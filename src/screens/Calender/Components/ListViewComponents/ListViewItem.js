@@ -6,6 +6,7 @@ import { Button } from '@/components';
 import { memo } from 'react';
 import { ms } from 'react-native-size-matters';
 import { Fonts, editIcon } from '@/assets';
+import { COLORS } from '@/theme';
 
 const ListViewItem = ({
   item,
@@ -13,7 +14,7 @@ const ListViewItem = ({
   onPressCheckin,
   onPressEdit,
   onPressMarkComplete,
-  isBookingCompletedLoading,
+  isChangeStatusLoading,
   isSendCheckinOTPLoading,
 }) => {
   const userDetails = item?.user_details;
@@ -60,7 +61,7 @@ const ListViewItem = ({
           {item?.status === 1 ? (
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button
-                pending={isSendCheckinOTPLoading}
+                pending={isChangeStatusLoading}
                 title={'Check-in'}
                 textStyle={styles.listCheckinBtnText}
                 style={styles.listViewCheckinBtn}
@@ -72,7 +73,7 @@ const ListViewItem = ({
             </View>
           ) : (
             <Button
-              pending={isBookingCompletedLoading}
+              pending={isChangeStatusLoading}
               title={'Mark Complete'}
               textStyle={[styles.listCheckinBtnText, { color: COLORS.white }]}
               style={[styles.listViewCheckinBtn, { backgroundColor: COLORS.primary }]}

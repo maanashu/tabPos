@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Image, Text, Platform, Dimensions } from 'react-native';
-
 import { DaySelector, ScreenWrapper, Spacer } from '@/components';
 
 import { styles } from './Analytics2.styles';
 import { MainScreen } from './Components/MainScreen';
 import { TotalProfit } from './Components/TotalProfit';
 import {
-  analyticsReport,
   profit,
   revenueTotal,
   totalSales,
@@ -17,14 +15,13 @@ import {
   locationSales,
   totalCost,
   totalOrders,
-  cross,
   calendar,
   dropdown,
   Fonts,
   backArrow2,
 } from '@/assets';
 import Modal from 'react-native-modal';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { Revenue } from './Components/Revenue';
 import { TotalCost } from './Components/TotalCost';
 import { TotalDeliveryOrders } from './Components/TotalDeliveryOrders';
@@ -44,17 +41,15 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { TotalProductSold } from './Components/TotalProductSold';
 import { TotalInventory } from './Components/TotalInventory';
 import { getUser } from '@/selectors/UserSelectors';
+
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ms } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CalendarPicker from 'react-native-calendar-picker';
-import CalendarPickerModal from './Components/CalendarPicker';
+import CalendarPickerModal from '@/components/CalendarPicker';
 import moment from 'moment';
-import { useCallback } from 'react';
 import { WeeklyTransaction } from './Components/WeeklyTransaction';
 import { useRef } from 'react';
-import { InvoiceDetail } from './Components/InvoiceDetail';
-
+import { InvoiceDetail } from '@/screens/Analytics2/Components/InvoiceDetail';
 export function Analytics2() {
   const mapRef = useRef(null);
 

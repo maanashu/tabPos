@@ -71,7 +71,7 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}>
       {singleOrderDetail?.delivery_option == 1 || singleOrderDetail?.delivery_option == 4 ? (
         <View style={[styles.firstRowStyle]}>
           <View style={styles.invoiceDetailSection}>
@@ -173,7 +173,7 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
               </Text>
               <Text style={styles._commonPayTitle}>Walk-In</Text>
               <Text style={styles._commonPayTitle}>
-                {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}` ?? '-'}
+                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
               </Text>
               <Text style={styles._commonPayTitle}>
                 POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
@@ -371,7 +371,7 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
                 </Text>
                 <Text style={styles._commonPayTitle}>Walk-In</Text>
                 <Text style={styles._commonPayTitle}>
-                  {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}` ?? '-'}
+                  {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
                 </Text>
                 <Text style={styles._commonPayTitle}>
                   POS No. {getUserData?.posLoginData?.pos_number ?? '-'}

@@ -175,7 +175,7 @@ export function Calender() {
     isLoadingSelector([TYPES.SEND_CHECKIN_OTP], state)
   );
 
-  const isBookingCompletedLoading = useSelector((state) =>
+  const isChangeStatusLoading = useSelector((state) =>
     isLoadingSelector([TYPES.CHANGE_APPOINTMENT_STATUS], state)
   );
 
@@ -217,7 +217,7 @@ export function Calender() {
       (appointment) => moment(appointment?.date).format('L') === moment(calendarDate).format('L')
     );
     return filteredAppointmentsByDate;
-  }, [calendarDate]);
+  }, [calendarDate, getApprovedAppointments]);
 
   const onPressSaveCalendarSettings = (calendarPreferences) => {
     if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.DAY) {
@@ -259,13 +259,14 @@ export function Calender() {
       <ListViewItem
         item={item}
         index={index}
-        isBookingCompletedLoading={isBookingCompletedLoading}
-        isSendCheckinOTPLoading={isSendCheckinOTPLoading}
+        isChangeStatusLoading={isChangeStatusLoading}
+        // isSendCheckinOTPLoading={isSendCheckinOTPLoading}
         onPressCheckin={() => {
           setSelectedPosStaffCompleteData(item);
-          dispatch(sendCheckinOTP(appointmentId)).then(() => {
-            setshowVerifyOTPModal(true);
-          });
+          dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
+          // dispatch(sendCheckinOTP(appointmentId)).then(() => {
+          //   setshowVerifyOTPModal(true);
+          // });
         }}
         onPressEdit={() => {
           setSelectedPosStaffCompleteData(item);
@@ -613,7 +614,7 @@ export function Calender() {
           setshowEventDetailModal={setshowEventDetailModal}
         />
 
-        <VerifyCheckinOtp
+        {/* <VerifyCheckinOtp
           appointmentData={selectedPosStaffCompleteData}
           isVisible={showVerifyOTPModal}
           setIsVisible={setshowVerifyOTPModal}
@@ -628,7 +629,7 @@ export function Calender() {
               });
             }, 500);
           }}
-        />
+        /> */}
       </View>
     </ScreenWrapper>
   );

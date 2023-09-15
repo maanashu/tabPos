@@ -52,7 +52,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
     isLoadingSelector([TYPES.SEND_CHECKIN_OTP], state)
   );
 
-  const isBookingCompletedLoading = useSelector((state) =>
+  const isChangeStatusLoading = useSelector((state) =>
     isLoadingSelector([TYPES.CHANGE_APPOINTMENT_STATUS], state)
   );
 
@@ -263,15 +263,17 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
             </TouchableOpacity>
             <Spacer space={ms(10)} horizontal />
             <Button
-              pending={isSendCheckinOTPLoading || isBookingCompletedLoading}
-              title={selectedPosStaffCompleteData?.status === 1 ? 'Check-in' : 'Complete'}
+              pending={isChangeStatusLoading}
+              title={selectedPosStaffCompleteData?.status === 1 ? 'Check-in' : 'Mark Complete'}
               textStyle={styles.checkintitle}
               style={styles.checkinContainer}
               onPress={() => {
                 if (selectedPosStaffCompleteData?.status === 1) {
-                  dispatch(sendCheckinOTP(appointmentId)).then(() => {
-                    setshowVerifyOTPModal(true);
-                  });
+                  dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
+                  hideAllModal();
+                  // dispatch(sendCheckinOTP(appointmentId)).then(() => {
+                  //   setshowVerifyOTPModal(true);
+                  // });
                 } else if (selectedPosStaffCompleteData?.status === 2) {
                   dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
                   hideAllModal();

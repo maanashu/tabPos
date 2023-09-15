@@ -41,7 +41,7 @@ import { useRef } from 'react';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { WeeklyTransaction } from './Components/WeeklyTransaction';
 import Modal from 'react-native-modal';
-import CalendarPickerModal from '../Analytics2/Components/CalendarPicker';
+import CalendarPickerModal from '@/components/CalendarPicker';
 
 export function Wallet2() {
   const mapRef = useRef(null);

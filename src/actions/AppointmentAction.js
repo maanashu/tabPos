@@ -178,6 +178,8 @@ const getAppointmentStatusMessage = (status) => {
     return 'Appointment Rejected';
   } else if (status === APPOINTMENT_STATUS.COMPLETED) {
     return 'Appointment Completed';
+  } else if (status === APPOINTMENT_STATUS.CHECKED_IN) {
+    return 'Appointment Checked In';
   }
 };
 
