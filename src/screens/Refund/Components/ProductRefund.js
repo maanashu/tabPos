@@ -25,6 +25,8 @@ import {
   categoryshoes,
   sellingArrow,
   PaymentDone,
+  plus,
+  minus,
 } from '@/assets';
 import PaymentSelection from './PaymentSelection';
 import { useEffect } from 'react';
@@ -64,6 +66,40 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
     setOrders(updatedDataArray);
   };
 
+  const addRemoveQty = (symbol, itemIndex) => {
+    // Create a copy of the orders array to avoid mutating the original state
+    const updatedOrders = [...orders];
+
+    // Find the selected item in the copy
+    const selectedItem = updatedOrders[itemIndex];
+
+    const originalOrderArr = orderData?.order?.order_details[itemIndex];
+
+    if (symbol === '+' && selectedItem.qty < originalOrderArr.qty) {
+      // Increase the qty of the selected item
+      selectedItem.qty += 1;
+    } else if (symbol === '-' && selectedItem.qty > 1) {
+      // Decrease the qty of the selected item, but ensure it doesn't go below 0
+      selectedItem.qty -= 1;
+    }
+
+    // Update the state with the modified copy of the orders array
+    setOrders(updatedOrders);
+  };
+
+  // Calculate the total refund amount using reduce
+  // const totalRefundAmount = orders?.reduce((total, order) => {
+  //   // Convert the "refundAmount" property to a floating-point number (assuming it's a string)
+  //   const refundAmount = parseFloat(order.refundAmount);
+
+  //   // Add the refundAmount to the total if it's a valid number
+  //   if (!isNaN(refundAmount)) {
+  //     total += refundAmount;
+  //   }
+
+  //   return total;
+  // }, 0);
+
   const renderProductItem = ({ item, index }) => (
     <View style={styles.blueListData}>
       <View style={styles.displayflex}>
@@ -77,7 +113,7 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
           >
             <Image source={categoryshoes} style={styles.columbiaMen} />
             <View style={{ marginLeft: 10 }}>
-              <Text style={[styles.blueListDataText, { width: SW(30) }]} numberOfLines={1}>
+              <Text style={[styles.blueListDataText, { width: SW(34) }]} numberOfLines={1}>
                 {item?.product_name}
               </Text>
               <Text style={styles.sukNumber}>{item?.product_details?.sku}</Text>
@@ -124,9 +160,28 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
           )}
 
           <View style={styles.productCartBody}>
-            <Text style={styles.blueListDataText} numberOfLines={1}>
-              X {item?.qty}
-            </Text>
+            <View style={styles.listCountCon}>
+              <TouchableOpacity
+                style={{
+                  width: SW(10),
+                  alignItems: 'center',
+                }}
+                onPress={() => addRemoveQty('-', index)}
+                // disabled={data.qty == 1 ? true : false}
+              >
+                <Image source={minus} style={styles.minus} />
+              </TouchableOpacity>
+              <Text>{`${item?.qty}`}</Text>
+              <TouchableOpacity
+                style={{
+                  width: SW(10),
+                  alignItems: 'center',
+                }}
+                onPress={() => addRemoveQty('+', index)}
+              >
+                <Image source={plus} style={styles.minus} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={styles.productCartBody}>
@@ -665,6 +720,23 @@ const styles = StyleSheet.create({
   contentContainerStyle: {
     flexGrow: 1,
     paddingBottom: 100,
+  },
+  listCountCon: {
+    borderWidth: 1,
+    width: SW(30),
+    height: SH(30),
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    // paddingVertical: verticalScale(1),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(4),
+    alignItems: 'center',
+  },
+  minus: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
   },
 });
 
