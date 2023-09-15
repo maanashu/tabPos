@@ -30,6 +30,7 @@ const getOrderUsertReset = () => ({
   type: TYPES.GET_ORDER_USER_RESET,
   payload: null,
 });
+
 const getUserOrderReset = () => ({
   type: TYPES.GET_USER_ORDER_RESET,
   payload: null,
@@ -44,6 +45,36 @@ const getCustomersSuccess = (getCustomers) => ({
 });
 const getCustomersError = (error) => ({
   type: TYPES.GET_CUSTOMERS_ERROR,
+  payload: { error },
+});
+
+const getAcceptMarketingRequest = () => ({
+  type: TYPES.GET_ACCEPTMARKETING_REQUEST,
+  payload: null,
+});
+const getAcceptMarketingSuccess = (getAcceptMarketing) => ({
+  type: TYPES.GET_ACCEPTMARKETING_SUCCESS,
+  payload: { getAcceptMarketing },
+});
+const getAcceptMarketingError = (error) => ({
+  type: TYPES.GET_ACCEPTMARKETING_ERROR,
+  payload: { error },
+});
+const getAcceptMarketingReset = () => ({
+  type: TYPES.GET_ACCEPTMARKETING_RESET,
+  payload: null,
+});
+
+const marketingUpdateRequest = () => ({
+  type: TYPES.GET_MARKETINGUPDATE_REQUEST,
+  payload: null,
+});
+const marketingUpdateSuccess = () => ({
+  type: TYPES.GET_MARKETINGUPDATE_SUCCESS,
+  payload: null,
+});
+const marketingUpdateError = (error) => ({
+  type: TYPES.GET_MARKETINGUPDATE_ERROR,
   payload: { error },
 });
 
@@ -79,5 +110,33 @@ export const getCustomer = (time, sellerID) => async (dispatch) => {
     dispatch(getCustomersSuccess(res?.payload));
   } catch (error) {
     dispatch(getCustomersError(error.message));
+  }
+};
+
+export const getAcceptMarketing = (data) => async (dispatch) => {
+  dispatch(getAcceptMarketingRequest());
+  try {
+    const res = await CustomersController.getAcceptMarketing(data);
+    dispatch(getAcceptMarketingSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getAcceptMarketingReset());
+    }
+    dispatch(getAcceptMarketingError(error.message));
+  }
+};
+
+export const marketingUpdate = (data) => async (dispatch) => {
+  dispatch(marketingUpdateRequest());
+  try {
+    const res = await CustomersController.marketingUpdate(data);
+    return dispatch(marketingUpdateSuccess(res));
+    // const data = {
+    //   userid: res?.payload?.user_id,
+    //   sellerid: res?.payload?.seller_id,
+    // };
+    // dispatch(getAcceptMarketing(data));
+  } catch (error) {
+    dispatch(marketingUpdateError(error.message));
   }
 };

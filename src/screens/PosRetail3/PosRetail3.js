@@ -407,7 +407,9 @@ export function PosRetail3() {
         crossHandler={() => setselectedScreen('MainScreen')}
         onPressPayNow={() => {
           setFromWhichCart('Service');
-          setselectedScreen('CartAmountPayBy'), setComingScreen('CartServiceScreen');
+          setselectedScreen('CartAmountPayBy');
+          setComingScreen('CartServiceScreen');
+          dispatch(getDrawerSessions());
         }}
         addNotesHandler={() => setAddServiceNotes(true)}
         addDiscountHandler={() => setAddServiceDiscount(true)}

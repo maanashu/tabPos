@@ -45,8 +45,10 @@ const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 import { TYPES } from '@/Types/CustomersTypes';
 import { useEffect } from 'react';
-import { getOrderUser } from '@/actions/CustomersAction';
+import { getAcceptMarketing, getOrderUser, marketingUpdate } from '@/actions/CustomersAction';
 import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
+import { useMemo } from 'react';
+import { useCallback } from 'react';
 
 const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler }) => {
   const isFocused = useIsFocused();
@@ -54,8 +56,10 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getCustomerData = useSelector(getCustomers);
+  const marketingData = getCustomerData?.getAcceptMarketing;
   const ordersbyUserData = getCustomerData?.getOrderUser;
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
+  // console.log('ordersByUser', JSON.stringify(ordersByUser));
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
@@ -68,7 +72,34 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
   const [selectedYearData, setselectedYearData] = useState(null);
   const [selectedMonthData, setselectedMonthData] = useState(null);
 
-  const startIndex = (page - 1) * paginationModalValue + 1;
+  useEffect(() => {
+    const data = {
+      userid: userDetail?.user_details?.id,
+      sellerid: userDetail?.seller_details?.id,
+    };
+    dispatch(getAcceptMarketing(data));
+  }, []);
+
+  const toggleHandler = async () => {
+    const data = {
+      user_id: userDetail?.user_details?.id.toString(),
+      seller_id: userDetail?.seller_details?.id.toString(),
+      accept: Object.keys(marketingData)?.length == 0 ? true : marketingData?.accept ? false : true,
+    };
+    const res = await dispatch(marketingUpdate(data));
+    if (res?.type === 'GET_MARKETINGUPDATE_SUCCESS') {
+      const data = {
+        userid: userDetail?.user_details?.id,
+        sellerid: userDetail?.seller_details?.id,
+      };
+      dispatch(getAcceptMarketing(data));
+    }
+  };
+
+  const startIndex = useMemo(
+    () => (page - 1) * paginationModalValue + 1,
+    [page, paginationModalValue]
+  );
 
   const data = {
     firstName: userDetail?.user_details?.firstname,
@@ -91,10 +122,9 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
 
   const orderPayloadLength = Object.keys(getCustomerData?.getOrderUser)?.length;
 
-  const paginationInchandler = () => {
-    setPage(page + 1);
-    // setInd(ind + 1);
-  };
+  const paginationInchandler = useCallback(() => {
+    setPage((prev) => prev + 1);
+  }, []);
 
   const paginationDechandler = () => {
     setPage(page - 1);
@@ -176,14 +206,16 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             <Spacer space={SH(10)} />
             <View style={[styles.pointCon, styles.acceptCon]}>
               <View style={styles.flexAlign}>
-                <TouchableOpacity
-                  style={styles.toggleBtnCon}
-                  // onPress={() => setToggles(!toggles)}
-                >
+                <TouchableOpacity style={styles.toggleBtnCon} onPress={toggleHandler}>
                   <Image
                     source={toggle}
-                    // style={toggles ? styles.toggleBtnStyle : styles.toggleBtnStyle2}
-                    style={styles.toggleBtnStyle}
+                    style={
+                      Object.keys(marketingData)?.length == 0
+                        ? styles.toggleBtnStyle2
+                        : marketingData?.accept == true
+                        ? styles.toggleBtnStyle
+                        : styles.toggleBtnStyle2
+                    }
                   />
                 </TouchableOpacity>
                 <Text style={styles.acceptMarketText}>{strings.customers.acceptMarket}</Text>

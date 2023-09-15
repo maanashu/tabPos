@@ -49,6 +49,8 @@ export const ApiUserInventory = {
   getSellerDrivers: 'merchant_drivers/get-drivers',
   abc: (sellerID) => `?page=1&limit=10&seller_id=${sellerID}`,
   getPaymentHistory: 'drawer_management/payment/history',
+  getAcceptMarketing: 'marketings/status',
+  marketingUpdate: 'marketings',
 };
 
 export const ApiProductInventory = {
@@ -71,10 +73,6 @@ export const ApiProductInventory = {
   availableOffer: 'offer/products',
   skuSearch: 'products/search-one',
 };
-
-// export const ApiSupportInventory = {
-
-// }
 
 export const ApiOrderInventory = {
   posCarts: 'poscarts',

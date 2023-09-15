@@ -243,7 +243,6 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
       )}
     </TouchableOpacity>
   );
-  // console.log('getTotalTraDetail', getTotalTraDetail);
 
   return (
     <View style={{ height: windowHeight * 0.95 }}>
