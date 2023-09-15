@@ -193,13 +193,11 @@ export function SessionHistoryTable({
                 </Text>
               </View>
               <View style={[styles.dateHeadAlign]}>
-                <Text style={styles.historyHeaderText}>Start</Text>
-                <Text style={styles.historyHeaderText}>Ends</Text>
                 <Text style={styles.historyHeaderText}>Ended By</Text>
                 <Text style={styles.historyHeaderText}>Session Started</Text>
-                <Text style={styles.historyHeaderText}>Total {`\n`}Cash In</Text>
-                <Text style={styles.historyHeaderText}>Total {`\n`}Cash Out</Text>
-                <Text style={styles.historyHeaderText}>Counted {`\n`}cash</Text>
+                <Text style={styles.historyHeaderText}>Added cash</Text>
+                <Text style={styles.historyHeaderText}>Removed cash</Text>
+                <Text style={styles.historyHeaderText}>Counted cash</Text>
                 <Text style={[styles.historyHeaderText, { paddingRight: 25 }]}>Session Ended</Text>
               </View>
             </View>

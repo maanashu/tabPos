@@ -14,6 +14,7 @@ export class CashTrackingController {
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response ====', response);
           resolve(response);
         })
         .catch((error) => {
@@ -110,27 +111,13 @@ export class CashTrackingController {
     });
   }
   static async getSessionHistory(newDateFormat) {
-    const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
     const urlAccDate = (newDateFormat) => {
-      //   if (newDateFormat) {
-      //     return USER_URL + ApiUserInventory.getSessionHistory + `?filter_date=${newDateFormat}`;
-      //   } else {
-      //     return USER_URL + ApiUserInventory.getSessionHistory;
-      //   }
-      // };
-
-      //new code
       if (newDateFormat) {
-        return (
-          USER_URL +
-          ApiUserInventory.getSessionHistoryy +
-          `?seller_id=${sellerID}&date=${newDateFormat}`
-        );
+        return USER_URL + ApiUserInventory.getSessionHistory + `?filter_date=${newDateFormat}`;
       } else {
-        return USER_URL + ApiUserInventory.getSessionHistoryy + `?seller_id=${sellerID}`;
+        return USER_URL + ApiUserInventory.getSessionHistory;
       }
     };
-
     return new Promise((resolve, reject) => {
       const endpoint = urlAccDate(newDateFormat);
       HttpClient.get(endpoint)
