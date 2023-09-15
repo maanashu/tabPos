@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Image, Text, Platform, Dimensions } from 'react-native';
 
-import { DaySelector, InvoiceDetail, ScreenWrapper, Spacer } from '@/components';
+import { DaySelector, ScreenWrapper, Spacer } from '@/components';
 
 import { styles } from './Analytics2.styles';
 import { MainScreen } from './Components/MainScreen';
@@ -53,6 +53,7 @@ import moment from 'moment';
 import { useCallback } from 'react';
 import { WeeklyTransaction } from './Components/WeeklyTransaction';
 import { useRef } from 'react';
+import { InvoiceDetail } from './Components/InvoiceDetail';
 
 export function Analytics2() {
   const mapRef = useRef(null);
@@ -66,6 +67,7 @@ export function Analytics2() {
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [channels, setChannels] = useState(false);
   const [channelValue, setChannelValue] = useState('pos');
+  const [fromInVoice, setFromInvoice] = useState(false);
   const [channelItem, setChannelItem] = useState([
     { label: 'B2B', value: 'b2b' },
     { label: 'POS', value: 'pos' },
@@ -113,6 +115,7 @@ export function Analytics2() {
 
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [invoiceDetail, setInvoiceDetail] = useState(false);
+  const [orderId, setOrderId] = useState(null);
 
   const handleOnPressNext = () => {
     // Perform actions when "Next" button is pressed
@@ -194,6 +197,11 @@ export function Analytics2() {
     setselectedScreen('MainScreen');
   };
 
+  const onViewInvoiceDetail = async (orderId) => {
+    setFromInvoice(false);
+    setOrderId(orderId);
+    setInvoiceDetail(true);
+  };
   const renderScreen = {
     ['MainScreen']: (
       <MainScreen
@@ -224,8 +232,9 @@ export function Analytics2() {
   };
 
   const closeHandler = () => {
+    setFromInvoice(true);
     setInvoiceDetail(false);
-    setWeeklyTrasaction(true);
+    // setWeeklyTrasaction(true);
   };
   const transactionList = () => {
     if (invoiceDetail) {
@@ -234,6 +243,7 @@ export function Analytics2() {
           {...{
             mapRef,
             closeHandler,
+            orderId,
           }}
         />
       );
@@ -241,16 +251,15 @@ export function Analytics2() {
       return (
         <WeeklyTransaction
           backHandler={() => {
+            setFromInvoice(false);
             setWeeklyTrasaction(false);
             // setWalletHome(true);
           }}
-          orderClickHandler={async (orderId) => {
-            const res = await dispatch(getOrderData(orderId));
-            if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
-              setInvoiceDetail(true);
-            }
+          orderClickHandler={(orderId) => {
+            onViewInvoiceDetail(orderId);
           }}
           selectTime={filter}
+          FromInvoice={fromInVoice}
         />
       );
     }
