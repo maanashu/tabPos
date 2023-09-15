@@ -2,6 +2,8 @@ import { Fonts, cross } from '@/assets';
 import { Button } from '@/components';
 import { COLORS, SH, SW } from '@/theme';
 import React, { useState } from 'react';
+import { useMemo } from 'react';
+import { memo } from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ms } from 'react-native-size-matters';
@@ -16,8 +18,7 @@ const CalendarPickerModal = ({
   selectedStartDate,
   onCancelPress,
 }) => {
-  const minDate = new Date(2020, 1, 1); // Today
-  // const maxDate = new Date(2030, 6, 3);
+  const minDate = useMemo(() => new Date(2020, 1, 1), []);
 
   return (
     <View style={styles.container}>
@@ -125,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CalendarPickerModal;
+export default memo(CalendarPickerModal);

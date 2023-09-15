@@ -42,7 +42,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CustomersTypes';
 import { PAGINATION_DATA } from '@/constants/enums';
 import Modal from 'react-native-modal';
-import CalendarPickerModal from '@/screens/Analytics2/Components/CalendarPicker';
+import CalendarPickerModal from '@/components/CalendarPicker';
 const result = Dimensions.get('window').height - 50;
 
 const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustomeType }) => {
