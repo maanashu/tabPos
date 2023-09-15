@@ -59,7 +59,6 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
   const marketingData = getCustomerData?.getAcceptMarketing;
   const ordersbyUserData = getCustomerData?.getOrderUser;
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
-  // console.log('ordersByUser', JSON.stringify(ordersByUser));
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
@@ -448,13 +447,45 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                           </Text>
                         </View>
                         <View style={styles.profileheaderChildView}>
-                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Image
-                              source={userImage}
-                              style={{ width: ms(15), height: ms(15), resizeMode: 'contain' }}
-                            />
-                            <Text style={styles.tableTextData}>{item?.shipping_detail?.title}</Text>
-                          </View>
+                          {item?.delivery_option == 4 ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                              <Image
+                                source={{ uri: item?.shipping_details?.image }}
+                                style={{
+                                  width: ms(17),
+                                  height: ms(17),
+                                  resizeMode: 'contain',
+                                  borderRadius: 50,
+                                }}
+                              />
+                              <Text
+                                style={[styles.tableTextData, { marginLeft: ms(3) }]}
+                                numberOfLines={2}
+                              >
+                                {item?.shipping_details?.title}
+                              </Text>
+                            </View>
+                          ) : item?.delivery_option == 3 || item?.delivery_option == 2 ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                              <Image
+                                source={{ uri: item?.pos_user_details?.profile_photo }}
+                                style={{ width: ms(15), height: ms(15), resizeMode: 'contain' }}
+                              />
+                              <Text style={styles.tableTextData}>
+                                {item?.pos_user_details?.firstname}
+                              </Text>
+                            </View>
+                          ) : (
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                              <Image
+                                source={{ uri: item?.driver_details?.profile_photo }}
+                                style={{ width: ms(15), height: ms(15), resizeMode: 'contain' }}
+                              />
+                              <Text style={styles.tableTextData}>
+                                {item?.driver_details?.firstname}
+                              </Text>
+                            </View>
+                          )}
                         </View>
                         <View style={styles.profileheaderChildView}>
                           <Text style={styles.tableTextData} numberOfLines={1}>

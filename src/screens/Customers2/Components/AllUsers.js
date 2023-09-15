@@ -133,7 +133,6 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   };
   const startIndex = (page - 1) * paginationModalValue + 1;
   const endIndex = page * paginationModalValue;
-  // console.log('startIndex', startIndex);
 
   const isCustomerLoad = useSelector((state) => isLoadingSelector([TYPES.GET_USER_ORDER], state));
   // const onChangeDate = (selectedDate) => {
