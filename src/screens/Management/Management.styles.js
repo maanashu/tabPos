@@ -548,6 +548,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
     paddingHorizontal: moderateScale(20),
+    marginHorizontal: ms(15),
   },
   allienpic: {
     width: SW(6),
@@ -689,5 +690,52 @@ export const styles = StyleSheet.create({
     width: ms(4),
     marginLeft: ms(5),
     transform: [{ rotate: '180deg' }],
+  },
+
+  //New table style
+
+  tableDataHeaderConNew: {
+    height: SH(50),
+    backgroundColor: COLORS.textInputBackground,
+    textAlign: 'center',
+    borderColor: COLORS.solidGrey,
+    paddingHorizontal: moderateScale(10),
+    justifyContent: 'center',
+  },
+  profileheaderUnderView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profileheaderUnderData: {
+    flexDirection: 'row',
+    // marginLeft: ms(-10),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profileheaderChildView: {
+    width: Platform.OS === 'android' ? ms(105) : ms(72),
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: ms(3),
+  },
+  tableTextHeader: {
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(14),
+  },
+  tableTextDataFirst: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    letterSpacing: -1,
+    width: windowWidth * 0.02,
+  },
+  tableTextData: {
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+    fontSize: SF(14),
+    marginStart: ms(10),
+    alignSelf: 'center',
   },
 });

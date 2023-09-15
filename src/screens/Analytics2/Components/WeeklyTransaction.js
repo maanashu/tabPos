@@ -41,7 +41,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
 const windowHeight = Dimensions.get('window').height;
 
-export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime }) {
+export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, FromInvoice }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getWalletData = useSelector(getWallet);
@@ -56,6 +56,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime }
   const [selectId, setSelectId] = useState(2);
   const time = selectTime?.value;
   const [page, setPage] = useState(1);
+  const [fromInVoice, setFromInVoice] = useState(FromInvoice);
   const [transaction, setTransaction] = useState({ modeOfPayment: 'all' });
 
   const [formatedDate, setFormatedDate] = useState();
@@ -76,6 +77,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime }
       calendarDate: formatedDate,
       sellerID: sellerID,
     };
+
     dispatch(getTotalTraType(data));
   }, [selectId, formatedDate]);
 
@@ -88,7 +90,9 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime }
       sellerId: sellerID,
       calendarDate: formatedDate,
     };
-    dispatch(getTotakTraDetail(data));
+    if (!fromInVoice) {
+      dispatch(getTotakTraDetail(data));
+    }
   }, [selectId, transaction, page, paginationModalValue, formatedDate]);
 
   const isTotalTradetail = useSelector((state) =>
@@ -204,7 +208,9 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime }
                 backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
               },
             ]}
-            onPress={() => setPage(page - 1)}
+            onPress={() => {
+              setFromInVoice(false), setPage(page - 1);
+            }}
             disabled={paginationData?.currentPage == 1 ? true : false}
           >
             <Image
@@ -328,11 +334,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime }
                 getTotalTraDetail?.map((item, index) => {
                   const currentIndex = startIndex + index;
                   return (
-                    <TouchableOpacity
-                      style={[styles.tableDataCon, { zIndex: -9 }]}
-                      key={index}
-                      onPress={() => orderClickHandler(item?.id)}
-                    >
+                    <View style={[styles.tableDataCon, { zIndex: -9 }]} key={index}>
                       <View style={styles.displayFlex}>
                         <View style={styles.tableHeaderLeft}>
                           <Text style={styles.tableTextDataFirst}>{currentIndex}</Text>
@@ -377,7 +379,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime }
                               {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
                             </Text>
                           </View>
-                          <View
+                          <TouchableOpacity
                             style={{
                               width: SF(110),
                               borderRadius: ms(3),
@@ -387,12 +389,13 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime }
                               justifyContent: 'center',
                               marginLeft: ms(-35),
                             }}
+                            onPress={() => orderClickHandler(item?.id)}
                           >
                             <Text style={styles.tableTextDataCom}>{statusFun(item.status)}</Text>
-                          </View>
+                          </TouchableOpacity>
                         </View>
                       </View>
-                    </TouchableOpacity>
+                    </View>
                   );
                 })
               )}

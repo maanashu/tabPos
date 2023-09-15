@@ -23,7 +23,7 @@ import {
 import { strings } from '@/localization';
 import { styles } from '@/screens/Management/Management.styles';
 import { Spacer, TableDropdown } from '@/components';
-import { Table } from 'react-native-table-component';
+import { Table, TableWrapper, Row, Col } from 'react-native-table-component';
 const windowWidth = Dimensions.get('window').width;
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -77,7 +77,7 @@ export function SessionHistoryTable({
 
   // const tableDataArrayReverse = tableDataArray?.reverse();
   const tableDataArrayReverse = tableDataArray?.slice().reverse();
-
+  console.log('sdasdas', JSON.stringify(tableDataArrayReverse));
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
@@ -111,12 +111,73 @@ export function SessionHistoryTable({
       </View>
       <View style={[styles.tableMainView]}>
         <Table>
-          <View style={styles.tableDataHeaderCon}>
+          <View
+            style={[
+              styles.tableDataHeaderConNew,
+              { borderTopWidth: 1, borderColor: COLORS.solidGrey },
+            ]}
+          >
+            <View style={styles.profileheaderUnderView}>
+              {/* <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}> */}
+              <View style={{ alignItems: 'center', justifyContent: 'center', marginStart: ms(15) }}>
+                <Text style={[styles.tableTextHeader]}>#</Text>
+              </View>
+
+              {/* </View> */}
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Date
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Start
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Ends
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Ended By
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Session Started
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Total {`\n`}Cash In
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Total {`\n`}Cash Out
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Counted {`\n`}cash
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Session Ended
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          {/* <View style={styles.tableDataHeaderCon}>
             <View style={styles.displayFlex}>
               <View
                 style={{
                   flexDirection: 'row',
-                  width: windowWidth * 0.22,
+                  width: windowWidth * 0.09,
                 }}
               >
                 <Text style={styles.text}>#</Text>
@@ -132,17 +193,23 @@ export function SessionHistoryTable({
                 </Text>
               </View>
               <View style={[styles.dateHeadAlign]}>
+                <Text style={styles.historyHeaderText}>Start</Text>
+                <Text style={styles.historyHeaderText}>Ends</Text>
                 <Text style={styles.historyHeaderText}>Ended By</Text>
                 <Text style={styles.historyHeaderText}>Session Started</Text>
-                <Text style={styles.historyHeaderText}>Added cash</Text>
-                <Text style={styles.historyHeaderText}>Removed cash</Text>
-                <Text style={styles.historyHeaderText}>Counted cash</Text>
+                <Text style={styles.historyHeaderText}>Total {`\n`}Cash In</Text>
+                <Text style={styles.historyHeaderText}>Total {`\n`}Cash Out</Text>
+                <Text style={styles.historyHeaderText}>Counted {`\n`}cash</Text>
                 <Text style={[styles.historyHeaderText, { paddingRight: 25 }]}>Session Ended</Text>
               </View>
             </View>
-          </View>
+          </View> */}
+
           <View style={{ height: windowHeight * 0.67 }}>
-            <ScrollView>
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              showsVerticalScrollIndicator={false}
+            >
               {sessionHistoryLoad ? (
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
@@ -162,74 +229,72 @@ export function SessionHistoryTable({
                     }
                     key={index}
                   >
-                    <View style={styles.displayFlex}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          width: windowWidth * 0.22,
-                        }}
-                      >
-                        <Text style={[styles.usertableRowText, { textAlign: 'left' }]}>
-                          {index + 1}
+                    <View style={styles.profileheaderUnderData}>
+                      {/* <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}> */}
+                      <Text style={[styles.tableTextData]}>{index + 1}</Text>
+                      {/* </View> */}
+                      <View style={styles.profileheaderChildView}>
+                        <Text style={styles.tableTextData}>
+                          {moment(item.created_at).format('YYYY/MM/DD') ?? ''}
                         </Text>
-                        <View style={{ paddingHorizontal: moderateScale(10) }}>
-                          <Text style={styles.usertableRowText}>
-                            {moment(item.created_at).format('LL') ?? ''}
-                          </Text>
-                          <Text style={[styles.usertableRowText, { textAlign: 'left' }]}>
-                            {moment(item.created_at).format('h : mm A')}
+                      </View>
+                      <View style={styles.profileheaderChildView}>
+                        <Text style={styles.tableTextData} numberOfLines={1}>
+                          {item.start_session == null
+                            ? ''
+                            : moment(item.start_session).format('hh:mm A') ?? ''}
+                        </Text>
+                      </View>
+                      <View style={styles.profileheaderChildView}>
+                        <Text style={styles.tableTextData} numberOfLines={1}>
+                          {item.end_session == null
+                            ? ''
+                            : moment(item.end_session).format('hh:mm A') ?? ''}
+                        </Text>
+                      </View>
+                      <View style={styles.profileheaderChildView}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            source={{ uri: item?.pos_user_detail?.user_profiles?.profile_photo }}
+                            style={{
+                              width: ms(15),
+                              height: ms(15),
+                              resizeMode: 'contain',
+                              borderRadius: 100,
+                              // marginLeft: ms(-15),
+                            }}
+                          />
+                          <Text style={[styles.tableTextData, { marginLeft: ms(5) }]}>
+                            {item?.pos_user_detail?.user_profiles?.firstname}
                           </Text>
                         </View>
                       </View>
-                      <View style={styles.dateTimeAlign}>
-                        <View
-                          style={[
-                            styles.historydataText,
-                            {
-                              flexDirection: 'row',
-                              justifyContent: 'flex-start',
-                            },
-                          ]}
-                        >
-                          <Image
-                            source={{
-                              uri: item.seller_details?.user_profiles?.profile_photo,
-                            }}
-                            style={[styles.allienpic, { marginRight: 4 }]}
-                          />
-                          <Text
-                            style={[styles.usertableRowText, { width: windowWidth * 0.09 }]}
-                            numberOfLines={1}
-                          >
-                            {item.seller_details?.user_profiles?.firstname}
-                          </Text>
-                        </View>
-                        <Text style={styles.historydataText} numberOfLines={1}>
+                      <View style={styles.profileheaderChildView}>
+                        <Text style={styles.tableTextData} numberOfLines={1}>
                           ${item.start_tracking_session}
                           {'.00'}
                         </Text>
-                        <Text style={styles.historydataText} numberOfLines={1}>
+                      </View>
+                      <View style={styles.profileheaderChildView}>
+                        <Text style={styles.tableTextData} numberOfLines={1}>
                           ${item.add_cash}
                           {'.00'}
                         </Text>
-                        <Text style={styles.historydataText} numberOfLines={1}>
+                      </View>
+                      <View style={styles.profileheaderChildView}>
+                        <Text style={styles.tableTextData} numberOfLines={1}>
                           ${item.removed_cash}
                           {'.00'}
                         </Text>
-                        <Text style={styles.historydataText} numberOfLines={1}>
+                      </View>
+                      <View style={styles.profileheaderChildView}>
+                        <Text style={styles.tableTextData} numberOfLines={1}>
                           ${item.counted_cash}
                           {'.00'}
                         </Text>
-                        <Text
-                          style={[
-                            styles.historydataText,
-                            {
-                              color:
-                                item.end_tracking_session < 0 ? COLORS.orange : COLORS.solid_grey,
-                            },
-                          ]}
-                          numberOfLines={1}
-                        >
+                      </View>
+                      <View style={[styles.profileheaderChildView]}>
+                        <Text style={[styles.tableTextData]} numberOfLines={1}>
                           {item.end_tracking_session < 0 ? '-' : null} $
                           {item.end_tracking_session < 0
                             ? Math.abs(item.end_tracking_session)
