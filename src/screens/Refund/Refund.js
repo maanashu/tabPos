@@ -10,7 +10,7 @@ export function Refund(props) {
 
   return (
     <ScreenWrapper>
-      <SearchScreen from={params} />
+      <SearchScreen from={params} navigation={props?.navigation} />
     </ScreenWrapper>
   );
 }

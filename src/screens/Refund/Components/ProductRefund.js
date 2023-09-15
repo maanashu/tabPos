@@ -33,7 +33,7 @@ import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 const { width, height } = Dimensions.get('window');
 
-const ProductRefund = ({ backHandler, orderList, orderData }) => {
+const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
   const dispatch = useDispatch();
   const [amount, setAmount] = useState('');
   const [applicableIsCheck, setApplicableIsCheck] = useState(false);
@@ -465,6 +465,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           applicableForAllItems={applicableIsCheck}
           applyEachItem={applyEachItem}
           amount={applicableIsCheck ? amount : refundAmount}
+          navigation={navigation}
         />
       )}
     </View>

@@ -14,7 +14,7 @@ import { returnProductSuccess, getProductsBySkuSuccess } from '@/actions/Dashboa
 
 const { width } = Dimensions.get('window');
 
-const ReturnConfirmation = ({ isVisible, setIsVisible, order }) => {
+const ReturnConfirmation = ({ isVisible, setIsVisible, order, navigation, onPressHandler }) => {
   const dispatch = useDispatch();
   return (
     <ReactNativeModal
@@ -28,12 +28,13 @@ const ReturnConfirmation = ({ isVisible, setIsVisible, order }) => {
 
           <TouchableOpacity
             style={styles.crossIconView}
-            onPress={() => {
-              setIsVisible(false);
-              navigate(NAVIGATION.refund);
-              dispatch(returnProductSuccess({}));
-              dispatch(getProductsBySkuSuccess({}));
-            }}
+            onPress={
+              onPressHandler
+              // setIsVisible(false);
+              // navigation.navigate(NAVIGATION.refund);
+              // dispatch(returnProductSuccess({}));
+              // dispatch(getProductsBySkuSuccess({}));
+            }
           >
             <Image source={crossButton} style={styles.crossIconStyle} />
           </TouchableOpacity>

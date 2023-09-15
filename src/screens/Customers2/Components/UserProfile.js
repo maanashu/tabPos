@@ -374,7 +374,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             </View>
           </View>
 
-          <View style={{ height: Platform.OS === 'android' ? ms(230) : ms(265) }}>
+          <View style={{ height: Platform.OS === 'android' ? ms(230) : ms(240) }}>
             <ScrollView
               contentContainerStyle={{ flexGrow: 1 }}
               showsVerticalScrollIndicator={false}

@@ -157,7 +157,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, 
       </View>
       <View style={styles.walletTranCon}>
         <View style={styles.displayFlex}>
-          <Text style={styles.trancationHeading}>{strings.wallet.totalTransections}</Text>
+          <Text style={styles.trancationHeading}>{strings.wallet.transactions}</Text>
         </View>
       </View>
       <Spacer space={SH(10)} />
@@ -280,7 +280,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, 
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ zIndex: -9 }}>
+      <View style={{ zIndex: -9, height: ms(350) }}>
         <Table>
           <View style={styles.tableDataHeaderCon}>
             <View style={styles.displayFlex}>
@@ -320,7 +320,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, 
             </View>
           </View>
 
-          <View style={styles.tableHeight}>
+          <View style={[styles.tableHeight, { height: windowHeight * 0.67 }]}>
             <ScrollView>
               {isTotalTradetail ? (
                 <View style={{ marginTop: 100 }}>
@@ -403,8 +403,6 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, 
           </View>
         </Table>
       </View>
-
-      <Spacer space={SH(100)} />
     </View>
   );
 }
