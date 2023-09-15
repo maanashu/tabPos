@@ -155,7 +155,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               </Text>
               <Text style={styles._commonPayTitle}>Walk-In</Text>
               <Text style={styles._commonPayTitle}>
-                {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}` ?? '-'}
+                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
               </Text>
               <Text style={styles._commonPayTitle}>
                 POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
@@ -344,7 +344,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               </Text>
               <Text style={styles._commonPayTitle}>Walk-In</Text>
               <Text style={styles._commonPayTitle}>
-                {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}` ?? '-'}
+                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
               </Text>
               <Text style={styles._commonPayTitle}>
                 POS No. {getUserData?.posLoginData?.pos_number ?? '-'}

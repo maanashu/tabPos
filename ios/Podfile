@@ -7,8 +7,6 @@ install! 'cocoapods', :deterministic_uuids => false
 production = ENV["PRODUCTION"] == "1"
 project 'tabposapp.xcodeproj'
 
-
-
 target 'tabposapp' do
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path

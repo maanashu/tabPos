@@ -143,7 +143,7 @@ const InvoiceDetails = ({
           </Text>
 
           <Text style={styles.deliveryDateText}>
-            {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}`}
+            {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}`}
           </Text>
 
           <Text style={styles.deliveryDateText}>{`User ID:${userDetailData?.uid}`}</Text>
