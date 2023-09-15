@@ -17,6 +17,7 @@ import {
   Refund,
   Customers2,
   Wallet2,
+  WeeklyTransaction,
 } from '@/screens';
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
@@ -101,6 +102,11 @@ export function HomeNavigator() {
       <Drawer.Screen
         component={Wallet2}
         name={NAVIGATION.wallet2}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        name={NAVIGATION.weeklyTransaction}
+        component={WeeklyTransaction}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

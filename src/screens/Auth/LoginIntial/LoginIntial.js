@@ -48,7 +48,11 @@ export function LoginIntial({ route }) {
             <Spacer space={SH(25)} />
 
             <Image
-              source={{ uri: posuserdata?.user?.user_profiles?.profile_photo } ?? userImage}
+              source={
+                posuserdata?.user?.user_profiles?.profile_photo
+                  ? { uri: posuserdata?.user?.user_profiles?.profile_photo }
+                  : userImage
+              }
               style={styles.profilePic}
             />
 

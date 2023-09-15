@@ -452,11 +452,8 @@ export class RetailController {
             supply_id: data.supplyId.toString(),
             supply_price_id: data.supplyPriceID.toString(),
           };
-
-      console.log('body=====', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response====', JSON.stringify(response));
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -468,7 +465,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error====', JSON.stringify(error));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -743,21 +739,25 @@ export class RetailController {
 
   static async createOrder(data) {
     return new Promise((resolve, reject) => {
+      const drawerId = store.getState()?.cashTracking?.getDrawerSession?.id;
       const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
       const body = data?.userId
         ? {
+            drawer_id: drawerId,
             cart_id: data.cartid,
             user_id: data.userId,
             // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
           }
         : {
+            drawer_id: drawerId,
             cart_id: data.cartid,
             // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response----', JSON.stringify(response));
           if (response?.msg === 'Order placed successfully!') {
             Toast.show({
               position: 'bottom',
@@ -769,6 +769,7 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error----', JSON.stringify(error));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

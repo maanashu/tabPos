@@ -15,7 +15,16 @@ import ReactNativeModal from 'react-native-modal';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { angela, cross, dropScan, Fonts, PaymentDone, userImage, watchLogo } from '@/assets';
+import {
+  angela,
+  cross,
+  crossButton,
+  dropScan,
+  Fonts,
+  PaymentDone,
+  userImage,
+  watchLogo,
+} from '@/assets';
 
 const { width } = Dimensions.get('window');
 
@@ -31,7 +40,7 @@ const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck }) => {
         <Text style={styles.headingTextStyle}>{strings.returnOrder.heading}</Text>
 
         <TouchableOpacity onPress={() => setIsVisible(false)}>
-          <Image source={cross} style={styles.crossIconStyle} />
+          <Image source={crossButton} style={styles.crossIconStyle} />
         </TouchableOpacity>
       </View>
 

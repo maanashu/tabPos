@@ -153,31 +153,50 @@ export function Customers2() {
     } else if (userProfile) {
       return (
         <UserProfile
+          pointHandler={() => {
+            setUserProfile(false);
+            setUserDetails(true);
+          }}
           backHandler={() => {
             setUserProfile(false);
             setAllUsers(true);
           }}
           userDetail={userData}
           orderClickHandler={async (item) => {
-            if (item?.delivery_option == 3 || item?.delivery_option == 2) {
+            const res = await dispatch(getOrderData(item?.id));
+            if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
               setUserProfile(false);
-              setUserDetails(true);
-              setOrderId(item?.id);
+              setInvoiceDetail(true);
             } else {
-              const res = await dispatch(getOrderData(item?.id));
-              if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
-                setUserProfile(false);
-                setInvoiceDetail(true);
-              } else {
-                Toast.show({
-                  text2: 'Something went wrong',
-                  position: 'bottom',
-                  type: 'error_toast',
-                  visibilityTime: 1500,
-                });
-              }
+              Toast.show({
+                text2: 'Something went wrong',
+                position: 'bottom',
+                type: 'error_toast',
+                visibilityTime: 1500,
+              });
             }
           }}
+
+          // orderClickHandler={async (item) => {
+          //   if (item?.delivery_option == 3 || item?.delivery_option == 2) {
+          //     setUserProfile(false);
+          //     setUserDetails(true);
+          //     setOrderId(item?.id);
+          //   } else {
+          //     const res = await dispatch(getOrderData(item?.id));
+          //     if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
+          //       setUserProfile(false);
+          //       setInvoiceDetail(true);
+          //     } else {
+          //       Toast.show({
+          //         text2: 'Something went wrong',
+          //         position: 'bottom',
+          //         type: 'error_toast',
+          //         visibilityTime: 1500,
+          //       });
+          //     }
+          //   }
+          // }}
         />
       );
     } else if (allUsers) {

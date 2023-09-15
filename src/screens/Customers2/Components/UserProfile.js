@@ -28,7 +28,7 @@ import {
   location,
 } from '@/assets';
 import { Spacer, TableDropdown } from '@/components';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { styles } from '@/screens/Customers2/Customers2.styles';
@@ -46,8 +46,9 @@ const twoEqualView = result / 1.8;
 import { TYPES } from '@/Types/CustomersTypes';
 import { useEffect } from 'react';
 import { getOrderUser } from '@/actions/CustomersAction';
+import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
 
-const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
+const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler }) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -64,6 +65,8 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
+  const [selectedYearData, setselectedYearData] = useState(null);
+  const [selectedMonthData, setselectedMonthData] = useState(null);
 
   const startIndex = (page - 1) * paginationModalValue + 1;
 
@@ -123,15 +126,22 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
           <Image source={leftBack} style={styles.backIconProfile} />
           <Text style={[styles.deliveryText, { fontSize: ms(10) }]}>{'User profile'}</Text>
         </TouchableOpacity>
-        <View style={styles.editButtonCon}>
+        {/* <View style={styles.editButtonCon}>
           <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
-        </View>
+        </View> */}
       </View>
 
       <View style={styles.profileCon}>
         <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image source={{ uri: data?.profilePhoto } ?? userImage} style={styles.lovingStyle} />
+            <Image
+              source={
+                data?.profilePhoto == null || data?.profilePhoto == ''
+                  ? userImage
+                  : { uri: data?.profilePhoto }
+              }
+              style={styles.lovingStyle}
+            />
             <View style={{ paddingHorizontal: moderateScale(10) }}>
               <Text style={styles.angelaText}>{data?.firstName}</Text>
               <Spacer space={SH(5)} />
@@ -157,7 +167,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
             </View>
           </View>
           <View>
-            <TouchableOpacity style={styles.pointCon}>
+            <TouchableOpacity style={styles.pointCon} onPress={pointHandler}>
               <View style={styles.flexAlign}>
                 <Image source={reward2} style={styles.rewardStyle} />
                 <Text style={styles.pointText}>{strings.customers.point}</Text>
@@ -187,7 +197,19 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
       <View style={styles.orderTypeCon}>
         <View style={styles.flexAlign}>
           <View style={{ marginHorizontal: moderateScale(5) }}>
-            <TableDropdown placeholder="Month" />
+            {/* <TableDropdown placeholder="Month" /> */}
+            <MonthYearPicker
+              showAllMonths={true}
+              dateType={DATE_TYPE.MONTH}
+              placeholder={'Month'}
+              containerStyle={{ marginRight: 10 }}
+              defaultValue={moment().month() + 1}
+              defaultYear={selectedYearData?.value ?? moment().year()}
+              onSelect={(monthData) => {
+                setselectedMonthData(monthData);
+              }}
+              dropdownStyle={{ height: SH(35), borderColor: COLORS.solidGrey }}
+            />
           </View>
           <>
             <TableDropdown placeholder="Store location" />
@@ -352,7 +374,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
             </View>
           </View>
 
-          <View style={{ height: Platform.OS === 'android' ? ms(230) : ms(265) }}>
+          <View style={{ height: Platform.OS === 'android' ? ms(230) : ms(240) }}>
             <ScrollView
               contentContainerStyle={{ flexGrow: 1 }}
               showsVerticalScrollIndicator={false}
@@ -385,7 +407,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler }) => {
                         </View>
                         <View style={styles.profileheaderChildView}>
                           <Text style={styles.tableTextData}>
-                            {item.created_at ? moment(item.created_at).format('LL') : ''}
+                            {item.created_at ? moment(item.created_at).format('ll') : ''}
                           </Text>
                         </View>
                         <View style={styles.profileheaderChildView}>

@@ -2,12 +2,41 @@ import { strings } from '@/localization';
 import { USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
+import { store } from '@/store';
 
 export class CashTrackingController {
   static async getDrawerSession() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
-      HttpClient.post(endpoint)
+      const body = {
+        seller_id: sellerID,
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          console.log('response ====', response);
+          resolve(response);
+        })
+        .catch((error) => {
+          console.log('error ====', error);
+          Toast.show({
+            text2: error.error,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  }
+  static async getPaymentDrawerSessions(drawerId) {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint = drawerId
+        ? USER_URL + `${ApiUserInventory.getPaymentHistory}?drawer_id=${drawerId}`
+        : USER_URL + ApiUserInventory.getPaymentHistory;
+
+      HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })

@@ -294,7 +294,9 @@ export const styles = StyleSheet.create({
   },
   headerView: {
     flexDirection: 'row',
-    padding: SW(2),
+    // padding: SW(2),
+    height: ms(20),
+    paddingHorizontal: ms(3),
     alignItems: 'center',
     backgroundColor: COLORS.white,
     marginHorizontal: SW(5),

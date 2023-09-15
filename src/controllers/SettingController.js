@@ -6,14 +6,14 @@ import { store } from '@/store';
 export class SettingController {
   static async getSetting() {
     return new Promise((resolve, reject) => {
-      const endpoint = USER_URL + ApiUserInventory.getSetting + `?app_name=pos`;
-      console.log('getSetting', endpoint);
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint =
+        USER_URL + ApiUserInventory.getSetting + `/?app_name=pos&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          console.log('1getSetting', error);
           if (error.statusCode !== 204) {
             Toast.show({
               text2: error.msg,
@@ -29,8 +29,11 @@ export class SettingController {
 
   static async upadteApi(data) {
     return new Promise(async (resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = USER_URL + ApiUserInventory.getSetting;
-      HttpClient.patch(endpoint, data)
+      const body = data;
+      (body.seller_id = sellerID), (body.app_name = 'pos');
+      HttpClient.patch(endpoint, body)
         .then((response) => {
           resolve(response);
         })

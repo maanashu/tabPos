@@ -1,10 +1,9 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import {
   View,
   Text,
   Image,
   Platform,
-  FlatList,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
@@ -15,19 +14,11 @@ import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { BarChart } from 'react-native-gifted-charts';
 
-import {
-  Fonts,
-  incomingOrders,
-  returnedOrders,
-  cancelledOrders,
-  checkedCheckboxSquare,
-  blankCheckBox,
-} from '@/assets';
 import { Spacer } from '@/components';
-import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { graphOptions } from '@/constants/flatListData';
+import { Fonts, blankCheckBox, mark } from '@/assets';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
@@ -37,107 +28,282 @@ const twoEqualView = result / 2;
 
 const Graph = () => {
   const getDeliveryData = useSelector(getDelivery);
-  const [graphData, setGraphData] = useState(graphOptions);
+  const [modifyData, setModifyData] = useState([]);
+  const [showIncoming, setShowIncoming] = useState(true);
+  const [showProcessing, setShowProcessing] = useState(true);
+  const [showReadyToPickup, setShowReadyToPickup] = useState(true);
+  const [showCompleted, setShowCompleted] = useState(true);
 
   const isGraphOrder = useSelector((state) => isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state));
 
-  const checkedIndices = graphData
-    .filter((checkbox) => checkbox.checked)
-    .map((checkbox) => parseInt(checkbox.key) - 1);
+  const convertData = () => {
+    const DATA = getDeliveryData?.graphOrders;
+    const barData = DATA?.labels?.flatMap((day, index) => {
+      const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
+      const setOfThree = [];
+      setOfThree.push({
+        value: values[0] || 0,
+        spacing: 10,
+        label: day,
+        labelWidth: 60,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+        frontColor: COLORS.bluish_green,
+        initialSpace: 0,
+        Incoming: true,
+      });
+      setOfThree.push({
+        value: values[1] || 0,
+        spacing: 10,
+        frontColor: COLORS.pink,
+        OrderProcessing: true,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+      });
+      setOfThree.push({
+        value: values[2] || 0,
+        spacing: 10,
+        frontColor: COLORS.yellowTweet,
+        ReadyForPickup: true,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+      });
+      setOfThree.push({
+        value: values[3] || 0,
+        spacing: 10,
+        frontColor: COLORS.primary,
+        Completed: true,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+      });
 
-  const summedValues = Array(getDeliveryData?.graphOrders?.labels?.length).fill(0);
-
-  for (const index of checkedIndices) {
-    const dataset = getDeliveryData?.graphOrders?.datasets?.[index].data;
-    for (let i = 0; i < dataset?.length; i++) {
-      summedValues[i] += dataset[i];
-    }
-  }
-
-  const outputData = summedValues.map((value, index) => ({
-    label: getDeliveryData?.graphOrders?.labels?.[index],
-    value,
-    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11, fontFamily: Fonts.Regular },
-    spacing: Platform.OS == 'ios' ? 38 : 62,
-    initialSpace: 0,
-    frontColor:
-      index === 0
-        ? COLORS.bluish_green
-        : index === 1
-        ? COLORS.pink
-        : index === 2
-        ? COLORS.yellowTweet
-        : COLORS.primary,
-  }));
-
-  const changeValue = (index) => {
-    setGraphData((prev) => {
-      let list = [...prev];
-      list[index].checked = !list[index].checked;
-      return list;
+      return setOfThree;
     });
+
+    setModifyData(barData);
   };
 
-  const renderGraphItem = ({ item, index }) => {
-    const getImageSource = () => {
-      if (item?.title === strings.shippingOrder.incomingOrders) return incomingOrders;
-      if (item?.title === strings.shippingOrder.processingOrders) return cancelledOrders;
-      if (item?.title === strings.shippingOrder.readyPickupOrders) return returnedOrders;
-      return checkedCheckboxSquare;
-    };
-
-    const getIconTintColor = () => {
-      switch (item?.title) {
-        case strings.shippingOrder.incomingOrders:
-          return COLORS.bluish_green;
-        case strings.shippingOrder.processingOrders:
-          return COLORS.pink;
-        case strings.shippingOrder.readyPickupOrders:
-          return COLORS.yellowTweet;
-        default:
-          return COLORS.primary;
+  const onClickCheckBox = (type, value) => {
+    const DATA = getDeliveryData?.graphOrders;
+    const barData = DATA?.labels?.flatMap((day, index) => {
+      const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
+      const setOfThree = [];
+      if (type === 'Incoming') {
+        setOfThree.push({
+          value: values[0] || 0,
+          spacing: 10,
+          label: day,
+          labelWidth: 80,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+          frontColor: value ? COLORS.bluish_green : COLORS.white,
+          initialSpace: 0,
+          Incoming: true,
+        });
+      } else {
+        setOfThree.push({
+          value: values[0] || 0,
+          spacing: 10,
+          label: day,
+          labelWidth: 60,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+          frontColor: showIncoming ? COLORS.bluish_green : COLORS.white,
+          initialSpace: 0,
+          Incoming: true,
+        });
       }
-    };
-
-    const handlePress = () => changeValue(index);
-
-    return (
-      <View style={styles.renderItemView}>
-        <TouchableOpacity style={styles.checkboxViewStyle} onPress={handlePress}>
-          <Image
-            source={item?.checked ? getImageSource() : blankCheckBox}
-            style={[
-              styles.checkboxIconStyle,
-              { tintColor: item?.checked ? undefined : getIconTintColor() },
-            ]}
-          />
-
-          <Text style={styles.varientTextStyle}>
-            {item?.title === strings.shippingOrder.incomingOrders
-              ? strings.shippingOrder.incomingOrders
-              : item?.title === strings.shippingOrder.processingOrders
-              ? strings.shippingOrder.processingOrders
-              : item?.title === strings.shippingOrder.readyPickupOrders
-              ? strings.shippingOrder.readyPickupOrders
-              : strings.shippingOrder.completed}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
+      if (type === 'OrderProcessing') {
+        setOfThree.push({
+          value: values[1] || 0,
+          spacing: 10,
+          frontColor: value ? COLORS.pink : COLORS.white,
+          OrderProcessing: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      } else {
+        setOfThree.push({
+          value: values[1] || 0,
+          spacing: 10,
+          frontColor: showProcessing ? COLORS.pink : COLORS.white,
+          OrderProcessing: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      }
+      if (type === 'ReadyForPickup') {
+        setOfThree.push({
+          value: values[2] || 0,
+          spacing: 10,
+          frontColor: value ? COLORS.yellowTweet : COLORS.white,
+          ReadyForPickup: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      } else {
+        setOfThree.push({
+          value: values[2] || 0,
+          spacing: 10,
+          frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
+          ReadyForPickup: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      }
+      if (type === 'Completed') {
+        setOfThree.push({
+          value: values[3] || 0,
+          spacing: 10,
+          frontColor: value ? COLORS.primary : COLORS.white,
+          Completed: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      } else {
+        setOfThree.push({
+          value: values[3] || 0,
+          spacing: 10,
+          frontColor: showCompleted ? COLORS.primary : COLORS.white,
+          Completed: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      }
+      return setOfThree;
+    });
+    setModifyData(barData);
   };
+
+  useEffect(() => {
+    convertData();
+  }, [getDeliveryData?.graphOrders]);
 
   return (
     <View style={styles.graphViewStyle}>
       <View>
         <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
 
-        <FlatList
-          horizontal
-          data={graphData}
-          scrollEnabled={false}
-          renderItem={renderGraphItem}
-          showsHorizontalScrollIndicator={false}
-        />
+        <View style={[styles.flexRow, { zIndex: 999 }]}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowIncoming((prevShowIncoming) => {
+                const newState = !prevShowIncoming;
+                onClickCheckBox('Incoming', newState);
+                return newState;
+              });
+            }}
+            style={styles.checkboxViewStyle}
+          >
+            <Image
+              source={showIncoming ? mark : blankCheckBox}
+              style={[styles.checkboxIconStyle, showIncoming && { tintColor: COLORS.bluish_green }]}
+            />
+            <Text style={styles.varientTextStyle}>{strings.shippingOrder.incomingOrders}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              setShowProcessing((prevShowProcessing) => {
+                const newState = !prevShowProcessing;
+                onClickCheckBox('OrderProcessing', newState);
+                return newState;
+              });
+            }}
+            style={styles.checkboxViewStyle}
+          >
+            <Image
+              source={showProcessing ? mark : blankCheckBox}
+              style={[styles.checkboxIconStyle, showProcessing && { tintColor: COLORS.pink }]}
+            />
+            <Text style={styles.varientTextStyle}>{strings.shippingOrder.processingOrders}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              setShowReadyToPickup((prevShowReadyToPickup) => {
+                const newState = !prevShowReadyToPickup;
+                onClickCheckBox('ReadyForPickup', newState);
+                return newState;
+              });
+            }}
+            style={styles.checkboxViewStyle}
+          >
+            <Image
+              source={showReadyToPickup ? mark : blankCheckBox}
+              style={[
+                styles.checkboxIconStyle,
+                showReadyToPickup && { tintColor: COLORS.yellowTweet },
+              ]}
+            />
+            <Text style={styles.varientTextStyle}>{strings.shippingOrder.readyPickupOrders}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              setShowCompleted((prevShowCompleted) => {
+                const newState = !prevShowCompleted;
+                onClickCheckBox('Completed', newState);
+                return newState;
+              });
+            }}
+            style={styles.checkboxViewStyle}
+          >
+            <Image
+              source={showCompleted ? mark : blankCheckBox}
+              style={[styles.checkboxIconStyle, showCompleted && { tintColor: COLORS.primary }]}
+            />
+            <Text style={styles.varientTextStyle}>{strings.shippingOrder.completed}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <Spacer space={Platform.OS === 'android' ? SH(25) : SH(20)} />
@@ -147,11 +313,11 @@ const Graph = () => {
           <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
-        <View>
+        <View style={{ zIndex: -999 }}>
           <BarChart
             roundedTop
             noOfSections={7}
-            data={outputData}
+            data={modifyData}
             xAxisThickness={1}
             yAxisThickness={1}
             xAxisType={'dashed'}
@@ -159,7 +325,8 @@ const Graph = () => {
             yAxisTextStyle={styles.yAxistext}
             yAxisLength={350}
             height={ms(130)}
-            width={windowWidth * 0.5}
+            width={windowWidth * 0.49}
+            barWidth={SW(3.5)}
           />
         </View>
       )}
@@ -185,11 +352,11 @@ const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
   },
-  renderItemView: {
-    marginLeft: ms(15),
+  flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: ms(7),
+    zIndex: 999,
+    marginTop: 10,
   },
   loaderView: {
     height: ms(150),
@@ -215,5 +382,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: 20,
   },
 });

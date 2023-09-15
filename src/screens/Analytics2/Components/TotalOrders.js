@@ -10,7 +10,7 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 
-export function TotalOrders() {
+export function TotalOrders({ onPressReview }) {
   const getAnalyticsData = useSelector(getAnalytics);
   const totalOrder = getAnalyticsData?.getTotalOrder;
 
@@ -37,13 +37,13 @@ export function TotalOrders() {
         <Text style={styles.revenueDataText}>${item?.new_consumer}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.consumer_returning?.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText}>${item?.consumer_returning?.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <TouchableOpacity style={styles.reviewView}>
+        <TouchableOpacity style={styles.reviewView} onPress={onPressReview}>
           <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
             {'Review'}
           </Text>
@@ -129,7 +129,7 @@ export function TotalOrders() {
                 <Text style={styles.revenueText}>Total Sales</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}> </Text>
+                <Text style={styles.revenueText}>Action</Text>
               </DataTable.Title>
             </DataTable.Header>
 

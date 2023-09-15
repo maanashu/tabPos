@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NAVIGATION } from '@/constants';
-import { POSUsers, LoginIntial, PosUserPasscode } from '@/screens';
+import { POSUsers, LoginIntial, PosUserPasscode, WeeklyTransaction } from '@/screens';
 import { HomeNavigator } from '@/navigation/HomeNavigator';
 
 const Stack = createNativeStackNavigator();
@@ -26,8 +26,8 @@ export function UserNavigator() {
       />
       <Stack.Screen component={HomeNavigator} name={'HOME'} options={{ headerShown: false }} />
       {/* <Stack.Screen
-        component={HomeNavigator}
-        name={NAVIGATION.retails}
+        name={NAVIGATION.weeklyTransaction}
+        component={WeeklyTransaction}
         options={{ headerShown: false }}
       /> */}
     </Stack.Navigator>

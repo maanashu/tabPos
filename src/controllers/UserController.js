@@ -10,7 +10,7 @@ export class UserController {
       const endpoint = USER_URL + ApiUserInventory.loginPosuser;
       const uniqueId = await DeviceInfo.getUniqueId();
       HttpClient.post(endpoint, data, {
-        headers: { 'device-id': uniqueId },
+        headers: { 'device-id': uniqueId, 'app-name': 'pos' },
       })
         .then((response) => {
           if (response.status_code === 200) {

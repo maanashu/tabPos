@@ -40,7 +40,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalShippingOrders() {
+export function TotalShippingOrders({ onPressReview }) {
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticOrderGraphs = getAnalyticsData?.getAnalyticOrderGraphs;
   const shippingGraph = analyticOrderGraphs?.shipping_graph;
@@ -81,7 +81,7 @@ export function TotalShippingOrders() {
         <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <TouchableOpacity style={styles.reviewView}>
+        <TouchableOpacity style={styles.reviewView} onPress={onPressReview}>
           <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
             {'Review'}
           </Text>
@@ -168,7 +168,7 @@ export function TotalShippingOrders() {
                 <Text style={styles.revenueText}>Total Sales</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}> </Text>
+                <Text style={styles.revenueText}>Action</Text>
               </DataTable.Title>
             </DataTable.Header>
 

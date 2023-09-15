@@ -24,7 +24,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('1---------', error);
           reject(error);
         });
     });
@@ -32,13 +31,16 @@ export class DashboardController {
 
   static async getDrawerSession() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
-      HttpClient.post(endpoint)
+      const body = {
+        seller_id: sellerID,
+      };
+      HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          console.log('2---------', error);
           reject(error);
         });
     });
@@ -46,10 +48,13 @@ export class DashboardController {
 
   static async getDrawerSessionPost(data) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = USER_URL + ApiUserInventory.getDrawerSession;
       const amountStringy = parseFloat(data.amount);
       const body = {
+        seller_id: sellerID,
         amount: amountStringy,
+        notes: data?.notes,
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
@@ -64,14 +69,13 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('3---------', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
             text2: error.msg,
             visibilityTime: 2000,
           });
-          reject(error.msg);
+          reject(error);
         });
     });
   }
@@ -108,14 +112,13 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('4---------', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
             text2: error.msg,
             visibilityTime: 2000,
           });
-          reject(error.msg);
+          reject(error);
         });
     });
   }
@@ -129,7 +132,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('5---------', error);
           Toast.show({
             text2: error?.msg || 'unknown error',
             position: 'bottom',
@@ -150,7 +152,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('6---------', error);
           Toast.show({
             text2: error?.msg || 'unknown error',
             position: 'bottom',
@@ -173,7 +174,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('7---------', error);
           reject(error);
         });
     });
@@ -187,7 +187,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('8---------', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -207,7 +206,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('10---------', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -227,7 +225,6 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('11---------', error);
           reject(error);
         });
     });
@@ -245,25 +242,21 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('12---------', error);
           reject(error);
         });
     });
   }
 
   static async returnProduct(data) {
-    console.log('data-----------', data);
+    const drawerId = store.getState()?.cashTracking?.getDrawerSession?.id;
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.return;
-      const body = {
-        order_id: data?.order_id,
-        products: data?.products,
-        return_reason: 'testing reason',
-      };
-      console.log('body-----------', body);
+      const body = { ...data, drawer_id: drawerId };
+      console.log('drawer====', store.getState()?.cashTracking);
+
+      console.log('body====', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response==============', response);
           Toast.show({
             position: 'bottom',
             type: 'success_toast',
@@ -273,12 +266,23 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
-            text2: error.msg,
-            visibilityTime: 2000,
-          });
+          alert(error?.msg);
+          reject(error.msg);
+        });
+    });
+  }
+
+  static async scanBarCode(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.scanbarcode;
+      const body = {
+        barcode: data,
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
           reject(error.msg);
         });
     });

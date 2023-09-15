@@ -1,5 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Image, Dimensions, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Image,
+  Dimensions,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { moderateScale, ms } from 'react-native-size-matters';
@@ -10,16 +18,22 @@ import OrderDetail from './OrderDetail';
 import ManualEntry from './ManualEntry';
 import { COLORS, SH, SW } from '@/theme';
 import ProductRefund from './ProductRefund';
+import ShowAttributes from './ShowAttributes';
 import { Fonts, scn, search_light } from '@/assets';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import RecheckConfirmation from './RecheckConfirmation';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import OrderWithInvoiceNumber from './OrderWithInvoiceNumber';
-import { getOrdersByInvoiceId, getOrdersByInvoiceIdSuccess } from '@/actions/DashboardAction';
-import ShowAttributes from './ShowAttributes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import {
+  getOrdersByInvoiceId,
+  getOrdersByInvoiceIdSuccess,
+  scanBarCode,
+} from '@/actions/DashboardAction';
 
 const windowWidth = Dimensions.get('window').width;
 
-export function SearchScreen() {
+export function SearchScreen({ navigation }) {
   let debounceTimeout;
   const textInputRef = useRef();
   const dispatch = useDispatch();
@@ -32,6 +46,10 @@ export function SearchScreen() {
   const [isShowAttributeModal, setIsShowAttributeModal] = useState(false);
   const [orderDetail, setOrderDetail] = useState(order?.order?.order_details ?? []);
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
+
+  useEffect(() => {
+    setShowProductRefund(false);
+  }, []);
 
   useEffect(() => {
     setOrderDetail(order?.order?.order_details);
@@ -60,9 +78,14 @@ export function SearchScreen() {
       setSku(text);
       clearTimeout(debounceTimeout);
       debounceTimeout = setTimeout(() => {
-        dispatch(getOrdersByInvoiceId(text));
+        if (text.includes('invoice_')) {
+          dispatch(scanBarCode(text));
+        } else {
+          dispatch(getOrdersByInvoiceId(text));
+        }
       }, 500);
     } else {
+      setSku('');
       dispatch(getOrdersByInvoiceIdSuccess({}));
     }
   };
@@ -82,7 +105,9 @@ export function SearchScreen() {
   //   }
   // }
 
-  console.log('search screen');
+  const isLoading = useSelector((state) =>
+    isLoadingSelector([DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID], state)
+  );
 
   return (
     <View style={styles.container}>
@@ -90,7 +115,6 @@ export function SearchScreen() {
         <>
           <Header />
           <Spacer space={SH(20)} />
-
           <View style={styles.leftViewStyle}>
             <View style={styles.textInputMainViewStyle}>
               <View style={styles.inputWraper}>
@@ -101,7 +125,7 @@ export function SearchScreen() {
                     ref={textInputRef}
                     style={styles.searchInput}
                     placeholder={'Search invoice here'}
-                    onChangeText={onSearchInvoiceHandler}
+                    onChangeText={(text) => onSearchInvoiceHandler(text)}
                   />
                 </View>
                 <TouchableOpacity onPress={() => textInputRef.current.focus()}>
@@ -116,43 +140,49 @@ export function SearchScreen() {
 
             <OrderDetail
               orderData={order}
-              enableModal={() => setIsVisibleManual(true)}
               checkboxHandler={cartHandler}
+              enableModal={() => setIsVisibleManual(true)}
               onPress={() => setIsCheckConfirmationModalVisible(true)}
             />
           </View>
 
           <ManualEntry
+            onPressCart={cartHandler}
             isVisible={isVisibleManual}
             setIsVisible={setIsVisibleManual}
-            onPressCart={cartHandler}
           />
 
           {order && (
             <ShowAttributes
-              isVisible={isShowAttributeModal}
-              setIsVisible={setIsShowAttributeModal}
               order={orderDetail}
               cartHandler={cartHandler}
-              // onPressCart={cartHandler}
+              isVisible={isShowAttributeModal}
+              setIsVisible={setIsShowAttributeModal}
             />
           )}
 
           <RecheckConfirmation
             orderList={orderDetail}
+            onPress={() => {
+              setShowProductRefund(true);
+              setIsCheckConfirmationModalVisible(false);
+            }}
             isVisible={isCheckConfirmationModalVisible}
             setIsVisible={setIsCheckConfirmationModalVisible}
-            onPress={() => {
-              setIsCheckConfirmationModalVisible(false);
-              setShowProductRefund(true);
-            }}
           />
+
+          {isLoading ? (
+            <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.2)' }]}>
+              <ActivityIndicator color={COLORS.primary} style={styles.loader} size={'large'} />
+            </View>
+          ) : null}
         </>
       ) : (
         <ProductRefund
-          backHandler={() => setShowProductRefund(false)}
-          orderList={orderDetail}
           orderData={order}
+          orderList={orderDetail}
+          backHandler={() => setShowProductRefund(false)}
+          navigation={navigation}
         />
       )}
     </View>
@@ -163,6 +193,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.textInputBackground,
+  },
+  loader: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    position: 'absolute',
   },
   inputWraper: {
     flexDirection: 'row',

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Image, Text, Platform, Dimensions } from 'react-native';
 
-import { DaySelector, ScreenWrapper, Spacer } from '@/components';
+import { DaySelector, InvoiceDetail, ScreenWrapper, Spacer } from '@/components';
 
 import { styles } from './Analytics2.styles';
 import { MainScreen } from './Components/MainScreen';
@@ -35,6 +35,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   getAnalyticOrderGraphs,
   getAnalyticStatistics,
+  getOrderData,
   getSoldProduct,
   getTotalInventory,
   getTotalOrder,
@@ -50,8 +51,12 @@ import CalendarPicker from 'react-native-calendar-picker';
 import CalendarPickerModal from './Components/CalendarPicker';
 import moment from 'moment';
 import { useCallback } from 'react';
+import { WeeklyTransaction } from './Components/WeeklyTransaction';
+import { useRef } from 'react';
 
 export function Analytics2() {
+  const mapRef = useRef(null);
+
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
@@ -105,6 +110,9 @@ export function Analytics2() {
   const currentEndDate = moment().endOf('month').format('MMM D, YYYY');
   const dateRange = `${currentStartDate} - ${currentEndDate}`;
   const maxDate = new Date(2030, 6, 3);
+
+  const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
+  const [invoiceDetail, setInvoiceDetail] = useState(false);
 
   const handleOnPressNext = () => {
     // Perform actions when "Next" button is pressed
@@ -203,446 +211,319 @@ export function Analytics2() {
     ['TotalProfit']: <TotalProfit />,
     ['Revenue']: <Revenue />,
     ['TotalCost']: <TotalCost />,
-    ['TotalDeliveryOrders']: <TotalDeliveryOrders />,
-    ['TotalShippingOrders']: <TotalShippingOrders />,
+    ['TotalDeliveryOrders']: (
+      <TotalDeliveryOrders onPressReview={() => setWeeklyTrasaction(true)} />
+    ),
+    ['TotalShippingOrders']: (
+      <TotalShippingOrders onPressReview={() => setWeeklyTrasaction(true)} />
+    ),
     ['TotalProductSold']: <TotalProductSold />,
-    ['TotalOrders']: <TotalOrders />,
-    ['TotalPosOrder']: <TotalPosOrder />,
+    ['TotalOrders']: <TotalOrders onPressReview={() => setWeeklyTrasaction(true)} />,
+    ['TotalPosOrder']: <TotalPosOrder onPressReview={() => setWeeklyTrasaction(true)} />,
     ['TotalInventory']: <TotalInventory />,
+  };
+
+  const closeHandler = () => {
+    setInvoiceDetail(false);
+    setWeeklyTrasaction(true);
+  };
+  const transactionList = () => {
+    if (invoiceDetail) {
+      return (
+        <InvoiceDetail
+          {...{
+            mapRef,
+            closeHandler,
+          }}
+        />
+      );
+    } else if (weeklyTransaction) {
+      return (
+        <WeeklyTransaction
+          backHandler={() => {
+            setWeeklyTrasaction(false);
+            // setWalletHome(true);
+          }}
+          orderClickHandler={async (orderId) => {
+            const res = await dispatch(getOrderData(orderId));
+            if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
+              setInvoiceDetail(true);
+            }
+          }}
+          selectTime={filter}
+        />
+      );
+    }
   };
 
   const screenChangeView = () => {
     return renderScreen[selectedScreen];
   };
-
   return (
     <ScreenWrapper>
-      <View style={styles.container}>
-        <View style={styles.homeMainContainer}>
-          <View style={styles.flexDirectionRow}>
-            <View>
-              <Spacer space={ms(10)} />
+      {weeklyTransaction ? (
+        transactionList()
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.homeMainContainer}>
+            <View style={styles.flexDirectionRow}>
+              <View>
+                <Spacer space={ms(10)} />
 
-              <DaySelector
-                onPresFun={orderOnPress}
-                setSelectTime={setFilter}
-                selectId={orderSelectId}
-                setSelectId={setOrderSelectId}
-              />
+                <DaySelector
+                  onPresFun={orderOnPress}
+                  setSelectTime={setFilter}
+                  selectId={orderSelectId}
+                  setSelectId={setOrderSelectId}
+                />
+              </View>
+              <View style={styles.calendarView}>
+                <TouchableOpacity
+                  onPress={() => setShowCalendarModal(!showCalendarModal)}
+                  style={[
+                    styles.headerView,
+                    {
+                      borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
+                      marginHorizontal: selectedScreen === 'TotalInventory' ? ms(0) : ms(5),
+                    },
+                  ]}
+                >
+                  <Image source={calendar} style={styles.calenderImage} />
+                  <Text style={styles.dateText}>
+                    {startDate
+                      ? moment(startDate).format('MMM D') +
+                        ' - ' +
+                        moment(endDate).format('MMM D, YYYY')
+                      : dateRange}
+                  </Text>
+                </TouchableOpacity>
+                {selectedScreen !== 'TotalInventory' ? (
+                  <DropDownPicker
+                    ArrowDownIconComponent={({ style }) => (
+                      <Image source={dropdown} style={styles.dropDownIcon} />
+                    )}
+                    style={styles.dropdown}
+                    containerStyle={[
+                      styles.containerStyle,
+                      { zIndex: Platform.OS === 'ios' ? 100 : 2 },
+                    ]}
+                    open={channels}
+                    value={channelValue}
+                    items={channelItem}
+                    setOpen={setChannels}
+                    setValue={setChannelValue}
+                    setItems={setChannelItem}
+                    placeholder="All Channels"
+                    placeholderStyle={{
+                      color: '#A7A7A7',
+                      fontFamily: Fonts.Regular,
+                      fontSize: ms(8),
+                    }}
+                    zIndex={2000}
+                    zIndexInverse={2000}
+                  />
+                ) : (
+                  <></>
+                )}
+              </View>
             </View>
-            <View style={styles.calendarView}>
-              <TouchableOpacity
-                onPress={() => setShowCalendarModal(!showCalendarModal)}
-                style={[
-                  styles.headerView,
-                  {
-                    borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
-                    marginHorizontal: selectedScreen === 'TotalInventory' ? ms(0) : ms(5),
-                  },
-                ]}
-              >
-                <Image source={calendar} style={styles.calenderImage} />
-                <Text style={styles.dateText}>
-                  {startDate
-                    ? moment(startDate).format('MMM D') +
-                      ' - ' +
-                      moment(endDate).format('MMM D, YYYY')
-                    : dateRange}
-                </Text>
-              </TouchableOpacity>
-              {selectedScreen !== 'TotalInventory' ? (
-                <DropDownPicker
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={dropdown} style={styles.dropDownIcon} />
-                  )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 100 : 2 },
-                  ]}
-                  open={channels}
-                  value={channelValue}
-                  items={channelItem}
-                  setOpen={setChannels}
-                  setValue={setChannelValue}
-                  setItems={setChannelItem}
-                  placeholder="All Channels"
-                  placeholderStyle={{
-                    color: '#A7A7A7',
-                    fontFamily: Fonts.Regular,
-                    fontSize: ms(8),
-                  }}
-                  zIndex={2000}
-                  zIndexInverse={2000}
-                />
-              ) : (
-                <></>
-              )}
-            </View>
-          </View>
-          <Spacer space={ms(5)} />
+            <Spacer space={ms(5)} />
 
-          <View style={[styles.flexDirectionRow, { zIndex: -999 }]}>
-            <View style={styles.container}>{screenChangeView()}</View>
+            <View style={[styles.flexDirectionRow, { zIndex: -999 }]}>
+              <View style={styles.container}>{screenChangeView()}</View>
 
-            <View style={styles.rightSideView}>
-              <Spacer space={SH(5)} />
-              <TouchableOpacity style={styles.bucketBackgorund} onPress={() => goBack()}>
-                <Image source={backArrow2} style={styles.backImageStyle} />
-              </TouchableOpacity>
+              <View style={styles.rightSideView}>
+                <Spacer space={SH(5)} />
+                <TouchableOpacity style={styles.bucketBackgorund} onPress={() => goBack()}>
+                  <Image source={backArrow2} style={styles.backImageStyle} />
+                </TouchableOpacity>
 
-              <Spacer space={SH(25)} />
-              <TouchableOpacity
-                disabled={getPosUser?.user_roles?.length > 0 ? true : false}
-                // style={[
-                //   styles.bucketBackgorund,
-                //   {
-                //     backgroundColor:
-                //       selectedScreen === 'TotalProfit'
-                //         ? COLORS.primary
-                //         : getPosUser?.user_roles?.length > 0
-                //         ? COLORS.mid_grey
-                //         : COLORS.white,
-                //   },
-                // ]}
-                onPress={() => setselectedScreen('TotalProfit')}
-              >
-                <Image
-                  source={profit}
-                  style={[
-                    styles.sideBarImage,
-                    {
-                      tintColor:
-                        selectedScreen === 'TotalProfit'
-                          ? COLORS.primary
-                          : getPosUser?.user_roles?.length > 0
-                          ? COLORS.mid_grey
-                          : COLORS.black,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
+                <Spacer space={SH(25)} />
+                <TouchableOpacity
+                  disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+                  // style={[
+                  //   styles.bucketBackgorund,
+                  //   {
+                  //     backgroundColor:
+                  //       selectedScreen === 'TotalProfit'
+                  //         ? COLORS.primary
+                  //         : getPosUser?.user_roles?.length > 0
+                  //         ? COLORS.mid_grey
+                  //         : COLORS.white,
+                  //   },
+                  // ]}
+                  onPress={() => setselectedScreen('TotalProfit')}
+                >
+                  <Image
+                    source={profit}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'TotalProfit'
+                            ? COLORS.primary
+                            : getPosUser?.user_roles?.length > 0
+                            ? COLORS.mid_grey
+                            : COLORS.black,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
 
-              <Spacer space={SH(20)} />
-              <TouchableOpacity
-                disabled={getPosUser?.user_roles?.length > 0 ? true : false}
-                onPress={() => setselectedScreen('Revenue')}
-              >
-                <Image
-                  source={revenueTotal}
-                  style={[
-                    styles.sideBarImage,
-                    {
-                      tintColor:
-                        selectedScreen === 'Revenue'
-                          ? COLORS.primary
-                          : getPosUser?.user_roles?.length > 0
-                          ? COLORS.mid_grey
-                          : COLORS.black,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
+                <Spacer space={SH(20)} />
+                <TouchableOpacity
+                  disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+                  onPress={() => setselectedScreen('Revenue')}
+                >
+                  <Image
+                    source={revenueTotal}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'Revenue'
+                            ? COLORS.primary
+                            : getPosUser?.user_roles?.length > 0
+                            ? COLORS.mid_grey
+                            : COLORS.black,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
 
-              <Spacer space={SH(20)} />
-              <TouchableOpacity
-                disabled={getPosUser?.user_roles?.length > 0 ? true : false}
-                onPress={() => setselectedScreen('TotalCost')}
-              >
-                <Image
-                  source={totalSales}
-                  style={[
-                    styles.sideBarImage,
-                    {
-                      tintColor:
-                        selectedScreen === 'TotalCost'
-                          ? COLORS.primary
-                          : getPosUser?.user_roles?.length > 0
-                          ? COLORS.mid_grey
-                          : COLORS.black,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
+                <Spacer space={SH(20)} />
+                <TouchableOpacity
+                  disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+                  onPress={() => setselectedScreen('TotalCost')}
+                >
+                  <Image
+                    source={totalSales}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'TotalCost'
+                            ? COLORS.primary
+                            : getPosUser?.user_roles?.length > 0
+                            ? COLORS.mid_grey
+                            : COLORS.black,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
 
-              <Spacer space={SH(20)} />
-              <TouchableOpacity onPress={() => setselectedScreen('TotalPosOrder')}>
-                <Image
-                  source={channel}
-                  style={[
-                    styles.sideBarImage,
-                    {
-                      tintColor: selectedScreen === 'TotalPosOrder' ? COLORS.primary : COLORS.black,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
+                <Spacer space={SH(20)} />
+                <TouchableOpacity onPress={() => setselectedScreen('TotalPosOrder')}>
+                  <Image
+                    source={channel}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'TotalPosOrder' ? COLORS.primary : COLORS.black,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
 
-              <Spacer space={SH(20)} />
-              <TouchableOpacity onPress={() => setselectedScreen('TotalDeliveryOrders')}>
-                <Image
-                  source={averageOrder}
-                  style={[
-                    styles.sideBarImage,
-                    {
-                      tintColor:
-                        selectedScreen === 'TotalDeliveryOrders' ? COLORS.primary : COLORS.black,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
+                <Spacer space={SH(20)} />
+                <TouchableOpacity onPress={() => setselectedScreen('TotalDeliveryOrders')}>
+                  <Image
+                    source={averageOrder}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'TotalDeliveryOrders' ? COLORS.primary : COLORS.black,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
 
-              <Spacer space={SH(20)} />
-              <TouchableOpacity onPress={() => setselectedScreen('TotalShippingOrders')}>
-                <Image
-                  source={productSelling}
-                  style={[
-                    styles.sideBarImage,
-                    {
-                      tintColor:
-                        selectedScreen === 'TotalShippingOrders' ? COLORS.primary : COLORS.black,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
+                <Spacer space={SH(20)} />
+                <TouchableOpacity onPress={() => setselectedScreen('TotalShippingOrders')}>
+                  <Image
+                    source={productSelling}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'TotalShippingOrders' ? COLORS.primary : COLORS.black,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
 
-              <Spacer space={SH(20)} />
-              <TouchableOpacity onPress={() => setselectedScreen('TotalOrders')}>
-                <Image
-                  source={locationSales}
-                  style={[
-                    styles.sideBarImage,
-                    {
-                      tintColor: selectedScreen === 'TotalOrders' ? COLORS.primary : COLORS.black,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
+                <Spacer space={SH(20)} />
+                <TouchableOpacity onPress={() => setselectedScreen('TotalOrders')}>
+                  <Image
+                    source={locationSales}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor: selectedScreen === 'TotalOrders' ? COLORS.primary : COLORS.black,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
 
-              <Spacer space={SH(20)} />
-              <TouchableOpacity onPress={() => setselectedScreen('TotalInventory')}>
-                <Image
-                  source={totalOrders}
-                  style={[
-                    styles.sideBarImage,
-                    {
-                      tintColor:
-                        selectedScreen === 'TotalInventory' ? COLORS.primary : COLORS.black,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
+                <Spacer space={SH(20)} />
+                <TouchableOpacity onPress={() => setselectedScreen('TotalInventory')}>
+                  <Image
+                    source={totalOrders}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'TotalInventory' ? COLORS.primary : COLORS.black,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
 
-              <Spacer space={SH(20)} />
-              <TouchableOpacity onPress={() => setselectedScreen('TotalProductSold')}>
-                <Image
-                  source={totalCost}
-                  style={[
-                    styles.sideBarImage,
-                    {
-                      tintColor:
-                        selectedScreen === 'TotalProductSold' ? COLORS.primary : COLORS.black,
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
+                <Spacer space={SH(20)} />
+                <TouchableOpacity onPress={() => setselectedScreen('TotalProductSold')}>
+                  <Image
+                    source={totalCost}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'TotalProductSold' ? COLORS.primary : COLORS.black,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
 
-              {/* <TouchableOpacity
+                {/* <TouchableOpacity
                 style={[styles.filterBackgorund]}
                 onPress={() => setShowFilterModal(!showFilterModal)}
               >
                 <Image source={filterday} style={[styles.sideBarImage]} />
               </TouchableOpacity> */}
+              </View>
             </View>
           </View>
+          <Modal
+            isVisible={showCalendarModal}
+            statusBarTranslucent
+            animationIn={'slideInRight'}
+            animationInTiming={600}
+            animationOutTiming={300}
+          >
+            <View style={styles.calendarModalView}>
+              <CalendarPickerModal
+                onPress={() => setShowCalendarModal(false)}
+                onDateChange={onDateChange}
+                handleOnPressNext={handleOnPressNext}
+                onSelectedDate={onSelect}
+                allowRangeSelection={true}
+                maxDate={maxDate}
+              />
+            </View>
+          </Modal>
         </View>
-        <Modal
-          isVisible={showCalendarModal}
-          statusBarTranslucent
-          animationIn={'slideInRight'}
-          animationInTiming={600}
-          animationOutTiming={300}
-        >
-          <View style={styles.calendarModalView}>
-            <CalendarPickerModal
-              onPress={() => setShowCalendarModal(false)}
-              onDateChange={onDateChange}
-              handleOnPressNext={handleOnPressNext}
-              onSelectedDate={onSelect}
-              allowRangeSelection={true}
-              maxDate={maxDate}
-            />
-          </View>
-        </Modal>
-        <Modal
-          // isVisible={showModal}
-          statusBarTranslucent
-        >
-          <View style={styles.modalView}>
-            <View style={styles.flexAlign}>
-              <Text style={styles.headerText}>{'Analytics Reports'}</Text>
-              <TouchableOpacity style={styles.imageView} onPress={() => setShowModal(false)}>
-                <Image source={analyticsReport} style={styles.headerImage} />
-              </TouchableOpacity>
-            </View>
-            <Spacer space={SH(25)} />
-
-            <View style={styles.flexAlign}>
-              <Image source={profit} style={styles.subImages} />
-              <View style={styles.marginLeft4}>
-                <Text style={styles.costText}>$ 2050</Text>
-                <Text style={styles.subTitle}>{'Total Profit'}</Text>
-              </View>
-            </View>
-            <Spacer space={SH(15)} />
-
-            <View style={styles.flexAlign}>
-              <Image source={revenueTotal} style={styles.subImages} />
-              <View style={styles.marginLeft4}>
-                <Text style={styles.costText}>$ 2050</Text>
-                <Text style={styles.subTitle}>{'Total Revenue'}</Text>
-              </View>
-            </View>
-
-            <Spacer space={SH(15)} />
-
-            <View style={styles.flexAlign}>
-              <Image source={totalSales} style={styles.subImages} />
-              <View style={styles.marginLeft4}>
-                <Text style={styles.costText}>$ 2050</Text>
-                <Text style={styles.subTitle}>{'Total Sales'}</Text>
-              </View>
-            </View>
-
-            <Spacer space={SH(15)} />
-
-            <View style={styles.flexAlign}>
-              <Image source={channel} style={styles.subImages} />
-              <View style={styles.marginLeft4}>
-                <Text style={styles.costText}>$ 2050</Text>
-                <Text style={styles.subTitle}>{'Sales by Channel'}</Text>
-              </View>
-            </View>
-
-            <Spacer space={SH(15)} />
-
-            <View style={styles.flexAlign}>
-              <Image source={averageOrder} style={styles.subImages} />
-              <View style={styles.marginLeft4}>
-                <Text style={styles.costText}>$ 2050</Text>
-                <Text style={styles.subTitle}>{'Average Order Value'}</Text>
-              </View>
-            </View>
-
-            <Spacer space={SH(15)} />
-
-            <View style={styles.flexAlign}>
-              <Image source={productSelling} style={styles.subImages} />
-              <View style={styles.marginLeft4}>
-                <Text style={styles.costText}>$ 2050</Text>
-                <Text style={styles.subTitle}>{'Top Selling Products'}</Text>
-              </View>
-            </View>
-
-            <Spacer space={SH(15)} />
-
-            <View style={styles.flexAlign}>
-              <Image source={locationSales} style={styles.subImages} />
-              <View style={styles.marginLeft4}>
-                <Text style={styles.costText}>$ 2050</Text>
-                <Text style={styles.subTitle}>{'Sales by Locations'}</Text>
-              </View>
-            </View>
-
-            <Spacer space={SH(15)} />
-
-            <View style={styles.flexAlign}>
-              <Image source={totalOrders} style={styles.subImages} />
-              <View style={styles.marginLeft4}>
-                <Text style={styles.costText}>$ 2050</Text>
-                <Text style={styles.subTitle}>{'Total Orders'}</Text>
-              </View>
-            </View>
-
-            <Spacer space={SH(15)} />
-
-            <View style={styles.flexAlign}>
-              <Image source={totalCost} style={styles.subImages} />
-              <View style={styles.marginLeft4}>
-                <Text style={styles.costText}>$ 2050</Text>
-                <Text style={styles.subTitle}>{'Total Costs'}</Text>
-              </View>
-            </View>
-          </View>
-        </Modal>
-
-        <Modal
-          isVisible={showFilterModal}
-          statusBarTranslucent
-          animationIn={'slideInRight'}
-          animationInTiming={600}
-          animationOutTiming={300}
-        >
-          <View style={styles.modalView}>
-            <View style={[styles.flexAlign, { alignSelf: 'flex-end' }]}>
-              {/* <Text style={styles.headerText}>{'Filter'}</Text> */}
-              <TouchableOpacity style={styles.imageView} onPress={() => setShowFilterModal(false)}>
-                <Image source={cross} style={styles.headerImage} />
-              </TouchableOpacity>
-            </View>
-            <Spacer space={SH(20)} />
-            <TouchableOpacity
-              onPress={() => {
-                setFilter('week');
-                setShowFilterModal(false);
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: SF(20),
-                  marginHorizontal: SW(5),
-                  color: filter === 'week' ? COLORS.primary : COLORS.black,
-                }}
-              >
-                {'Week'}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setFilter('month');
-                setShowFilterModal(false);
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: SF(20),
-                  marginHorizontal: SW(5),
-                  color: filter === 'month' ? COLORS.primary : COLORS.black,
-                  marginVertical: SH(10),
-                }}
-              >
-                {'Month'}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setFilter('year');
-                setShowFilterModal(false);
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: SF(20),
-                  marginHorizontal: SW(5),
-                  color: filter === 'year' ? COLORS.primary : COLORS.black,
-                }}
-              >
-                {'Year'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-      </View>
+      )}
     </ScreenWrapper>
   );
 }

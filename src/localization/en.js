@@ -77,7 +77,7 @@ export const en = {
     perDis: 'Percent',
     DisCode: 'Discount Code',
     DisTitle: 'Discount Title',
-    eRecipeEmail: `e-recipe will Send\nto your email`,
+    eRecipeEmail: `e-recipe will send\nto your email`,
   },
   posSale: {
     onlyx: 'x',
@@ -529,5 +529,13 @@ export const en = {
     percentageLabel: 'percentage',
     inStore: 'In-store',
     reservation: 'Reservation',
+    totalReturnAmount: 'Total Return Amount:',
+    returnPaymentMethod: 'Return Payment Method',
+    payBy: 'Pay By',
+    jbr: 'jbr',
+    cash: 'cash',
+    eReceipt: 'E-Recipe',
+    return: 'Return',
+    noOrderFound: 'No order found',
   },
 };

@@ -15,32 +15,37 @@ import ReactNativeModal from 'react-native-modal';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { cross, Fonts } from '@/assets';
+import { cross, crossButton, Fonts } from '@/assets';
 
 const { width } = Dimensions.get('window');
 
 const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) => {
   const filteredList = orderList?.filter((e) => e?.isChecked);
 
-  const renderProductList = ({ item, index }) => {
-    console.log(item);
+  const renderProductList = ({ item }) => {
     return (
       <View style={styles.itemMainViewStyle}>
-        <Text style={styles.quantityTextStyle}>{item?.qty}</Text>
+        <Text style={styles.quantityTextStyle}>{item?.qty ?? '-'}</Text>
         <Text style={styles.quantityTextStyle}>{'X'}</Text>
 
         <View style={{ width: SH(100), paddingLeft: ms(8) }}>
           <Text numberOfLines={1} style={styles.productTextStyle}>
-            {item?.product_name}
+            {item?.product_name ?? '-'}
           </Text>
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={styles.colorTextStyle}>{`${item?.product_details?.sku}`}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.colorTextStyle}>{item?.sku ? item?.sku : '-'}</Text>
           </View>
         </View>
 
         <View style={styles.priceViewStyle}>
-          <Text style={styles.priceTextStyle}>{`$${item?.price}`}</Text>
+          <Text style={styles.priceTextStyle}>{`$${item?.price}` ?? '-'}</Text>
         </View>
       </View>
     );
@@ -57,8 +62,8 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
         <View style={styles.headingRowStyle}>
           <Text style={styles.headingTextStyle}>{strings.returnOrder.recheckConfirmed}</Text>
 
-          <TouchableOpacity onPress={() => setIsVisible(false)}>
-            <Image source={cross} style={styles.crossIconStyle} />
+          <TouchableOpacity style={styles.crossIconViewStyle} onPress={() => setIsVisible(false)}>
+            <Image source={crossButton} style={styles.crossIconStyle} />
           </TouchableOpacity>
         </View>
 
@@ -105,9 +110,14 @@ const styles = StyleSheet.create({
   headingRowStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    // paddingHorizontal: SH(10),
     paddingTop: ms(20),
     justifyContent: 'space-between',
+  },
+  crossIconViewStyle: {
+    width: SH(34),
+    height: SH(34),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   crossIconStyle: {
     width: SH(14),
@@ -119,7 +129,6 @@ const styles = StyleSheet.create({
     fontSize: SF(13),
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
-    // paddingLeft: ms(20),
   },
   itemMainViewStyle: {
     flexDirection: 'row',
@@ -139,6 +148,7 @@ const styles = StyleSheet.create({
   },
   colorTextStyle: {
     fontSize: SF(9),
+    textAlign: 'center',
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },

@@ -28,10 +28,13 @@ import {
 } from '@/assets';
 import PaymentSelection from './PaymentSelection';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 const { width, height } = Dimensions.get('window');
 
-const ProductRefund = ({ backHandler, orderList, orderData }) => {
+const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
+  const dispatch = useDispatch();
   const [amount, setAmount] = useState('');
   const [applicableIsCheck, setApplicableIsCheck] = useState(false);
   const [applyEachItem, setApplyEachItem] = useState(false);
@@ -40,6 +43,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   const [changeView, setChangeView] = useState('TotalItems');
   const [refundAmount, setRefundAmount] = useState('');
   const [orders, setOrders] = useState();
+  const [orderDetailData, setOrderDetailData] = useState();
   let isRefund = false;
 
   useEffect(() => {
@@ -47,6 +51,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
       return { ...item, refundAmount: '' };
     });
     setOrders(updatedDataArray);
+    setOrderDetailData(orderData);
   }, [orderData]);
 
   const refundHandler = (key, newText) => {
@@ -141,24 +146,30 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
       const hasCheckedItem = orders?.every((item) => item?.refundAmount !== '');
       if (hasCheckedItem) {
         setButtonText('Applied');
+        dispatch(getDrawerSessions());
       } else {
         alert('Please add refund amount for all items');
       }
     } else {
       setButtonText('Applied');
+      dispatch(getDrawerSessions());
     }
   };
 
   const getOrdersDetail = () => {
-    const newArray = orders.map((obj) => ({
-      ...obj, // Copy all existing key-value pairs
-      ['applicableKey']: applicableIsCheck, // Add the new key-value pair
-      ['applyToEachItemKey']: applyEachItem, //
-      ['applicableAmountToAllItems']: amount, //
-      ['RefundedAmount']: obj.refundAmount,
-    }));
-    setOrders(newArray);
-    setChangeView('PaymentScreen');
+    if (applyEachItem) {
+      const newArray = orders.map((obj) => ({
+        ...obj, // Copy all existing key-value pairs
+        // ['applicableKey']: applicableIsCheck, // Add the new key-value pair
+        ['applyToEachItemKey']: applyEachItem, //
+        // ['applicableAmountToAllItems']: amount, //
+        ['RefundedAmount']: obj.refundAmount,
+      }));
+      setOrders(newArray);
+      setChangeView('PaymentScreen');
+    } else {
+      setChangeView('PaymentScreen');
+    }
   };
 
   return (
@@ -431,9 +442,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
               <Spacer space={SH(20)} />
 
               <TouchableOpacity
-                onPress={() => {
-                  getOrdersDetail();
-                }}
+                onPress={() => getOrdersDetail()}
                 disabled={buttonText === 'Applied' ? false : true}
                 style={[
                   styles.nextButtonStyle,
@@ -449,7 +458,15 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           </View>
         </>
       ) : (
-        <PaymentSelection backHandler={() => setChangeView('TotalItems')} orderData={orderData} />
+        <PaymentSelection
+          backHandler={() => setChangeView('TotalItems')}
+          orderData={orderData}
+          order={orders}
+          applicableForAllItems={applicableIsCheck}
+          applyEachItem={applyEachItem}
+          amount={applicableIsCheck ? amount : refundAmount}
+          navigation={navigation}
+        />
       )}
     </View>
   );

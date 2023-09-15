@@ -64,13 +64,11 @@ export function POSUsers({ navigation }) {
   });
 
   useEffect(() => {
-    dispatch(getAllPosUsers(sellerID));
-    // setTimeout(() => {
-    // if (isFocused) {
-    //   dispatch(getSettings());
-    //   useEffectFun();
-    // }
-    // }, 3000);
+    // dispatch(getAllPosUsers(sellerID));
+    if (isFocused) {
+      dispatch(getSettings());
+      useEffectFun();
+    }
   }, [isFocused]);
 
   const useEffectFun = async () => {
@@ -222,7 +220,11 @@ export function POSUsers({ navigation }) {
                     <Spacer space={SH(10)} />
 
                     <Image
-                      source={{ uri: item.user?.user_profiles?.profile_photo } ?? userImage}
+                      source={
+                        item.user?.user_profiles?.profile_photo
+                          ? { uri: item.user?.user_profiles?.profile_photo }
+                          : userImage
+                      }
                       style={styles.profileImage}
                     />
 

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 import moment from 'moment';
@@ -8,7 +8,7 @@ import Price from './Price';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { blankCheckBox, Fonts, iImage, PaymentDone, research, scooter, userImage } from '@/assets';
+import { blankCheckBox, Fonts, PaymentDone, research, scooter, userImage } from '@/assets';
 
 const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
   const getDeliveryType = (type) => {
@@ -25,7 +25,6 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
   };
 
   const renderOrderProducts = ({ item }) => {
-    console.log('item====', item);
     return (
       <View style={styles.orderproductView}>
         <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
@@ -65,7 +64,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
 
   return (
     <View style={styles.container}>
-      {Object.keys(orderData).length > 0 ? (
+      {orderData !== undefined && Object.keys(orderData).length > 0 && orderData?.order ? (
         <View style={styles.orderMainViewStyle}>
           <View style={styles.orderDetailViewStyle}>
             <View style={[styles.locationViewStyle, { flex: 1 }]}>
@@ -153,6 +152,10 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
 
             <Price orderData={orderData} onPresshandler={onPress} />
           </View>
+        </View>
+      ) : Object.keys(orderData).length > 0 && orderData?.order === null ? (
+        <View style={styles.searchViewStyle}>
+          <Text style={styles.emptyTextStyle}>{'No product found'}</Text>
         </View>
       ) : (
         <View style={styles.searchViewStyle}>
@@ -318,5 +321,10 @@ const styles = StyleSheet.create({
     width: SH(210),
     height: SH(210),
     resizeMode: 'contain',
+  },
+  emptyTextStyle: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(20),
+    color: COLORS.primary,
   },
 });

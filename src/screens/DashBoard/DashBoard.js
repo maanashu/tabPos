@@ -10,6 +10,8 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  findNodeHandle,
+  Keyboard,
 } from 'react-native';
 
 import moment from 'moment';
@@ -62,11 +64,12 @@ import { getLoginSessionTime } from '@/utils/GlobalMethods';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { endTrackingSession } from '@/actions/CashTrackingAction';
+import { endTrackingSession, getDrawerSessions } from '@/actions/CashTrackingAction';
 import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 
 import { styles } from './DashBoard.styles';
 import { scanProductAdd } from '@/actions/RetailAction';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -89,6 +92,7 @@ export function DashBoard({ navigation }) {
   const todayJbrAmount = TotalSale?.[1]?.total_sale_amount.toFixed(2);
   const todayCardAmount = TotalSale?.[2]?.total_sale_amount.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+
   const getDeliveryData = getDashboardData?.getOrderDeliveries?.data;
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
 
@@ -104,6 +108,7 @@ export function DashBoard({ navigation }) {
   const [page, setPage] = useState(1);
   const [sku, setSku] = useState('');
   const [scan, setScan] = useState(false);
+  const [scroll, setScroll] = useState('');
 
   //  order delivery pagination
 
@@ -274,7 +279,14 @@ export function DashBoard({ navigation }) {
   };
 
   const getSessionLoad = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION], state)
+    isLoadingSelector(
+      [
+        DASHBOARDTYPE.GET_DRAWER_SESSION,
+        DASHBOARDTYPE.GET_DRAWER_SESSION_POST,
+        DASHBOARDTYPE.START_TRACKING_SESSION,
+      ],
+      state
+    )
   );
 
   const startSellingHandler = async (id) => {
@@ -341,77 +353,86 @@ export function DashBoard({ navigation }) {
   const trackinSessionModal = () => {
     return (
       <Modal transparent={true} animationType={'fade'} isVisible={trackingSession}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 100}
-        >
-          <ScrollView>
-            <View style={styles.modalMainView}>
-              <View style={styles.headerView}>
-                <View style={styles.sessionViewStyle}>
-                  <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                    {strings.management.session}
-                  </Text>
-                </View>
-
-                <TouchableOpacity
-                  style={styles.crossButonBorder}
-                  onPress={() => dispatch(logoutUserFunction())}
-                >
-                  <Image source={crossButton} style={styles.crossIconStyle} />
-                </TouchableOpacity>
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.modalMainView}>
+            <View style={styles.headerView}>
+              <View style={styles.sessionViewStyle}>
+                <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
+                  {strings.management.session}
+                </Text>
               </View>
 
-              <Spacer space={SH(40)} />
-              <View style={styles.countCashView}>
-                <Text style={styles.countCashText}>{strings.management.countCash}</Text>
-
-                <Spacer space={SH(40)} />
-                <View>
-                  <Text style={styles.amountCountedText}>{strings.management.amountCounted}</Text>
-                  <TextInput
-                    placeholder={strings.management.amount}
-                    style={styles.inputStyle}
-                    placeholderTextColor={COLORS.solid_grey}
-                    keyboardType="number-pad"
-                    value={amountCount}
-                    onChangeText={setAmountCount}
-                  />
-                </View>
-                <Spacer space={SH(40)} />
-                <View>
-                  <Text style={styles.amountCountedText}>{strings.management.note}</Text>
-                  <TextInput
-                    placeholder={strings.management.note}
-                    style={styles.noteInputStyle}
-                    placeholderTextColor={COLORS.gerySkies}
-                    value={trackNotes}
-                    onChangeText={setTrackNotes}
-                    multiline={true}
-                    numberOfLines={3}
-                  />
-                </View>
-                <Spacer space={SH(20)} />
-              </View>
-              <View style={{ flex: 1 }} />
-              <Button
-                title={strings.management.startSession}
-                textStyle={{
-                  ...styles.buttonText,
-                  ...{ color: amountCount ? COLORS.white : COLORS.darkGray },
-                }}
-                style={{
-                  ...styles.saveButton,
-                  ...{
-                    backgroundColor: amountCount ? COLORS.primary : COLORS.textInputBackground,
-                  },
-                }}
-                onPress={startTrackingSesHandler}
-              />
-              <Spacer space={SH(40)} />
+              <TouchableOpacity
+                style={styles.crossButonBorder}
+                onPress={() => dispatch(logoutUserFunction())}
+              >
+                <Image source={crossButton} style={styles.crossIconStyle} />
+              </TouchableOpacity>
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+
+            <Spacer space={SH(40)} />
+            <View style={styles.countCashView}>
+              <Text style={styles.countCashText}>{strings.management.countCash}</Text>
+
+              <Spacer space={SH(40)} />
+              <View>
+                <Text style={styles.amountCountedText}>{strings.management.amountCounted}</Text>
+                <TextInput
+                  // ref={(inputRef) => {
+                  //   onInputFocus(inputRef), inputRef;
+                  // }}
+                  onFocus={(event) => {
+                    // setFresh((prev) => !prev);
+                    setScroll('1');
+                    // onInputFocus(event.target);
+                  }}
+                  placeholder={strings.management.amount}
+                  style={styles.inputStyle}
+                  placeholderTextColor={COLORS.solid_grey}
+                  keyboardType="number-pad"
+                  value={amountCount}
+                  onChangeText={setAmountCount}
+                />
+              </View>
+              <Spacer space={SH(40)} />
+              <View>
+                <Text style={styles.amountCountedText}>{strings.management.note}</Text>
+                <TextInput
+                  // ref={(inputRef) => (onInputFocus(inputRef), inputRef)}
+                  onFocus={(event) => {
+                    // setFresh((prev) => !prev);
+                    setScroll('2');
+                    // onInputFocus(event.target);
+                  }}
+                  placeholder={strings.management.note}
+                  style={styles.noteInputStyle}
+                  placeholderTextColor={COLORS.gerySkies}
+                  value={trackNotes}
+                  onChangeText={setTrackNotes}
+                  multiline={true}
+                  numberOfLines={3}
+                />
+              </View>
+              <Spacer space={SH(20)} />
+            </View>
+            <View style={{ flex: 1 }} />
+            <Button
+              title={strings.management.startSession}
+              textStyle={{
+                ...styles.buttonText,
+                ...{ color: amountCount ? COLORS.white : COLORS.darkGray },
+              }}
+              style={{
+                ...styles.saveButton,
+                ...{
+                  backgroundColor: amountCount ? COLORS.primary : COLORS.textInputBackground,
+                },
+              }}
+              onPress={startTrackingSesHandler}
+            />
+            <Spacer space={SH(40)} />
+          </View>
+        </KeyboardAwareScrollView>
       </Modal>
     );
   };
@@ -424,8 +445,6 @@ export function DashBoard({ navigation }) {
       setSearchModal(false);
     }
   };
-
-  console.log('dashboard');
 
   const bodyView = () => (
     <View style={styles.homeScreenCon}>
@@ -533,7 +552,6 @@ export function DashBoard({ navigation }) {
 
           <TouchableOpacity
             onPress={() => {
-              console.log('hiiiiiiiiiiiiiiiiii');
               dispatch(getOrdersByInvoiceIdSuccess({}));
               navigate(NAVIGATION.refund, { screen: 'intial' });
             }}
