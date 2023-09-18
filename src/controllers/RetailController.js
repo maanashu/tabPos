@@ -757,7 +757,6 @@ export class RetailController {
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response----', JSON.stringify(response));
           if (response?.msg === 'Order placed successfully!') {
             Toast.show({
               position: 'bottom',
@@ -769,7 +768,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error----', JSON.stringify(error));
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -783,8 +781,10 @@ export class RetailController {
 
   static async createServiceOrder(data) {
     return new Promise((resolve, reject) => {
+      const drawerId = store.getState()?.cashTracking?.getDrawerSession?.id;
       const endpoint = ORDER_URL + ApiOrderInventory.createServiceOrder;
       const body = {
+        drawer_id: drawerId,
         cart_id: data?.serviceCartId,
         mode_of_payment: data?.modeOfPayment,
       };

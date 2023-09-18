@@ -257,7 +257,6 @@ export const startstarckingSession = (resData) => async (dispatch) => {
   try {
     const res = await DashboardController.startstarckingSession(resData);
     dispatch(startstarckingSessionSuccess(res));
-    console.log('-----------------------------------------------------');
     dispatch(getDrawerSession());
   } catch (error) {
     dispatch(startstarckingSessionError(error.message));

@@ -177,7 +177,7 @@ export const FinalPaymentScreen = ({
               <Text style={styles._paySubTitle}>{payDetail?.modeOfPayment}</Text>
             </View>
             <Text style={styles._commonPayTitle}>
-              {moment().format('ddd DD MMM, YYYY')} {moment().format('hh:mm A')}
+              {moment(cartData?.created_at).format('llll')}
             </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
             <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
@@ -187,8 +187,10 @@ export const FinalPaymentScreen = ({
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
 
             <Text style={styles._thankyou}>Thank You</Text>
-            <Image source={barcode} style={styles._barCodeImage} />
-            {/* <Text style={styles._barCode}>ABC-abc-1234</Text> */}
+            <Image
+              source={cartData?.barcode ? { uri: cartData?.barcode } : barcode}
+              style={styles._barCodeImage}
+            />
             <Image source={logo_full} style={styles.logoFull} />
           </View>
         </View>

@@ -252,9 +252,6 @@ export class DashboardController {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.return;
       const body = { ...data, drawer_id: drawerId };
-      console.log('drawer====', store.getState()?.cashTracking);
-
-      console.log('body====', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
           Toast.show({

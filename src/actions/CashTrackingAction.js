@@ -13,6 +13,18 @@ const getDrawerSessionError = (error) => ({
   type: TYPES.GET_DRAWER_SESSION_ERROR,
   payload: { error },
 });
+const getPaymentDrawerHistoryRequest = () => ({
+  type: TYPES.GET_DRAWER_HISTORY_REQUEST,
+  payload: null,
+});
+const getPaymentDrawerHistorySuccess = (drawerHistory) => ({
+  type: TYPES.GET_DRAWER_HISTORY_SUCCESS,
+  payload: { drawerHistory },
+});
+const getPaymentDrawerHistoryError = (error) => ({
+  type: TYPES.GET_DRAWER_HISTORY_ERROR,
+  payload: { error },
+});
 
 const trackSessionSaveRequest = () => ({
   type: TYPES.TRACK_SESSION_SAVE_REQUEST,
@@ -77,6 +89,15 @@ export const getDrawerSessions = () => async (dispatch) => {
     dispatch(getDrawerSessionSuccess(res?.payload));
   } catch (error) {
     dispatch(getDrawerSessionError(error.message));
+  }
+};
+export const getPaymentDrawerSessions = () => async (dispatch) => {
+  dispatch(getPaymentDrawerHistoryRequest());
+  try {
+    const res = await CashTrackingController.getPaymentDrawerSessions();
+    dispatch(getPaymentDrawerHistorySuccess(res?.payload));
+  } catch (error) {
+    dispatch(getPaymentDrawerHistoryError(error.message));
   }
 };
 export const trackSessionSave = (data) => async (dispatch) => {

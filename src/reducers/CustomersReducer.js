@@ -4,6 +4,7 @@ const INITIALSTATE = {
   getUserOrder: {},
   getOrderUser: {},
   getCustomers: {},
+  getAcceptMarketing: {},
 };
 
 export const customersReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -37,6 +38,16 @@ export const customersReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getCustomers: payload.getCustomers,
+      };
+    case TYPES.GET_ACCEPTMARKETING_SUCCESS:
+      return {
+        ...state,
+        getAcceptMarketing: payload.getAcceptMarketing,
+      };
+    case TYPES.GET_ACCEPTMARKETING_RESET:
+      return {
+        ...state,
+        getAcceptMarketing: {},
       };
 
     default:

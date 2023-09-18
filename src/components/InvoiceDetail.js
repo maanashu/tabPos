@@ -40,8 +40,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
   const getAuth = useSelector(getAuthData);
   const oneOrderDetail = useSelector(getAnalytics);
   const singleOrderDetail = oneOrderDetail?.getOrderData;
-  console.log('singleOrderDetail', JSON.stringify(singleOrderDetail));
-  const userDetailData = singleOrderDetail?.pos_user_details;
+  const sellerDetailData = singleOrderDetail?.seller_details;
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const latitude = parseFloat(location?.latitude ?? 0.0);
   const longitude = parseFloat(location?.longitude ?? 0.0);
@@ -55,7 +54,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}>
       {singleOrderDetail?.delivery_option == 1 || singleOrderDetail?.delivery_option == 4 ? (
         <View style={[styles.firstRowStyle]}>
           <View style={styles.invoiceDetailSection}>
@@ -64,10 +63,9 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                 {singleOrderDetail?.seller_details?.organization_name ?? ''}
               </Text>
               <Text style={styles._kAddress}>
-                {' '}
-                {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
+                {`${sellerDetailData?.current_address?.city} ${sellerDetailData?.current_address?.country} ${sellerDetailData?.current_address?.zipcode}`}
               </Text>
-              <Text style={styles._kAddress}>{userDetailData?.phone_number ?? '-'}</Text>
+              <Text style={styles._kAddress}>{sellerDetailData?.phone_number ?? '-'}</Text>
               <View style={styles._flatListContainer}>
                 <FlatList
                   data={singleOrderDetail?.order_details}
@@ -153,11 +151,11 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                 </Text>
               </View>
               <Text style={styles._commonPayTitle}>
-                {moment(singleOrderDetail?.invoice?.delivery_date).format('llll')}
+                {moment(singleOrderDetail?.created_at).format('llll')}
               </Text>
               <Text style={styles._commonPayTitle}>Walk-In</Text>
               <Text style={styles._commonPayTitle}>
-                {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}` ?? '-'}
+                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
               </Text>
               <Text style={styles._commonPayTitle}>
                 POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
@@ -254,10 +252,9 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                 {singleOrderDetail?.seller_details?.organization_name ?? ''}
               </Text>
               <Text style={styles._kAddress}>
-                {' '}
-                {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
+                {`${sellerDetailData?.current_address?.city} ${sellerDetailData?.current_address?.country} ${sellerDetailData?.current_address?.zipcode}`}
               </Text>
-              <Text style={styles._kAddress}>{userDetailData?.phone_number ?? '-'}</Text>
+              <Text style={styles._kAddress}>{sellerDetailData?.phone_number ?? '-'}</Text>
               <View style={styles._flatListContainer}>
                 <FlatList
                   data={singleOrderDetail?.order_details}
@@ -343,11 +340,11 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                 </Text>
               </View>
               <Text style={styles._commonPayTitle}>
-                {moment(singleOrderDetail?.invoice?.delivery_date).format('llll')}
+                {moment(singleOrderDetail?.created_at).format('llll')}
               </Text>
               <Text style={styles._commonPayTitle}>Walk-In</Text>
               <Text style={styles._commonPayTitle}>
-                {`Invoice No. #${singleOrderDetail?.invoice?.invoice_id}` ?? '-'}
+                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
               </Text>
               <Text style={styles._commonPayTitle}>
                 POS No. {getUserData?.posLoginData?.pos_number ?? '-'}

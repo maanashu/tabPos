@@ -2,6 +2,7 @@ import { TYPES } from '@/Types/CashtrackingTypes';
 
 const INITIALSTATE = {
   getDrawerSession: {},
+  drawerHistory: {},
   getSessionHistory: [],
   getDrawerSessionById: [],
 };
@@ -12,6 +13,11 @@ export const cashTrackingReducer = (state = INITIALSTATE, { payload, type }) => 
       return {
         ...state,
         getDrawerSession: payload.getDrawerSession,
+      };
+    case TYPES.GET_DRAWER_HISTORY_SUCCESS:
+      return {
+        ...state,
+        drawerHistory: payload.drawerHistory,
       };
 
     case TYPES.GET_SESSION_HISTORY_SUCCESS:

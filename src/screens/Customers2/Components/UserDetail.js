@@ -45,7 +45,7 @@ const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 import { TYPES } from '@/Types/CustomersTypes';
 import { useEffect } from 'react';
-import { getOrderUser } from '@/actions/CustomersAction';
+import { getAcceptMarketing, getOrderUser, marketingUpdate } from '@/actions/CustomersAction';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
@@ -58,6 +58,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
   const singleOrderDetail = oneOrderDetail?.getOrderData;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getCustomerData = useSelector(getCustomers);
+  const marketingData = getCustomerData?.getAcceptMarketing;
   const ordersbyUserData = getCustomerData?.getOrderUser;
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
@@ -92,6 +93,30 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
   const isOrderUserLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ORDER_USER], state)
   );
+
+  useEffect(() => {
+    const data = {
+      userid: userDetail?.user_details?.id,
+      sellerid: userDetail?.seller_details?.id,
+    };
+    dispatch(getAcceptMarketing(data));
+  }, []);
+
+  const toggleHandler = async () => {
+    const data = {
+      user_id: userDetail?.user_details?.id.toString(),
+      seller_id: userDetail?.seller_details?.id.toString(),
+      accept: Object.keys(marketingData)?.length == 0 ? true : marketingData?.accept ? false : true,
+    };
+    const res = await dispatch(marketingUpdate(data));
+    if (res?.type === 'GET_MARKETINGUPDATE_SUCCESS') {
+      const data = {
+        userid: userDetail?.user_details?.id,
+        sellerid: userDetail?.seller_details?.id,
+      };
+      dispatch(getAcceptMarketing(data));
+    }
+  };
 
   const paginationInchandler = () => {
     setPage(page + 1);
@@ -174,14 +199,17 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
             <Spacer space={SH(10)} />
             <View style={[styles.pointCon, styles.acceptCon]}>
               <View style={styles.flexAlign}>
-                <TouchableOpacity
-                  style={styles.toggleBtnCon}
-                  // onPress={() => setToggles(!toggles)}
-                >
+                <TouchableOpacity style={styles.toggleBtnCon} onPress={toggleHandler}>
                   <Image
                     source={toggle}
-                    // style={toggles ? styles.toggleBtnStyle : styles.toggleBtnStyle2}
-                    style={styles.toggleBtnStyle}
+                    style={
+                      Object.keys(marketingData)?.length == 0
+                        ? styles.toggleBtnStyle2
+                        : marketingData?.accept == true
+                        ? styles.toggleBtnStyle
+                        : styles.toggleBtnStyle2
+                    }
+                    // style={styles.toggleBtnStyle2}
                   />
                 </TouchableOpacity>
                 <Text style={styles.acceptMarketText}>{strings.customers.acceptMarket}</Text>
