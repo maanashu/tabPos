@@ -24,16 +24,12 @@ import {
   backArrow2,
 } from '@/assets';
 import {
+  getGraphOrders,
   orderStatusCount,
   todayCurrentStatus,
   todayShippingStatus,
 } from '@/actions/ShippingAction';
-import {
-  getGraphOrders,
-  getReviewDefault,
-  getOrderstatistics,
-  acceptOrder,
-} from '@/actions/DeliveryAction';
+import { getReviewDefault, getOrderstatistics, acceptOrder } from '@/actions/DeliveryAction';
 import Graph from './Components/Graph';
 import { COLORS, SH } from '@/theme';
 import Orders from './Components/Orders';
@@ -80,7 +76,7 @@ export function ShippingOrder2() {
     dispatch(todayShippingStatus(sellerID));
     dispatch(todayCurrentStatus(sellerID));
     dispatch(getReviewDefault(0, 4));
-    dispatch(getGraphOrders(4));
+    dispatch(getGraphOrders());
     dispatch(getOrderstatistics(4));
     dispatch(orderStatusCount(sellerID));
   }, []);

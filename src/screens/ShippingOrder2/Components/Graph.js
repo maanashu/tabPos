@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -23,102 +23,292 @@ import { blankCheckBox, Fonts, mark } from '@/assets';
 import { graphOptions } from '@/constants/flatListData';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { getShipping } from '@/selectors/ShippingSelector';
 
 const { width } = Dimensions.get('window');
 
 const Graph = () => {
-  const getGraphOrderData = useSelector(getDelivery);
+  const getGraphOrderData = useSelector(getShipping);
   const [graphData, setGraphData] = useState(graphOptions);
+
+  const [modifyData, setModifyData] = useState([]);
+  const [showIncoming, setShowIncoming] = useState(true);
+  const [showProcessing, setShowProcessing] = useState(true);
+  const [showReadyToPickup, setShowReadyToPickup] = useState(true);
+  const [showCompleted, setShowCompleted] = useState(true);
 
   const isDeliveryOrder = useSelector((state) =>
     isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state)
   );
 
-  const changeValue = (index) => {
-    setGraphData((prev) => {
-      let list = [...prev];
-      list[index].checked = !list[index].checked;
-      return list;
+  const convertData = () => {
+    const DATA = getGraphOrderData?.graphOrders;
+    const barData = DATA?.labels?.flatMap((day, index) => {
+      const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
+      const setOfThree = [];
+      setOfThree.push({
+        value: values[0] || 0,
+        spacing: 10,
+        label: day,
+        labelWidth: 60,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+        frontColor: COLORS.bluish_green,
+        initialSpace: 0,
+        Incoming: true,
+      });
+      setOfThree.push({
+        value: values[1] || 0,
+        spacing: 10,
+        frontColor: COLORS.pink,
+        OrderProcessing: true,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+      });
+      setOfThree.push({
+        value: values[2] || 0,
+        spacing: 10,
+        frontColor: COLORS.yellowTweet,
+        ReadyForPickup: true,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+      });
+      setOfThree.push({
+        value: values[3] || 0,
+        spacing: 10,
+        frontColor: COLORS.primary,
+        Completed: true,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+      });
+
+      return setOfThree;
     });
+
+    setModifyData(barData);
   };
 
-  const checkedIndices = graphData
-    .filter((checkbox) => checkbox.checked)
-    .map((checkbox) => parseInt(checkbox.key) - 1);
-
-  const summedValues = Array(getGraphOrderData?.graphOrders?.labels?.length).fill(0);
-
-  for (const index of checkedIndices) {
-    const dataset = getGraphOrderData?.graphOrders?.datasets?.[index].data;
-    for (let i = 0; i < dataset?.length; i++) {
-      summedValues[i] += dataset[i];
-    }
-  }
-
-  const outputData = summedValues.map((value, index) => ({
-    label: getGraphOrderData?.graphOrders?.labels?.[index],
-    value,
-    labelTextStyle: { color: COLORS.gerySkies, fontSize: 11, fontFamily: Fonts.Regular },
-    spacing: Platform.OS == 'ios' ? 38 : 62,
-    initialSpace: 0,
-    frontColor:
-      index === 0
-        ? COLORS.bluish_green
-        : index === 1
-        ? COLORS.pink
-        : index === 2
-        ? COLORS.yellowTweet
-        : COLORS.primary,
-  }));
-
-  const renderGraphItem = ({ item, index }) => {
-    const title =
-      item?.title === strings.shippingOrder.incomingOrders
-        ? strings.shippingOrder.incomingOrders
-        : item.title === strings.shippingOrder.processingOrders
-        ? strings.shippingOrder.processingOrders
-        : item?.title === strings.shippingOrder.readyPickupOrders
-        ? strings.shippingOrder.readyPickupOrders
-        : strings.shippingOrder.completed;
-
-    const image =
-      item?.title === strings.shippingOrder.incomingOrders
-        ? COLORS.bluish_green
-        : item.title === strings.shippingOrder.processingOrders
-        ? COLORS.pink
-        : item?.title === strings.shippingOrder.readyPickupOrders
-        ? COLORS.yellowTweet
-        : COLORS.primary;
-
-    return (
-      <View style={styles.checkBoxRowMainView}>
-        {item?.checked ? (
-          <TouchableOpacity style={styles.checkBoxViewStyle} onPress={() => changeValue(index)}>
-            <Image source={mark} style={[styles.checkIconStyle, { tintColor: image }]} />
-            <Text style={styles.labelTextStyle}>{title}</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.checkBoxViewStyle} onPress={() => changeValue(index)}>
-            <Image source={blankCheckBox} style={[styles.checkIconStyle, { tintColor: image }]} />
-            <Text style={styles.labelTextStyle}>{title}</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    );
+  const onClickCheckBox = (type, value) => {
+    const DATA = getGraphOrderData?.graphOrders;
+    const barData = DATA?.labels?.flatMap((day, index) => {
+      const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
+      const setOfThree = [];
+      if (type === 'Incoming') {
+        setOfThree.push({
+          value: values[0] || 0,
+          spacing: 10,
+          label: day,
+          labelWidth: 80,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+          frontColor: value ? COLORS.bluish_green : COLORS.white,
+          initialSpace: 0,
+          Incoming: true,
+        });
+      } else {
+        setOfThree.push({
+          value: values[0] || 0,
+          spacing: 10,
+          label: day,
+          labelWidth: 60,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+          frontColor: showIncoming ? COLORS.bluish_green : COLORS.white,
+          initialSpace: 0,
+          Incoming: true,
+        });
+      }
+      if (type === 'OrderProcessing') {
+        setOfThree.push({
+          value: values[1] || 0,
+          spacing: 10,
+          frontColor: value ? COLORS.pink : COLORS.white,
+          OrderProcessing: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      } else {
+        setOfThree.push({
+          value: values[1] || 0,
+          spacing: 10,
+          frontColor: showProcessing ? COLORS.pink : COLORS.white,
+          OrderProcessing: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      }
+      if (type === 'ReadyForPickup') {
+        setOfThree.push({
+          value: values[2] || 0,
+          spacing: 10,
+          frontColor: value ? COLORS.yellowTweet : COLORS.white,
+          ReadyForPickup: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      } else {
+        setOfThree.push({
+          value: values[2] || 0,
+          spacing: 10,
+          frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
+          ReadyForPickup: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      }
+      if (type === 'Completed') {
+        setOfThree.push({
+          value: values[3] || 0,
+          spacing: 10,
+          frontColor: value ? COLORS.primary : COLORS.white,
+          Completed: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      } else {
+        setOfThree.push({
+          value: values[3] || 0,
+          spacing: 10,
+          frontColor: showCompleted ? COLORS.primary : COLORS.white,
+          Completed: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      }
+      return setOfThree;
+    });
+    setModifyData(barData);
   };
+
+  useEffect(() => {
+    convertData();
+  }, [getGraphOrderData?.graphOrders]);
 
   return (
     <View style={styles.graphViewStyle}>
       <View>
         <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
 
-        <FlatList
-          horizontal
-          data={graphData}
-          scrollEnabled={false}
-          renderItem={renderGraphItem}
-          showsHorizontalScrollIndicator={false}
-        />
+        <View style={[styles.flexRow, { zIndex: 999 }]}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowIncoming((prevShowIncoming) => {
+                const newState = !prevShowIncoming;
+                onClickCheckBox('Incoming', newState);
+                return newState;
+              });
+            }}
+            style={styles.checkboxViewStyle}
+          >
+            <Image
+              source={showIncoming ? mark : blankCheckBox}
+              style={[styles.checkboxIconStyle, showIncoming && { tintColor: COLORS.bluish_green }]}
+            />
+            <Text style={styles.varientTextStyle}>{strings.shippingOrder.incomingOrders}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              setShowProcessing((prevShowProcessing) => {
+                const newState = !prevShowProcessing;
+                onClickCheckBox('OrderProcessing', newState);
+                return newState;
+              });
+            }}
+            style={styles.checkboxViewStyle}
+          >
+            <Image
+              source={showProcessing ? mark : blankCheckBox}
+              style={[styles.checkboxIconStyle, showProcessing && { tintColor: COLORS.pink }]}
+            />
+            <Text style={styles.varientTextStyle}>{strings.shippingOrder.processingOrders}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              setShowReadyToPickup((prevShowReadyToPickup) => {
+                const newState = !prevShowReadyToPickup;
+                onClickCheckBox('ReadyForPickup', newState);
+                return newState;
+              });
+            }}
+            style={styles.checkboxViewStyle}
+          >
+            <Image
+              source={showReadyToPickup ? mark : blankCheckBox}
+              style={[
+                styles.checkboxIconStyle,
+                showReadyToPickup && { tintColor: COLORS.yellowTweet },
+              ]}
+            />
+            <Text style={styles.varientTextStyle}>{strings.shippingOrder.readyPickupOrders}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              setShowCompleted((prevShowCompleted) => {
+                const newState = !prevShowCompleted;
+                onClickCheckBox('Completed', newState);
+                return newState;
+              });
+            }}
+            style={styles.checkboxViewStyle}
+          >
+            <Image
+              source={showCompleted ? mark : blankCheckBox}
+              style={[styles.checkboxIconStyle, showCompleted && { tintColor: COLORS.primary }]}
+            />
+            <Text style={styles.varientTextStyle}>{strings.shippingOrder.completed}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <Spacer space={SH(20)} />
@@ -130,7 +320,7 @@ const Graph = () => {
       ) : (
         <View>
           <BarChart
-            data={outputData}
+            data={modifyData}
             noOfSections={7}
             roundedTop
             xAxisThickness={1}
@@ -199,5 +389,22 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(11),
     color: COLORS.darkGray,
+  },
+  checkboxIconStyle: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+  },
+  checkboxViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 20,
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    zIndex: 999,
+    marginTop: 10,
   },
 });
