@@ -3,33 +3,28 @@ import {
   View,
   Text,
   Image,
-  FlatList,
-  ActivityIndicator,
   Dimensions,
   StyleSheet,
-  Platform,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { BarChart } from 'react-native-gifted-charts';
 
-import { COLORS, SF, SH } from '@/theme';
 import { Spacer } from '@/components';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { blankCheckBox, Fonts, mark } from '@/assets';
-import { graphOptions } from '@/constants/flatListData';
-import { getDelivery } from '@/selectors/DeliverySelector';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getShipping } from '@/selectors/ShippingSelector';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const { width } = Dimensions.get('window');
 
 const Graph = () => {
   const getGraphOrderData = useSelector(getShipping);
-  const [graphData, setGraphData] = useState(graphOptions);
 
   const [modifyData, setModifyData] = useState([]);
   const [showIncoming, setShowIncoming] = useState(true);
@@ -37,7 +32,11 @@ const Graph = () => {
   const [showReadyToPickup, setShowReadyToPickup] = useState(true);
   const [showCompleted, setShowCompleted] = useState(true);
 
-  const isDeliveryOrder = useSelector((state) =>
+  useEffect(() => {
+    convertData();
+  }, [getGraphOrderData?.graphOrders]);
+
+  const isShippingOrder = useSelector((state) =>
     isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state)
   );
 
@@ -228,10 +227,6 @@ const Graph = () => {
     setModifyData(barData);
   };
 
-  useEffect(() => {
-    convertData();
-  }, [getGraphOrderData?.graphOrders]);
-
   return (
     <View style={styles.graphViewStyle}>
       <View>
@@ -311,9 +306,9 @@ const Graph = () => {
         </View>
       </View>
 
-      <Spacer space={SH(20)} />
+      <Spacer space={SH(30)} />
 
-      {isDeliveryOrder ? (
+      {isShippingOrder ? (
         <View style={styles.loaderViewStyle}>
           <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
@@ -330,9 +325,7 @@ const Graph = () => {
             yAxisLength={350}
             height={ms(130)}
             width={width * 0.48}
-            spacing={2}
-            initialSpacing={12}
-            disableScroll={true}
+            barWidth={SW(3.5)}
             yAxisTextStyle={styles.yAxisTextStyle}
           />
         </View>
@@ -357,7 +350,7 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
     paddingHorizontal: ms(12),
-    paddingTop: ms(8),
+    paddingTop: ms(13),
   },
   loaderViewStyle: {
     height: ms(150),
@@ -370,20 +363,9 @@ const styles = StyleSheet.create({
     fontSize: SF(11),
     fontFamily: Fonts.Regular,
   },
-  checkBoxRowMainView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: ms(10),
-    paddingHorizontal: ms(10),
-  },
   checkBoxViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  checkIconStyle: {
-    width: ms(14),
-    height: ms(14),
-    resizeMode: 'contain',
   },
   labelTextStyle: {
     fontFamily: Fonts.Regular,
@@ -405,6 +387,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     zIndex: 999,
-    marginTop: 10,
+    marginTop: ms(10),
+  },
+  varientTextStyle: {
+    fontSize: SF(11),
+    color: COLORS.darkGray,
+    fontFamily: Fonts.Regular,
   },
 });

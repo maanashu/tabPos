@@ -1,60 +1,38 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  SafeAreaView,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
 
+import WebView from 'react-native-webview';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  Cart,
-  task,
-  timer,
-  NoCard,
-  Delivery,
-  ReturnTruck,
-  drawerdeliveryTruck,
-  Group,
-  backArrow2,
-} from '@/assets';
 import {
   getGraphOrders,
   orderStatusCount,
   todayCurrentStatus,
   todayShippingStatus,
 } from '@/actions/ShippingAction';
-import { getReviewDefault, getOrderstatistics, acceptOrder } from '@/actions/DeliveryAction';
-import Graph from './Components/Graph';
+import { backArrow2 } from '@/assets';
 import { COLORS, SH } from '@/theme';
-import Orders from './Components/Orders';
-import RightDrawer from './Components/RightDrawer';
 import { Spacer } from '@/components';
+import Graph from './Components/Graph';
+import Header from './Components/Header';
+import { strings } from '@/localization';
+import Orders from './Components/Orders';
+import OrderList from './Components/OrderList';
+import OrderDetail from './Components/OrderDetail';
+import RightDrawer from './Components/RightDrawer';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import OrderConversion from './Components/OrderConversion';
-import { getShipping } from '@/selectors/ShippingSelector';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import TodayShippingStatus from './Components/TodayShippingStatus';
-import CurrentShippingStatus from './Components/CurrentShippingStatus';
-
-import styles from './ShippingOrder2.styles';
-import OrderList from './Components/OrderList';
-import Header from './Components/Header';
-import { ms } from 'react-native-size-matters';
-import OrderDetail from './Components/OrderDetail';
-import { strings } from '@/localization';
-import WebView from 'react-native-webview';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/DeliveringOrderTypes';
+import TodayShippingStatus from './Components/TodayShippingStatus';
+import CurrentShippingStatus from './Components/CurrentShippingStatus';
+import { getReviewDefault, getOrderstatistics, acceptOrder } from '@/actions/DeliveryAction';
 
-const height = Dimensions.get('window').height;
+import styles from './ShippingOrder2.styles';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -148,7 +126,7 @@ export function ShippingOrder2() {
       sellerID: sellerID,
     };
     dispatch(
-      acceptOrder(data, (res) => {
+      acceptOrder(data, () => {
         alert('Order declined successfully');
         setViewAllOrders(false);
         dispatch(getReviewDefault(0, 4));
