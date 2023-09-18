@@ -562,6 +562,7 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
           applicableForAllItems={applicableIsCheck}
           backHandler={() => setChangeView('TotalItems')}
           amount={applicableIsCheck ? amount : refundAmount}
+          payableAmount={totalRefundableAmount}
         />
       )}
     </View>
