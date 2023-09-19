@@ -165,11 +165,11 @@ export function Analytics2() {
     setSelectedEndDate('');
   };
   const onDateChange = (date, type) => {
-    const Date = moment(date).format('YYYY-MM-DD');
+    const formattedDate = moment(date).format('YYYY-MM-DD');
     if (type === 'END_DATE') {
-      setSelectedEndDate(Date);
+      setSelectedEndDate(formattedDate);
     } else {
-      setSelectedStartDate(Date);
+      setSelectedStartDate(formattedDate);
       setSelectedEndDate(null);
     }
   };
