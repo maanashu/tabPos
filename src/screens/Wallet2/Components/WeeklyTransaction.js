@@ -49,7 +49,7 @@ import { memo } from 'react';
 import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
 const windowHeight = Dimensions.get('window').height;
 import Modal from 'react-native-modal';
-import CalendarPickerModal from '@/components/CalendarPicker';
+import CalendarPickerModal from '@/components/CalendarPickerModal';
 
 export function WeeklyTransaction({ backHandler, orderClickHandler }) {
   const mapRef = useRef(null);
