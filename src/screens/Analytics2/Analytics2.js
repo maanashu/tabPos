@@ -45,7 +45,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ms } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CalendarPickerModal from '@/components/CalendarPicker';
+import CalendarPickerModal from '@/components/CalendarPickerModal';
 import moment from 'moment';
 import { WeeklyTransaction } from './Components/WeeklyTransaction';
 import { useRef } from 'react';
