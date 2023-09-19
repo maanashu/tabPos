@@ -263,6 +263,7 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           alert(error?.msg);
           reject(error.msg);
         });

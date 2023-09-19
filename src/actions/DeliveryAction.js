@@ -283,10 +283,10 @@ export const getOrderstatistics = (delivery) => async (dispatch) => {
   }
 };
 
-export const getGraphOrders = (delivery) => async (dispatch) => {
+export const getGraphOrders = () => async (dispatch) => {
   dispatch(getGraphOrdersRequest());
   try {
-    const res = await DeliveryController.getGraphOrders(delivery);
+    const res = await DeliveryController.getGraphOrders();
     return dispatch(getGraphOrdersSuccess(res?.payload));
   } catch (error) {
     dispatch(getGraphOrdersError(error.message));

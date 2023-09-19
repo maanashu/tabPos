@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { View, Image, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 
+import { useSelector } from 'react-redux';
 import { ms, verticalScale } from 'react-native-size-matters';
 
-import { COLORS, SF, SW } from '@/theme';
 import {
   Cart,
   Delivery,
@@ -15,7 +15,7 @@ import {
   task,
   timer,
 } from '@/assets';
-import { useSelector } from 'react-redux';
+import { COLORS, SF, SW } from '@/theme';
 import { getShipping } from '@/selectors/ShippingSelector';
 
 const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {

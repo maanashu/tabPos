@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { SH, COLORS } from '@/theme';
 import { Spacer } from '@/components';
+import { strings } from '@/localization';
+import { Fonts, logo_full } from '@/assets';
 import { getUser } from '@/selectors/UserSelectors';
-import { barcode, Fonts, logo_full } from '@/assets';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
@@ -46,11 +47,13 @@ const InvoiceDetails = ({ orderData }) => {
       </Text>
 
       <Spacer space={SH(10)} backgroundColor={COLORS.transparent} />
+
       <Text style={styles.storeAddressText}>
         {`${orderDetail?.seller_details?.current_address?.street_address}` ?? '-'}
       </Text>
 
       <Spacer space={SH(5)} backgroundColor={COLORS.transparent} />
+
       <Text style={styles.storeAddressText}>
         {`${orderDetail?.seller_details?.phone_number}` ?? '-'}
       </Text>
@@ -70,21 +73,21 @@ const InvoiceDetails = ({ orderData }) => {
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
-        <Text style={styles._substotalTile}>Discount</Text>
+        <Text style={styles._substotalTile}>{strings.deliveryOrders.discount}</Text>
         <Text style={styles._subTotalPrice}>{`$${orderDetail?.discount}` ?? '-'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
-        <Text style={styles._substotalTile}>Tips</Text>
+        <Text style={styles._substotalTile}>{strings.deliveryOrders.tips}</Text>
         <Text style={styles._subTotalPrice}>{`$${orderDetail?.tips}` ?? '-'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
-        <Text style={styles._substotalTile}>Total Taxes</Text>
+        <Text style={styles._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
         <Text style={styles._subTotalPrice}>{`$${orderDetail?.tax}` ?? '-'}</Text>
       </View>
 
@@ -102,7 +105,7 @@ const InvoiceDetails = ({ orderData }) => {
       <View style={[styles._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
 
       <View style={styles._paymentTitleContainer}>
-        <Text style={styles._payTitle}>Payment option: </Text>
+        <Text style={styles._payTitle}>{strings.deliveryOrders.paymentOption} </Text>
         <Text style={styles._paySubTitle}>
           {orderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
         </Text>
@@ -122,7 +125,7 @@ const InvoiceDetails = ({ orderData }) => {
 
       <Text style={styles._commonPayTitle}>User ID : #{getUserData?.posLoginData?.id ?? '-'}</Text>
 
-      <Text style={styles._thankyou}>Thank You</Text>
+      <Text style={styles._thankyou}>{strings.deliveryOrders2.thanks}</Text>
 
       <Image source={{ uri: orderDetail?.invoices?.barcode }} style={styles._barCodeImage} />
 
