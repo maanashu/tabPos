@@ -1,21 +1,16 @@
 import React, { memo } from 'react';
 import { Text, View, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 
-import { useDispatch } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 
 import { Spacer } from '@/components';
-import { cross, crossButton, Fonts } from '@/assets';
+import { crossButton, Fonts } from '@/assets';
 import { COLORS, SF, SH } from '@/theme';
-import { NAVIGATION } from '@/constants';
-import { navigate } from '@/navigation/NavigationRef';
-import { returnProductSuccess, getProductsBySkuSuccess } from '@/actions/DashboardAction';
 
 const { width } = Dimensions.get('window');
 
-const ReturnConfirmation = ({ isVisible, setIsVisible, order, navigation, onPressHandler }) => {
-  const dispatch = useDispatch();
+const ReturnConfirmation = ({ isVisible, order, onPressHandler }) => {
   return (
     <ReactNativeModal
       isVisible={isVisible}
@@ -26,16 +21,7 @@ const ReturnConfirmation = ({ isVisible, setIsVisible, order, navigation, onPres
         <View style={styles.headingRowStyle}>
           <Text style={styles.headingTextStyle}>{'Return Confirmed!'}</Text>
 
-          <TouchableOpacity
-            style={styles.crossIconView}
-            onPress={
-              onPressHandler
-              // setIsVisible(false);
-              // navigation.navigate(NAVIGATION.refund);
-              // dispatch(returnProductSuccess({}));
-              // dispatch(getProductsBySkuSuccess({}));
-            }
-          >
+          <TouchableOpacity style={styles.crossIconView} onPress={onPressHandler}>
             <Image source={crossButton} style={styles.crossIconStyle} />
           </TouchableOpacity>
         </View>

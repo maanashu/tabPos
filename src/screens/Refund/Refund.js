@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ScreenWrapper } from '@/components';
 import moment from 'moment';
 import { SearchScreen } from './Components/SearchScreen';
 
 moment.suppressDeprecationWarnings = true;
 
-export function Refund(props) {
-  const params = props?.route?.params?.screen;
-
+export function Refund() {
   return (
     <ScreenWrapper>
-      <SearchScreen from={params} navigation={props?.navigation} />
+      <SearchScreen />
     </ScreenWrapper>
   );
 }

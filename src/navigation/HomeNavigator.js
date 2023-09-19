@@ -22,6 +22,7 @@ import {
 import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
 import NotificationsList from '@/screens/Notifications/NotificationsList';
+import { SearchScreen } from '@/screens/Refund/Components/SearchScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -94,6 +95,11 @@ export function HomeNavigator() {
         options={{ headerShown: false }}
       />
       <Drawer.Screen component={Refund} name={NAVIGATION.refund} options={{ headerShown: false }} />
+      <Drawer.Screen
+        component={SearchScreen}
+        name={'SearchScreen'}
+        options={{ headerShown: false }}
+      />
       <Drawer.Screen
         component={Customers2}
         name={NAVIGATION.customers2}

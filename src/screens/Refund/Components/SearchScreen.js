@@ -33,19 +33,30 @@ import {
 
 const windowWidth = Dimensions.get('window').width;
 
-export function SearchScreen({ navigation }) {
+export function SearchScreen(props) {
   let debounceTimeout;
   const textInputRef = useRef();
   const dispatch = useDispatch();
   const getSearchOrders = useSelector(getDashboard);
   const order = getSearchOrders?.invoiceSearchOrders;
+  const param = props?.route?.params?.screen;
 
   const [sku, setSku] = useState();
   const [isVisibleManual, setIsVisibleManual] = useState(false);
   const [showProductRefund, setShowProductRefund] = useState(false);
   const [isShowAttributeModal, setIsShowAttributeModal] = useState(false);
-  const [orderDetail, setOrderDetail] = useState(order?.order?.order_details ?? []);
+  const [orderDetail, setOrderDetail] = useState([]);
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
+
+  useEffect(() => {
+    console.log('param====', param);
+    if (param === 'return') {
+      setOrderDetail([]);
+      setSku();
+      setShowProductRefund(false);
+      dispatch(getOrdersByInvoiceIdSuccess({}));
+    }
+  }, []);
 
   useEffect(() => {
     setShowProductRefund(false);
@@ -182,7 +193,6 @@ export function SearchScreen({ navigation }) {
           orderData={order}
           orderList={orderDetail}
           backHandler={() => setShowProductRefund(false)}
-          navigation={navigation}
         />
       )}
     </View>
