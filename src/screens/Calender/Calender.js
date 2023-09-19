@@ -33,6 +33,7 @@ import {
   getStaffUsersList,
   sendCheckinOTP,
 } from '@/actions/AppointmentAction';
+import Modal from 'react-native-modal';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ActivityIndicator } from 'react-native';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -54,6 +55,7 @@ import { APPOINTMENT_STATUS } from '@/constants/status';
 import ReScheduleDetailModal from './Components/ReScheduleDetailModal';
 import ListViewItem from './Components/ListViewComponents/ListViewItem';
 import ListViewHeader from './Components/ListViewComponents/ListViewHeader';
+import CalendarPickerModal from '@/components/CalendarPickerModal';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -61,7 +63,7 @@ export function Calender() {
   const windowHeight = Dimensions.get('window').height;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-
+  const maxDate = new Date(2030, 6, 3);
   const getSettingData = useSelector(getSetting);
   const defaultSettingsForCalendar = getSettingData?.getSetting;
   const getCalenderData = useSelector(getAppointmentSelector);
@@ -594,7 +596,7 @@ export function Calender() {
           {...{ eventData, showEventDetailModal, setshowEventDetailModal, dispatch }}
         />
 
-        <DateTimePicker
+        {/* <DateTimePicker
           isVisible={showMiniCalendar}
           date={new Date()}
           display="inline"
@@ -605,7 +607,31 @@ export function Calender() {
           onCancel={() => {
             setshowMiniCalendar(false);
           }}
-        />
+        /> */}
+
+        <Modal
+          isVisible={showMiniCalendar}
+          statusBarTranslucent
+          animationIn={'slideInRight'}
+          animationInTiming={600}
+          animationOutTiming={300}
+        >
+          <View style={styles.calendarModalView}>
+            <CalendarPickerModal
+              allowRangeSelection={false}
+              maxDate={maxDate}
+              selectedStartDate={calendarDate}
+              onPress={() => setshowMiniCalendar(false)}
+              onSelectedDate={(date) => {
+                setCalendarDate(moment(date));
+                setshowMiniCalendar(false);
+              }}
+              onCancelPress={() => {
+                setshowMiniCalendar(false);
+              }}
+            />
+          </View>
+        </Modal>
 
         <ReScheduleDetailModal
           showRecheduleModal={showRescheduleTimeModal}

@@ -930,4 +930,13 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     margin: ms(20),
   },
+  calendarModalView: {
+    backgroundColor: COLORS.white,
+    width: windowWidth * 0.6,
+    height: windowHeight - SW(30),
+    alignSelf: 'center',
+    paddingVertical: SH(10),
+    paddingHorizontal: SW(5),
+    borderRadius: SW(5),
+  },
 });
