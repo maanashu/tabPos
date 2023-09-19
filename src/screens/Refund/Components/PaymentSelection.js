@@ -105,7 +105,7 @@ const PaymentSelection = ({
               id: item?.id,
               qty: item?.qty ?? 1,
               refund_flag: 'amount',
-              refund_value: item?.RefundedAmount?.toFixed(2),
+              refund_value: `${item?.RefundedAmount}`,
             });
           });
         } else {
