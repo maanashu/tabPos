@@ -14,32 +14,30 @@ import {
 
 import ReactNativeModal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import CountryPicker from 'react-native-country-picker-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { moderateScale, moderateVerticalScale, ms, verticalScale } from 'react-native-size-matters';
 
+import {
+  returnProduct,
+  returnProductSuccess,
+  getProductsBySkuSuccess,
+} from '@/actions/DashboardAction';
 import { Spacer } from '@/components';
+import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { SF, SH, COLORS, SW } from '@/theme';
 import InvoiceDetails from './InvoiceDetails';
 import BackButton from '@/components/BackButton';
 import ReturnConfirmation from './ReturnConfirmation';
 import { RECIPE_DATA } from '@/constants/flatListData';
-import {
-  getOrdersByInvoiceIdSuccess,
-  getProductsBySkuSuccess,
-  returnProduct,
-  returnProductSuccess,
-} from '@/actions/DashboardAction';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
 import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
-import { getDashboard } from '@/selectors/DashboardSelector';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
-import { NAVIGATION } from '@/constants';
 
 const { width, height } = Dimensions.get('window');
-let products = [];
 
 const PaymentSelection = ({
   backHandler,
@@ -47,14 +45,10 @@ const PaymentSelection = ({
   order,
   applicableForAllItems,
   applyEachItem,
-  amount,
-  navigation,
   payableAmount,
 }) => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
-  const getDashboardData = useSelector(getDashboard);
-  const getSessionData = getDashboardData?.getSession;
-  const id = getSessionData?.id;
 
   const [flag, setFlag] = useState('US');
   const [email, setEmail] = useState('');
@@ -102,15 +96,16 @@ const PaymentSelection = ({
   };
 
   const onReturnHandler = () => {
-    if (selectedRecipeIndex !== null) {
-      orderData?.order?.order_details?.map((item, index) => {
+    let products = [];
+    if (orderData?.order?.mode_of_payment === 'cash' && selectedRecipeIndex !== null) {
+      orderData?.order?.order_details?.map((item) => {
         if (applyEachItem) {
-          order?.map((item, index) => {
+          order?.map((item) => {
             products.push({
               id: item?.id,
               qty: item?.qty ?? 1,
               refund_flag: 'amount',
-              refund_value: item?.RefundedAmount,
+              refund_value: item?.RefundedAmount?.toFixed(2),
             });
           });
         } else {
@@ -120,6 +115,10 @@ const PaymentSelection = ({
           });
         }
       });
+
+      console.log('selectedRecipeIndex=======', selectedRecipeIndex);
+      console.log('applicableForAllItems=======', applicableForAllItems);
+      console.log('applyEachItem=======', applyEachItem);
 
       const data =
         selectedRecipeIndex === 0 && applicableForAllItems
@@ -173,9 +172,9 @@ const PaymentSelection = ({
         })
       );
     } else if (orderData?.order?.mode_of_payment === 'jbr') {
-      orderData?.order?.order_details?.map((item, index) => {
+      orderData?.order?.order_details?.map((item) => {
         if (applyEachItem) {
-          order?.map((item, index) => {
+          order?.map((item) => {
             products.push({
               id: item?.id,
               qty: item?.qty ?? 1,
@@ -190,6 +189,8 @@ const PaymentSelection = ({
           });
         }
       });
+
+      console.log('products====', products);
 
       const data = applicableForAllItems
         ? {
@@ -211,17 +212,16 @@ const PaymentSelection = ({
           }
         })
       );
-      if (orderData?.order?.mode_of_payment === 'cash') {
-        alert('Please select e-recipe method');
-      }
+    } else {
+      alert('Please select e-recipe method');
     }
   };
 
   const onPressreturn = () => {
     setIsReturnConfirmation(false);
-    navigation.navigate(NAVIGATION.refund);
     dispatch(returnProductSuccess({}));
     dispatch(getProductsBySkuSuccess({}));
+    navigation.navigate('SearchScreen', { screen: 'return' });
   };
 
   return (
@@ -235,7 +235,7 @@ const PaymentSelection = ({
 
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles._dollarSymbol}>{strings.returnOrder.dollar}</Text>
-              <Text style={styles._amount}>{payableAmount}</Text>
+              <Text style={styles._amount}>{payableAmount?.toFixed(2)}</Text>
             </View>
           </View>
         </View>
@@ -252,7 +252,7 @@ const PaymentSelection = ({
               <TouchableOpacity style={styles._payBYBoxContainer}>
                 <Text style={styles._payByTitle}>{strings.returnOrder.payBy}</Text>
                 <Text style={styles._payByMethod}>{orderData?.order?.mode_of_payment}</Text>
-                <Text style={styles._payByAmount}>{`$${orderData?.order?.payable_amount}`}</Text>
+                <Text style={styles._payByAmount}>{`$${payableAmount?.toFixed(2)}`}</Text>
                 <Image
                   source={
                     orderData?.order?.mode_of_payment === strings.returnOrder.cash
@@ -302,7 +302,6 @@ const PaymentSelection = ({
         isVisible={isReturnConfirmation}
         setIsVisible={setIsReturnConfirmation}
         order={orderData}
-        navigation={navigation}
         onPressHandler={onPressreturn}
       />
 

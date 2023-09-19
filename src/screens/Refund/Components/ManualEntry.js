@@ -32,10 +32,6 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
   const [search, setSearch] = useState();
   const [selectedItem, setSelectedItem] = useState();
 
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.GET_PRODUCTS_BY_SKU], state)
-  );
-
   const changeView = () => {
     if (getProducts !== undefined && Object.keys(getProducts).length > 0) {
       return (
