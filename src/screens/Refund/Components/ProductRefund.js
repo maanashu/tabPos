@@ -23,6 +23,8 @@ import {
   blankCheckBox,
   categoryshoes,
   checkedCheckboxSquare,
+  editIcon,
+  cross,
 } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
@@ -30,10 +32,12 @@ import PaymentSelection from './PaymentSelection';
 import { COLORS, SH, SF, SW, ShadowStyles } from '@/theme';
 import { CustomHeader } from '@/screens/PosRetail3/Components';
 import { getDrawerSessions } from '@/actions/CashTrackingAction';
+import ReactNativeModal from 'react-native-modal';
+import InventoryProducts from './InventoryProducts';
 
 const { width, height } = Dimensions.get('window');
 
-const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
+const ProductRefund = ({ backHandler, orderList, orderData }) => {
   const dispatch = useDispatch();
   const [amount, setAmount] = useState('');
   const [applicableIsCheck, setApplicableIsCheck] = useState(false);
@@ -44,6 +48,8 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
   const [refundAmount, setRefundAmount] = useState('');
   const [orders, setOrders] = useState();
   const [orderDetailData, setOrderDetailData] = useState();
+  const [selectedItem, setSelectedItem] = useState('');
+  const [inventoryModal, setInventoryModal] = useState(false);
 
   useEffect(() => {
     const updatedDataArray = orderData?.order?.order_details.map((item) => {
@@ -107,15 +113,25 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
             <Image source={categoryshoes} style={styles.columbiaMen} />
             <View style={{ marginLeft: 10 }}>
               <Text style={[styles.blueListDataText, { width: SW(34) }]} numberOfLines={1}>
-                {item?.product_name}
+                {item?.product_name ?? '-'}
               </Text>
-              <Text style={styles.sukNumber}>{item?.product_details?.sku}</Text>
+              <Text style={styles.sukNumber}>{item?.product_details?.sku ?? '-'}</Text>
             </View>
           </View>
 
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedItem(item);
+              setInventoryModal(!inventoryModal);
+            }}
+            style={styles.productCartBody}
+          >
+            <Image source={editIcon} style={styles.editIconStyle} />
+          </TouchableOpacity>
+
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              ${item?.actual_price}
+              ${item?.actual_price ?? '0'}
             </Text>
           </View>
 
@@ -178,7 +194,7 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              ${item?.actual_price * item?.qty}
+              ${item?.actual_price * item?.qty ?? '0'}
             </Text>
           </View>
         </View>
@@ -279,7 +295,13 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
         <>
           <CustomHeader iconShow crossHandler={backHandler} />
 
-          <View style={{ flexDirection: 'row' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+              justifyContent: 'space-between',
+            }}
+          >
             <View style={styles.leftMainViewStyle}>
               <View style={styles.rowStyle}>
                 {!applyEachItem ? (
@@ -288,7 +310,6 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
                       <TouchableOpacity
                         onPress={() => {
                           !applicableIsCheck && setButtonText('Apply Refund'), setAmount('');
-
                           setApplicableIsCheck(!applicableIsCheck);
                         }}
                       >
@@ -465,6 +486,9 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
                   </View>
                   <View style={styles.productCartBodyRight}>
                     <View style={styles.productCartBody}>
+                      <Text style={styles.cashLabelWhite}>Write off/Inventory</Text>
+                    </View>
+                    <View style={styles.productCartBody}>
                       <Text style={styles.cashLabelWhite}>Unit Price</Text>
                     </View>
                     <View style={styles.productCartBody}>
@@ -476,7 +500,6 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
                     <View style={styles.productCartBody}>
                       <Text style={styles.cashLabelWhite}>Line Total</Text>
                     </View>
-                    <View style={styles.productCartBody}></View>
                   </View>
                 </View>
               </View>
@@ -512,16 +535,20 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
               </View>
 
               {orderData?.order?.status === 5 ? (
-                <View style={styles.totalViewStyle}>
-                  <Text style={styles.subTotalText}>
-                    {orderData?.order?.delivery_charge
-                      ? 'Delivery Charges'
-                      : orderData?.order?.shipping_charge
-                      ? 'Shipping Charges'
-                      : ''}
-                  </Text>
-                  <Text style={styles.subTotalPrice}>{`$${orderData?.order?.tax}`}</Text>
-                </View>
+                <>
+                  <Spacer space={SH(10)} />
+                  <View style={styles.totalViewStyle}>
+                    <Text style={styles.subTotalText}>
+                      {orderData?.order?.delivery_charge
+                        ? 'Delivery Charges'
+                        : orderData?.order?.shipping_charge
+                        ? 'Shipping Charges'
+                        : ''}
+                    </Text>
+                    <Text style={styles.subTotalPrice}>{`$${orderData?.order?.tax}`}</Text>
+                  </View>
+                  <Spacer space={SH(10)} />
+                </>
               ) : null}
 
               <Spacer space={SH(10)} />
@@ -531,7 +558,7 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
                   {strings.wallet.total}
                 </Text>
                 <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
-                  {`$${totalRefundableAmount}`}
+                  {`$${totalRefundableAmount?.toFixed(2)}`}
                 </Text>
               </View>
 
@@ -557,7 +584,6 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
         <PaymentSelection
           order={orders}
           orderData={orderData}
-          navigation={navigation}
           applyEachItem={applyEachItem}
           applicableForAllItems={applicableIsCheck}
           backHandler={() => setChangeView('TotalItems')}
@@ -565,6 +591,21 @@ const ProductRefund = ({ backHandler, orderList, orderData, navigation }) => {
           payableAmount={totalRefundableAmount}
         />
       )}
+
+      <ReactNativeModal
+        isVisible={inventoryModal}
+        style={{
+          width: Dimensions.get('window').width / 2.5,
+          borderRadius: 10,
+          alignSelf: 'center',
+          backgroundColor: COLORS.white,
+        }}
+      >
+        <InventoryProducts
+          onPressCrossHandler={() => setInventoryModal(false)}
+          clickedItem={selectedItem}
+        />
+      </ReactNativeModal>
     </View>
   );
 };
@@ -576,7 +617,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   leftMainViewStyle: {
-    width: width / 1.8,
+    flex: 0.75,
     backgroundColor: COLORS.white,
     borderRadius: 10,
     height: height,
@@ -676,7 +717,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(15),
   },
   productCartBodyRight: {
-    width: Platform.OS === 'android' ? ms(330) : ms(255),
+    // width: Platform.OS === 'android' ? ms(330) : ms(255),
     height: ms(20),
     flexDirection: 'row',
   },
@@ -713,7 +754,7 @@ const styles = StyleSheet.create({
   totalItemsText: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.primary,
-    fontSize: SF(18),
+    fontSize: SF(16),
   },
   arrowIconStyle: {
     width: SH(24),
@@ -725,12 +766,12 @@ const styles = StyleSheet.create({
   subTotalText: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.dark_grey,
-    fontSize: SF(16),
+    fontSize: SF(14),
   },
   subTotalPrice: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.black,
-    fontSize: SF(16),
+    fontSize: SF(14),
   },
   nextButtonStyle: {
     flexDirection: 'row',
@@ -755,9 +796,9 @@ const styles = StyleSheet.create({
   },
   billAmountViewStyle: {
     justifyContent: 'flex-end',
-    paddingBottom: 100,
-    flex: 1,
-    paddingHorizontal: 50,
+    paddingBottom: 10,
+    flex: 0.2,
+    paddingHorizontal: 30,
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -769,7 +810,6 @@ const styles = StyleSheet.create({
     height: SH(30),
     borderRadius: 3,
     borderColor: COLORS.solidGrey,
-    // paddingVertical: verticalScale(1),
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(4),
@@ -778,6 +818,11 @@ const styles = StyleSheet.create({
   minus: {
     width: SW(5),
     height: SW(5),
+    resizeMode: 'contain',
+  },
+  editIconStyle: {
+    width: ms(14),
+    height: ms(14),
     resizeMode: 'contain',
   },
 });

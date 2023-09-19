@@ -553,7 +553,7 @@ export function DashBoard({ navigation }) {
           <TouchableOpacity
             onPress={() => {
               dispatch(getOrdersByInvoiceIdSuccess({}));
-              navigate(NAVIGATION.refund, { screen: 'intial' });
+              navigate(NAVIGATION.refund);
             }}
             style={styles.checkoutButton}
           >

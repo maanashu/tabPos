@@ -1,3 +1,4 @@
+import { navigate } from '@/navigation/NavigationRef';
 import { store } from '@/store';
 import {
   ORDER_URL,
@@ -263,8 +264,15 @@ export class DashboardController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
-          alert(error?.msg);
+          if (
+            error?.msg === 'Invalid product or the product already returned!' ||
+            error?.msg === 'Order already returned!'
+          ) {
+            alert('Product already returned!');
+            navigate('SearchScreen', { screen: 'return' });
+          } else {
+            alert(error?.msg);
+          }
           reject(error.msg);
         });
     });

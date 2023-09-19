@@ -1,13 +1,5 @@
 import React, { memo } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
@@ -15,9 +7,7 @@ import ReactNativeModal from 'react-native-modal';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { cross, crossButton, Fonts } from '@/assets';
-
-const { width } = Dimensions.get('window');
+import { crossButton, Fonts } from '@/assets';
 
 const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) => {
   const filteredList = orderList?.filter((e) => e?.isChecked);
