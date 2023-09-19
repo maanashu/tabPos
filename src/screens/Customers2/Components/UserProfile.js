@@ -36,7 +36,7 @@ import moment from 'moment';
 import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getCustomers } from '@/selectors/CustomersSelector';
 import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
