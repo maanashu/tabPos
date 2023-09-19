@@ -49,6 +49,7 @@ const PaymentSelection = ({
   applyEachItem,
   amount,
   navigation,
+  payableAmount,
 }) => {
   const dispatch = useDispatch();
   const getDashboardData = useSelector(getDashboard);
@@ -126,7 +127,7 @@ const PaymentSelection = ({
               order_id: orderData?.order_id,
               products: products,
               refund_flag: 'amount',
-              refund_value: amount,
+              refund_value: payableAmount,
               return_reason: 'testing reason',
               full_phone_number: countryCode + phoneNumber,
             }
@@ -135,7 +136,7 @@ const PaymentSelection = ({
               order_id: orderData?.order_id,
               products: products,
               refund_flag: 'amount',
-              refund_value: amount,
+              refund_value: payableAmount,
               return_reason: 'testing reason',
               email: email,
             }
@@ -144,7 +145,7 @@ const PaymentSelection = ({
               order_id: orderData?.order_id,
               products: products,
               refund_flag: 'amount',
-              refund_value: amount,
+              refund_value: payableAmount,
               return_reason: 'testing reason',
             }
           : selectedRecipeIndex === 0 && applyEachItem
@@ -171,8 +172,48 @@ const PaymentSelection = ({
           }
         })
       );
-    } else {
-      alert('Please select e-recipe method');
+    } else if (orderData?.order?.mode_of_payment === 'jbr') {
+      orderData?.order?.order_details?.map((item, index) => {
+        if (applyEachItem) {
+          order?.map((item, index) => {
+            products.push({
+              id: item?.id,
+              qty: item?.qty ?? 1,
+              refund_flag: 'amount',
+              refund_value: payableAmount,
+            });
+          });
+        } else {
+          products.push({
+            id: item?.id,
+            qty: item?.qty ?? 1,
+          });
+        }
+      });
+
+      const data = applicableForAllItems
+        ? {
+            order_id: orderData?.order_id,
+            products: products,
+            refund_flag: 'amount',
+            refund_value: payableAmount,
+            return_reason: 'testing reason',
+          }
+        : {
+            order_id: orderData?.order_id,
+            products: products,
+          };
+
+      dispatch(
+        returnProduct(data, (res) => {
+          if (res) {
+            setIsReturnConfirmation(true);
+          }
+        })
+      );
+      if (orderData?.order?.mode_of_payment === 'cash') {
+        alert('Please select e-recipe method');
+      }
     }
   };
 
@@ -194,7 +235,7 @@ const PaymentSelection = ({
 
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles._dollarSymbol}>{strings.returnOrder.dollar}</Text>
-              <Text style={styles._amount}>{orderData?.order?.payable_amount}</Text>
+              <Text style={styles._amount}>{payableAmount}</Text>
             </View>
           </View>
         </View>
