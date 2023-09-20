@@ -77,6 +77,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ServiceCartListModal } from './ServiceCartListModal ';
 import { CustomProductAdd } from '@/screens/PosRetail3/Components';
+import { useRef } from 'react';
 
 export function MainScreen({
   cartScreenHandler,
@@ -139,6 +140,7 @@ export function MainScreen({
   // const serviceCartLength = SERVICE_CART_LENGTH;
   //  const serviceCartLength = CART_LENGTH;
   let arr = [getRetailData?.getAllCart];
+  const onEndReachedCalledDuringMomentum = useRef(false);
   const [cartModal, setCartModal] = useState(false);
   const [serviceCartModal, setServiceCartModal] = useState(false);
   const [search, setSearch] = useState('');
@@ -831,9 +833,18 @@ export function MainScreen({
                   scrollEnabled={true}
                   showsVerticalScrollIndicator={false}
                   ListFooterComponent={renderFooterPost}
-                  onEndReached={debouncedLoadMoreProduct}
+                  // onEndReached={debouncedLoadMoreProduct}
                   // onEndReached={onLoadMoreProduct}
-                  onEndReachedThreshold={0.5}
+                  // onEndReachedThreshold={0.5}
+                  onEndReachedThreshold={0.1}
+                  // onEndReached={onEndReached}
+                  onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                  onMomentumScrollEnd={() => {
+                    if (onEndReachedCalledDuringMomentum.current) {
+                      debouncedLoadMoreProduct(); // LOAD MORE DATA
+                      onEndReachedCalledDuringMomentum.current = false;
+                    }
+                  }}
                   // onMomentumScrollBegin={() => {
                   //   setIsScrolling(true);
                   // }}
