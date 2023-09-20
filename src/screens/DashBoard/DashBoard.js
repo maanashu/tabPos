@@ -551,10 +551,7 @@ export function DashBoard({ navigation }) {
           <View style={{ flex: 1 }} />
 
           <TouchableOpacity
-            onPress={() => {
-              dispatch(getOrdersByInvoiceIdSuccess({}));
-              navigate(NAVIGATION.refund);
-            }}
+            onPress={() => navigate('SearchScreen', { screen: 'Dashboard' })}
             style={styles.checkoutButton}
           >
             <View style={styles.displayRow}>

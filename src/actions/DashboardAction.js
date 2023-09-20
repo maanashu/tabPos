@@ -335,6 +335,7 @@ export const getOrdersByInvoiceId = (invoice) => async (dispatch) => {
   dispatch(getOrdersByInvoiceIdRequest());
   try {
     const res = await DashboardController.getOrdersByInvoiceId(invoice);
+    // console.log('res----', JSON.stringify(res?.payload));
     if (res?.payload?.order) {
       res?.payload?.order?.order_details?.map((item, index) => {
         if (item?.qty !== item?.returned_qty) {

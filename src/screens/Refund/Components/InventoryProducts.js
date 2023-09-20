@@ -9,7 +9,6 @@ const InventoryProducts = ({ onPressCrossHandler, clickedItem }) => {
 
   //   };
 
-  console.log('clickedItem==============', clickedItem);
   return (
     <View style={styles.container}>
       <View style={styles.headingViewStyle}>
