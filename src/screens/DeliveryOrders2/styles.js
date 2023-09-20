@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(7.2),
+    fontSize: SF(12),
     color: COLORS.solid_grey,
     paddingTop: ms(2),
   },
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   countTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.dark_grey,
   },
   orderRowStyle: {
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
   },
   totalText: {
     fontFamily: Fonts.MaisonBold,
-    fontSize: SF(18),
+    fontSize: SF(16),
     color: COLORS.solid_grey,
   },
   acceptButtonView: {
@@ -492,16 +492,16 @@ const styles = StyleSheet.create({
   },
   addressTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: ms(9),
+    fontSize: SF(9),
     color: COLORS.dark_grey,
     paddingTop: ms(5),
     textAlign: 'center',
   },
   firstNameText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(12),
+    fontSize: SF(12),
     color: COLORS.dark_grey,
-    paddingTop: ms(15),
+    paddingTop: ms(10),
     textAlign: 'center',
   },
   driverListHeadingText: {
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
   },
   storeNumberText: {
     fontFamily: Fonts.Regular,
-    fontSize: ms(9),
+    fontSize: SF(9),
     color: COLORS.dark_grey,
     paddingTop: ms(5),
     textAlign: 'center',
@@ -540,7 +540,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 15,
     paddingBottom: 10,
-    height: Dimensions.get('window').height - 80,
+    // height: Dimensions.get('window').height - 80,
   },
   dashedLineView: {
     borderWidth: 1,
@@ -548,24 +548,24 @@ const styles = StyleSheet.create({
     borderStyle: 'dashed',
     marginTop: ms(5),
   },
-  paymentModeText: { fontFamily: Fonts.SemiBold, fontSize: ms(9), color: COLORS.dark_grey },
+  paymentModeText: { fontFamily: Fonts.SemiBold, fontSize: SF(11), color: COLORS.dark_grey },
   paymentOptionView: {
     alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    paddingLeft: 15,
+    paddingLeft: 20,
   },
-  paymentOptionText: { fontFamily: Fonts.Regular, fontSize: ms(9), color: COLORS.dark_grey },
+  paymentOptionText: { fontFamily: Fonts.Regular, fontSize: SF(11), color: COLORS.dark_grey },
   thankYouText: {
     fontFamily: Fonts.MaisonBold,
-    fontSize: ms(16),
+    fontSize: SF(20),
     textAlign: 'center',
     color: COLORS.dark_grey,
   },
   deliveryDateText: {
-    paddingLeft: 15,
+    paddingLeft: 20,
     fontFamily: Fonts.Regular,
-    fontSize: ms(9),
+    fontSize: SF(11),
     paddingTop: ms(5),
     color: COLORS.dark_grey,
   },
@@ -578,7 +578,7 @@ const styles = StyleSheet.create({
   },
   jobrTextStyle: {
     fontFamily: Fonts.Bold,
-    fontSize: ms(16),
+    fontSize: SF(22),
     textAlign: 'center',
     color: COLORS.primary,
   },
@@ -600,6 +600,11 @@ const styles = StyleSheet.create({
     height: ms(13),
     resizeMode: 'contain',
     // tintColor: COLORS.text,
+  },
+  productTextStyle: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(6),
+    color: COLORS.dark_grey,
   },
 });
 

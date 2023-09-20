@@ -60,6 +60,9 @@ import ReturnConfirmation from './Components/ReturnConfirmation';
 import RecheckConfirmation from './Components/RecheckConfirmation';
 
 import styles from './styles';
+import { store } from '@/store';
+import moment from 'moment';
+import ReturnedOrderDetail from './Components/ReturnedOrderDetail';
 
 export function DeliveryOrders2({ route }) {
   const mapRef = useRef(null);
@@ -81,6 +84,7 @@ export function DeliveryOrders2({ route }) {
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const ordersList = getDeliveryData?.getReviewDef;
   const singleOrderDetail = oneOrderDetail?.getOrderData;
+
   const widthAndHeight = 180;
   const series = [
     pieChartData?.[0]?.count ?? 0,
@@ -364,7 +368,7 @@ export function DeliveryOrders2({ route }) {
   const renderOrderToReview = ({ item }) => {
     const isSelected = viewAllOrder && item?.id === userDetail?.id;
     const orderDetails = item?.order_details || [];
-    const deliveryDate = item?.invoice?.delivery_date || '';
+    const deliveryDate = moment(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     const startTime = item?.preffered_delivery_start_time || '00.00';
     const endTime = item?.preffered_delivery_end_time || '00.00';
     const formattedTime = `${startTime} - ${endTime}`;
@@ -548,39 +552,28 @@ export function DeliveryOrders2({ route }) {
       <View
         style={[
           styles.orderproductView,
-          { width: Dimensions.get('window').width / 3.3, paddingVertical: ms(10) },
+          {
+            // width: Dimensions.get('window').width / 3.3,
+            paddingVertical: ms(10),
+            flex: 1,
+            justifyContent: 'flex-start',
+          },
         ]}
       >
-        <Text
-          style={{
-            fontFamily: Fonts.Regular,
-            fontSize: ms(6),
-            color: COLORS.dark_grey,
-          }}
-        >
-          {item?.qty ?? '0'}
-        </Text>
-        <View>
-          <Text
-            style={{
-              fontFamily: Fonts.Regular,
-              fontSize: ms(6),
-              color: COLORS.dark_grey,
-            }}
-          >
+        <View style={{ flex: 0.1 }}>
+          <Text style={styles.productTextStyle}>{item?.qty ?? '0'}</Text>
+        </View>
+        <View style={{ flex: 0.8 }}>
+          <Text style={styles.productTextStyle} numberOfLines={2}>
             {item?.product_name ?? ''}
           </Text>
         </View>
 
-        <Text
-          style={{
-            fontFamily: Fonts.Regular,
-            fontSize: ms(6),
-            color: COLORS.dark_grey,
-          }}
-        >
-          {item?.price ?? '00'}
-        </Text>
+        <View style={{ flex: 0.2 }}>
+          <Text style={[styles.productTextStyle, { textAlign: 'right' }]}>
+            {item?.price ?? '00'}
+          </Text>
+        </View>
       </View>
     );
   };
@@ -747,26 +740,30 @@ export function DeliveryOrders2({ route }) {
                         />
                       </View>
 
-                      <OrderDetail
-                        {...{
-                          userDetail,
-                          orderDetail,
-                          renderOrderProducts,
-                          acceptHandler,
-                          declineHandler,
-                          openShippingOrders,
-                          trackHandler,
-                          isProductDetailLoading,
-                          latitude,
-                          longitude,
-                          location,
-                          sourceCoordinate,
-                          destinationCoordinate,
-                          changeMapState,
-                          mapRef,
-                          onPressShop,
-                        }}
-                      />
+                      {changeViewToRecheck ? (
+                        <ReturnedOrderDetail orderDetail={singleOrderDetail} />
+                      ) : (
+                        <OrderDetail
+                          {...{
+                            userDetail,
+                            orderDetail,
+                            renderOrderProducts,
+                            acceptHandler,
+                            declineHandler,
+                            openShippingOrders,
+                            trackHandler,
+                            isProductDetailLoading,
+                            latitude,
+                            longitude,
+                            location,
+                            sourceCoordinate,
+                            destinationCoordinate,
+                            changeMapState,
+                            mapRef,
+                            onPressShop,
+                          }}
+                        />
+                      )}
                     </>
                   ) : (
                     <View style={styles.emptyView}>
@@ -885,7 +882,7 @@ export function DeliveryOrders2({ route }) {
         isVisible={isReturnModalVisible}
         setIsVisible={setIsReturnModalVisible}
         onPressRecheck={recheckHandler}
-        orderDetail={orderDetail}
+        orderDetail={singleOrderDetail}
       />
 
       <RecheckConfirmation

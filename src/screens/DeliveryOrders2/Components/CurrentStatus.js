@@ -46,7 +46,7 @@ const CurrentStatus = ({ deliverytypes }) => {
     <View style={styles.currentStatusView}>
       <Text style={styles.currentStatusText}>{strings.shippingOrder.currentStatus}</Text>
 
-      <FlatList data={deliverytypes} renderItem={renderItem} />
+      <FlatList data={deliverytypes} renderItem={renderItem} showsVerticalScrollIndicator={false} />
     </View>
   );
 };
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     width: SW(100),
     borderRadius: 10,
     height: equalPartSize,
-    paddingVertical: SH(15),
+    paddingVertical: SH(10),
     backgroundColor: COLORS.white,
   },
   currentStatusText: {
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   itemMainViewStyle: {
     borderWidth: 1,
     marginHorizontal: SW(6),
-    marginVertical: SH(4),
+    marginVertical: SH(3),
     borderRadius: 5,
     alignItems: 'center',
     flexDirection: 'row',
