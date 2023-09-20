@@ -49,14 +49,13 @@ export function SearchScreen(props) {
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
   useEffect(() => {
-    console.log('param====', param);
-    if (param === 'return') {
+    if (param === 'return' || param === 'Dashboard') {
       setOrderDetail([]);
       setSku();
       setShowProductRefund(false);
       dispatch(getOrdersByInvoiceIdSuccess({}));
     }
-  }, []);
+  }, [param]);
 
   useEffect(() => {
     setShowProductRefund(false);
