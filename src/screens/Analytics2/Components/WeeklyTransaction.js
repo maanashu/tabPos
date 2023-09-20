@@ -111,22 +111,25 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, 
         return 'Prepare';
         break;
       case 3:
-        return 'Ready Pickup';
+        return 'Ready For Pickup';
         break;
       case 4:
-        return 'Assign';
-        break;
-      case 5:
         return 'Pickup';
         break;
-      case 6:
+      case 5:
         return 'Delivered';
+        break;
+      case 6:
+        return 'Pickup By Customer';
         break;
       case 7:
         return 'Cancelled';
         break;
       case 8:
         return 'Rejected';
+        break;
+      case 9:
+        return 'Returned';
         break;
     }
   };
@@ -385,9 +388,10 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, 
                               borderRadius: ms(3),
                               backgroundColor: COLORS.bluish_green,
                               alignItems: 'center',
-                              height: SH(24),
+
                               justifyContent: 'center',
                               marginLeft: ms(-35),
+                              paddingVertical: ms(2),
                             }}
                             onPress={() => orderClickHandler(item?.id)}
                           >

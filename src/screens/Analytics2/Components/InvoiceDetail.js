@@ -312,7 +312,10 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._substotalTile}>Sub-Total</Text>
                   <Text style={styles._subTotalPrice}>
-                    ${singleOrderDetail?.total_sale_price ?? '0'}
+                    $
+                    {singleOrderDetail?.total_sale_price
+                      ? parseFloat(singleOrderDetail?.total_sale_price).toFixed(2)
+                      : '0'}
                   </Text>
                 </View>
 
