@@ -227,7 +227,7 @@ const ReturnedOrderDetail = ({ orderDetail, doneHandler }) => {
               <Text style={styles.declineTextStyle}>{'Later'}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.acceptButtonView} onPress={() => doneHandler()}>
+            <TouchableOpacity style={styles.acceptButtonView}>
               <Text style={styles.acceptTextStyle}>{'Done'}</Text>
             </TouchableOpacity>
           </View>

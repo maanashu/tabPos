@@ -33,7 +33,7 @@ const InvoiceDetails = ({
   const userDetailData = singleOrderDetail?.user_details;
   return (
     <View style={{ flex: 1 }}>
-      <View style={[styles.firstRowStyle]}>
+      <View style={styles.firstRowStyle}>
         <View style={styles.storeDetailView}>
           <Text style={styles.firstNameText}>
             {singleOrderDetail?.seller_details?.organization_name ?? ''}
@@ -50,12 +50,15 @@ const InvoiceDetails = ({
 
           <Spacer space={SH(10)} />
 
-          <FlatList
-            data={singleOrderDetail?.order_details}
-            renderItem={renderOrderDetailProducts}
-            extraData={singleOrderDetail?.order_details}
-            keyExtractor={(item, index) => index.toString()}
-          />
+          <View style={{ height: 170 }}>
+            <FlatList
+              data={singleOrderDetail?.order_details}
+              renderItem={renderOrderDetailProducts}
+              extraData={singleOrderDetail?.order_details}
+              keyExtractor={(item, index) => index.toString()}
+              style={{ flex: 1 }}
+            />
+          </View>
 
           <View style={[styles.shippingOrdersViewStyle, { bottom: 0 }]}>
             <View

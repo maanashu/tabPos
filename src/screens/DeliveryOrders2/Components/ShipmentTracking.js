@@ -149,7 +149,7 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
   return (
     <>
       {status === 9 ? (
-        <View style={styles.mainContainer}>
+        <View style={[styles.mainContainer, { bottom: ms(30) }]}>
           <>
             <View style={styles.headerMainView}>
               <View>
