@@ -399,9 +399,9 @@ const createOrderRequest = () => ({
   payload: null,
 });
 
-const createOrderSuccess = () => ({
+const createOrderSuccess = (createOrder) => ({
   type: TYPES.CREATE_ORDER_SUCCESS,
-  payload: {},
+  payload: { createOrder },
 });
 
 const createOrderError = (error) => ({
@@ -414,9 +414,9 @@ const createServiceOrderRequest = () => ({
   payload: null,
 });
 
-const createServiceOrderSuccess = () => ({
+const createServiceOrderSuccess = (createServiceOrder) => ({
   type: TYPES.CREATE_SERVICE_ORDER_SUCCESS,
-  payload: {},
+  payload: { createServiceOrder },
 });
 
 const createServiceOrderError = (error) => ({
@@ -1303,10 +1303,9 @@ export const createOrder = (data, callback) => async (dispatch) => {
   dispatch(createOrderRequest());
   try {
     const res = await RetailController.createOrder(data);
-    dispatch(createOrderSuccess(res));
+    dispatch(createOrderSuccess(res?.payload));
     dispatch(clearAllCart());
     dispatch(getAllCart());
-
     callback && callback(res);
   } catch (error) {
     dispatch(createOrderError(error.message));
@@ -1317,7 +1316,7 @@ export const createServiceOrder = (data, callback) => async (dispatch) => {
   dispatch(createServiceOrderRequest());
   try {
     const res = await RetailController.createServiceOrder(data);
-    dispatch(createServiceOrderSuccess(res));
+    dispatch(createServiceOrderSuccess(res?.payload));
     dispatch(clearServiceAllCart());
     dispatch(getServiceCart());
     callback && callback(res);

@@ -757,7 +757,6 @@ export class RetailController {
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response========', response?.payload?.invoices?.invoice_number);
           if (response?.msg === 'Order placed successfully!') {
             Toast.show({
               position: 'bottom',

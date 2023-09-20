@@ -308,7 +308,6 @@ export const PayByCash = ({
               <Text style={styles._paySubTitle}>{'Cash'}</Text>
             </View>
             <Text style={styles._commonPayTitle}>
-              {' '}
               {moment().format('ddd DD MMM, YYYY')} {moment().format('hh:mm A')}
             </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>

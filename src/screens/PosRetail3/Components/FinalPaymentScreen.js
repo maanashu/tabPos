@@ -36,6 +36,9 @@ export const FinalPaymentScreen = ({
   const getAuthdata = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
+  const reatilData = useSelector(getRetail);
+  const orderInvoice =
+    cartType == 'Product' ? reatilData?.createOrder : reatilData?.createServiceOrder;
 
   const cartProducts =
     cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
@@ -180,17 +183,16 @@ export const FinalPaymentScreen = ({
               {moment(cartData?.created_at).format('llll')}
             </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
-            <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
+            <Text style={styles._commonPayTitle}>
+              Invoice No. #{orderInvoice?.invoices?.invoice_number}
+            </Text>
             <Text style={styles._commonPayTitle}>
               POS No. {getUserData?.posLoginData?.pos_number}
             </Text>
             <Text style={styles._commonPayTitle}>User ID : ****128</Text>
 
             <Text style={styles._thankyou}>Thank You</Text>
-            <Image
-              source={cartData?.barcode ? { uri: cartData?.barcode } : barcode}
-              style={styles._barCodeImage}
-            />
+            <Image source={{ uri: orderInvoice?.invoices?.barcode }} style={styles._barCodeImage} />
             <Image source={logo_full} style={styles.logoFull} />
           </View>
         </View>

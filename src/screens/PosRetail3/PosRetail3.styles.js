@@ -2319,7 +2319,7 @@ export const styles = StyleSheet.create({
   },
   serviceCartBody: {
     // borderWidth: 1,
-    width: Platform.OS === 'android' ? ms(71) : ms(54),
+    width: Platform.OS === 'android' ? ms(68) : ms(54),
     height: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
