@@ -474,7 +474,7 @@ export const en = {
     incomingOrders: 'Incoming Orders',
     processingOrders: 'Order Processing',
     readyPickupOrders: 'Ready For Pickup',
-    totalItem: 'Total Item',
+    totalItem: 'Total Items',
     orderDate: 'Order Date',
     orderId: 'Order ID',
     completed: 'Completed',

@@ -146,8 +146,6 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
     </>
   );
 
-  // console.log('status', status);
-
   return (
     <>
       {status === 9 ? (
