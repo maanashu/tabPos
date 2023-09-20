@@ -8,8 +8,6 @@ const InventoryProducts = ({ onPressCrossHandler, clickedItem }) => {
   //   const addInventoryQty = () => {
 
   //   };
-
-  console.log('clickedItem==============', clickedItem);
   return (
     <View style={styles.container}>
       <View style={styles.headingViewStyle}>

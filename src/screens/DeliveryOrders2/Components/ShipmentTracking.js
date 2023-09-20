@@ -105,7 +105,7 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
 
       <View style={styles.statusViewText}>
         {heading === 'Return to Shop' ? (
-          <TouchableOpacity onPress={() => onPressShop(true)}>
+          <TouchableOpacity onPress={onPressShop}>
             <Text style={styles.statusNameText}>{heading}</Text>
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -146,23 +146,17 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
     </>
   );
 
+  // console.log('status', status);
+
   return (
     <>
-      {orderStatus === '9' ? (
-        <View
-          style={[
-            styles.mainContainer,
-            {
-              bottom: Platform.OS === 'android' ? ms(50) : ms(50),
-              right: Platform.OS === 'android' ? ms(10) : ms(3),
-            },
-          ]}
-        >
+      {status === 9 ? (
+        <View style={styles.mainContainer}>
           <>
             <View style={styles.headerMainView}>
               <View>
                 <Text style={styles.orderStatusHeading}>{strings.deliveryOrders.orderStatus}</Text>
-                <Text style={styles.currentStatusText}>{strings.deliveryOrders.delivered}</Text>
+                <Text style={styles.currentStatusText}>{strings.deliveryOrders.returned}</Text>
               </View>
               <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
                 <Image source={isHideView ? down : up} style={styles.downArrowStyle} />
