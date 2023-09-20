@@ -169,6 +169,19 @@ const orderStatusCountError = (error) => ({
   payload: { error },
 });
 
+const getGraphOrdersRequest = () => ({
+  type: TYPES.GET_GRAPH_ORDERS_REQUEST,
+  payload: null,
+});
+const getGraphOrdersSuccess = (getGraphOrders) => ({
+  type: TYPES.GET_GRAPH_ORDERS_SUCCESS,
+  payload: { getGraphOrders },
+});
+const getGraphOrdersError = (error) => ({
+  type: TYPES.GET_GRAPH_ORDERS_ERROR,
+  payload: { error },
+});
+
 export const getOrderCount = (status) => async (dispatch) => {
   dispatch(getOrderCountRequest());
   try {
@@ -286,5 +299,15 @@ export const orderStatusCount = (sellerID) => async (dispatch) => {
     dispatch(orderStatusCountSuccess(res?.payload));
   } catch (error) {
     dispatch(orderStatusCountError(error.message));
+  }
+};
+
+export const getGraphOrders = () => async (dispatch) => {
+  dispatch(getGraphOrdersRequest());
+  try {
+    const res = await ShippingController.getGraphOrders();
+    return dispatch(getGraphOrdersSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getGraphOrdersError(error.message));
   }
 };

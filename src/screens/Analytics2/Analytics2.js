@@ -45,7 +45,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ms } from 'react-native-size-matters';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CalendarPickerModal from '@/components/CalendarPicker';
+import CalendarPickerModal from '@/components/CalendarPickerModal';
 import moment from 'moment';
 import { WeeklyTransaction } from './Components/WeeklyTransaction';
 import { useRef } from 'react';
@@ -165,11 +165,11 @@ export function Analytics2() {
     setSelectedEndDate('');
   };
   const onDateChange = (date, type) => {
-    const Date = moment(date).format('YYYY-MM-DD');
+    const formattedDate = moment(date).format('YYYY-MM-DD');
     if (type === 'END_DATE') {
-      setSelectedEndDate(Date);
+      setSelectedEndDate(formattedDate);
     } else {
-      setSelectedStartDate(Date);
+      setSelectedStartDate(formattedDate);
       setSelectedEndDate(null);
     }
   };

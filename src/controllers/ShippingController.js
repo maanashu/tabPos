@@ -1,4 +1,5 @@
 import { strings } from '@/localization';
+import { store } from '@/store';
 import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
@@ -142,10 +143,11 @@ export class ShippingController {
     });
   }
 
-  static async shippingGraph(sellerID) {
+  static async shippingGraph() {
+    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.shippingGraph + `?seller_id=${sellerID}&filter=week`;
+        ORDER_URL + ApiOrderInventory.shippingGraph + `?seller_id=${sellerId}&filter=week`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -217,6 +219,29 @@ export class ShippingController {
             visibilityTime: 1500,
           });
           reject(new Error((strings.valiadtion.error = error.msg)));
+        });
+    });
+  }
+
+  static async getGraphOrders() {
+    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.graphOrders +
+        `?seller_id=${sellerId}&filter=week&delivery_option=4`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
         });
     });
   }

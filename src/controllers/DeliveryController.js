@@ -176,12 +176,12 @@ export class DeliveryController {
     });
   }
 
-  static async getGraphOrders(delivery) {
+  static async getGraphOrders() {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.graphOrders +
-        `?seller_id=${sellerId}&filter=week&delivery_option=${delivery}`;
+        `?seller_id=${sellerId}&filter=week&delivery_option=1`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

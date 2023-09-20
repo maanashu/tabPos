@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 
@@ -42,6 +42,7 @@ const ShipmentTracking = ({ props }) => {
       <View style={styles.bottomLine} />
     </>
   );
+
   const statusView = (heading, stepCompleted) => (
     <>
       <View style={styles.statusMainView}>
@@ -58,20 +59,20 @@ const ShipmentTracking = ({ props }) => {
       </View>
     </>
   );
-  const latestStatus = () => {
-    return (
-      <>
-        <View style={styles.statusMainView}>
-          <View style={{ alignItems: 'center' }}>
-            <Image source={radioArrBlue} style={styles.statusIconStyle} resizeMode="stretch" />
-          </View>
-          <View style={styles.statusViewText}>
-            <Text style={styles.statusNameText}>{currentStatus(props?.status)}</Text>
-          </View>
+
+  const latestStatus = () => (
+    <>
+      <View style={styles.statusMainView}>
+        <View style={{ alignItems: 'center' }}>
+          <Image source={radioArrBlue} style={styles.statusIconStyle} resizeMode="stretch" />
         </View>
-      </>
-    );
-  };
+        <View style={styles.statusViewText}>
+          <Text style={styles.statusNameText}>{currentStatus(props?.status)}</Text>
+        </View>
+      </View>
+    </>
+  );
+
   return (
     <>
       <View style={styles.mainContainer}>
@@ -91,6 +92,7 @@ const ShipmentTracking = ({ props }) => {
     </>
   );
 };
+
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -101,12 +103,6 @@ const styles = StyleSheet.create({
     right: ms(10),
     bottom: ms(50),
     width: ms(180),
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-    alignSelf: 'center',
-    borderRadius: 6,
   },
   statusNameText: {
     color: COLORS.black,

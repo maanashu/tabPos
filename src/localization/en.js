@@ -57,6 +57,9 @@ export const en = {
     paymentOption: 'Payment Option: ',
     rejected: 'Rejected/Cancelled',
     driverAssigned: 'Driver Assigned',
+    tips: 'Tips',
+    totalTax: 'Total Taxes',
+    totalRefundItems: 'Total Refund Items:',
   },
   verifyPhone: {
     heading: 'Verify your phone number',

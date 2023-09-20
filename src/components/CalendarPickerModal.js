@@ -1,25 +1,25 @@
 import { Fonts, cross } from '@/assets';
 import { Button } from '@/components';
 import { COLORS, SH, SW } from '@/theme';
+import moment from 'moment';
 import React, { useState } from 'react';
-import { useMemo } from 'react';
-import { memo } from 'react';
+import { useMemo, memo } from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ms } from 'react-native-size-matters';
 
 const CalendarPickerModal = ({
   onPress,
-  onDateChange,
-  handleOnPressNext,
-  onSelectedDate,
+  onDateChange = () => {},
+  handleOnPressNext = () => {},
+  onSelectedDate = () => {},
   allowRangeSelection,
   maxDate,
   selectedStartDate,
-  onCancelPress,
+  onCancelPress = () => {},
 }) => {
   const minDate = useMemo(() => new Date(2020, 1, 1), []);
-
+  const [selectedDate, setSelectDate] = useState(moment());
   return (
     <View style={styles.container}>
       <View style={styles.flexAlign}>
@@ -38,7 +38,10 @@ const CalendarPickerModal = ({
         todayTextStyle={'black'}
         selectedDayColor={COLORS.primary}
         selectedDayTextColor="#FFFFFF"
-        onDateChange={onDateChange}
+        onDateChange={(date, type) => {
+          onDateChange(date, type);
+          setSelectDate(date);
+        }}
         onPressNext={handleOnPressNext}
         headerWrapperStyle={styles.headerWrapper}
         textStyle={{ fontSize: ms(12) }}
@@ -57,7 +60,9 @@ const CalendarPickerModal = ({
           style={styles.applyButton}
           title={'Apply'}
           textStyle={styles.applyText}
-          onPress={onSelectedDate}
+          onPress={() => {
+            onSelectedDate(selectedDate);
+          }}
         />
       </View>
     </View>
