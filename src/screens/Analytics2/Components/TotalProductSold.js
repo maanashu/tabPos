@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
@@ -75,13 +75,18 @@ export function TotalProductSold() {
       </DataTable.Cell>
     </DataTable.Row>
   );
-  const HeaderView = ({ image, text, count, style }) => (
-    <View style={[styles.subContainer, style]}>
-      <Image source={image} resizeMode="contain" style={styles.imageStyle} />
-      <Text style={styles.text}>{text}</Text>
-      <Text style={styles.text2}>{count}</Text>
-    </View>
+
+  const HeaderView = useCallback(
+    ({ image, text, count, style }) => (
+      <View style={[styles.subContainer, style]}>
+        <Image source={image} resizeMode="contain" style={styles.imageStyle} />
+        <Text style={styles.text}>{text}</Text>
+        <Text style={styles.text2}>{count}</Text>
+      </View>
+    ),
+    []
   );
+
   return (
     <View style={styles.flex1}>
       <Text style={styles.graphTitle}> {'Total Proucts Sold'}</Text>

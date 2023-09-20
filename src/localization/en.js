@@ -60,6 +60,7 @@ export const en = {
     tips: 'Tips',
     totalTax: 'Total Taxes',
     totalRefundItems: 'Total Refund Items:',
+    returned: 'Returned',
   },
   verifyPhone: {
     heading: 'Verify your phone number',

@@ -174,18 +174,16 @@ export function Analytics2() {
     }
   };
   const onSelect = () => {
-    // const body = channelValue
-    //   ? { start_date: startDate, end_date: endDated, channel: channelValue }
-    //   : { start_date: startDate, end_date: endDated };
-    // dispatch(getAnalyticStatistics(sellerID, body));
-    // dispatch(getAnalyticOrderGraphs(sellerID, body));
-    // dispatch(getTotalOrder(sellerID, body));
-    // dispatch(getTotalInventory(sellerID, body));
-    // dispatch(getSoldProduct(sellerID, body));
-    setShowCalendarModal(false);
-    setFilter('');
-    setOrderSelectId('');
-    setSelectDate(!selectDate);
+    if (!selectedStartDate && !selectedEndDate) {
+      alert('Please Select Date');
+    } else if (selectedStartDate && selectedEndDate) {
+      setShowCalendarModal(false);
+      setFilter('');
+      setOrderSelectId('');
+      setSelectDate(!selectDate);
+    } else {
+      alert('Please Select End Date');
+    }
   };
 
   const goBack = () => {
@@ -229,7 +227,6 @@ export function Analytics2() {
   const closeHandler = () => {
     setFromInvoice(true);
     setInvoiceDetail(false);
-    // setWeeklyTrasaction(true);
   };
   const transactionList = () => {
     if (invoiceDetail) {
@@ -248,7 +245,6 @@ export function Analytics2() {
           backHandler={() => {
             setFromInvoice(false);
             setWeeklyTrasaction(false);
-            // setWalletHome(true);
           }}
           orderClickHandler={(orderId) => {
             onViewInvoiceDetail(orderId);
@@ -523,6 +519,7 @@ export function Analytics2() {
                 onSelectedDate={onSelect}
                 allowRangeSelection={true}
                 maxDate={maxDate}
+                onCancelPress={() => setShowCalendarModal(false)}
               />
             </View>
           </Modal>
