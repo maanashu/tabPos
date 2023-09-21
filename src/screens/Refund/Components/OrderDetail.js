@@ -157,6 +157,14 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                 </Text>
                 <Text style={styles.itemCountText}>{`#${orderData?.order?.id}` ?? '-'}</Text>
               </View>
+              <Spacer space={SH(15)} />
+
+              <View>
+                <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'Payment Method'}</Text>
+                <Text style={styles.itemCountText}>
+                  {`${orderData?.order?.mode_of_payment}` ?? '-'}
+                </Text>
+              </View>
             </View>
 
             <Price orderData={orderData} onPresshandler={onPress} />
