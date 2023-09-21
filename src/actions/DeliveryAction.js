@@ -320,7 +320,7 @@ export const getProductByUpc = (upc, callback) => async (dispatch) => {
   dispatch(getProductByUpcRequest());
   try {
     const res = await DeliveryController.getProductByUpc(upc);
-    callback && callback(res?.payload);
+    callback && callback(res?.payload?.product_detail?.id);
     return dispatch(getProductByUpcSuccess(res?.payload));
   } catch (error) {
     dispatch(getProductByUpcError(error.message));

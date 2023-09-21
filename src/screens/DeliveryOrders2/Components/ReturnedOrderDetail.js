@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useRef, useState, useEffect } from 'react';
 import {
   View,
   Image,
@@ -9,6 +9,7 @@ import {
   Platform,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 
 import moment from 'moment';
@@ -17,19 +18,39 @@ import { ms } from 'react-native-size-matters';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { Fonts, iImage, scooter, userImage } from '@/assets';
-import { productList } from '@/constants/flatListData';
-import { useRef } from 'react';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { blankCheckBox, Fonts, PaymentDone, userImage } from '@/assets';
+import { useDispatch, useSelector } from 'react-redux';
 import { getProductByUpc } from '@/actions/DeliveryAction';
+import RecheckConfirmation from './RecheckConfirmation';
+import ReactNativeModal from 'react-native-modal';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import CustomerDetails from './CustomerDetails';
 
 const { width, height } = Dimensions.get('window');
 
-const ReturnedOrderDetail = ({ orderDetail, doneHandler }) => {
+const ReturnedOrderDetail = ({ orderDetail, onPressConfirm }) => {
   const dispatch = useDispatch();
   const textInputRef = useRef();
   const [productUpc, setProductUpc] = useState('');
+  const [orderDetails, setOrderDetails] = useState([]);
+  const [inventoryProduct, setInventoryProduct] = useState([]);
+  const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
+
+  useEffect(() => {
+    setOrderDetails(orderDetail?.order_details);
+  }, []);
+
+  const doneHandler = () => {
+    const hasCheckedItem = orderDetails?.some((item) => item.isChecked === true);
+    if (hasCheckedItem) {
+      const getInventory = orderDetails?.filter((e) => e.isChecked);
+      setInventoryProduct(getInventory);
+      setIsCheckConfirmationModalVisible(true);
+    } else {
+      alert('Please select atleast one product');
+    }
+  };
 
   const renderOrderProducts = ({ item, index }) => {
     return (
@@ -44,83 +65,75 @@ const ReturnedOrderDetail = ({ orderDetail, doneHandler }) => {
             <Text style={styles.varientTextStyle}>{`${item?.product_details?.sku ?? '-'}`}</Text>
           </View>
         </View>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price ?? '0'}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty ?? '0'}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
-          {orderDetail?.actual_amount}
-        </Text>
 
-        <View style={styles.infoIconView}>
-          <Image source={iImage} style={styles.infoIconStyle} />
+        <View
+          style={[
+            styles.shippingOrderHeader,
+            { paddingTop: 0, width: ms(100), justifyContent: 'space-between' },
+          ]}
+        >
+          <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+            {item?.price ?? '0'}
+          </Text>
+          <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+            {`X ${item?.qty}` ?? '0'}
+          </Text>
+          <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+            {orderDetail?.actual_amount}
+          </Text>
         </View>
+
+        {item?.isChecked ? (
+          <TouchableOpacity onPress={() => getProduct(item?.product_id)}>
+            <Image
+              source={PaymentDone}
+              style={[styles.infoIconStyle, { tintColor: COLORS.primary }]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => getProduct(item?.product_id)}>
+            <Image source={blankCheckBox} style={styles.infoIconStyle} />
+          </TouchableOpacity>
+        )}
       </View>
     );
   };
 
   const onChangeHandler = (text) => {
     setProductUpc(text);
-    dispatch(getProductByUpc(text));
+    if (text?.length >= 12) {
+      dispatch(getProductByUpc(text, getProduct));
+    }
   };
+
+  const getProduct = (value) => {
+    const getArray = orderDetails?.findIndex((attr) => attr?.product_id === value);
+
+    if (getArray !== -1) {
+      const newProdArray = [...orderDetails];
+      newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
+      setOrderDetails(newProdArray);
+      setProductUpc('');
+    } else {
+      alert('Product not found in the order');
+    }
+  };
+
+  const isProductLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_PRODUCT_BY_UPC], state)
+  );
 
   return (
     <View style={styles.orderDetailView}>
-      <View style={styles.orderDetailViewStyle}>
-        <View style={[styles.locationViewStyle, { flex: 1 }]}>
-          <Image
-            source={
-              orderDetail?.user_details?.profile_photo
-                ? { uri: orderDetail?.user_details?.profile_photo }
-                : userImage
-            }
-            style={styles.userImageStyle}
-          />
-
-          <View style={styles.userNameView}>
-            <Text style={[styles.totalTextStyle, { padding: 0 }]}>
-              {`${orderDetail?.user_details?.firstname} ${orderDetail?.user_details?.lastname}`}
-            </Text>
-            <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
-              {`${orderDetail?.user_details?.current_address?.street_address}, ${orderDetail?.user_details?.current_address?.city}`}
-            </Text>
-            <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
-              {`${orderDetail?.user_details?.current_address?.state}, ${orderDetail?.user_details?.current_address?.country}`}
-            </Text>
-          </View>
-        </View>
-
-        <View style={[styles.locationViewStyle, { flex: 0.55 }]}>
-          <Image source={scooter} style={styles.scooterImageStyle} />
-
-          <View style={[styles.userNameView, { paddingLeft: 5 }]}>
-            <Text
-              style={{
-                fontFamily: Fonts.Bold,
-                fontSize: SF(14),
-                color: COLORS.primary,
-              }}
-            >
-              {moment(orderDetail?.invoices?.delivery_date).format('DD MMM YYYY')}
-            </Text>
-            <Text
-              style={{
-                fontFamily: Fonts.Medium,
-                fontSize: SF(11),
-                color: COLORS.dark_grey,
-              }}
-            >
-              {`${orderDetail?.preffered_delivery_start_time ?? '-'} - ${
-                orderDetail?.preffered_delivery_end_time ?? '-'
-              }`}
-            </Text>
-          </View>
-        </View>
-      </View>
+      <CustomerDetails orderDetail={orderDetail} />
 
       <Spacer space={SH(8)} />
       <View style={styles.scanBarCodeView}>
         <TextInput
           value={productUpc}
           ref={textInputRef}
+          maxLength={12}
+          keyboardType={'number-pad'}
           style={styles.scanBarCodeView}
           placeholder={strings.returnOrder.scanbarCode}
           onChangeText={(text) => onChangeHandler(text)}
@@ -130,9 +143,10 @@ const ReturnedOrderDetail = ({ orderDetail, doneHandler }) => {
       <View style={{ height: SH(400) }}>
         <FlatList
           scrollEnabled
-          data={orderDetail?.order_details ?? []}
+          data={orderDetails ?? []}
           renderItem={renderOrderProducts}
           showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
         />
       </View>
@@ -227,12 +241,31 @@ const ReturnedOrderDetail = ({ orderDetail, doneHandler }) => {
               <Text style={styles.declineTextStyle}>{'Later'}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.acceptButtonView}>
+            <TouchableOpacity onPress={doneHandler} style={styles.acceptButtonView}>
               <Text style={styles.acceptTextStyle}>{'Done'}</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
+
+      <ReactNativeModal
+        isVisible={isCheckConfirmationModalVisible}
+        style={styles.modalStyle}
+        animationIn={'slideInRight'}
+        animationOut={'slideOutRight'}
+      >
+        <RecheckConfirmation
+          onPressCross={() => setIsCheckConfirmationModalVisible(false)}
+          inventoryArray={inventoryProduct}
+          confirmHandler={onPressConfirm}
+        />
+      </ReactNativeModal>
+
+      {isProductLoading ? (
+        <View style={[styles.loaderStyle, { backgroundColor: 'rgba(0,0,0,0.1)' }]}>
+          <ActivityIndicator color={COLORS.primary} size={'small'} style={styles.loaderStyle} />
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -245,17 +278,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flex: 0.9,
   },
-  orderDetailViewStyle: {
-    alignSelf: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginHorizontal: 10,
-    paddingVertical: 30,
-    borderRadius: 10,
-    marginTop: ms(10),
-    backgroundColor: COLORS.textInputBackground,
-  },
   locationViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -266,25 +288,12 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     resizeMode: 'cover',
   },
-  scooterImageStyle: {
-    width: SH(26),
-    height: SH(26),
-    resizeMode: 'contain',
-  },
-  userNameView: {
-    paddingLeft: 10,
-    flex: 1,
-  },
+
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(7.2),
     color: COLORS.solid_grey,
     paddingTop: ms(2),
-  },
-  badgetext: {
-    color: COLORS.dark_grey,
-    fontSize: ms(5.5),
-    fontFamily: Fonts.SemiBold,
   },
   scanBarCodeView: {
     height: ms(30),
@@ -392,7 +401,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     paddingVertical: 6,
     borderColor: COLORS.blue_shade,
   },
@@ -415,15 +424,22 @@ const styles = StyleSheet.create({
   infoIconView: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 100,
-    width: SH(18),
-    height: SH(18),
+    width: SH(28),
+    height: SH(28),
     alignItems: 'center',
     justifyContent: 'center',
   },
   infoIconStyle: {
-    width: SH(10),
-    height: SH(10),
+    width: SH(20),
+    height: SH(20),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
+  },
+  loaderStyle: {
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    position: 'absolute',
   },
 });

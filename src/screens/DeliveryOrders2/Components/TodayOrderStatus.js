@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF } from '@/theme';
+import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { getDelivery } from '@/selectors/DeliverySelector';
@@ -36,10 +36,10 @@ const TodayOrderStatus = () => {
             <Text style={styles.todayOrderText}>{todayOrderStatusData?.[0]?.count ?? '0'}</Text>
           </View>
 
-          <View style={styles.todayOrdersViewStyle}>
+          {/* <View style={styles.todayOrdersViewStyle}>
             <Text style={styles.todayOrderText}>{strings.deliveryOrders2.pickupOrders}</Text>
             <Text style={styles.todayOrderText}>{todayOrderStatusData?.[1]?.count ?? '0'}</Text>
-          </View>
+          </View> */}
         </>
       )}
     </View>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   orderStatusText: {
     fontSize: SF(16),
-    paddingTop: ms(5),
+    paddingTop: ms(10),
     paddingLeft: ms(15),
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: SH(10),
   },
   todayOrderText: {
     fontSize: SF(14),

@@ -1,6 +1,6 @@
 import messaging from '@react-native-firebase/messaging';
 import notifee, { AuthorizationStatus } from '@notifee/react-native';
-import { getOrderCount, getReviewDefault } from '@/actions/DeliveryAction';
+import { getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
 import { store } from '@/store';
 
 const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
@@ -31,8 +31,9 @@ const getDeviceToken = async () => {
 // Handle incoming push notifications when the app is in the foreground
 const onMessageReceivedForeground = async (message) => {
   if (message?.data?.type === 'order_delivered') {
-    store.dispatch(getReviewDefault(4, 1));
+    store.dispatch(getReviewDefault(5, 1));
     store.dispatch(getOrderCount());
+    store.dispatch(todayOrders());
   }
   if (message?.data?.type === 'order_received') {
     store.dispatch(getReviewDefault(0, 1));
@@ -56,6 +57,7 @@ const onMessageReceivedBackground = async (message) => {
   if (message?.data?.type === 'order_delivered') {
     store.dispatch(getReviewDefault(5, 1));
     store.dispatch(getOrderCount());
+    store.dispatch(todayOrders());
   }
   if (message?.data?.type === 'order_received') {
     store.dispatch(getReviewDefault(0, 1));

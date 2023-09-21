@@ -60,7 +60,6 @@ import ReturnConfirmation from './Components/ReturnConfirmation';
 import RecheckConfirmation from './Components/RecheckConfirmation';
 
 import styles from './styles';
-import { store } from '@/store';
 import moment from 'moment';
 import ReturnedOrderDetail from './Components/ReturnedOrderDetail';
 
@@ -130,7 +129,7 @@ export function DeliveryOrders2({ route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
   const [changeViewToRecheck, setChangeViewToRecheck] = useState();
-  const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
+
   // const [isEnableDriverList, setIsEnableDriverList] = useState(false);
 
   // console.log('userDetail===', JSON.stringify(userDetail));
@@ -196,13 +195,13 @@ export function DeliveryOrders2({ route }) {
         count: getDeliveryData?.deliveringOrder?.[2]?.count ?? 0,
         image: twoHourType,
       },
-      {
-        key: '4',
-        delivery_type_title:
-          getDeliveryData?.deliveringOrder?.[3]?.delivery_type_title ?? 'Customer Pickups',
-        count: getDeliveryData?.deliveringOrder?.[3]?.count ?? 0,
-        image: customType,
-      },
+      // {
+      //   key: '4',
+      //   delivery_type_title:
+      //     getDeliveryData?.deliveringOrder?.[3]?.delivery_type_title ?? 'Customer Pickups',
+      //   count: getDeliveryData?.deliveringOrder?.[3]?.count ?? 0,
+      //   image: customType,
+      // },
     ];
     setDeliveryTypes(deliveryTypes);
   }, []);
@@ -350,6 +349,8 @@ export function DeliveryOrders2({ route }) {
       );
     }
   };
+
+  const onPressConfirmHandler = () => {};
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
@@ -699,6 +700,7 @@ export function DeliveryOrders2({ route }) {
 
   const onPressShop = () => {
     setIsReturnModalVisible(true);
+    setTrackingView(false);
   };
 
   return (
@@ -859,6 +861,7 @@ export function DeliveryOrders2({ route }) {
                 renderOrderDetailProducts,
                 location,
                 mapRef,
+                onPressShop,
               }}
             />
             <RightSideBar
@@ -882,12 +885,7 @@ export function DeliveryOrders2({ route }) {
         setIsVisible={setIsReturnModalVisible}
         onPressRecheck={recheckHandler}
         orderDetail={singleOrderDetail}
-      />
-
-      <RecheckConfirmation
-        isVisible={isCheckConfirmationModalVisible}
-        setIsVisible={setIsCheckConfirmationModalVisible}
-        onPress={() => setIsCheckConfirmationModalVisible(false)}
+        onPressConfirm={onPressConfirmHandler}
       />
     </ScreenWrapper>
   );

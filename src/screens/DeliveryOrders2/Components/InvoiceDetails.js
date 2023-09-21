@@ -28,6 +28,7 @@ const InvoiceDetails = ({
   renderOrderDetailProducts,
   location,
   mapRef,
+  onPressShop,
 }) => {
   const dispatch = useDispatch();
   const userDetailData = singleOrderDetail?.user_details;
@@ -249,6 +250,7 @@ const InvoiceDetails = ({
 
           <ShipmentTracking
             status={singleOrderDetail?.status}
+            onPressShop={onPressShop}
             // props={{ status: singleOrderDetail?.status }}
           />
         </View>

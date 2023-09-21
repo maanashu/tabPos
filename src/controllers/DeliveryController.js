@@ -225,11 +225,15 @@ export class DeliveryController {
         PRODUCT_URL +
         ApiProductInventory.skuSearch +
         `?app_name=merchant&seller_id=${sellerId}&search=${upc}`;
+
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
+          if (error?.statusCode === 204) {
+            alert('Product not found');
+          }
           reject(error);
         });
     });
