@@ -60,6 +60,7 @@ export const en = {
     tips: 'Tips',
     totalTax: 'Total Taxes',
     totalRefundItems: 'Total Refund Items:',
+    returned: 'Returned',
   },
   verifyPhone: {
     heading: 'Verify your phone number',
@@ -474,7 +475,7 @@ export const en = {
     incomingOrders: 'Incoming Orders',
     processingOrders: 'Order Processing',
     readyPickupOrders: 'Ready For Pickup',
-    totalItem: 'Total Item',
+    totalItem: 'Total Items',
     orderDate: 'Order Date',
     orderId: 'Order ID',
     completed: 'Completed',

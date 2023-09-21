@@ -86,6 +86,8 @@ export const CartAmountPayBy = ({
   const getUserData = useSelector(getUser);
   const updateData = useSelector(getRetail).updateQuantityy;
 
+  const getAuthdata = useSelector(getAuthData);
+
   // const [loading, setloading] = useState(false);
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
   const cartData =
@@ -114,10 +116,9 @@ export const CartAmountPayBy = ({
   const [walletCountryCode, setWalletCountryCode] = useState('+1');
   const walletUser = getRetailData?.walletGetByPhone?.[0];
   const getWalletQr = getRetailData?.getWallet?.qr_code;
-  const sellerID = getAuthData?.merchantLoginData?.uniqe_id;
+  const sellerID = getAuthdata?.merchantLoginData?.uniqe_id;
   const [requestId, setRequestId] = useState();
   const requestStatus = getRetailData?.requestCheck;
-  const getAuthdata = useSelector(getAuthData);
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const qrStatus = getRetailData.qrStatuskey;
   const [status, setstatus] = useState('');
@@ -126,6 +127,8 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
+
+  console.log('getTips', getTips);
 
   // useEffect(() => {
   //   dispatch(getAllCart());

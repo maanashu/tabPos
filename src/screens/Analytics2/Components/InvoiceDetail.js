@@ -72,7 +72,14 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}>
-      {singleOrderDetail?.delivery_option == 1 || singleOrderDetail?.delivery_option == 4 ? (
+      {isLoading ? (
+        <ActivityIndicator
+          animating
+          size={'large'}
+          color={COLORS.primary}
+          style={{ marginTop: ms(100) }}
+        />
+      ) : singleOrderDetail?.delivery_option == 1 || singleOrderDetail?.delivery_option == 4 ? (
         <View style={[styles.firstRowStyle]}>
           <View style={styles.invoiceDetailSection}>
             <View style={[{ height: '100%', alignItems: 'center' }]}>
@@ -264,132 +271,124 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
             <Image source={leftBack} style={styles.backIcon} />
             <Text style={styles.backTitle}>{'Back'}</Text>
           </TouchableOpacity>
-          {isLoading ? (
-            <ActivityIndicator
-              animating
-              size={'large'}
-              color={COLORS.primary}
-              style={{ marginTop: ms(100) }}
-            />
-          ) : (
-            <View style={styles.invoiceDetailSection}>
-              <View style={[{ height: '100%', alignItems: 'center' }]}>
-                <Text style={styles._kSubCenterContainer}>
-                  {singleOrderDetail?.seller_details?.organization_name ?? ''}
-                </Text>
-                <Text style={styles._kAddress}>
-                  {' '}
-                  {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
-                </Text>
-                <Text style={styles._kAddress}>{userDetailData?.phone_number ?? '-'}</Text>
-                <View style={styles._flatListContainer}>
-                  <FlatList
-                    data={singleOrderDetail?.order_details}
-                    style={{ width: '100%' }}
-                    renderItem={({ item, index }) => {
-                      return (
-                        <View style={styles.cartcontainer}>
-                          <View style={styles.subContainer}>
-                            <Text style={styles.count}>{index + 1}</Text>
-                            <View style={{ marginLeft: ms(10) }}>
-                              <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-                                {item?.product_details?.name}
-                              </Text>
-                              <View style={styles.belowSubContainer}>
-                                {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
+
+          <View style={styles.invoiceDetailSection}>
+            <View style={[{ height: '100%', alignItems: 'center' }]}>
+              <Text style={styles._kSubCenterContainer}>
+                {singleOrderDetail?.seller_details?.organization_name ?? ''}
+              </Text>
+              <Text style={styles._kAddress}>
+                {' '}
+                {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
+              </Text>
+              <Text style={styles._kAddress}>{userDetailData?.phone_number ?? '-'}</Text>
+              <View style={styles._flatListContainer}>
+                <FlatList
+                  data={singleOrderDetail?.order_details}
+                  style={{ width: '100%' }}
+                  renderItem={({ item, index }) => {
+                    return (
+                      <View style={styles.cartcontainer}>
+                        <View style={styles.subContainer}>
+                          <Text style={styles.count}>{index + 1}</Text>
+                          <View style={{ marginLeft: ms(10) }}>
+                            <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
+                              {item?.product_details?.name}
+                            </Text>
+                            <View style={styles.belowSubContainer}>
+                              {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
                   <Text style={styles.sizeTitle}>Size : XXL</Text> */}
-                                <Text style={styles.colorsTitle}>QTY : {item?.qty ?? '-'}</Text>
-                              </View>
+                              <Text style={styles.colorsTitle}>QTY : {item?.qty ?? '-'}</Text>
                             </View>
                           </View>
-                          <Text style={styles.priceTitle}>${item?.price ?? '0.00'}</Text>
                         </View>
-                      );
-                    }}
-                  />
-                </View>
-                <Spacer space={SH(10)} />
-                <View style={styles._subTotalContainer}>
-                  <Text style={styles._substotalTile}>Sub-Total</Text>
-                  <Text style={styles._subTotalPrice}>
-                    $
-                    {singleOrderDetail?.total_sale_price
-                      ? parseFloat(singleOrderDetail?.total_sale_price).toFixed(2)
-                      : '0'}
-                  </Text>
-                </View>
-
-                <View style={styles._horizontalLine} />
-                <View style={styles._subTotalContainer}>
-                  <Text style={styles._substotalTile}>Discount</Text>
-                  <Text style={styles._subTotalPrice}>${singleOrderDetail?.discount ?? '0'}</Text>
-                </View>
-
-                <View style={styles._horizontalLine} />
-
-                <View style={styles._subTotalContainer}>
-                  <Text style={styles._substotalTile}>Tips</Text>
-                  <Text style={styles._subTotalPrice}>${singleOrderDetail?.tips ?? '0'}</Text>
-                </View>
-
-                <View style={styles._horizontalLine} />
-
-                <View style={styles._subTotalContainer}>
-                  <Text style={styles._substotalTile}>Total Taxes</Text>
-                  <Text style={styles._subTotalPrice}>${singleOrderDetail?.tax ?? '0'}</Text>
-                </View>
-                <View style={styles._horizontalLine} />
-                <View style={styles._subTotalContainer}>
-                  <Text style={styles._substotalTile}>Delivery charges</Text>
-                  <Text style={styles._subTotalPrice}>
-                    ${singleOrderDetail?.delivery_charge ?? '0'}
-                  </Text>
-                </View>
-
-                <View style={styles._horizontalLine} />
-
-                <View style={styles._subTotalContainer}>
-                  <Text
-                    style={[styles._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
-                  >
-                    Total
-                  </Text>
-                  <Text
-                    style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
-                  >
-                    ${singleOrderDetail?.payable_amount ?? '0'}
-                  </Text>
-                </View>
-                {/* <View style={styles._horizontalLine} /> */}
-                <View style={[styles._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
-
-                <View style={styles._paymentTitleContainer}>
-                  <Text style={styles._payTitle}>Payment option: </Text>
-                  <Text style={styles._paySubTitle}>
-                    {singleOrderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
-                  </Text>
-                </View>
-                <Text style={styles._commonPayTitle}>
-                  {moment(singleOrderDetail?.invoice?.delivery_date).format('llll')}
-                </Text>
-                <Text style={styles._commonPayTitle}>Walk-In</Text>
-                <Text style={styles._commonPayTitle}>
-                  {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
-                </Text>
-                <Text style={styles._commonPayTitle}>
-                  POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
-                </Text>
-                <Text style={styles._commonPayTitle}>
-                  User ID : #{getUserData?.posLoginData?.id ?? '-'}
-                </Text>
-
-                <Text style={styles._thankyou}>Thank You</Text>
-                <Image source={barcode} style={styles._barCodeImage} />
-                {/* <Text style={styles._barCode}>ABC-abc-1234</Text> */}
-                <Image source={logo_full} style={styles.logoFull} />
+                        <Text style={styles.priceTitle}>${item?.price ?? '0.00'}</Text>
+                      </View>
+                    );
+                  }}
+                />
               </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Sub-Total</Text>
+                <Text style={styles._subTotalPrice}>
+                  $
+                  {singleOrderDetail?.total_sale_price
+                    ? parseFloat(singleOrderDetail?.total_sale_price).toFixed(2)
+                    : '0'}
+                </Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Discount</Text>
+                <Text style={styles._subTotalPrice}>${singleOrderDetail?.discount ?? '0'}</Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Tips</Text>
+                <Text style={styles._subTotalPrice}>${singleOrderDetail?.tips ?? '0'}</Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Total Taxes</Text>
+                <Text style={styles._subTotalPrice}>${singleOrderDetail?.tax ?? '0'}</Text>
+              </View>
+              <View style={styles._horizontalLine} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._substotalTile}>Delivery charges</Text>
+                <Text style={styles._subTotalPrice}>
+                  ${singleOrderDetail?.delivery_charge ?? '0'}
+                </Text>
+              </View>
+
+              <View style={styles._horizontalLine} />
+
+              <View style={styles._subTotalContainer}>
+                <Text
+                  style={[styles._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
+                >
+                  Total
+                </Text>
+                <Text
+                  style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
+                >
+                  ${singleOrderDetail?.payable_amount ?? '0'}
+                </Text>
+              </View>
+              {/* <View style={styles._horizontalLine} /> */}
+              <View style={[styles._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
+
+              <View style={styles._paymentTitleContainer}>
+                <Text style={styles._payTitle}>Payment option: </Text>
+                <Text style={styles._paySubTitle}>
+                  {singleOrderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
+                </Text>
+              </View>
+              <Text style={styles._commonPayTitle}>
+                {moment(singleOrderDetail?.invoice?.delivery_date).format('llll')}
+              </Text>
+              <Text style={styles._commonPayTitle}>Walk-In</Text>
+              <Text style={styles._commonPayTitle}>
+                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
+              </Text>
+              <Text style={styles._commonPayTitle}>
+                POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
+              </Text>
+              <Text style={styles._commonPayTitle}>
+                User ID : #{getUserData?.posLoginData?.id ?? '-'}
+              </Text>
+
+              <Text style={styles._thankyou}>Thank You</Text>
+              <Image source={barcode} style={styles._barCodeImage} />
+              {/* <Text style={styles._barCode}>ABC-abc-1234</Text> */}
+              <Image source={logo_full} style={styles.logoFull} />
             </View>
-          )}
+          </View>
 
           <View></View>
         </View>

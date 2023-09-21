@@ -175,6 +175,19 @@ const getSellerDriverListError = (error) => ({
   payload: { error },
 });
 
+const getProductByUpcRequest = () => ({
+  type: TYPES.GET_PRODUCT_BY_UPC_REQUEST,
+  payload: null,
+});
+const getProductByUpcSuccess = (getProductByUpc) => ({
+  type: TYPES.GET_PRODUCT_BY_UPC_SUCCESS,
+  payload: { getProductByUpc },
+});
+const getProductByUpcError = (error) => ({
+  type: TYPES.GET_PRODUCT_BY_UPC_ERROR,
+  payload: { error },
+});
+
 export const getOrderCount = () => async (dispatch) => {
   dispatch(getOrderCountRequest());
   try {
@@ -300,5 +313,16 @@ export const getSellerDriverList = () => async (dispatch) => {
     return dispatch(getSellerDriverListSuccess(res?.payload));
   } catch (error) {
     dispatch(getSellerDriverListError(error.message));
+  }
+};
+
+export const getProductByUpc = (upc, callback) => async (dispatch) => {
+  dispatch(getProductByUpcRequest());
+  try {
+    const res = await DeliveryController.getProductByUpc(upc);
+    callback && callback(res?.payload?.product_detail?.id);
+    return dispatch(getProductByUpcSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getProductByUpcError(error.message));
   }
 };

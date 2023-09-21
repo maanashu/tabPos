@@ -32,6 +32,7 @@ const OrderDetail = ({
   destinationCoordinate,
   changeMapState,
   mapRef,
+  onPressShop,
 }) => {
   return (
     <View style={styles.orderDetailView}>
@@ -84,7 +85,7 @@ const OrderDetail = ({
             <Image source={expand} style={styles.rightIconStyle} />
             <Text style={[styles.acceptTextStyle, { paddingHorizontal: 12 }]}>{'Expand'}</Text>
           </TouchableOpacity>
-          <ShipmentTracking props={{ status: userDetail?.status }} />
+          <ShipmentTracking status={userDetail?.status} onPressShop={onPressShop} />
 
           <TouchableOpacity
             onPress={() =>

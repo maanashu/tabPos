@@ -41,6 +41,7 @@ export function DrawerNavigator(props) {
   const getDashboardData = useSelector(getDashboard);
   const selection = getDashboardData?.selection;
   const [active, setActive] = useState('dashBoard');
+  console.log('selection', selection);
 
   useEffect(() => {
     getSelectedOption();
@@ -49,9 +50,11 @@ export function DrawerNavigator(props) {
   const getSelectedOption = async () => {
     if (selection || selection !== undefined) {
       if (selection === 1) {
-        setActive('posRetail2');
+        setActive('posRetail3');
+      } else if (selection === 2) {
+        setActive('deliveryOrders2');
       } else {
-        setActive('delivery');
+        setActive('dashBoard');
       }
     }
   };

@@ -21,7 +21,7 @@ const AddedCartItemsCard = ({ item, index }) => {
         </View>
       </View>
       <Text style={styles.priceTitle}>
-        ${item?.product_details?.supply?.supply_prices?.selling_price ?? '0.00'}
+        ${item?.product_details?.supply?.supply_prices?.selling_price.toFixed(2) ?? '0.00'}
       </Text>
     </View>
   );

@@ -301,9 +301,10 @@ export function DashBoard({ navigation }) {
 
   const tableListItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate(NAVIGATION.deliveryOrders2, { isViewAll: true, ORDER_DETAIL: item })
-      }
+      onPress={() => {
+        dispatch(addSellingSelection(2));
+        navigation.navigate(NAVIGATION.deliveryOrders2, { isViewAll: true, ORDER_DETAIL: item });
+      }}
       style={[styles.reviewRenderView]}
     >
       <View style={{ width: SW(20) }}>
@@ -551,10 +552,7 @@ export function DashBoard({ navigation }) {
           <View style={{ flex: 1 }} />
 
           <TouchableOpacity
-            onPress={() => {
-              dispatch(getOrdersByInvoiceIdSuccess({}));
-              navigate(NAVIGATION.refund);
-            }}
+            onPress={() => navigate('SearchScreen', { screen: 'Dashboard' })}
             style={styles.checkoutButton}
           >
             <View style={styles.displayRow}>

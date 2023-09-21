@@ -1,6 +1,13 @@
 import { strings } from '@/localization';
 import { store } from '@/store';
-import { ORDER_URL, ApiOrderInventory, USER_URL, ApiUserInventory } from '@/utils/APIinventory';
+import {
+  ORDER_URL,
+  ApiOrderInventory,
+  USER_URL,
+  ApiUserInventory,
+  PRODUCT_URL,
+  ApiProductInventory,
+} from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
@@ -206,6 +213,27 @@ export class DeliveryController {
           resolve(response);
         })
         .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getProductByUpc(upc) {
+    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL +
+        ApiProductInventory.skuSearch +
+        `?app_name=merchant&seller_id=${sellerId}&search=${upc}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          if (error?.statusCode === 204) {
+            alert('Product not found');
+          }
           reject(error);
         });
     });

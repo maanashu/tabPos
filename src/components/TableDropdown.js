@@ -7,11 +7,11 @@ import DropDownPicker from 'react-native-dropdown-picker';
 export function TableDropdown({ placeholder, selected, data }) {
   const [statusModalOpen, setStatusModelOpen] = useState(false);
   const [statusModalValue, setStatusModalValue] = useState(null);
-  const [statusItems, setStatusItems] = useState([
-    { label: 'none', value: 'none' },
-    { label: 'xyz', value: 'xyz' },
-    { label: 'abc', value: 'abc' },
-  ]);
+  const [statusItems, setStatusItems] = useState([{ label: 'none', value: 'none' }, ...data]);
+
+  // { label: 'none', value: 'none' },
+  //   { label: 'xyz', value: 'xyz' },
+  //   { label: 'abc', value: 'abc' },
   const finalValues = statusModalValue == 'none' ? placeholder : statusModalValue;
   return (
     <DropDownPicker
@@ -27,7 +27,7 @@ export function TableDropdown({ placeholder, selected, data }) {
       selectedItemLabelStyle={styles.selectedItemLabelStyle}
       open={statusModalOpen}
       value={finalValues}
-      items={data || statusItems}
+      items={statusItems}
       setOpen={setStatusModelOpen}
       setValue={setStatusModalValue}
       // setItems={setStatusItems}
@@ -63,9 +63,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 7,
-    ...ShadowStyles.shadow,
+    ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    top: Platform.OS === 'android' ? 30 : 32,
+    top: Platform.OS === 'android' ? 40 : 32,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   listItemLabelStyle: {

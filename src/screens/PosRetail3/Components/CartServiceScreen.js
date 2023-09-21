@@ -291,7 +291,7 @@ export function CartServiceScreen({
                 {item?.appointment_cart_products?.map((data, ind) => (
                   <View style={[styles.blueListData, { height: SH(70) }]} key={ind}>
                     <View style={styles.displayflex}>
-                      <View style={styles.cartHeaderLeftSide}>
+                      <View style={[styles.cartHeaderLeftSide, { alignItems: 'center' }]}>
                         <Text
                           style={[
                             styles.blueListDataText,
@@ -337,6 +337,8 @@ export function CartServiceScreen({
                                 alignItems: 'center',
                                 paddingLeft: ms(0),
                                 opacity: cartIndex === ind && cartEditItem ? 0.3 : 1,
+                                width: ms(60),
+                                paddingRight: 30,
                               },
                             ]}
                           >
@@ -349,7 +351,7 @@ export function CartServiceScreen({
                               style={styles.offerImage}
                             />
                             <Text style={styles.blueListDataText} numberOfLines={1}>
-                              {data?.pos_user_details?.user?.user_profiles?.firstname}
+                              {data?.pos_user_details?.user?.user_profiles?.firstname}sssssssssssss
                             </Text>
                           </View>
                         </View>
@@ -360,9 +362,10 @@ export function CartServiceScreen({
                               onChangeText={setUnitPrice}
                               style={styles.unitPriceInput}
                               keyboardType="numeric"
+                              multiline={false}
                             />
                           ) : (
-                            <Text style={styles.blueListDataText} numberOfLines={1}>
+                            <Text style={styles.blueListDataText}>
                               $
                               {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
                                 2

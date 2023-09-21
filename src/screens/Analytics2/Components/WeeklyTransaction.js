@@ -395,7 +395,9 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, 
                             }}
                             onPress={() => orderClickHandler(item?.id)}
                           >
-                            <Text style={styles.tableTextDataCom}>{statusFun(item.status)}</Text>
+                            <Text style={[styles.tableTextDataCom, { textAlign: 'center' }]}>
+                              {statusFun(item.status)}
+                            </Text>
                           </TouchableOpacity>
                         </View>
                       </View>

@@ -13,8 +13,6 @@ import {
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import MapViewDirections from 'react-native-maps-directions';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import {
   pay,
@@ -27,10 +25,6 @@ import {
   customType,
   Fonts,
   backArrow2,
-  scooter,
-  deliveryHomeIcon,
-  expand,
-  gps,
 } from '@/assets';
 import {
   acceptOrder,
@@ -46,7 +40,6 @@ import Graph from './Components/Graph';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
 import Header from './Components/Header';
-import { GOOGLE_MAP } from '@/constants/ApiKey';
 import OrderDetail from './Components/OrderDetail';
 import OrderReview from './Components/OrderReview';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
@@ -54,22 +47,20 @@ import { ScreenWrapper, Spacer } from '@/components';
 import RightSideBar from './Components/RightSideBar';
 import { getAuthData } from '@/selectors/AuthSelector';
 import CurrentStatus from './Components/CurrentStatus';
-import { returnOrders } from '@/constants/flatListData';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import InvoiceDetails from './Components/InvoiceDetails';
-import mapCustomStyle from '@/components/MapCustomStyles';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import OrderConvertion from './Components/OrderConvertion';
 import { orderStatusCount } from '@/actions/ShippingAction';
-import ShipmentTracking from './Components/ShipmentTracking';
 import TodayOrderStatus from './Components/TodayOrderStatus';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES as ANALYTICSTYPES } from '@/Types/AnalyticsTypes';
 import ReturnConfirmation from './Components/ReturnConfirmation';
+import RecheckConfirmation from './Components/RecheckConfirmation';
 
 import styles from './styles';
-import RecheckConfirmation from './Components/RecheckConfirmation';
+import moment from 'moment';
 import ReturnedOrderDetail from './Components/ReturnedOrderDetail';
 
 export function DeliveryOrders2({ route }) {
@@ -92,6 +83,7 @@ export function DeliveryOrders2({ route }) {
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const ordersList = getDeliveryData?.getReviewDef;
   const singleOrderDetail = oneOrderDetail?.getOrderData;
+
   const widthAndHeight = 180;
   const series = [
     pieChartData?.[0]?.count ?? 0,
@@ -137,8 +129,10 @@ export function DeliveryOrders2({ route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
   const [changeViewToRecheck, setChangeViewToRecheck] = useState();
-  const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
+
   // const [isEnableDriverList, setIsEnableDriverList] = useState(false);
+
+  // console.log('userDetail===', JSON.stringify(userDetail));
 
   useEffect(() => {
     if (ordersList?.length > 0) {
@@ -201,13 +195,13 @@ export function DeliveryOrders2({ route }) {
         count: getDeliveryData?.deliveringOrder?.[2]?.count ?? 0,
         image: twoHourType,
       },
-      {
-        key: '4',
-        delivery_type_title:
-          getDeliveryData?.deliveringOrder?.[3]?.delivery_type_title ?? 'Customer Pickups',
-        count: getDeliveryData?.deliveringOrder?.[3]?.count ?? 0,
-        image: customType,
-      },
+      // {
+      //   key: '4',
+      //   delivery_type_title:
+      //     getDeliveryData?.deliveringOrder?.[3]?.delivery_type_title ?? 'Customer Pickups',
+      //   count: getDeliveryData?.deliveringOrder?.[3]?.count ?? 0,
+      //   image: customType,
+      // },
     ];
     setDeliveryTypes(deliveryTypes);
   }, []);
@@ -356,6 +350,8 @@ export function DeliveryOrders2({ route }) {
     }
   };
 
+  const onPressConfirmHandler = () => {};
+
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
@@ -373,13 +369,12 @@ export function DeliveryOrders2({ route }) {
   const renderOrderToReview = ({ item }) => {
     const isSelected = viewAllOrder && item?.id === userDetail?.id;
     const orderDetails = item?.order_details || [];
-    const deliveryDate = item?.invoice?.delivery_date || '';
+    const deliveryDate = moment(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     const startTime = item?.preffered_delivery_start_time || '00.00';
     const endTime = item?.preffered_delivery_end_time || '00.00';
     const formattedTime = `${startTime} - ${endTime}`;
 
     const handlePress = () => {
-      console.log('item----', item?.id);
       setViewAllOrder(true);
       setSelectedProductId(orderDetails[0]?.id);
       setUserDetail(item);
@@ -449,7 +444,7 @@ export function DeliveryOrders2({ route }) {
     <View style={styles.headingRowStyle}>
       <Text style={styles.ordersToReviewText}>{getHeaderText(openShippingOrders)}</Text>
 
-      {getDeliveryData?.getReviewDef?.length > 0 || openShippingOrders === '9' ? (
+      {getDeliveryData?.getReviewDef?.length > 0 ? (
         <TouchableOpacity onPress={() => setViewAllOrder(true)} style={styles.viewAllButtonStyle}>
           <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
         </TouchableOpacity>
@@ -557,39 +552,28 @@ export function DeliveryOrders2({ route }) {
       <View
         style={[
           styles.orderproductView,
-          { width: Dimensions.get('window').width / 3.3, paddingVertical: ms(10) },
+          {
+            // width: Dimensions.get('window').width / 3.3,
+            paddingVertical: ms(10),
+            flex: 1,
+            justifyContent: 'flex-start',
+          },
         ]}
       >
-        <Text
-          style={{
-            fontFamily: Fonts.Regular,
-            fontSize: ms(6),
-            color: COLORS.dark_grey,
-          }}
-        >
-          {item?.qty ?? '0'}
-        </Text>
-        <View>
-          <Text
-            style={{
-              fontFamily: Fonts.Regular,
-              fontSize: ms(6),
-              color: COLORS.dark_grey,
-            }}
-          >
+        <View style={{ flex: 0.1 }}>
+          <Text style={styles.productTextStyle}>{item?.qty ?? '0'}</Text>
+        </View>
+        <View style={{ flex: 0.8 }}>
+          <Text style={styles.productTextStyle} numberOfLines={2}>
             {item?.product_name ?? ''}
           </Text>
         </View>
 
-        <Text
-          style={{
-            fontFamily: Fonts.Regular,
-            fontSize: ms(6),
-            color: COLORS.dark_grey,
-          }}
-        >
-          {item?.price ?? '00'}
-        </Text>
+        <View style={{ flex: 0.2 }}>
+          <Text style={[styles.productTextStyle, { textAlign: 'right' }]}>
+            {item?.price ?? '00'}
+          </Text>
+        </View>
       </View>
     );
   };
@@ -714,6 +698,11 @@ export function DeliveryOrders2({ route }) {
     setIsReturnModalVisible(false);
   }, []);
 
+  const onPressShop = () => {
+    setIsReturnModalVisible(true);
+    setTrackingView(false);
+  };
+
   return (
     <ScreenWrapper>
       {!trackingView ? (
@@ -726,7 +715,7 @@ export function DeliveryOrders2({ route }) {
             {viewAllOrder ? (
               <View style={styles.firstRowStyle}>
                 <>
-                  {getDeliveryData?.getReviewDef.length > 0 ? (
+                  {getDeliveryData?.getReviewDef?.length > 0 ? (
                     <>
                       <View
                         style={[
@@ -752,25 +741,30 @@ export function DeliveryOrders2({ route }) {
                         />
                       </View>
 
-                      <OrderDetail
-                        {...{
-                          userDetail,
-                          orderDetail,
-                          renderOrderProducts,
-                          acceptHandler,
-                          declineHandler,
-                          openShippingOrders,
-                          trackHandler,
-                          isProductDetailLoading,
-                          latitude,
-                          longitude,
-                          location,
-                          sourceCoordinate,
-                          destinationCoordinate,
-                          changeMapState,
-                          mapRef,
-                        }}
-                      />
+                      {changeViewToRecheck && openShippingOrders === '9' ? (
+                        <ReturnedOrderDetail orderDetail={singleOrderDetail} />
+                      ) : (
+                        <OrderDetail
+                          {...{
+                            userDetail,
+                            orderDetail,
+                            renderOrderProducts,
+                            acceptHandler,
+                            declineHandler,
+                            openShippingOrders,
+                            trackHandler,
+                            isProductDetailLoading,
+                            latitude,
+                            longitude,
+                            location,
+                            sourceCoordinate,
+                            destinationCoordinate,
+                            changeMapState,
+                            mapRef,
+                            onPressShop,
+                          }}
+                        />
+                      )}
                     </>
                   ) : (
                     <View style={styles.emptyView}>
@@ -813,26 +807,16 @@ export function DeliveryOrders2({ route }) {
                   <Graph />
 
                   <Spacer space={SH(15)} />
-                  {openShippingOrders === '9' ? (
-                    <View
-                      style={[
-                        styles.orderToReviewView,
-                        // { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
-                      ]}
-                    >
-                      {emptyComponent()}
-                    </View>
-                  ) : (
-                    <OrderReview
-                      {...{
-                        renderOrderToReview,
-                        emptyComponent,
-                        headerComponent,
-                        getDeliveryData,
-                        isOrderLoading,
-                      }}
-                    />
-                  )}
+
+                  <OrderReview
+                    {...{
+                      renderOrderToReview,
+                      emptyComponent,
+                      headerComponent,
+                      getDeliveryData,
+                      isOrderLoading,
+                    }}
+                  />
                 </View>
 
                 <RightSideBar
@@ -877,6 +861,7 @@ export function DeliveryOrders2({ route }) {
                 renderOrderDetailProducts,
                 location,
                 mapRef,
+                onPressShop,
               }}
             />
             <RightSideBar
@@ -889,16 +874,18 @@ export function DeliveryOrders2({ route }) {
         </View>
       )}
 
+      {isOrderLoading && viewAllOrder ? (
+        <View style={[styles.percentageView, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator size={'small'} color={COLORS.primary} style={styles.percentageView} />
+        </View>
+      ) : null}
+
       <ReturnConfirmation
         isVisible={isReturnModalVisible}
         setIsVisible={setIsReturnModalVisible}
         onPressRecheck={recheckHandler}
-      />
-
-      <RecheckConfirmation
-        isVisible={isCheckConfirmationModalVisible}
-        setIsVisible={setIsCheckConfirmationModalVisible}
-        onPress={() => setIsCheckConfirmationModalVisible(false)}
+        orderDetail={singleOrderDetail}
+        onPressConfirm={onPressConfirmHandler}
       />
     </ScreenWrapper>
   );

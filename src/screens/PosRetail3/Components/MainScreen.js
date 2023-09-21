@@ -77,6 +77,8 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ServiceCartListModal } from './ServiceCartListModal ';
 import { CustomProductAdd } from '@/screens/PosRetail3/Components';
+import { useRef } from 'react';
+import { useCallback } from 'react';
 
 export function MainScreen({
   cartScreenHandler,
@@ -139,6 +141,7 @@ export function MainScreen({
   // const serviceCartLength = SERVICE_CART_LENGTH;
   //  const serviceCartLength = CART_LENGTH;
   let arr = [getRetailData?.getAllCart];
+  const onEndReachedCalledDuringMomentum = useRef(false);
   const [cartModal, setCartModal] = useState(false);
   const [serviceCartModal, setServiceCartModal] = useState(false);
   const [search, setSearch] = useState('');
@@ -531,19 +534,32 @@ export function MainScreen({
   const isLoadingMore = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ALL_PRODUCT_PAGINATION], state)
   );
-  const onLoadMoreProduct = () => {
-    setPage((prevPage) => prevPage + 1);
+  const onLoadMoreProduct = useCallback(() => {
     const totalPages = getRetailData?.getMainProduct?.total_pages;
-    if (page <= totalPages) {
-      // if (!isScrolling) return;
+    const currentPage = getRetailData?.getMainProduct?.current_page;
+    if (currentPage < totalPages) {
       const data = {
-        page: page,
+        page: currentPage + 1,
       };
       dispatch(getMainProductPagination(data));
     }
-  };
+  }, [getRetailData]);
+  // const onLoadMoreProduct = () => {
+  //   console.log('sjdhaskdjas', JSON.stringify(getRetailData?.getMainProduct));
+  //   // setPage((prevPage) => prevPage + 1);
+  //   const totalPages = getRetailData?.getMainProduct?.total_pages;
+  //   const currentPage = getRetailData?.getMainProduct?.current_page;
+  //   if (currentPage < totalPages) {
+  //     // if (!isScrolling) return;
+  //     const data = {
+  //       // page: page,
+  //       page: currentPage + 1,
+  //     };
+  //     dispatch(getMainProductPagination(data));
+  //   }
+  // };
 
-  const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
+  // const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
 
   const renderFooterPost = () => {
     return (
@@ -831,15 +847,19 @@ export function MainScreen({
                   scrollEnabled={true}
                   showsVerticalScrollIndicator={false}
                   ListFooterComponent={renderFooterPost}
-                  onEndReached={debouncedLoadMoreProduct}
+                  // onEndReached={debouncedLoadMoreProduct}
                   // onEndReached={onLoadMoreProduct}
-                  onEndReachedThreshold={0.5}
-                  // onMomentumScrollBegin={() => {
-                  //   setIsScrolling(true);
-                  // }}
-                  // onMomentumScrollEnd={() => {
-                  //   setIsScrolling(false);
-                  // }}
+                  // onEndReachedThreshold={0.5}
+                  onEndReachedThreshold={0.1}
+                  // onEndReached={onEndReached}
+                  onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                  onMomentumScrollEnd={() => {
+                    if (onEndReachedCalledDuringMomentum.current) {
+                      onLoadMoreProduct();
+                      // debouncedLoadMoreProduct(); // LOAD MORE DATA
+                      onEndReachedCalledDuringMomentum.current = false;
+                    }
+                  }}
                   ListEmptyComponent={() => (
                     <View style={styles.noProductText}>
                       <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>

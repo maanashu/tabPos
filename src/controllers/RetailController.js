@@ -757,7 +757,6 @@ export class RetailController {
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response========', response?.payload?.invoices?.invoice_number);
           if (response?.msg === 'Order placed successfully!') {
             Toast.show({
               position: 'bottom',
@@ -904,6 +903,7 @@ export class RetailController {
   static async getTips(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1103,6 +1103,7 @@ export class RetailController {
         seller_id: sellerID,
         service_type: 'service',
         need_pos_users: true,
+        check_stock_out: true,
       };
 
       let finalParams;
@@ -1123,6 +1124,7 @@ export class RetailController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
+          console.log('endpoint', endpoint);
         })
         .catch((error) => {
           reject(error);

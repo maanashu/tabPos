@@ -308,11 +308,10 @@ export const PayByCash = ({
               <Text style={styles._paySubTitle}>{'Cash'}</Text>
             </View>
             <Text style={styles._commonPayTitle}>
-              {' '}
               {moment().format('ddd DD MMM, YYYY')} {moment().format('hh:mm A')}
             </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
-            <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text>
+            {/* <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text> */}
             <Text style={styles._commonPayTitle}>
               POS No. {getUserData?.posLoginData?.pos_number}
             </Text>

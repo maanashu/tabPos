@@ -28,7 +28,7 @@ import {
 
 const { width } = Dimensions.get('window');
 
-const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck }) => {
+const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck, orderDetail }) => {
   return (
     <ReactNativeModal
       isVisible={isVisible}
@@ -57,11 +57,23 @@ const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck }) => {
         </Text>
 
         <View style={styles.customerDetailViewStyle}>
-          <Image source={userImage} style={styles.userImageStyle} />
+          <Image
+            source={
+              orderDetail?.user_details?.profile_photo
+                ? { uri: orderDetail?.user_details?.profile_photo }
+                : userImage
+            }
+            style={styles.userImageStyle}
+          />
 
           <View>
-            <Text style={styles.customerNameStyle}>{strings.returnOrder.userName}</Text>
-            <Text style={styles.addressTextStyle}>{strings.returnOrder.address}</Text>
+            <Text style={styles.customerNameStyle}>
+              {`${orderDetail?.user_details?.firstname} ${orderDetail?.user_details?.lastname}` ??
+                '-'}
+            </Text>
+            <Text
+              style={styles.addressTextStyle}
+            >{`${orderDetail?.user_details?.current_address?.street_address}, ${orderDetail?.user_details?.current_address?.city}, ${orderDetail?.user_details?.current_address?.country}`}</Text>
           </View>
         </View>
       </View>
@@ -73,11 +85,24 @@ const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck }) => {
         </Text>
 
         <View style={styles.customerDetailViewStyle}>
-          <Image source={angela} style={styles.userImageStyle} />
+          <Image
+            source={
+              orderDetail?.driver_details?.profile_photo
+                ? { uri: orderDetail?.driver_details?.profile_photo }
+                : userImage
+            }
+            style={styles.userImageStyle}
+          />
 
           <View>
-            <Text style={styles.customerNameStyle}>{strings.returnOrder.userName}</Text>
-            <Text style={styles.addressTextStyle}>{strings.returnOrder.number}</Text>
+            <Text style={styles.customerNameStyle}>
+              {`${orderDetail?.driver_details?.firstname ?? '-'}  ${
+                orderDetail?.driver_details?.lastname ?? '-'
+              }`}
+            </Text>
+            <Text style={styles.addressTextStyle}>{`${
+              orderDetail?.driver_details?.phone_number ?? '-'
+            }`}</Text>
           </View>
         </View>
       </View>
@@ -86,7 +111,7 @@ const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck }) => {
         <Text style={[styles.returnConfirmedTextStyle, { textAlign: 'left' }]}>
           {strings.returnOrder.totalItems}
         </Text>
-        <Text style={styles.itemsTextStyle}>{strings.returnOrder.totalItemsValue}</Text>
+        <Text style={styles.itemsTextStyle}>{`${orderDetail?.total_items ?? '0'}`}</Text>
       </View>
 
       <View style={{ flex: 1 }} />

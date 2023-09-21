@@ -121,10 +121,6 @@ const PaymentSelection = ({
         }
       });
 
-      console.log('selectedRecipeIndex=======', selectedRecipeIndex);
-      console.log('applicableForAllItems=======', applicableForAllItems);
-      console.log('applyEachItem=======', applyEachItem);
-
       const data =
         selectedRecipeIndex === 0 && applicableForAllItems
           ? {
@@ -194,8 +190,6 @@ const PaymentSelection = ({
           });
         }
       });
-
-      console.log('products====', products);
 
       const data = applicableForAllItems
         ? {
