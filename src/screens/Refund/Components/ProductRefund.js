@@ -21,10 +21,7 @@ import {
   PaymentDone,
   sellingArrow,
   blankCheckBox,
-  categoryshoes,
   checkedCheckboxSquare,
-  editIcon,
-  cross,
 } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
@@ -47,22 +44,32 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   const [changeView, setChangeView] = useState('TotalItems');
   const [refundAmount, setRefundAmount] = useState('');
   const [orders, setOrders] = useState();
-  const [orderDetailData, setOrderDetailData] = useState();
   const [selectedItem, setSelectedItem] = useState('');
   const [inventoryModal, setInventoryModal] = useState(false);
 
+  const finalOrder = JSON.parse(JSON.stringify(orderData));
+
   useEffect(() => {
-    const updatedDataArray = orderData?.order?.order_details.map((item) => {
-      return { ...item, refundAmount: '' };
-    });
-    setOrders(updatedDataArray);
-    setOrderDetailData(orderData);
-  }, [orderData]);
+    if (orderData?.order) {
+      finalOrder.order.order_details = orderList; //Replace orders array with selected orders
+
+      const filterSelectedProducts = finalOrder?.order?.order_details?.filter((e) => e?.isChecked);
+      const updatedDataArray = filterSelectedProducts.map((item) => {
+        return { ...item, refundAmount: 0, totalRefundAmount: 0 };
+      });
+      setOrders(updatedDataArray);
+    }
+  }, []);
 
   const refundHandler = (key, newText) => {
+    setButtonText('Apply Refund');
     const updatedDataArray = orders.map((item, index) => {
       if (index === key) {
-        return { ...item, refundAmount: newText };
+        return {
+          ...item,
+          refundAmount: parseFloat(newText),
+          totalRefundAmount: parseFloat(newText) * item.qty || 0,
+        };
       }
       return item;
     });
@@ -75,29 +82,62 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
     // Find the selected item in the copy
     const selectedItem = updatedOrders[itemIndex];
-
-    const originalOrderArr = orderData?.order?.order_details[itemIndex];
+    const originalOrderArr = orderList[itemIndex];
 
     if (symbol === '+' && selectedItem.qty < originalOrderArr.qty) {
       // Increase the qty of the selected item
       selectedItem.qty += 1;
+      selectedItem.totalRefundAmount = selectedItem.qty * selectedItem.refundAmount;
     } else if (symbol === '-' && selectedItem.qty > 1) {
       // Decrease the qty of the selected item, but ensure it doesn't go below 0
       selectedItem.qty -= 1;
+      console.log(selectedItem.refundAmount, selectedItem.qty);
+      selectedItem.totalRefundAmount = selectedItem.qty * selectedItem.refundAmount;
     }
-
     // Update the state with the modified copy of the orders array
     setOrders(updatedOrders);
   };
 
-  const totalRefundAmount = orders?.reduce((total, order) => {
-    let refundPrice = order.refundAmount ? order?.refundAmount : amount;
-    let totalTax = 0;
-    const itemTax = order.qty * refundPrice * 0.08;
-    totalTax += itemTax;
-
-    return totalTax;
+  const totalRefundAmount = orders?.reduce((accumulator, currentValue) => {
+    const totalRefund = accumulator + currentValue.totalRefundAmount;
+    return totalRefund;
   }, 0);
+
+  const calculateRefundTax = () => {
+    const calculatedTax = totalRefundAmount * 0.08;
+    return calculatedTax || 0;
+  };
+
+  const totalRefundableAmount = () => {
+    let deliveryCharges;
+    if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '1') {
+      deliveryCharges = finalOrder?.order?.delivery_charge;
+    } else if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '3') {
+      deliveryCharges = finalOrder?.order?.shipping_charge;
+    } else {
+      deliveryCharges = 0;
+    }
+    const total_payable_amount =
+      parseFloat(deliveryCharges) + calculateRefundTax() + totalRefundAmount;
+
+    return total_payable_amount || 0;
+  };
+
+  const deliveryShippingCharges = () => {
+    let deliveryCharges;
+    let title;
+    if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '1') {
+      deliveryCharges = finalOrder?.order?.delivery_charge;
+      title = 'Delivery Charges';
+    } else if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '3') {
+      deliveryCharges = finalOrder?.order?.shipping_charge;
+      title = 'Shipping Charges';
+    } else {
+      title = '';
+      deliveryCharges = 0;
+    }
+    return { title, deliveryCharges };
+  };
 
   const renderProductItem = ({ item, index }) => (
     <View style={styles.blueListData}>
@@ -110,16 +150,16 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
               alignItems: 'center',
             }}
           >
-            <Image source={categoryshoes} style={styles.columbiaMen} />
+            <Image source={{ uri: item?.product_image }} style={styles.columbiaMen} />
             <View style={{ marginLeft: 10 }}>
-              <Text style={[styles.blueListDataText, { width: SW(34) }]} numberOfLines={1}>
+              <Text style={[styles.blueListDataText, { width: SW(74) }]} numberOfLines={1}>
                 {item?.product_name ?? '-'}
               </Text>
               <Text style={styles.sukNumber}>{item?.product_details?.sku ?? '-'}</Text>
             </View>
           </View>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               setSelectedItem(item);
               setInventoryModal(!inventoryModal);
@@ -127,7 +167,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
             style={styles.productCartBody}
           >
             <Image source={editIcon} style={styles.editIconStyle} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
@@ -158,7 +198,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
             <View style={styles.productCartBody}>
               {amount ? (
                 <Text style={styles.blueListDataText} numberOfLines={1}>
-                  {selectType === 'dollar' ? `$${amount}` : `${amount}%`}
+                  {`$${(item?.refundAmount).toFixed(2) ?? 0}`}
                 </Text>
               ) : (
                 <Text style={styles.blueListDataText} numberOfLines={1}>
@@ -194,7 +234,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              ${item?.actual_price * item?.qty ?? '0'}
+              ${(item?.totalRefundAmount).toFixed(2) ?? 0}
             </Text>
           </View>
         </View>
@@ -203,39 +243,42 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   );
 
   const applyRefundHandler = () => {
-    if (applicableIsCheck && !amount) {
-      alert('Please add refund amount');
-    } else if (applyEachItem) {
-      const hasCheckedItem = orders?.every((item) => item?.refundAmount !== '');
-      if (hasCheckedItem) {
+    if (applicableIsCheck || applyEachItem) {
+      if (applicableIsCheck && !amount) {
+        alert('Please add refund amount');
+      } else if (applyEachItem) {
+        const hasCheckedItem = orders?.every((item) => item?.refundAmount !== 0);
+        if (hasCheckedItem) {
+          setButtonText('Applied');
+          dispatch(getDrawerSessions());
+        } else {
+          alert('Please add refund amount for all items');
+        }
+      } else {
         setButtonText('Applied');
         dispatch(getDrawerSessions());
-      } else {
-        alert('Please add refund amount for all items');
       }
-    } else {
-      setButtonText('Applied');
-      dispatch(getDrawerSessions());
     }
   };
 
   const applyRefundButton = () => {
-    if (applicableIsCheck && amount && buttonText === 'Applied') {
+    const isApplied = buttonText === 'Applied';
+    if ((applicableIsCheck || applyEachItem || amount) && isApplied) {
       return (
-        <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
+        <View
+          style={[
+            styles.applyRefundButton,
+            { flexDirection: 'row', paddingHorizontal: ms(12), backgroundColor: 'transparent' },
+          ]}
+        >
           <Image
             source={PaymentDone}
-            style={[styles.checkBoxIconStyle, { tintColor: COLORS.primary }]}
-          />
-          <Text style={[styles.applyRefundButtonText, { color: COLORS.primary }]}>{'Applied'}</Text>
-        </View>
-      );
-    } else if (applyEachItem && buttonText === 'Applied') {
-      return (
-        <View style={{ flexDirection: 'row', paddingHorizontal: 10 }}>
-          <Image
-            source={PaymentDone}
-            style={[styles.checkBoxIconStyle, { tintColor: COLORS.primary }]}
+            style={{
+              tintColor: COLORS.primary,
+              width: scale(7),
+              height: scale(7),
+              resizeMode: 'contain',
+            }}
           />
           <Text style={[styles.applyRefundButtonText, { color: COLORS.primary }]}>{'Applied'}</Text>
         </View>
@@ -274,21 +317,6 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     }
   };
 
-  const totalRefundableAmount = orders?.reduce((total, order) => {
-    let deliveryCharges =
-      orderData?.order?.status === 5 && orderData?.order?.delivery_option === '1'
-        ? orderData?.order?.delivery_charge
-        : orderData?.order?.status === 5 && orderData?.order?.delivery_option === '3'
-        ? orderData?.order?.shipping_charge
-        : 0;
-    let payable = orderData?.order?.payable_amount;
-
-    let total_payable_amount =
-      parseFloat(deliveryCharges) + parseFloat(payable) + parseFloat(totalRefundAmount);
-
-    return total_payable_amount;
-  }, 0);
-
   return (
     <View style={styles.container}>
       {changeView === 'TotalItems' ? (
@@ -309,14 +337,21 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                     {applicableIsCheck ? (
                       <TouchableOpacity
                         onPress={() => {
-                          !applicableIsCheck && setButtonText('Apply Refund'), setAmount('');
+                          setButtonText('Apply Refund');
+                          setAmount('');
                           setApplicableIsCheck(!applicableIsCheck);
                         }}
                       >
                         <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
                       </TouchableOpacity>
                     ) : (
-                      <TouchableOpacity onPress={() => setApplicableIsCheck(!applicableIsCheck)}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setApplicableIsCheck(!applicableIsCheck);
+                          setButtonText('Apply Refund');
+                          setAmount('');
+                        }}
+                      >
                         <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
                       </TouchableOpacity>
                     )}
@@ -343,12 +378,22 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                     keyboardType={'number-pad'}
                     style={styles.textInputStyle}
                     onChangeText={(text) => {
+                      const isPercentageLabel = selectType === strings.returnOrder.percentageLabel;
+
+                      const updatedDataArray = orders.map((item) => ({
+                        ...item,
+                        refundAmount: isPercentageLabel
+                          ? (item.price * parseFloat(text)) / 100
+                          : parseFloat(text),
+                        totalRefundAmount: isPercentageLabel
+                          ? (item.price * parseFloat(text) * item.qty) / 100
+                          : parseFloat(text) * item.qty,
+                      }));
+
+                      setOrders(updatedDataArray);
+                      setButtonText('Apply Refund');
                       setAmount(text);
-                      setApplicableIsCheck(true);
-                      if (!text) {
-                        setButtonText('Apply Refund');
-                        setApplicableIsCheck(false);
-                      }
+                      setApplicableIsCheck(!!text);
                     }}
                     placeholderTextColor={COLORS.solidGrey}
                     placeholder={selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '% 0'}
@@ -357,7 +402,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                   <View style={styles.typeViewStyle}>
                     <TouchableOpacity
                       disabled={applyEachItem ? true : false}
-                      onPress={() => setSelectType(strings.returnOrder.dollarLabel)}
+                      onPress={() => {
+                        setSelectType(strings.returnOrder.dollarLabel);
+                        setAmount('');
+                      }}
                       style={[
                         styles.dollarViewStyle,
                         {
@@ -395,7 +443,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
                     <TouchableOpacity
                       disabled={applyEachItem ? true : false}
-                      onPress={() => setSelectType(strings.returnOrder.percentageLabel)}
+                      onPress={() => {
+                        setSelectType(strings.returnOrder.percentageLabel);
+                        setAmount('');
+                      }}
                       style={[
                         styles.dollarViewStyle,
                         {
@@ -453,6 +504,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                         onPress={() => {
                           setAmount('');
                           setApplyEachItem(!applyEachItem);
+                          setButtonText('Apply Refund');
                         }}
                       >
                         <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
@@ -462,6 +514,11 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                         onPress={() => {
                           setAmount('');
                           setApplyEachItem(!applyEachItem);
+                          setButtonText('Apply Refund');
+                          const updatedDataArray = orders.map((item, index) => {
+                            return { ...item, refundAmount: 0, totalRefundAmount: 0 };
+                          });
+                          setOrders(updatedDataArray);
                         }}
                       >
                         <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
@@ -485,9 +542,6 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                     <Text style={styles.cashLabelWhite}>Item</Text>
                   </View>
                   <View style={styles.productCartBodyRight}>
-                    <View style={styles.productCartBody}>
-                      <Text style={styles.cashLabelWhite}>Write off/Inventory</Text>
-                    </View>
                     <View style={styles.productCartBody}>
                       <Text style={styles.cashLabelWhite}>Unit Price</Text>
                     </View>
@@ -524,28 +578,28 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{strings.deliveryOrders.subTotal}</Text>
-                <Text style={styles.subTotalPrice}>{`$${orderData?.order?.actual_amount}`}</Text>
+                <Text style={styles.subTotalPrice}>{`$${totalRefundAmount}`}</Text>
               </View>
 
               <Spacer space={SH(10)} />
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{strings.deliveryOrders.totalTax}</Text>
-                <Text style={styles.subTotalPrice}>{`$${totalRefundAmount}`}</Text>
+                <Text style={styles.subTotalPrice}>{`$${
+                  applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0
+                }`}</Text>
               </View>
 
-              {orderData?.order?.status === 5 ? (
+              {finalOrder?.order?.status === 5 ? (
                 <>
                   <Spacer space={SH(10)} />
                   <View style={styles.totalViewStyle}>
-                    <Text style={styles.subTotalText}>
-                      {orderData?.order?.delivery_charge
-                        ? 'Delivery Charges'
-                        : orderData?.order?.shipping_charge
-                        ? 'Shipping Charges'
-                        : ''}
-                    </Text>
-                    <Text style={styles.subTotalPrice}>{`$${orderData?.order?.tax}`}</Text>
+                    <Text style={styles.subTotalText}>{deliveryShippingCharges().title}</Text>
+                    <Text style={styles.subTotalPrice}>{`$${
+                      applyEachItem || applicableIsCheck
+                        ? deliveryShippingCharges().deliveryCharges
+                        : 0
+                    }`}</Text>
                   </View>
                   <Spacer space={SH(10)} />
                 </>
@@ -558,7 +612,9 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                   {strings.wallet.total}
                 </Text>
                 <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
-                  {`$${totalRefundableAmount?.toFixed(2)}`}
+                  {`$${
+                    applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0
+                  }`}
                 </Text>
               </View>
 
@@ -583,12 +639,12 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
       ) : (
         <PaymentSelection
           order={orders}
-          orderData={orderData}
+          orderData={finalOrder}
           applyEachItem={applyEachItem}
           applicableForAllItems={applicableIsCheck}
           backHandler={() => setChangeView('TotalItems')}
           amount={applicableIsCheck ? amount : refundAmount}
-          payableAmount={totalRefundableAmount}
+          payableAmount={totalRefundableAmount()}
         />
       )}
 
@@ -776,7 +832,7 @@ const styles = StyleSheet.create({
   nextButtonStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: scale(120),
+    width: scale(100),
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
@@ -797,7 +853,7 @@ const styles = StyleSheet.create({
   billAmountViewStyle: {
     justifyContent: 'flex-end',
     paddingBottom: 10,
-    flex: 0.2,
+    flex: 0.23,
     paddingHorizontal: 30,
   },
   contentContainerStyle: {

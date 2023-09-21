@@ -105,7 +105,7 @@ export function Calender() {
 
   // Only show appointments on calendar which are approved/Check-In
   const getApprovedAppointments = getAppointmentList?.filter(
-    (item) => item.status === 1 || item.status === 2
+    (item) => item.status === 1 || item.status === 2 || item.status === 3
   );
 
   // Will be used to show list of all unaccepted appointments

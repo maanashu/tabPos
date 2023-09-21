@@ -47,7 +47,16 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
         </Text>
 
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => checkboxHandler(item?.id, item?.qty)}>
+          <TouchableOpacity
+            style={{
+              width: SH(25),
+              height: SH(25),
+              resizeMode: 'contain',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => checkboxHandler(item?.id, item?.qty)}
+          >
             <Image
               source={PaymentDone}
               style={[styles.infoIconStyle, { tintColor: COLORS.primary }]}
@@ -78,7 +87,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
               />
 
               <View style={styles.userNameView}>
-                <Text style={[styles.totalTextStyle, { padding: 0 }]}>{'Customer'}</Text>
+                <Text style={[styles.totalTextStyle, { padding: 0 }]}>{'No Customer'}</Text>
               </View>
             </View>
 
@@ -277,8 +286,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   infoIconStyle: {
-    width: SH(10),
-    height: SH(10),
+    width: SH(15),
+    height: SH(15),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
   },
