@@ -46,6 +46,11 @@ const PaymentSelection = ({
   applicableForAllItems,
   applyEachItem,
   payableAmount,
+  subTotal,
+  totalTaxes,
+  deliveryShippingTitle,
+  deliveryShippingCharges,
+  total,
 }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -71,7 +76,7 @@ const PaymentSelection = ({
   };
 
   const renderRecipeMethod = ({ item, index }) => {
-    const selectedMethod = selectedRecipeIndex === index ? COLORS.primary : COLORS.solidGrey;
+    const selectedMethod = selectedRecipeIndex === index ? COLORS.primary : COLORS.darkGray;
     return (
       <TouchableOpacity
         key={index}
@@ -295,7 +300,15 @@ const PaymentSelection = ({
       </View>
 
       <View style={styles.rightContainer}>
-        <InvoiceDetails orderData={orderData} />
+        <InvoiceDetails
+          orderList={order}
+          orderData={orderData}
+          subTotal={subTotal}
+          totalTaxes={totalTaxes}
+          deliveryShippingTitle={deliveryShippingTitle}
+          deliveryShippingCharges={deliveryShippingCharges}
+          total={total}
+        />
       </View>
 
       <ReturnConfirmation

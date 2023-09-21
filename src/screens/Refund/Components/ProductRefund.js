@@ -643,8 +643,12 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           applyEachItem={applyEachItem}
           applicableForAllItems={applicableIsCheck}
           backHandler={() => setChangeView('TotalItems')}
-          amount={applicableIsCheck ? amount : refundAmount}
           payableAmount={totalRefundableAmount()}
+          subTotal={totalRefundAmount}
+          totalTaxes={applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0}
+          deliveryShippingTitle={deliveryShippingCharges().title}
+          deliveryShippingCharges={deliveryShippingCharges().deliveryCharges}
+          total={applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0}
         />
       )}
 
