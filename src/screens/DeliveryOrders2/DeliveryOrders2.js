@@ -374,7 +374,6 @@ export function DeliveryOrders2({ route }) {
     const formattedTime = `${startTime} - ${endTime}`;
 
     const handlePress = () => {
-      console.log('item----', item?.id);
       setViewAllOrder(true);
       setSelectedProductId(orderDetails[0]?.id);
       setUserDetail(item);

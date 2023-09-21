@@ -77,7 +77,6 @@ export function SessionHistoryTable({
 
   // const tableDataArrayReverse = tableDataArray?.reverse();
   const tableDataArrayReverse = tableDataArray?.slice().reverse();
-  console.log('sdasdas', JSON.stringify(tableDataArrayReverse));
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>

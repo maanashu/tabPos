@@ -39,7 +39,7 @@ import { Table } from 'react-native-table-component';
 import { useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getCustomers } from '@/selectors/CustomersSelector';
-import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
+import { DELIVERY_MODE, PAGINATION_DATA, months } from '@/constants/enums';
 
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
@@ -66,6 +66,27 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
   const [selectedYearData, setselectedYearData] = useState(null);
+
+  const storeLocation = (value) => setLocationSelect(value);
+  const [locationSelect, setLocationSelect] = useState('');
+
+  const monthSelection = (value) => setMonthSelect(value);
+  const [monthSelect, setMonthSelect] = useState('');
+
+  const dummyArea = [
+    {
+      label: 'Shimla',
+      value: 'shimla',
+    },
+    {
+      label: 'Haryana',
+      value: 'haryana',
+    },
+    {
+      label: 'Punjab',
+      value: 'punjab',
+    },
+  ];
 
   const data = {
     firstName: userDetail?.user_details?.firstname,
@@ -223,10 +244,10 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
       <View style={styles.orderTypeCon}>
         <View style={styles.flexAlign}>
           <View style={{ marginHorizontal: moderateScale(5) }}>
-            <TableDropdown placeholder="Month" />
+            <TableDropdown placeholder="Month" selected={monthSelection} data={months} />
           </View>
           <>
-            <TableDropdown placeholder="Store location" />
+            <TableDropdown placeholder="Store location" selected={storeLocation} data={dummyArea} />
           </>
         </View>
       </View>

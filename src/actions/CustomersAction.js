@@ -77,12 +77,31 @@ const marketingUpdateError = (error) => ({
   type: TYPES.GET_MARKETINGUPDATE_ERROR,
   payload: { error },
 });
+// getArea
+const getAreaRequest = () => ({
+  type: TYPES.GET_AREA_REQUEST,
+  payload: null,
+});
+const getAreaSuccess = (getArea) => ({
+  type: TYPES.GET_AREA_SUCCESS,
+  payload: { getArea },
+});
+const getAreaError = (error) => ({
+  type: TYPES.GET_AREA_ERROR,
+  payload: { error },
+});
+const getAreaReset = () => ({
+  type: TYPES.GET_AREA_RESET,
+  payload: null,
+});
 
 export const getUserOrder = (data) => async (dispatch) => {
   dispatch(getUserOrderRequest());
   try {
     const res = await CustomersController.getUserOrder(data);
     dispatch(getUserOrderSuccess(res?.payload));
+
+    console.log('--------------------------', res);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getUserOrderReset());
@@ -138,5 +157,18 @@ export const marketingUpdate = (data) => async (dispatch) => {
     // dispatch(getAcceptMarketing(data));
   } catch (error) {
     dispatch(marketingUpdateError(error.message));
+  }
+};
+
+export const getArea = () => async (dispatch) => {
+  dispatch(getAreaRequest());
+  try {
+    const res = await CustomersController.getArea();
+    dispatch(getAreaSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getAreaReset());
+    }
+    dispatch(getAreaError(error.message));
   }
 };

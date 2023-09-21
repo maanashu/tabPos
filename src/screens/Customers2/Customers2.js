@@ -27,7 +27,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
-import { getCustomer, getOrderUser } from '@/actions/CustomersAction';
+import { getArea, getCustomer, getOrderUser } from '@/actions/CustomersAction';
 import { getCustomers } from '@/selectors/CustomersSelector';
 import Graph from './Components/Graph';
 import AllUsers from './Components/AllUsers';
@@ -76,6 +76,10 @@ export function Customers2() {
   const onPresFun = (value) => {
     dispatch(getCustomer(value, sellerID));
   };
+
+  useEffect(() => {
+    dispatch(getArea());
+  }, []);
 
   useEffect(() => {
     if (isFocused) {

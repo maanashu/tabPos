@@ -903,6 +903,7 @@ export class RetailController {
   static async getTips(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

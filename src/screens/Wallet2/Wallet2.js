@@ -75,6 +75,7 @@ export function Wallet2() {
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [transcationTypeId, setTranscationTypeId] = useState(1);
   const [transaction, setTransaction] = useState({ mode_of_payment: 'all' });
+  const [fromHome, setFromHome] = useState('');
 
   const onPresFun1 = (value) => {
     setShow(false);
@@ -200,12 +201,14 @@ export function Wallet2() {
       price: getTotalTraData?.data?.cash.toFixed(2) ?? '0',
       img: cashIcon,
       id: '3',
+      type: 'cash',
     },
     {
       aboutTransaction: 'Card',
       price: getTotalTraData?.data?.card.toFixed(2) ?? '0',
       img: cardIcon,
       id: '4',
+      type: 'card',
     },
   ];
 
@@ -293,7 +296,14 @@ export function Wallet2() {
                 extraData={aboutTransactionData}
                 renderItem={({ item, index }) => {
                   return (
-                    <View style={styles.custometrCon}>
+                    <TouchableOpacity
+                      style={styles.custometrCon}
+                      onPress={() => {
+                        setWeeklyTrasaction(true);
+                        setWalletHome(false);
+                        setFromHome(item?.type);
+                      }}
+                    >
                       <View style={styles.flexAlign}>
                         {index === 0 ? null : (
                           <Image source={item.img} style={styles.newCustomer} />
@@ -307,7 +317,7 @@ export function Wallet2() {
                           <Text style={styles.newCustomerHeading}>{item.aboutTransaction}</Text>
                         </View>
                       </View>
-                    </View>
+                    </TouchableOpacity>
                   );
                 }}
                 keyExtractor={(item) => item.id}
@@ -318,14 +328,14 @@ export function Wallet2() {
             </View>
             <View style={[styles.displayFlex, { marginTop: ms(20) }]}>
               <Text style={styles.transactions}>{strings.wallet.transactions}</Text>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setWeeklyTrasaction(true), setWalletHome(false);
                 }}
                 style={styles.viewButtonCon}
               >
                 <Text style={styles.viewAll}>{strings.reward.viewAll}</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <View>
               <Graph />
@@ -336,11 +346,13 @@ export function Wallet2() {
     } else if (weeklyTransaction) {
       return (
         <WeeklyTransaction
+          comeFrom={fromHome}
           backHandler={() => {
             setWeeklyTrasaction(false);
             setWalletHome(true);
           }}
-          orderClickHandler={async (orderId) => {
+          orderClickHandler={async (orderId, comingFrom) => {
+            setFromHome(comingFrom);
             const res = await dispatch(getOrderData(orderId));
             if (res?.type === 'GET_ORDER_DATA_SUCCESS') {
               setWeeklyTrasaction(false);

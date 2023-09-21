@@ -10,14 +10,26 @@ export class CustomersController {
     let convertedString = originalString.toLowerCase().replace(/\s+/g, '_');
     return new Promise((resolve, reject) => {
       const endpoint =
+        // data?.area == 'none'
+        // ?
+
         ORDER_URL +
         ApiOrderInventory.getUserOrder +
         `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}`;
+      // :
+
+      // ORDER_URL +
+      //   ApiOrderInventory.getUserOrder +
+      //   `?seller_id=${data?.sellerID}&type=${convertedString}&state=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
+
+      // console.log(endpoint);
+
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
+          // console.log('error', error);
           error?.msg &&
             Toast.show({
               text2: error.msg,
@@ -91,6 +103,23 @@ export class CustomersController {
           resolve(response);
         })
         .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static async getArea(data) {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint = ORDER_URL + ApiOrderInventory.getArea + `?seller_id=${sellerID}`;
+      console.log(endpoint);
+      HttpClient.get(endpoint)
+        .then((response) => {
+          console.log('response', response);
+          resolve(response);
+        })
+        .catch((error) => {
+          console.log('error', error);
           reject(error);
         });
     });
