@@ -71,6 +71,11 @@ export function TotalProfit() {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
+          ${item?.total_tax ? item?.total_tax.toFixed(2) : 0}
+        </Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>
           ${item?.cost_sum ? item?.cost_sum.toFixed(2) : 0}
         </Text>
       </DataTable.Cell>
@@ -162,6 +167,10 @@ export function TotalProfit() {
 
               <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Average Order value</Text>
+              </DataTable.Title>
+
+              <DataTable.Title style={styles.tableHeaderView}>
+                <Text style={styles.revenueText}>Tax</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.tableHeaderView}>

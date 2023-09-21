@@ -1103,6 +1103,7 @@ export class RetailController {
         seller_id: sellerID,
         service_type: 'service',
         need_pos_users: true,
+        check_stock_out: true,
       };
 
       let finalParams;
@@ -1123,6 +1124,7 @@ export class RetailController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
+          console.log('endpoint', endpoint);
         })
         .catch((error) => {
           reject(error);
