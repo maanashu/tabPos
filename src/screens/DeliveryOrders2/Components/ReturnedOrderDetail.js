@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Dimensions,
   Platform,
+  TextInput,
   TouchableOpacity,
 } from 'react-native';
 
@@ -18,23 +19,36 @@ import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import { Fonts, iImage, scooter, userImage } from '@/assets';
 import { productList } from '@/constants/flatListData';
+import { useRef } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getProductByUpc } from '@/actions/DeliveryAction';
 
 const { width, height } = Dimensions.get('window');
 
-const ReturnedOrderDetail = ({ doneHandler }) => {
+const ReturnedOrderDetail = ({ orderDetail, doneHandler }) => {
+  const dispatch = useDispatch();
+  const textInputRef = useRef();
+  const [productUpc, setProductUpc] = useState('');
+
   const renderOrderProducts = ({ item, index }) => {
     return (
       <View style={styles.orderproductView}>
         <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
-          <Image source={userImage} style={styles.userImageStyle} />
+          <Image
+            source={item?.product_image ? { uri: item?.product_image } : userImage}
+            style={styles.userImageStyle}
+          />
           <View style={{ paddingLeft: 10, width: ms(100) }}>
-            <Text style={styles.nameTextStyle}>{item?.productName}</Text>
-            <Text style={styles.varientTextStyle}>{`${item?.color} / ${item?.size}`}</Text>
+            <Text style={styles.nameTextStyle}>{item?.product_name ?? '-'}</Text>
+            <Text style={styles.varientTextStyle}>{`${item?.product_details?.sku ?? '-'}`}</Text>
           </View>
         </View>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.quantity}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.price ?? '0'}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty ?? '0'}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+          {orderDetail?.actual_amount}
+        </Text>
 
         <View style={styles.infoIconView}>
           <Image source={iImage} style={styles.infoIconStyle} />
@@ -43,18 +57,33 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
     );
   };
 
+  const onChangeHandler = (text) => {
+    setProductUpc(text);
+    dispatch(getProductByUpc(text));
+  };
+
   return (
     <View style={styles.orderDetailView}>
       <View style={styles.orderDetailViewStyle}>
         <View style={[styles.locationViewStyle, { flex: 1 }]}>
-          <Image source={userImage} style={styles.userImageStyle} />
+          <Image
+            source={
+              orderDetail?.user_details?.profile_photo
+                ? { uri: orderDetail?.user_details?.profile_photo }
+                : userImage
+            }
+            style={styles.userImageStyle}
+          />
 
           <View style={styles.userNameView}>
             <Text style={[styles.totalTextStyle, { padding: 0 }]}>
-              {strings.returnOrder.userName}
+              {`${orderDetail?.user_details?.firstname} ${orderDetail?.user_details?.lastname}`}
             </Text>
             <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
-              {strings.returnOrder.address}
+              {`${orderDetail?.user_details?.current_address?.street_address}, ${orderDetail?.user_details?.current_address?.city}`}
+            </Text>
+            <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
+              {`${orderDetail?.user_details?.current_address?.state}, ${orderDetail?.user_details?.current_address?.country}`}
             </Text>
           </View>
         </View>
@@ -70,7 +99,7 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
                 color: COLORS.primary,
               }}
             >
-              {'Express Delivery'}
+              {moment(orderDetail?.invoices?.delivery_date).format('DD MMM YYYY')}
             </Text>
             <Text
               style={{
@@ -79,7 +108,9 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
                 color: COLORS.dark_grey,
               }}
             >
-              {'Immediately'}
+              {`${orderDetail?.preffered_delivery_start_time ?? '-'} - ${
+                orderDetail?.preffered_delivery_end_time ?? '-'
+              }`}
             </Text>
           </View>
         </View>
@@ -87,13 +118,19 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
 
       <Spacer space={SH(8)} />
       <View style={styles.scanBarCodeView}>
-        <Text style={styles.scanBarCodeTextStyle}>{strings.returnOrder.scanbarCode}</Text>
+        <TextInput
+          value={productUpc}
+          ref={textInputRef}
+          style={styles.scanBarCodeView}
+          placeholder={strings.returnOrder.scanbarCode}
+          onChangeText={(text) => onChangeHandler(text)}
+        />
       </View>
 
       <View style={{ height: SH(400) }}>
         <FlatList
           scrollEnabled
-          data={productList}
+          data={orderDetail?.order_details ?? []}
           renderItem={renderOrderProducts}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }}
@@ -106,7 +143,7 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
             <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
               {strings.shippingOrder.totalItem}
             </Text>
-            <Text style={styles.itemCountText}>{'7'}</Text>
+            <Text style={styles.itemCountText}>{orderDetail?.total_items ?? '0'}</Text>
           </View>
 
           <Spacer space={SH(15)} />
@@ -114,7 +151,9 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
             <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
               {strings.shippingOrder.orderDate}
             </Text>
-            <Text style={styles.itemCountText}>{moment().format('DD/MM/YYYY')}</Text>
+            <Text style={styles.itemCountText}>
+              {moment(orderDetail?.invoices?.delivery_date).format('DD/MM/YYYY')}
+            </Text>
           </View>
 
           <Spacer space={SH(15)} />
@@ -122,7 +161,7 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
             <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
               {strings.shippingOrder.orderId}
             </Text>
-            <Text style={styles.itemCountText}>{'1'}</Text>
+            <Text style={styles.itemCountText}>{`#${orderDetail?.id}`}</Text>
           </View>
         </View>
 
@@ -132,26 +171,24 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
               {strings.deliveryOrders.subTotal}
             </Text>
             <Text style={[styles.totalTextStyle, { paddingTop: 0, fontFamily: Fonts.MaisonBold }]}>
-              ${'0'}
+              ${orderDetail?.total_sale_price ?? '0'}
             </Text>
           </View>
 
           <View style={styles.orderDetailsView}>
             <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.totalTextStyle2}>{'$'}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
-                {'0'}
+                {`$${orderDetail?.discount ?? '0'}`}
               </Text>
             </View>
           </View>
 
           <View style={styles.orderDetailsView}>
-            <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
+            <Text style={styles.invoiceText}>{strings.deliveryOrders.deliveryCharges}</Text>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.totalTextStyle2}>{'$'}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
-                {'0.00'}
+                {`$${orderDetail?.delivery_charge ?? '0'}`}
               </Text>
             </View>
           </View>
@@ -159,9 +196,8 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
           <View style={styles.orderDetailsView}>
             <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.totalTextStyle2}>{'$'}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
-                {'0'}
+                {`$${orderDetail?.tax ?? '0'}`}
               </Text>
             </View>
           </View>
@@ -178,15 +214,9 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
           <View style={styles.orderDetailsView}>
             <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
             <View style={{ flexDirection: 'row' }}>
-              <Text
-                style={[
-                  styles.totalTextStyle2,
-                  { fontFamily: Fonts.MaisonBold, fontSize: SF(13), color: COLORS.solid_grey },
-                ]}
-              >
-                {'$'}
-              </Text>
-              <Text style={[styles.totalText, { paddingTop: 0 }]}>{0}</Text>
+              <Text style={[styles.totalText, { paddingTop: 0 }]}>{`$${
+                orderDetail?.payable_amount ?? '0'
+              }`}</Text>
             </View>
           </View>
 
@@ -197,7 +227,7 @@ const ReturnedOrderDetail = ({ doneHandler }) => {
               <Text style={styles.declineTextStyle}>{'Later'}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.acceptButtonView} onPress={() => doneHandler()}>
+            <TouchableOpacity style={styles.acceptButtonView}>
               <Text style={styles.acceptTextStyle}>{'Done'}</Text>
             </TouchableOpacity>
           </View>
@@ -213,11 +243,7 @@ const styles = StyleSheet.create({
   orderDetailView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,
-    width:
-      Platform.OS === 'ios'
-        ? Dimensions.get('window').width / 3
-        : Dimensions.get('window').width * 0.32,
-    height: Dimensions.get('window').height - 120,
+    flex: 0.9,
   },
   orderDetailViewStyle: {
     alignSelf: 'center',
@@ -263,13 +289,16 @@ const styles = StyleSheet.create({
   scanBarCodeView: {
     height: ms(30),
     borderRadius: 5,
-    width: width / 3.35,
+    width: width / 2.8,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft: ms(10),
     justifyContent: 'center',
     backgroundColor: COLORS.blue_shade,
+    fontSize: SF(11),
+    textAlign: 'center',
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.SemiBold,
   },
   scanBarCodeTextStyle: {
     fontSize: SF(11),

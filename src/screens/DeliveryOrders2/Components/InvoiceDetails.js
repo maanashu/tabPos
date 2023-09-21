@@ -33,7 +33,7 @@ const InvoiceDetails = ({
   const userDetailData = singleOrderDetail?.user_details;
   return (
     <View style={{ flex: 1 }}>
-      <View style={[styles.firstRowStyle]}>
+      <View style={styles.firstRowStyle}>
         <View style={styles.storeDetailView}>
           <Text style={styles.firstNameText}>
             {singleOrderDetail?.seller_details?.organization_name ?? ''}
@@ -50,10 +50,15 @@ const InvoiceDetails = ({
 
           <Spacer space={SH(10)} />
 
-          <FlatList
-            data={singleOrderDetail?.order_details}
-            renderItem={renderOrderDetailProducts}
-          />
+          <View style={{ height: 170 }}>
+            <FlatList
+              data={singleOrderDetail?.order_details}
+              renderItem={renderOrderDetailProducts}
+              extraData={singleOrderDetail?.order_details}
+              keyExtractor={(item, index) => index.toString()}
+              style={{ flex: 1 }}
+            />
+          </View>
 
           <View style={[styles.shippingOrdersViewStyle, { bottom: 0 }]}>
             <View
@@ -105,10 +110,7 @@ const InvoiceDetails = ({
                 <Text style={styles.countTextStyle}>{strings.deliveryOrders.deliveryCharges}</Text>
                 <View style={styles.flexDirectionRow}>
                   <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
-                    {'$'}
-                  </Text>
-                  <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
-                    {singleOrderDetail?.order_delivery?.amount}
+                    {`$${singleOrderDetail?.delivery_charge}`}
                   </Text>
                 </View>
               </View>
@@ -146,13 +148,15 @@ const InvoiceDetails = ({
             {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}`}
           </Text>
 
-          <Text style={styles.deliveryDateText}>{`User ID:${userDetailData?.uid}`}</Text>
+          <Text
+            style={styles.deliveryDateText}
+          >{`User ID: #${singleOrderDetail?.user_details?.id}`}</Text>
 
           <Spacer space={SH(35)} />
 
           <Text style={styles.thankYouText}>{strings.deliveryOrders2.thanks}</Text>
 
-          <Spacer space={SH(15)} />
+          <Spacer space={SH(10)} />
           <Image source={barcode} style={{ alignSelf: 'center', height: 50 }} />
 
           <Text style={styles.jobrTextStyle}>{strings.deliveryOrders2.jobr}</Text>

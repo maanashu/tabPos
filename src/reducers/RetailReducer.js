@@ -34,6 +34,8 @@ const INITIALSTATE = {
   timeSlots: [],
   getAllServiceCart: [],
   availableOffer: [],
+  createOrder: {},
+  createServiceOrder: {},
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -395,6 +397,18 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         qrStatuskey: payload,
+      };
+
+    case TYPES.CREATE_ORDER_SUCCESS:
+      return {
+        ...state,
+        createOrder: payload?.createOrder,
+      };
+
+    case TYPES.CREATE_SERVICE_ORDER_SUCCESS:
+      return {
+        ...state,
+        createServiceOrder: payload?.createServiceOrder,
       };
 
     case TYPES.CLEAR_RETAIL_STORE:

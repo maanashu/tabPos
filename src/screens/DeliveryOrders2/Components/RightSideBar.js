@@ -17,8 +17,7 @@ import { COLORS } from '@/theme';
 import { strings } from '@/localization';
 import { getDelivery } from '@/selectors/DeliverySelector';
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const { width, height } = Dimensions.get('window');
 
 const RightSideBar = ({ renderDrawer, viewAllOrder }) => {
   const getDeliveryData = useSelector(getDelivery);
@@ -70,7 +69,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder }) => {
       key: '9',
       image: returnShipping,
       title: strings.deliveryOrders2.returned,
-      count: 0,
+      count: getDeliveryData?.getOrderCount?.[9]?.count ?? 0,
     },
   ];
 
@@ -79,7 +78,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder }) => {
       style={[
         styles.rightSideView,
         {
-          height: viewAllOrder ? windowHeight - 80 : windowHeight - 35,
+          height: viewAllOrder ? height - 80 : height - 35,
         },
       ]}
     >
@@ -90,7 +89,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder }) => {
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.key.toString()}
         contentContainerStyle={{
-          height: viewAllOrder ? windowHeight - 80 : windowHeight - 35,
+          height: viewAllOrder ? height - 80 : height - 35,
         }}
       />
     </View>
@@ -103,7 +102,7 @@ const styles = StyleSheet.create({
   rightSideView: {
     borderRadius: 10,
     alignItems: 'center',
-    width: windowWidth * 0.06,
+    width: width * 0.06,
     backgroundColor: COLORS.white,
     paddingVertical: verticalScale(6),
   },

@@ -2270,7 +2270,7 @@ export const styles = StyleSheet.create({
 
   unitPriceInput: {
     backgroundColor: COLORS.solidGrey,
-    width: Platform.OS === 'android' ? ms(50) : ms(57),
+    width: Platform.OS === 'android' ? ms(50) : ms(38),
     height: ms(20),
     padding: 0,
     margin: 0,
@@ -2278,6 +2278,8 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontSize: SF(13),
     fontFamily: Fonts.Regular,
+    borderRadius: 3,
+    paddingHorizontal: ms(3),
   },
   unitPriceInputWidth: {
     width: Platform.OS === 'android' ? ms(44) : ms(57),
@@ -2317,7 +2319,7 @@ export const styles = StyleSheet.create({
   },
   serviceCartBody: {
     // borderWidth: 1,
-    width: Platform.OS === 'android' ? ms(71) : ms(54),
+    width: Platform.OS === 'android' ? ms(68) : ms(54),
     height: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
