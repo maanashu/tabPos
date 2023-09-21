@@ -302,11 +302,8 @@ export function DashBoard({ navigation }) {
   const tableListItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
-        dispatch(addSellingSelection(item?.delivery_option == 1 ? 2 : 3));
-        navigation.navigate(
-          item?.delivery_option == 1 ? NAVIGATION.deliveryOrders2 : NAVIGATION.shippingOrder2,
-          { isViewAll: true, ORDER_DETAIL: item }
-        );
+        dispatch(addSellingSelection(2));
+        navigation.navigate(NAVIGATION.deliveryOrders2, { isViewAll: true, ORDER_DETAIL: item });
       }}
       style={[styles.reviewRenderView]}
     >

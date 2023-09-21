@@ -54,7 +54,7 @@ export function DrawerNavigator(props) {
       } else if (selection === 2) {
         setActive('deliveryOrders2');
       } else {
-        setActive('shippingOrder2');
+        setActive('dashBoard');
       }
     }
   };

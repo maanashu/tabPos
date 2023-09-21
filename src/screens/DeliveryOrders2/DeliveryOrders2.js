@@ -741,7 +741,7 @@ export function DeliveryOrders2({ route }) {
                         />
                       </View>
 
-                      {changeViewToRecheck ? (
+                      {changeViewToRecheck && openShippingOrders === '9' ? (
                         <ReturnedOrderDetail orderDetail={singleOrderDetail} />
                       ) : (
                         <OrderDetail
