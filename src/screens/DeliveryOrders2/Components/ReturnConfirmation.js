@@ -29,7 +29,6 @@ import {
 const { width } = Dimensions.get('window');
 
 const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck, orderDetail }) => {
-  console.log('orderDetail------', JSON.stringify(orderDetail));
   return (
     <ReactNativeModal
       isVisible={isVisible}

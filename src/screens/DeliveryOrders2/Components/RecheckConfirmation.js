@@ -1,102 +1,86 @@
 import React, { memo } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
-import ReactNativeModal from 'react-native-modal';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { cross, crossButton, Fonts } from '@/assets';
-import { productList } from '@/constants/flatListData';
+import { crossButton, Fonts } from '@/assets';
 
-const { width } = Dimensions.get('window');
+const RecheckConfirmation = ({ onPressCross, inventoryArray, confirmHandler }) => {
+  const renderProductList = ({ item }) => (
+    <View style={styles.itemMainViewStyle}>
+      <Text style={styles.quantityTextStyle}>{item?.qty ?? 0}</Text>
+      <Text style={styles.quantityTextStyle}>{'X'}</Text>
 
-const RecheckConfirmation = ({ isVisible, setIsVisible, onPress }) => {
-  const renderProductList = ({ item, index }) => {
-    return (
-      <View style={styles.itemMainViewStyle}>
-        <Text style={styles.quantityTextStyle}>{item?.quantity}</Text>
-        <Text style={styles.quantityTextStyle}>{'X'}</Text>
+      <View style={styles.productDetailViewStyle}>
+        <Text style={styles.productTextStyle}>{item?.product_name ?? '-'}</Text>
 
-        <View style={{ paddingLeft: ms(8) }}>
-          <Text style={styles.productTextStyle}>{item?.productName}</Text>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={styles.colorTextStyle}>{`Color: ${item?.color}`}</Text>
-            <Text style={styles.colorTextStyle}>{`Size: ${item?.size}`}</Text>
-          </View>
-        </View>
-
-        <View style={styles.priceViewStyle}>
-          <Text style={styles.priceTextStyle}>{item?.price}</Text>
+        <View style={styles.skuViewStyle}>
+          <Text style={styles.colorTextStyle}>{`${item?.product_details?.sku ?? '-'}`}</Text>
         </View>
       </View>
-    );
-  };
+    </View>
+  );
 
   return (
-    <ReactNativeModal
-      isVisible={isVisible}
-      style={styles.modalStyle}
-      animationIn={'slideInRight'}
-      animationOut={'slideOutRight'}
-    >
+    <View style={styles.modalContainer}>
       <View style={styles.headingRowStyle}>
-        <Text style={styles.headingTextStyle}>{strings.returnOrder.recheckConfirmed}</Text>
+        <Text style={styles.headingTextStyle}>{strings.returnOrder.returnToInventory}</Text>
 
-        <TouchableOpacity onPress={() => setIsVisible(false)}>
+        <TouchableOpacity style={styles.crossViewStyle} onPress={onPressCross}>
           <Image source={crossButton} style={styles.crossIconStyle} />
         </TouchableOpacity>
       </View>
 
       <Spacer space={SH(30)} />
-      <View>
-        <Text style={styles.customerNameStyle}>{strings.returnOrder.description}</Text>
-      </View>
+
+      <Text style={styles.customerNameStyle}>{strings.returnOrder.description}</Text>
 
       <Spacer space={SH(20)} />
 
       <FlatList
-        data={productList}
+        data={inventoryArray}
         renderItem={renderProductList}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item?.key}
-        style={{ height: ms(200) }}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: ms(10) }}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.contentContainerStyle}
       />
 
       <View style={{ flex: 1 }} />
 
-      <TouchableOpacity onPress={() => onPress()} style={styles.buttonStyle}>
-        <Text style={styles.buttonTextStyle}>{'Confirm'}</Text>
+      <TouchableOpacity onPress={confirmHandler} style={styles.buttonStyle}>
+        <Text style={styles.buttonTextStyle}>{strings.management.confirm}</Text>
       </TouchableOpacity>
-    </ReactNativeModal>
+    </View>
   );
 };
 
 export default memo(RecheckConfirmation);
 
 const styles = StyleSheet.create({
-  modalStyle: {
-    width: width / 3.2,
+  modalContainer: {
+    backgroundColor: COLORS.white,
+    width: SH(500),
     borderRadius: 10,
     alignSelf: 'flex-end',
-    backgroundColor: COLORS.white,
   },
   headingTextStyle: {
     fontSize: SF(25),
     textAlign: 'center',
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
+  },
+  crossViewStyle: {
+    width: SH(35),
+    height: SH(35),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  contentContainerStyle: {
+    flexGrow: 1,
+    paddingBottom: ms(10),
   },
   headingRowStyle: {
     flexDirection: 'row',
@@ -106,8 +90,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   crossIconStyle: {
-    width: SH(14),
-    height: SH(14),
+    width: SH(24),
+    height: SH(24),
     resizeMode: 'contain',
     tintColor: COLORS.dark_grey,
   },
@@ -138,20 +122,18 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },
+  productDetailViewStyle: {
+    width: SH(200),
+    paddingLeft: ms(8),
+  },
   productTextStyle: {
     fontSize: SF(9),
     color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
-  priceViewStyle: {
-    flex: 1,
-    alignItems: 'flex-end',
-    paddingHorizontal: ms(10),
-  },
-  priceTextStyle: {
-    fontSize: SF(12),
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
+  skuViewStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   buttonStyle: {
     height: ms(35),
