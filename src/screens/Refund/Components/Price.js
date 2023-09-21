@@ -7,10 +7,10 @@ import { Fonts } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { useState } from 'react';
 
 const Price = ({ orderData, onPresshandler }) => {
-  const [productsVerified, setProductsVerified] = useState(false);
+  const hasCheckedItem = orderData?.order?.order_details.some((item) => item.isChecked === true);
+
   return (
     <View style={styles.subTotalView}>
       <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
@@ -78,29 +78,24 @@ const Price = ({ orderData, onPresshandler }) => {
       <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
         <TouchableOpacity
           onPress={() => {
-            const hasCheckedItem = orderData?.order?.order_details.some(
-              (item) => item.isChecked === true
-            );
-
             if (hasCheckedItem) {
               onPresshandler();
-              setProductsVerified(true);
             } else {
-              alert('Please verify all products');
+              alert('Please select products to return');
             }
           }}
           style={[
             styles.returnButtonStyle,
             {
-              backgroundColor: productsVerified ? COLORS.primary : COLORS.white,
-              borderWidth: productsVerified ? 0 : 1,
+              backgroundColor: hasCheckedItem ? COLORS.primary : COLORS.white,
+              borderWidth: hasCheckedItem ? 0 : 1,
             },
           ]}
         >
           <Text
             style={[
               styles.returnTextStyle,
-              { color: productsVerified ? COLORS.white : COLORS.dark_grey },
+              { color: hasCheckedItem ? COLORS.white : COLORS.dark_grey },
             ]}
           >
             {'Return All'}

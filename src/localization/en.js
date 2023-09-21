@@ -520,6 +520,7 @@ export const en = {
     checkLater: 'Check later',
     recheck: 'Re-check',
     recheckConfirmed: 'Recheck confirmed!',
+    returnToInventory: 'Return to Inventory',
     description: 'All Returned item will be adjusted with inventory',
     scanbarCode: 'Scan barcode of each item returned',
     returnCart: 'Add to Return Cart',
