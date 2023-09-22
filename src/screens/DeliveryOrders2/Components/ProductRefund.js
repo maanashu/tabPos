@@ -273,9 +273,29 @@ export function ProductRefund(props) {
         ['applyToEachItemKey']: applyEachItem, //
       }));
       setOrders(newArray);
-      setChangeView('PaymentScreen');
+      const data = {
+        order: orders,
+        orderData: finalOrder,
+        applyEachItem: applyEachItem,
+        applicableForAllItems: applicableIsCheck,
+        payableAmount: totalRefundableAmount(),
+        subTotal: totalRefundAmount,
+        totalTaxes: applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0,
+        total: applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0,
+      };
+      navigate(NAVIGATION.paymentSelection, { screen: data });
     } else {
-      setChangeView('PaymentScreen');
+      const data = {
+        order: orders,
+        orderData: finalOrder,
+        applyEachItem: applyEachItem,
+        applicableForAllItems: applicableIsCheck,
+        payableAmount: totalRefundableAmount(),
+        subTotal: totalRefundAmount,
+        totalTaxes: applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0,
+        total: applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0,
+      };
+      navigate(NAVIGATION.paymentSelection, { screen: data });
     }
   };
 
@@ -592,7 +612,6 @@ export function ProductRefund(props) {
         <RecheckConfirmation
           onPressCross={() => setIsCheckConfirmationModalVisible(false)}
           inventoryArray={products}
-          // confirmHandler={onPressConfirm}
         />
       </ReactNativeModal>
     </View>
