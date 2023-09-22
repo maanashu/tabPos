@@ -1595,15 +1595,11 @@ export class RetailController {
             start_time: '07:00 PM',
             end_time: '08:00PM',
           };
-      console.log('endpoint,', endpoint);
-      console.log('body,', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response,', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error,', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',

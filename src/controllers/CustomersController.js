@@ -45,7 +45,6 @@ export class CustomersController {
   }
 
   static async getOrderUser(data) {
-    console.log('data', data);
     return new Promise((resolve, reject) => {
       const endpoint =
         data?.month === 'none' && data?.storeLocation === 'none'
@@ -64,15 +63,11 @@ export class CustomersController {
             ApiOrderInventory.getOrderUser +
             `?seller_id=${data?.sellerID}&user_uid=${data?.userId}&month=${data?.month}&store_location=${data?.storeLocation}&page=${data?.page}&limit=${data?.limit}`;
 
-      console.log('endpoint', endpoint);
-
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           reject(error);
         });
     });
