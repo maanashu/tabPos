@@ -54,6 +54,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [customerType, setCustomerType] = useState(
     saveCustomeType === undefined ? 'new_customers' : saveCustomeType
   );
+
   const [show, setShow] = useState(false);
   const customerArray = getCustomerData?.getUserOrder?.data ?? [];
   const payloadLength = Object.keys(getCustomerData?.getUserOrder)?.length ?? 0;

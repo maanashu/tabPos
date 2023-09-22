@@ -39,7 +39,15 @@ const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck, orderDeta
       <View style={styles.headingRowStyle}>
         <Text style={styles.headingTextStyle}>{strings.returnOrder.heading}</Text>
 
-        <TouchableOpacity onPress={() => setIsVisible(false)}>
+        <TouchableOpacity
+          style={{
+            width: SH(34),
+            height: SH(34),
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={() => setIsVisible(false)}
+        >
           <Image source={crossButton} style={styles.crossIconStyle} />
         </TouchableOpacity>
       </View>
@@ -157,8 +165,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   crossIconStyle: {
-    width: SH(14),
-    height: SH(14),
+    width: SH(24),
+    height: SH(24),
     resizeMode: 'contain',
     tintColor: COLORS.dark_grey,
   },

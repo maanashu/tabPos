@@ -26,6 +26,8 @@ import ReactNativeModal from 'react-native-modal';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import CustomerDetails from './CustomerDetails';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -34,7 +36,6 @@ const ReturnedOrderDetail = ({ orderDetail, onPressConfirm }) => {
   const textInputRef = useRef();
   const [productUpc, setProductUpc] = useState('');
   const [orderDetails, setOrderDetails] = useState([]);
-  const [inventoryProduct, setInventoryProduct] = useState([]);
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
   useEffect(() => {
@@ -45,8 +46,11 @@ const ReturnedOrderDetail = ({ orderDetail, onPressConfirm }) => {
     const hasCheckedItem = orderDetails?.some((item) => item.isChecked === true);
     if (hasCheckedItem) {
       const getInventory = orderDetails?.filter((e) => e.isChecked);
-      setInventoryProduct(getInventory);
-      setIsCheckConfirmationModalVisible(true);
+      navigate(NAVIGATION.productRefund, {
+        productsArray: orderDetail?.order_details,
+        orderData: orderDetail,
+      });
+      // setIsCheckConfirmationModalVisible(true);
     } else {
       alert('Please select atleast one product');
     }
@@ -247,19 +251,6 @@ const ReturnedOrderDetail = ({ orderDetail, onPressConfirm }) => {
           </View>
         </View>
       </View>
-
-      <ReactNativeModal
-        isVisible={isCheckConfirmationModalVisible}
-        style={styles.modalStyle}
-        animationIn={'slideInRight'}
-        animationOut={'slideOutRight'}
-      >
-        <RecheckConfirmation
-          onPressCross={() => setIsCheckConfirmationModalVisible(false)}
-          inventoryArray={inventoryProduct}
-          confirmHandler={onPressConfirm}
-        />
-      </ReactNativeModal>
 
       {isProductLoading ? (
         <View style={[styles.loaderStyle, { backgroundColor: 'rgba(0,0,0,0.1)' }]}>
