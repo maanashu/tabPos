@@ -176,17 +176,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
     const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
     setDate(formattedDate);
-    // if (weeklyTransaction) {
-    //   setSelectId2(0);
-    //   dispatch(getTotakTraDetail(formattedDate, sellerID, 'all'));
-    // } else {
-    // setSelectId(0);
-    return;
-
-    dispatch(getTotalTra(null, sellerID, formattedDate));
-    // }
   };
-
   const getFormattedTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -194,7 +184,6 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-
   const maxDate = getFormattedTodayDate();
 
   const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));

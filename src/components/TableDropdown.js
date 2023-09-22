@@ -7,7 +7,14 @@ import DropDownPicker from 'react-native-dropdown-picker';
 export function TableDropdown({ placeholder, selected, data }) {
   const [statusModalOpen, setStatusModelOpen] = useState(false);
   const [statusModalValue, setStatusModalValue] = useState(null);
-  const [statusItems, setStatusItems] = useState([{ label: 'none', value: 'none' }, ...data]);
+  // const [statusItems, setStatusItems] = useState([{ label: 'none', value: 'none' }, ...data]);
+
+  const initialStatusItems =
+    Array.isArray(data) && data.length > 0
+      ? [{ label: 'none', value: 'none' }, ...data]
+      : [{ label: 'none', value: 'none' }];
+
+  const [statusItems, setStatusItems] = useState(initialStatusItems);
 
   // { label: 'none', value: 'none' },
   //   { label: 'xyz', value: 'xyz' },

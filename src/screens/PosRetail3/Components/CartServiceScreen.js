@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Keyboard, ScrollView, Text, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
@@ -45,6 +45,7 @@ import { updateServiceCartLength } from '@/actions/CartAction';
 import { getServiceCartLength } from '@/selectors/CartSelector';
 import { useFocusEffect } from '@react-navigation/core';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
+import { CustomProductAdd } from './CustomProductAdd';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -72,6 +73,7 @@ export function CartServiceScreen({
   const [cartIndex, setCartIndex] = useState();
   const [unitPrice, setUnitPrice] = useState();
   const [cartProductId, setCartProductId] = useState();
+  const [numPadModal, setNumPadModal] = useState(false);
 
   useEffect(() => {
     const data = {
@@ -351,7 +353,7 @@ export function CartServiceScreen({
                               style={styles.offerImage}
                             />
                             <Text style={styles.blueListDataText} numberOfLines={1}>
-                              {data?.pos_user_details?.user?.user_profiles?.firstname}sssssssssssss
+                              {data?.pos_user_details?.user?.user_profiles?.firstname}
                             </Text>
                           </View>
                         </View>
@@ -436,7 +438,10 @@ export function CartServiceScreen({
             <View style={styles.displayflex}>
               <TouchableOpacity
                 style={styles.holdCartPad}
-                //   onPress={() => setProductdetailModal(true)}
+                onPress={() => {
+                  backCartLoad();
+                  setNumPadModal(true);
+                }}
               >
                 <Image source={sideKeyboard} style={styles.keyboardIcon} />
               </TouchableOpacity>
@@ -612,6 +617,12 @@ export function CartServiceScreen({
           itemData={serviceItemSave}
           offerId={offerId}
         />
+      </Modal>
+
+      <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+          <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="service" />
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );

@@ -10,26 +10,27 @@ export class CustomersController {
     let convertedString = originalString.toLowerCase().replace(/\s+/g, '_');
     return new Promise((resolve, reject) => {
       const endpoint =
-        // data?.area == 'none'
-        // ?
-
-        ORDER_URL +
-        ApiOrderInventory.getUserOrder +
-        `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}`;
-      // :
-
-      // ORDER_URL +
-      //   ApiOrderInventory.getUserOrder +
-      //   `?seller_id=${data?.sellerID}&type=${convertedString}&state=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
-
-      // console.log(endpoint);
+        data?.area === 'none' && data?.calenderDate === undefined
+          ? ORDER_URL +
+            ApiOrderInventory.getUserOrder +
+            `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}`
+          : data?.calenderDate !== undefined && data?.area == 'none'
+          ? ORDER_URL +
+            ApiOrderInventory.getUserOrder +
+            `?seller_id=${data?.sellerID}&type=${convertedString}&date=${data?.calenderDate}&page=${data?.page}&limit=${data?.limit}`
+          : data?.calenderDate === undefined && data?.area !== 'none'
+          ? ORDER_URL +
+            ApiOrderInventory.getUserOrder +
+            `?seller_id=${data?.sellerID}&type=${convertedString}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`
+          : ORDER_URL +
+            ApiOrderInventory.getUserOrder +
+            `?seller_id=${data?.sellerID}&type=${convertedString}&date=${data?.calenderDate}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
 
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          // console.log('error', error);
           error?.msg &&
             Toast.show({
               text2: error.msg,
@@ -44,16 +45,34 @@ export class CustomersController {
   }
 
   static async getOrderUser(data) {
+    console.log('data', data);
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getOrderUser +
-        `?seller_id=${data?.sellerID}&user_uid=${data?.userId}&page=${data?.page}&limit=${data?.limit}`;
+        data?.month === 'none' && data?.storeLocation === 'none'
+          ? ORDER_URL +
+            ApiOrderInventory.getOrderUser +
+            `?seller_id=${data?.sellerID}&user_uid=${data?.userId}&page=${data?.page}&limit=${data?.limit}`
+          : data?.month !== 'none' && data?.storeLocation === 'none'
+          ? ORDER_URL +
+            ApiOrderInventory.getOrderUser +
+            `?seller_id=${data?.sellerID}&user_uid=${data?.userId}&month=${data?.month}&page=${data?.page}&limit=${data?.limit}`
+          : data?.month === 'none' && data?.storeLocation !== 'none'
+          ? ORDER_URL +
+            ApiOrderInventory.getOrderUser +
+            `?seller_id=${data?.sellerID}&user_uid=${data?.userId}&store_location=${data?.storeLocation}&page=${data?.page}&limit=${data?.limit}`
+          : ORDER_URL +
+            ApiOrderInventory.getOrderUser +
+            `?seller_id=${data?.sellerID}&user_uid=${data?.userId}&month=${data?.month}&store_location=${data?.storeLocation}&page=${data?.page}&limit=${data?.limit}`;
+
+      console.log('endpoint', endpoint);
+
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           reject(error);
         });
     });
@@ -112,14 +131,25 @@ export class CustomersController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.getArea + `?seller_id=${sellerID}`;
-      console.log(endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
+          reject(error);
+        });
+    });
+  }
+
+  static async getStoreLocation(data) {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint = ORDER_URL + ApiOrderInventory.getStoreLocation + `?seller_id=${sellerID}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
           reject(error);
         });
     });

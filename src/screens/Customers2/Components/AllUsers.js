@@ -54,15 +54,14 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [customerType, setCustomerType] = useState(
     saveCustomeType === undefined ? 'new_customers' : saveCustomeType
   );
-
-  console.log('getCustomerData?.getUserOrder', getCustomerData?.getUserOrder);
   const [show, setShow] = useState(false);
   const customerArray = getCustomerData?.getUserOrder?.data ?? [];
   const payloadLength = Object.keys(getCustomerData?.getUserOrder)?.length ?? 0;
 
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [dateformat, setDateformat] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState();
+  const [formatedDate, setFormatedDate] = useState();
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
@@ -72,7 +71,6 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [defaultDate, setDefaultDate] = useState(new Date());
   const [dropdownSelect, setDropdownSelect] = useState('none');
   const onchangeValue = (value) => setDropdownSelect(value);
-  console.log('dropdownSelect', dropdownSelect);
 
   // useEffect(() => {
   //   if (paginationModalValue == 10) {
@@ -111,6 +109,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   };
 
   const maxDate = getFormattedTodayDate();
+
   const paginationData = {
     total: getCustomerData?.getUserOrder?.total ?? '0',
     totalPages: getCustomerData?.getUserOrder?.total_pages ?? '0',
@@ -124,9 +123,10 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
       page: page,
       limit: paginationModalValue,
       area: dropdownSelect,
+      calenderDate: formatedDate,
     };
     dispatch(getUserOrder(data));
-  }, [selectedId, paginationModalValue, page, dropdownSelect]);
+  }, [selectedId, paginationModalValue, page, dropdownSelect, formatedDate]);
 
   const paginationInchandler = () => {
     setPage(page + 1);
@@ -169,7 +169,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
     const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
     setDateformat(formattedDate);
-    setDate(fullDate);
+    setDate(formattedDate);
   };
 
   const dummyCustomerData = [
@@ -288,11 +288,22 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
           >
             <View style={styles.calendarModalView}>
               <CalendarPickerModal
-                onPress={() => setShow(false)}
+                onPress={() => {
+                  setShow(false);
+                  setFormatedDate();
+                }}
                 onDateChange={onChangeDate}
-                onSelectedDate={() => setShow(false)}
+                onSelectedDate={() => {
+                  setShow(false);
+                  setFormatedDate(date);
+                }}
                 maxDate={maxDate}
                 selectedStartDate={defaultDate}
+                onCancelPress={() => {
+                  setShow(false);
+                  setFormatedDate();
+                  setDate();
+                }}
               />
             </View>
           </Modal>
