@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 40,
   },
   declineButtonStyle: {
     height: SH(48),

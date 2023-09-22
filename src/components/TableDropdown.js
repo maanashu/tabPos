@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    top: Platform.OS === 'android' ? 40 : 32,
+    top: 40,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   listItemLabelStyle: {
