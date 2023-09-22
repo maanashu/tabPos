@@ -172,6 +172,13 @@ export const ApiRewards = {
   getRewardedUsers: `rewards/pos/rewarded-people`,
   getRewardUser: 'rewards/pos/users/statistics',
 };
+export const plansAPI = {
+  getAllPlans: `plans`,
+  createPlan: `plans/`,
+  getPlanById: `plans/:`,
+  buyPlan: `subscription`,
+  activePlan: `subscription/active`,
+};
 
 // Add URLS which is required to send POS USER token
 export const API_URLS_USING_POS_USER_ACCESS_TOKEN = (sellerID) => [

@@ -22,6 +22,7 @@ client.interceptors.request.use(async function (config) {
 
   console.log('user', user);
 
+  console.log('userTokenn', user);
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
    * @returns Token for api call

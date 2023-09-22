@@ -72,32 +72,11 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [dropdownSelect, setDropdownSelect] = useState('none');
   const onchangeValue = (value) => setDropdownSelect(value);
 
-  // useEffect(() => {
-  //   if (paginationModalValue == 10) {
-  //     setInd(0);
-  //   }
-  //   // if (paginationModalValue >= 15) {
-  //   //   setInd(1);
-  //   // }
-  // }, [paginationModalValue]);
-
   const areaSelector = [
     areaData?.map((item, index) => ({
       label: item?.state,
       value: item?.state,
     })),
-    // {
-    //   label: 'Shimla',
-    //   value: 'shimla',
-    // },
-    // {
-    //   label: 'Haryana',
-    //   value: 'haryana',
-    // },
-    // {
-    //   label: 'Punjab',
-    //   value: 'punjab',
-    // },
   ];
 
   const getFormattedTodayDate = () => {

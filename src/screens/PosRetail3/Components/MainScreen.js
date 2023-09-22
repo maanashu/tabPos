@@ -561,9 +561,28 @@ export function MainScreen({
 
   // const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
 
-  const renderFooterPost = () => {
-    return (
-      <View style={{}}>
+  // const renderFooterPost = () => {
+  //   return (
+  //     <View style={{}}>
+  //       {isLoadingMore && (
+  //         <ActivityIndicator
+  //           style={{ marginVertical: 14 }}
+  //           size={'large'}
+  //           color={COLORS.blueLight}
+  //         />
+  //       )}
+  //     </View>
+  //   );
+  // };
+  const renderFooterPost = useCallback(
+    () => (
+      <View
+        style={
+          {
+            // marginBottom: ms(20),
+          }
+        }
+      >
         {isLoadingMore && (
           <ActivityIndicator
             style={{ marginVertical: 14 }}
@@ -572,9 +591,9 @@ export function MainScreen({
           />
         )}
       </View>
-    );
-  };
-
+    ),
+    [isLoadingMore]
+  );
   useFocusEffect(
     React.useCallback(() => {
       return () => dispatch(getMainProduct());
@@ -843,16 +862,14 @@ export function MainScreen({
                   numColumns={7}
                   contentContainerStyle={{
                     justifyContent: 'space-between',
+                    marginTop: isLoadingMore ? -50 : 0,
                   }}
                   scrollEnabled={true}
                   showsVerticalScrollIndicator={false}
                   ListFooterComponent={renderFooterPost}
-                  // onEndReached={debouncedLoadMoreProduct}
-                  // onEndReached={onLoadMoreProduct}
-                  // onEndReachedThreshold={0.5}
                   onEndReachedThreshold={0.1}
-                  // onEndReached={onEndReached}
                   onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                  onMomentumScrollBegin={() => {}}
                   onMomentumScrollEnd={() => {
                     if (onEndReachedCalledDuringMomentum.current) {
                       onLoadMoreProduct();
