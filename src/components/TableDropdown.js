@@ -3,16 +3,26 @@ import { StyleSheet, Image } from 'react-native';
 import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
 import { dropdown2, Fonts } from '@/assets';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useEffect } from 'react';
 
 export function TableDropdown({ placeholder, selected, data }) {
+  console.log('Sds', data);
   const [statusModalOpen, setStatusModelOpen] = useState(false);
   const [statusModalValue, setStatusModalValue] = useState(null);
-  const [statusItems, setStatusItems] = useState([{ label: 'none', value: 'none' }, ...data]);
+
+  const [statusItems, setStatusItems] = useState();
+  useEffect(() => {
+    const initialStatusItems =
+      Array.isArray(data) && data.length > 0
+        ? [{ label: 'none', value: 'none' }, ...data]
+        : [{ label: 'none', value: 'none' }];
+    setStatusItems(initialStatusItems);
+  }, [data]);
 
   // { label: 'none', value: 'none' },
   //   { label: 'xyz', value: 'xyz' },
   //   { label: 'abc', value: 'abc' },
-  const finalValues = statusModalValue == 'none' ? placeholder : statusModalValue;
+  const finalValues = statusModalValue == 'none' ? null : statusModalValue;
   return (
     <DropDownPicker
       ArrowUpIconComponent={({ style }) => <Image source={dropdown2} style={styles.dropDownIcon} />}

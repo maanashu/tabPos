@@ -91,10 +91,10 @@ export const getDrawerSessions = () => async (dispatch) => {
     dispatch(getDrawerSessionError(error.message));
   }
 };
-export const getPaymentDrawerSessions = () => async (dispatch) => {
+export const getPaymentDrawerSessions = (drawerId) => async (dispatch) => {
   dispatch(getPaymentDrawerHistoryRequest());
   try {
-    const res = await CashTrackingController.getPaymentDrawerSessions();
+    const res = await CashTrackingController.getPaymentDrawerSessions(drawerId);
     dispatch(getPaymentDrawerHistorySuccess(res?.payload));
   } catch (error) {
     dispatch(getPaymentDrawerHistoryError(error.message));

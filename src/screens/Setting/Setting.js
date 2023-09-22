@@ -30,6 +30,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { strings } from '@/localization';
+import { getAllPlans } from '@/actions/SubscriptionAction';
 
 export function Setting() {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ export function Setting() {
   useEffect(() => {
     if (isFocused) {
       dispatch(getSettings());
+
       // dispatch(getShippingPickup());
     }
   }, [isFocused]);
