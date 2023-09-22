@@ -31,6 +31,7 @@ import { CustomHeader } from '@/screens/PosRetail3/Components';
 import { getDrawerSessions } from '@/actions/CashTrackingAction';
 import ReactNativeModal from 'react-native-modal';
 import InventoryProducts from './InventoryProducts';
+import RecheckConfirmation from './RecheckConfirmation';
 
 const { width, height } = Dimensions.get('window');
 
@@ -46,6 +47,8 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   const [orders, setOrders] = useState();
   const [selectedItem, setSelectedItem] = useState('');
   const [inventoryModal, setInventoryModal] = useState(false);
+
+  const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
   const finalOrder = JSON.parse(JSON.stringify(orderData));
   finalOrder.order.order_details = orderList;
@@ -619,7 +622,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
               <Spacer space={SH(20)} />
 
               <TouchableOpacity
-                onPress={() => getOrdersDetail()}
+                onPress={() => setIsCheckConfirmationModalVisible(true)}
                 disabled={buttonText === 'Applied' ? false : true}
                 style={[
                   styles.nextButtonStyle,
@@ -664,6 +667,17 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           clickedItem={selectedItem}
         />
       </ReactNativeModal>
+
+      <RecheckConfirmation
+        orderList={orders}
+        onPress={(modifiedOrderDetailArr) => {
+          setIsCheckConfirmationModalVisible(false);
+          setOrders([...modifiedOrderDetailArr]);
+          getOrdersDetail();
+        }}
+        isVisible={isCheckConfirmationModalVisible}
+        setIsVisible={setIsCheckConfirmationModalVisible}
+      />
     </View>
   );
 };
