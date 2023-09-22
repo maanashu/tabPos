@@ -260,7 +260,7 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
               </Text>
             </TouchableOpacity>
             <ShipmentTracking
-              status={singleOrderDetail?.status}
+              orderData={singleOrderDetail}
               // props={{ status: singleOrderDetail?.status }}
             />
           </View>

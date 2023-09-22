@@ -19,7 +19,11 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, ShadowStyles } from '@/theme';
 
-const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
+const ShipmentTracking = ({ orderData }) => {
+  const orderStatus = orderData?.status;
+  const shopName = orderData?.seller_details?.organization_name;
+  const shopAddress = orderData?.seller_details?.current_address?.street_address;
+
   const [isHideView, setisHideView] = useState(false);
 
   const currentStatus = (status) => {
@@ -41,7 +45,7 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
       <View style={styles.headerMainView}>
         <View>
           <Text style={styles.orderStatusHeading}>{strings.deliveryOrders.orderStatus}</Text>
-          <Text style={styles.currentStatusText}>{currentStatus(status)}</Text>
+          <Text style={styles.currentStatusText}>{currentStatus(orderStatus)}</Text>
         </View>
         <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
           <Image source={isHideView ? down : up} style={styles.downArrowStyle} />
@@ -59,7 +63,7 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
           {heading === 'Verified' ? (
             <Image
               style={styles.verifiedIconStyle}
-              source={status === 5 ? fillRadio : blankRadio}
+              source={orderStatus === 5 ? fillRadio : blankRadio}
             />
           ) : (
             <Image
@@ -82,12 +86,18 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
     <View style={styles.statusMainView}>
       <View style={{ alignItems: 'center' }}>
         {heading === 'Return CODE' ? (
-          <Image style={styles.verifiedIconStyle} source={blankRadio} />
+          <Image
+            style={[styles.verifiedIconStyle, { tintColor: COLORS.primary }]}
+            source={fillRadio}
+          />
         ) : heading === strings.deliveryOrders.cancelled ? (
           <>
-            <Image style={styles.statusIconStyle} source={movingArrowBlue} />
             <Image
-              style={[styles.verifiedIconStyle, { resizeMode: 'contain' }]}
+              style={[styles.statusIconStyle, { width: ms(10), height: ms(15) }]}
+              source={movingArrowBlue}
+            />
+            <Image
+              style={[styles.verifiedIconStyle, { width: ms(15), height: ms(7) }]}
               source={cancleIc}
             />
           </>
@@ -97,7 +107,13 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
             source={radioArrBlue}
           />
         ) : (
-          <Image style={styles.statusIconStyle} source={radioArrBlue} />
+          <Image
+            style={[
+              styles.statusIconStyle,
+              { resizeMode: 'contain', width: ms(17), height: ms(30) },
+            ]}
+            source={radioArrBlue}
+          />
         )}
       </View>
 
@@ -105,24 +121,21 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
 
       <View style={styles.statusViewText}>
         {heading === 'Return to Shop' ? (
-          <TouchableOpacity onPress={onPressShop}>
+          <View>
             <Text style={styles.statusNameText}>{heading}</Text>
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image
-                style={[styles.verifiedIconStyle, { resizeMode: 'contain' }]}
-                source={storeLogo}
-              />
+              <Image style={styles.verifiedIconStyle} source={storeLogo} />
               <View>
-                <Text style={styles.statusNameText}>{'Store name'}</Text>
+                <Text style={styles.statusNameText}>{shopName ?? '-'}</Text>
                 <Text
                   style={[styles.statusNameText, { fontSize: ms(5), fontFamily: Fonts.Regular }]}
                 >
-                  {'1222 Tully Street,Detroit, MI 48227'}
+                  {shopAddress ?? 'jfdhskfhsdjkfhksdfhjksdfhsdkjfhsdjkfhksdj'}
                 </Text>
               </View>
             </View>
-          </TouchableOpacity>
+          </View>
         ) : (
           <Text style={styles.statusNameText}>{heading}</Text>
         )}
@@ -140,7 +153,7 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
         <Spacer horizontal space={ms(5)} />
 
         <View style={styles.statusViewText}>
-          <Text style={styles.statusNameText}>{currentStatus(status)}</Text>
+          <Text style={styles.statusNameText}>{currentStatus(orderStatus)}</Text>
         </View>
       </View>
     </>
@@ -148,7 +161,7 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
 
   return (
     <>
-      {status === 9 ? (
+      {orderStatus === 9 ? (
         <View style={[styles.mainContainer, { bottom: ms(30) }]}>
           <>
             <View style={styles.headerMainView}>
@@ -183,7 +196,7 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
                 <Spacer horizontal space={ms(5)} />
 
                 <View style={styles.statusViewText}>
-                  <Text style={styles.statusNameText}>{strings.deliveryOrders.cancelled}</Text>
+                  <Text style={styles.statusNameText}>{strings.deliveryOrders.returned}</Text>
                 </View>
               </View>
             </View>
@@ -194,12 +207,12 @@ const ShipmentTracking = ({ status, orderStatus, onPressShop }) => {
           {shipmentHeader}
           {isHideView ? (
             <View style={styles.statusViewStyle}>
-              {statusView(strings.settings.verified, status >= 5 && true)}
-              {statusView(strings.deliveryOrders.delivered, status >= 5 && true)}
-              {statusView(strings.deliveryOrders.pickup, status >= 4 && true)}
-              {statusView(strings.deliveryOrders.driverAssigned, status >= 3 && true)}
-              {statusView(strings.deliveryOrders.readyToPickup, status >= 2 && true)}
-              {statusView(strings.deliveryOrders.orderAccepted, status >= 1 && true)}
+              {statusView(strings.settings.verified, orderStatus >= 5 && true)}
+              {statusView(strings.deliveryOrders.delivered, orderStatus >= 5 && true)}
+              {statusView(strings.deliveryOrders.pickup, orderStatus >= 4 && true)}
+              {statusView(strings.deliveryOrders.driverAssigned, orderStatus >= 3 && true)}
+              {statusView(strings.deliveryOrders.readyToPickup, orderStatus >= 2 && true)}
+              {statusView(strings.deliveryOrders.orderAccepted, orderStatus >= 1 && true)}
             </View>
           ) : (
             <View style={styles.statusViewStyle}>{latestStatus()}</View>

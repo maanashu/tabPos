@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
@@ -10,9 +10,11 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
+import CustomerDetails from './CustomerDetails';
+import ButtonComponent from './ButtonComponent';
 import ShipmentTracking from './ShipmentTracking';
 import mapCustomStyle from '@/components/MapCustomStyles';
-import { deliveryHomeIcon, expand, Fonts, gps, scooter, userImage } from '@/assets';
+import { deliveryHomeIcon, expand, Fonts, gps, scooter } from '@/assets';
 
 import styles from '../styles';
 
@@ -24,7 +26,6 @@ const OrderDetail = ({
   declineHandler,
   openShippingOrders,
   trackHandler,
-  isProductDetailLoading,
   latitude,
   longitude,
   location,
@@ -36,7 +37,7 @@ const OrderDetail = ({
 }) => {
   return (
     <View style={styles.orderDetailView}>
-      {openShippingOrders >= '3' && userDetail?.status !== 7 ? (
+      {openShippingOrders >= '3' && userDetail?.status !== 7 && userDetail?.status !== 8 ? (
         <>
           <MapView
             customMapStyle={mapCustomStyle}
@@ -81,11 +82,13 @@ const OrderDetail = ({
               </View>
             </Marker>
           </MapView>
+
           <TouchableOpacity onPress={() => changeMapState(true)} style={styles.expandButtonStyle}>
             <Image source={expand} style={styles.rightIconStyle} />
             <Text style={[styles.acceptTextStyle, { paddingHorizontal: 12 }]}>{'Expand'}</Text>
           </TouchableOpacity>
-          <ShipmentTracking status={userDetail?.status} onPressShop={onPressShop} />
+
+          <ShipmentTracking orderData={userDetail} onPressShop={onPressShop} />
 
           <TouchableOpacity
             onPress={() =>
@@ -106,60 +109,7 @@ const OrderDetail = ({
         </>
       ) : (
         <>
-          <View style={styles.orderDetailViewStyle}>
-            <View style={[styles.locationViewStyle, { flex: 1 }]}>
-              <Image
-                source={
-                  userDetail?.user_details?.profile_photo
-                    ? { uri: userDetail?.user_details?.profile_photo }
-                    : userImage
-                }
-                style={styles.userImageStyle}
-              />
-
-              <View style={styles.userNameView}>
-                <Text style={[styles.totalTextStyle, { padding: 0 }]}>
-                  {userDetail?.user_details?.firstname
-                    ? userDetail?.user_details?.firstname
-                    : 'user name'}
-                </Text>
-                <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
-                  {userDetail?.address}
-                </Text>
-              </View>
-            </View>
-
-            <View style={[styles.locationViewStyle, { flex: 0.55 }]}>
-              <Image source={scooter} style={styles.scooterImageStyle} />
-
-              <View style={[styles.userNameView, { paddingLeft: 5 }]}>
-                <Text
-                  style={{
-                    fontFamily: Fonts.Bold,
-                    fontSize: SF(14),
-                    color: COLORS.primary,
-                  }}
-                >
-                  {userDetail?.invoice?.delivery_date ?? ''}
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: Fonts.Medium,
-                    fontSize: SF(11),
-                    color: COLORS.dark_grey,
-                  }}
-                >
-                  {userDetail?.preffered_delivery_start_time
-                    ? userDetail?.preffered_delivery_start_time
-                    : '00.00'}
-                  {'-'}{' '}
-                  {userDetail?.preffered_delivery_end_time
-                    ? userDetail?.preffered_delivery_end_time
-                    : '00.00'}
-                </Text>
-              </View>
-            </View>
-          </View>
+          <CustomerDetails orderDetail={userDetail} />
 
           <View style={{ height: SH(400) }}>
             <FlatList
@@ -195,7 +145,7 @@ const OrderDetail = ({
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                   {strings.shippingOrder.orderId}
                 </Text>
-                <Text style={styles.itemCountText}>{userDetail?.id}</Text>
+                <Text style={styles.itemCountText}>{`#${userDetail?.id}`}</Text>
               </View>
 
               {userDetail?.status === 2 && (
@@ -283,7 +233,11 @@ const OrderDetail = ({
                   <Text
                     style={[
                       styles.totalTextStyle2,
-                      { fontFamily: Fonts.MaisonBold, fontSize: SF(13), color: COLORS.solid_grey },
+                      {
+                        fontFamily: Fonts.MaisonBold,
+                        fontSize: SF(13),
+                        color: COLORS.solid_grey,
+                      },
                     ]}
                   >
                     {'$'}
@@ -296,58 +250,13 @@ const OrderDetail = ({
 
               <Spacer space={SH(15)} />
 
-              <View style={styles.shippingOrdersViewStyle}>
-                {openShippingOrders == '0' ? (
-                  <TouchableOpacity
-                    onPress={() => declineHandler(userDetail?.id)}
-                    style={styles.declineButtonStyle}
-                  >
-                    <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
-                  </TouchableOpacity>
-                ) : null}
-
-                {openShippingOrders === '0' ||
-                openShippingOrders === '1' ||
-                openShippingOrders === '2' ? (
-                  <TouchableOpacity
-                    onPress={() => acceptHandler(userDetail?.id)}
-                    style={styles.acceptButtonView}
-                  >
-                    <Text style={styles.acceptTextStyle}>
-                      {openShippingOrders === '0'
-                        ? strings.buttonStatus.reviewButton
-                        : openShippingOrders === '1'
-                        ? strings.buttonStatus.preparedButton
-                        : openShippingOrders === '2'
-                        ? strings.buttonStatus.prepareButton
-                        : ''}
-                    </Text>
-                  </TouchableOpacity>
-                ) : null}
-
-                {openShippingOrders >= '3' && userDetail?.status !== 7 && (
-                  <TouchableOpacity
-                    onPress={() => trackHandler()}
-                    style={[styles.acceptButtonView]}
-                  >
-                    {isProductDetailLoading ? (
-                      <ActivityIndicator size={'small'} color={COLORS.white} />
-                    ) : (
-                      <Text style={styles.acceptTextStyle}>
-                        {strings.buttonStatus.prepareButton}
-                      </Text>
-                    )}
-                  </TouchableOpacity>
-                )}
-
-                {userDetail?.status === 7 && (
-                  <View style={[styles.acceptButtonView, { backgroundColor: COLORS.washGrey }]}>
-                    <Text style={[styles.acceptTextStyle, { color: COLORS.darkGray }]}>
-                      {'Cancelled by User'}
-                    </Text>
-                  </View>
-                )}
-              </View>
+              <ButtonComponent
+                selected={openShippingOrders}
+                orderData={userDetail}
+                acceptHandler={acceptHandler}
+                declineHandler={declineHandler}
+                trackHandler={trackHandler}
+              />
             </View>
           </View>
         </>

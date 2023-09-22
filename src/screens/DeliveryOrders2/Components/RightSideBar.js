@@ -63,7 +63,9 @@ const RightSideBar = ({ renderDrawer, viewAllOrder }) => {
       key: '7,8',
       image: NoCard,
       title: strings.deliveryOrders.rejected,
-      count: getDeliveryData?.getOrderCount?.[7]?.count ?? 0,
+      count:
+        parseInt(getDeliveryData?.getOrderCount?.[7]?.count) +
+          parseInt(getDeliveryData?.getOrderCount?.[8]?.count) ?? 0,
     },
     {
       key: '9',

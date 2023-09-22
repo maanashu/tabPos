@@ -100,8 +100,6 @@ export const getUserOrder = (data) => async (dispatch) => {
   try {
     const res = await CustomersController.getUserOrder(data);
     dispatch(getUserOrderSuccess(res?.payload));
-
-    console.log('--------------------------', res);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getUserOrderReset());

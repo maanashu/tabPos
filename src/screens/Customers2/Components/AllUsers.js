@@ -55,7 +55,6 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
     saveCustomeType === undefined ? 'new_customers' : saveCustomeType
   );
 
-  console.log('getCustomerData?.getUserOrder', getCustomerData?.getUserOrder);
   const [show, setShow] = useState(false);
   const customerArray = getCustomerData?.getUserOrder?.data ?? [];
   const payloadLength = Object.keys(getCustomerData?.getUserOrder)?.length ?? 0;
@@ -72,7 +71,6 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [defaultDate, setDefaultDate] = useState(new Date());
   const [dropdownSelect, setDropdownSelect] = useState('none');
   const onchangeValue = (value) => setDropdownSelect(value);
-  console.log('dropdownSelect', dropdownSelect);
 
   // useEffect(() => {
   //   if (paginationModalValue == 10) {

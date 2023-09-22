@@ -112,14 +112,11 @@ export class CustomersController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.getArea + `?seller_id=${sellerID}`;
-      console.log(endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           reject(error);
         });
     });
