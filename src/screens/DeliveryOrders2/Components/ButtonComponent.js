@@ -17,6 +17,10 @@ const ButtonComponent = ({ selected, orderData, declineHandler, acceptHandler, t
     isLoadingSelector([TYPES.GET_ORDER_DATA], state)
   );
 
+  console.log('selected====', selected);
+  console.log('selected====', selected);
+  console.log('selected====', selected);
+
   return (
     <View style={styles.shippingOrdersViewStyle}>
       {selected === '0' && (
