@@ -46,18 +46,18 @@ import { TYPES } from '@/Types/WalletTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
 import { memo } from 'react';
-import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
+import { DELIVERY_MODE, PAGINATION_DATA, months } from '@/constants/enums';
 const windowHeight = Dimensions.get('window').height;
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 
-export function WeeklyTransaction({ backHandler, orderClickHandler }) {
+export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) {
   const mapRef = useRef(null);
-
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getWalletData = useSelector(getWallet);
   const getCustomerData = useSelector(getCustomers);
+
   const getTotalTraData = getWalletData?.getTotalTra;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail?.data ?? [];
   const transactionTypeArray = getWalletData?.getTotalTraType;
@@ -76,11 +76,38 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
   const [date, setDate] = useState();
   const [historytype, setHistorytype] = useState('all');
 
-  const [transcationTypeId, setTranscationTypeId] = useState(1);
-  const [transaction, setTransaction] = useState({ modeOfPayment: 'all' });
+  const [transcationTypeId, setTranscationTypeId] = useState(
+    comeFrom == 'all' ? 1 : comeFrom == 'jbr' ? 2 : comeFrom == 'cash' ? 3 : 4
+  );
+  const [transaction, setTransaction] = useState({
+    modeOfPayment:
+      comeFrom == 'all' ? 'all' : comeFrom == 'jbr' ? 'jbr' : comeFrom == 'cash' ? 'cash' : 'card',
+  });
+
   const [show, setShow] = useState(false);
   const [defaultDate, setDefaultDate] = useState(new Date());
   const [formatedDate, setFormatedDate] = useState();
+
+  const statusSelection = (value) => setStatusSelect(value);
+  const [statusSelect, setStatusSelect] = useState('none');
+
+  const orderTypeSelection = (value) => setOrderTypeSelect(value);
+  const [orderTypeSelect, setOrderTypeSelect] = useState('none');
+
+  const dummyArea = [
+    {
+      label: 'Shimla',
+      value: 'shimla',
+    },
+    {
+      label: 'Haryana',
+      value: 'haryana',
+    },
+    {
+      label: 'Punjab',
+      value: 'punjab',
+    },
+  ];
 
   const paginationData = {
     total: getWalletData?.getTotakTraDetail?.total ?? '0',
@@ -348,10 +375,10 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
           </View> */}
 
           <View style={{ marginRight: moderateScale(5) }}>
-            <TableDropdown placeholder="Status" />
+            <TableDropdown placeholder="Status" selected={statusSelection} data={dummyArea} />
           </View>
           <>
-            <TableDropdown placeholder="Order type" />
+            <TableDropdown placeholder="Order type" selected={orderTypeSelection} data={months} />
           </>
         </View>
       </View>
@@ -468,7 +495,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
       </View>
       <View style={{ zIndex: -9 }}>
         <Table>
-          <View style={styles.tableDataHeaderCon}>
+          <View style={[styles.tableDataHeaderCon, { borderWidth: 1, padding: 0 }]}>
             <View style={styles.displayFlex}>
               <View style={styles.tableHeaderLeft}>
                 <Text style={styles.tableTextHeaFirst}>#</Text>
@@ -478,80 +505,18 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
                 <Text numberOfLines={1} style={styles.tableTextHea}>
                   Transaction Id
                 </Text>
-
                 <View style={styles.flexAlign}>
-                  {/* <Text style={styles.tableTextHea}>Employee</Text> */}
-                  <Text numberOfLines={1} style={styles.tableTextHea}>
+                  <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
                     Transaction type
                   </Text>
                   <Image source={tableArrow} style={styles.tableArrow} />
-                  {/* <DropDownPicker
-                    ArrowUpIconComponent={({ style }) => (
-                      <Image source={tableArrow} style={styles.dropDownIconPagination} />
-                    )}
-                    ArrowDownIconComponent={({ style }) => (
-                      <Image source={tableArrow} style={styles.dropDownIconPagination} />
-                    )}
-                    style={styles.dropdown}
-                    containerStyle={[
-                      { width: ms(101), marginTop: Platform.OS === 'ios' ? 0 : ms(0) },
-                      { zIndex: Platform.OS === 'ios' ? 20 : 1 },
-                    ]}
-                    dropDownContainerStyle={styles.transTypeDownContainerStyle}
-                    listItemLabelStyle={styles.listItemLabelStyle}
-                    labelStyle={styles.labelStyle}
-                    selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                    open={transTypeModalOpen}
-                    value={transTypeModalValue}
-                    items={transTypeModalItems}
-                    setOpen={setTransTypeModalOpen}
-                    setValue={setTransTypeModalValue}
-                    setItems={setTransTypeModalItems}
-                    placeholder="Transaction type"
-                    placeholderStyle={styles.placeholderStylePagination}
-                  /> */}
                 </View>
-                <View
-                  style={styles.flexAlign}
-                  onPress={() => setPaymentMethodModalOpen((prev) => !prev)}
-                >
-                  {/* <Text style={styles.tableTextHea}>Customer</Text> */}
-
-                  <Text numberOfLines={1} style={styles.tableTextHea}>
+                <View style={styles.flexAlign}>
+                  <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
                     Payment Method
                   </Text>
                   <Image source={tableArrow} style={styles.tableArrow} />
-                  {/* <DropDownPicker
-                    ArrowUpIconComponent={({ style }) => (
-                      <Image source={tableArrow} style={styles.dropDownIconPagination} />
-                    )}
-                    ArrowDownIconComponent={({ style }) => (
-                      <Image source={tableArrow} style={styles.dropDownIconPagination} />
-                    )}
-                    style={styles.dropdown}
-                    containerStyle={[
-                      { width: Platform.OS === 'ios' ? ms(90) : ms(100) },
-                      { zIndex: Platform.OS === 'ios' ? 20 : 1 },
-                    ]}
-                    dropDownContainerStyle={styles.paymentMethodDownContainerStyle}
-                    listItemLabelStyle={styles.listItemLabelStyle}
-                    labelStyle={styles.labelStyle}
-                    selectedItemLabelStyle={styles.selectedItemLabelStyle}
-                    open={paymentMethodModalOpen}
-                    value={paymentMethodModalValue}
-                    items={paymentMethodModalItems}
-                    setOpen={setPaymentMethodModalOpen}
-                    setValue={setPaymnentMethodModalValue}
-                    setItems={setPaymentMethodModalItems}
-                    placeholder="Payment Method"
-                    placeholderStyle={styles.placeholderStylePagination}
-                  /> */}
                 </View>
-
-                {/* <Text style={styles.tableTextHea}> */}
-                {/* {historytype == 'jbr' ? 'JOBR' : 'Amount'} */}
-
-                {/* </Text> */}
                 <Text style={styles.tableTextHea}>Amount</Text>
                 <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text>
 
@@ -577,7 +542,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler }) {
                     <TouchableOpacity
                       style={[styles.tableDataCon, { zIndex: -9 }]}
                       key={index}
-                      onPress={() => orderClickHandler(item?.id)}
+                      onPress={() => orderClickHandler(item?.id, transaction?.modeOfPayment)}
                     >
                       <View style={styles.displayFlex}>
                         <View style={styles.tableHeaderLeft}>

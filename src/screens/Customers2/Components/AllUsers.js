@@ -49,13 +49,16 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
+  const areaData = getCustomerData?.getArea?.data;
   const [selectedId, setSelectedId] = useState(saveCustomerId === undefined ? 2 : saveCustomerId);
   const [customerType, setCustomerType] = useState(
     saveCustomeType === undefined ? 'new_customers' : saveCustomeType
   );
+
+  console.log('getCustomerData?.getUserOrder', getCustomerData?.getUserOrder);
   const [show, setShow] = useState(false);
   const customerArray = getCustomerData?.getUserOrder?.data ?? [];
-  const payloadLength = Object.keys(getCustomerData?.getUserOrder)?.length;
+  const payloadLength = Object.keys(getCustomerData?.getUserOrder)?.length ?? 0;
 
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [dateformat, setDateformat] = useState('');
@@ -67,8 +70,9 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [ind, setInd] = useState();
   const [indexStart, setIndexStart] = useState();
   const [defaultDate, setDefaultDate] = useState(new Date());
-  const [dropdownSelect, setDropdownSelect] = useState();
+  const [dropdownSelect, setDropdownSelect] = useState('none');
   const onchangeValue = (value) => setDropdownSelect(value);
+  console.log('dropdownSelect', dropdownSelect);
 
   // useEffect(() => {
   //   if (paginationModalValue == 10) {
@@ -79,22 +83,23 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   //   // }
   // }, [paginationModalValue]);
 
-  const dummyArea = [
-    {
-      id: 1,
-      label: 'Shimla',
-      value: 'Shimla',
-    },
-    {
-      id: 2,
-      label: 'Haryana',
-      value: 'Haryana',
-    },
-    {
-      id: 3,
-      label: 'Punjab',
-      value: 'Punjab',
-    },
+  const areaSelector = [
+    areaData?.map((item, index) => ({
+      label: item?.state,
+      value: item?.state,
+    })),
+    // {
+    //   label: 'Shimla',
+    //   value: 'shimla',
+    // },
+    // {
+    //   label: 'Haryana',
+    //   value: 'haryana',
+    // },
+    // {
+    //   label: 'Punjab',
+    //   value: 'punjab',
+    // },
   ];
 
   const getFormattedTodayDate = () => {
@@ -118,9 +123,10 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
       customerType: customerType,
       page: page,
       limit: paginationModalValue,
+      area: dropdownSelect,
     };
     dispatch(getUserOrder(data));
-  }, [selectedId, paginationModalValue, page]);
+  }, [selectedId, paginationModalValue, page, dropdownSelect]);
 
   const paginationInchandler = () => {
     setPage(page + 1);
@@ -291,7 +297,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
             </View>
           </Modal>
           <View style={{ marginHorizontal: moderateScale(10) }}>
-            <TableDropdown selected={onchangeValue} placeholder="Area" data={dummyArea} />
+            <TableDropdown selected={onchangeValue} placeholder="Area" data={areaSelector?.[0]} />
           </View>
         </View>
       </View>

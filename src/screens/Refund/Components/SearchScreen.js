@@ -46,6 +46,7 @@ export function SearchScreen(props) {
   const [showProductRefund, setShowProductRefund] = useState(false);
   const [isShowAttributeModal, setIsShowAttributeModal] = useState(false);
   const [orderDetail, setOrderDetail] = useState([]);
+  const [finalOrderDetail, setFinalOrderDetail] = useState([]);
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
   useEffect(() => {
@@ -71,11 +72,11 @@ export function SearchScreen(props) {
       const newProdArray = [...orderDetail];
       if (newProdArray[0]?.attributes?.length > 0) {
         newProdArray[getArray].qty = count;
-        newProdArray[getArray].isChecked = true;
+        newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
         setOrderDetail(newProdArray);
         setIsShowAttributeModal(false);
       } else {
-        newProdArray[getArray].isChecked = true;
+        newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
         setOrderDetail(newProdArray);
       }
     } else {
@@ -173,9 +174,10 @@ export function SearchScreen(props) {
 
           <RecheckConfirmation
             orderList={orderDetail}
-            onPress={() => {
+            onPress={(modifiedOrderDetailArr) => {
               setShowProductRefund(true);
               setIsCheckConfirmationModalVisible(false);
+              setFinalOrderDetail([...modifiedOrderDetailArr]);
             }}
             isVisible={isCheckConfirmationModalVisible}
             setIsVisible={setIsCheckConfirmationModalVisible}
@@ -190,7 +192,7 @@ export function SearchScreen(props) {
       ) : (
         <ProductRefund
           orderData={order}
-          orderList={orderDetail}
+          orderList={finalOrderDetail}
           backHandler={() => setShowProductRefund(false)}
         />
       )}

@@ -46,7 +46,13 @@ const CurrentStatus = ({ deliverytypes }) => {
     <View style={styles.currentStatusView}>
       <Text style={styles.currentStatusText}>{strings.shippingOrder.currentStatus}</Text>
 
-      <FlatList data={deliverytypes} renderItem={renderItem} showsVerticalScrollIndicator={false} />
+      <FlatList
+        data={deliverytypes}
+        renderItem={renderItem}
+        extraData={deliverytypes}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 };
@@ -70,8 +76,9 @@ const styles = StyleSheet.create({
   itemMainViewStyle: {
     borderWidth: 1,
     marginHorizontal: SW(6),
-    marginVertical: SH(3),
+    marginVertical: SH(8),
     borderRadius: 5,
+    height: SH(50),
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 12,

@@ -148,6 +148,7 @@ export const ApiOrderInventory = {
   invoiceIdSearch: 'invoices/by-invoice-number/',
   return: 'returns/',
   scanbarcode: 'invoices/scan-barcode',
+  getArea: 'orders/customers/state',
 };
 
 export const ApiWalletInventory = {

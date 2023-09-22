@@ -1,28 +1,60 @@
 import React, { memo } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 
-import { ms } from 'react-native-size-matters';
+import { moderateScale, ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { COLORS, SF, SH } from '@/theme';
-import { crossButton, Fonts } from '@/assets';
+import { COLORS, SF, SH, SW } from '@/theme';
+import { crossButton, Fonts, minus, plus } from '@/assets';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) => {
-  const filteredList = orderList?.filter((e) => e?.isChecked);
+  const selectedOrderList = orderList?.filter((e) => e?.isChecked);
+  const inventoryOrderList = selectedOrderList?.map((orderData) => ({
+    ...orderData,
+    write_off_qty: 0,
+    add_to_inventory_qty: orderData?.qty,
+  }));
+  const [editedOrder, setEditedOrder] = useState([]);
 
-  const renderProductList = ({ item }) => {
+  useEffect(() => {
+    setEditedOrder(inventoryOrderList);
+  }, [orderList]);
+
+  const addRemoveQty = (symbol, itemIndex) => {
+    // Create a copy of the orders array to avoid mutating the original state
+    const updatedOrders = [...editedOrder];
+
+    // Find the selected item in the copy
+    const selectedItem = updatedOrders[itemIndex];
+
+    const originalOrderArr = inventoryOrderList[itemIndex];
+
+    if (
+      symbol === '+' &&
+      selectedItem.add_to_inventory_qty < originalOrderArr.add_to_inventory_qty
+    ) {
+      selectedItem.add_to_inventory_qty += 1;
+      selectedItem.write_off_qty -= 1;
+    } else if (symbol === '-' && selectedItem.add_to_inventory_qty > 0) {
+      selectedItem.add_to_inventory_qty -= 1;
+      selectedItem.write_off_qty = selectedItem.qty - selectedItem.add_to_inventory_qty;
+    }
+    // Update the state with the modified copy of the orders array
+    setEditedOrder(updatedOrders);
+  };
+
+  const renderProductList = ({ item, index }) => {
     return (
       <View style={styles.itemMainViewStyle}>
         <Text style={styles.quantityTextStyle}>{item?.qty ?? '-'}</Text>
         <Text style={styles.quantityTextStyle}>{'X'}</Text>
 
-        <View style={{ width: SH(100), paddingLeft: ms(8) }}>
-          <Text numberOfLines={1} style={styles.productTextStyle}>
-            {item?.product_name ?? '-'}
-          </Text>
-
+        <View style={{ width: '60%', paddingLeft: ms(8) }}>
+          <Text style={styles.productTextStyle}>{item?.product_name ?? '-'}</Text>
           <View
             style={{
               flexDirection: 'row',
@@ -35,7 +67,27 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
         </View>
 
         <View style={styles.priceViewStyle}>
-          <Text style={styles.priceTextStyle}>{`$${item?.price}` ?? '-'}</Text>
+          <View style={styles.listCountCon}>
+            <TouchableOpacity
+              style={{
+                width: SW(10),
+                alignItems: 'center',
+              }}
+              onPress={() => addRemoveQty('-', index)}
+            >
+              <Image source={minus} style={styles.minus} />
+            </TouchableOpacity>
+            <Text>{`${item?.add_to_inventory_qty}`}</Text>
+            <TouchableOpacity
+              style={{
+                width: SW(10),
+                alignItems: 'center',
+              }}
+              onPress={() => addRemoveQty('+', index)}
+            >
+              <Image source={plus} style={styles.minus} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -50,7 +102,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
     >
       <View style={{ flex: 1, paddingHorizontal: ms(15) }}>
         <View style={styles.headingRowStyle}>
-          <Text style={styles.headingTextStyle}>{strings.returnOrder.recheckConfirmed}</Text>
+          <Text style={styles.headingTextStyle}>{strings.returnOrder.returnToInventory}</Text>
 
           <TouchableOpacity style={styles.crossIconViewStyle} onPress={() => setIsVisible(false)}>
             <Image source={crossButton} style={styles.crossIconStyle} />
@@ -65,18 +117,18 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
         <Spacer space={SH(20)} />
 
         <FlatList
-          data={filteredList}
+          data={editedOrder}
           renderItem={renderProductList}
           showsVerticalScrollIndicator={false}
-          keyExtractor={(index) => index.toString()}
+          keyExtractor={(_, index) => index.toString()}
           style={{ height: ms(200) }}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: ms(10) }}
         />
 
         <View style={{ flex: 0.2 }} />
 
-        <TouchableOpacity onPress={() => onPress()} style={styles.buttonStyle}>
-          <Text style={styles.buttonTextStyle}>{'Confirm'}</Text>
+        <TouchableOpacity onPress={() => onPress(editedOrder)} style={styles.buttonStyle}>
+          <Text style={styles.buttonTextStyle}>{strings.returnOrder.returnToInventory}</Text>
         </TouchableOpacity>
       </View>
     </ReactNativeModal>
@@ -90,6 +142,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignSelf: 'flex-end',
     backgroundColor: COLORS.white,
+    width: '44%',
   },
   headingTextStyle: {
     fontSize: SF(25),
@@ -170,5 +223,22 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.white,
     fontFamily: Fonts.SemiBold,
+  },
+
+  listCountCon: {
+    borderWidth: 1,
+    width: SW(30),
+    height: SH(30),
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(4),
+    alignItems: 'center',
+  },
+  minus: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
   },
 });

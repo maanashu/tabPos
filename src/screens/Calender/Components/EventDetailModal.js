@@ -264,9 +264,22 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
             <Spacer space={ms(10)} horizontal />
             <Button
               pending={isChangeStatusLoading}
-              title={selectedPosStaffCompleteData?.status === 1 ? 'Check-in' : 'Mark Complete'}
+              title={
+                selectedPosStaffCompleteData?.status === 3
+                  ? 'Completed'
+                  : selectedPosStaffCompleteData?.status === 1
+                  ? 'Check-in'
+                  : 'Mark Complete'
+              }
+              disable={!selectedPosStaffCompleteData?.status === 3}
               textStyle={styles.checkintitle}
-              style={styles.checkinContainer}
+              style={[
+                styles.checkinContainer,
+                {
+                  backgroundColor:
+                    selectedPosStaffCompleteData?.status === 3 ? COLORS.darkGray : COLORS.primary,
+                },
+              ]}
               onPress={() => {
                 if (selectedPosStaffCompleteData?.status === 1) {
                   dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));

@@ -5,6 +5,7 @@ const INITIALSTATE = {
   getOrderUser: {},
   getCustomers: {},
   getAcceptMarketing: {},
+  getArea: {},
 };
 
 export const customersReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -48,6 +49,17 @@ export const customersReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getAcceptMarketing: {},
+      };
+
+    case TYPES.GET_AREA_SUCCESS:
+      return {
+        ...state,
+        getArea: payload.getArea,
+      };
+    case TYPES.GET_AREA_RESET:
+      return {
+        ...state,
+        getArea: {},
       };
 
     default:
