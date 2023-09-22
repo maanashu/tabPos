@@ -13,12 +13,19 @@ import { getUser } from '@/selectors/UserSelectors';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
-const InvoiceDetails = ({ orderData }) => {
+const InvoiceDetails = ({
+  orderList,
+  orderData,
+  subTotal,
+  totalTaxes,
+  deliveryShippingTitle,
+  deliveryShippingCharges,
+  total,
+}) => {
   const dispatch = useDispatch();
   const getOrder = useSelector(getAnalytics);
   const getUserData = useSelector(getUser);
   const orderDetail = getOrder?.getOrderData;
-
   useEffect(() => {
     dispatch(getOrderData(orderData?.order_id));
   }, []);
@@ -26,7 +33,7 @@ const InvoiceDetails = ({ orderData }) => {
   const renderProductItem = ({ item, index }) => (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.count}>{index + 1}</Text>
+        <Text style={styles.count}>{item.qty}</Text>
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
             {item?.product_name ?? '-'}
@@ -36,7 +43,7 @@ const InvoiceDetails = ({ orderData }) => {
           </View>
         </View>
       </View>
-      <Text style={styles.priceTitle}>{`$${item?.price}` ?? '-'}</Text>
+      <Text style={styles.priceTitle}>{`$${item?.totalRefundAmount}` ?? '-'}</Text>
     </View>
   );
 
@@ -62,9 +69,9 @@ const InvoiceDetails = ({ orderData }) => {
 
       <View style={{ paddingVertical: 8 }}>
         <FlatList
-          data={orderDetail?.order_details ?? []}
+          data={orderList ?? []}
           renderItem={renderProductItem}
-          extraData={orderDetail?.order_details}
+          extraData={orderData?.order?.order_details}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
         />
@@ -73,22 +80,22 @@ const InvoiceDetails = ({ orderData }) => {
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
-        <Text style={styles._substotalTile}>{strings.deliveryOrders.discount}</Text>
-        <Text style={styles._subTotalPrice}>{`$${orderDetail?.discount}` ?? '-'}</Text>
+        <Text style={styles._substotalTile}>{'Sub Total'}</Text>
+        <Text style={styles._subTotalPrice}>{`$${subTotal}` ?? '-'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
-        <Text style={styles._substotalTile}>{strings.deliveryOrders.tips}</Text>
-        <Text style={styles._subTotalPrice}>{`$${orderDetail?.tips}` ?? '-'}</Text>
+        <Text style={styles._substotalTile}>{deliveryShippingTitle}</Text>
+        <Text style={styles._subTotalPrice}>{`$${deliveryShippingCharges}` ?? '-'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
-        <Text style={styles._subTotalPrice}>{`$${orderDetail?.tax}` ?? '-'}</Text>
+        <Text style={styles._subTotalPrice}>{`$${totalTaxes}` ?? '-'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
@@ -98,7 +105,7 @@ const InvoiceDetails = ({ orderData }) => {
           Total
         </Text>
         <Text style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-          {`$${orderDetail?.payable_amount}` ?? '-'}
+          {`$${total}` ?? '-'}
         </Text>
       </View>
 
