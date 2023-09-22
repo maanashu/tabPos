@@ -94,6 +94,17 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
   const orderTypeSelection = (value) => setOrderTypeSelect(value);
   const [orderTypeSelect, setOrderTypeSelect] = useState('none');
 
+  const orderTypeArray = [
+    {
+      label: 'Product',
+      value: 'product',
+    },
+    {
+      label: 'Service',
+      value: 'service',
+    },
+  ];
+
   const dummyArea = [
     {
       label: 'Shimla',
@@ -167,9 +178,10 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
       limit: paginationModalValue,
       sellerId: sellerID,
       calendarDate: formatedDate,
+      orderType: orderTypeSelect,
     };
     dispatch(getTotakTraDetail(data));
-  }, [selectId, transaction, page, paginationModalValue, formatedDate]);
+  }, [selectId, transaction, page, paginationModalValue, formatedDate, orderTypeSelect]);
 
   const onChangeDate = (selectedDate) => {
     setDefaultDate(selectedDate);
@@ -225,6 +237,9 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
         break;
       case 8:
         return 'Rejected';
+        break;
+      case 9:
+        return 'Returned';
         break;
     }
   };
@@ -367,7 +382,11 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
             <TableDropdown placeholder="Status" selected={statusSelection} data={dummyArea} />
           </View>
           <>
-            <TableDropdown placeholder="Order type" selected={orderTypeSelection} data={months} />
+            <TableDropdown
+              placeholder="Order type"
+              selected={orderTypeSelection}
+              data={orderTypeArray}
+            />
           </>
         </View>
       </View>
