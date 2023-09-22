@@ -101,119 +101,37 @@ const PaymentSelection = ({
   };
 
   const onReturnHandler = () => {
-    let products = [];
-    if (orderData?.order?.mode_of_payment === 'cash' && selectedRecipeIndex !== null) {
-      orderData?.order?.order_details?.map((item) => {
-        if (applyEachItem) {
-          order?.map((item) => {
-            products.push({
-              id: item?.id,
-              qty: item?.qty ?? 1,
-              refund_flag: 'amount',
-              refund_value: `${item?.RefundedAmount}`,
-            });
-          });
-        } else {
-          products.push({
-            id: item?.id,
-            qty: item?.qty ?? 1,
-          });
-        }
-      });
-
-      const data =
-        selectedRecipeIndex === 0 && applicableForAllItems
-          ? {
-              order_id: orderData?.order_id,
-              products: products,
-              refund_flag: 'amount',
-              refund_value: payableAmount,
-              return_reason: 'testing reason',
-              full_phone_number: countryCode + phoneNumber,
-            }
-          : selectedRecipeIndex === 1 && applicableForAllItems
-          ? {
-              order_id: orderData?.order_id,
-              products: products,
-              refund_flag: 'amount',
-              refund_value: payableAmount,
-              return_reason: 'testing reason',
-              email: email,
-            }
-          : selectedRecipeIndex === 2 && applicableForAllItems
-          ? {
-              order_id: orderData?.order_id,
-              products: products,
-              refund_flag: 'amount',
-              refund_value: payableAmount,
-              return_reason: 'testing reason',
-            }
-          : selectedRecipeIndex === 0 && applyEachItem
-          ? {
-              order_id: orderData?.order_id,
-              products: products,
-              full_phone_number: countryCode + phoneNumber,
-            }
-          : selectedRecipeIndex === 1 && applyEachItem
-          ? {
-              order_id: orderData?.order_id,
-              products: products,
-              email: email,
-            }
-          : {
-              order_id: orderData?.order_id,
-              products: products,
-            };
-
-      dispatch(
-        returnProduct(data, (res) => {
-          if (res) {
-            setIsReturnConfirmation(true);
-          }
-        })
-      );
-    } else if (orderData?.order?.mode_of_payment === 'jbr') {
-      orderData?.order?.order_details?.map((item) => {
-        if (applyEachItem) {
-          order?.map((item) => {
-            products.push({
-              id: item?.id,
-              qty: item?.qty ?? 1,
-              refund_flag: 'amount',
-              refund_value: payableAmount,
-            });
-          });
-        } else {
-          products.push({
-            id: item?.id,
-            qty: item?.qty ?? 1,
-          });
-        }
-      });
-
-      const data = applicableForAllItems
-        ? {
-            order_id: orderData?.order_id,
-            products: products,
-            refund_flag: 'amount',
-            refund_value: payableAmount,
-            return_reason: 'testing reason',
-          }
-        : {
-            order_id: orderData?.order_id,
-            products: products,
-          };
-
-      dispatch(
-        returnProduct(data, (res) => {
-          if (res) {
-            setIsReturnConfirmation(true);
-          }
-        })
-      );
-    } else {
+    if (!orderData || !order || !orderData.order || !orderData.order.mode_of_payment) {
       alert('Please select e-recipe method');
+      return;
     }
+    const products =
+      order?.map((item) => ({
+        id: item?.id,
+        qty: item?.qty ?? 1,
+        write_off_qty: item?.write_off_qty,
+        add_to_inventory_qty: item?.add_to_inventory_qty,
+        refund_value: `${item?.totalRefundAmount}`,
+      })) || [];
+
+    const data = {
+      order_id: orderData.order_id,
+      products,
+      total_taxes: totalTaxes,
+      total_refund_amount: total,
+      return_reason: 'testing reason',
+      ...(selectedRecipeIndex === 0 && {
+        full_phone_number: countryCode + phoneNumber,
+      }),
+      ...(selectedRecipeIndex === 1 && { email }),
+    };
+    dispatch(
+      returnProduct(data, (res) => {
+        if (res) {
+          setIsReturnConfirmation(true);
+        }
+      })
+    );
   };
 
   const onPressreturn = () => {

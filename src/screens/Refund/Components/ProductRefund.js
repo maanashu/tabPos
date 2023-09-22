@@ -48,10 +48,11 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   const [inventoryModal, setInventoryModal] = useState(false);
 
   const finalOrder = JSON.parse(JSON.stringify(orderData));
+  finalOrder.order.order_details = orderList;
 
   useEffect(() => {
     if (orderData?.order) {
-      finalOrder.order.order_details = orderList; //Replace orders array with selected orders
+      // finalOrder.order.order_details = orderList; //Replace orders array with selected orders
 
       const filterSelectedProducts = finalOrder?.order?.order_details?.filter((e) => e?.isChecked);
       const updatedDataArray = filterSelectedProducts.map((item) => {
@@ -305,10 +306,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     if (applyEachItem) {
       const newArray = orders.map((obj) => ({
         ...obj, // Copy all existing key-value pairs
-        // ['applicableKey']: applicableIsCheck, // Add the new key-value pair
         ['applyToEachItemKey']: applyEachItem, //
-        // ['applicableAmountToAllItems']: amount, //
-        ['RefundedAmount']: obj.refundAmount,
       }));
       setOrders(newArray);
       setChangeView('PaymentScreen');
