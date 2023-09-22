@@ -1560,7 +1560,8 @@ export function Management() {
                   <Text style={styles.cashDrawerText}>{strings.management.netPayment}</Text>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {SessionData?.cashBalance}
+                    {cashIn?.total + cashOut?.total}
+                    {/* {SessionData?.cashBalance} */}
                   </Text>
                 </View>
               </ScrollView>
