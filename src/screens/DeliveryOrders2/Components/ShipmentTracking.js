@@ -86,7 +86,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
     <View style={styles.statusMainView}>
       <View style={{ alignItems: 'center' }}>
         {heading === 'Return CODE' ? (
-          <Image style={styles.verifiedIconStyle} source={blankRadio} />
+          <Image style={styles.verifiedIconStyle} source={orderStatus ? fillRadio : blankRadio} />
         ) : heading === strings.deliveryOrders.cancelled ? (
           <>
             <Image
@@ -117,7 +117,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
       <Spacer horizontal space={ms(5)} />
 
       <View style={styles.statusViewText}>
-        {heading === 'Return to Shop' ? (
+        {heading === 'Return to Shop' && orderStatus === 7 && orderData?.is_delivery_dispute ? (
           <TouchableOpacity onPress={onPressShop}>
             <Text style={styles.statusNameText}>{heading}</Text>
 
@@ -133,6 +133,24 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
               </View>
             </View>
           </TouchableOpacity>
+        ) : heading === 'Return to Shop' &&
+          orderStatus === 9 &&
+          orderData?.is_delivery_dispute === false ? (
+          <View>
+            <Text style={styles.statusNameText}>{heading}</Text>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image style={styles.verifiedIconStyle} source={storeLogo} />
+              <View>
+                <Text style={styles.statusNameText}>{shopName ?? '-'}</Text>
+                <Text
+                  style={[styles.statusNameText, { fontSize: ms(5), fontFamily: Fonts.Regular }]}
+                >
+                  {shopAddress ?? '-'}
+                </Text>
+              </View>
+            </View>
+          </View>
         ) : (
           <Text style={styles.statusNameText}>{heading}</Text>
         )}
@@ -194,6 +212,47 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
 
                 <View style={styles.statusViewText}>
                   <Text style={styles.statusNameText}>{strings.deliveryOrders.cancelled}</Text>
+                </View>
+              </View>
+            </View>
+          )}
+        </View>
+      ) : orderStatus === 9 && orderData?.is_delivery_dispute === false ? (
+        <View style={[styles.mainContainer, { bottom: ms(30) }]}>
+          <>
+            <View style={styles.headerMainView}>
+              <View>
+                <Text style={styles.orderStatusHeading}>{strings.deliveryOrders.orderStatus}</Text>
+                <Text style={styles.currentStatusText}>{strings.deliveryOrders.returned}</Text>
+              </View>
+              <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
+                <Image source={isHideView ? down : up} style={styles.downArrowStyle} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.bottomLine} />
+          </>
+          {isHideView ? (
+            <View style={styles.statusViewStyle}>
+              {returnStatusView('Return CODE')}
+              {returnStatusView('Return to Shop')}
+              {returnStatusView(strings.deliveryOrders.cancelled)}
+              {returnStatusView(strings.deliveryOrders.pickup)}
+              {returnStatusView(strings.deliveryOrders.driverAssigned)}
+              {returnStatusView(strings.deliveryOrders.readyToPickup)}
+              {returnStatusView(strings.deliveryOrders.orderAccepted)}
+            </View>
+          ) : (
+            <View style={styles.statusViewStyle}>
+              <View style={styles.statusMainView}>
+                <View style={{ alignItems: 'center' }}>
+                  <Image source={radioArrBlue} style={styles.statusIconStyle} />
+                </View>
+
+                <Spacer horizontal space={ms(5)} />
+
+                <View style={styles.statusViewText}>
+                  <Text style={styles.statusNameText}>{strings.deliveryOrders.returned}</Text>
                 </View>
               </View>
             </View>
