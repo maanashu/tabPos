@@ -23,6 +23,7 @@ import { DrawerNavigator } from '@/navigation/DrawerNavigator';
 import { Platform } from 'react-native';
 import NotificationsList from '@/screens/Notifications/NotificationsList';
 import { SearchScreen } from '@/screens/Refund/Components/SearchScreen';
+import { ProductRefund } from '@/screens/DeliveryOrders2/Components/ProductRefund';
 
 const Drawer = createDrawerNavigator();
 
@@ -113,6 +114,11 @@ export function HomeNavigator() {
       <Drawer.Screen
         name={NAVIGATION.weeklyTransaction}
         component={WeeklyTransaction}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        name={NAVIGATION.productRefund}
+        component={ProductRefund}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

@@ -32,4 +32,6 @@ export const NAVIGATION = {
   customers2: 'Customers2',
   wallet2: 'Wallet2',
   weeklyTransaction: 'WeeklyTransaction',
+  productRefund: 'ProductRefund',
+  paymentSelection: 'PaymentSelection',
 };

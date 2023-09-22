@@ -248,7 +248,7 @@ const InvoiceDetails = ({
             </Text>
           </TouchableOpacity>
 
-          <ShipmentTracking orderData={singleOrderDetail} />
+          <ShipmentTracking orderData={singleOrderDetail} onPressShop={onPressShop} />
         </View>
       </View>
     </View>

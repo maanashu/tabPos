@@ -19,7 +19,7 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, ShadowStyles } from '@/theme';
 
-const ShipmentTracking = ({ orderData }) => {
+const ShipmentTracking = ({ orderData, onPressShop }) => {
   const orderStatus = orderData?.status;
   const shopName = orderData?.seller_details?.organization_name;
   const shopAddress = orderData?.seller_details?.current_address?.street_address;
@@ -86,10 +86,7 @@ const ShipmentTracking = ({ orderData }) => {
     <View style={styles.statusMainView}>
       <View style={{ alignItems: 'center' }}>
         {heading === 'Return CODE' ? (
-          <Image
-            style={[styles.verifiedIconStyle, { tintColor: COLORS.primary }]}
-            source={fillRadio}
-          />
+          <Image style={styles.verifiedIconStyle} source={blankRadio} />
         ) : heading === strings.deliveryOrders.cancelled ? (
           <>
             <Image
@@ -121,7 +118,7 @@ const ShipmentTracking = ({ orderData }) => {
 
       <View style={styles.statusViewText}>
         {heading === 'Return to Shop' ? (
-          <View>
+          <TouchableOpacity onPress={onPressShop}>
             <Text style={styles.statusNameText}>{heading}</Text>
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -131,11 +128,11 @@ const ShipmentTracking = ({ orderData }) => {
                 <Text
                   style={[styles.statusNameText, { fontSize: ms(5), fontFamily: Fonts.Regular }]}
                 >
-                  {shopAddress ?? 'jfdhskfhsdjkfhksdfhjksdfhsdkjfhsdjkfhksdj'}
+                  {shopAddress ?? '-'}
                 </Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         ) : (
           <Text style={styles.statusNameText}>{heading}</Text>
         )}
@@ -161,13 +158,13 @@ const ShipmentTracking = ({ orderData }) => {
 
   return (
     <>
-      {orderStatus === 9 ? (
+      {orderStatus === 7 && orderData?.is_delivery_dispute ? (
         <View style={[styles.mainContainer, { bottom: ms(30) }]}>
           <>
             <View style={styles.headerMainView}>
               <View>
                 <Text style={styles.orderStatusHeading}>{strings.deliveryOrders.orderStatus}</Text>
-                <Text style={styles.currentStatusText}>{strings.deliveryOrders.returned}</Text>
+                <Text style={styles.currentStatusText}>{strings.deliveryOrders.cancelled}</Text>
               </View>
               <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
                 <Image source={isHideView ? down : up} style={styles.downArrowStyle} />
@@ -196,7 +193,7 @@ const ShipmentTracking = ({ orderData }) => {
                 <Spacer horizontal space={ms(5)} />
 
                 <View style={styles.statusViewText}>
-                  <Text style={styles.statusNameText}>{strings.deliveryOrders.returned}</Text>
+                  <Text style={styles.statusNameText}>{strings.deliveryOrders.cancelled}</Text>
                 </View>
               </View>
             </View>

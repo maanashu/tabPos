@@ -361,7 +361,7 @@ export function DeliveryOrders2({ route }) {
     const formattedTime = `${startTime} - ${endTime}`;
 
     const handlePress = () => {
-      console.log(item?.id);
+      console.log(JSON.stringify(item));
       setViewAllOrder(true);
       setSelectedProductId(orderDetails[0]?.id);
       setUserDetail(item);
@@ -685,10 +685,10 @@ export function DeliveryOrders2({ route }) {
     );
   };
 
-  const recheckHandler = useCallback(() => {
+  const recheckHandler = () => {
     setChangeViewToRecheck(true);
     setIsReturnModalVisible(false);
-  }, []);
+  };
 
   const onPressShop = () => {
     setIsReturnModalVisible(true);
@@ -733,7 +733,9 @@ export function DeliveryOrders2({ route }) {
                         />
                       </View>
 
-                      {changeViewToRecheck && openShippingOrders === '9' ? (
+                      {changeViewToRecheck &&
+                      singleOrderDetail?.is_delivery_dispute &&
+                      singleOrderDetail?.status === 7 ? (
                         <ReturnedOrderDetail orderDetail={singleOrderDetail} />
                       ) : (
                         <OrderDetail

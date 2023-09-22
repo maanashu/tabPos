@@ -35,9 +35,13 @@ const OrderDetail = ({
   mapRef,
   onPressShop,
 }) => {
+  console.log(userDetail?.status);
   return (
     <View style={styles.orderDetailView}>
-      {openShippingOrders >= '3' && userDetail?.status !== 7 && userDetail?.status !== 8 ? (
+      {openShippingOrders >= '3' &&
+      userDetail?.status === 7 &&
+      userDetail?.is_delivery_dispute &&
+      userDetail?.status !== 8 ? (
         <>
           <MapView
             customMapStyle={mapCustomStyle}
