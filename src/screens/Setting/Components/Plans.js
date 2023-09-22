@@ -35,12 +35,13 @@ export function Plans() {
   const [planModal, setPlanModal] = useState(false);
   const [selectedId, setSelectedId] = useState(1);
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(null);
+
   useEffect(() => {
     if (isFocused) {
       dispatch(getAllPlans());
       dispatch(getActiveSubscription());
     }
-  }, [isFocused, setPlanModal]);
+  }, [isFocused]);
   console.log('activeplan', activePlan);
   if (activeUserPlan.length > 0) {
     activePlan = getPlanData?.activeSubscription[0];
@@ -183,7 +184,7 @@ export function Plans() {
 
   return (
     <View>
-      {Object.keys(activePlan).length > 0 ? (
+      {Object.keys(activePlan).length > 0 && !planModal ? (
         <View>
           <View style={[styles.flexRow, { height: SW(8) }]}>
             <Text style={styles.HeaderLabelText}>{strings.settings.plans}</Text>
