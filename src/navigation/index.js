@@ -31,7 +31,9 @@ export function RootNavigator() {
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState) => {
-      setState(nextAppState);
+      if (nextAppState == 'active') {
+        setState(!state);
+      }
     };
     const subs = AppState.addEventListener('change', handleAppStateChange);
     return () => {
