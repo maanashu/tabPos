@@ -1,70 +1,146 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 
-import { ms } from 'react-native-size-matters';
+import { moderateScale, ms } from 'react-native-size-matters';
+import ReactNativeModal from 'react-native-modal';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { COLORS, SF, SH } from '@/theme';
-import { crossButton, Fonts } from '@/assets';
+import { COLORS, SF, SH, SW } from '@/theme';
+import { crossButton, Fonts, minus, plus } from '@/assets';
 
-const RecheckConfirmation = ({ onPressCross, inventoryArray, confirmHandler }) => {
-  const renderProductList = ({ item }) => (
-    <View style={styles.itemMainViewStyle}>
-      <Text style={styles.quantityTextStyle}>{item?.qty ?? 0}</Text>
-      <Text style={styles.quantityTextStyle}>{'X'}</Text>
+const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) => {
+  const selectedOrderList = orderList?.filter((e) => e?.isChecked);
+  const inventoryOrderList = selectedOrderList?.map((orderData) => ({
+    ...orderData,
+    write_off_qty: 0,
+    add_to_inventory_qty: orderData?.qty,
+  }));
+  const [editedOrder, setEditedOrder] = useState([]);
 
-      <View style={styles.productDetailViewStyle}>
-        <Text style={styles.productTextStyle}>{item?.product_name ?? '-'}</Text>
+  useEffect(() => {
+    setEditedOrder(inventoryOrderList);
+  }, [orderList]);
 
-        <View style={styles.skuViewStyle}>
-          <Text style={styles.colorTextStyle}>{`${item?.product_details?.sku ?? '-'}`}</Text>
+  const addRemoveQty = (symbol, itemIndex) => {
+    // Create a copy of the orders array to avoid mutating the original state
+    const updatedOrders = [...editedOrder];
+
+    // Find the selected item in the copy
+    const selectedItem = updatedOrders[itemIndex];
+
+    const originalOrderArr = inventoryOrderList[itemIndex];
+
+    if (
+      symbol === '+' &&
+      selectedItem.add_to_inventory_qty < originalOrderArr.add_to_inventory_qty
+    ) {
+      selectedItem.add_to_inventory_qty += 1;
+      selectedItem.write_off_qty -= 1;
+    } else if (symbol === '-' && selectedItem.add_to_inventory_qty > 0) {
+      selectedItem.add_to_inventory_qty -= 1;
+      selectedItem.write_off_qty = selectedItem.qty - selectedItem.add_to_inventory_qty;
+    }
+    // Update the state with the modified copy of the orders array
+    setEditedOrder(updatedOrders);
+  };
+
+  const renderProductList = ({ item, index }) => {
+    return (
+      <View style={styles.itemMainViewStyle}>
+        <Text style={styles.quantityTextStyle}>{item?.qty ?? '-'}</Text>
+        <Text style={styles.quantityTextStyle}>{'X'}</Text>
+
+        <View style={{ width: '60%', paddingLeft: ms(8) }}>
+          <Text style={styles.productTextStyle}>{item?.product_name ?? '-'}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.colorTextStyle}>{item?.sku ? item?.sku : '-'}</Text>
+          </View>
+        </View>
+
+        <View style={styles.priceViewStyle}>
+          <View style={styles.listCountCon}>
+            <TouchableOpacity
+              style={{
+                width: SW(10),
+                alignItems: 'center',
+              }}
+              onPress={() => addRemoveQty('-', index)}
+            >
+              <Image source={minus} style={styles.minus} />
+            </TouchableOpacity>
+            <Text>{`${item?.add_to_inventory_qty}`}</Text>
+            <TouchableOpacity
+              style={{
+                width: SW(10),
+                alignItems: 'center',
+              }}
+              onPress={() => addRemoveQty('+', index)}
+            >
+              <Image source={plus} style={styles.minus} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
-    <View style={styles.modalContainer}>
-      <View style={styles.headingRowStyle}>
-        <Text style={styles.headingTextStyle}>{strings.returnOrder.returnToInventory}</Text>
+    <ReactNativeModal
+      isVisible={isVisible}
+      style={styles.modalStyle}
+      animationIn={'slideInRight'}
+      animationOut={'slideOutRight'}
+    >
+      <View style={{ flex: 1, paddingHorizontal: ms(15) }}>
+        <View style={styles.headingRowStyle}>
+          <Text style={styles.headingTextStyle}>{strings.returnOrder.returnToInventory}</Text>
 
-        <TouchableOpacity style={styles.crossViewStyle} onPress={onPressCross}>
-          <Image source={crossButton} style={styles.crossIconStyle} />
+          <TouchableOpacity style={styles.crossIconViewStyle} onPress={() => setIsVisible(false)}>
+            <Image source={crossButton} style={styles.crossIconStyle} />
+          </TouchableOpacity>
+        </View>
+
+        <Spacer space={SH(30)} />
+        <View>
+          <Text style={styles.customerNameStyle}>{strings.returnOrder.description}</Text>
+        </View>
+
+        <Spacer space={SH(20)} />
+
+        <FlatList
+          data={editedOrder}
+          renderItem={renderProductList}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(_, index) => index.toString()}
+          style={{ height: ms(200) }}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: ms(10) }}
+        />
+
+        <View style={{ flex: 0.2 }} />
+
+        <TouchableOpacity onPress={() => onPress(editedOrder)} style={styles.buttonStyle}>
+          <Text style={styles.buttonTextStyle}>{strings.returnOrder.returnToInventory}</Text>
         </TouchableOpacity>
       </View>
-
-      <Spacer space={SH(30)} />
-
-      <Text style={styles.customerNameStyle}>{strings.returnOrder.description}</Text>
-
-      <Spacer space={SH(20)} />
-
-      <FlatList
-        data={inventoryArray}
-        renderItem={renderProductList}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={styles.contentContainerStyle}
-      />
-
-      <View style={{ flex: 1 }} />
-
-      <TouchableOpacity onPress={confirmHandler} style={styles.buttonStyle}>
-        <Text style={styles.buttonTextStyle}>{strings.management.confirm}</Text>
-      </TouchableOpacity>
-    </View>
+    </ReactNativeModal>
   );
 };
 
 export default memo(RecheckConfirmation);
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    backgroundColor: COLORS.white,
-    width: SH(500),
+  modalStyle: {
     borderRadius: 10,
     alignSelf: 'flex-end',
+    backgroundColor: COLORS.white,
+    width: '44%',
   },
   headingTextStyle: {
     fontSize: SF(25),
@@ -72,26 +148,21 @@ const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
   },
-  crossViewStyle: {
-    width: SH(35),
-    height: SH(35),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  contentContainerStyle: {
-    flexGrow: 1,
-    paddingBottom: ms(10),
-  },
   headingRowStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: SH(30),
     paddingTop: ms(20),
     justifyContent: 'space-between',
   },
+  crossIconViewStyle: {
+    width: SH(34),
+    height: SH(34),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   crossIconStyle: {
-    width: SH(24),
-    height: SH(24),
+    width: SH(14),
+    height: SH(14),
     resizeMode: 'contain',
     tintColor: COLORS.dark_grey,
   },
@@ -99,7 +170,6 @@ const styles = StyleSheet.create({
     fontSize: SF(13),
     color: COLORS.black,
     fontFamily: Fonts.SemiBold,
-    paddingLeft: ms(20),
   },
   itemMainViewStyle: {
     flexDirection: 'row',
@@ -107,7 +177,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     borderColor: COLORS.washGrey,
-    marginHorizontal: ms(17),
+    marginHorizontal: ms(10),
     marginVertical: ms(4),
     paddingVertical: ms(5),
   },
@@ -119,21 +189,24 @@ const styles = StyleSheet.create({
   },
   colorTextStyle: {
     fontSize: SF(9),
+    textAlign: 'center',
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
-  },
-  productDetailViewStyle: {
-    width: SH(200),
-    paddingLeft: ms(8),
   },
   productTextStyle: {
     fontSize: SF(9),
     color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
-  skuViewStyle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  priceViewStyle: {
+    flex: 1,
+    alignItems: 'flex-end',
+    paddingHorizontal: ms(10),
+  },
+  priceTextStyle: {
+    fontSize: SF(12),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
   },
   buttonStyle: {
     height: ms(35),
@@ -148,5 +221,22 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.white,
     fontFamily: Fonts.SemiBold,
+  },
+
+  listCountCon: {
+    borderWidth: 1,
+    width: SW(30),
+    height: SH(30),
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(4),
+    alignItems: 'center',
+  },
+  minus: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
   },
 });

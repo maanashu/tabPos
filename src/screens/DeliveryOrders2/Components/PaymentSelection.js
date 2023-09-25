@@ -20,7 +20,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { moderateScale, moderateVerticalScale, ms, verticalScale } from 'react-native-size-matters';
 
 import { returnProduct } from '@/actions/DashboardAction';
-import { Spacer } from '@/components';
+import { InvoiceDetail, Spacer } from '@/components';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { SF, SH, COLORS, SW } from '@/theme';
@@ -32,6 +32,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
 import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
 import { goBack } from '@/navigation/NavigationRef';
+import ReturnInvoice from './ReturnInvoice';
 
 const { width, height } = Dimensions.get('window');
 
@@ -88,7 +89,7 @@ export function PaymentSelection(props) {
   const onReturnHandler = () => {
     if (
       !orderFinalData?.orderData ||
-      !orderFinalData?.order ||
+      orderFinalData?.order.length === 0 ||
       !orderFinalData?.orderData?.mode_of_payment
     ) {
       alert('Please select e-recipe method');
@@ -196,7 +197,7 @@ export function PaymentSelection(props) {
 
           <Spacer space={SH(60)} backgroundColor={COLORS.transparent} />
 
-          <TouchableOpacity onPress={onReturnHandler} style={styles.buttonStyle}>
+          <TouchableOpacity onPress={() => onReturnHandler()} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>{strings.returnOrder.return}</Text>
           </TouchableOpacity>
         </View>

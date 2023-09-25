@@ -585,7 +585,7 @@ export function ProductRefund(props) {
             <Spacer space={SH(20)} />
 
             <TouchableOpacity
-              onPress={() => getOrdersDetail()}
+              onPress={() => setIsCheckConfirmationModalVisible(true)}
               disabled={buttonText === 'Applied' ? false : true}
               style={[
                 styles.nextButtonStyle,
@@ -603,17 +603,16 @@ export function ProductRefund(props) {
         </View>
       </>
 
-      <ReactNativeModal
+      <RecheckConfirmation
+        orderList={orders}
+        onPress={(modifiedOrderDetailArr) => {
+          setIsCheckConfirmationModalVisible(false);
+          setOrders([...modifiedOrderDetailArr]);
+          getOrdersDetail();
+        }}
         isVisible={isCheckConfirmationModalVisible}
-        style={styles.modalStyle}
-        animationIn={'slideInRight'}
-        animationOut={'slideOutRight'}
-      >
-        <RecheckConfirmation
-          onPressCross={() => setIsCheckConfirmationModalVisible(false)}
-          inventoryArray={products}
-        />
-      </ReactNativeModal>
+        setIsVisible={setIsCheckConfirmationModalVisible}
+      />
     </View>
   );
 }

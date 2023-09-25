@@ -34,8 +34,6 @@ const InvoiceDetails = ({
   const getUserData = useSelector(getUser);
   const orderDetail = getOrder?.getOrderData;
 
-  console.log('invoiceDetails=============', orderData);
-
   useEffect(() => {
     dispatch(getOrderData(orderData?.order_id));
   }, []);
@@ -53,7 +51,7 @@ const InvoiceDetails = ({
           </View>
         </View>
       </View>
-      <Text style={style.priceTitle}>{`$${item?.totalRefundAmount}` ?? '-'}</Text>
+      <Text style={style.priceTitle}>{`$${item?.price}` ?? '-'}</Text>
     </View>
   );
 
@@ -62,7 +60,7 @@ const InvoiceDetails = ({
       <View style={styles.firstRowStyle}>
         <View style={styles.storeDetailView}>
           <Text style={style.storeNameText}>
-            {`${orderData?.order?.seller_details?.organization_name}` ?? '-'}
+            {`${orderDetail?.seller_details?.organization_name}` ?? '-'}
           </Text>
 
           <Spacer space={SH(10)} backgroundColor={COLORS.transparent} />
@@ -81,9 +79,9 @@ const InvoiceDetails = ({
 
           <View style={{ paddingVertical: 8 }}>
             <FlatList
-              data={orderList ?? []}
+              data={orderDetail?.order_details ?? []}
               renderItem={renderProductItem}
-              extraData={orderData?.order?.order_details}
+              extraData={orderDetail?.order_details}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
             />
@@ -93,7 +91,7 @@ const InvoiceDetails = ({
 
           <View style={style._subTotalContainer}>
             <Text style={style._substotalTile}>{'Sub Total'}</Text>
-            <Text style={style._subTotalPrice}>{`$${subTotal}` ?? '-'}</Text>
+            <Text style={style._subTotalPrice}>{`$${orderDetail?.actual_amount}` ?? '-'}</Text>
           </View>
 
           <View style={style._horizontalLine} />
@@ -102,7 +100,7 @@ const InvoiceDetails = ({
 
           <View style={style._subTotalContainer}>
             <Text style={style._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
-            <Text style={style._subTotalPrice}>{`$${totalTaxes}` ?? '-'}</Text>
+            <Text style={style._subTotalPrice}>{`$${orderDetail?.tax}` ?? '-'}</Text>
           </View>
 
           <View style={style._horizontalLine} />
@@ -112,7 +110,7 @@ const InvoiceDetails = ({
               Total
             </Text>
             <Text style={[style._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-              {`$${total}` ?? '-'}
+              {`$${orderDetail?.payable_amount}` ?? '-'}
             </Text>
           </View>
 
@@ -126,7 +124,7 @@ const InvoiceDetails = ({
           </View>
 
           <Text style={style._commonPayTitle}>
-            {moment(orderDetail?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
+            {moment(orderData?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
           </Text>
 
           <Text style={style._commonPayTitle}>

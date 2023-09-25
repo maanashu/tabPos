@@ -368,6 +368,7 @@ export function DeliveryOrders2({ route }) {
       setOrderDetail(orderDetails);
       dispatch(getOrderData(item?.id));
       setOrderId(item?.id);
+      setChangeViewToRecheck(false);
     };
 
     const handleExpandPress = () => {
@@ -733,9 +734,7 @@ export function DeliveryOrders2({ route }) {
                         />
                       </View>
 
-                      {changeViewToRecheck &&
-                      singleOrderDetail?.is_delivery_dispute &&
-                      singleOrderDetail?.status === 7 ? (
+                      {changeViewToRecheck ? (
                         <ReturnedOrderDetail orderDetail={singleOrderDetail} />
                       ) : (
                         <OrderDetail
