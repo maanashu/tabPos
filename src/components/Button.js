@@ -11,6 +11,7 @@ export function Button({ style, textStyle, title, pending, disable, ...rest }) {
 
   return pending ? (
     <TouchableOpacity
+      disabled={disable}
       style={[styles.button, { borderColor: colors.border }, style, ShadowStyles]}
       {...rest}
     >
@@ -19,6 +20,7 @@ export function Button({ style, textStyle, title, pending, disable, ...rest }) {
     </TouchableOpacity>
   ) : (
     <TouchableOpacity
+      disabled={disable}
       activeOpacity={0.5}
       underlayColor="#0E86D4"
       style={[styles.button, { borderColor: colors.border }, style, ShadowStyles]}

@@ -207,6 +207,23 @@ function capitalizeFirstLetter(str) {
 
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
+
+const getCalendarActionButtonTitle = (status) => {
+  switch (status) {
+    case 1:
+      return 'Check-in';
+    case 2:
+      return 'Mark Completed';
+    case 3:
+      return 'Completed';
+    case 5:
+      return 'Cancelled';
+
+    default:
+      return 'Status unknown';
+  }
+};
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -223,4 +240,5 @@ export {
   calculateDuration,
   getDaysAndDates,
   capitalizeFirstLetter,
+  getCalendarActionButtonTitle,
 };

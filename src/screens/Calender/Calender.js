@@ -17,7 +17,6 @@ import {
   todayCalendarIcon,
   calendarSettingsIcon,
 } from '@/assets';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { strings } from '@/localization';
 import { COLORS } from '@/theme';
 import { ScreenWrapper } from '@/components';
@@ -31,7 +30,6 @@ import {
   changeAppointmentStatus,
   getAppointment,
   getStaffUsersList,
-  sendCheckinOTP,
 } from '@/actions/AppointmentAction';
 import Modal from 'react-native-modal';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
@@ -49,8 +47,6 @@ import { NAVIGATION } from '@/constants';
 import EventDetailModal from './Components/EventDetailModal';
 import { getSettings, upadteApi } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import VerifyCheckinOtp from './Components/VerifyCheckinOtp';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import ReScheduleDetailModal from './Components/ReScheduleDetailModal';
 import ListViewItem from './Components/ListViewComponents/ListViewItem';
@@ -79,7 +75,6 @@ export function Calender() {
   const [eventData, setEventData] = useState({});
 
   const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
-  const [showVerifyOTPModal, setshowVerifyOTPModal] = useState(false);
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(null);
 
   const [week, setWeek] = useState(true);
@@ -103,9 +98,9 @@ export function Calender() {
 
   const getAppointmentList2 = getAppointmentList?.filter((item) => item.status !== 3);
 
-  // Only show appointments on calendar which are approved/Check-In
+  // Only show appointments on calendar which are approved/Check-In/Completed/CancelledByCustomer
   const getApprovedAppointments = getAppointmentList?.filter(
-    (item) => item.status === 1 || item.status === 2 || item.status === 3
+    (item) => item.status === 1 || item.status === 2 || item.status === 3 || item.status === 5
   );
 
   // Will be used to show list of all unaccepted appointments
@@ -138,16 +133,19 @@ export function Calender() {
     if (isFocused) {
       dispatch(getStaffUsersList());
       dispatch(getSettings());
+      onPressListViewMode();
     }
   }, [isFocused]);
 
   useEffect(() => {
-    if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.DAY) {
-      dayHandler();
-    } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.WEEK) {
-      weekHandler();
-    } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.MONTH) {
-      monthHandler();
+    if (calendarMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW) {
+      if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.DAY) {
+        dayHandler();
+      } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.WEEK) {
+        weekHandler();
+      } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.MONTH) {
+        monthHandler();
+      }
     }
   }, [defaultSettingsForCalendar]);
 
@@ -212,6 +210,8 @@ export function Calender() {
     setCalendarViewMode(CALENDAR_VIEW_MODES.LIST_VIEW);
     setshouldShowCalendarModeOptions(false);
     dayHandler();
+    setSelectedStaffEmployeeId(null);
+    setshowEmployeeHeader(false);
   };
 
   const getAppointmentsByDate = useMemo(() => {
@@ -470,6 +470,7 @@ export function Calender() {
             <View style={{ flex: 1, alignItems: 'center' }}>
               <TouchableOpacity
                 onPress={() => {
+                  setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
                   setSelectedStaffEmployeeId(null);
                   if (selectedStaffEmployeeId) {
                     setshowEmployeeHeader(true);
@@ -503,6 +504,7 @@ export function Calender() {
                   return (
                     <TouchableOpacity
                       onPress={() => {
+                        setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
                         setSelectedStaffEmployeeId((prev) => {
                           if (prev === posUserId) {
                             setSelectedStaffEmployeeId(null);
@@ -596,19 +598,6 @@ export function Calender() {
           {...{ eventData, showEventDetailModal, setshowEventDetailModal, dispatch }}
         />
 
-        {/* <DateTimePicker
-          isVisible={showMiniCalendar}
-          date={new Date()}
-          display="inline"
-          onConfirm={(date) => {
-            setCalendarDate(moment(date));
-            setshowMiniCalendar(false);
-          }}
-          onCancel={() => {
-            setshowMiniCalendar(false);
-          }}
-        /> */}
-
         <Modal
           isVisible={showMiniCalendar}
           statusBarTranslucent
@@ -639,23 +628,6 @@ export function Calender() {
           appointmentData={selectedPosStaffCompleteData}
           setshowEventDetailModal={setshowEventDetailModal}
         />
-
-        {/* <VerifyCheckinOtp
-          appointmentData={selectedPosStaffCompleteData}
-          isVisible={showVerifyOTPModal}
-          setIsVisible={setshowVerifyOTPModal}
-          onVerify={(res) => {
-            setshowVerifyOTPModal(false);
-            setTimeout(() => {
-              Toast.show({
-                text2: res?.msg,
-                position: 'bottom',
-                type: 'success_toast',
-                visibilityTime: 2500,
-              });
-            }, 500);
-          }}
-        /> */}
       </View>
     </ScreenWrapper>
   );

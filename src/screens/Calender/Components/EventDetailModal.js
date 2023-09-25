@@ -5,7 +5,7 @@ import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import moment from 'moment';
-import { calculateDuration } from '@/utils/GlobalMethods';
+import { calculateDuration, getCalendarActionButtonTitle } from '@/utils/GlobalMethods';
 import ProfileImage from '@/components/ProfileImage';
 import { useState } from 'react';
 import { COLORS } from '@/theme';
@@ -41,12 +41,11 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
     selectedPosStaffCompleteData?.pos_user_details?.user?.user_roles[0]?.role?.name || ' ';
   const colorCode = selectedPosStaffCompleteData?.pos_user_details?.color_code;
   const appointmentId = selectedPosStaffCompleteData?.id;
-
   //Update the state with initial values if it doesn't get updated while initialization of the states
   useEffect(() => {
     setSelectedPosStaffCompleteData(completeData);
     setSelectedStaffUserId(completeData?.pos_user_details.user?.unique_uuid);
-  }, [completeData]);
+  }, [eventData, completeData]);
 
   const isSendCheckinOTPLoading = useSelector((state) =>
     isLoadingSelector([TYPES.SEND_CHECKIN_OTP], state)
@@ -254,30 +253,34 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
             <Text style={styles.invoiceTxt}>Invoice # V364899978</Text>
           </View>
           <View style={styles.bottomBtnContainer}>
-            <TouchableOpacity
-              style={styles.btmEditBtn}
-              onPress={() => setshowRescheduleTimeModal(true)}
-            >
-              <Image source={editIcon} style={styles.editOptionIcon} />
-              <Text style={styles.editTextBtn}>Edit</Text>
-            </TouchableOpacity>
-            <Spacer space={ms(10)} horizontal />
+            {selectedPosStaffCompleteData?.status === 1 && (
+              <>
+                <TouchableOpacity
+                  style={styles.btmEditBtn}
+                  onPress={() => setshowRescheduleTimeModal(true)}
+                >
+                  <Image source={editIcon} style={styles.editOptionIcon} />
+                  <Text style={styles.editTextBtn}>Edit</Text>
+                </TouchableOpacity>
+                <Spacer space={ms(10)} horizontal />
+              </>
+            )}
             <Button
               pending={isChangeStatusLoading}
-              title={
-                selectedPosStaffCompleteData?.status === 3
-                  ? 'Completed'
-                  : selectedPosStaffCompleteData?.status === 1
-                  ? 'Check-in'
-                  : 'Mark Complete'
+              title={getCalendarActionButtonTitle(selectedPosStaffCompleteData?.status)}
+              disable={
+                selectedPosStaffCompleteData?.status === 3 ||
+                selectedPosStaffCompleteData?.status === 5
               }
-              disable={!selectedPosStaffCompleteData?.status === 3}
               textStyle={styles.checkintitle}
               style={[
                 styles.checkinContainer,
                 {
                   backgroundColor:
-                    selectedPosStaffCompleteData?.status === 3 ? COLORS.darkGray : COLORS.primary,
+                    selectedPosStaffCompleteData?.status === 3 ||
+                    selectedPosStaffCompleteData?.status === 5
+                      ? COLORS.darkGray
+                      : COLORS.primary,
                 },
               ]}
               onPress={() => {

@@ -190,6 +190,7 @@ export const changeAppointmentStatus = (appointmentId, status) => async (dispatc
     const res = await AppointmentController.changeAppointmentAPI(appointmentId, status);
     dispatch(changeAppointmentStatusSuccess(res?.payload));
     dispatch(getAppointment());
+    dispatch(getStaffUsersList());
     Toast.show({
       text2: getAppointmentStatusMessage(status),
       position: 'bottom',
