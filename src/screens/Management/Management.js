@@ -99,7 +99,7 @@ export function Management() {
   const onchangeValue = (value) => setDropdownSelect(value);
   const addCashValue = (value) => setAddCashDropDown(value);
   const [differentState, setdifferentState] = useState(false);
-  const [addCashInput, setAddCashInput] = useState();
+  const [addCashInput, setAddCashInput] = useState('');
   const [mergedDataa, setMergedData] = useState();
   const [userHistory, setUserHistory] = useState();
   const [isCashIn, setIsCashIn] = useState(null);
@@ -127,6 +127,14 @@ export function Management() {
   const [viewCashOutArray, setViewCashOutArray] = useState(false);
   const [salesExpandedView, setSalesExpandedView] = useState(false);
   const [salesOutExpandedView, setSalesOutExpandedView] = useState(false);
+
+  const [manualInExpandedView, setManualInExpandedView] = useState(false);
+  const [manualOutExpandedView, setManualOutExpandedView] = useState(false);
+
+  const [delieveryFeeInExpandedView, setDelieveryFeeInExpandedView] = useState(false);
+  const [delieveryFeeOutExpandedView, setDelieveryFeeOutExpandedView] = useState(false);
+  const [shippingFeeInExpandedView, setShippingFeeInExpandedView] = useState(false);
+  const [shippingFeeOutExpandedView, setShippingFeeOutExpandedView] = useState(false);
 
   // Function to toggle the expansion state of an item
   const toggleExpansion = (index) => {
@@ -314,6 +322,7 @@ export function Management() {
   const tableTouchHandler = (item) => {
     setUserHistory(item);
     setSessionHistory(false), setSummaryHistory(true);
+    dispatch(getPaymentDrawerSessions(item.id));
   };
   const emailButtonHandler = () => {
     dispatch(logoutUserFunction());
@@ -526,7 +535,10 @@ export function Management() {
           <Button
             title={strings.management.confirm}
             textStyle={styles.buttonText}
-            style={styles.saveButton}
+            style={[
+              styles.saveButton,
+              { backgroundColor: addCashInput !== '' ? COLORS.primary : COLORS.gerySkies },
+            ]}
             // onPress={() => {
             //   setAddCash(false);
             // }}
@@ -1088,7 +1100,161 @@ export function Management() {
                         </View>
                       </View>
                     )}
-                    <View
+
+                    <TouchableOpacity
+                      style={styles.paymentBodyCon}
+                      onPress={() => setManualInExpandedView((prev) => !prev)}
+                    >
+                      <View style={styles.flexAlign}>
+                        <Text style={styles.paymentBodyText}>{'Manual'}</Text>
+                        <Image
+                          source={dropdown}
+                          resizeMode="contain"
+                          style={
+                            manualInExpandedView
+                              ? styles.activeDropDownPayment
+                              : styles.dropDownPayment
+                          }
+                          // style={styles.dropDownPayment}
+                        />
+                      </View>
+                      <Text style={styles.paymentBodyText}>
+                        {strings.management.usd}
+                        {cashIn?.manual?.total}
+                      </Text>
+                    </TouchableOpacity>
+                    {manualInExpandedView && (
+                      <View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashIn?.manual?.cash}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashIn?.manual?.card}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashIn?.manual?.jobr_coin}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+
+                    <TouchableOpacity
+                      style={styles.paymentBodyCon}
+                      onPress={() => setDelieveryFeeInExpandedView((prev) => !prev)}
+                    >
+                      <View style={styles.flexAlign}>
+                        <Text style={styles.paymentBodyText}>{'Delivery Fees'}</Text>
+                        <Image
+                          source={dropdown}
+                          resizeMode="contain"
+                          style={
+                            delieveryFeeInExpandedView
+                              ? styles.activeDropDownPayment
+                              : styles.dropDownPayment
+                          }
+                          // style={styles.dropDownPayment}
+                        />
+                      </View>
+                      <Text style={styles.paymentBodyText}>
+                        {strings.management.usd}
+                        {cashIn?.delivery_fees?.total}
+                      </Text>
+                    </TouchableOpacity>
+                    {delieveryFeeInExpandedView && (
+                      <View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashIn?.delivery_fees?.cash}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashIn?.delivery_fees?.card}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashIn?.delivery_fees?.jobr_coin}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+
+                    <TouchableOpacity
+                      style={styles.paymentBodyCon}
+                      onPress={() => setShippingFeeInExpandedView((prev) => !prev)}
+                    >
+                      <View style={styles.flexAlign}>
+                        <Text style={styles.paymentBodyText}>{'Shipping Fees'}</Text>
+                        <Image
+                          source={dropdown}
+                          resizeMode="contain"
+                          style={
+                            shippingFeeInExpandedView
+                              ? styles.activeDropDownPayment
+                              : styles.dropDownPayment
+                          }
+                          // style={styles.dropDownPayment}
+                        />
+                      </View>
+                      <Text style={styles.paymentBodyText}>
+                        {strings.management.usd}
+                        {cashIn?.shipping_fees?.total}
+                      </Text>
+                    </TouchableOpacity>
+                    {shippingFeeInExpandedView && (
+                      <View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashIn?.shipping_fees?.cash}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashIn?.shipping_fees?.card}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashIn?.shipping_fees?.jobr_coin}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+
+                    {/* <View
                       style={styles.paymentBodyCon}
                       // onPress={() => toggleExpansion(index)}
                     >
@@ -1109,7 +1275,7 @@ export function Management() {
                         {strings.management.usd}
                         {cashIn?.manual}
                       </Text>
-                    </View>
+                    </View> */}
                     {/* <View>
                             <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
                               <Text style={styles.paymentBodyText}>{'Cash'}</Text>
@@ -1208,7 +1374,7 @@ export function Management() {
                         </View>
                       </View>
                     )}
-                    <TouchableOpacity style={styles.paymentBodyCon}>
+                    {/* <TouchableOpacity style={styles.paymentBodyCon}>
                       <View style={styles.flexAlign}>
                         <Text style={styles.paymentBodyText}>{'Manual'}</Text>
                         <Image
@@ -1225,15 +1391,177 @@ export function Management() {
                         {strings.management.usd}
                         {cashOut?.manual}
                       </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </>
                 )}
 
+                {viewCashOutArray && (
+                  <>
+                    <TouchableOpacity
+                      style={styles.paymentBodyCon}
+                      onPress={() => setManualOutExpandedView((prev) => !prev)}
+                    >
+                      <View style={styles.flexAlign}>
+                        <Text style={styles.paymentBodyText}>{'Manual'}</Text>
+                        <Image
+                          source={dropdown}
+                          resizeMode="contain"
+                          style={
+                            manualOutExpandedView
+                              ? styles.activeDropDownPayment
+                              : styles.dropDownPayment
+                          }
+                        />
+                      </View>
+                      <Text style={styles.paymentBodyText}>
+                        {strings.management.usd}
+                        {cashOut?.manual?.total}
+                      </Text>
+                    </TouchableOpacity>
+                    {manualOutExpandedView && (
+                      <View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashOut?.manual?.cash}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashOut?.manual?.card}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashOut?.manual?.jobr_coin}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                  </>
+                )}
+
+                {viewCashOutArray && (
+                  <>
+                    <TouchableOpacity
+                      style={styles.paymentBodyCon}
+                      onPress={() => setDelieveryFeeOutExpandedView((prev) => !prev)}
+                    >
+                      <View style={styles.flexAlign}>
+                        <Text style={styles.paymentBodyText}>{'Delivery Fees'}</Text>
+                        <Image
+                          source={dropdown}
+                          resizeMode="contain"
+                          style={
+                            delieveryFeeOutExpandedView
+                              ? styles.activeDropDownPayment
+                              : styles.dropDownPayment
+                          }
+                        />
+                      </View>
+                      <Text style={styles.paymentBodyText}>
+                        {strings.management.usd}
+                        {cashOut?.delivery_fees?.total}
+                      </Text>
+                    </TouchableOpacity>
+                    {delieveryFeeOutExpandedView && (
+                      <View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashOut?.delivery_fees?.cash}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashOut?.delivery_fees?.card}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashOut?.delivery_fees?.jobr_coin}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                  </>
+                )}
+
+                {viewCashOutArray && (
+                  <>
+                    <TouchableOpacity
+                      style={styles.paymentBodyCon}
+                      onPress={() => setShippingFeeOutExpandedView((prev) => !prev)}
+                    >
+                      <View style={styles.flexAlign}>
+                        <Text style={styles.paymentBodyText}>{'Shipping Fees'}</Text>
+                        <Image
+                          source={dropdown}
+                          resizeMode="contain"
+                          style={
+                            shippingFeeOutExpandedView
+                              ? styles.activeDropDownPayment
+                              : styles.dropDownPayment
+                          }
+                        />
+                      </View>
+                      <Text style={styles.paymentBodyText}>
+                        {strings.management.usd}
+                        {cashOut?.shipping_fees?.total}
+                      </Text>
+                    </TouchableOpacity>
+                    {shippingFeeOutExpandedView && (
+                      <View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashOut?.shipping_fees?.cash}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashOut?.shipping_fees?.card}
+                          </Text>
+                        </View>
+                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                          <Text style={styles.paymentBodyText}>
+                            {strings.management.usd}
+                            {cashOut?.shipping_fees?.jobr_coin}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                  </>
+                )}
                 <View style={[styles.paymentOptionsView, { borderBottomWidth: 0 }]}>
                   <Text style={styles.cashDrawerText}>{strings.management.netPayment}</Text>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {SessionData?.cashBalance}
+                    {cashIn?.total + cashOut?.total}
+                    {/* {SessionData?.cashBalance} */}
                   </Text>
                 </View>
               </ScrollView>

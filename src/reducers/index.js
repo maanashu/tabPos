@@ -16,6 +16,7 @@ import { dashboardReducer } from '@/reducers/DashboardReducer';
 import { settingReducer } from '@/reducers/SettingReducer';
 import { cartReducer } from './CartReducer';
 import { TYPES } from '@/Types/Types';
+import { subscriptionReducer } from '@/reducers/SubscriptionReducer';
 import { chatReducer } from './ChatReducer';
 
 export const appReducer = combineReducers({
@@ -36,6 +37,7 @@ export const appReducer = combineReducers({
   setting: settingReducer,
   cartReducer: cartReducer,
   chat: chatReducer,
+  plan: subscriptionReducer,
 });
 
 export const rootReducer = (state, action) => {

@@ -1532,4 +1532,82 @@ export class RetailController {
         });
     });
   }
+
+  static async customProductAdd(data) {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint = ORDER_URL + ApiOrderInventory.customProductAdd;
+      const body = data?.notes
+        ? {
+            seller_id: sellerID,
+            price: data?.price,
+            name: data?.productName,
+            description: data?.notes,
+            type: 'physical',
+            qty: data?.qty,
+          }
+        : {
+            seller_id: sellerID,
+            price: data?.price,
+            name: data?.productName,
+            type: 'physical',
+            qty: data?.qty,
+          };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error?.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async customServiceAdd(data) {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint = ORDER_URL + ApiOrderInventory.customServiceAdd;
+      const body = data?.notes
+        ? {
+            seller_id: sellerID,
+            price: data?.price,
+            name: data?.productName,
+            description: data?.notes,
+            type: 'digital',
+            qty: data?.qty,
+            date: '2023-09-23',
+            start_time: '07:00 PM',
+            end_time: '08:00PM',
+          }
+        : {
+            seller_id: sellerID,
+            price: data?.price,
+            name: data?.productName,
+            type: 'digital',
+            qty: data?.qty,
+            date: '2023-09-23',
+            start_time: '07:00 PM',
+            end_time: '08:00PM',
+          };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error?.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
 }

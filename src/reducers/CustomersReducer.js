@@ -6,6 +6,7 @@ const INITIALSTATE = {
   getCustomers: {},
   getAcceptMarketing: {},
   getArea: {},
+  getStoreLocation: {},
 };
 
 export const customersReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -60,6 +61,17 @@ export const customersReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getArea: {},
+      };
+
+    case TYPES.GET_STORELOCATION_SUCCESS:
+      return {
+        ...state,
+        getStoreLocation: payload.getStoreLocation,
+      };
+    case TYPES.GET_STORELOCATION_RESET:
+      return {
+        ...state,
+        getStoreLocation: {},
       };
 
     default:

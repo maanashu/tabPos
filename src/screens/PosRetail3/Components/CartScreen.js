@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Image, TextInput, Keyboard, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import {
+  Image,
+  TextInput,
+  Keyboard,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -46,6 +55,7 @@ import { updateCartLength } from '@/actions/CartAction';
 import { getCartLength } from '@/selectors/CartSelector';
 import { FlatList } from 'react-native-gesture-handler';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { CustomProductAdd } from './CustomProductAdd';
 
 export function CartScreen({
   onPressPayNow,
@@ -74,6 +84,7 @@ export function CartScreen({
   const [cartEditItem, setCartEditItem] = useState(false);
   const [cartIndex, setCartIndex] = useState();
   const [cartProductId, setCartProductId] = useState();
+  const [numPadModal, setNumPadModal] = useState(false);
 
   useEffect(() => {
     const data = {
@@ -439,14 +450,16 @@ export function CartScreen({
                 </View>
               ))}
             </ScrollView>
-
             <Spacer space={SH(7)} />
           </View>
           <View style={styles.rightSideCon}>
             <View style={styles.displayflex}>
               <TouchableOpacity
                 style={styles.holdCartPad}
-                //   onPress={() => setProductdetailModal(true)}
+                onPress={() => {
+                  beforeDiscountCartLoad();
+                  setNumPadModal((prev) => !prev);
+                }}
               >
                 <Image source={sideKeyboard} style={styles.keyboardIcon} />
               </TouchableOpacity>
@@ -641,6 +654,12 @@ export function CartScreen({
             openFrom="cart"
           />
         )}
+      </Modal>
+
+      <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+          <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="product" />
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );

@@ -149,6 +149,9 @@ export const ApiOrderInventory = {
   return: 'returns/',
   scanbarcode: 'invoices/scan-barcode',
   getArea: 'orders/customers/state',
+  customProductAdd: 'poscarts/custom-product',
+  customServiceAdd: 'appointment_carts/custom-product',
+  getStoreLocation: 'orders/customers/city',
 };
 
 export const ApiWalletInventory = {
@@ -168,6 +171,13 @@ export const ApiRewards = {
   getRewardGraph: `rewards/pos/graph`,
   getRewardedUsers: `rewards/pos/rewarded-people`,
   getRewardUser: 'rewards/pos/users/statistics',
+};
+export const plansAPI = {
+  getAllPlans: `plans`,
+  createPlan: `plans/`,
+  getPlanById: `plans/:`,
+  buyPlan: `subscription`,
+  activePlan: `subscription/active`,
 };
 
 // Add URLS which is required to send POS USER token

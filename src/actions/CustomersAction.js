@@ -95,6 +95,24 @@ const getAreaReset = () => ({
   payload: null,
 });
 
+// getStoreLOcation
+const getStoreLocationRequest = () => ({
+  type: TYPES.GET_STORELOCATION_REQUEST,
+  payload: null,
+});
+const getStoreLocationSuccess = (getStoreLocation) => ({
+  type: TYPES.GET_STORELOCATION_SUCCESS,
+  payload: { getStoreLocation },
+});
+const getStoreLocationError = (error) => ({
+  type: TYPES.GET_STORELOCATION_ERROR,
+  payload: { error },
+});
+const getStoreLocationReset = () => ({
+  type: TYPES.GET_STORELOCATION_RESET,
+  payload: null,
+});
+
 export const getUserOrder = (data) => async (dispatch) => {
   dispatch(getUserOrderRequest());
   try {
@@ -168,5 +186,18 @@ export const getArea = () => async (dispatch) => {
       dispatch(getAreaReset());
     }
     dispatch(getAreaError(error.message));
+  }
+};
+
+export const getStoreLocation = () => async (dispatch) => {
+  dispatch(getStoreLocationRequest());
+  try {
+    const res = await CustomersController.getStoreLocation();
+    dispatch(getStoreLocationSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getStoreLocationReset());
+    }
+    dispatch(getStoreLocationError(error.message));
   }
 };

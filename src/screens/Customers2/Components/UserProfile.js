@@ -56,6 +56,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getCustomerData = useSelector(getCustomers);
+  const storeLocationData = getCustomerData?.getStoreLocation?.data;
   const marketingData = getCustomerData?.getAcceptMarketing;
   const ordersbyUserData = getCustomerData?.getOrderUser;
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
@@ -71,24 +72,16 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
   const [selectedYearData, setselectedYearData] = useState(null);
   const [selectedMonthData, setselectedMonthData] = useState(null);
   const storeLocation = (value) => setLocationSelect(value);
-  const [locationSelect, setLocationSelect] = useState('');
+  const [locationSelect, setLocationSelect] = useState('none');
 
   const monthSelection = (value) => setMonthSelect(value);
-  const [monthSelect, setMonthSelect] = useState('');
+  const [monthSelect, setMonthSelect] = useState('none');
 
-  const dummyArea = [
-    {
-      label: 'Shimla',
-      value: 'shimla',
-    },
-    {
-      label: 'Haryana',
-      value: 'haryana',
-    },
-    {
-      label: 'Punjab',
-      value: 'punjab',
-    },
+  const storeLocationArray = [
+    storeLocationData?.map((item, index) => ({
+      label: item?.city,
+      value: item?.city,
+    })),
   ];
 
   useEffect(() => {
@@ -156,9 +149,11 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
       sellerID: sellerID,
       page: page,
       limit: paginationModalValue,
+      month: monthSelect,
+      storeLocation: locationSelect,
     };
     dispatch(getOrderUser(data));
-  }, [paginationModalValue, page]);
+  }, [paginationModalValue, page, monthSelect, locationSelect]);
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
@@ -263,7 +258,11 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             /> */}
           </View>
           <>
-            <TableDropdown placeholder="Store location" selected={storeLocation} data={dummyArea} />
+            <TableDropdown
+              placeholder="Store location"
+              selected={storeLocation}
+              data={storeLocationArray?.[0]}
+            />
           </>
         </View>
       </View>
