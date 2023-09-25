@@ -5,7 +5,7 @@ import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
 import moment from 'moment';
-import { calculateDuration } from '@/utils/GlobalMethods';
+import { calculateDuration, getCalendarActionButtonTitle } from '@/utils/GlobalMethods';
 import ProfileImage from '@/components/ProfileImage';
 import { useState } from 'react';
 import { COLORS } from '@/theme';
@@ -265,23 +265,22 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 <Spacer space={ms(10)} horizontal />
               </>
             )}
-
             <Button
               pending={isChangeStatusLoading}
-              title={
-                selectedPosStaffCompleteData?.status === 3
-                  ? 'Completed'
-                  : selectedPosStaffCompleteData?.status === 1
-                  ? 'Check-in'
-                  : 'Mark Complete'
+              title={getCalendarActionButtonTitle(selectedPosStaffCompleteData?.status)}
+              disable={
+                selectedPosStaffCompleteData?.status === 3 ||
+                selectedPosStaffCompleteData?.status === 5
               }
-              disable={selectedPosStaffCompleteData?.status === 3}
               textStyle={styles.checkintitle}
               style={[
                 styles.checkinContainer,
                 {
                   backgroundColor:
-                    selectedPosStaffCompleteData?.status === 3 ? COLORS.darkGray : COLORS.primary,
+                    selectedPosStaffCompleteData?.status === 3 ||
+                    selectedPosStaffCompleteData?.status === 5
+                      ? COLORS.darkGray
+                      : COLORS.primary,
                 },
               ]}
               onPress={() => {

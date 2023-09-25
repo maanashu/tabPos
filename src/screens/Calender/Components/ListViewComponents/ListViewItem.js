@@ -7,6 +7,7 @@ import { memo } from 'react';
 import { ms } from 'react-native-size-matters';
 import { Fonts, editIcon } from '@/assets';
 import { COLORS } from '@/theme';
+import { getCalendarActionButtonTitle } from '@/utils/GlobalMethods';
 
 const ListViewItem = ({
   item,
@@ -74,14 +75,15 @@ const ListViewItem = ({
           ) : (
             <Button
               pending={isChangeStatusLoading}
-              disabled={item?.status === 3}
-              title={item?.status === 3 ? 'Completed' : 'Mark Completed'}
+              disabled={item?.status === 3 || item?.status === 5}
+              title={getCalendarActionButtonTitle(item?.status)}
               textStyle={[styles.listCheckinBtnText, { color: COLORS.white }]}
               style={[
                 styles.listViewCheckinBtn,
                 {
-                  backgroundColor: item?.status === 3 ? COLORS.darkGray : COLORS.primary,
-                  borderWidth: item?.status === 3 ? 0 : 1,
+                  backgroundColor:
+                    item?.status === 3 || item?.status === 5 ? COLORS.darkGray : COLORS.primary,
+                  borderWidth: item?.status === 3 || item?.status === 5 ? 0 : 1,
                 },
               ]}
               onPress={() => onPressMarkComplete(item)}
