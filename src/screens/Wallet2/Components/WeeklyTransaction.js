@@ -94,6 +94,17 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
   const orderTypeSelection = (value) => setOrderTypeSelect(value);
   const [orderTypeSelect, setOrderTypeSelect] = useState('none');
 
+  const orderTypeArray = [
+    {
+      label: 'Product',
+      value: 'product',
+    },
+    {
+      label: 'Service',
+      value: 'service',
+    },
+  ];
+
   const dummyArea = [
     {
       label: 'Shimla',
@@ -167,26 +178,17 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
       limit: paginationModalValue,
       sellerId: sellerID,
       calendarDate: formatedDate,
+      orderType: orderTypeSelect,
     };
     dispatch(getTotakTraDetail(data));
-  }, [selectId, transaction, page, paginationModalValue, formatedDate]);
+  }, [selectId, transaction, page, paginationModalValue, formatedDate, orderTypeSelect]);
 
   const onChangeDate = (selectedDate) => {
     setDefaultDate(selectedDate);
     const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
     setDate(formattedDate);
-    // if (weeklyTransaction) {
-    //   setSelectId2(0);
-    //   dispatch(getTotakTraDetail(formattedDate, sellerID, 'all'));
-    // } else {
-    // setSelectId(0);
-    return;
-
-    dispatch(getTotalTra(null, sellerID, formattedDate));
-    // }
   };
-
   const getFormattedTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -194,7 +196,6 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-
   const maxDate = getFormattedTodayDate();
 
   const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
@@ -236,6 +237,9 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
         break;
       case 8:
         return 'Rejected';
+        break;
+      case 9:
+        return 'Returned';
         break;
     }
   };
@@ -378,7 +382,11 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
             <TableDropdown placeholder="Status" selected={statusSelection} data={dummyArea} />
           </View>
           <>
-            <TableDropdown placeholder="Order type" selected={orderTypeSelection} data={months} />
+            <TableDropdown
+              placeholder="Order type"
+              selected={orderTypeSelection}
+              data={orderTypeArray}
+            />
           </>
         </View>
       </View>

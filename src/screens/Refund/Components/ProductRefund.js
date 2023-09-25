@@ -103,7 +103,6 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     } else if (symbol === '-' && selectedItem.qty > 1) {
       // Decrease the qty of the selected item, but ensure it doesn't go below 0
       selectedItem.qty -= 1;
-      console.log(selectedItem.refundAmount, selectedItem.qty);
       selectedItem.totalRefundAmount = selectedItem.qty * selectedItem.refundAmount;
     }
     // Update the state with the modified copy of the orders array

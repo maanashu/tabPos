@@ -79,6 +79,7 @@ export function DeliveryOrders2({ route }) {
   const getDeliveryData = useSelector(getDelivery);
   const oneOrderDetail = useSelector(getAnalytics);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+
   const pieChartData = getDeliveryData?.getOrderstatistics?.data;
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const ordersList = getDeliveryData?.getReviewDef;
@@ -129,10 +130,6 @@ export function DeliveryOrders2({ route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
   const [changeViewToRecheck, setChangeViewToRecheck] = useState();
-
-  // const [isEnableDriverList, setIsEnableDriverList] = useState(false);
-
-  // console.log('userDetail===', JSON.stringify(userDetail));
 
   useEffect(() => {
     if (ordersList?.length > 0) {
@@ -195,13 +192,6 @@ export function DeliveryOrders2({ route }) {
         count: getDeliveryData?.deliveringOrder?.[2]?.count ?? 0,
         image: twoHourType,
       },
-      // {
-      //   key: '4',
-      //   delivery_type_title:
-      //     getDeliveryData?.deliveringOrder?.[3]?.delivery_type_title ?? 'Customer Pickups',
-      //   count: getDeliveryData?.deliveringOrder?.[3]?.count ?? 0,
-      //   image: customType,
-      // },
     ];
     setDeliveryTypes(deliveryTypes);
   }, []);
@@ -219,10 +209,6 @@ export function DeliveryOrders2({ route }) {
     dispatch(getOrderData(getDeliveryData?.getReviewDef?.[0]?.id));
     setOrderId(getDeliveryData?.getReviewDef?.[0]?.id);
   }, [openShippingOrders, viewAllOrder, getDeliveryData?.getReviewDef]);
-
-  const isProductDetailLoading = useSelector((state) =>
-    isLoadingSelector([ANALYTICSTYPES.GET_ORDER_DATA], state)
-  );
 
   const isOrderLoading = useSelector((state) => isLoadingSelector([TYPES.GET_REVIEW_DEF], state));
 
@@ -375,6 +361,7 @@ export function DeliveryOrders2({ route }) {
     const formattedTime = `${startTime} - ${endTime}`;
 
     const handlePress = () => {
+      console.log(JSON.stringify(item));
       setViewAllOrder(true);
       setSelectedProductId(orderDetails[0]?.id);
       setUserDetail(item);
@@ -480,9 +467,6 @@ export function DeliveryOrders2({ route }) {
   );
 
   const acceptHandler = (id) => {
-    // if (openShippingOrders === '2') {
-    //   setIsEnableDriverList(true);
-    // } else {
     const data = {
       orderId: id,
       status: parseInt(openShippingOrders) + 1,
@@ -503,19 +487,27 @@ export function DeliveryOrders2({ route }) {
         }
       })
     );
-    // }
   };
 
   const declineHandler = (id) => {
     const data = {
       orderId: id,
-      status: 7,
+      status: 8,
       sellerID: sellerID,
     };
     dispatch(
-      acceptOrder(data, () => {
-        setViewAllOrder(false);
-        dispatch(getReviewDefault(0, 1));
+      acceptOrder(data, openShippingOrders, 1, (res) => {
+        if (res?.msg) {
+          setViewAllOrder(true);
+          dispatch(getReviewDefault(openShippingOrders, 1));
+          dispatch(orderStatusCount(sellerID));
+          dispatch(todayOrders());
+          dispatch(getOrderstatistics(1));
+          dispatch(getGraphOrders(1));
+          setGetOrderDetail('ViewAllScreen');
+          setUserDetail(ordersList?.[0] ?? []);
+          setOrderDetail(ordersList?.[0]?.order_details ?? []);
+        }
       })
     );
   };
@@ -693,10 +685,10 @@ export function DeliveryOrders2({ route }) {
     );
   };
 
-  const recheckHandler = useCallback(() => {
+  const recheckHandler = () => {
     setChangeViewToRecheck(true);
     setIsReturnModalVisible(false);
-  }, []);
+  };
 
   const onPressShop = () => {
     setIsReturnModalVisible(true);
@@ -741,7 +733,9 @@ export function DeliveryOrders2({ route }) {
                         />
                       </View>
 
-                      {changeViewToRecheck && openShippingOrders === '9' ? (
+                      {changeViewToRecheck &&
+                      singleOrderDetail?.is_delivery_dispute &&
+                      singleOrderDetail?.status === 7 ? (
                         <ReturnedOrderDetail orderDetail={singleOrderDetail} />
                       ) : (
                         <OrderDetail
@@ -753,7 +747,6 @@ export function DeliveryOrders2({ route }) {
                             declineHandler,
                             openShippingOrders,
                             trackHandler,
-                            isProductDetailLoading,
                             latitude,
                             longitude,
                             location,

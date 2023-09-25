@@ -202,6 +202,7 @@ export const getReviewDefault = (status, deliveryOption) => async (dispatch) => 
   try {
     const res = await DeliveryController.getReviewDefault(status, deliveryOption);
     dispatch(getReviewDefSuccess(res));
+    dispatch(deliOrder());
     dispatch(getPendingOrders(sellerID));
     dispatch(getOrderCount());
   } catch (error) {
