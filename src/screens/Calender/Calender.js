@@ -133,16 +133,19 @@ export function Calender() {
     if (isFocused) {
       dispatch(getStaffUsersList());
       dispatch(getSettings());
+      onPressListViewMode();
     }
   }, [isFocused]);
 
   useEffect(() => {
-    if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.DAY) {
-      dayHandler();
-    } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.WEEK) {
-      weekHandler();
-    } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.MONTH) {
-      monthHandler();
+    if (calendarMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW) {
+      if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.DAY) {
+        dayHandler();
+      } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.WEEK) {
+        weekHandler();
+      } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.MONTH) {
+        monthHandler();
+      }
     }
   }, [defaultSettingsForCalendar]);
 
@@ -207,6 +210,8 @@ export function Calender() {
     setCalendarViewMode(CALENDAR_VIEW_MODES.LIST_VIEW);
     setshouldShowCalendarModeOptions(false);
     dayHandler();
+    setSelectedStaffEmployeeId(null);
+    setshowEmployeeHeader(false);
   };
 
   const getAppointmentsByDate = useMemo(() => {
@@ -465,6 +470,7 @@ export function Calender() {
             <View style={{ flex: 1, alignItems: 'center' }}>
               <TouchableOpacity
                 onPress={() => {
+                  setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
                   setSelectedStaffEmployeeId(null);
                   if (selectedStaffEmployeeId) {
                     setshowEmployeeHeader(true);
@@ -498,6 +504,7 @@ export function Calender() {
                   return (
                     <TouchableOpacity
                       onPress={() => {
+                        setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
                         setSelectedStaffEmployeeId((prev) => {
                           if (prev === posUserId) {
                             setSelectedStaffEmployeeId(null);
