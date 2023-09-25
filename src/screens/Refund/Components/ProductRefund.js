@@ -65,19 +65,27 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     }
   }, []);
 
-  const refundHandler = (key, newText) => {
-    setButtonText('Apply Refund');
-    const updatedDataArray = orders.map((item, index) => {
+  const refundHandler = (key, newText, item) => {
+    const parsedNewText = parseFloat(newText);
+    const finalText = isNaN(parsedNewText) ? 0 : parsedNewText;
+    const isSmallerThanUnitPrice = finalText <= parseFloat(item?.price);
+
+    const updatedDataArray = orders.map((order, index) => {
       if (index === key) {
         return {
-          ...item,
-          refundAmount: parseFloat(newText),
-          totalRefundAmount: parseFloat(newText) * item.qty || 0,
+          ...order,
+          refundAmount: isSmallerThanUnitPrice ? finalText : '',
+          totalRefundAmount: isSmallerThanUnitPrice ? finalText * item.qty : 0.0,
         };
       }
-      return item;
+      return order;
     });
+
     setOrders(updatedDataArray);
+
+    if (!isSmallerThanUnitPrice) {
+      alert('Refund amount should not be greater than unit price');
+    }
   };
 
   const addRemoveQty = (symbol, itemIndex) => {
@@ -195,7 +203,9 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                 ]}
                 value={item?.refundAmount}
                 keyboardType={'number-pad'}
-                onChangeText={(text) => refundHandler(index, text)}
+                onChangeText={(text) => {
+                  refundHandler(index, text, item);
+                }}
               />
             </View>
           ) : (
