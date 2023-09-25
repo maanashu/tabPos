@@ -8,6 +8,9 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
+
+import Modal from 'react-native-modal';
+
 import { COLORS, SF, SH, SW } from '@/theme';
 import { List } from 'react-native-paper';
 import { moderateScale, ms } from 'react-native-size-matters';
@@ -38,6 +41,9 @@ import { getSessionHistory } from '@/actions/CashTrackingAction';
 import { width } from '@/theme/ScalerDimensions';
 import { transactionDataList } from '@/constants/flatListData';
 import { getCashTracking } from '@/selectors/CashTrackingSelector';
+import CalendarPickerModal from '@/components/CalendarPickerModal';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { useEffect } from 'react';
 const windowHeight = Dimensions.get('window').height;
 
 moment.suppressDeprecationWarnings = true;
@@ -54,32 +60,95 @@ export function SessionHistoryTable({
   const [dateformat, setDateformat] = useState('');
   const [show, setShow] = useState(false);
   const [staffSelect, setStaffSelect] = useState('');
+  const [formattedDate, setFormattedDate] = useState(new Date());
   const staffSelection = (value) => setStaffSelect(value);
+  const getAuth = useSelector(getAuthData);
+  const posUserArray = getAuth?.getAllPosUsers;
+  var posUsers = [];
+  if (posUserArray.length > 0) {
+    const mappedArray = posUserArray.map((item) => {
+      return { label: item?.user?.user_profiles?.firstname, value: item?.user?.unique_uuid };
+    });
+    posUsers = mappedArray;
+  }
+
+  console.log('DSASDASD', JSON.stringify(posUsers));
+
+  const getFormattedTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const maxDate = getFormattedTodayDate();
+  // const onChangeDate = (selectedDate) => {
+  //   setSessionHistoryArray([]);
+  //   const currentDate = moment().format('MM/DD/YYYY');
+  //   const selected = moment(selectedDate).format('MM/DD/YYYY');
+  //   setShow(false);
+  //   const month = selectedDate.getMonth() + 1;
+  //   const selectedMonth = month < 10 ? '0' + month : month;
+  //   const day = selectedDate.getDate();
+  //   const selectedDay = day < 10 ? '0' + day : day;
+  //   const year = selectedDate.getFullYear();
+  //   const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
+  //   const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
+  //   setDateformat(newDateFormat);
+  //   setDate(fullDate);
+  //   if (newDateFormat) {
+  //     dispatch(getSessionHistory(newDateFormat));
+  //   }
+  // };
+  // const onCancelFun = () => {
+  //   setShow(false);
+  //   setDateformat('');
+  //   setDate(new Date());
+  //   dispatch(getSessionHistory());
+  // };
+
+  //New calendar changes
 
   const onChangeDate = (selectedDate) => {
-    setSessionHistoryArray([]);
-    const currentDate = moment().format('MM/DD/YYYY');
-    const selected = moment(selectedDate).format('MM/DD/YYYY');
-    setShow(false);
-    const month = selectedDate.getMonth() + 1;
-    const selectedMonth = month < 10 ? '0' + month : month;
-    const day = selectedDate.getDate();
-    const selectedDay = day < 10 ? '0' + day : day;
-    const year = selectedDate.getFullYear();
-    const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
-    const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
-    setDateformat(newDateFormat);
+    const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
+    const fullDate = moment(selectedDate).format('MM/DD/YYYY');
     setDate(fullDate);
+    setFormattedDate(formattedDate);
+  };
+  const onDateApply = (selectedDate) => {
+    // setSessionHistoryArray([]);
+    // const currentDate = moment().format('MM/DD/YYYY');
+    // const selected = moment(selectedDate).format('MM/DD/YYYY');
+    // setShow(false);
+    // const month = selectedDate?.getMonth() + 1;
+    // const selectedMonth = month < 10 ? '0' + month : month;
+    // const day = selectedDate.getDate();
+    // const selectedDay = day < 10 ? '0' + day : day;
+    // const year = selectedDate.getFullYear();
+    // const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
+    // const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
+    // setDateformat(newDateFormat);
+    // setDate(fullDate);
+    setShow(false);
+    const newDateFormat = moment(selectedDate).format('YYYY-MM-DD');
     if (newDateFormat) {
+      const fullDate = moment(selectedDate).format('YYYY/MM/DD');
+      setDateformat(newDateFormat);
+      setDate(fullDate);
       dispatch(getSessionHistory(newDateFormat));
     }
   };
-  const onCancelFun = () => {
+  const onCancelPressCalendar = () => {
     setShow(false);
     setDateformat('');
     setDate(new Date());
     dispatch(getSessionHistory());
   };
+  useEffect(() => {
+    const newDateFormat = moment(formattedDate).format('YYYY-MM-DD');
+    dispatch(getSessionHistory(newDateFormat, staffSelect));
+  }, [staffSelect]);
 
   // const tableDataArrayReverse = tableDataArray?.reverse();
   const tableDataArrayReverse = tableDataArray?.slice().reverse();
@@ -103,15 +172,16 @@ export function SessionHistoryTable({
               style={styles.txtInput}
             />
           </TouchableOpacity>
-          <DateTimePickerModal
+          {/* <DateTimePickerModal
             mode={'date'}
             isVisible={show}
             onConfirm={onChangeDate}
             onCancel={() => onCancelFun()}
             maximumDate={new Date()}
-          />
+          /> */}
+
           <View style={{ marginHorizontal: moderateScale(10) }}>
-            <TableDropdown placeholder="Select Staff" selected={staffSelection} data={[]} />
+            <TableDropdown placeholder="Select Staff" selected={staffSelection} data={posUsers} />
           </View>
         </View>
       </View>
@@ -283,6 +353,28 @@ export function SessionHistoryTable({
           </View>
         </Table>
       </View>
+      {/* {show && ( */}
+      <Modal
+        isVisible={show}
+        statusBarTranslucent
+        animationIn={'bounceIn'}
+        animationOut={'fadeOut'}
+        // animationInTiming={600}
+        // animationOutTiming={300}
+        onBackdropPress={() => setShow(false)}
+      >
+        <View style={styles.calendarModalView}>
+          <CalendarPickerModal
+            onPress={() => setShow(false)}
+            onDateChange={onChangeDate}
+            onSelectedDate={() => onDateApply(formattedDate)}
+            selectedStartDate={formattedDate}
+            maxDate={maxDate}
+            onCancelPress={onCancelPressCalendar}
+          />
+        </View>
+      </Modal>
+      {/* )} */}
     </View>
   );
 }

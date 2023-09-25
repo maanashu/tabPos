@@ -31,21 +31,23 @@ export function Plans() {
   const getPlanData = useSelector(getAllPlansData);
   const activeUserPlan = getPlanData?.activeSubscription;
 
-  var activePlan = {};
+  // var activePlan = {};
   const [planModal, setPlanModal] = useState(false);
   const [selectedId, setSelectedId] = useState(1);
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(null);
+  const [activePlan, setActivePlan] = useState({});
 
   useEffect(() => {
     if (isFocused) {
       dispatch(getAllPlans());
       dispatch(getActiveSubscription());
+      if (activeUserPlan?.length > 0) {
+        setActivePlan(getPlanData?.activeSubscription[0]);
+      }
     }
   }, [isFocused]);
-  console.log('activeplan', activePlan);
-  if (activeUserPlan.length > 0) {
-    activePlan = getPlanData?.activeSubscription[0];
-  }
+
+  useEffect(() => {}, [getPlanData]);
   const monthlyPlans = [];
   const yearlyPlans = [];
   if (getPlanData?.allPlans?.length > 0) {
@@ -175,104 +177,107 @@ export function Plans() {
   };
 
   const onBuySubscription = async (plan_id) => {
-    dispatch(buySubscription(plan_id));
+    await dispatch(buySubscription(plan_id));
     const data = await dispatch(getActiveSubscription());
     if (data) {
       setPlanModal(false);
+      if (data !== undefined || data?.length > 0) {
+        setActivePlan(data[0]);
+      }
     }
   };
-
-  return (
-    <View>
-      {Object.keys(activePlan).length > 0 && !planModal ? (
-        <View>
-          <View style={[styles.flexRow, { height: SW(8) }]}>
-            <Text style={styles.HeaderLabelText}>{strings.settings.plans}</Text>
+  const renderPlanView = useCallback(
+    () => (
+      <View>
+        <View style={[styles.flexRow, { height: SW(8) }]}>
+          <Text style={styles.HeaderLabelText}>{strings.settings.plans}</Text>
+        </View>
+        <Spacer space={SH(20)} />
+        <View style={styles.securityMainCon}>
+          <Text style={styles.yourPlan}>{strings.settings.yourPlan}</Text>
+          <Spacer space={SH(15)} />
+          <View style={styles.flexRow}>
+            <View>
+              <Text style={styles.basic}>{activePlan?.plan_id?.name}</Text>
+              <Text style={styles.everyThingNeed}>{activePlan?.plan_id?.description}</Text>
+            </View>
+            <TouchableOpacity style={styles.dispalyRow} onPress={() => setPlanModal(true)}>
+              <Text style={styles.changePlanText}>{strings.settings.chnagePlan}</Text>
+              <Image source={changePlan} style={styles.changePlan} />
+            </TouchableOpacity>
           </View>
           <Spacer space={SH(20)} />
-          <View style={styles.securityMainCon}>
-            <Text style={styles.yourPlan}>{strings.settings.yourPlan}</Text>
-            <Spacer space={SH(15)} />
-            <View style={styles.flexRow}>
-              <View>
-                <Text style={styles.basic}>{activePlan?.plan_id?.name}</Text>
-                <Text style={styles.everyThingNeed}>{activePlan?.plan_id?.description}</Text>
-              </View>
-              <TouchableOpacity style={styles.dispalyRow} onPress={() => setPlanModal(true)}>
-                <Text style={styles.changePlanText}>{strings.settings.chnagePlan}</Text>
-                <Image source={changePlan} style={styles.changePlan} />
-              </TouchableOpacity>
+          <Text style={styles.changePlanText}>{strings.settings.includePlan}</Text>
+          {activePlan?.plan_id?.included_apps?.map((item) => (
+            <View key={item} style={[styles.dispalyRow, { paddingVertical: verticalScale(2) }]}>
+              <Image source={radioFillPlan} style={styles.radioFillPlan} />
+              <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>{item}</Text>
             </View>
-            <Spacer space={SH(20)} />
-            <Text style={styles.changePlanText}>{strings.settings.includePlan}</Text>
-            {activePlan?.plan_id?.included_apps?.map((item) => (
-              <View key={item} style={[styles.dispalyRow, { paddingVertical: verticalScale(2) }]}>
-                <Image source={radioFillPlan} style={styles.radioFillPlan} />
-                <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>{item}</Text>
-              </View>
-            ))}
-            {/* <View style={[styles.dispalyRow, { paddingVertical: verticalScale(2) }]}>
- 
-           <Image source={radioFillPlan} style={styles.radioFillPlan} />
-           <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>JOBR B2B</Text>
-         </View> */}
-            {/* <View style={styles.dispalyRow}>
-           <Image source={radioFillPlan} style={styles.radioFillPlan} />
-           <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>JOBR Wallet</Text>
-         </View> */}
-            <Spacer space={SH(20)} />
-            <Text style={styles.changePlanText}>{strings.settings.planFeat}</Text>
-            <FlatList
-              data={activePlan?.plan_id?.tags}
-              extraData={activePlan?.plan_id?.tags}
-              renderItem={planTagItem}
-              keyExtractor={(item) => item}
-            />
-            <Spacer space={SH(20)} />
-            <View style={styles.billingDateCon}>
-              <Text style={styles.changePlanText}>Next billing date</Text>
-              <Spacer space={SH(3)} />
-              <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
-                {/* March 2, 2023 for $1.00 USD */}
+          ))}
 
-                {moment(activePlan?.expiry_date).format('MMMM D, YYYY')}
-                {' for $' + activePlan?.plan_id?.amount + '.00 USD'}
+          <Spacer space={SH(20)} />
+          <Text style={styles.changePlanText}>{strings.settings.planFeat}</Text>
+          <FlatList
+            data={activePlan?.plan_id?.tags}
+            extraData={activePlan?.plan_id?.tags}
+            renderItem={planTagItem}
+            keyExtractor={(item) => item}
+          />
+          <Spacer space={SH(20)} />
+          <View style={styles.billingDateCon}>
+            <Text style={styles.changePlanText}>Next billing date</Text>
+            <Spacer space={SH(3)} />
+            <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
+              {/* March 2, 2023 for $1.00 USD */}
+
+              {moment(activePlan?.expiry_date).format('MMMM D, YYYY')}
+              {' for $' + activePlan?.plan_id?.amount + '.00 USD'}
+            </Text>
+          </View>
+          <Spacer space={SH(20)} />
+          <View style={styles.billingDateCon}>
+            <Text style={styles.changePlanText}>{strings.settings.paymentMethod}</Text>
+            <Spacer space={SH(3)} />
+            <View style={styles.dispalyRow}>
+              <Image source={visa} style={styles.visa} />
+              <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
+                Visa ending in 2275
               </Text>
-            </View>
-            <Spacer space={SH(20)} />
-            <View style={styles.billingDateCon}>
-              <Text style={styles.changePlanText}>{strings.settings.paymentMethod}</Text>
-              <Spacer space={SH(3)} />
-              <View style={styles.dispalyRow}>
-                <Image source={visa} style={styles.visa} />
-                <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
-                  Visa ending in 2275
-                </Text>
-              </View>
             </View>
           </View>
         </View>
-      ) : (
-        <View
-          style={[
-            styles.securityMainCon,
-            { justifyContent: 'space-evenly', alignItems: 'center', height: ms(100) },
-          ]}
+      </View>
+    ),
+    [activePlan]
+  );
+  const renderBuyView = useCallback(
+    () => (
+      <View
+        style={[
+          styles.securityMainCon,
+          { justifyContent: 'space-evenly', alignItems: 'center', height: ms(100) },
+        ]}
+      >
+        <Text style={{ textAlign: 'center' }}>No Active Subscription</Text>
+
+        <TouchableOpacity
+          onPress={() => {
+            setPlanModal(true);
+          }}
+          style={[styles.checkoutButton, styles.checkoutButtonSec]}
         >
-          <Text style={{ textAlign: 'center' }}>No Active Subscription</Text>
+          <Text style={[styles.checkoutText, { color: COLORS.white }]}>{'Buy Subscription'}</Text>
 
-          <TouchableOpacity
-            onPress={() => {
-              setPlanModal(true);
-            }}
-            style={[styles.checkoutButton, styles.checkoutButtonSec]}
-          >
-            <Text style={[styles.checkoutText, { color: COLORS.white }]}>{'Buy Subscription'}</Text>
-
-            <Image source={checkArrow} style={[styles.checkArrow, { tintColor: COLORS.white }]} />
-          </TouchableOpacity>
-        </View>
-      )}
+          <Image source={checkArrow} style={[styles.checkArrow, { tintColor: COLORS.white }]} />
+        </TouchableOpacity>
+      </View>
+    ),
+    [activePlan]
+  );
+  return (
+    <View>
+      {Object.keys(activePlan).length > 0 && renderPlanView()}
+      {Object.keys(activePlan).length <= 0 && renderBuyView()}
 
       <Modal animationType="fade" transparent={true} isVisible={planModal}>
         <View style={styles.planModalcon}>

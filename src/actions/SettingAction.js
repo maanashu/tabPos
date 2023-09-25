@@ -234,7 +234,7 @@ export const getSettings = () => async (dispatch) => {
   try {
     const res = await SettingController.getSetting();
     dispatch(getSettingSuccess(res?.payload));
-    return res.payload
+    return res.payload;
   } catch (error) {
     dispatch(getSettingError(error.message));
   }
@@ -363,10 +363,10 @@ export const verifyGoogleCode = (data) => async (dispatch) => {
   try {
     const res = await SettingController.verifyGoogleCode(data);
     dispatch(verifyGoogleCodeSuccess(res));
-    return res
+    return res;
   } catch (error) {
     dispatch(verifyGoogleCodeError(error.message));
-    return error
+    return error;
   }
 };
 
@@ -375,10 +375,10 @@ export const configureGoogleCode = (data) => async (dispatch) => {
   try {
     const res = await SettingController.configureGoogleCode(data);
     dispatch(configureGoogleCodeSuccess(res));
-    return res
+    return res;
   } catch (error) {
     dispatch(configureGoogleCodeError(error.message));
-    return error
+    return error;
   }
 };
 

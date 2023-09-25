@@ -30,7 +30,7 @@ export class SubscriptionController {
     });
   }
 
-  static async getActiveSubscription() {
+  static async getActiveSubscriptions() {
     return new Promise((resolve, reject) => {
       const endpoint = WALLET_URL + plansAPI.activePlan;
       HttpClient.get(endpoint)

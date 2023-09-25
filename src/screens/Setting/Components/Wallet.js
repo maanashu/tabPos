@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 
-import {
-  wallet,
-  vector,
-  vectorOff,
-  walletConfigCash,
-  walletConfigCard,
-  Fonts,
-} from '@/assets';
+import { wallet, vector, vectorOff, walletConfigCash, walletConfigCard, Fonts } from '@/assets';
 import { SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer, Button } from '@/components';
@@ -23,10 +16,11 @@ export function Wallet() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getSettingData = useSelector(getSetting);
+  console.log('get', JSON.stringify(getSettingData));
   const data = {
-    jbrcoin: getSettingData?.getSetting?.jbr_coin_status,
-    cash: getSettingData?.getSetting?.cash_status,
-    card: getSettingData?.getSetting?.setup_sila_status,
+    jbrcoin: getSettingData?.getSetting?.accept_jbr_coin_payment,
+    cash: getSettingData?.getSetting?.accept_cash_payment,
+    card: getSettingData?.getSetting?.accept_card_payment,
   };
 
   const [jbrCoin, setJbrCoin] = useState(data?.jbrcoin);
@@ -35,26 +29,26 @@ export function Wallet() {
 
   useEffect(() => {
     if (getSettingData?.getSetting) {
-      setJbrCoin(getSettingData?.getSetting?.jbr_coin_status);
-      setCash(getSettingData?.getSetting?.cash_status);
-      setCard(getSettingData?.getSetting?.setup_sila_status);
+      setJbrCoin(getSettingData?.getSetting?.accept_jbr_coin_payment);
+      setCash(getSettingData?.getSetting?.accept_cash_payment);
+      setCard(getSettingData?.getSetting?.accept_card_payment);
     }
   }, [getSettingData?.getSetting]);
 
-  const jbrCoinOnPress = id => {
+  const jbrCoinOnPress = (id) => {
     if (id === 1) {
       const data = {
-        jbr_coin_status: jbrCoin ? false : true,
+        accept_jbr_coin_payment: true,
       };
       dispatch(upadteApi(data));
     } else if (id === 2) {
       const data = {
-        cash_status: cash ? false : true,
+        accept_cash_payment: cash ? false : true,
       };
       dispatch(upadteApi(data));
     } else if (id === 3) {
       const data = {
-        setup_sila_status: card ? false : true,
+        accept_card_payment: card ? false : true,
       };
       dispatch(upadteApi(data));
     }
@@ -69,19 +63,13 @@ export function Wallet() {
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={wallet} style={styles.securityLogo} />
             <View style={styles.twoStepVerifiCon}>
-              <Text
-                style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}
-              >
+              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
                 {strings.wallet.payJBR}
               </Text>
               <Text style={styles.systemPos}>{strings.wallet.system}</Text>
-              <Text style={styles.securitysubhead}>
-                {strings.wallet.dafaultPayment}
-              </Text>
+              <Text style={styles.securitysubhead}>{strings.wallet.dafaultPayment}</Text>
               <Spacer space={SH(10)} />
-              <Text style={styles.securitysubhead}>
-                {strings.wallet.shopifyPayments}
-              </Text>
+              <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
             </View>
 
             {/* <TouchableOpacity
@@ -100,25 +88,15 @@ export function Wallet() {
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={walletConfigCash} style={styles.securityLogo} />
             <View style={styles.twoStepVerifiCon}>
-              <Text
-                style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}
-              >
+              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
                 {strings.wallet.payCash}
               </Text>
               <Text style={styles.systemPos}>{strings.wallet.systemPOS}</Text>
               <Spacer space={SH(5)} />
-              <Text style={styles.securitysubhead}>
-                {strings.wallet.shopifyPayments}
-              </Text>
+              <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
             </View>
-            <TouchableOpacity
-              style={styles.vectorIconCon}
-              onPress={() => jbrCoinOnPress(2)}
-            >
-              <Image
-                source={data?.cash ? vector : vectorOff}
-                style={styles.toggleSecurity}
-              />
+            <TouchableOpacity style={styles.vectorIconCon} onPress={() => jbrCoinOnPress(2)}>
+              <Image source={data?.cash ? vector : vectorOff} style={styles.toggleSecurity} />
             </TouchableOpacity>
           </View>
         </View>
@@ -127,25 +105,13 @@ export function Wallet() {
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={walletConfigCard} style={styles.securityLogo} />
             <View style={styles.twoStepVerifiCon}>
-              <Text
-                style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}
-              >
-                Pay by Card 
-              </Text>
+              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>Pay by Card</Text>
               <Text style={styles.systemPos}>{strings.wallet.systemPOS}</Text>
               <Spacer space={SH(5)} />
-              <Text style={styles.securitysubhead}>
-                {strings.wallet.shopifyPayments}
-              </Text>
+              <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
             </View>
-            <TouchableOpacity
-              style={styles.vectorIconCon}
-              onPress={() => jbrCoinOnPress(3)}
-            >
-              <Image
-                source={data?.card ? vector : vectorOff}
-                style={styles.toggleSecurity}
-              />
+            <TouchableOpacity style={styles.vectorIconCon} onPress={() => jbrCoinOnPress(3)}>
+              <Image source={data?.card ? vector : vectorOff} style={styles.toggleSecurity} />
             </TouchableOpacity>
           </View>
         </View>

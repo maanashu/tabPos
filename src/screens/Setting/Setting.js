@@ -37,7 +37,6 @@ export function Setting() {
   const isFocused = useIsFocused();
   const getSettingData = useSelector(getSetting);
 
-  // console.log('getSettingData', JSON.stringify(getSettingData));
   const [selectedId, setSelectedId] = useState(1);
   const [security, setSecurity] = useState(false);
   const [device, setDevice] = useState(false);

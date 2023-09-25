@@ -209,6 +209,8 @@ export const styles = StyleSheet.create({
     // justifyContent: 'center',
     alignItems: 'center',
     padding: ms(10),
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   _payBYBoxContainerEmpty: {
     height: ms(125),

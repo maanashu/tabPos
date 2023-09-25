@@ -1218,6 +1218,7 @@ export const createBulkcart = (data) => async (dispatch) => {
     const res = await RetailController.createBulkCart(data);
     dispatch(createBulkcartSuccess(res));
     dispatch(getAllCart());
+    return res?.payload;
   } catch (error) {
     dispatch(createBulkCartError(error.message));
   }
