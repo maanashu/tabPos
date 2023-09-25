@@ -14,29 +14,26 @@ import {
 
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { blankCheckBox, Fonts, PaymentDone, userImage } from '@/assets';
-import { useDispatch, useSelector } from 'react-redux';
-import { getProductByUpc } from '@/actions/DeliveryAction';
-import RecheckConfirmation from './RecheckConfirmation';
-import ReactNativeModal from 'react-native-modal';
-import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import CustomerDetails from './CustomerDetails';
-import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import CustomerDetails from './CustomerDetails';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { navigate } from '@/navigation/NavigationRef';
+import { getProductByUpc } from '@/actions/DeliveryAction';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { blankCheckBox, Fonts, PaymentDone, userImage } from '@/assets';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-const ReturnedOrderDetail = ({ orderDetail, onPressConfirm }) => {
+const ReturnedOrderDetail = ({ orderDetail }) => {
   const dispatch = useDispatch();
   const textInputRef = useRef();
   const [productUpc, setProductUpc] = useState('');
   const [orderDetails, setOrderDetails] = useState([]);
-  const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
   useEffect(() => {
     setOrderDetails(orderDetail?.order_details);
@@ -45,18 +42,16 @@ const ReturnedOrderDetail = ({ orderDetail, onPressConfirm }) => {
   const doneHandler = () => {
     const hasCheckedItem = orderDetails?.some((item) => item.isChecked === true);
     if (hasCheckedItem) {
-      const getInventory = orderDetails?.filter((e) => e.isChecked);
       navigate(NAVIGATION.productRefund, {
         productsArray: orderDetail?.order_details,
         orderData: orderDetail,
       });
-      // setIsCheckConfirmationModalVisible(true);
     } else {
       alert('Please select atleast one product');
     }
   };
 
-  const renderOrderProducts = ({ item, index }) => {
+  const renderOrderProducts = ({ item }) => {
     return (
       <View style={styles.orderproductView}>
         <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>

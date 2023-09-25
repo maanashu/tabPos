@@ -17,6 +17,21 @@ const ButtonComponent = ({ selected, orderData, declineHandler, acceptHandler, t
     isLoadingSelector([TYPES.GET_ORDER_DATA], state)
   );
 
+  console.log(orderStatus);
+
+  const buttonView = () => {
+    if (selectedorderStatus === 0) {
+      return (
+        <TouchableOpacity
+          onPress={() => declineHandler(orderData?.id)}
+          style={styles.declineButtonStyle}
+        >
+          <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
+        </TouchableOpacity>
+      );
+    }
+  };
+
   return (
     <View style={styles.shippingOrdersViewStyle}>
       {selected === '0' && (

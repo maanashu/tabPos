@@ -290,12 +290,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     bottom: Platform.OS === 'android' ? ms(10) : ms(10),
   },
-  map: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 6,
-    alignSelf: 'center',
-  },
   statusNameText: {
     color: COLORS.black,
     marginBottom: ms(3),

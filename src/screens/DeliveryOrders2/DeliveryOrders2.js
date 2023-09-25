@@ -843,19 +843,13 @@ export function DeliveryOrders2({ route }) {
 
           <View style={styles.firstRowStyle}>
             <InvoiceDetails
-              {...{
-                setTrackingView,
-                singleOrderDetail,
-                latitude,
-                longitude,
-                sourceCoordinate,
-                destinationCoordinate,
-                openShippingOrders,
-                renderOrderDetailProducts,
-                location,
-                mapRef,
-                onPressShop,
+              trackingView={() => {
+                setTrackingView(false);
+                dispatch(getReviewDefault(openShippingOrders, 1));
               }}
+              mapRef={mapRef}
+              orderList={orderDetail}
+              orderData={singleOrderDetail}
             />
             <RightSideBar
               {...{
