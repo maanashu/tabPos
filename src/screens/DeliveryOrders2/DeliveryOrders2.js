@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -22,7 +22,6 @@ import {
   expressType,
   oneHourType,
   twoHourType,
-  customType,
   Fonts,
   backArrow2,
 } from '@/assets';
@@ -55,15 +54,14 @@ import { orderStatusCount } from '@/actions/ShippingAction';
 import TodayOrderStatus from './Components/TodayOrderStatus';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES as ANALYTICSTYPES } from '@/Types/AnalyticsTypes';
 import ReturnConfirmation from './Components/ReturnConfirmation';
-import RecheckConfirmation from './Components/RecheckConfirmation';
 
 import styles from './styles';
 import moment from 'moment';
 import ReturnedOrderDetail from './Components/ReturnedOrderDetail';
 
 export function DeliveryOrders2({ route }) {
+  console.log('route====', route);
   const mapRef = useRef(null);
   var isViewAll;
   var ORDER_DETAIL;
@@ -361,7 +359,6 @@ export function DeliveryOrders2({ route }) {
     const formattedTime = `${startTime} - ${endTime}`;
 
     const handlePress = () => {
-      console.log(JSON.stringify(item));
       setViewAllOrder(true);
       setSelectedProductId(orderDetails[0]?.id);
       setUserDetail(item);

@@ -20,28 +20,29 @@ const ReturnInvoice = ({ orderList, orderData, subTotal, totalTaxes, total }) =>
   const getUserData = useSelector(getUser);
   const orderDetail = getOrder?.getOrderData;
 
-  console.log('invoiceDetails=============', orderData);
-
   useEffect(() => {
     dispatch(getOrderData(orderData?.order_id));
   }, []);
 
-  const renderProductItem = ({ item }) => (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.count}>{item.qty}</Text>
-        <View style={{ marginLeft: ms(10) }}>
-          <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-            {item?.product_name ?? '-'}
-          </Text>
-          <View style={styles.belowSubContainer}>
-            <Text style={styles.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
+  const renderProductItem = ({ item }) => {
+    console.log(item);
+    return (
+      <View style={styles.container}>
+        <View style={styles.subContainer}>
+          <Text style={styles.count}>{item.qty}</Text>
+          <View style={{ marginLeft: ms(10) }}>
+            <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
+              {item?.product_name ?? '-'}
+            </Text>
+            <View style={styles.belowSubContainer}>
+              <Text style={styles.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
+            </View>
           </View>
         </View>
+        <Text style={styles.priceTitle}>{`$${item?.totalRefundAmount}` ?? '-'}</Text>
       </View>
-      <Text style={styles.priceTitle}>{`$${item?.totalRefundAmount}` ?? '-'}</Text>
-    </View>
-  );
+    );
+  };
 
   return (
     <View style={styles.storeDetailView}>
@@ -65,9 +66,9 @@ const ReturnInvoice = ({ orderList, orderData, subTotal, totalTaxes, total }) =>
 
       <View style={{ paddingVertical: 8 }}>
         <FlatList
-          data={orderDetail?.order_details ?? []}
+          data={orderList ?? []}
           renderItem={renderProductItem}
-          extraData={orderDetail?.order_details}
+          extraData={orderList}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
         />

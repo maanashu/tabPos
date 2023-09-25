@@ -112,7 +112,6 @@ export function ProductRefund(props) {
   };
 
   const renderProductItem = ({ item, index }) => {
-    console.log(item);
     return (
       <View style={styles.blueListData}>
         <View style={styles.displayflex}>

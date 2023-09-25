@@ -57,12 +57,9 @@ export class SubscriptionController {
             text2: 'Success',
             visibilityTime: 2000,
           });
-          console.log('Buy response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('Buy Error', error);
-
           reject(error);
         });
     });

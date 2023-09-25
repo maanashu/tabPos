@@ -83,7 +83,6 @@ export function SessionHistoryTable({
 
   // const tableDataArrayReverse = tableDataArray?.reverse();
   const tableDataArrayReverse = tableDataArray?.slice().reverse();
-  // console.log('sdasdas', JSON.stringify(tableDataArrayReverse));
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
@@ -296,7 +295,6 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
   const toggleExpansion = (index) => {
     const newExpandedItems = [...expandedItems];
     newExpandedItems[index] = !newExpandedItems[index];
-    console.log('expanded ', newExpandedItems);
     setExpandedItems(newExpandedItems);
   };
   const toggleExpansionCashOut = (index) => {
@@ -341,8 +339,6 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
   const cashIn = drawerData?.drawerHistory?.cash_in;
   const cashOut = drawerData?.drawerHistory?.cash_out;
-
-  // console.log('finalchat', JSON.stringify(reverseArray));
 
   const correctWay = (transaction_type) => {
     if (transaction_type === 'start_tracking_session') {

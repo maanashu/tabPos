@@ -41,7 +41,7 @@ export function Plans() {
       dispatch(getActiveSubscription());
     }
   }, [isFocused, setPlanModal]);
-  console.log('activeplan', activePlan);
+
   if (activeUserPlan.length > 0) {
     activePlan = getPlanData?.activeSubscription[0];
   }

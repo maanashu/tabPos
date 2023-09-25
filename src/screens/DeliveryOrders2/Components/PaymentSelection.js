@@ -31,7 +31,7 @@ import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
 import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
-import { goBack } from '@/navigation/NavigationRef';
+import { goBack, navigate } from '@/navigation/NavigationRef';
 import ReturnInvoice from './ReturnInvoice';
 
 const { width, height } = Dimensions.get('window');
@@ -86,11 +86,13 @@ export function PaymentSelection(props) {
     setIsPhoneVisible(false);
   };
 
+  console.log(orderFinalData);
+
   const onReturnHandler = () => {
     if (
       !orderFinalData?.orderData ||
-      orderFinalData?.order.length === 0 ||
-      !orderFinalData?.orderData?.mode_of_payment
+      !orderFinalData?.order ||
+      (!orderFinalData?.orderData?.mode_of_payment && selectedRecipeIndex === null)
     ) {
       alert('Please select e-recipe method');
       return;
@@ -116,9 +118,9 @@ export function PaymentSelection(props) {
       ...(selectedRecipeIndex === 1 && { email }),
     };
     dispatch(
-      returnProduct(data, (res) => {
+      returnProduct(data, 'delivery', (res) => {
         if (res) {
-          setIsReturnConfirmation(true);
+          alert('Product returned successfully');
         }
       })
     );
@@ -134,7 +136,11 @@ export function PaymentSelection(props) {
       <View style={styles.leftContainer}>
         <View style={styles.selectTipsHeader}>
           <View style={styles.headerRowStyle}>
-            <BackButton onPress={() => goBack()} title={'Back'} style={styles.backIconStyle} />
+            <BackButton
+              onPress={() => navigate(NAVIGATION.deliveryOrders2)}
+              title={'Back'}
+              style={styles.backIconStyle}
+            />
 
             <Text style={styles._totalAmountTitle}>{strings.returnOrder.totalReturnAmount}</Text>
 
