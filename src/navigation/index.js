@@ -12,17 +12,21 @@ import { endTrackingSession } from '@/actions/CashTrackingAction';
 import { getDrawerSessionSuccess } from '@/actions/DashboardAction';
 import { logoutUserFunction } from '@/actions/UserActions';
 import { AppState } from 'react-native';
+import { getSetting } from '@/selectors/SettingSelector';
 
 export function RootNavigator() {
   const dispatch = useDispatch();
   const auth = useSelector(getAuthData);
   const posUser = useSelector(getUser);
   const getDashboardData = useSelector(getDashboard);
+  const getSettingData = useSelector(getSetting);
   const merchantToken = auth?.merchantLoginData?.token;
   const posUserToken = posUser?.posLoginData?.token;
 
   const getLoginDeatil = getDashboardData?.posLoginDetail;
   const getSessionObj = getDashboardData?.getSesssion;
+  const settingData = getSettingData?.getSetting;
+  const ShiftTime = parseFloat(settingData?.staff_shift_hrs);
   const [state, setState] = useState(AppState.currentState);
 
   useEffect(() => {
@@ -44,7 +48,7 @@ export function RootNavigator() {
       const date2 = new Date(timeString2);
 
       const timeDifference = Math.abs(date2 - date1);
-      const eightHoursInMilliseconds = 8 * 60 * 60 * 1000;
+      const eightHoursInMilliseconds = ShiftTime * 60 * 60 * 1000;
       if (timeDifference >= eightHoursInMilliseconds) {
         endSession();
       } else {
