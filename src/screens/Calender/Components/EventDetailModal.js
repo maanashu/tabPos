@@ -41,12 +41,11 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
     selectedPosStaffCompleteData?.pos_user_details?.user?.user_roles[0]?.role?.name || ' ';
   const colorCode = selectedPosStaffCompleteData?.pos_user_details?.color_code;
   const appointmentId = selectedPosStaffCompleteData?.id;
-
   //Update the state with initial values if it doesn't get updated while initialization of the states
   useEffect(() => {
     setSelectedPosStaffCompleteData(completeData);
     setSelectedStaffUserId(completeData?.pos_user_details.user?.unique_uuid);
-  }, [completeData]);
+  }, [eventData, completeData]);
 
   const isSendCheckinOTPLoading = useSelector((state) =>
     isLoadingSelector([TYPES.SEND_CHECKIN_OTP], state)
@@ -254,14 +253,19 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
             <Text style={styles.invoiceTxt}>Invoice # V364899978</Text>
           </View>
           <View style={styles.bottomBtnContainer}>
-            <TouchableOpacity
-              style={styles.btmEditBtn}
-              onPress={() => setshowRescheduleTimeModal(true)}
-            >
-              <Image source={editIcon} style={styles.editOptionIcon} />
-              <Text style={styles.editTextBtn}>Edit</Text>
-            </TouchableOpacity>
-            <Spacer space={ms(10)} horizontal />
+            {selectedPosStaffCompleteData?.status === 1 && (
+              <>
+                <TouchableOpacity
+                  style={styles.btmEditBtn}
+                  onPress={() => setshowRescheduleTimeModal(true)}
+                >
+                  <Image source={editIcon} style={styles.editOptionIcon} />
+                  <Text style={styles.editTextBtn}>Edit</Text>
+                </TouchableOpacity>
+                <Spacer space={ms(10)} horizontal />
+              </>
+            )}
+
             <Button
               pending={isChangeStatusLoading}
               title={
@@ -271,7 +275,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                   ? 'Check-in'
                   : 'Mark Complete'
               }
-              disable={!selectedPosStaffCompleteData?.status === 3}
+              disable={selectedPosStaffCompleteData?.status === 3}
               textStyle={styles.checkintitle}
               style={[
                 styles.checkinContainer,

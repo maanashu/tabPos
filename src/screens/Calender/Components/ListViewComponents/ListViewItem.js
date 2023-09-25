@@ -74,9 +74,16 @@ const ListViewItem = ({
           ) : (
             <Button
               pending={isChangeStatusLoading}
-              title={'Mark Complete'}
+              disabled={item?.status === 3}
+              title={item?.status === 3 ? 'Completed' : 'Mark Completed'}
               textStyle={[styles.listCheckinBtnText, { color: COLORS.white }]}
-              style={[styles.listViewCheckinBtn, { backgroundColor: COLORS.primary }]}
+              style={[
+                styles.listViewCheckinBtn,
+                {
+                  backgroundColor: item?.status === 3 ? COLORS.darkGray : COLORS.primary,
+                  borderWidth: item?.status === 3 ? 0 : 1,
+                },
+              ]}
               onPress={() => onPressMarkComplete(item)}
             />
           )}
