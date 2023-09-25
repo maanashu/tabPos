@@ -6,18 +6,15 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useEffect } from 'react';
 
 export function TableDropdown({ placeholder, selected, data }) {
-  console.log('Sds', data);
   const [statusModalOpen, setStatusModelOpen] = useState(false);
   const [statusModalValue, setStatusModalValue] = useState(null);
+  // const [statusItems, setStatusItems] = useState([{ label: 'none', value: 'none' }, ...data]);
+  const initialStatusItems =
+    Array.isArray(data) && data.length > 0
+      ? [{ label: 'None', value: 'none' }, ...data]
+      : [{ label: 'None', value: 'none' }];
 
-  const [statusItems, setStatusItems] = useState();
-  useEffect(() => {
-    const initialStatusItems =
-      Array.isArray(data) && data.length > 0
-        ? [{ label: 'none', value: 'none' }, ...data]
-        : [{ label: 'none', value: 'none' }];
-    setStatusItems(initialStatusItems);
-  }, [data]);
+  const [statusItems, setStatusItems] = useState(initialStatusItems);
 
   // { label: 'none', value: 'none' },
   //   { label: 'xyz', value: 'xyz' },
@@ -75,7 +72,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
-    top: Platform.OS === 'android' ? 40 : 32,
+    top: 40,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   listItemLabelStyle: {

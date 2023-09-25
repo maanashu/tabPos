@@ -112,8 +112,8 @@ export function MainScreen({
   const SERVICE_CART_LENGTH = useSelector(getServiceCartLength);
   const getRetailData = useSelector(getRetail);
   const LOCAL_CART_ARRAY = useSelector(getLocalCartArray);
-
   const [localCartArray, setLocalCartArray] = useState(LOCAL_CART_ARRAY);
+  const [customProductOpen, setCustomProductOpen] = useState('');
 
   useEffect(() => {
     if (activeCategory === 'Product') {
@@ -1019,7 +1019,12 @@ export function MainScreen({
                     </View>
                   </TouchableOpacity>
                   <Spacer space={SH(25)} />
-                  <TouchableOpacity onPress={() => setNumPadModal(!numPadModal)}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setNumPadModal((prev) => !prev);
+                      setCustomProductOpen('product');
+                    }}
+                  >
                     <Image
                       source={plus}
                       style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
@@ -1158,7 +1163,12 @@ export function MainScreen({
                   </TouchableOpacity>
                   <Spacer space={SH(25)} />
                   <View>
-                    <TouchableOpacity onPress={() => setNumPadModal(!numPadModal)}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setNumPadModal((prev) => !prev);
+                        setCustomProductOpen('service');
+                      }}
+                    >
                       <Image
                         source={plus}
                         style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
@@ -1271,12 +1281,22 @@ export function MainScreen({
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
       >
+        {/* {cartModal ? ( */}
         <CartListModal
           cartQtyUpdate={cartQtyUpdate}
           clearCart={eraseClearCart}
           checkOutHandler={checkOutHandler}
           CloseCartModal={() => setCartModal(false)}
+          // customAddBtn={() => {
+          //   setCartModal(false);
+          //   setNumPadModal(true);
+          // }}
         />
+        {/* ) : (
+          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+            <CustomProductAdd crossHandler={() => setNumPadModal(false)} />
+          </KeyboardAvoidingView>
+        )} */}
       </ReactNativeModal>
 
       {/* cart list modal end */}
@@ -1482,9 +1502,12 @@ export function MainScreen({
         </KeyboardAvoidingView>
       </Modal>
 
-      <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
+      <Modal animationType="fade" transparent={true} isVisible={numPadModal} backdropOpacity={0.6}>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-          <CustomProductAdd crossHandler={() => setNumPadModal(false)} />
+          <CustomProductAdd
+            crossHandler={() => setNumPadModal(false)}
+            comeFrom={customProductOpen}
+          />
         </KeyboardAvoidingView>
       </Modal>
     </View>

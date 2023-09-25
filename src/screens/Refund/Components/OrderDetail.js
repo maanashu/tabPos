@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
 
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
@@ -9,8 +9,20 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import { blankCheckBox, Fonts, PaymentDone, research, scooter, userImage } from '@/assets';
+import { useState } from 'react';
+import { getProductByUpc } from '@/actions/DeliveryAction';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
+  const [productUpc, setProductUpc] = useState('');
+  const [orderDetails, setOrderDetails] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setOrderDetails(orderData?.order?.order_details);
+  }, [orderData]);
+
   const getDeliveryType = (type) => {
     switch (type) {
       case '1':
@@ -21,6 +33,28 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
         return strings.shipping.shippingText;
       default:
         return strings.returnOrder.reservation;
+    }
+  };
+
+  const onChangeHandler = (text) => {
+    setProductUpc(text);
+    if (text?.length >= 12) {
+      dispatch(getProductByUpc(text, getProduct));
+    }
+  };
+
+  const getProduct = (value) => {
+    const getArray = orderData?.order?.order_details?.findIndex(
+      (attr) => attr?.product_id === value
+    );
+
+    if (getArray !== -1) {
+      const newProdArray = [...orderData?.order?.order_details];
+      newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
+      setOrderDetails(newProdArray);
+      setProductUpc('');
+    } else {
+      alert('Product not found in the order');
     }
   };
 
@@ -110,7 +144,13 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
           <Spacer space={SH(15)} />
           <View style={styles.getProductDetailView}>
             <View style={styles.scanProductView}>
-              <Text style={styles.orderDateText}>{'Scan barcode of each item returned'}</Text>
+              <TextInput
+                value={productUpc}
+                maxLength={12}
+                placeholder="Scan barcode of each item returned"
+                style={styles.orderDateText}
+                onChangeText={onChangeHandler}
+              />
             </View>
 
             <TouchableOpacity onPress={enableModal} style={styles.manualView}>
@@ -122,7 +162,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
           <View style={{ height: SH(400) }}>
             <FlatList
               scrollEnabled
-              data={orderData?.order?.order_details ?? []}
+              data={orderDetails}
               renderItem={renderOrderProducts}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ flexGrow: 1, paddingBottom: 130 }}
@@ -156,6 +196,14 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                   {strings.shippingOrder.orderId}
                 </Text>
                 <Text style={styles.itemCountText}>{`#${orderData?.order?.id}` ?? '-'}</Text>
+              </View>
+              <Spacer space={SH(15)} />
+
+              <View>
+                <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'Payment Method'}</Text>
+                <Text style={styles.itemCountText}>
+                  {`${orderData?.order?.mode_of_payment}` ?? '-'}
+                </Text>
               </View>
             </View>
 
@@ -257,6 +305,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(22),
     backgroundColor: COLORS.blue_shade,
     paddingHorizontal: ms(20),
+    marginRight: ms(5),
+    flex: 1,
   },
   manualView: {
     borderWidth: 3,

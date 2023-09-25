@@ -2169,7 +2169,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: ms(10),
+    paddingHorizontal: ms(12),
   },
 
   addCartbtnBodyCon: {
@@ -2183,9 +2183,8 @@ export const styles = StyleSheet.create({
   },
 
   customProductCon: {
-    borderWidth: 1,
     width: ms(350),
-    height: ms(290),
+    height: ms(310),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: 10,
@@ -2338,7 +2337,7 @@ export const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderColor: COLORS.solidGrey,
-    width: ms(80),
+    width: ms(160),
     justifyContent: 'center',
     alignItems: 'center',
   },

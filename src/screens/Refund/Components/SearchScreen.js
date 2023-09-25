@@ -153,7 +153,7 @@ export function SearchScreen(props) {
               orderData={order}
               checkboxHandler={cartHandler}
               enableModal={() => setIsVisibleManual(true)}
-              onPress={() => setIsCheckConfirmationModalVisible(true)}
+              onPress={() => setShowProductRefund(true)}
             />
           </View>
 
@@ -192,7 +192,7 @@ export function SearchScreen(props) {
       ) : (
         <ProductRefund
           orderData={order}
-          orderList={finalOrderDetail}
+          orderList={orderDetail}
           backHandler={() => setShowProductRefund(false)}
         />
       )}

@@ -944,6 +944,34 @@ const cartBarCodeError = (error) => ({
   payload: { error },
 });
 
+//custom product add
+const customProductAddRequest = () => ({
+  type: TYPES.CUSTOM_PRODUCT_ADD_REQUEST,
+  payload: null,
+});
+const customProductAddSuccess = () => ({
+  type: TYPES.CUSTOM_PRODUCT_ADD_SUCCESS,
+  payload: null,
+});
+const customProductAddError = (error) => ({
+  type: TYPES.CUSTOM_PRODUCT_ADD_ERROR,
+  payload: { error },
+});
+
+//custom service add
+const customServiceAddRequest = () => ({
+  type: TYPES.CUSTOM_SERVICE_ADD_REQUEST,
+  payload: null,
+});
+const customServiceAddSuccess = () => ({
+  type: TYPES.CUSTOM_SERVICE_ADD_SUCCESS,
+  payload: null,
+});
+const customServiceAddError = (error) => ({
+  type: TYPES.CUSTOM_SERVICE_ADD_ERROR,
+  payload: { error },
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -1636,5 +1664,29 @@ export const cartBarCode = (data) => async (dispatch) => {
     dispatch(cartBarCodeSuccess(res));
   } catch (error) {
     dispatch(cartBarCodeError(error.message));
+  }
+};
+
+export const customProductAdd = (data) => async (dispatch) => {
+  dispatch(customProductAddRequest());
+  try {
+    const res = await RetailController.customProductAdd(data);
+    dispatch(customProductAddSuccess(res));
+    dispatch(getAllCart());
+    dispatch(getMainProduct());
+  } catch (error) {
+    dispatch(customProductAddError(error.message));
+  }
+};
+
+export const customServiceAdd = (data) => async (dispatch) => {
+  dispatch(customServiceAddRequest());
+  try {
+    const res = await RetailController.customServiceAdd(data);
+    dispatch(customServiceAddSuccess(res));
+    dispatch(getServiceCart());
+    dispatch(getMainServices());
+  } catch (error) {
+    dispatch(customServiceAddError(error.message));
   }
 };

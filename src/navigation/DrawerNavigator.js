@@ -41,7 +41,6 @@ export function DrawerNavigator(props) {
   const getDashboardData = useSelector(getDashboard);
   const selection = getDashboardData?.selection;
   const [active, setActive] = useState('dashBoard');
-  console.log('selection', selection);
 
   useEffect(() => {
     getSelectedOption();

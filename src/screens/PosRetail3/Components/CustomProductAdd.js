@@ -7,32 +7,84 @@ import { Spacer } from '@/components';
 import { cross, crossButton, dollar, Fonts, minus, plus } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import { addToServiceCart, getTimeSlots } from '@/actions/RetailAction';
+import {
+  addToServiceCart,
+  customProductAdd,
+  customServiceAdd,
+  getTimeSlots,
+} from '@/actions/RetailAction';
 import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker';
 import { useEffect } from 'react';
 import moment from 'moment';
 import { getDaysAndDates } from '@/utils/GlobalMethods';
 import { TextInput } from 'react-native-gesture-handler';
+import { digits } from '@/utils/validators';
 const windowWidth = Dimensions.get('window').width;
 
-export function CustomProductAdd({ crossHandler }) {
+export function CustomProductAdd({ crossHandler, comeFrom }) {
+  const dispatch = useDispatch();
   const [amount, setAmount] = useState();
   const [productName, setProductName] = useState();
   const [notes, setNotes] = useState();
   const [count, setCount] = useState(1);
 
+  const customProduct = () => {
+    if (comeFrom == 'product') {
+      if (!amount) {
+        alert('Please enter amount');
+      } else if (amount && digits.test(amount) === false) {
+        alert('Please enter valid amount');
+      } else if (!productName) {
+        alert('Please enter product name');
+      } else {
+        const data = {
+          price: amount,
+          productName: productName,
+          qty: count,
+          notes: notes,
+        };
+        dispatch(customProductAdd(data));
+        crossHandler();
+      }
+    } else {
+      if (!amount) {
+        alert('Please enter amount');
+      } else if (amount && digits.test(amount) === false) {
+        alert('Please enter valid amount');
+      } else if (!productName) {
+        alert('Please enter product name');
+      } else {
+        const data = {
+          price: amount,
+          productName: productName,
+          qty: count,
+          notes: notes,
+        };
+        dispatch(customServiceAdd(data));
+        crossHandler();
+      }
+    }
+  };
+
   return (
     <View style={styles.customProductCon}>
       <View style={styles.headerConCustomProduct}>
-        <Text style={styles.zeroText}>New Product Add to Cart</Text>
+        {/* <Text style={styles.zeroText}>New Product Add to Cart</Text> */}
         <TouchableOpacity onPress={crossHandler}>
           <Image
             source={crossButton}
             style={[styles.crossButton, { tintColor: COLORS.solid_grey }]}
           />
         </TouchableOpacity>
+        <TouchableOpacity style={styles.addToCartCon} onPress={() => customProduct()}>
+          <Text style={styles.addTocartText}>Add to Cart</Text>
+        </TouchableOpacity>
       </View>
+
       <View style={{ padding: ms(15) }}>
+        <Text style={[styles.zeroText, { fontSize: ms(10), marginBottom: ms(5) }]}>
+          New {comeFrom == 'product' ? 'Product' : 'Service'} Add to Cart
+        </Text>
         <View style={styles.dollarAddCon}>
           <Image source={dollar} style={styles.dollar} />
           <TextInput
@@ -75,11 +127,15 @@ export function CustomProductAdd({ crossHandler }) {
               <Text style={styles.zeroText}>{count}</Text>
             </View>
 
-            <TouchableOpacity onPress={() => setCount(count + 1)} style={styles.minusCon}>
+            <TouchableOpacity
+              onPress={() => setCount(count + 1)}
+              style={styles.minusCon}
+              disabled={comeFrom == 'product' ? false : true}
+            >
               <Image source={plus} style={styles.plusButton} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={[
               styles.closeButtonCon,
               { backgroundColor: amount && productName ? COLORS.primary : COLORS.gerySkies },
@@ -87,7 +143,7 @@ export function CustomProductAdd({ crossHandler }) {
             disabled={amount && productName ? false : true}
           >
             <Text style={[styles.closeText, { color: COLORS.white }]}>Add to Cart</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* <View style={[styles.displayflex, { marginTop: ms(15) }]}>

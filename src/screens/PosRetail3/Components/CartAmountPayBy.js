@@ -128,8 +128,6 @@ export const CartAmountPayBy = ({
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
 
-  console.log('getTips', getTips);
-
   // useEffect(() => {
   //   dispatch(getAllCart());
   // }, []);

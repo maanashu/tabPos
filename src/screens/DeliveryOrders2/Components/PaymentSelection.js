@@ -36,22 +36,12 @@ import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
 import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
+import { goBack } from '@/navigation/NavigationRef';
 
 const { width, height } = Dimensions.get('window');
 
-const PaymentSelection = ({
-  backHandler,
-  orderData,
-  order,
-  applicableForAllItems,
-  applyEachItem,
-  payableAmount,
-  subTotal,
-  totalTaxes,
-  deliveryShippingTitle,
-  deliveryShippingCharges,
-  total,
-}) => {
+export function PaymentSelection(props) {
+  console.log('props----', props?.route?.params?.screen);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -138,7 +128,7 @@ const PaymentSelection = ({
     setIsReturnConfirmation(false);
     dispatch(returnProductSuccess({}));
     dispatch(getProductsBySkuSuccess({}));
-    navigation.navigate('SearchScreen', { screen: 'return' });
+    navigation.navigate(NAVIGATION.deliveryOrders2);
   };
 
   return (
@@ -146,7 +136,7 @@ const PaymentSelection = ({
       <View style={styles.leftContainer}>
         <View style={styles.selectTipsHeader}>
           <View style={styles.headerRowStyle}>
-            <BackButton onPress={backHandler} title={'Back'} style={styles.backIconStyle} />
+            <BackButton onPress={() => goBack()} title={'Back'} style={styles.backIconStyle} />
 
             <Text style={styles._totalAmountTitle}>{strings.returnOrder.totalReturnAmount}</Text>
 
@@ -333,259 +323,6 @@ const PaymentSelection = ({
       ) : null}
     </View>
   );
-};
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: verticalScale(10),
-    backgroundColor: COLORS.textInputBackground,
-  },
-  loader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  headerRowStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backIconStyle: {
-    top: ms(10),
-    left: ms(10),
-    backgroundColor: 'transparent',
-  },
-  leftContainer: {
-    flex: 0.7,
-  },
-  rightContainer: {
-    flex: 0.28,
-    borderRadius: 15,
-    backgroundColor: COLORS.white,
-  },
-  loaderViewStyle: {
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    position: 'absolute',
-  },
-  selectTipsHeader: {
-    borderTopEndRadius: 8,
-    borderTopLeftRadius: 8,
-    paddingVertical: verticalScale(6),
-    backgroundColor: COLORS.blue_shade,
-  },
-  _totalAmountTitle: {
-    fontSize: ms(17),
-    color: COLORS.solid_grey,
-    fontFamily: Fonts.Regular,
-  },
-  _dollarSymbol: {
-    fontSize: ms(17),
-    marginTop: ms(2),
-    color: COLORS.primary,
-    fontFamily: Fonts.SemiBold,
-  },
-  _amount: {
-    fontSize: ms(25),
-    color: COLORS.primary,
-    fontFamily: Fonts.SemiBold,
-  },
-  buttonStyle: {
-    height: SH(60),
-    borderRadius: 5,
-    width: width / 2.5,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.primary,
-  },
-  buttonTextStyle: {
-    fontSize: SF(20),
-    color: COLORS.white,
-    fontFamily: Fonts.SemiBold,
-  },
-  returnPaymentMethod: {
-    fontSize: SF(20),
-    color: COLORS.darkGray,
-    fontFamily: Fonts.Regular,
-    paddingHorizontal: ms(12),
-  },
-  paymentMethodViewStyle: {
-    borderRadius: 7,
-    paddingHorizontal: 20,
-    paddingVertical: ms(20),
-    marginHorizontal: ms(30),
-    backgroundColor: COLORS.white,
-  },
-  _payBYBoxContainer: {
-    borderWidth: 1,
-    borderRadius: ms(6),
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    marginHorizontal: ms(4),
-    justifyContent: 'center',
-    borderColor: COLORS.primary,
-    width: Platform.OS === 'ios' ? ms(95) : ms(127),
-    height: Platform.OS === 'ios' ? ms(100) : ms(120),
-  },
-  _payByTitle: {
-    fontSize: ms(9),
-    marginBottom: ms(3),
-    color: COLORS.primary,
-    fontFamily: Fonts.Regular,
-  },
-  _payByMethod: {
-    fontSize: ms(14),
-    marginTop: ms(2),
-    color: COLORS.primary,
-    fontFamily: Fonts.SemiBold,
-  },
-  _payByAmount: {
-    fontSize: ms(10),
-    marginTop: ms(2),
-    color: COLORS.primary,
-    fontFamily: Fonts.Regular,
-  },
-  _payByIcon: {
-    width: ms(22),
-    height: ms(22),
-    marginTop: ms(8),
-    resizeMode: 'contain',
-    tintColor: COLORS.primary,
-  },
-  _payBYBoxContainerReceipe: {
-    borderWidth: 1,
-    height: ms(45),
-    borderRadius: ms(6),
-    alignItems: 'center',
-    marginHorizontal: ms(4),
-    justifyContent: 'center',
-    borderColor: COLORS.solidGrey,
-    width: Platform.OS === 'ios' ? ms(95) : ms(127),
-  },
-  _payByMethodReceipe: {
-    fontSize: ms(12),
-    color: COLORS.solid_grey,
-    fontFamily: Fonts.SemiBold,
-  },
-  eReceiptViewStyle: {
-    paddingTop: 5,
-    alignItems: 'center',
-  },
-  contentContainerStyle: {
-    paddingBottom: 20,
-  },
-  calendarSettingModalContainer: {
-    width: width * 0.4,
-    height: height * 0.84,
-    backgroundColor: 'white',
-    alignSelf: 'center',
-    borderRadius: 7,
-    alignItems: 'center',
-    borderWidth: 1,
-    paddingHorizontal: moderateVerticalScale(7),
-    paddingVertical: verticalScale(15),
-    position: 'absolute',
-  },
-  textInputView: {
-    paddingHorizontal: SW(4),
-    borderWidth: 0,
-    alignItems: 'center',
-    flexDirection: 'row',
-    height: height * 0.08,
-    width: width * 0.33,
-    borderWidth: 1,
-    borderColor: '#D8D8D8',
-    borderRadius: 5,
-  },
-  dropDownIcon: {
-    width: 7,
-    height: 7,
-    resizeMode: 'contain',
-  },
-  countryCodeText: {
-    color: COLORS.black,
-    fontSize: SF(18),
-    fontFamily: Fonts.Regular,
-    paddingHorizontal: moderateScale(8),
-  },
-  textInputContainer: {
-    color: COLORS.black,
-    fontSize: SF(16),
-    fontFamily: Fonts.Italic,
-    width: width * 0.2,
-  },
-  emailModalContainer: {
-    width: ms(350),
-    height: ms(160),
-    backgroundColor: 'white',
-    paddingVertical: ms(15),
-    alignSelf: 'center',
-    borderRadius: ms(10),
-    alignItems: 'center',
-  },
-  modalHeaderCon: {
-    height: SH(80),
-    width: ms(300),
-    justifyContent: 'center',
-  },
-  crossButton: {
-    width: SW(9),
-    height: SW(9),
-    resizeMode: 'contain',
-  },
-  crossButtonCon: {
-    width: SW(13),
-    height: SW(13),
-    alignItems: 'center',
-  },
-  flexRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  twoStepText: {
-    fontSize: SF(25),
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.black,
-    textAlign: 'left',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    width: ms(300),
-    height: ms(40),
-    marginTop: ms(25),
-    padding: 15,
-  },
-  textInput: {
-    flex: 1,
-    height: 45,
-    fontSize: ms(10),
-    paddingHorizontal: 15,
-  },
-  payNowButton: {
-    height: ms(30),
-    width: ms(70),
-    backgroundColor: COLORS.darkGray,
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  payNowButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
-
-export default memo(PaymentSelection);
+const styles = StyleSheet.create({});

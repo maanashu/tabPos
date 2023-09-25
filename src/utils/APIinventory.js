@@ -149,6 +149,9 @@ export const ApiOrderInventory = {
   return: 'returns/',
   scanbarcode: 'invoices/scan-barcode',
   getArea: 'orders/customers/state',
+  customProductAdd: 'poscarts/custom-product',
+  customServiceAdd: 'appointment_carts/custom-product',
+  getStoreLocation: 'orders/customers/city',
 };
 
 export const ApiWalletInventory = {

@@ -77,7 +77,7 @@ export function TotalInventory() {
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting2}>
-        <Text style={styles.revenueDataText}>{moment(item?.created_at).format('YYYY-MM-DD')}</Text>
+        <Text style={styles.revenueDataText}>{moment(item?.updated_at).format('YYYY-MM-DD')}</Text>
       </DataTable.Cell>
     </DataTable.Row>
   );

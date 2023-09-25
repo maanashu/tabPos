@@ -37,7 +37,13 @@ import { getCartLength } from '@/selectors/CartSelector';
 import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
 import { ms } from 'react-native-size-matters';
 
-export function CartListModal({ checkOutHandler, CloseCartModal, clearCart, cartQtyUpdate }) {
+export function CartListModal({
+  checkOutHandler,
+  CloseCartModal,
+  clearCart,
+  cartQtyUpdate,
+  customAddBtn,
+}) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
@@ -313,7 +319,12 @@ export function CartListModal({ checkOutHandler, CloseCartModal, clearCart, cart
 
           <View style={styles.cartListIconBody}>
             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <Image source={plus} style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]} />
+              <TouchableOpacity onPress={customAddBtn}>
+                <Image
+                  source={plus}
+                  style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
+                />
+              </TouchableOpacity>
               <Spacer space={SH(20)} />
               <TouchableOpacity onPress={() => eraseClearCart()}>
                 <Image
