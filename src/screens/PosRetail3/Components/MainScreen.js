@@ -61,6 +61,7 @@ import {
   getMainProductSuccess,
   createBulkcart,
   getMainProductPagination,
+  getAllCart,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -93,6 +94,9 @@ export function MainScreen({
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
   const [selectedId, setSelectedId] = useState();
+  const [selectedItem, setSelectedItem] = useState();
+
+  const [selectedItemQty, setSelectedItemQty] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
   const [brandModal, setBrandModal] = useState(false);
@@ -190,19 +194,85 @@ export function MainScreen({
   const [selectedItems, setSelectedItems] = useState([]);
   const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [onHold, setOnHold] = useState(false);
 
-  const cartStatusHandler = () => {
-    const data =
-      holdProductArray?.length > 0
-        ? {
-            status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
-            cartId: holdProductArray?.[0]?.id,
-          }
-        : {
-            status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
-            cartId: getRetailData?.getAllCart?.id,
-          };
-    dispatch(changeStatusProductCart(data));
+  const cartStatusHandler = async () => {
+    // const data =
+    //   holdProductArray?.length > 0
+    //     ? {
+    //         status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
+    //         cartId: holdProductArray?.[0]?.id,
+    //       }
+    //     : {
+    //         status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+    //         cartId: getRetailData?.getAllCart?.id,
+    //       };
+    // dispatch(changeStatusProductCart(data));
+
+    //New Code------
+    if (localCartArray.length > 0) {
+      const dataToSend = {
+        seller_id: sellerID,
+        products: localCartArray,
+      };
+      try {
+        eraseClearCart();
+        const bulkData = await dispatch(createBulkcart(dataToSend));
+        if (holdProductArray?.length == 0 || getRetailData?.getAllCart?.length == 0) {
+          const data =
+            holdProductArray?.length > 0
+              ? {
+                  status: true,
+                  cartId: holdProductArray?.[0]?.id,
+                }
+              : {
+                  status: true,
+                  cartId: bulkData?.id,
+                };
+
+          dispatch(changeStatusProductCart(data));
+        } else {
+          const data =
+            holdProductArray?.length > 0
+              ? {
+                  status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
+                  cartId: holdProductArray?.[0]?.id,
+                }
+              : {
+                  status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+                  cartId: bulkData?.id,
+                };
+
+          dispatch(changeStatusProductCart(data));
+          console.log('dfsfd', data);
+        }
+      } catch (error) {}
+    } else {
+      holdProductArray?.length;
+      const data =
+        holdProductArray?.length > 0
+          ? {
+              status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
+              cartId: holdProductArray?.[0]?.id,
+            }
+          : {
+              status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+              cartId: getRetailData?.getAllCart?.id,
+            };
+
+      dispatch(changeStatusProductCart(data));
+      console.log('DATATTA', getRetailData?.getAllCart);
+      //   if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
+      //     const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
+      //       product_id: obj.product_id,
+      //       qty: obj.qty,
+      //       supply_id: obj.supply_id,
+      //       supply_price_id: obj.supply_price_id,
+      //     }));
+      //     dispatch(addLocalCart(cartmatchId));
+      //     setSelectedCartItems(cartmatchId);
+      //   }
+    }
   };
   const serviceCartStatusHandler = () => {
     const data =
@@ -291,7 +361,7 @@ export function MainScreen({
         setSelectedCartItems([]);
       }
     }
-  }, [isFocus]);
+  }, [isFocus, cartData, productCartArray]);
 
   const cartQtyUpdate = () => {
     if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
@@ -366,6 +436,31 @@ export function MainScreen({
     // dispatch(addTocart(data));
   };
 
+  const onClickAddCartModal = (item, index, cartQty) => {
+    const mainProductArray = getRetailData?.getMainProduct;
+
+    const cartArray = selectedCartItem;
+
+    const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
+
+    const DATA = {
+      product_id: item?.id,
+      qty: cartQty,
+      supply_id: item?.supplies?.[0]?.id,
+      supply_price_id: item?.supplies?.[0]?.supply_prices[0]?.id,
+    };
+    if (existingItemIndex === -1) {
+      cartArray.push(DATA);
+      dispatch(updateCartLength(cartLength + 1));
+    } else {
+      cartArray[existingItemIndex].qty = cartQty;
+    }
+    setSelectedCartItems(cartArray);
+    dispatch(addLocalCart(cartArray));
+    ///
+    mainProductArray.data[index].cart_qty = cartQty;
+    dispatch(getMainProductSuccess(mainProductArray));
+  };
   const originalFilterData = [
     {
       id: 1,
@@ -382,8 +477,19 @@ export function MainScreen({
   ];
 
   const productFun = async (productId, index, item) => {
+    const isProductMatchArray = localCartArray?.find((data) => data.product_id === item.id);
+    const cartAddQty = isProductMatchArray?.qty;
+    // Create a new object with updated cart_qty value
+    const updatedItem = { ...item };
+    if (cartAddQty !== undefined) {
+      updatedItem.cart_qty = cartAddQty;
+    } else {
+      updatedItem.cart_qty = 1;
+    }
     const res = await dispatch(getOneProduct(sellerID, productId));
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+      setSelectedItemQty(updatedItem?.cart_qty);
+      setSelectedItem(item);
       setAddCartModal(true);
       setProductIndex(index);
       setProductItem(item);
@@ -429,7 +535,6 @@ export function MainScreen({
   const Item = ({ item, index }) => {
     const isProductMatchArray = localCartArray?.find((data) => data.product_id === item.id);
     const cartAddQty = isProductMatchArray?.qty;
-    // Create a new object with updated cart_qty value
 
     const updatedItem = { ...item };
     if (cartAddQty !== undefined) {
@@ -443,8 +548,6 @@ export function MainScreen({
         onPress={() => productFun(item.id, index, item)}
         activeOpacity={0.7}
       >
-        {/* <Image source={{ uri: item.image }} style={styles.categoryshoes} /> */}
-
         <FastImage
           source={{
             uri: item.image,
@@ -466,7 +569,7 @@ export function MainScreen({
           <Text numberOfLines={1} style={styles.productPrice}>
             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
           </Text>
-          {/* addToCartBlue */}
+
           <TouchableOpacity
             // activeOpacity={1}
             onPress={() => onClickAddCart(item, index, cartAddQty)}
@@ -476,25 +579,12 @@ export function MainScreen({
               style={styles.addToCart}
               resizeMode={FastImage.resizeMode.contain}
             />
-            {/* -----New_In progress_CODE------- */}
+
             {updatedItem.cart_qty > 0 && (
               <View style={styles.productBadge}>
                 <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
               </View>
             )}
-            {/* {cartAddQty>0 &&
-           <View 
-           style={styles.productBadge}>
-               <Text style={styles.productBadgeText}>{cartAddQty}</Text>
-            </View>
-          } */}
-
-            {/* -----OLD_CODE------- */}
-            {/* {isProductMatchArray ? (
-              <View style={styles.productBadge}>
-                <Text style={styles.productBadgeText}>{cartAddQty}</Text>
-              </View>
-            ) : null} */}
           </TouchableOpacity>
         </TouchableOpacity>
       </TouchableOpacity>
@@ -1348,6 +1438,7 @@ export function MainScreen({
             crossHandler={() => setAddCartDetailModal(false)}
             sellerID={sellerID}
             openFrom="main"
+            cartQty={selectedItemQty}
             addToLocalCart={onClickAddCart}
             productIndex={productIndex}
             doubleCrossHandler={() => {
@@ -1360,7 +1451,10 @@ export function MainScreen({
             crossHandler={() => setAddCartModal(false)}
             detailHandler={() => setAddCartDetailModal(true)}
             sellerID={sellerID}
+            cartQty={selectedItemQty}
             productIndex={productIndex}
+            selectedItem={selectedItem}
+            onClickAddCartModal={onClickAddCartModal}
             addToLocalCart={onClickAddCart}
             backToCartHandler={() => cartScreenHandler()}
             openFrom="main"

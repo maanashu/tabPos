@@ -31,13 +31,15 @@ import { useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { strings } from '@/localization';
 import { getAllPlans } from '@/actions/SubscriptionAction';
+import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 
 export function Setting() {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const getSettingData = useSelector(getSetting);
-
-  // console.log('getSettingData', JSON.stringify(getSettingData));
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const posUserArray = getAuth?.getAllPosUsers;
   const [selectedId, setSelectedId] = useState(1);
   const [security, setSecurity] = useState(false);
   const [device, setDevice] = useState(false);
@@ -104,7 +106,9 @@ export function Setting() {
           <Image source={item.image} style={[styles.security, { tintColor: tintAndColor }]} />
           <View style={{ marginLeft: 6 }}>
             <Text style={[styles.securityText, { color: textColor }]}>{item.name}</Text>
-            <Text style={[styles.notUpdated, { color: tintAndColor }]}>{item.subhead}</Text>
+            <Text style={[styles.notUpdated, { color: tintAndColor }]}>
+              {item?.name == 'Staffs' ? posUserArray?.length : item.subhead}
+            </Text>
           </View>
         </View>
         <Image source={right_light} style={[styles.right_light, { tintColor: tintAndColor }]} />

@@ -62,6 +62,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useIsFocused } from '@react-navigation/native';
 import { DATA } from '@/constants/flatListData';
 import { getUser } from '@/selectors/UserSelectors';
+import { getSetting } from '@/selectors/SettingSelector';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -85,7 +86,21 @@ export const CartAmountPayBy = ({
   const getRetailData = useSelector(getRetail);
   const getUserData = useSelector(getUser);
   const updateData = useSelector(getRetail).updateQuantityy;
-
+  const getSettingData = useSelector(getSetting);
+  console.log('get', JSON.stringify(getSettingData));
+  // jbrcoin: getSettingData?.getSetting?.accept_jbr_coin_payment,
+  // cash: getSettingData?.getSetting?.accept_cash_payment,
+  // card: getSettingData?.getSetting?.accept_card_payment,
+  const paymentMethodData = [
+    { title: 'Cash', icon: moneyIcon, status: getSettingData?.getSetting?.accept_cash_payment },
+    {
+      title: 'JBR Coin',
+      icon: qrCodeIcon,
+      status: getSettingData?.getSetting?.accept_jbr_coin_payment,
+    },
+    { title: 'Card', icon: cardPayment, status: getSettingData?.getSetting?.accept_card_payment },
+  ];
+  const filteredPaymentMethods = paymentMethodData.filter((item) => item.status);
   const getAuthdata = useSelector(getAuthData);
 
   // const [loading, setloading] = useState(false);
@@ -131,6 +146,12 @@ export const CartAmountPayBy = ({
   // useEffect(() => {
   //   dispatch(getAllCart());
   // }, []);
+
+  const DATA = [
+    { title: 'Cash', icon: moneyIcon },
+    { title: 'JBR Coin', icon: qrCodeIcon },
+    { title: 'Card', icon: cardPayment },
+  ];
 
   const TIPS_DATA = [
     { title: getTips?.first_tips ?? 18, icon: cardPayment, percent: getTips?.first_tips ?? '18' },
@@ -525,8 +546,13 @@ export const CartAmountPayBy = ({
                 }}
               >
                 <Text style={styles.selectTips}>Select Payment Method</Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  {DATA.map((item, index) => (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: filteredPaymentMethods.length > 2 ? 'space-evenly' : null,
+                  }}
+                >
+                  {filteredPaymentMethods.map((item, index) => (
                     <TouchableOpacity
                       onPress={() => {
                         // index==1 && onPressPaymentMethod({ method: item.title, index: index })

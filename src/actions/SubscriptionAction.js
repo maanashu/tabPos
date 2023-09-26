@@ -121,7 +121,7 @@ export const getPlanById = () => async (dispatch) => {
 export const getActiveSubscription = () => async (dispatch) => {
   dispatch(getActiveSubscriptionRequest());
   try {
-    const res = await SubscriptionController.getActiveSubscription();
+    const res = await SubscriptionController.getActiveSubscriptions();
     dispatch(getActiveSubscriptionSuccess(res?.payload));
     return res.payload;
   } catch (error) {

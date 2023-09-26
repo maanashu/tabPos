@@ -109,10 +109,14 @@ export class CashTrackingController {
         });
     });
   }
-  static async getSessionHistory(newDateFormat) {
+  static async getSessionHistory(newDateFormat, staff) {
     const urlAccDate = (newDateFormat) => {
-      if (newDateFormat) {
-        return USER_URL + ApiUserInventory.getSessionHistory + `?filter_date=${newDateFormat}`;
+      if (newDateFormat !== undefined || (staff !== undefined) !== 'none') {
+        return (
+          USER_URL +
+          ApiUserInventory.getSessionHistory +
+          `?filter_date=${newDateFormat}&pos_user_id=${staff}`
+        );
       } else {
         return USER_URL + ApiUserInventory.getSessionHistory;
       }

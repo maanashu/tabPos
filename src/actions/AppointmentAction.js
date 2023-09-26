@@ -59,6 +59,42 @@ const getStaffUsersReset = () => ({
   payload: null,
 });
 
+// Get Staff users list
+const createPosUserRequest = () => ({
+  type: TYPES.CREATE_POS_USER_REQUEST,
+  payload: null,
+});
+const createPosUserSuccess = (data) => ({
+  type: TYPES.CREATE_POS_USER_SUCCESS,
+  payload: { data },
+});
+const createPosUserError = (error) => ({
+  type: TYPES.CREATE_POS_USER_ERROR,
+  payload: { error },
+});
+const createPosUserReset = () => ({
+  type: TYPES.CREATE_POS_USER_RESET,
+  payload: null,
+});
+
+// Get Staff users list
+const getPosUserRoleRequest = () => ({
+  type: TYPES.GET_POS_USER_ROLE_REQUEST,
+  payload: null,
+});
+const getPosUserRoleSuccess = (data) => ({
+  type: TYPES.GET_POS_USER_ROLE_SUCCESS,
+  payload: { data },
+});
+const getPosUserRoleError = (error) => ({
+  type: TYPES.GET_POS_USER_ROLE_ERROR,
+  payload: { error },
+});
+const getPosUserRoleReset = () => ({
+  type: TYPES.GET_POS_USER_ROLE_RESET,
+  payload: null,
+});
+
 // Change appointments status
 const changeAppointmentStatusRequest = () => ({
   type: TYPES.CHANGE_APPOINTMENT_STATUS_REQUEST,
@@ -168,6 +204,35 @@ export const getStaffUsersList = (pageNumber) => async (dispatch) => {
       dispatch(getStaffUsersReset());
     }
     dispatch(getStaffUsersError(error.message));
+  }
+};
+
+export const creatPostUser = (data) => async (dispatch) => {
+  dispatch(createPosUserRequest());
+  try {
+    const res = await AppointmentController.createPossUser(data);
+    dispatch(createPosUserSuccess(res?.payload));
+    return res?.payload;
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(createPosUserReset());
+    }
+    return error;
+    dispatch(createPosUserError(error.message));
+  }
+};
+
+export const getPosUserRole = (data) => async (dispatch) => {
+  dispatch(getPosUserRoleRequest());
+  try {
+    const res = await AppointmentController.getPosUserRoles(data);
+    console.log('DSFsfdf', JSON.stringify(res));
+    dispatch(getPosUserRoleSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getPosUserRoleReset());
+    }
+    dispatch(getPosUserRoleError(error.message));
   }
 };
 

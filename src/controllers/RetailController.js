@@ -301,6 +301,7 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.posCarts + `/`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('reresrdd', response);
           resolve(response);
         })
         .catch((error) => {

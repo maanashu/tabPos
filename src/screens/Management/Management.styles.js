@@ -739,4 +739,24 @@ export const styles = StyleSheet.create({
     marginStart: ms(10),
     alignSelf: 'center',
   },
+
+  //Calendar
+
+  calendarModalView: {
+    backgroundColor: COLORS.white,
+    width: windowWidth * 0.6,
+    height: windowHeight - SW(30),
+    alignSelf: 'center',
+    paddingVertical: SH(10),
+    paddingHorizontal: SW(5),
+    borderRadius: SW(5),
+  },
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
 });

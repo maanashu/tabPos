@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Spacer } from '@/components';
+import { Spacer, TableDropdown } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { View, Text, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
+import { ColorPicker, fromHsv } from 'react-native-color-picker';
 import Modal from 'react-native-modal';
 import {
   addIcon,
   backArrow,
   columbiaMen,
   crossButton,
+  dropdown,
   email,
   Fonts,
   location,
@@ -18,7 +29,10 @@ import {
   shieldPerson,
   staffImage,
   userImage,
+  vector,
+  vectorOff,
 } from '@/assets';
+import CountryPicker from 'react-native-country-picker-modal';
 import { Table } from 'react-native-table-component';
 import { Dimensions } from 'react-native';
 import { moderateScale } from 'react-native-size-matters';
@@ -31,6 +45,14 @@ import { getSetting } from '@/selectors/SettingSelector';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import moment from 'moment';
 import { store } from '@/store';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { creatPostUser, getPosUserRole } from '@/actions/AppointmentAction';
+import { digits, emailReg } from '@/utils/validators';
+import { getAppointmentSelector, getPosUserRoles } from '@/selectors/AppointmentSelector';
+import { TYPES } from '@/Types/AppointmentTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { Snackbar } from 'react-native-paper';
 const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
@@ -39,20 +61,58 @@ export function Staff() {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
   const posUserArray = getAuth?.getAllPosUsers;
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
+  const [staffModal, setStaffModal] = useState(false);
   const [expandView, setExpandView] = useState(false);
   const [data, setData] = useState();
   const [Index, setIndex] = useState();
   const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
   const posUserId = store.getState().user?.posLoginData?.id;
+  const [value, setValue] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [flag, setFlag] = useState('US');
+  const [countryCode, setCountryCode] = useState('+1');
+  const [isStaff, setIsStaff] = useState(true);
+  const [name, setName] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
+  const [posPassword, setPosPassword] = useState('');
+  const [isColorModal, setIsColorModal] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const userRoles = useSelector(getAppointmentSelector);
+  const [visible, setVisible] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
 
+  const onToggleSnackBar = (message) => {
+    setVisible(!visible);
+    setErrorMessage(message);
+  };
+
+  const onDismissSnackBar = () => setVisible(false);
+  console.log(userRoles);
+  var posUsersRole = [];
+  if (userRoles?.posUserRole?.roles?.length > 0 && userRoles?.posUserRole !== null) {
+    const mappedArray = userRoles?.posUserRole?.roles?.map((item) => {
+      return { label: item?.name, value: item?.id };
+    });
+    posUsersRole = mappedArray;
+  }
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState(null);
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.CREATE_POS_USER], state));
   useEffect(() => {
     if (isFocused) {
-      dispatch(getAllPosUsers());
+      const data = {
+        page: 1,
+        limit: 20,
+        user_id: getAuth?.merchantLoginData?.uniqe_id,
+      };
+      dispatch(getPosUserRole(data));
+      dispatch(getAllPosUsers(sellerID));
     }
   }, [isFocused]);
 
@@ -370,34 +430,41 @@ export function Staff() {
       );
     } else {
       return (
-        <View>
+        <View style={{ flex: 1 }}>
           <View style={[styles.flexRow, { height: SW(8) }]}>
-            <Text style={styles.HeaderLabelText}>{strings.settings.device}</Text>
-            <View style={{ zIndex: 99 }}>
-              {posRole === 'admin' ? (
-                <TouchableOpacity style={styles.addNewButtonCon} activeOpacity={0.3}>
-                  <Image source={addIcon} style={styles.addIcon} />
-                  <Text style={styles.addNew}>{strings.Staff.addStaff}</Text>
-                </TouchableOpacity>
-              ) : null}
-            </View>
+            <Text style={styles.HeaderLabelText}>{strings.settings.staff}</Text>
+
+            {posRole !== 'admin' ? (
+              <TouchableOpacity
+                style={styles.addNewButtonCon}
+                onPress={() => setStaffModal(!staffModal)}
+                activeOpacity={0.3}
+              >
+                <Image source={addIcon} style={styles.addIcon} />
+                <Text style={styles.addNew}>{strings.settings.addStaff}</Text>
+              </TouchableOpacity>
+            ) : null}
           </View>
           <Spacer space={SH(20)} />
-          <View style={styles.securityMainCon}>
-            <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={staffImage} style={styles.securityLogo} />
-              <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>{strings.Staff.staffList}</Text>
-                <Spacer space={SH(10)} />
-                <Text style={styles.securitysubhead}>{strings.Staff.staffDes}</Text>
-                <Spacer space={SH(18)} />
+          <View
+            style={{ borderWidth: 1, borderColor: COLORS.solidGrey, flex: 1, borderRadius: 10 }}
+          >
+            <View style={styles.securityStaffMainCon}>
+              <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
+                <Image source={staffImage} style={styles.securityLogo} />
+                <View style={styles.twoStepVerifiCon}>
+                  <Text style={styles.twoStepText}>{strings.Staff.staffList}</Text>
+                  <Spacer space={SH(8)} />
+                  <Text style={styles.securitysubhead}>{strings.Staff.staffDes}</Text>
+                  <Spacer space={SH(8)} />
 
-                <FlatList
-                  data={posUserArray}
-                  extraData={posUserArray}
-                  renderItem={userRenderItem}
-                  keyExtractor={(item) => item.id}
-                />
+                  <FlatList
+                    data={posUserArray}
+                    extraData={posUserArray}
+                    renderItem={userRenderItem}
+                    keyExtractor={(item) => item.id}
+                  />
+                </View>
               </View>
             </View>
           </View>
@@ -406,6 +473,60 @@ export function Staff() {
     }
   };
 
+  const createPosUserHandler = async () => {
+    if (!name) {
+      onToggleSnackBar('Please enter Name');
+    } else if (phoneNumber == '' || phoneNumber.length < 5) {
+      onToggleSnackBar(strings.valiadtion.validPhone);
+    } else if (phoneNumber && digits.test(phoneNumber) === false) {
+      onToggleSnackBar(strings.valiadtion.validPhone);
+    } else if (posPassword == '') {
+      onToggleSnackBar('Please enter one time password');
+    } else if (posPassword < 4) {
+      onToggleSnackBar('Please enter One time password atleast 4 digit');
+    } else if (emailAddress == '') {
+      onToggleSnackBar('Please enter user Email');
+    } else if (emailAddress && emailReg.test(emailAddress) === false) {
+      onToggleSnackBar('Please enter valid Email');
+    } else if (selectedColor == null) {
+      onToggleSnackBar('Please select color');
+    } else if (value == '') {
+      onToggleSnackBar('Please select user role');
+    } else {
+      const data = {
+        firstname: name,
+        pos_security_pin: 123,
+        phone_code: countryCode,
+        phone_no: phoneNumber,
+        email: emailAddress,
+        is_staff_member: isStaff,
+        role_ids: [value],
+        color_code: fromHsv(selectedColor),
+      };
+      console.log('sdfdsfds', data);
+
+      const responseData = await dispatch(creatPostUser(data));
+      console.log('ResponseData', responseData);
+      if (responseData) {
+        Toast.show({
+          position: 'top',
+          type: 'success',
+          text2: 'User created successfully',
+          visibilityTime: 2000,
+        });
+        dispatch(getAllPosUsers(sellerID));
+        onCloseModal();
+      }
+    }
+  };
+  const onCloseModal = () => {
+    setStaffModal(!staffModal);
+    setName('');
+    setEmailAddress('');
+    setPhoneNumber('');
+    setPosPassword('');
+    setSelectedColor(null);
+  };
   return (
     <View style={{ flex: 1 }}>
       {bodyView()}
@@ -486,6 +607,220 @@ export function Staff() {
             </ScrollView>
           </View>
         </View>
+      </Modal>
+
+      <Modal animationType="slide" transparent={true} isVisible={staffModal}>
+        {!isColorModal ? (
+          <View pointerEvents={isLoading ? 'none' : 'auto'} style={[styles.addStaffModalCon]}>
+            <View style={styles.addCartConHeader}>
+              <TouchableOpacity onPress={() => onCloseModal()}>
+                <Image source={crossButton} style={styles.crossBg} />
+              </TouchableOpacity>
+
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity style={styles.continueBtnCon} onPress={() => onCloseModal()}>
+                  <Text style={styles.detailBtnCon}>Discard</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.addToCartCon} onPress={createPosUserHandler}>
+                  {isLoading ? (
+                    <ActivityIndicator animating={true} size={'large'} color={COLORS.white} />
+                  ) : (
+                    <Text style={styles.addTocartText}>Send</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <KeyboardAwareScrollView contentContainerStyle={{ padding: SW(10) }}>
+              <View style={{ justifyContent: 'space-between' }}>
+                <Text style={styles.phoneText}>{'Name'}</Text>
+
+                <View style={styles.textInputView}>
+                  <TextInput
+                    // maxLength={15}
+                    returnKeyType={'done'}
+                    keyboardType={'default'}
+                    value={name.trim()}
+                    onChangeText={(text) => {
+                      setName(text);
+                    }}
+                    style={styles.textInputContainer}
+                    placeholder={'Name'}
+                    placeholderTextColor={COLORS.darkGray}
+                    showSoftInputOnFocus={false}
+                  />
+                </View>
+                <Spacer space={SW(10)} />
+                <Text style={styles.phoneText}>{'Phone Number'}</Text>
+                <View style={styles.textInputView}>
+                  <CountryPicker
+                    onSelect={(code) => {
+                      setFlag(code.cca2);
+                      if (code.callingCode !== []) {
+                        setCountryCode('+' + code.callingCode.flat());
+                      } else {
+                        setCountryCode('');
+                      }
+                    }}
+                    countryCode={flag}
+                    withFilter
+                    withCallingCode
+                  />
+
+                  <Image source={dropdown} style={styles.dropDownIcon} />
+
+                  <Text style={styles.countryCodeText}>{countryCode}</Text>
+
+                  <TextInput
+                    maxLength={15}
+                    returnKeyType={'done'}
+                    keyboardType={'number-pad'}
+                    value={phoneNumber.trim()}
+                    onChangeText={(text) => {
+                      setPhoneNumber(text);
+                    }}
+                    style={styles.textInputContainer}
+                    placeholder={strings.verifyPhone.placeHolderText}
+                    placeholderTextColor={COLORS.darkGray}
+                    showSoftInputOnFocus={false}
+                  />
+                </View>
+                <Spacer space={SW(10)} />
+                <Text style={styles.phoneText}>{'One Time Password'}</Text>
+                <View style={styles.textInputView}>
+                  <TextInput
+                    maxLength={15}
+                    returnKeyType={'done'}
+                    keyboardType={'number-pad'}
+                    value={posPassword.trim()}
+                    onChangeText={(text) => {
+                      setPosPassword(text);
+                    }}
+                    style={styles.textInputContainer}
+                    placeholder={'Password'}
+                    placeholderTextColor={COLORS.darkGray}
+                    showSoftInputOnFocus={false}
+                  />
+                </View>
+                <Spacer space={SW(10)} />
+                <Text style={styles.phoneText}>{'Email Address'}</Text>
+                <View style={styles.textInputView}>
+                  <TextInput
+                    returnKeyType={'done'}
+                    keyboardType={'email-address'}
+                    value={emailAddress.trim()}
+                    onChangeText={(text) => {
+                      setEmailAddress(text);
+                    }}
+                    style={styles.textInputContainer}
+                    placeholder={'Email Address'}
+                    placeholderTextColor={COLORS.darkGray}
+                    showSoftInputOnFocus={false}
+                  />
+                </View>
+
+                <Spacer space={SW(10)} />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingHorizontal: SW(5),
+                    justifyContent: 'space-between',
+                    // height: open ? SW(50) : 0,
+                  }}
+                >
+                  <View>
+                    <Text>is staff member</Text>
+                    <TouchableOpacity
+                      style={styles.vectorIconCon}
+                      onPress={() => setIsStaff(!isStaff)}
+                    >
+                      <Image source={isStaff ? vector : vectorOff} style={styles.toggleSecurity} />
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    <Text>Select Color</Text>
+                    <TouchableOpacity
+                      style={[
+                        styles.vectorIconCon,
+                        {
+                          backgroundColor: fromHsv(selectedColor),
+                          height: SW(10),
+                          width: SW(30),
+                        },
+                      ]}
+                      onPress={() => setIsColorModal(true)}
+                    >
+                      {selectedColor !== null && <Text>{fromHsv(selectedColor)}</Text>}
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    <Text>Select Role</Text>
+                    <DropDownPicker
+                      placeholder="Select Role"
+                      containerStyle={{
+                        width: SW(50),
+                        height: SH(35),
+                        justifyContent: 'center',
+                        // borderWidth: 1,
+                        borderRadius: 7,
+                        // borderColor: COLORS.blue_shade,
+                        marginTop: SW(2),
+                      }}
+                      open={open}
+                      value={value}
+                      items={posUsersRole}
+                      setOpen={setOpen}
+                      setValue={setValue}
+                      // setItems={setItems}
+                    />
+                  </View>
+                </View>
+                <Spacer space={SW(10)} />
+              </View>
+            </KeyboardAwareScrollView>
+            <Snackbar
+              style={{ backgroundColor: COLORS.roseRed }}
+              visible={visible}
+              duration={1500}
+              onDismiss={onDismissSnackBar}
+            >
+              {errorMessage}
+            </Snackbar>
+          </View>
+        ) : (
+          <View
+            style={[
+              styles.addStaffModalCon,
+              { paddingHorizontal: SW(10), justifyContent: 'space-between' },
+            ]}
+          >
+            <ColorPicker
+              defaultColor={fromHsv(selectedColor)}
+              onColorChange={(color) => setSelectedColor(color)}
+              onColorSelected={(color) => setSelectedColor(color)}
+              style={{ flex: 1 }}
+              // hideSliders
+            />
+            <View style={styles.colorBottomCon}>
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity
+                  style={styles.continueBtnCon}
+                  onPress={() => {
+                    setIsColorModal(false);
+                  }}
+                >
+                  <Text style={styles.detailBtnCon}>Discard</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.addToCartCon}
+                  onPress={() => setIsColorModal(false)}
+                >
+                  <Text style={styles.addTocartText}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        )}
       </Modal>
     </View>
   );

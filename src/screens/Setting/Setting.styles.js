@@ -83,6 +83,15 @@ export const styles = StyleSheet.create({
     // height: windowHeight * 0.33,
     padding: 15,
   },
+  securityStaffMainCon: {
+    // borderWidth: 1,
+    // borderColor: COLORS.solidGrey,
+
+    // height: windowHeight * 0.5,
+    padding: 15,
+    flex: 0.9,
+    // alignItems: 'center',
+  },
   securityMainCon2: {
     height: windowHeight * 0.82,
   },
@@ -294,6 +303,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 999,
     paddingHorizontal: moderateScale(5),
+
+    position: 'absolute',
+    right: 10,
   },
   addIcon: {
     width: SW(6),
@@ -1184,6 +1196,15 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(10),
   },
+  addStaffModalCon: {
+    width: windowWidth * 0.5,
+    height: windowHeight * 0.8,
+    backgroundColor: COLORS.white,
+    alignSelf: 'center',
+    borderRadius: 10,
+    // paddingHorizontal: moderateScale(15),
+    paddingVertical: verticalScale(10),
+  },
   invoice: {
     fontFamily: Fonts.Medium,
     color: COLORS.solid_grey,
@@ -1252,6 +1273,7 @@ export const styles = StyleSheet.create({
     height: SW(9),
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: SW(2),
   },
   walletConfigMain: {
     // borderWidth: 1,
@@ -1333,5 +1355,97 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
+  },
+
+  //
+  continueBtnCon: {
+    width: SH(120),
+    height: SH(44),
+    padding: SH(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.primary,
+    borderWidth: 1,
+    marginLeft: SH(10),
+    borderRadius: 3,
+  },
+  addToCartCon: {
+    backgroundColor: COLORS.primary,
+    width: SH(120),
+    height: SH(44),
+    padding: SH(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: SH(10),
+    borderRadius: 3,
+  },
+  addTocartText: {
+    color: COLORS.white,
+    fontSize: SH(13),
+    fontFamily: Fonts.SemiBold,
+  },
+  detailBtnCon: {
+    color: COLORS.primary,
+    fontSize: SH(13),
+    fontFamily: Fonts.SemiBold,
+  },
+  addCartConHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: SH(70),
+    paddingHorizontal: moderateScale(15),
+    borderBottomWidth: 1,
+    borderColor: COLORS.solidGrey,
+  },
+  colorBottomCon: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: SH(70),
+    paddingHorizontal: moderateScale(15),
+    alignSelf: 'center',
+  },
+  crossBg: {
+    width: SW(10),
+    height: SW(8),
+    resizeMode: 'contain',
+  },
+
+  textInputView: {
+    paddingHorizontal: SW(4),
+    borderWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: windowHeight * 0.08,
+    width: windowWidth * 0.45,
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 5,
+    marginTop: 16,
+    // marginHorizontal: SW(10),
+  },
+  dropDownIcon: {
+    width: 7,
+    height: 7,
+    resizeMode: 'contain',
+  },
+  countryCodeText: {
+    color: COLORS.black,
+    fontSize: SF(18),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(8),
+  },
+  phoneText: {
+    color: COLORS.black,
+    fontSize: SF(14),
+    fontFamily: Fonts.Medium,
+    // paddingHorizontal: moderateScale(8),
+  },
+  textInputContainer: {
+    backgroundColor: COLORS.input_bg,
+    color: COLORS.black,
+    fontSize: SF(16),
+    fontFamily: Fonts.Italic,
+    width: windowWidth * 0.5,
   },
 });

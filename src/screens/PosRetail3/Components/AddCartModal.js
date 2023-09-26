@@ -27,10 +27,12 @@ export function AddCartModal({
   productIndex,
   productItem,
   openFrom,
+  cartQty,
+  selectedItem,
+  onClickAddCartModal,
 }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-
   const cartData = getRetailData?.getAllCart;
   const productDetail = getRetailData?.getOneProduct;
   // console.log('productDetail', JSON.stringify(productDetail));
@@ -44,7 +46,7 @@ export function AddCartModal({
   const coloredArray = productDetail?.product_detail?.supplies?.[0]?.attributes?.[1]?.values;
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(cartQty == 0 ? 1 : cartQty);
   const [colors, setColors] = useState();
   const [colorName, setColorName] = useState();
   const [sizeName, setSizeName] = useState();
@@ -60,6 +62,8 @@ export function AddCartModal({
         alert('Please add quantity to cart');
         return;
       } else {
+        onClickAddCartModal(selectedItem, productIndex, count);
+
         const data = {
           seller_id: sellerID,
           service_id: productDetail?.product_detail?.service_id,

@@ -223,16 +223,19 @@ export class AuthController {
         return (
           USER_URL +
           ApiUserInventory.getPosUsers +
-          `?page=1&limit=10&seller_id=${sellerID}&search=${search}`
+          `?page=1&limit=40&seller_id=${sellerID}&search=${search}`
         );
       } else {
-        return USER_URL + ApiUserInventory.getPosUsers + `?page=1&limit=10&seller_id=${sellerID}`;
+        return USER_URL + ApiUserInventory.getPosUsers + `?page=1&limit=50&seller_id=${sellerID}`;
+
         // USER_URL + ApiUserInventory.abc(sellerID);
       }
     };
+
     return new Promise(async (resolve, reject) => {
       // const endpoint =  `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10&seller_id=${sellerID}`;
       const endpoint = getUrl(sellerID, search);
+      console.log('Enspoint', endpoint);
       await HttpClient.get(endpoint)
         .then((response) => {
           if (response?.status_code === 200) {
