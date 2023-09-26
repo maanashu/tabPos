@@ -2188,7 +2188,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     // padding: ms(10),
-    marginTop: Platform.OS === 'android' ? ms(10) : ms(50),
+    // marginTop: Platform.OS === 'android' ? ms(10) : ms(50),
   },
   dollarAddCon: {
     height: ms(32),

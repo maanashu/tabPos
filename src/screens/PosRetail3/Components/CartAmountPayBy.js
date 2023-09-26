@@ -258,7 +258,8 @@ export const CartAmountPayBy = ({
         alert(strings.valiadtion.validPhone);
         return;
       } else {
-        dispatch(walletGetByPhone(phoneNumber));
+        const data = walletCountryCode + phoneNumber;
+        dispatch(walletGetByPhone(data));
         Keyboard.dismiss();
       }
     }
@@ -321,6 +322,7 @@ export const CartAmountPayBy = ({
       const data = {
         cartId: cartid,
         phoneNo: customerNo,
+        countryCode: countryCode,
       };
       const res = await dispatch(attachCustomer(data));
       if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {

@@ -1366,10 +1366,10 @@ export const getWalletId = (sellerID) => async (dispatch) => {
   }
 };
 
-export const walletGetByPhone = (walletIdInp) => async (dispatch) => {
+export const walletGetByPhone = (data) => async (dispatch) => {
   dispatch(walletGetByPhoneRequest());
   try {
-    const res = await RetailController.walletGetByPhone(walletIdInp);
+    const res = await RetailController.walletGetByPhone(data);
     dispatch(walletGetByPhoneSuccess(res?.payload?.data));
   } catch (error) {
     if (error?.statusCode === 204) {

@@ -108,6 +108,7 @@ export function MainScreen({
   const [serviceNumPadModal, setServiceNumPadModal] = useState(false);
   const [goToCart, setGoToCart] = useState(false);
   const getMerchantService = getAuthdata?.merchantLoginData?.product_existance_status;
+  console.log('getAuthdata?.merchantLoginData', JSON.stringify(getAuthdata?.merchantLoginData));
   const CART_LENGTH = useSelector(getCartLength);
   const SERVICE_CART_LENGTH = useSelector(getServiceCartLength);
   const getRetailData = useSelector(getRetail);
@@ -1280,6 +1281,7 @@ export function MainScreen({
         isVisible={cartModal || numPadModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
+        backdropOpacity={0.4}
       >
         {cartModal ? (
           <CartListModal
@@ -1290,6 +1292,7 @@ export function MainScreen({
             customAddBtn={() => {
               setCartModal(false);
               setNumPadModal(true);
+              setCustomProductOpen('product');
             }}
           />
         ) : (
@@ -1297,6 +1300,7 @@ export function MainScreen({
             <CustomProductAdd
               crossHandler={() => setNumPadModal(false)}
               comeFrom={customProductOpen}
+              sellerID={sellerID}
             />
           </KeyboardAvoidingView>
         )}
@@ -1308,9 +1312,10 @@ export function MainScreen({
       <ReactNativeModal
         animationType="fade"
         transparent={true}
-        isVisible={serviceCartModal}
+        isVisible={serviceCartModal || numPadModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
+        backdropOpacity={0.4}
       >
         {serviceCartModal ? (
           <ServiceCartListModal
@@ -1322,6 +1327,7 @@ export function MainScreen({
             customAddBtn={() => {
               setServiceCartModal(false);
               setNumPadModal(true);
+              setCustomProductOpen('service');
             }}
           />
         ) : (
@@ -1329,6 +1335,7 @@ export function MainScreen({
             <CustomProductAdd
               crossHandler={() => setNumPadModal(false)}
               comeFrom={customProductOpen}
+              sellerID={sellerID}
             />
           </KeyboardAvoidingView>
         )}

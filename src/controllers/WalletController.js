@@ -66,8 +66,6 @@ export class WalletController {
                 ? `filter_by=${data?.dayWiseFilter}`
                 : `date=${data?.calendarDate}`
             }&order_type=${data?.orderType}&status=${data?.status}`;
-
-      console.log('endpoin2222', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -88,8 +86,6 @@ export class WalletController {
           : ORDER_URL +
             ApiOrderInventory.getTotalTraType +
             `?seller_id=${data?.sellerID}&date=${data?.calendarDate}`;
-
-      console.log('endpoint1111', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

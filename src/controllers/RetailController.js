@@ -825,9 +825,9 @@ export class RetailController {
     });
   }
 
-  static async walletGetByPhone(walletIdInp) {
+  static async walletGetByPhone(data) {
     return new Promise((resolve, reject) => {
-      const endpoint = WALLET_URL + ApiWalletInventory.walletGetByPhone + `?search=${walletIdInp}`;
+      const endpoint = WALLET_URL + ApiWalletInventory.walletGetByPhone + `?search=${data}`;
       HttpClient.get(endpoint)
         .then((response) => {
           if (response?.msg === 'api wallets found') {
@@ -863,8 +863,11 @@ export class RetailController {
         amount: data.amount,
         reciever_address: data.wallletAdd,
       };
+      console.log('endpoint', endpoint);
+      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response', response);
           if (response?.msg === 'Payment request sent success!') {
             Toast.show({
               text2: 'Request send successfully',
@@ -876,6 +879,8 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
+          alert(error?.msg);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -1202,6 +1207,7 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.attachCustomer + `${data.cartId}`;
       const body = data?.phoneNo
         ? {
+            phone_code: data?.countryCode,
             phone_no: data?.phoneNo,
           }
         : {
@@ -1395,6 +1401,7 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.slots + '?' + convertToQueryParam;
 
       HttpClient.get(endpoint)
+
         .then((response) => {
           resolve(response);
         })
@@ -1581,9 +1588,9 @@ export class RetailController {
             description: data?.notes,
             type: 'digital',
             qty: data?.qty,
-            date: '2023-09-23',
-            start_time: '07:00 PM',
-            end_time: '08:00PM',
+            date: data?.date,
+            start_time: data?.startTime,
+            end_time: data?.endTime,
           }
         : {
             seller_id: sellerID,
@@ -1591,9 +1598,9 @@ export class RetailController {
             name: data?.productName,
             type: 'digital',
             qty: data?.qty,
-            date: '2023-09-23',
-            start_time: '07:00 PM',
-            end_time: '08:00PM',
+            date: data?.date,
+            start_time: data?.startTime,
+            end_time: data?.endTime,
           };
       HttpClient.post(endpoint, body)
         .then((response) => {

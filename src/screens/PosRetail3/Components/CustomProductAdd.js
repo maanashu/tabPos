@@ -21,12 +21,106 @@ import { TextInput } from 'react-native-gesture-handler';
 import { digits } from '@/utils/validators';
 const windowWidth = Dimensions.get('window').width;
 
-export function CustomProductAdd({ crossHandler, comeFrom }) {
+export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
   const dispatch = useDispatch();
+  const getRetailData = useSelector(getRetail);
   const [amount, setAmount] = useState();
   const [productName, setProductName] = useState();
   const [notes, setNotes] = useState();
   const [count, setCount] = useState(1);
+  const timeSlotsData = getRetailData?.timeSlots.filter((timeSlot) => timeSlot.is_available);
+
+  const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
+  const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
+  const [selectedDate, setselectedDate] = useState(moment(new Date()).format('YYYY-MM-DD'));
+
+  const [selectedMonthData, setselectedMonthData] = useState(null);
+  const [selectedYearData, setselectedYearData] = useState(null);
+
+  const [monthDays, setmonthDays] = useState([]);
+  useEffect(() => {
+    const params = {
+      seller_id: sellerID,
+      // product_id: itemData?.id,
+      date: selectedDate,
+      // pos_user_id: posUserId,
+    };
+    dispatch(getTimeSlots(params));
+  }, [selectedDate]);
+
+  useEffect(() => {
+    const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
+    setmonthDays(daysArray);
+  }, [selectedMonthData, selectedYearData]);
+
+  const renderWeekItem = ({ item, index }) => (
+    <TouchableOpacity
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: SW(31.5),
+        height: SH(60),
+      }}
+      onPress={() => {
+        setselectedDate(item?.completeDate);
+        //Clear previous day selected time slot values
+        setselectedTimeSlotIndex(null);
+        setSelectedTimeSlotData('');
+      }}
+    >
+      <Text
+        style={{
+          fontFamily: Fonts.Regular,
+          fontSize: SF(14),
+          color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.dark_grey,
+        }}
+      >
+        {item?.day}
+      </Text>
+      <Text
+        style={{
+          fontFamily: Fonts.SemiBold,
+          fontSize: SF(18),
+          color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.black,
+        }}
+      >
+        {item?.completeDate === moment(new Date()).format('YYYY-MM-DD') ? 'Today' : item?.date}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  const renderSlotItem = ({ item, index }) => (
+    <TouchableOpacity
+      disabled={!item?.is_available}
+      style={{
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '25.1%',
+        height: ms(23),
+        borderColor: COLORS.solidGrey,
+        backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
+      }}
+      onPress={() => {
+        setselectedTimeSlotIndex(index);
+        setSelectedTimeSlotData(item);
+      }}
+    >
+      <Text
+        style={{
+          fontFamily: Fonts.Regular,
+          fontSize: ms(6.2),
+          color: !item?.is_available
+            ? COLORS.row_grey
+            : selectedTimeSlotIndex === index
+            ? COLORS.white
+            : COLORS.dark_grey,
+        }}
+      >
+        {item?.start_time + ' - ' + item?.end_time}
+      </Text>
+    </TouchableOpacity>
+  );
 
   const customProduct = () => {
     if (comeFrom == 'product') {
@@ -53,12 +147,18 @@ export function CustomProductAdd({ crossHandler, comeFrom }) {
         alert('Please enter valid amount');
       } else if (!productName) {
         alert('Please enter product name');
+      } else if (!selectedTimeSlotData) {
+        alert('Please select a time slot for the service');
+        return;
       } else {
         const data = {
           price: amount,
           productName: productName,
           qty: count,
           notes: notes,
+          date: selectedDate,
+          startTime: selectedTimeSlotData?.start_time,
+          endTime: selectedTimeSlotData?.end_time,
         };
         dispatch(customServiceAdd(data));
         crossHandler();
@@ -67,7 +167,13 @@ export function CustomProductAdd({ crossHandler, comeFrom }) {
   };
 
   return (
-    <View style={styles.customProductCon}>
+    <View
+      style={
+        comeFrom === 'product'
+          ? styles.customProductCon
+          : [styles.customProductCon, { height: ms(400) }]
+      }
+    >
       <View style={styles.headerConCustomProduct}>
         {/* <Text style={styles.zeroText}>New Product Add to Cart</Text> */}
         <TouchableOpacity onPress={crossHandler}>
@@ -114,28 +220,29 @@ export function CustomProductAdd({ crossHandler, comeFrom }) {
           numberOfLines={4}
         />
 
-        <View style={styles.addCartbtnBodyCon}>
-          <View style={styles.counterMainCon}>
-            <TouchableOpacity
-              onPress={() => setCount(count - 1)}
-              disabled={count == 1 ? true : false}
-              style={styles.minusCon}
-            >
-              <Image source={minus} style={styles.plusButton} />
-            </TouchableOpacity>
-            <View style={styles.oneCon}>
-              <Text style={styles.zeroText}>{count}</Text>
-            </View>
+        {comeFrom === 'product' ? (
+          <View style={styles.addCartbtnBodyCon}>
+            <View style={styles.counterMainCon}>
+              <TouchableOpacity
+                onPress={() => setCount(count - 1)}
+                disabled={count == 1 ? true : false}
+                style={styles.minusCon}
+              >
+                <Image source={minus} style={styles.plusButton} />
+              </TouchableOpacity>
+              <View style={styles.oneCon}>
+                <Text style={styles.zeroText}>{count}</Text>
+              </View>
 
-            <TouchableOpacity
-              onPress={() => setCount(count + 1)}
-              style={styles.minusCon}
-              disabled={comeFrom == 'product' ? false : true}
-            >
-              <Image source={plus} style={styles.plusButton} />
-            </TouchableOpacity>
-          </View>
-          {/* <TouchableOpacity
+              <TouchableOpacity
+                onPress={() => setCount(count + 1)}
+                style={styles.minusCon}
+                disabled={comeFrom == 'product' ? false : true}
+              >
+                <Image source={plus} style={styles.plusButton} />
+              </TouchableOpacity>
+            </View>
+            {/* <TouchableOpacity
             style={[
               styles.closeButtonCon,
               { backgroundColor: amount && productName ? COLORS.primary : COLORS.gerySkies },
@@ -144,36 +251,50 @@ export function CustomProductAdd({ crossHandler, comeFrom }) {
           >
             <Text style={[styles.closeText, { color: COLORS.white }]}>Add to Cart</Text>
           </TouchableOpacity> */}
-        </View>
-
-        {/* <View style={[styles.displayflex, { marginTop: ms(15) }]}>
-          <TouchableOpacity style={styles.closeButtonCon}>
-            <Text style={styles.closeText}>Close</Text>
-          </TouchableOpacity>
-          <View style={styles.customAddQtyCon}>
-            <TouchableOpacity
-              onPress={() => setCount(count - 1)}
-              disabled={count == 1 ? true : false}
-            >
-              <Image source={minus} style={styles.plusButton} />
-            </TouchableOpacity>
-
-            <Text style={styles.zeroText}>{count}</Text>
-            <TouchableOpacity onPress={() => setCount(count + 1)}>
-              <Image source={plus} style={styles.plusButton} />
-            </TouchableOpacity>
           </View>
+        ) : (
+          <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 10,
+              }}
+            >
+              <MonthYearPicker
+                dateType={DATE_TYPE.MONTH}
+                placeholder={'Select Month'}
+                containerStyle={{ marginRight: 10 }}
+                defaultValue={moment().month() + 1}
+                defaultYear={selectedYearData?.value ?? moment().year()}
+                onSelect={(monthData) => {
+                  setselectedMonthData(monthData);
+                }}
+              />
+              <MonthYearPicker
+                dateType={DATE_TYPE.YEAR}
+                placeholder={'Select Year'}
+                defaultValue={moment().year()}
+                onSelect={(yearData) => {
+                  setselectedYearData(yearData);
+                }}
+              />
+            </View>
 
-          <TouchableOpacity
-            style={[
-              styles.closeButtonCon,
-              { backgroundColor: amount && productName ? COLORS.primary : COLORS.gerySkies },
-            ]}
-            disabled={amount && productName ? false : true}
-          >
-            <Text style={[styles.closeText, { color: COLORS.white }]}>Add to Cart</Text>
-          </TouchableOpacity>
-        </View> */}
+            <View
+              style={{
+                marginTop: SH(10),
+                borderWidth: 1,
+                borderColor: COLORS.solidGrey,
+                width: '100%',
+              }}
+            >
+              <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
+
+              <FlatList data={timeSlotsData || []} numColumns={4} renderItem={renderSlotItem} />
+            </View>
+          </View>
+        )}
       </View>
     </View>
   );
