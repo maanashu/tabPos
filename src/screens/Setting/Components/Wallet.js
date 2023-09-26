@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 
-import { wallet, vector, vectorOff, walletConfigCash, walletConfigCard, Fonts } from '@/assets';
+import {
+  wallet,
+  vector,
+  vectorOff,
+  walletConfigCash,
+  walletConfigCard,
+  Fonts,
+  addIcon,
+} from '@/assets';
 import { SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer, Button } from '@/components';

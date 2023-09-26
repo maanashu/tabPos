@@ -30,6 +30,8 @@ export const ApiUserInventory = {
   trackSessionSave: 'drawer_management',
   getSessionHistory: 'drawer_management/drawer-session/history',
   getPosUsers: 'users/merchant/pos-user',
+  getPosUserRoles: 'roles',
+  creatPosUsers: 'users/merchant/pos-user',
   loginPosuser: 'users/merchant/pos-user/login',
   posLoginDetail: 'users/pos/login-details',
   getSetting: 'user_settings',
@@ -186,6 +188,7 @@ export const API_URLS_USING_POS_USER_ACCESS_TOKEN = (sellerID) => [
   USER_URL + ApiUserInventory.configureGoogleCode,
   USER_URL + ApiUserInventory.getSetting,
   USER_URL + ApiUserInventory.merchantLogin,
+  USER_URL + ApiUserInventory.creatPosUsers,
   USER_URL + ApiUserInventory.getSetting + `/?app_name=pos&seller_id=${sellerID}`,
   // USER_URL + ApiUserInventory.loginPosuser
 ];

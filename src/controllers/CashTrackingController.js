@@ -110,9 +110,6 @@ export class CashTrackingController {
     });
   }
   static async getSessionHistory(newDateFormat, staff) {
-    console.log('Datatatatata', newDateFormat);
-    console.log('Staff', staff);
-
     const urlAccDate = (newDateFormat) => {
       if (newDateFormat !== undefined || (staff !== undefined) !== 'none') {
         return (

@@ -69,13 +69,9 @@ export function Device() {
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={deviceLogo} style={styles.securityLogo} />
             <View style={styles.twoStepVerifiCon}>
-              <Text style={styles.twoStepText}>
-                {strings.settings.configure}
-              </Text>
+              <Text style={styles.twoStepText}>{strings.settings.configure}</Text>
               <Spacer space={SH(10)} />
-              <Text style={styles.securitysubhead}>
-                {strings.settings.manageDevice}
-              </Text>
+              <Text style={styles.securitysubhead}>{strings.settings.manageDevice}</Text>
               <Spacer space={SH(20)} />
               <TouchableOpacity
                 style={styles.twoStepMemberCon}
@@ -88,17 +84,12 @@ export function Device() {
                       <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                         {strings.settings.barScan}
                       </Text>
-                      <Text
-                        style={[styles.securitysubhead, { fontSize: SF(12) }]}
-                      >
+                      <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
                         {strings.settings.oneBlueTToth}
                       </Text>
                     </View>
                   </View>
-                  <Image
-                    source={toggleSecurity}
-                    style={styles.toggleSecurity}
-                  />
+                  <Image source={toggleSecurity} style={styles.toggleSecurity} />
                 </View>
               </TouchableOpacity>
             </View>
@@ -124,15 +115,11 @@ export function Device() {
             </View>
             <View style={[styles.modalDataCon, { alignItems: 'center' }]}>
               <Spacer space={SH(50)} />
-              <Text style={styles.searchForDevice}>
-                {strings.settings.searchForDevice}
-              </Text>
+              <Text style={styles.searchForDevice}>{strings.settings.searchForDevice}</Text>
               <Spacer space={SH(40)} />
               <Image source={blueToothIcon} style={styles.blueToothIcon} />
               <Spacer space={SH(30)} />
-              <Text style={styles.foundOneDev}>
-                {strings.settings.foundOneDev}
-              </Text>
+              <Text style={styles.foundOneDev}>{strings.settings.foundOneDev}</Text>
               <Spacer space={SH(10)} />
               <View style={[styles.twoStepMemberCon, styles.twoStepMemberCon2]}>
                 <View style={styles.flexRow}>
@@ -144,10 +131,7 @@ export function Device() {
                       </Text>
                     </View>
                   </View>
-                  <Image
-                    source={toggleSecurity}
-                    style={styles.toggleSecurity}
-                  />
+                  <Image source={toggleSecurity} style={styles.toggleSecurity} />
                 </View>
               </View>
             </View>
@@ -169,18 +153,12 @@ export function Device() {
             </View>
             <View style={styles.modalDataCon}>
               <Spacer space={SH(50)} />
-              <Text style={styles.firstDownloader}>
-                {strings.settings.pluginFirst}
-              </Text>
-              <Text style={styles.firstDownloader}>
-                {strings.settings.pluginSecond}
-              </Text>
+              <Text style={styles.firstDownloader}>{strings.settings.pluginFirst}</Text>
+              <Text style={styles.firstDownloader}>{strings.settings.pluginSecond}</Text>
               <Spacer space={SH(50)} />
               <Image source={scanner} style={styles.scanner} />
               <Spacer space={SH(50)} />
-              <Text style={styles.codeAppear}>
-                {strings.settings.codeAppear}
-              </Text>
+              <Text style={styles.codeAppear}>{strings.settings.codeAppear}</Text>
               <Spacer space={SH(10)} />
               <View style={styles.codeContainer}></View>
               <Spacer space={SH(20)} />

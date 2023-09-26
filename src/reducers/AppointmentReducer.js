@@ -5,6 +5,7 @@ const INITIALSTATE = {
   geAppointmentById: [],
   appointmentStatus: null,
   staffUsers: [],
+  posUserRole: null,
 };
 
 export const appointmentReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -72,6 +73,11 @@ export const appointmentReducer = (state = INITIALSTATE, { payload, type }) => {
         appointmentStatus: null,
       };
 
+    case TYPES.GET_POS_USER_ROLE_SUCCESS:
+      return {
+        ...state,
+        posUserRole: payload.data,
+      };
     default:
       return state;
   }

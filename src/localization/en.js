@@ -261,6 +261,7 @@ export const en = {
     barScan: 'Barcode Scanner ',
     oneBlueTToth: '1 bluetooth device active',
     addNew: 'Add New',
+    addStaff: 'Add Staff',
     addbarcode: 'Add Barcode Scanner',
     pluginFirst: '1.  Plugin USB/C Port to  POS Monitor',
     pluginSecond: '2. Scan Barcode Below',
@@ -342,6 +343,7 @@ export const en = {
     notification: 'Notifications',
     addlanguage: 'Add Language',
     businessName: 'Business Name',
+    staff: 'Staff',
   },
   dashboard: {
     todaySale: "Today's Sales",

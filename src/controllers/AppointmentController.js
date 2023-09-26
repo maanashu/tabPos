@@ -80,6 +80,48 @@ export class AppointmentController {
         });
     });
   }
+  static async createPossUser(data) {
+    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+    return new Promise(async (resolve, reject) => {
+      const endpoint = `${USER_URL}${ApiUserInventory.creatPosUsers}`;
+      console.log('endpoint', endpoint);
+      console.log('Data', data);
+      // const body = {
+      //   recipient_id: data,
+      //   media_type: 'text',
+      //   ...data,
+      // };
+
+      await HttpClient.post(endpoint, data)
+        .then((response) => {
+          console.log('dsfsdf', response);
+          if (response?.status_code === 200) {
+            resolve(response);
+          }
+        })
+        .catch((error) => {
+          console.log('error', error);
+
+          reject(error);
+        });
+    });
+  }
+  static async getPosUserRoles(data) {
+    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+    return new Promise(async (resolve, reject) => {
+      const endpoint = `${USER_URL}${ApiUserInventory.getPosUserRoles}?user_id=${data.user_id}`;
+      // const endpoint = `${USER_URL}${ApiUserInventory.getPosUserRoles}?limit=${data.limit}&page=${data.page}&user_id=${data.user_id}`;
+      await HttpClient.get(endpoint)
+        .then((response) => {
+          if (response?.status_code === 200) {
+            resolve(response);
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
 
   static async sendCheckinOTPAPI(appointmentId) {
     const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
