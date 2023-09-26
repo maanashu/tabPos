@@ -301,7 +301,6 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.posCarts + `/`;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('reresrdd', response);
           resolve(response);
         })
         .catch((error) => {
@@ -864,11 +863,8 @@ export class RetailController {
         amount: data.amount,
         reciever_address: data.wallletAdd,
       };
-      console.log('endpoint', endpoint);
-      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           if (response?.msg === 'Payment request sent success!') {
             Toast.show({
               text2: 'Request send successfully',
@@ -880,7 +876,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           alert(error?.msg);
           Toast.show({
             position: 'bottom',
