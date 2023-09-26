@@ -36,7 +36,7 @@ const ReScheduleDetailModal = ({
 }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-  const timeSlotsData = getRetailData?.timeSlots;
+  const timeSlotsData = getRetailData?.timeSlots.filter((timeSlot) => timeSlot.is_available);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const appointmentDetail = appointmentData?.appointment_details[0];

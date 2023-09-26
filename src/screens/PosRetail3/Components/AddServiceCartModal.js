@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, Text, View, TouchableOpacity, FlatList } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -27,7 +35,7 @@ export function AddServiceCartModal({
   const getRetailData = useSelector(getRetail);
   const itemData = getRetailData?.getOneService?.product_detail;
   const cartServiceData = getRetailData?.getserviceCart;
-  const timeSlotsData = getRetailData?.timeSlots;
+  const timeSlotsData = getRetailData?.timeSlots.filter((timeSlot) => timeSlot.is_available);
   const [posUserId, setposUserId] = useState(itemData?.pos_staff?.[0]?.user?.unique_uuid);
   const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff?.[0]?.user);
 
@@ -199,117 +207,119 @@ export function AddServiceCartModal({
         </View>
       </View>
 
-      <View
-        style={{
-          width: windowWidth * 0.42,
-          alignSelf: 'center',
-        }}
-      >
-        <View style={[styles.displayflex, { marginTop: SH(10) }]}>
-          <View style={styles.detailLeftDetail}>
-            <Text style={styles.colimbiaText}>{itemData?.name}</Text>
-
-            <Text style={styles.sizeAndColor}>Est: 45 ~ 50 min </Text>
-          </View>
-          <Text style={styles.colimbiaText}>
-            ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-          </Text>
-        </View>
-        {itemData?.pos_staff?.length > 0 ? (
-          <View style={{ alignItems: 'center' }}>
-            <View style={styles.displayRow}>
-              <View style={[styles.colorRow, styles.serviceRow]} />
-              <Text style={styles.colorText}>Service Provider</Text>
-              <View style={[styles.colorRow, styles.serviceRow]} />
-            </View>
-          </View>
-        ) : null}
-
-        <View>
-          {itemData?.pos_staff?.length > 0 ? (
-            <Text style={styles.selected}>
-              Selected:{' '}
-              <Text style={{ color: COLORS.primary }}>
-                {providerDetail?.user_profiles?.firstname}
-              </Text>
-            </Text>
-          ) : null}
-
-          <Spacer space={SH(10)} />
-          <View
-            style={{
-              width: windowWidth * 0.42,
-              alignItems: 'center',
-            }}
-          >
-            <FlatList
-              data={itemData?.pos_staff}
-              extraData={itemData?.pos_staff}
-              renderItem={renderServiceProviderItem}
-              keyExtractor={(item) => item.id}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-            />
-          </View>
-          <Spacer space={SH(10)} />
-
-          <View style={styles.displayRow}>
-            <View style={[styles.colorRow, styles.serviceRow]} />
-            <Text style={styles.colorText}>Available slot</Text>
-            <View style={[styles.colorRow, styles.serviceRow]} />
-          </View>
-          <Spacer space={SH(10)} />
-
-          <Text style={styles.selected}>
-            Time:{' '}
-            <Text style={{ color: COLORS.primary }}>
-              {selectedDate === moment(new Date()).format('YYYY-MM-DD')
-                ? `Today`
-                : `${moment(selectedDate).format('ll')}`}
-              {selectedTimeSlotData && ` @ ${selectedTimeSlotData?.start_time}`}
-            </Text>
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 10,
-            }}
-          >
-            <MonthYearPicker
-              dateType={DATE_TYPE.MONTH}
-              placeholder={'Select Month'}
-              containerStyle={{ marginRight: 10 }}
-              defaultValue={moment().month() + 1}
-              defaultYear={selectedYearData?.value ?? moment().year()}
-              onSelect={(monthData) => {
-                setselectedMonthData(monthData);
-              }}
-            />
-            <MonthYearPicker
-              dateType={DATE_TYPE.YEAR}
-              placeholder={'Select Year'}
-              defaultValue={moment().year()}
-              onSelect={(yearData) => {
-                setselectedYearData(yearData);
-              }}
-            />
-          </View>
-        </View>
-
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View
           style={{
-            marginTop: SH(10),
-            borderWidth: 1,
-            borderColor: COLORS.solidGrey,
-            width: '100%',
+            width: windowWidth * 0.42,
+            alignSelf: 'center',
           }}
         >
-          <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
+          <View style={[styles.displayflex, { marginTop: SH(10) }]}>
+            <View style={styles.detailLeftDetail}>
+              <Text style={styles.colimbiaText}>{itemData?.name}</Text>
 
-          <FlatList data={timeSlotsData || []} numColumns={4} renderItem={renderSlotItem} />
+              <Text style={styles.sizeAndColor}>Est: 45 ~ 50 min </Text>
+            </View>
+            <Text style={styles.colimbiaText}>
+              ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+            </Text>
+          </View>
+          {itemData?.pos_staff?.length > 0 ? (
+            <View style={{ alignItems: 'center' }}>
+              <View style={styles.displayRow}>
+                <View style={[styles.colorRow, styles.serviceRow]} />
+                <Text style={styles.colorText}>Service Provider</Text>
+                <View style={[styles.colorRow, styles.serviceRow]} />
+              </View>
+            </View>
+          ) : null}
+
+          <View>
+            {itemData?.pos_staff?.length > 0 ? (
+              <Text style={styles.selected}>
+                Selected:{' '}
+                <Text style={{ color: COLORS.primary }}>
+                  {providerDetail?.user_profiles?.firstname}
+                </Text>
+              </Text>
+            ) : null}
+
+            <Spacer space={SH(10)} />
+            <View
+              style={{
+                width: windowWidth * 0.42,
+                alignItems: 'center',
+              }}
+            >
+              <FlatList
+                data={itemData?.pos_staff}
+                extraData={itemData?.pos_staff}
+                renderItem={renderServiceProviderItem}
+                keyExtractor={(item) => item.id}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            <Spacer space={SH(10)} />
+
+            <View style={styles.displayRow}>
+              <View style={[styles.colorRow, styles.serviceRow]} />
+              <Text style={styles.colorText}>Available slot</Text>
+              <View style={[styles.colorRow, styles.serviceRow]} />
+            </View>
+            <Spacer space={SH(10)} />
+
+            <Text style={styles.selected}>
+              Time:{' '}
+              <Text style={{ color: COLORS.primary }}>
+                {selectedDate === moment(new Date()).format('YYYY-MM-DD')
+                  ? `Today`
+                  : `${moment(selectedDate).format('ll')}`}
+                {selectedTimeSlotData && ` @ ${selectedTimeSlotData?.start_time}`}
+              </Text>
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 10,
+              }}
+            >
+              <MonthYearPicker
+                dateType={DATE_TYPE.MONTH}
+                placeholder={'Select Month'}
+                containerStyle={{ marginRight: 10 }}
+                defaultValue={moment().month() + 1}
+                defaultYear={selectedYearData?.value ?? moment().year()}
+                onSelect={(monthData) => {
+                  setselectedMonthData(monthData);
+                }}
+              />
+              <MonthYearPicker
+                dateType={DATE_TYPE.YEAR}
+                placeholder={'Select Year'}
+                defaultValue={moment().year()}
+                onSelect={(yearData) => {
+                  setselectedYearData(yearData);
+                }}
+              />
+            </View>
+          </View>
+
+          <View
+            style={{
+              marginTop: SH(10),
+              borderWidth: 1,
+              borderColor: COLORS.solidGrey,
+              width: '100%',
+            }}
+          >
+            <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
+
+            <FlatList data={timeSlotsData || []} numColumns={4} renderItem={renderSlotItem} />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
