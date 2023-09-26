@@ -25,7 +25,6 @@ const ReturnInvoice = ({ orderList, orderData, subTotal, totalTaxes, total }) =>
   }, []);
 
   const renderProductItem = ({ item }) => {
-    console.log(item);
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>

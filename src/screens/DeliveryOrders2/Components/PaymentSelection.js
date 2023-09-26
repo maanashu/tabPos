@@ -86,8 +86,6 @@ export function PaymentSelection(props) {
     setIsPhoneVisible(false);
   };
 
-  console.log(orderFinalData);
-
   const onReturnHandler = () => {
     if (selectedRecipeIndex === null) {
       alert('Please select e-recipe method');

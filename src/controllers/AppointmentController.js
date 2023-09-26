@@ -84,8 +84,6 @@ export class AppointmentController {
     const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
     return new Promise(async (resolve, reject) => {
       const endpoint = `${USER_URL}${ApiUserInventory.creatPosUsers}`;
-      console.log('endpoint', endpoint);
-      console.log('Data', data);
       // const body = {
       //   recipient_id: data,
       //   media_type: 'text',
@@ -94,14 +92,11 @@ export class AppointmentController {
 
       await HttpClient.post(endpoint, data)
         .then((response) => {
-          console.log('dsfsdf', response);
           if (response?.status_code === 200) {
             resolve(response);
           }
         })
         .catch((error) => {
-          console.log('error', error);
-
           reject(error);
         });
     });

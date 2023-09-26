@@ -65,7 +65,6 @@ export function Staff() {
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
   const posUserArray = getAuth?.getAllPosUsers;
-  console.log('posUserArray', JSON.stringify(posUserArray));
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [staffModal, setStaffModal] = useState(false);
@@ -94,7 +93,6 @@ export function Staff() {
   };
 
   const onDismissSnackBar = () => setVisible(false);
-  console.log(userRoles);
   var posUsersRole = [];
   if (userRoles?.posUserRole?.roles?.length > 0 && userRoles?.posUserRole !== null) {
     const mappedArray = userRoles?.posUserRole?.roles?.map((item) => {
@@ -504,10 +502,8 @@ export function Staff() {
         role_ids: [value],
         color_code: fromHsv(selectedColor),
       };
-      console.log('sdfdsfds', data);
 
       const responseData = await dispatch(creatPostUser(data));
-      console.log('ResponseData', responseData);
       if (responseData) {
         Toast.show({
           position: 'top',

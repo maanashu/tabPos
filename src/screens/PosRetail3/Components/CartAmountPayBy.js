@@ -87,7 +87,6 @@ export const CartAmountPayBy = ({
   const getUserData = useSelector(getUser);
   const updateData = useSelector(getRetail).updateQuantityy;
   const getSettingData = useSelector(getSetting);
-  console.log('get', JSON.stringify(getSettingData));
   // jbrcoin: getSettingData?.getSetting?.accept_jbr_coin_payment,
   // cash: getSettingData?.getSetting?.accept_cash_payment,
   // card: getSettingData?.getSetting?.accept_card_payment,

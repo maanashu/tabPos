@@ -24,7 +24,6 @@ export function Wallet() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getSettingData = useSelector(getSetting);
-  console.log('get', JSON.stringify(getSettingData));
   const data = {
     jbrcoin: getSettingData?.getSetting?.accept_jbr_coin_payment,
     cash: getSettingData?.getSetting?.accept_cash_payment,

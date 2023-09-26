@@ -243,7 +243,6 @@ export function MainScreen({
                 };
 
           dispatch(changeStatusProductCart(data));
-          console.log('dfsfd', data);
         }
       } catch (error) {}
     } else {
@@ -260,7 +259,6 @@ export function MainScreen({
             };
 
       dispatch(changeStatusProductCart(data));
-      console.log('DATATTA', getRetailData?.getAllCart);
       //   if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
       //     const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
       //       product_id: obj.product_id,
