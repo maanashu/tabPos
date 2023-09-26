@@ -1277,26 +1277,29 @@ export function MainScreen({
       <ReactNativeModal
         animationType="fade"
         transparent={true}
-        isVisible={cartModal}
+        isVisible={cartModal || numPadModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
       >
-        {/* {cartModal ? ( */}
-        <CartListModal
-          cartQtyUpdate={cartQtyUpdate}
-          clearCart={eraseClearCart}
-          checkOutHandler={checkOutHandler}
-          CloseCartModal={() => setCartModal(false)}
-          // customAddBtn={() => {
-          //   setCartModal(false);
-          //   setNumPadModal(true);
-          // }}
-        />
-        {/* ) : (
+        {cartModal ? (
+          <CartListModal
+            cartQtyUpdate={cartQtyUpdate}
+            clearCart={eraseClearCart}
+            checkOutHandler={checkOutHandler}
+            CloseCartModal={() => setCartModal(false)}
+            customAddBtn={() => {
+              setCartModal(false);
+              setNumPadModal(true);
+            }}
+          />
+        ) : (
           <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-            <CustomProductAdd crossHandler={() => setNumPadModal(false)} />
+            <CustomProductAdd
+              crossHandler={() => setNumPadModal(false)}
+              comeFrom={customProductOpen}
+            />
           </KeyboardAvoidingView>
-        )} */}
+        )}
       </ReactNativeModal>
 
       {/* cart list modal end */}
@@ -1309,13 +1312,26 @@ export function MainScreen({
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
       >
-        <ServiceCartListModal
-          clearCart={() => {
-            dispatch(clearServiceAllCart()), setServiceCartModal(false);
-          }}
-          checkOutHandler={checkOutServiceHandler}
-          CloseCartModal={() => setServiceCartModal(false)}
-        />
+        {serviceCartModal ? (
+          <ServiceCartListModal
+            clearCart={() => {
+              dispatch(clearServiceAllCart()), setServiceCartModal(false);
+            }}
+            checkOutHandler={checkOutServiceHandler}
+            CloseCartModal={() => setServiceCartModal(false)}
+            customAddBtn={() => {
+              setServiceCartModal(false);
+              setNumPadModal(true);
+            }}
+          />
+        ) : (
+          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+            <CustomProductAdd
+              crossHandler={() => setNumPadModal(false)}
+              comeFrom={customProductOpen}
+            />
+          </KeyboardAvoidingView>
+        )}
       </ReactNativeModal>
 
       {/* cart list modal end */}
@@ -1502,14 +1518,14 @@ export function MainScreen({
         </KeyboardAvoidingView>
       </Modal>
 
-      <Modal animationType="fade" transparent={true} isVisible={numPadModal} backdropOpacity={0.6}>
+      {/* <Modal animationType="fade" transparent={true} isVisible={numPadModal} backdropOpacity={0.6}>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
           <CustomProductAdd
             crossHandler={() => setNumPadModal(false)}
             comeFrom={customProductOpen}
           />
         </KeyboardAvoidingView>
-      </Modal>
+      </Modal> */}
     </View>
   );
 }

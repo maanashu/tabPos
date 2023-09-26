@@ -51,3 +51,46 @@ export const months = [
   { label: 'November', value: 'november' },
   { label: 'December', value: 'december' },
 ];
+
+export const weeklyStatus = [
+  {
+    label: 'Review',
+    value: 0,
+  },
+  {
+    label: 'Accepted',
+    value: 1,
+  },
+  {
+    label: 'Prepare',
+    value: 2,
+  },
+  {
+    label: 'Ready Pickup',
+    value: 3,
+  },
+  {
+    label: 'Assign',
+    value: 4,
+  },
+  {
+    label: 'Pickup',
+    value: 5,
+  },
+  {
+    label: 'Delivered',
+    value: 6,
+  },
+  {
+    label: 'Cancelled',
+    value: 7,
+  },
+  {
+    label: 'Rejected',
+    value: 8,
+  },
+  {
+    label: 'Returned',
+    value: 9,
+  },
+];

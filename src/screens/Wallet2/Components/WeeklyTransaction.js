@@ -46,7 +46,7 @@ import { TYPES } from '@/Types/WalletTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
 import { memo } from 'react';
-import { DELIVERY_MODE, PAGINATION_DATA, months } from '@/constants/enums';
+import { DELIVERY_MODE, PAGINATION_DATA, months, weeklyStatus } from '@/constants/enums';
 const windowHeight = Dimensions.get('window').height;
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
@@ -102,21 +102,6 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
     {
       label: 'Service',
       value: 'service',
-    },
-  ];
-
-  const dummyArea = [
-    {
-      label: 'Shimla',
-      value: 'shimla',
-    },
-    {
-      label: 'Haryana',
-      value: 'haryana',
-    },
-    {
-      label: 'Punjab',
-      value: 'punjab',
     },
   ];
 
@@ -179,9 +164,18 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
       sellerId: sellerID,
       calendarDate: formatedDate,
       orderType: orderTypeSelect,
+      status: statusSelect,
     };
     dispatch(getTotakTraDetail(data));
-  }, [selectId, transaction, page, paginationModalValue, formatedDate, orderTypeSelect]);
+  }, [
+    selectId,
+    transaction,
+    page,
+    paginationModalValue,
+    formatedDate,
+    orderTypeSelect,
+    statusSelect,
+  ]);
 
   const onChangeDate = (selectedDate) => {
     setDefaultDate(selectedDate);
@@ -379,7 +373,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
           </View> */}
 
           <View style={{ marginRight: moderateScale(5) }}>
-            <TableDropdown placeholder="Status" selected={statusSelection} data={dummyArea} />
+            <TableDropdown placeholder="Status" selected={statusSelection} data={weeklyStatus} />
           </View>
           <>
             <TableDropdown

@@ -25,32 +25,49 @@ export class WalletController {
   }
 
   static async getTotakTraDetail(data) {
-    // const endpointAccTra = (time, sellerID, transactionType) => {
-    //   if (transactionType === 'all') {
-    //     return (
-    //       ORDER_URL +
-    //       ApiOrderInventory.getTotakTraDetail +
-    //       `?seller_id=${sellerID}&filter_by=${time === undefined ? 'week' : time}`
-    //     );
-    //   } else {
-    //     return (
-    //       ORDER_URL +
-    //       ApiOrderInventory.getTotakTraDetail +
-    //       `?seller_id=${sellerID}&filter_by=${
-    //         time === undefined ? 'week' : time
-    //       }&transaction_type=${transactionType}`
-    //     );
-    //   }
-    // };
     return new Promise((resolve, reject) => {
       const endpoint =
-        data?.calendarDate == undefined || data?.calendarDate == ''
+        data?.status === 'none' && data?.orderType === 'none'
           ? ORDER_URL +
             ApiOrderInventory.getTotakTraDetail +
-            `?seller_id=${data?.sellerId}&filter_by=${data?.dayWiseFilter}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`
+            `?seller_id=${data?.sellerId}&transaction_type=${data?.transactionType}&page=${
+              data?.page
+            }&limit=${data?.limit}&${
+              data?.calendarDate == undefined
+                ? `filter_by=${data?.dayWiseFilter}`
+                : `date=${data?.calendarDate}`
+            }`
+          : data?.status !== 'none' && data?.orderType === 'none'
+          ? ORDER_URL +
+            ApiOrderInventory.getTotakTraDetail +
+            `?seller_id=${data?.sellerId}&transaction_type=${data?.transactionType}&page=${
+              data?.page
+            }&limit=${data?.limit}&${
+              data?.calendarDate == undefined
+                ? `filter_by=${data?.dayWiseFilter}`
+                : `date=${data?.calendarDate}`
+            }&status=${data?.status}`
+          : data?.status === 'none' && data?.orderType !== 'none'
+          ? ORDER_URL +
+            ApiOrderInventory.getTotakTraDetail +
+            `?seller_id=${data?.sellerId}&transaction_type=${data?.transactionType}&page=${
+              data?.page
+            }&limit=${data?.limit}&${
+              data?.calendarDate == undefined
+                ? `filter_by=${data?.dayWiseFilter}`
+                : `date=${data?.calendarDate}`
+            }&order_type=${data?.orderType}`
           : ORDER_URL +
             ApiOrderInventory.getTotakTraDetail +
-            `?seller_id=${data?.sellerId}&date=${data?.calendarDate}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`;
+            `?seller_id=${data?.sellerId}&transaction_type=${data?.transactionType}&page=${
+              data?.page
+            }&limit=${data?.limit}&${
+              data?.calendarDate == undefined
+                ? `filter_by=${data?.dayWiseFilter}`
+                : `date=${data?.calendarDate}`
+            }&order_type=${data?.orderType}&status=${data?.status}`;
+
+      console.log('endpoin2222', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -71,6 +88,8 @@ export class WalletController {
           : ORDER_URL +
             ApiOrderInventory.getTotalTraType +
             `?seller_id=${data?.sellerID}&date=${data?.calendarDate}`;
+
+      console.log('endpoint1111', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

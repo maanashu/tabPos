@@ -36,7 +36,7 @@ import moment from 'moment';
 import { updateServiceCartLength } from '@/actions/CartAction';
 import { useFocusEffect } from '@react-navigation/native';
 
-export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCart }) {
+export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCart, customAddBtn }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getserviceCart;
@@ -302,7 +302,12 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
 
           <View style={styles.cartListIconBody}>
             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <Image source={plus} style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]} />
+              <TouchableOpacity onPress={customAddBtn}>
+                <Image
+                  source={plus}
+                  style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
+                />
+              </TouchableOpacity>
               <Spacer space={SH(20)} />
               <TouchableOpacity
                 onPress={() => {
