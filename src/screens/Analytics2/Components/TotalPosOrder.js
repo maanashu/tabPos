@@ -134,7 +134,7 @@ export function TotalPosOrder({ onPressReview }) {
         />
         <HeaderView
           image={totalSales}
-          text={'Gross Profit'}
+          text={'Total Sales'}
           count={
             posGraph?.ordersOverView?.amount
               ? '$' + posGraph?.ordersOverView?.amount?.toFixed(2)

@@ -50,6 +50,10 @@ import moment from 'moment';
 import { WeeklyTransaction } from './Components/WeeklyTransaction';
 import { useRef } from 'react';
 import { InvoiceDetail } from '@/screens/Analytics2/Components/InvoiceDetail';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 export function Analytics2() {
   const mapRef = useRef(null);
 
@@ -145,21 +149,18 @@ export function Analytics2() {
   const data = channelValue ? getSelectedData() : getSelectedInventoryData();
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAnalyticStatistics(sellerID, data));
-    dispatch(getAnalyticOrderGraphs(sellerID, data));
-    dispatch(getTotalOrder(sellerID, data));
-    dispatch(getTotalInventory(sellerID, data));
-    dispatch(getSoldProduct(sellerID, data));
-    getData();
-  }, [filter, channelValue, selectDate]);
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getAnalyticStatistics(sellerID, data));
+      dispatch(getAnalyticOrderGraphs(sellerID, data));
+      dispatch(getTotalOrder(sellerID, data));
+      dispatch(getTotalInventory(sellerID, data));
+      dispatch(getSoldProduct(sellerID, data));
+      getData();
+    }, [filter, channelValue, selectDate])
+  );
 
   const orderOnPress = (value) => {
-    // dispatch(getAnalyticStatistics(sellerID, value));
-    // dispatch(getAnalyticOrderGraphs(sellerID, value));
-    // dispatch(getTotalOrder(sellerID, value));
-    // dispatch(getTotalInventory(sellerID, value));
-    // dispatch(getSoldProduct(sellerID, value));
     storeData(value);
     setSelectedStartDate('');
     setSelectedEndDate('');
@@ -195,6 +196,7 @@ export function Analytics2() {
     setOrderId(orderId);
     setInvoiceDetail(true);
   };
+
   const renderScreen = {
     ['MainScreen']: (
       <MainScreen
@@ -228,6 +230,7 @@ export function Analytics2() {
     setFromInvoice(true);
     setInvoiceDetail(false);
   };
+
   const transactionList = () => {
     if (invoiceDetail) {
       return (
@@ -249,8 +252,9 @@ export function Analytics2() {
           orderClickHandler={(orderId) => {
             onViewInvoiceDetail(orderId);
           }}
-          selectTime={filter}
+          selectTime={data}
           FromInvoice={fromInVoice}
+          orderType={selectedScreen === 'TotalOrders' ? 'none' : 'product'}
         />
       );
     }
@@ -259,6 +263,7 @@ export function Analytics2() {
   const screenChangeView = () => {
     return renderScreen[selectedScreen];
   };
+
   return (
     <ScreenWrapper>
       {weeklyTransaction ? (

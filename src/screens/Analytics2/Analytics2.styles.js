@@ -422,4 +422,9 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: ms(2),
   },
+  loaderView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: ms(30),
+  },
 });

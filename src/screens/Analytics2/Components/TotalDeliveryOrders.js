@@ -132,7 +132,7 @@ export function TotalDeliveryOrders({ onPressReview }) {
         />
         <HeaderView
           image={totalSales}
-          text={'Gross Profit'}
+          text={'Total Sales'}
           count={
             deliveryGraph?.ordersOverView?.amount
               ? '$' + deliveryGraph?.ordersOverView?.amount?.toFixed(2)

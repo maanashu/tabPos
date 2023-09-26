@@ -2,7 +2,15 @@ import React, { useCallback, useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { Fonts, backArrow2, locationSales, revenueTotal, totalOrders, totalSales } from '@/assets';
+import {
+  Fonts,
+  backArrow2,
+  locationSales,
+  revenueTotal,
+  totalCost,
+  totalOrders,
+  totalSales,
+} from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
@@ -133,11 +141,11 @@ export function TotalCost() {
           }
         />
         <HeaderView
-          image={totalSales}
-          text={'Gross Profit'}
+          image={totalCost}
+          text={'Total Cost'}
           count={
-            analyticStatistics?.overView?.profit_sum
-              ? '$' + analyticStatistics?.overView?.profit_sum?.toFixed(2)
+            analyticStatistics?.overView?.total_cost
+              ? '$' + analyticStatistics?.overView?.total_cost?.toFixed(2)
               : '$0'
           }
         />

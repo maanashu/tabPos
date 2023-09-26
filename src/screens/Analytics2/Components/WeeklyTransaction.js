@@ -41,7 +41,13 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
 const windowHeight = Dimensions.get('window').height;
 
-export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, FromInvoice }) {
+export function WeeklyTransaction({
+  backHandler,
+  orderClickHandler,
+  selectTime,
+  FromInvoice,
+  orderType,
+}) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getWalletData = useSelector(getWallet);
@@ -52,14 +58,14 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, 
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
-
   const [selectId, setSelectId] = useState(2);
-  const time = selectTime?.value;
+  const time = selectTime?.filter;
   const [page, setPage] = useState(1);
   const [fromInVoice, setFromInVoice] = useState(FromInvoice);
   const [transaction, setTransaction] = useState({ modeOfPayment: 'all' });
 
-  const [formatedDate, setFormatedDate] = useState();
+  const selectedDate = selectTime?.start_date;
+  const formatedDate = selectTime?.filter ? undefined : moment(selectedDate).format('YYYY-MM-DD');
 
   const paginationData = {
     total: getWalletData?.getTotakTraDetail?.total ?? '0',
@@ -89,6 +95,8 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, selectTime, 
       limit: paginationModalValue,
       sellerId: sellerID,
       calendarDate: formatedDate,
+      orderType: orderType,
+      status: 'none',
     };
     if (!fromInVoice) {
       dispatch(getTotakTraDetail(data));
