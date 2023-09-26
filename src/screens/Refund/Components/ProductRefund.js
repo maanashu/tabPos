@@ -22,6 +22,7 @@ import {
   sellingArrow,
   blankCheckBox,
   checkedCheckboxSquare,
+  borderCross,
 } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
@@ -163,22 +164,12 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           >
             <Image source={{ uri: item?.product_image }} style={styles.columbiaMen} />
             <View style={{ marginLeft: 10 }}>
-              <Text style={[styles.blueListDataText, { width: SW(74) }]} numberOfLines={1}>
+              <Text style={[styles.blueListDataText, { width: SW(60) }]} numberOfLines={2}>
                 {item?.product_name ?? '-'}
               </Text>
               <Text style={styles.sukNumber}>{item?.product_details?.sku ?? '-'}</Text>
             </View>
           </View>
-
-          {/* <TouchableOpacity
-            onPress={() => {
-              setSelectedItem(item);
-              setInventoryModal(!inventoryModal);
-            }}
-            style={styles.productCartBody}
-          >
-            <Image source={editIcon} style={styles.editIconStyle} />
-          </TouchableOpacity> */}
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
@@ -249,6 +240,19 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
             <Text style={styles.blueListDataText} numberOfLines={1}>
               ${(item?.totalRefundAmount).toFixed(2) ?? 0}
             </Text>
+          </View>
+          <View style={{}}>
+            <TouchableOpacity
+              onPress={() => {
+                setOrders((prevState) => {
+                  const removedArr = prevState.filter((data) => data !== item);
+                  return removedArr;
+                });
+              }}
+              style={styles.removeContainer}
+            >
+              <Image source={borderCross} style={styles.removeIcon} />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -564,6 +568,9 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                     <View style={styles.productCartBody}>
                       <Text style={styles.cashLabelWhite}>Line Total</Text>
                     </View>
+                    <View style={styles.productCartBody}>
+                      <Text style={styles.cashLabelWhite}></Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -632,10 +639,15 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
               <TouchableOpacity
                 onPress={() => setIsCheckConfirmationModalVisible(true)}
-                disabled={buttonText === 'Applied' ? false : true}
+                disabled={buttonText === 'Applied' && orders?.length > 0 ? false : true}
                 style={[
                   styles.nextButtonStyle,
-                  { backgroundColor: buttonText === 'Applied' ? COLORS.primary : COLORS.gerySkies },
+                  {
+                    backgroundColor:
+                      buttonText === 'Applied' && orders?.length > 0
+                        ? COLORS.primary
+                        : COLORS.gerySkies,
+                  },
                 ]}
               >
                 <Text style={styles.nextTextStyle}>{strings.management.next}</Text>
@@ -692,6 +704,13 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 };
 
 const styles = StyleSheet.create({
+  removeIcon: { width: ms(14), height: ms(14), resizeMode: 'contain' },
+  removeContainer: {
+    height: ms(20),
+    width: ms(20),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     paddingHorizontal: moderateScale(12),
@@ -781,7 +800,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   tableListSide: {
-    width: width * 0.15,
+    width: width * 0.24,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
