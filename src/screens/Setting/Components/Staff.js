@@ -495,7 +495,7 @@ export function Staff() {
     } else {
       const data = {
         firstname: name,
-        pos_security_pin: 123,
+        pos_security_pin: posPassword,
         phone_code: countryCode,
         phone_no: phoneNumber,
         email: emailAddress,
