@@ -1,31 +1,45 @@
 import React, { memo } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 
+import { useSelector } from 'react-redux';
 import PieChart from 'react-native-pie-chart';
-import { ms } from 'react-native-size-matters';
+import { ms, scale } from 'react-native-size-matters';
 
-import { COLORS, SF, SH, SW } from '@/theme';
+import { Fonts } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { Fonts } from '@/assets';
+import { COLORS, SF, SH, SW } from '@/theme';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { getDelivery } from '@/selectors/DeliverySelector';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
-const result = Dimensions.get('window').height - 50;
-const equalPartSize = result / 3;
+const OrderConvertion = () => {
+  const getData = useSelector(getDelivery);
+  const pieChartData = getData?.getOrderstatistics?.data;
 
-const OrderConvertion = ({
-  series,
-  sliceColor,
-  widthAndHeight,
-  pieChartData,
-  sum,
-  orderConversionLoading,
-}) => {
+  const series = [
+    pieChartData?.[0]?.count ?? 0,
+    pieChartData?.[1]?.count ?? 0,
+    pieChartData?.[2]?.count ?? 0,
+    pieChartData?.[3]?.count ?? 0,
+  ];
+
+  let sum = 0;
+  series.forEach((num) => {
+    sum += num;
+  });
+
+  const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellowTweet, COLORS.primary];
+
+  const orderConversionLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
+  );
+
   return (
     <View style={styles.orderConvertionView}>
       <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
 
       <Spacer space={ms(10)} />
-
       <View style={styles.piechartViewStyle}>
         <View>
           <PieChart
@@ -33,7 +47,7 @@ const OrderConvertion = ({
             coverRadius={0.7}
             sliceColor={sum > 0 ? sliceColor : [COLORS.light_sky]}
             coverFill={COLORS.white}
-            widthAndHeight={sum > 0 ? widthAndHeight : 140}
+            widthAndHeight={140}
           />
           <View style={styles.percentageView}>
             <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text>
@@ -43,7 +57,7 @@ const OrderConvertion = ({
         <Spacer space={SH(10)} />
 
         {orderConversionLoading ? (
-          <View style={styles.loaderView}>
+          <View style={styles.loaderViewStyle}>
             <ActivityIndicator color={COLORS.primary} size={'small'} />
           </View>
         ) : (
@@ -91,16 +105,15 @@ export default memo(OrderConvertion);
 const styles = StyleSheet.create({
   orderConvertionView: {
     borderRadius: 10,
-    paddingBottom: ms(10),
-    height: equalPartSize + 120,
     backgroundColor: COLORS.white,
+    paddingBottom: ms(10),
   },
   orderTextStyle: {
-    fontSize: SF(18),
-    paddingLeft: ms(6),
-    paddingTop: ms(10),
-    color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonBold,
+    fontSize: scale(7),
+    color: COLORS.solid_grey,
+    paddingLeft: ms(12),
+    paddingTop: ms(9),
   },
   piechartViewStyle: {
     alignSelf: 'center',
@@ -122,12 +135,18 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     textAlign: 'center',
   },
+  loaderViewStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: ms(35),
+  },
   ordersRowView: {
-    width: SW(80),
-    paddingVertical: 5,
     flexDirection: 'row',
     alignItems: 'center',
+    width: SW(80),
     justifyContent: 'space-between',
+    paddingVertical: ms(4),
+    paddingHorizontal: ms(12),
   },
   orderTypeTextStyle: {
     fontFamily: Fonts.Medium,
@@ -138,10 +157,5 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.dark_grey,
-  },
-  loaderView: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: ms(30),
   },
 });

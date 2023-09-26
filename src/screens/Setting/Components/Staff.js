@@ -65,6 +65,7 @@ export function Staff() {
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
   const posUserArray = getAuth?.getAllPosUsers;
+  console.log('posUserArray', JSON.stringify(posUserArray));
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [staffModal, setStaffModal] = useState(false);
@@ -640,7 +641,7 @@ export function Staff() {
 
                 <View style={styles.textInputView}>
                   <TextInput
-                    // maxLength={15}
+                    maxLength={15}
                     returnKeyType={'done'}
                     keyboardType={'default'}
                     value={name.trim()}
@@ -650,7 +651,7 @@ export function Staff() {
                     style={styles.textInputContainer}
                     placeholder={'Name'}
                     placeholderTextColor={COLORS.darkGray}
-                    showSoftInputOnFocus={false}
+                    // showSoftInputOnFocus={false}
                   />
                 </View>
                 <Spacer space={SW(10)} />
@@ -685,7 +686,7 @@ export function Staff() {
                     style={styles.textInputContainer}
                     placeholder={strings.verifyPhone.placeHolderText}
                     placeholderTextColor={COLORS.darkGray}
-                    showSoftInputOnFocus={false}
+                    // showSoftInputOnFocus={false}
                   />
                 </View>
                 <Spacer space={SW(10)} />
@@ -702,14 +703,14 @@ export function Staff() {
                     style={styles.textInputContainer}
                     placeholder={'Password'}
                     placeholderTextColor={COLORS.darkGray}
-                    showSoftInputOnFocus={false}
+                    // showSoftInputOnFocus={false}
                   />
                 </View>
                 <Spacer space={SW(10)} />
                 <Text style={styles.phoneText}>{'Email Address'}</Text>
                 <View style={styles.textInputView}>
                   <TextInput
-                    returnKeyType={'done'}
+                    // returnKeyType={'done'}
                     keyboardType={'email-address'}
                     value={emailAddress.trim()}
                     onChangeText={(text) => {
@@ -718,7 +719,7 @@ export function Staff() {
                     style={styles.textInputContainer}
                     placeholder={'Email Address'}
                     placeholderTextColor={COLORS.darkGray}
-                    showSoftInputOnFocus={false}
+                    // showSoftInputOnFocus={false}
                   />
                 </View>
 

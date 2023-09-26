@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   getGraphOrders,
+  getShippingOrderstatistics,
   orderStatusCount,
   todayCurrentStatus,
   todayShippingStatus,
@@ -30,7 +31,7 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import TodayShippingStatus from './Components/TodayShippingStatus';
 import CurrentShippingStatus from './Components/CurrentShippingStatus';
-import { getReviewDefault, getOrderstatistics, acceptOrder } from '@/actions/DeliveryAction';
+import { getReviewDefault, acceptOrder } from '@/actions/DeliveryAction';
 
 import styles from './ShippingOrder2.styles';
 
@@ -55,7 +56,7 @@ export function ShippingOrder2() {
     dispatch(todayCurrentStatus(sellerID));
     dispatch(getReviewDefault(0, 4));
     dispatch(getGraphOrders());
-    dispatch(getOrderstatistics(4));
+    dispatch(getShippingOrderstatistics());
     dispatch(orderStatusCount(sellerID));
   }, []);
 

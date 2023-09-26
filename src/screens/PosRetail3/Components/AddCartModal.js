@@ -35,7 +35,6 @@ export function AddCartModal({
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   const productDetail = getRetailData?.getOneProduct;
-  // console.log('productDetail', JSON.stringify(productDetail));
 
   const sizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const colorSizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;

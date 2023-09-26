@@ -366,10 +366,10 @@ export const getProductsBySku = (sku) => async (dispatch) => {
   }
 };
 
-export const returnProduct = (data, callback) => async (dispatch) => {
+export const returnProduct = (data, screen, callback) => async (dispatch) => {
   dispatch(returnProductRequest());
   try {
-    const res = await DashboardController.returnProduct(data);
+    const res = await DashboardController.returnProduct(data, screen);
     callback && callback(res);
     dispatch(returnProductSuccess(res?.payload));
   } catch (error) {

@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   crossIconStyle: {
-    width: SH(14),
-    height: SH(14),
+    width: SH(24),
+    height: SH(24),
     resizeMode: 'contain',
     tintColor: COLORS.dark_grey,
   },

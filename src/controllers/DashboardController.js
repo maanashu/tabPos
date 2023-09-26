@@ -1,3 +1,4 @@
+import { NAVIGATION } from '@/constants';
 import { navigate } from '@/navigation/NavigationRef';
 import { store } from '@/store';
 import {
@@ -248,7 +249,7 @@ export class DashboardController {
     });
   }
 
-  static async returnProduct(data) {
+  static async returnProduct(data, screen) {
     const drawerId = store.getState()?.cashTracking?.getDrawerSession?.id;
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.return;
@@ -269,7 +270,11 @@ export class DashboardController {
             error?.msg === 'Order already returned!'
           ) {
             alert('Product already returned!');
-            navigate('SearchScreen', { screen: 'return' });
+            if (screen === 'delivery') {
+              navigate(NAVIGATION.deliveryOrders2, { data: 'return' });
+            } else {
+              navigate('SearchScreen', { screen: 'return' });
+            }
           } else {
             alert(error?.msg);
           }

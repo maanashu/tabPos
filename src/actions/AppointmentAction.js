@@ -226,7 +226,6 @@ export const getPosUserRole = (data) => async (dispatch) => {
   dispatch(getPosUserRoleRequest());
   try {
     const res = await AppointmentController.getPosUserRoles(data);
-    console.log('DSFsfdf', JSON.stringify(res));
     dispatch(getPosUserRoleSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
