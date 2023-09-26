@@ -1,6 +1,6 @@
 import { COLORS, SW } from '@/theme';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
 import { ms } from 'react-native-size-matters';
 
@@ -147,6 +147,7 @@ export function BarChartCom({
   interval,
   dateInterval,
   dateTodayInterval,
+  isLoading,
 }) {
   const formattedData = transformData(data, spacing, interval, dateInterval, dateTodayInterval);
   const barData =
@@ -375,27 +376,39 @@ export function BarChartCom({
         ];
   return (
     <View>
-      <BarChart
-        data={formattedData}
-        barWidth={barW}
-        spacing={barSpacing}
-        roundedTop
-        // hideRules
-        xAxisThickness={1}
-        yAxisThickness={0}
-        xAxisType={'dashed'}
-        yAxisType={'dashed'}
-        xAxisColor={`rgba(39, 90, 255, 1)`}
-        yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
-        noOfSections={4}
-        // maxValue={100}
-        yAxisLength={350}
-        height={barHei}
-        width={barWid}
-        initialSpacing={initialSpacing}
-      />
+      {isLoading ? (
+        <View style={styles.loaderView}>
+          <ActivityIndicator color={COLORS.primary} size={'small'} />
+        </View>
+      ) : (
+        <BarChart
+          data={formattedData}
+          barWidth={barW}
+          spacing={barSpacing}
+          roundedTop
+          // hideRules
+          xAxisThickness={1}
+          yAxisThickness={0}
+          xAxisType={'dashed'}
+          yAxisType={'dashed'}
+          xAxisColor={`rgba(39, 90, 255, 1)`}
+          yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
+          noOfSections={4}
+          // maxValue={100}
+          yAxisLength={350}
+          height={barHei}
+          width={barWid}
+          initialSpacing={initialSpacing}
+        />
+      )}
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  loaderView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: ms(30),
+  },
+});

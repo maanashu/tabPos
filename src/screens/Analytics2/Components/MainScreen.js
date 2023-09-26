@@ -1,5 +1,12 @@
 import React from 'react';
-import { Platform, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import {
+  Platform,
+  View,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import { BarChartCom, Spacer } from '@/components';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
@@ -9,6 +16,8 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import { getUser } from '@/selectors/UserSelectors';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { ms } from 'react-native-size-matters';
+import { useEffect } from 'react';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -92,6 +101,22 @@ export function MainScreen({
     isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
   );
 
+  const isAnalyticStatisticLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
+  );
+  const isAnalyticOrderGraphLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ANALYTIC_ORDER_GRAPHS], state)
+  );
+  const isTotalOrderLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_TOTAL_ORDER], state)
+  );
+  const isInventoryLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_TOTAL_INVENTORY], state)
+  );
+  const isSoldProductLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_SOLD_PRODUCT], state)
+  );
+
   return (
     <View>
       <View style={styles.flexDirectionRow}>
@@ -117,6 +142,7 @@ export function MainScreen({
             onPress={onPressProfit}
             labels={labelsProfit}
             data={analyticStatistics?.profit?.graph_data?.datasets?.[0]?.data}
+            isLoading={isAnalyticStatisticLoading}
           />
         )}
 
@@ -142,6 +168,7 @@ export function MainScreen({
             onPress={onPressRevenue}
             labels={labelsRevenue}
             data={analyticStatistics?.revenue?.graph_data?.datasets?.[0]?.data}
+            isLoading={isAnalyticStatisticLoading}
           />
         )}
         {getPosUser?.user_roles?.length > 0 ? (
@@ -166,6 +193,7 @@ export function MainScreen({
             onPress={onPressCost}
             labels={labelsCost}
             data={analyticStatistics?.cost?.graph_data?.datasets?.[0]?.data}
+            isLoading={isAnalyticStatisticLoading}
           />
         )}
       </View>
@@ -185,6 +213,7 @@ export function MainScreen({
           data={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[0]?.data}
           data1={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[1]?.data}
           data2={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[2]?.data}
+          isLoading={isAnalyticOrderGraphLoading}
         />
         <HomeGraph
           header="Total Delivery Orders"
@@ -200,6 +229,7 @@ export function MainScreen({
           data={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[0]?.data}
           data1={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[1]?.data}
           data2={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[2]?.data}
+          isLoading={isAnalyticOrderGraphLoading}
         />
 
         <HomeGraph
@@ -217,6 +247,7 @@ export function MainScreen({
           data1={analyticOrderGraphs?.shipping_graph?.graph_data?.datasets?.[1]?.data}
           data2={analyticOrderGraphs?.shipping_graph?.graph_data?.datasets?.[2]?.data}
           bulletText="Shipped"
+          isLoading={isAnalyticOrderGraphLoading}
         />
       </View>
       <View style={styles.flexDirectionRow}>
@@ -226,7 +257,13 @@ export function MainScreen({
             <View>
               <Text style={styles.darkBlackText}>Total Orders</Text>
               <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
-                {totalOrder?.totalAmount ? totalOrder?.totalAmount : '0'}
+                {isTotalOrderLoading ? (
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                ) : totalOrder?.totalAmount ? (
+                  totalOrder?.totalAmount
+                ) : (
+                  '0'
+                )}
               </Text>
             </View>
             <View>
@@ -259,6 +296,7 @@ export function MainScreen({
               interval={2}
               dateInterval={5}
               dateTodayInterval={4}
+              isLoading={isTotalOrderLoading}
             />
           </TouchableOpacity>
         </View>
@@ -271,6 +309,7 @@ export function MainScreen({
           arrayLength={totalInventory?.graph_data?.datasets?.length}
           labels={labelsInvetory}
           data={totalInventory?.graph_data?.datasets?.[0]?.data}
+          isLoading={isInventoryLoading}
         />
 
         <HomeGraph
@@ -281,6 +320,7 @@ export function MainScreen({
           arrayLength={soldProduct?.graph_data?.datasets?.length}
           labels={labelsProductSold}
           data={soldProduct?.graph_data?.datasets?.[0]?.data}
+          isLoading={isSoldProductLoading}
         />
       </View>
     </View>

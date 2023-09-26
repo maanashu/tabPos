@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
 import { NewChartKit, Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
@@ -17,6 +17,7 @@ export function HomeGraph({
   bulletText,
   disabled,
   style,
+  isLoading,
 }) {
   return (
     <View style={[styles.totalProductCon, style]}>
@@ -24,7 +25,9 @@ export function HomeGraph({
       <View style={styles.displayFlex}>
         <View>
           <Text style={styles.darkBlackText}>{header}</Text>
-          <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>{subHeader}</Text>
+          <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
+            {isLoading ? <ActivityIndicator color={COLORS.primary} size={'small'} /> : subHeader}
+          </Text>
         </View>
         {rightHeader && (
           <View>
@@ -43,15 +46,21 @@ export function HomeGraph({
           </View>
         )}
       </View>
-      <TouchableOpacity onPress={onPress} disabled={disabled}>
-        <NewChartKit
-          data={data}
-          arrayLength={arrayLength}
-          labels={labels}
-          data1={data1}
-          data2={data2}
-        />
-      </TouchableOpacity>
+      {isLoading ? (
+        <View style={styles.loaderView}>
+          <ActivityIndicator color={COLORS.primary} size={'small'} />
+        </View>
+      ) : (
+        <TouchableOpacity onPress={onPress} disabled={disabled}>
+          <NewChartKit
+            data={data}
+            arrayLength={arrayLength}
+            labels={labels}
+            data1={data1}
+            data2={data2}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
