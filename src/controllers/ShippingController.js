@@ -245,4 +245,26 @@ export class ShippingController {
         });
     });
   }
+
+  static async getShippingOrderstatistics() {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        ORDER_URL +
+        ApiOrderInventory.getOrderstatistics +
+        `?seller_id=${sellerId}&filter=week&delivery_option=4`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
 }

@@ -1,44 +1,57 @@
-import React, { memo } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  StyleSheet,
-  Dimensions,
-  ActivityIndicator,
-} from 'react-native';
+import React, { useEffect, useState, memo } from 'react';
+import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
 
-import { useSelector } from 'react-redux';
-import { ms } from 'react-native-size-matters';
+import { useDispatch, useSelector } from 'react-redux';
+import { ms, scale } from 'react-native-size-matters';
 
-import { Fonts } from '@/assets';
+import { COLORS } from '@/theme';
 import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
-import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { todayOrders } from '@/actions/DeliveryAction';
+import { getDelivery } from '@/selectors/DeliverySelector';
+import { expressType, Fonts, oneHourType, twoHourType } from '@/assets';
 
-const result = Dimensions.get('window').height - 80;
-const equalPartSize = result / 3;
+const CurrentStatus = () => {
+  const dispatch = useDispatch();
+  const getDeliveryData = useSelector(getDelivery);
+  const [deliverytypes, setDeliveryTypes] = useState();
 
-const CurrentStatus = ({ deliverytypes }) => {
-  const isDeliveryOrder = useSelector((state) =>
-    isLoadingSelector([TYPES.DELIVERING_ORDER], state)
-  );
+  useEffect(() => {
+    dispatch(todayOrders());
+
+    const deliveryTypes = [
+      {
+        key: '1',
+        delivery_type_title:
+          getDeliveryData?.deliveringOrder?.[0]?.delivery_type_title ?? 'Express Delivery',
+        count: getDeliveryData?.deliveringOrder?.[0]?.count ?? 0,
+        image: expressType,
+      },
+      {
+        key: '2',
+        delivery_type_title:
+          getDeliveryData?.deliveringOrder?.[1]?.delivery_type_title ?? '1 hour delivery window',
+        count: getDeliveryData?.deliveringOrder?.[1]?.count ?? 0,
+        image: oneHourType,
+      },
+      {
+        key: '3',
+        delivery_type_title:
+          getDeliveryData?.deliveringOrder?.[2]?.delivery_type_title ?? '2 hour delivery window',
+        count: getDeliveryData?.deliveringOrder?.[2]?.count ?? 0,
+        image: twoHourType,
+      },
+    ];
+    setDeliveryTypes(deliveryTypes);
+  }, []);
 
   const renderItem = ({ item }) => (
     <View style={styles.itemMainViewStyle}>
-      <Image source={item?.image} style={styles.itemImageStyle} />
-      {isDeliveryOrder ? (
-        <View style={styles.activityIndicatorStyle}>
-          <ActivityIndicator color={COLORS.primary} size={'small'} />
-        </View>
-      ) : (
-        <View style={styles.deliveryViewStyle}>
-          <Text style={styles.deliveryTypeText}>{item?.delivery_type_title}</Text>
-          <Text style={styles.totalTextStyle}>{item?.count}</Text>
-        </View>
-      )}
+      <Image source={item?.image} style={styles.deliveryTypeImage} />
+
+      <View style={styles.deliveryTypeDetails}>
+        <Text style={styles.deliveryTypeText}>{item?.delivery_type_title}</Text>
+        <Text style={styles.totalTextStyle}>{item?.count}</Text>
+      </View>
     </View>
   );
 
@@ -51,6 +64,7 @@ const CurrentStatus = ({ deliverytypes }) => {
         renderItem={renderItem}
         extraData={deliverytypes}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: 10 }}
         keyExtractor={(item, index) => index.toString()}
       />
     </View>
@@ -61,56 +75,49 @@ export default memo(CurrentStatus);
 
 const styles = StyleSheet.create({
   currentStatusView: {
-    width: SW(100),
+    flex: 0.8,
     borderRadius: 10,
-    height: equalPartSize,
-    paddingVertical: SH(10),
     backgroundColor: COLORS.white,
+    paddingBottom: ms(10),
+    paddingTop: 15,
   },
   currentStatusText: {
-    fontSize: SF(16),
-    color: COLORS.text,
-    paddingLeft: SW(6),
     fontFamily: Fonts.SemiBold,
+    fontSize: scale(6),
+    color: COLORS.text,
+    paddingLeft: ms(12),
   },
   itemMainViewStyle: {
     borderWidth: 1,
-    marginHorizontal: SW(6),
-    marginVertical: SH(8),
+    marginHorizontal: ms(12),
+    marginVertical: ms(3),
     borderRadius: 5,
-    height: SH(50),
-    alignItems: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 12,
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.white,
+    paddingHorizontal: ms(8),
+    alignItems: 'center',
+    flexDirection: 'row',
+    paddingVertical: ms(2),
   },
-  itemImageStyle: {
-    width: ms(15),
-    height: ms(15),
-    alignSelf: 'center',
+  deliveryTypeImage: {
+    width: ms(16),
+    height: ms(16),
     resizeMode: 'contain',
   },
-  activityIndicatorStyle: {
-    alignSelf: 'center',
-    alignItems: 'center',
-    paddingVertical: ms(6),
+  deliveryTypeDetails: {
     justifyContent: 'center',
-    paddingHorizontal: ms(30),
-  },
-  deliveryViewStyle: {
-    marginHorizontal: 15,
-    justifyContent: 'center',
+    marginHorizontal: ms(10),
+    paddingVertical: ms(1),
   },
   deliveryTypeText: {
-    fontSize: SF(11),
-    color: COLORS.darkGray,
     fontFamily: Fonts.SemiBold,
+    fontSize: scale(4),
+    color: COLORS.darkGray,
   },
   totalTextStyle: {
-    fontSize: ms(7.2),
-    paddingTop: ms(2),
-    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
+    fontSize: scale(4),
+    color: COLORS.solid_grey,
+    paddingTop: ms(3),
   },
 });

@@ -6,15 +6,15 @@ import PieChart from 'react-native-pie-chart';
 import { ms, scale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF, SW } from '@/theme';
 import { Spacer } from '@/components';
+import { COLORS, SF, SW } from '@/theme';
 import { strings } from '@/localization';
-import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { getDelivery } from '@/selectors/DeliverySelector';
+import { TYPES } from '@/Types/ShippingOrderTypes';
+import { getShipping } from '@/selectors/ShippingSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const OrderConversion = () => {
-  const getOrdersData = useSelector(getDelivery);
+  const getOrdersData = useSelector(getShipping);
   const pieChartData = getOrdersData?.getOrderstatistics?.data;
 
   const series = [
@@ -29,10 +29,10 @@ const OrderConversion = () => {
     sum += num;
   });
 
-  const sliceColor = [COLORS.primary, COLORS.pink, COLORS.yellowTweet, COLORS.lightGreen];
+  const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellowTweet, COLORS.primary];
 
   const orderConversionLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
+    isLoadingSelector([TYPES.GET_SHIPPING_ORDERS], state)
   );
 
   return (

@@ -10,6 +10,7 @@ const INITIALSTATE = {
   shippingGraph: {},
   orderStatus: [],
   graphOrders: {},
+  getOrderstatistics: [],
 };
 
 export const shippingReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -50,7 +51,11 @@ export const shippingReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         deliveryOrd: [],
       };
-
+    case TYPES.GET_SHIPPING_ORDERS_SUCCESS:
+      return {
+        ...state,
+        getOrderstatistics: payload.getShippingOrderstatistics,
+      };
     case TYPES.GET_SHIPSERVICE_SUCCESS:
       return {
         ...state,

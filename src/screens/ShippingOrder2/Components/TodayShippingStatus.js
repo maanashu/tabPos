@@ -47,17 +47,17 @@ export default memo(TodayShippingStatus);
 
 const styles = StyleSheet.create({
   shippingStatusViewStyle: {
-    alignItems: 'flex-start',
     borderRadius: 10,
-    paddingVertical: ms(12),
-    backgroundColor: COLORS.white,
     marginTop: SH(15),
+    paddingVertical: ms(12),
+    alignItems: 'flex-start',
+    backgroundColor: COLORS.white,
   },
   shippingStatusText: {
-    fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
     paddingLeft: ms(15),
     color: COLORS.primary,
+    fontFamily: Fonts.SemiBold,
   },
   loaderViewStyle: {
     alignSelf: 'center',
@@ -71,10 +71,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   shippedOrderText: {
-    fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    color: COLORS.solid_grey,
-    paddingLeft: ms(15),
     paddingTop: ms(10),
+    paddingLeft: ms(15),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
   },
 });

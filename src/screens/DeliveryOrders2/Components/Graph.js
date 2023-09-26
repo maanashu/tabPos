@@ -28,11 +28,16 @@ const twoEqualView = result / 2;
 
 const Graph = () => {
   const getDeliveryData = useSelector(getDelivery);
+
   const [modifyData, setModifyData] = useState([]);
   const [showIncoming, setShowIncoming] = useState(true);
   const [showProcessing, setShowProcessing] = useState(true);
   const [showReadyToPickup, setShowReadyToPickup] = useState(true);
   const [showCompleted, setShowCompleted] = useState(true);
+
+  useEffect(() => {
+    convertData();
+  }, [getDeliveryData?.graphOrders]);
 
   const isGraphOrder = useSelector((state) => isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state));
 
@@ -95,7 +100,6 @@ const Graph = () => {
 
       return setOfThree;
     });
-
     setModifyData(barData);
   };
 
@@ -223,10 +227,6 @@ const Graph = () => {
     setModifyData(barData);
   };
 
-  useEffect(() => {
-    convertData();
-  }, [getDeliveryData?.graphOrders]);
-
   return (
     <View style={styles.graphViewStyle}>
       <View>
@@ -306,7 +306,7 @@ const Graph = () => {
         </View>
       </View>
 
-      <Spacer space={Platform.OS === 'android' ? SH(25) : SH(20)} />
+      <Spacer space={SH(30)} />
 
       {isGraphOrder ? (
         <View style={styles.loaderView}>

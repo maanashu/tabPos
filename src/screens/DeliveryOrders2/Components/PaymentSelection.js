@@ -89,11 +89,7 @@ export function PaymentSelection(props) {
   console.log(orderFinalData);
 
   const onReturnHandler = () => {
-    if (
-      !orderFinalData?.orderData ||
-      !orderFinalData?.order ||
-      (!orderFinalData?.orderData?.mode_of_payment && selectedRecipeIndex === null)
-    ) {
+    if (selectedRecipeIndex === null) {
       alert('Please select e-recipe method');
       return;
     }
@@ -121,6 +117,7 @@ export function PaymentSelection(props) {
       returnProduct(data, 'delivery', (res) => {
         if (res) {
           alert('Product returned successfully');
+          navigate(NAVIGATION.deliveryOrders2, { screen: 'delivery' });
         }
       })
     );
@@ -323,7 +320,7 @@ export function PaymentSelection(props) {
       </ReactNativeModal>
 
       {isLoading ? (
-        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.3)' }]}>
+        <View style={[styles.loader, { flex: 1, backgroundColor: 'rgba(0,0,0,0.3)' }]}>
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
