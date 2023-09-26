@@ -631,7 +631,10 @@ export function Staff() {
               </View>
             </View>
 
-            <KeyboardAwareScrollView contentContainerStyle={{ padding: SW(10) }}>
+            <KeyboardAwareScrollView
+              keyboardShouldPersistTaps={'always'}
+              contentContainerStyle={{ padding: SW(10) }}
+            >
               <View style={{ justifyContent: 'space-between' }}>
                 <Text style={styles.phoneText}>{'Name'}</Text>
 
