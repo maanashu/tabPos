@@ -495,7 +495,7 @@ export function Staff() {
     } else {
       const data = {
         firstname: name,
-        pos_security_pin: 123,
+        pos_security_pin: posPassword,
         phone_code: countryCode,
         phone_no: phoneNumber,
         email: emailAddress,
@@ -631,7 +631,10 @@ export function Staff() {
               </View>
             </View>
 
-            <KeyboardAwareScrollView contentContainerStyle={{ padding: SW(10) }}>
+            <KeyboardAwareScrollView
+              keyboardShouldPersistTaps={'always'}
+              contentContainerStyle={{ padding: SW(10) }}
+            >
               <View style={{ justifyContent: 'space-between' }}>
                 <Text style={styles.phoneText}>{'Name'}</Text>
 
