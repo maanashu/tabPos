@@ -74,6 +74,7 @@ export function Analytics2() {
   ]);
   const [orderSelectId, setOrderSelectId] = useState(2);
   const [backTime, setBackTime] = useState();
+  const [date, setDate] = useState('');
 
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -215,17 +216,40 @@ export function Analytics2() {
     ['Revenue']: <Revenue />,
     ['TotalCost']: <TotalCost />,
     ['TotalDeliveryOrders']: (
-      <TotalDeliveryOrders onPressReview={() => setWeeklyTrasaction(true)} />
+      <TotalDeliveryOrders
+        onPressReview={(item) => {
+          setWeeklyTrasaction(true);
+          setDate(item);
+        }}
+      />
     ),
     ['TotalShippingOrders']: (
-      <TotalShippingOrders onPressReview={() => setWeeklyTrasaction(true)} />
+      <TotalShippingOrders
+        onPressReview={(item) => {
+          setWeeklyTrasaction(true);
+          setDate(item);
+        }}
+      />
     ),
     ['TotalProductSold']: <TotalProductSold />,
-    ['TotalOrders']: <TotalOrders onPressReview={() => setWeeklyTrasaction(true)} />,
-    ['TotalPosOrder']: <TotalPosOrder onPressReview={() => setWeeklyTrasaction(true)} />,
+    ['TotalOrders']: (
+      <TotalOrders
+        onPressReview={(item) => {
+          setWeeklyTrasaction(true);
+          setDate(item);
+        }}
+      />
+    ),
+    ['TotalPosOrder']: (
+      <TotalPosOrder
+        onPressReview={(item) => {
+          setWeeklyTrasaction(true);
+          setDate(item);
+        }}
+      />
+    ),
     ['TotalInventory']: <TotalInventory />,
   };
-
   const closeHandler = () => {
     setFromInvoice(true);
     setInvoiceDetail(false);
@@ -252,7 +276,7 @@ export function Analytics2() {
           orderClickHandler={(orderId) => {
             onViewInvoiceDetail(orderId);
           }}
-          selectTime={data}
+          selectTime={date}
           FromInvoice={fromInVoice}
           orderType={selectedScreen === 'TotalOrders' ? 'none' : 'product'}
         />
