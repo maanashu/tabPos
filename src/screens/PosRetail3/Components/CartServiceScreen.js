@@ -75,6 +75,8 @@ export function CartServiceScreen({
   const [cartProductId, setCartProductId] = useState();
   const [numPadModal, setNumPadModal] = useState(false);
 
+  console.log(getRetailData?.getserviceCart?.id);
+
   useEffect(() => {
     const data = {
       seller_id: sellerID,

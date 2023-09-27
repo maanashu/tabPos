@@ -46,6 +46,7 @@ export function AddCartModal({
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
   const [count, setCount] = useState(cartQty == 0 ? 1 : cartQty);
+  // const [count, setCount] = useState('1');
   const [colors, setColors] = useState();
   const [colorName, setColorName] = useState();
   const [sizeName, setSizeName] = useState();
@@ -61,7 +62,7 @@ export function AddCartModal({
         alert('Please add quantity to cart');
         return;
       } else {
-        onClickAddCartModal(selectedItem, productIndex, count);
+        openFrom === 'main' && onClickAddCartModal(selectedItem, productIndex, count);
 
         const data = {
           seller_id: sellerID,

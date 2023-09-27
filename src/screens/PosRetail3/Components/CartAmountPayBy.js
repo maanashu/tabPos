@@ -53,6 +53,7 @@ import {
   qrcodestatus,
   qrCodeStatusSuccess,
   Servicesqrcodestatus,
+  getAllCart,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -109,6 +110,7 @@ export const CartAmountPayBy = ({
   const qrcodeData = useSelector(getRetail).qrKey;
 
   const cartProducts = cartData?.poscart_products;
+  console.log('cartProducts', cartProducts?.length);
   const saveCartData = { ...getRetailData };
   const serviceCartId = getRetailData?.getserviceCart?.id;
   const servicCartId = getRetailData?.getserviceCart?.id;
@@ -187,6 +189,7 @@ export const CartAmountPayBy = ({
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
         dispatch(getQrCodee(cartData?.id));
         setQrPopUp(true);
+        // dispatch(getAllCart());
       }
     } else {
       const data = {
@@ -878,7 +881,7 @@ export const CartAmountPayBy = ({
                 <TouchableOpacity
                   style={styles.payNowButton}
                   onPress={() => {
-                    // getTipPress()
+                    getTipPress();
                     // payNowHandler(),
                     payNowByphone(selectedTipAmount);
                     attachUserByEmail(email);

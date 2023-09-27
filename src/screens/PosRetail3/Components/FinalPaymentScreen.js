@@ -120,7 +120,9 @@ export const FinalPaymentScreen = ({
               style={styles._kAddress}
             >{`${merchantDetails?.user_profiles?.current_address?.street_address}, ${merchantDetails?.user_profiles?.current_address?.city}, ${merchantDetails?.user_profiles?.current_address?.state}, ${merchantDetails?.user_profiles?.current_address?.country}, ${merchantDetails?.user_profiles?.current_address?.zipcode}`}</Text>
             <Text style={styles._kNumber}>{merchantDetails?.user_profiles?.full_phone_number}</Text>
-
+            <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
+              Invoice No. #{orderInvoice?.invoices?.invoice_number}
+            </Text>
             <View style={styles._flatListContainer}>
               <FlatList
                 data={cartProducts}
@@ -150,7 +152,7 @@ export const FinalPaymentScreen = ({
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Tips</Text>
-              <Text style={styles._subTotalPrice}>${tipamount}</Text>
+              <Text style={styles._subTotalPrice}>${tipamount.toFixed(2)}</Text>
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
@@ -183,9 +185,7 @@ export const FinalPaymentScreen = ({
               {moment(cartData?.created_at).format('llll')}
             </Text>
             <Text style={styles._commonPayTitle}>Walk-In</Text>
-            <Text style={styles._commonPayTitle}>
-              Invoice No. #{orderInvoice?.invoices?.invoice_number}
-            </Text>
+
             <Text style={styles._commonPayTitle}>
               POS No. {getUserData?.posLoginData?.pos_number}
             </Text>

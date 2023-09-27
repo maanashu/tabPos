@@ -1569,7 +1569,6 @@ export const updateCartByTip = (data) => async (dispatch) => {
   dispatch(updateCartByTipRequest());
   try {
     const res = await RetailController.getTip(data);
-    // dispatch(getAllCart());
     return dispatch(updateCartByTipSuccess(res));
   } catch (error) {
     dispatch(updateCartByTipError(error.message));

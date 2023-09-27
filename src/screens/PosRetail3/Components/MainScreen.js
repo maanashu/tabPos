@@ -105,7 +105,6 @@ export function MainScreen({
   const [productIndex, setProductIndex] = useState(0);
   const [productItem, setProductItem] = useState(null);
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
-
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const getAuthdata = useSelector(getAuthData);
   const [numPadModal, setNumPadModal] = useState(false);
@@ -458,6 +457,7 @@ export function MainScreen({
     mainProductArray.data[index].cart_qty = cartQty;
     dispatch(getMainProductSuccess(mainProductArray));
   };
+
   const originalFilterData = [
     {
       id: 1,
@@ -724,7 +724,6 @@ export function MainScreen({
                   <View style={styles.allProductSection}>
                     <Text style={styles.allProduct}>{'All Services'}</Text>
                     <Text style={styles.productCount}>
-                      {' '}
                       ({getRetailData?.getMainServices?.total ?? '0'})
                     </Text>
                   </View>

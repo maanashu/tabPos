@@ -66,6 +66,9 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                 {`${sellerDetailData?.current_address?.city} ${sellerDetailData?.current_address?.country} ${sellerDetailData?.current_address?.zipcode}`}
               </Text>
               <Text style={styles._kAddress}>{sellerDetailData?.phone_number ?? '-'}</Text>
+              <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
+                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
+              </Text>
               <View style={styles._flatListContainer}>
                 <FlatList
                   data={singleOrderDetail?.order_details}
@@ -154,9 +157,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                 {moment(singleOrderDetail?.created_at).format('llll')}
               </Text>
               <Text style={styles._commonPayTitle}>Walk-In</Text>
-              <Text style={styles._commonPayTitle}>
-                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
-              </Text>
+
               <Text style={styles._commonPayTitle}>
                 POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
               </Text>
@@ -258,6 +259,9 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                 {`${sellerDetailData?.current_address?.city} ${sellerDetailData?.current_address?.country} ${sellerDetailData?.current_address?.zipcode}`}
               </Text>
               <Text style={styles._kAddress}>{sellerDetailData?.phone_number ?? '-'}</Text>
+              <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
+                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
+              </Text>
               <View style={styles._flatListContainer}>
                 <FlatList
                   data={singleOrderDetail?.order_details}
@@ -346,9 +350,6 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                 {moment(singleOrderDetail?.created_at).format('llll')}
               </Text>
               <Text style={styles._commonPayTitle}>Walk-In</Text>
-              <Text style={styles._commonPayTitle}>
-                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
-              </Text>
               <Text style={styles._commonPayTitle}>
                 POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
               </Text>
@@ -568,5 +569,9 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: ms(6),
     marginLeft: ms(10),
+  },
+  boldInvoice: {
+    alignSelf: 'center',
+    fontFamily: Fonts.SemiBold,
   },
 });

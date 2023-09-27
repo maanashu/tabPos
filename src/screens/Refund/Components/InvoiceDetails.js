@@ -65,6 +65,10 @@ const InvoiceDetails = ({
         {`${orderDetail?.seller_details?.phone_number}` ?? '-'}
       </Text>
 
+      <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
+        Invoice No. # {orderDetail?.invoices?.invoice_number ?? '-'}
+      </Text>
+
       <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
 
       <View style={{ paddingVertical: 8 }}>
@@ -120,10 +124,6 @@ const InvoiceDetails = ({
 
       <Text style={styles._commonPayTitle}>
         {moment(orderDetail?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
-      </Text>
-
-      <Text style={styles._commonPayTitle}>
-        Invoice No. # {orderDetail?.invoices?.invoice_number ?? '-'}
       </Text>
 
       <Text style={styles._commonPayTitle}>
@@ -269,6 +269,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: ms(2),
     alignSelf: 'center',
+  },
+  boldInvoice: {
+    alignSelf: 'center',
+    fontFamily: Fonts.SemiBold,
   },
 });
 

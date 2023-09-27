@@ -387,7 +387,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   holdCartPad: {
-    width: windowWidth * 0.03,
+    width: windowWidth * 0.035,
     height: SH(38),
     borderRadius: 5,
     backgroundColor: COLORS.white,
@@ -403,8 +403,8 @@ export const styles = StyleSheet.create({
     tintColor: COLORS.dark_grey,
   },
   keyboardIcon: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(7),
+    height: SW(7),
     resizeMode: 'contain',
     tintColor: COLORS.dark_grey,
   },
@@ -634,6 +634,10 @@ export const styles = StyleSheet.create({
     marginLeft: SH(10),
     borderRadius: 3,
   },
+  discardBtnCon: {
+    backgroundColor: COLORS.textInputBackground,
+    width: SH(130),
+  },
   addTocartText: {
     color: COLORS.white,
     fontSize: SH(13),
@@ -762,6 +766,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     marginLeft: 10,
+    width: ms(500),
   },
   priceCon: {
     height: windowHeight * 0.07,
@@ -1035,6 +1040,10 @@ export const styles = StyleSheet.create({
     fontSize: ms(7),
     color: COLORS.black,
     fontFamily: Fonts.Regular,
+  },
+  boldInvoice: {
+    alignSelf: 'center',
+    fontFamily: Fonts.SemiBold,
   },
   _upperContainer: {
     flexDirection: 'row',
@@ -2352,5 +2361,42 @@ export const styles = StyleSheet.create({
     height: ms(30),
     resizeMode: 'contain',
     marginTop: ms(2),
+  },
+
+  dropDownIcon: {
+    width: 7,
+    height: 7,
+    resizeMode: 'contain',
+  },
+  countryCodeText: {
+    color: COLORS.black,
+    fontSize: SF(18),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(8),
+  },
+  textInputContainer: {
+    backgroundColor: COLORS.input_bg,
+    color: COLORS.black,
+    fontSize: SF(16),
+    fontFamily: Fonts.Italic,
+    width: windowWidth * 0.2,
+  },
+
+  phoneCodeNewCustomerView: {
+    paddingHorizontal: SW(4),
+    borderWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: windowHeight * 0.09,
+    // width: windowWidth * 0.35,
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 5,
+    fontFamily: Fonts.Italic,
+  },
+  newCusAdd: {
+    color: COLORS.dark_grey,
+    fontSize: ms(8),
+    fontFamily: Fonts.Medium,
+    marginVertical: ms(4),
   },
 });

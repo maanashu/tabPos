@@ -25,6 +25,7 @@ import {
   eraser,
   holdCart,
   minus,
+  newCustomer,
   notess,
   plus,
   rightBack,
@@ -56,6 +57,7 @@ import { getCartLength } from '@/selectors/CartSelector';
 import { FlatList } from 'react-native-gesture-handler';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { CustomProductAdd } from './CustomProductAdd';
+import { NewCustomerAdd } from './NewCustomerAdd';
 
 export function CartScreen({
   onPressPayNow,
@@ -85,6 +87,12 @@ export function CartScreen({
   const [cartIndex, setCartIndex] = useState();
   const [cartProductId, setCartProductId] = useState();
   const [numPadModal, setNumPadModal] = useState(false);
+  const [newCustomerModal, setNewCustomerModal] = useState(false);
+  const [productIndex, setProductIndex] = useState(0);
+  const [productItem, setProductItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState();
+
+  console.log('getRetailData?.getAllCart', getRetailData?.getAllCart?.id);
 
   useEffect(() => {
     const data = {
@@ -134,12 +142,15 @@ export function CartScreen({
     }, [])
   );
 
-  const productFun = async (item) => {
+  const productFun = async (item, index) => {
     beforeDiscountCartLoad();
     setOfferId(item?.id);
     const res = await dispatch(getOneProduct(sellerID, item?.product?.id, item?.id));
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
+      setProductIndex(index);
+      setProductItem(item);
+      setSelectedItem(item);
     }
   };
 
@@ -461,9 +472,30 @@ export function CartScreen({
                   setNumPadModal((prev) => !prev);
                 }}
               >
-                <Image source={sideKeyboard} style={styles.keyboardIcon} />
+                <Image source={plus} style={styles.keyboardIcon} />
               </TouchableOpacity>
               <TouchableOpacity
+                style={styles.holdCartPad}
+                onPress={() => setNewCustomerModal((prev) => !prev)}
+              >
+                <Image source={newCustomer} style={styles.keyboardIcon} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.holdCartPad,
+                  { borderColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.black },
+                ]}
+                onPress={cartStatusHandler}
+              >
+                <Image
+                  source={holdCart}
+                  style={[
+                    styles.keyboardIcon,
+                    { tintColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
+                  ]}
+                />
+              </TouchableOpacity>
+              {/* <TouchableOpacity
                 style={[
                   styles.holdCartCon,
                   { borderColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.black },
@@ -486,7 +518,7 @@ export function CartScreen({
                 >
                   {strings.dashboard.holdCart}
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity style={styles.holdCartCon} onPress={clearCartHandler}>
                 <Image source={eraser} style={[styles.pause, { tintColor: COLORS.dark_grey }]} />
                 <Text style={styles.holdCart}>{strings.dashboard.clearcart}</Text>
@@ -507,7 +539,7 @@ export function CartScreen({
                       <TouchableOpacity
                         style={styles.avaliableOferBodyCon}
                         key={index}
-                        onPress={() => productFun(item)}
+                        onPress={() => productFun(item, index)}
                       >
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <View style={{ borderRadius: 4 }}>
@@ -652,6 +684,14 @@ export function CartScreen({
             sellerID={sellerID}
             offerId={offerId}
             openFrom="cart"
+            productIndex={productIndex}
+            selectedItem={selectedItem}
+            cartQty={1}
+
+            // cartQty={selectedItemQty}
+            // productIndex={productIndex}
+            // selectedItem={selectedItem}
+            // onClickAddCartModal={onClickAddCartModal}
           />
         )}
       </Modal>
@@ -659,6 +699,12 @@ export function CartScreen({
       <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
           <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="product" />
+        </KeyboardAvoidingView>
+      </Modal>
+
+      <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
+        <KeyboardAvoidingView behavior="padding">
+          <NewCustomerAdd crossHandler={() => setNewCustomerModal(false)} comeFrom="product" />
         </KeyboardAvoidingView>
       </Modal>
     </View>

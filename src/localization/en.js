@@ -82,6 +82,9 @@ export const en = {
     DisCode: 'Discount Code',
     DisTitle: 'Discount Title',
     eRecipeEmail: `e-recipe will send\nto your email`,
+    phoneNumber: 'Phone Number',
+    emailAdd: 'Email Address',
+    name: 'Name',
   },
   posSale: {
     onlyx: 'x',

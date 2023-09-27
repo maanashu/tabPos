@@ -25,6 +25,7 @@ export function AddCartDetailModal({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
+  console.log('productDetail', JSON.stringify(productDetail));
 
   // Remove HTML tags
   const withoutHtmlTags = productDetail?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
@@ -189,7 +190,9 @@ export function AddCartDetailModal({
             </View>
             <View style={styles.skuConBody}>
               <Text style={styles.sku}>Unit Weight</Text>
-              <Text style={styles.sku}>{productDetail?.weight_unit} </Text>
+              <Text style={styles.sku}>
+                {productDetail?.weight + ' ' + productDetail?.weight_unit}
+              </Text>
             </View>
             <View style={[styles.skuConBody, { borderColor: COLORS.white }]}>
               <Text style={styles.sku}>Other locations</Text>
