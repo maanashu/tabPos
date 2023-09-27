@@ -118,9 +118,19 @@ export const ServiceFilterDropDown = ({
     setSearchBrand(search);
     setBrandOpenDropDown(true);
     if (search?.length > 2) {
-      dispatch(getAllPosUsers(sellerid, search));
+      const data = {
+        page: 1,
+        limit: 10,
+        seller_id: sellerid,
+      };
+      dispatch(getAllPosUsers(data, search));
     } else if (search?.length === 0) {
-      dispatch(getAllPosUsers(sellerid));
+      const data = {
+        page: 1,
+        limit: 10,
+        seller_id: sellerid,
+      };
+      dispatch(getAllPosUsers(data));
     }
   };
 
@@ -141,7 +151,13 @@ export const ServiceFilterDropDown = ({
   const clearInput = () => {
     dispatch(getServiceCategory(sellerid));
     dispatch(getServiceSubCategory(sellerid));
-    dispatch(getAllPosUsers(sellerid));
+    // dispatch(getAllPosUsers(sellerid));
+    const data = {
+      page: 1,
+      limit: 10,
+      seller_id: sellerid,
+    };
+    dispatch(getAllPosUsers(data));
   };
 
   // useEffect(() => {

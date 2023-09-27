@@ -5,6 +5,7 @@ const INITIALSTATE = {
   merchantLoginData: {},
   getProfile: {},
   getAllPosUsers: [],
+  getAllPosUsersData: {},
 };
 
 export const authReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -28,7 +29,8 @@ export const authReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.GET_ALL_POS_USERS_SUCCESS:
       return {
         ...state,
-        getAllPosUsers: payload.getAllPosUsers,
+        getAllPosUsers: payload.getAllPosUsers?.pos_staff,
+        getAllPosUsersData: payload.getAllPosUsers,
       };
 
     case TYPES.GET_ALL_POS_USERS_RESET:

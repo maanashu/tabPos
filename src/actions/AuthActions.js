@@ -79,7 +79,10 @@ const getAllPosUsersRequest = () => ({
   type: TYPES.GET_ALL_POS_USERS_REQUEST,
   payload: null,
 });
-
+const getAllPosUsersPageRequest = () => ({
+  type: TYPES.GET_ALL_POS_USERS_PAGE,
+  payload: null,
+});
 const getAllPosUsersError = (error) => ({
   type: TYPES.GET_ALL_POS_USERS_ERROR,
   payload: { error },
@@ -140,11 +143,21 @@ export const register = (data, params) => async (dispatch) => {
   }
 };
 
-export const getAllPosUsers = (sellerID, search) => async (dispatch) => {
-  dispatch(getAllPosUsersRequest());
+export const getAllPosUsers = (data, search) => async (dispatch, getState) => {
+  data.page == 1 ? dispatch(getAllPosUsersRequest()) : dispatch(getAllPosUsersPageRequest());
   try {
-    const res = await AuthController.getAllPosUsers(sellerID, search);
-    dispatch(getAllPosUsersSuccess(res?.payload?.pos_staff));
+    const state = getState();
+    const res = await AuthController.getAllPosUsers(data, search);
+    if (data.page == 1) {
+      dispatch(getAllPosUsersSuccess(res?.payload));
+    } else {
+      const { current_page, total_pages, pos_staff } = res?.payload;
+      const storeData = { ...state.auth.getAllPosUsersData };
+      storeData.current_page = current_page;
+      storeData.total_pages = total_pages;
+      storeData.pos_staff = [...storeData.pos_staff, ...pos_staff];
+      dispatch(getAllPosUsersSuccess(storeData));
+    }
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllPosUsersReset());

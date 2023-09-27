@@ -293,7 +293,12 @@ export function MainScreen({
   useEffect(() => {
     dispatch(getServiceCategory(sellerID));
     dispatch(getServiceSubCategory(sellerID));
-    dispatch(getAllPosUsers(sellerID));
+    const data = {
+      page: 1,
+      limit: 10,
+      seller_id: sellerID,
+    };
+    dispatch(getAllPosUsers(data));
   }, []);
 
   useEffect(() => {

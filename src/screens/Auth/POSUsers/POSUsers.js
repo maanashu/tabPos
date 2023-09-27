@@ -36,6 +36,9 @@ import { getAllPosUsers, logoutFunction, merchantLoginSuccess } from '@/actions/
 import { configureGoogleCode, getSettings, verifyGoogleCode } from '@/actions/SettingAction';
 
 import { styles } from './POSUsers.styles';
+import { useRef } from 'react';
+import { useCallback } from 'react';
+import { ms } from 'react-native-size-matters';
 
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
@@ -44,14 +47,15 @@ export function POSUsers({ navigation }) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const getAuth = useSelector(getAuthData);
-  const posUserArray = getAuth?.getAllPosUsers;
+  const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
+  const posUserArraydata = getAuth?.getAllPosUsersData;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
   const refSix = useBlurOnFulfill({ value, cellCount: CELL_COUNT_SIX });
   const getSettingData = useSelector(getSetting);
   const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
   const merchantData = getAuth?.merchantLoginData;
-
+  const onEndReachedCalledDuringMomentum = useRef(false);
   const [value, setValue] = useState('');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [twoStepModal, setTwoStepModal] = useState(false);
@@ -77,7 +81,12 @@ export function POSUsers({ navigation }) {
       setTwoFactorEnabled(true);
       setTwoStepModal(true);
     } else {
-      dispatch(getAllPosUsers(sellerID));
+      const data = {
+        page: 1,
+        limit: 10,
+        seller_id: sellerID,
+      };
+      dispatch(getAllPosUsers(data));
     }
   };
 
@@ -168,7 +177,12 @@ export function POSUsers({ navigation }) {
           setTwoStepModal(false);
           setGoogleAuthScan(false);
           setSixDigit(false);
-          dispatch(getAllPosUsers(sellerID));
+          const data = {
+            page: 1,
+            limit: 10,
+            seller_id: sellerID,
+          };
+          dispatch(getAllPosUsers(data));
         }
       } else if (res === undefined) {
         setValue('');
@@ -185,7 +199,38 @@ export function POSUsers({ navigation }) {
       dispatch(logoutFunction());
     }
   };
+  const isLoadingBottom = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_POS_USERS_PAGE], state)
+  );
 
+  const renderStaffFooter = useCallback(
+    () => (
+      <View
+        style={{
+          marginBottom: ms(20),
+        }}
+      >
+        {isLoadingBottom && (
+          <ActivityIndicator
+            style={{ marginVertical: 14 }}
+            size={'large'}
+            color={COLORS.blueLight}
+          />
+        )}
+      </View>
+    ),
+    [isLoadingBottom]
+  );
+  const onLoadMoreProduct = useCallback(() => {
+    if (posUserArraydata?.current_page < posUserArraydata?.total_pages) {
+      const data = {
+        page: posUserArraydata?.current_page + 1,
+        limit: 10,
+        seller_id: sellerID,
+      };
+      dispatch(getAllPosUsers(data));
+    }
+  }, [posUserArray]);
   return (
     <ScreenWrapper>
       {!twoFactorEnabled ? (
@@ -261,6 +306,16 @@ export function POSUsers({ navigation }) {
                     </TouchableOpacity>
                   </View>
                 );
+              }}
+              ListFooterComponent={renderStaffFooter}
+              onEndReachedThreshold={0.1}
+              onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+              //  onMomentumScrollBegin={() => {}}
+              onMomentumScrollEnd={() => {
+                if (onEndReachedCalledDuringMomentum.current) {
+                  onLoadMoreProduct();
+                  onEndReachedCalledDuringMomentum.current = false;
+                }
               }}
             />
           )}
