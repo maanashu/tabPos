@@ -217,24 +217,33 @@ export class AuthController {
       });
   }
 
-  static async getAllPosUsers(sellerID, search) {
-    const getUrl = (sellerID, search) => {
-      if (sellerID && search) {
-        return (
-          USER_URL +
-          ApiUserInventory.getPosUsers +
-          `?page=1&limit=40&seller_id=${sellerID}&search=${search}`
-        );
-      } else {
-        return USER_URL + ApiUserInventory.getPosUsers + `?page=1&limit=50&seller_id=${sellerID}`;
+  static async getAllPosUsers(data, search) {
+    // const getUrl = (sellerID, search) => {
+    //   if (data && search) {
+    //     return (
+    //       USER_URL +
+    //       ApiUserInventory.getPosUsers +
+    //       `?page=${data.page}&limit=${data.limit}&seller_id=${data.seller_id}&search=${search}`
+    //     );
+    //   } else {
+    //     return (
+    //       USER_URL +
+    //       ApiUserInventory.getPosUsers +
+    //       `?page=${data.page}&limit=${data.limit}&seller_id=${data.seller_id}`
+    //     );
 
-        // USER_URL + ApiUserInventory.abc(sellerID);
-      }
-    };
+    //     // USER_URL + ApiUserInventory.abc(sellerID);
+    //   }
+    // };
 
     return new Promise(async (resolve, reject) => {
       // const endpoint =  `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10&seller_id=${sellerID}`;
-      const endpoint = getUrl(sellerID, search);
+      // const endpoint = getUrl(data.seller_id, search);
+      const endpoint =
+        USER_URL +
+        ApiUserInventory.getPosUsers +
+        `?page=${data.page}&limit=${data.limit}&seller_id=${data.seller_id}`;
+      console.log('Enspoint', endpoint);
       await HttpClient.get(endpoint)
         .then((response) => {
           if (response?.status_code === 200) {

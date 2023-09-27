@@ -52,8 +52,11 @@ import { creatPostUser, getPosUserRole } from '@/actions/AppointmentAction';
 import { digits, emailReg } from '@/utils/validators';
 import { getAppointmentSelector, getPosUserRoles } from '@/selectors/AppointmentSelector';
 import { TYPES } from '@/Types/AppointmentTypes';
+import { TYPES as TYPE } from '@/Types/Types';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { Snackbar } from 'react-native-paper';
+import { useRef } from 'react';
+import { useCallback } from 'react';
 const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
@@ -65,7 +68,9 @@ export function Staff() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
-  const posUserArray = getAuth?.getAllPosUsers;
+  // const posUserArray = getAuth?.getAllPosUsers;
+  const posUserArraydata = getAuth?.getAllPosUsersData;
+  const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [staffModal, setStaffModal] = useState(false);
@@ -87,13 +92,16 @@ export function Staff() {
   const userRoles = useSelector(getAppointmentSelector);
   const [visible, setVisible] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+  const onEndReachedCalledDuringMomentum = useRef(false);
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState(null);
 
-  const onToggleSnackBar = (message) => {
-    setVisible(!visible);
-    setErrorMessage(message);
-  };
-
-  const onDismissSnackBar = () => setVisible(false);
+  // const onToggleSnackBar = (message) => {
+  //   setVisible(!visible);
+  //   setErrorMessage(message);
+  // };
+  // const onDismissSnackBar = () => setVisible(false);
   var posUsersRole = [];
   if (userRoles?.posUserRole?.roles?.length > 0 && userRoles?.posUserRole !== null) {
     const mappedArray = userRoles?.posUserRole?.roles?.map((item) => {
@@ -101,18 +109,21 @@ export function Staff() {
     });
     posUsersRole = mappedArray;
   }
-  const [open, setOpen] = useState(false);
-  const [items, setItems] = useState(null);
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.CREATE_POS_USER], state));
+
   useEffect(() => {
     if (isFocused) {
       const data = {
         page: 1,
         limit: 20,
-        user_id: getAuth?.merchantLoginData?.uniqe_id,
+        user_id: sellerID,
       };
       dispatch(getPosUserRole(data));
-      dispatch(getAllPosUsers(sellerID));
+      const Data = {
+        page: 1,
+        limit: 10,
+        seller_id: sellerID,
+      };
+      dispatch(getAllPosUsers(Data));
     }
   }, [isFocused]);
 
@@ -145,7 +156,6 @@ export function Staff() {
       }
     }
   };
-
   const userRenderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.twoStepMemberCon}
@@ -168,7 +178,10 @@ export function Staff() {
               {item.user?.user_profiles?.firstname}
             </Text>
             <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
-              {item?.pos_role ?? 'Merchant'}
+              {item?.user?.user_roles?.length > 0
+                ? item?.user?.user_roles?.map((item, index) => item.role?.name)
+                : 'Admin'}
+              {/* {item?.pos_role ?? 'Merchant'} */}
             </Text>
           </View>
         </View>
@@ -176,7 +189,41 @@ export function Staff() {
       </View>
     </TouchableOpacity>
   );
+  const isLoadingBottom = useSelector((state) =>
+    isLoadingSelector([TYPE.GET_ALL_POS_USERS], state)
+  );
 
+  const renderStaffFooter = useCallback(
+    () => (
+      <View
+        style={
+          {
+            // marginBottom: ms(20),
+          }
+        }
+      >
+        {isLoadingBottom && (
+          <ActivityIndicator
+            style={{ marginVertical: 14 }}
+            size={'large'}
+            color={COLORS.blueLight}
+          />
+        )}
+      </View>
+    ),
+    [isLoadingBottom]
+  );
+  const onLoadMoreProduct = useCallback(() => {
+    // console.log('sdasdas', posUserArray);
+    if (posUserArraydata?.current_page < posUserArraydata?.total_pages) {
+      const data = {
+        page: posUserArraydata?.current_page + 1,
+        limit: 10,
+        seller_id: sellerID,
+      };
+      dispatch(getAllPosUsers(data));
+    }
+  }, [posUserArray]);
   const bodyView = () => {
     if (staffDetail) {
       return (
@@ -463,6 +510,16 @@ export function Staff() {
                     extraData={posUserArray}
                     renderItem={userRenderItem}
                     keyExtractor={(item) => item.id}
+                    ListFooterComponent={renderStaffFooter}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                    //  onMomentumScrollBegin={() => {}}
+                    onMomentumScrollEnd={() => {
+                      if (onEndReachedCalledDuringMomentum.current) {
+                        onLoadMoreProduct();
+                        onEndReachedCalledDuringMomentum.current = false;
+                      }
+                    }}
                   />
                 </View>
               </View>
@@ -547,6 +604,7 @@ export function Staff() {
       });
       // onToggleSnackBar('Please select user role');
     } else {
+      setIsLoading(true);
       const data = {
         firstname: name,
         pos_security_pin: posPassword,
@@ -560,14 +618,31 @@ export function Staff() {
 
       const responseData = await dispatch(creatPostUser(data));
       if (responseData) {
-        Toast.show({
-          position: 'top',
-          type: 'success',
-          text2: 'User created successfully',
-          visibilityTime: 2000,
-        });
-        dispatch(getAllPosUsers(sellerID));
-        onCloseModal();
+        setIsLoading(false);
+        if (responseData?.error) {
+          // onToggleSnackBar(responseData?.error);
+          Toast.show({
+            position: 'top',
+            type: 'error',
+            text2: responseData?.error,
+            visibilityTime: 2000,
+          });
+        } else {
+          Toast.show({
+            position: 'top',
+            type: 'success',
+            text2: 'User created successfully',
+            visibilityTime: 2000,
+          });
+
+          const Data = {
+            page: 1,
+            limit: 10,
+            seller_id: getAuth?.merchantLoginData?.uniqe_id,
+          };
+          dispatch(getAllPosUsers(Data));
+          onCloseModal();
+        }
       }
     }
   };
@@ -727,7 +802,7 @@ export function Staff() {
                   <Text style={styles.countryCodeText}>{countryCode}</Text>
 
                   <TextInput
-                    maxLength={15}
+                    maxLength={11}
                     returnKeyType={'done'}
                     keyboardType={'number-pad'}
                     value={phoneNumber.trim()}
