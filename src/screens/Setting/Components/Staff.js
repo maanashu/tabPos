@@ -636,7 +636,7 @@ export function Staff() {
           });
 
           const Data = {
-            page: 1,
+            page: posUserArraydata?.current_page + 1,
             limit: 10,
             seller_id: getAuth?.merchantLoginData?.uniqe_id,
           };
