@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import { ColorPicker, fromHsv } from 'react-native-color-picker';
+import Toast from 'react-native-toast-message';
 import Modal from 'react-native-modal';
 import {
   addIcon,
@@ -42,7 +43,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
 import { getStaffDetail } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
+// import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import moment from 'moment';
 import { store } from '@/store';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -474,23 +475,77 @@ export function Staff() {
 
   const createPosUserHandler = async () => {
     if (!name) {
-      onToggleSnackBar('Please enter Name');
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter Name',
+        visibilityTime: 1500,
+        autoHide: true,
+      });
+      // onToggleSnackBar('Please enter Name');
     } else if (phoneNumber == '' || phoneNumber.length < 5) {
-      onToggleSnackBar(strings.valiadtion.validPhone);
+      Toast.show({
+        type: 'error',
+        text1: strings.valiadtion.validPhone,
+        visibilityTime: 1500,
+        autoHide: true,
+      });
+      // onToggleSnackBar(strings.valiadtion.validPhone);
     } else if (phoneNumber && digits.test(phoneNumber) === false) {
-      onToggleSnackBar(strings.valiadtion.validPhone);
+      Toast.show({
+        type: 'error',
+        text1: strings.valiadtion.validPhone,
+        visibilityTime: 1500,
+        autoHide: true,
+      });
+      // onToggleSnackBar(strings.valiadtion.validPhone);
     } else if (posPassword == '') {
-      onToggleSnackBar('Please enter one time password');
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter one time password',
+        visibilityTime: 1500,
+        autoHide: true,
+      });
+      // onToggleSnackBar('Please enter one time password');
     } else if (posPassword < 4) {
-      onToggleSnackBar('Please enter One time password atleast 4 digit');
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter One time password atleast 4 digit',
+        visibilityTime: 1500,
+        autoHide: true,
+      });
+      // onToggleSnackBar('Please enter One time password atleast 4 digit');
     } else if (emailAddress == '') {
-      onToggleSnackBar('Please enter user Email');
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter user Email',
+        visibilityTime: 1500,
+        autoHide: true,
+      });
+      // onToggleSnackBar('Please enter user Email');
     } else if (emailAddress && emailReg.test(emailAddress) === false) {
-      onToggleSnackBar('Please enter valid Email');
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter valid Email',
+        visibilityTime: 1500,
+        autoHide: true,
+      });
+      // onToggleSnackBar('Please enter valid Email');
     } else if (selectedColor == null) {
-      onToggleSnackBar('Please select color');
+      Toast.show({
+        type: 'error',
+        text1: 'Please select color',
+        visibilityTime: 1500,
+        autoHide: true,
+      });
+      // onToggleSnackBar('Please select color');
     } else if (value == '') {
-      onToggleSnackBar('Please select user role');
+      Toast.show({
+        type: 'error',
+        text1: 'Please select user role',
+        visibilityTime: 1500,
+        autoHide: true,
+      });
+      // onToggleSnackBar('Please select user role');
     } else {
       const data = {
         firstname: name,
@@ -778,14 +833,14 @@ export function Staff() {
                 <Spacer space={SW(10)} />
               </View>
             </KeyboardAwareScrollView>
-            <Snackbar
-              style={{ backgroundColor: COLORS.roseRed }}
+            {/* <Snackbar
+              style={{ backgroundColor: COLORS.roseRed, position: 'absolute', top: 40 }}
               visible={visible}
               duration={1500}
               onDismiss={onDismissSnackBar}
             >
               {errorMessage}
-            </Snackbar>
+            </Snackbar> */}
           </View>
         ) : (
           <View
@@ -821,6 +876,7 @@ export function Staff() {
             </View>
           </View>
         )}
+        <Toast ref={(ref) => Toast.setRef(ref)} />
       </Modal>
     </View>
   );
