@@ -81,7 +81,7 @@ export function TotalShippingOrders({ onPressReview }) {
         <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <TouchableOpacity style={styles.reviewView} onPress={onPressReview}>
+        <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
           <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
             {'Review'}
           </Text>
@@ -134,8 +134,8 @@ export function TotalShippingOrders({ onPressReview }) {
           image={totalSales}
           text={'Total Sales'}
           count={
-            shippingGraph?.ordersOverView?.amount
-              ? '$' + shippingGraph?.ordersOverView?.amount?.toFixed(2)
+            shippingGraph?.ordersOverView?.total_sales_or_actual_amount
+              ? '$' + shippingGraph?.ordersOverView?.total_sales_or_actual_amount?.toFixed(2)
               : '$0'
           }
         />

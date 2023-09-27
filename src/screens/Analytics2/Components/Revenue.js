@@ -117,8 +117,8 @@ export function Revenue() {
           image={revenueTotal}
           text={'Total Revenue'}
           count={
-            analyticStatistics?.overView?.transaction
-              ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
+            analyticStatistics?.overView?.total_revenue
+              ? '$' + analyticStatistics?.overView?.total_revenue?.toFixed(2)
               : '$0'
           }
         />
