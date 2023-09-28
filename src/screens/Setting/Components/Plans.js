@@ -30,6 +30,7 @@ export function Plans() {
   const isFocused = useIsFocused();
   const getPlanData = useSelector(getAllPlansData);
   const activeUserPlan = getPlanData?.activeSubscription;
+  console.log('activeee', activeUserPlan);
   // var activePlan = {};
   const [planModal, setPlanModal] = useState(false);
   const [selectedId, setSelectedId] = useState(1);
@@ -40,13 +41,13 @@ export function Plans() {
     if (isFocused) {
       dispatch(getAllPlans());
       dispatch(getActiveSubscription());
-      if (activeUserPlan?.length > 0) {
-        setActivePlan(getPlanData?.activeSubscription[0]);
-      }
     }
   }, [isFocused]);
-
-  useEffect(() => {}, [getPlanData]);
+  useEffect(() => {
+    if (activeUserPlan?.length > 0) {
+      setActivePlan(getPlanData?.activeSubscription[0]);
+    }
+  }, [Object.keys(activeUserPlan).length]);
   const monthlyPlans = [];
   const yearlyPlans = [];
   if (getPlanData?.allPlans?.length > 0) {
@@ -247,7 +248,7 @@ export function Plans() {
         </View>
       </View>
     ),
-    [activePlan]
+    [activeUserPlan, activePlan]
   );
   const renderBuyView = useCallback(
     () => (

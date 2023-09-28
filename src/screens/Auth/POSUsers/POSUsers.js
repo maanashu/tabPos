@@ -62,6 +62,7 @@ export function POSUsers({ navigation }) {
   const [googleAuthScan, setGoogleAuthScan] = useState(false);
   const [sixDigit, setSixDigit] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
+  const [isLoadingBottom, setIsLoadingBottom] = useState(false);
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -199,9 +200,9 @@ export function POSUsers({ navigation }) {
       dispatch(logoutFunction());
     }
   };
-  const isLoadingBottom = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_ALL_POS_USERS_PAGE], state)
-  );
+  // const isLoadingBottom = useSelector((state) =>
+  //   isLoadingSelector([TYPES.GET_ALL_POS_USERS_PAGE], state)
+  // );
 
   const renderStaffFooter = useCallback(
     () => (
@@ -221,14 +222,18 @@ export function POSUsers({ navigation }) {
     ),
     [isLoadingBottom]
   );
-  const onLoadMoreProduct = useCallback(() => {
+  const onLoadMoreProduct = useCallback(async () => {
     if (posUserArraydata?.current_page < posUserArraydata?.total_pages) {
+      setIsLoadingBottom(true);
       const data = {
         page: posUserArraydata?.current_page + 1,
         limit: 10,
         seller_id: sellerID,
       };
-      dispatch(getAllPosUsers(data));
+      const Data = await dispatch(getAllPosUsers(data));
+      if (Data) {
+        setIsLoadingBottom(false);
+      }
     }
   }, [posUserArray]);
   return (

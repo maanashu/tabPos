@@ -763,7 +763,12 @@ export function Staff() {
         </View>
       </Modal>
 
-      <Modal animationType="slide" transparent={true} isVisible={staffModal}>
+      <Modal
+        animationIn={'slideInUp'}
+        animationOut={'slideOutDown'}
+        transparent={true}
+        isVisible={staffModal}
+      >
         {!isColorModal ? (
           <View pointerEvents={isLoading ? 'none' : 'auto'} style={[styles.addStaffModalCon]}>
             <View style={styles.addCartConHeader}>
