@@ -129,7 +129,7 @@ export function Staff() {
       dispatch(getPosUserRole(data));
       const Data = {
         page: 1,
-        limit: 10,
+        limit: 50,
         seller_id: sellerID,
       };
       dispatch(getAllPosUsers(Data));
@@ -238,7 +238,7 @@ export function Staff() {
   const onRefresh = () => {
     const Data = {
       page: 1,
-      limit: 10,
+      limit: 50,
       seller_id: sellerID,
     };
     dispatch(getAllPosUsers(Data));
@@ -666,7 +666,7 @@ export function Staff() {
 
           const Data = {
             page: 1,
-            limit: 10,
+            limit: 50,
             seller_id: getAuth?.merchantLoginData?.uniqe_id,
           };
           dispatch(getAllPosUsers(Data));
