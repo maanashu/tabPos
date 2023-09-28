@@ -555,7 +555,6 @@ export const CartAmountPayBy = ({
                 ))}
               </View>
             </View>
-
             {selectedTipIndex !== null ? (
               <View
                 style={{
@@ -649,7 +648,7 @@ export const CartAmountPayBy = ({
                 }}
               >
                 <Text style={styles.selectTips}>E-Recipe</Text>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   {receiptData.map((item, index) => (
                     <TouchableOpacity
                       onPress={() => {
