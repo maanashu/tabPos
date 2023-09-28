@@ -268,19 +268,13 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
             <Button
               pending={isChangeStatusLoading}
               title={getCalendarActionButtonTitle(selectedPosStaffCompleteData?.status)}
-              disable={
-                selectedPosStaffCompleteData?.status === 3 ||
-                selectedPosStaffCompleteData?.status === 5
-              }
+              disable={selectedPosStaffCompleteData?.status === 3}
               textStyle={styles.checkintitle}
               style={[
                 styles.checkinContainer,
                 {
                   backgroundColor:
-                    selectedPosStaffCompleteData?.status === 3 ||
-                    selectedPosStaffCompleteData?.status === 5
-                      ? COLORS.darkGray
-                      : COLORS.primary,
+                    selectedPosStaffCompleteData?.status === 3 ? COLORS.darkGray : COLORS.primary,
                 },
               ]}
               onPress={() => {

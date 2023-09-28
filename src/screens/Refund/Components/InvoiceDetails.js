@@ -21,6 +21,8 @@ const InvoiceDetails = ({
   deliveryShippingTitle,
   deliveryShippingCharges,
   total,
+  applicableForAllItems,
+  applyEachItem,
 }) => {
   const dispatch = useDispatch();
   const getOrder = useSelector(getAnalytics);
@@ -43,7 +45,11 @@ const InvoiceDetails = ({
           </View>
         </View>
       </View>
-      <Text style={styles.priceTitle}>{`$${item?.totalRefundAmount}` ?? '-'}</Text>
+      <Text style={styles.priceTitle}>
+        {`${
+          applicableForAllItems || applyEachItem ? item?.totalRefundAmount : item?.price * item?.qty
+        }`}
+      </Text>
     </View>
   );
 
@@ -85,7 +91,7 @@ const InvoiceDetails = ({
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{'Sub Total'}</Text>
-        <Text style={styles._subTotalPrice}>{`$${subTotal}` ?? '-'}</Text>
+        <Text style={styles._subTotalPrice}>{`$${subTotal?.toFixed(2)}` ?? '-'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />

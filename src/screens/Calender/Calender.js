@@ -100,7 +100,7 @@ export function Calender() {
 
   // Only show appointments on calendar which are approved/Check-In/Completed/CancelledByCustomer
   const getApprovedAppointments = getAppointmentList?.filter(
-    (item) => item.status === 1 || item.status === 2 || item.status === 3 || item.status === 5
+    (item) => item.status === 1 || item.status === 2 || item.status === 3
   );
 
   // Will be used to show list of all unaccepted appointments
@@ -215,11 +215,11 @@ export function Calender() {
   };
 
   const getAppointmentsByDate = useMemo(() => {
-    const filteredAppointmentsByDate = getApprovedAppointments.filter(
+    const filteredAppointmentsByDate = getAppointmentList.filter(
       (appointment) => moment(appointment?.date).format('L') === moment(calendarDate).format('L')
     );
     return filteredAppointmentsByDate;
-  }, [calendarDate, getApprovedAppointments]);
+  }, [calendarDate, getAppointmentList]);
 
   const onPressSaveCalendarSettings = (calendarPreferences) => {
     if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.DAY) {
