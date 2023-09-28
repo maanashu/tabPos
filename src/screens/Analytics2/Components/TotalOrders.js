@@ -43,7 +43,7 @@ export function TotalOrders({ onPressReview }) {
         <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <TouchableOpacity style={styles.reviewView} onPress={onPressReview}>
+        <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
           <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
             {'Review'}
           </Text>

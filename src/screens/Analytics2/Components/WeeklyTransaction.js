@@ -64,8 +64,7 @@ export function WeeklyTransaction({
   const [fromInVoice, setFromInVoice] = useState(FromInvoice);
   const [transaction, setTransaction] = useState({ modeOfPayment: 'all' });
 
-  const selectedDate = selectTime?.start_date;
-  const formatedDate = selectTime?.filter ? undefined : moment(selectedDate).format('YYYY-MM-DD');
+  const formatedDate = selectTime;
 
   const paginationData = {
     total: getWalletData?.getTotakTraDetail?.total ?? '0',
