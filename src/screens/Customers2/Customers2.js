@@ -94,28 +94,40 @@ export function Customers2() {
       count: allCustomerObject?.newCustomer ?? 0,
       img: newCustomer,
       id: '1',
+      type: 'new_customers',
+      cID: 2,
     },
     {
       customertype: 'Returning Customers',
       count: allCustomerObject?.returningCustomer ?? 0,
       img: returnCustomer,
       id: '2',
+      type: 'returning_customers',
+      cID: 3,
     },
     {
       customertype: 'Online Customers',
       count: allCustomerObject?.onlineCustomers ?? 0,
       img: onlineCutomer,
       id: '3',
+      type: 'online_customers',
+      cID: 4,
     },
     {
       customertype: 'Walking Customers',
       count: allCustomerObject?.walkingCustomers ?? 0,
       img: walkinCustomer,
       id: '4',
+      type: 'walking_customers',
+      cID: 5,
     },
   ];
   const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
-
+  const onViewUser = (id, type) => {
+    setSaveCustomerId(id);
+    setSaveCustomerType(type);
+    setAllUsers(true);
+  };
   const bodyView = () => {
     if (userDetails) {
       return (
@@ -261,14 +273,17 @@ export function Customers2() {
                 extraData={newCustomerData}
                 renderItem={({ item, index }) => {
                   return (
-                    <View style={styles.custometrCon}>
-                      <View style={styles.flexAlign}>
+                    <View style={[styles.custometrCon, styles.flexAlignNew]}>
+                      <TouchableOpacity
+                        onPress={() => onViewUser(item.cID, item.type)}
+                        style={styles.flexAlign}
+                      >
                         <Image source={item.img} style={styles.newCustomer} />
                         <View style={{ paddingHorizontal: moderateScale(7) }}>
                           <Text style={styles.customerCount}>{item.count}</Text>
                           <Text style={styles.newCustomerHeading}>{item.customertype}</Text>
                         </View>
-                      </View>
+                      </TouchableOpacity>
                     </View>
                   );
                 }}
@@ -284,7 +299,10 @@ export function Customers2() {
                 <Text style={styles.totalCusPrimary}>{strings.customers.totalCustomer}</Text>
                 <Text style={styles.totalCustomer}>{totalCustomer ?? '0'}</Text>
               </View>
-              <TouchableOpacity style={styles.viewButtonCon} onPress={() => setAllUsers(true)}>
+              <TouchableOpacity
+                style={styles.viewButtonCon}
+                onPress={() => onViewUser(1, 'all_customers')}
+              >
                 <Text style={styles.viewAll}>{strings.reward.viewAll}</Text>
               </TouchableOpacity>
             </View>

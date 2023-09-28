@@ -32,6 +32,8 @@ import {
   userImage,
   vector,
   vectorOff,
+  EyeHide,
+  EyeShow,
 } from '@/assets';
 import CountryPicker from 'react-native-country-picker-modal';
 import { Table } from 'react-native-table-component';
@@ -57,6 +59,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { Snackbar } from 'react-native-paper';
 import { useRef } from 'react';
 import { useCallback } from 'react';
+import { RefreshControl } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
@@ -70,6 +73,7 @@ export function Staff() {
   const staffDetailData = getSettingData?.staffDetail;
   // const posUserArray = getAuth?.getAllPosUsers;
   const posUserArraydata = getAuth?.getAllPosUsersData;
+  console.log('PosUserArtaaa', JSON.stringify(posUserArraydata));
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
@@ -96,7 +100,12 @@ export function Staff() {
   const onEndReachedCalledDuringMomentum = useRef(false);
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prevState) => !prevState);
+  };
   // const onToggleSnackBar = (message) => {
   //   setVisible(!visible);
   //   setErrorMessage(message);
@@ -224,6 +233,14 @@ export function Staff() {
       dispatch(getAllPosUsers(data));
     }
   }, [posUserArray]);
+  const onRefresh = () => {
+    const Data = {
+      page: 1,
+      limit: 10,
+      seller_id: sellerID,
+    };
+    dispatch(getAllPosUsers(Data));
+  };
   const bodyView = () => {
     if (staffDetail) {
       return (
@@ -520,6 +537,14 @@ export function Staff() {
                         onEndReachedCalledDuringMomentum.current = false;
                       }
                     }}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={isRefreshing}
+                        onRefresh={onRefresh}
+                        tintColor="#000" // Change the color of the loading spinner
+                        title="Pull to Refresh" // Optional, you can customize the text
+                      />
+                    }
                   />
                 </View>
               </View>
@@ -617,6 +642,8 @@ export function Staff() {
       };
 
       const responseData = await dispatch(creatPostUser(data));
+      // console.log('datdsats', JSON.stringify(responseData));
+      // return;
       if (responseData) {
         setIsLoading(false);
         if (responseData?.error) {
@@ -636,7 +663,7 @@ export function Staff() {
           });
 
           const Data = {
-            page: posUserArraydata?.current_page + 1,
+            page: 1,
             limit: 10,
             seller_id: getAuth?.merchantLoginData?.uniqe_id,
           };
@@ -817,8 +844,9 @@ export function Staff() {
                 </View>
                 <Spacer space={SW(10)} />
                 <Text style={styles.phoneText}>{'One Time Password'}</Text>
-                <View style={styles.textInputView}>
+                <View style={[styles.textInputView, { flexDirection: 'row' }]}>
                   <TextInput
+                    secureTextEntry={!isPasswordVisible}
                     maxLength={15}
                     returnKeyType={'done'}
                     keyboardType={'number-pad'}
@@ -826,11 +854,20 @@ export function Staff() {
                     onChangeText={(text) => {
                       setPosPassword(text);
                     }}
-                    style={styles.textInputContainer}
+                    style={[styles.textInputContainer, { width: windowWidth * 0.4 }]}
                     placeholder={'Password'}
                     placeholderTextColor={COLORS.darkGray}
                     // showSoftInputOnFocus={false}
                   />
+                  <TouchableOpacity
+                    onPress={togglePasswordVisibility}
+                    style={{ height: 24, width: 24 }}
+                  >
+                    <Image
+                      source={isPasswordVisible ? EyeShow : EyeHide}
+                      style={{ resizeMode: 'contain', height: 24, width: 24 }}
+                    />
+                  </TouchableOpacity>
                 </View>
                 <Spacer space={SW(10)} />
                 <Text style={styles.phoneText}>{'Email Address'}</Text>

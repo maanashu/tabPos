@@ -50,11 +50,10 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
   const areaData = getCustomerData?.getArea?.data;
-  const [selectedId, setSelectedId] = useState(saveCustomerId === undefined ? 2 : saveCustomerId);
+  const [selectedId, setSelectedId] = useState(saveCustomerId === undefined ? 1 : saveCustomerId);
   const [customerType, setCustomerType] = useState(
-    saveCustomeType === undefined ? 'new_customers' : saveCustomeType
+    saveCustomeType === undefined ? 'all_customers' : saveCustomeType
   );
-
   const [show, setShow] = useState(false);
   const customerArray = getCustomerData?.getUserOrder?.data ?? [];
   const payloadLength = Object.keys(getCustomerData?.getUserOrder)?.length ?? 0;
@@ -442,6 +441,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                 customerArray?.map((item, index) => {
                   const currentIndex = startIndex + index;
                   // setIndexStart(index);
+                  console.log('ietn', item?.user_details?.firstname);
                   return (
                     <TouchableOpacity
                       key={index}
@@ -467,7 +467,9 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                             {/* <Image source={userImage} style={styles.lovingStyleData} /> */}
                             <View style={{ flexDirection: 'column', marginLeft: 10 }}>
                               <Text style={styles.tableTextDataName}>
-                                {item?.user_details?.firstname}
+                                {item?.user_details?.firstname == undefined
+                                  ? 'Unknown'
+                                  : item?.user_details?.firstname}
                               </Text>
                               {item?.user_details ? (
                                 <Text
