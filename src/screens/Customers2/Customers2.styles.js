@@ -23,6 +23,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  flexAlignNew: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: 'rgba(0, 0, 0, 0.1)', // Shadow color
+    shadowOffset: { width: 1, height: 1 }, // Shadow offset
+    shadowOpacity: 0.8, // Shadow opacity
+    shadowRadius: 4, // Shadow radius
+    elevation: 2,
+    margin: 5,
+  },
   headerMainView: {
     width: windowWidth,
     paddingHorizontal: SW(16),
