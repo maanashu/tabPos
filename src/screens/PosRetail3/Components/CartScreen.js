@@ -653,7 +653,10 @@ export function CartScreen({
                 styles.checkoutButtonSideBar,
                 { opacity: cartData?.poscart_products?.length > 0 ? 1 : 0.7 },
               ]}
-              onPress={onPressPayNow}
+              onPress={() => {
+                onPressPayNow();
+                beforeDiscountCartLoad();
+              }}
               disabled={cartData?.poscart_products?.length > 0 ? false : true}
             >
               <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>

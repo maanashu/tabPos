@@ -607,7 +607,10 @@ export function CartServiceScreen({
                 styles.checkoutButtonSideBar,
                 { opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7 },
               ]}
-              onPress={onPressPayNow}
+              onPress={() => {
+                backCartLoad();
+                onPressPayNow();
+              }}
               disabled={cartServiceData?.appointment_cart_products?.length > 0 ? false : true}
             >
               <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
