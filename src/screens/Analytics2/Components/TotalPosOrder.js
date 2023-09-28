@@ -125,7 +125,7 @@ export function TotalPosOrder({ onPressReview }) {
         />
         <HeaderView
           image={totalOrders}
-          text={'Average order value'}
+          text={'Average Order Value'}
           count={
             posGraph?.ordersOverView?.averageValue
               ? '$' + posGraph?.ordersOverView?.averageValue?.toFixed(2)
@@ -162,7 +162,7 @@ export function TotalPosOrder({ onPressReview }) {
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Average Order View</Text>
+                <Text style={styles.revenueText}>Average Order Value</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>

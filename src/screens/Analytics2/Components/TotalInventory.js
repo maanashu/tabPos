@@ -69,7 +69,7 @@ export function TotalInventory() {
         <Text style={styles.revenueDataText}>{item?.products?.upc}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
-        <Text style={styles.revenueDataText}>${item?.products?.price}</Text>
+        <Text style={styles.revenueDataText}>${item?.supply_prices[0]?.selling_price}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting2}>
