@@ -216,6 +216,8 @@ const getCalendarActionButtonTitle = (status) => {
       return 'Mark Completed';
     case 3:
       return 'Completed';
+    case 4:
+      return 'Declined';
     case 5:
       return 'Cancelled';
 
