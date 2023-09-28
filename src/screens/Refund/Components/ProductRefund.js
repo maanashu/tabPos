@@ -111,7 +111,11 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   };
 
   const totalRefundAmount = orders?.reduce((accumulator, currentValue) => {
-    const totalRefund = accumulator + currentValue.totalRefundAmount;
+    const price =
+      applicableIsCheck || applyEachItem
+        ? currentValue.totalRefundAmount
+        : currentValue.price * currentValue.qty;
+    const totalRefund = accumulator + price;
     return totalRefund;
   }, 0);
 
@@ -238,7 +242,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              ${(item?.totalRefundAmount).toFixed(2) ?? 0}
+              $
+              {applicableIsCheck || applyEachItem
+                ? (item?.totalRefundAmount).toFixed(2) ?? 0
+                : item.price * item.qty}
             </Text>
           </View>
           <View style={{}}>
@@ -595,16 +602,14 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{strings.deliveryOrders.subTotal}</Text>
-                <Text style={styles.subTotalPrice}>{`$${totalRefundAmount}`}</Text>
+                <Text style={styles.subTotalPrice}>{`$${totalRefundAmount?.toFixed(2)}`}</Text>
               </View>
 
               <Spacer space={SH(10)} />
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{strings.deliveryOrders.totalTax}</Text>
-                <Text style={styles.subTotalPrice}>{`$${
-                  applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0
-                }`}</Text>
+                <Text style={styles.subTotalPrice}>{`$${calculateRefundTax().toFixed(2)}`}</Text>
               </View>
 
               {finalOrder?.order?.status === 5 ? (
@@ -629,9 +634,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                   {strings.wallet.total}
                 </Text>
                 <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
-                  {`$${
-                    applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0
-                  }`}
+                  {`$${totalRefundableAmount().toFixed(2)}`}
                 </Text>
               </View>
 
@@ -639,14 +642,11 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
               <TouchableOpacity
                 onPress={() => setIsCheckConfirmationModalVisible(true)}
-                disabled={buttonText === 'Applied' && orders?.length > 0 ? false : true}
+                disabled={orders?.length > 0 ? false : true}
                 style={[
                   styles.nextButtonStyle,
                   {
-                    backgroundColor:
-                      buttonText === 'Applied' && orders?.length > 0
-                        ? COLORS.primary
-                        : COLORS.gerySkies,
+                    backgroundColor: orders?.length > 0 ? COLORS.primary : COLORS.gerySkies,
                   },
                 ]}
               >
@@ -667,10 +667,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           backHandler={() => setChangeView('TotalItems')}
           payableAmount={totalRefundableAmount()}
           subTotal={totalRefundAmount}
-          totalTaxes={applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0}
+          totalTaxes={calculateRefundTax().toFixed(2)}
           deliveryShippingTitle={deliveryShippingCharges().title}
           deliveryShippingCharges={deliveryShippingCharges().deliveryCharges}
-          total={applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0}
+          total={totalRefundableAmount().toFixed(2)}
         />
       )}
 

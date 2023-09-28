@@ -220,6 +220,8 @@ const PaymentSelection = ({
           deliveryShippingTitle={deliveryShippingTitle}
           deliveryShippingCharges={deliveryShippingCharges}
           total={total}
+          applicableForAllItems={applicableForAllItems}
+          applyEachItem={applyEachItem}
         />
       </View>
 
