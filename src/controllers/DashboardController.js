@@ -250,7 +250,7 @@ export class DashboardController {
   }
 
   static async returnProduct(data, screen) {
-    const drawerId = store.getState()?.cashTracking?.getDrawerSession?.id;
+    const drawerId = store.getState().dashboard?.drawerSession?.id; //store.getState()?.cashTracking?.getDrawerSession?.id;
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.return;
       const body = { ...data, drawer_id: drawerId };

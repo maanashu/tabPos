@@ -111,7 +111,9 @@ const PaymentSelection = ({
         qty: item?.qty ?? 1,
         write_off_qty: item?.write_off_qty,
         add_to_inventory_qty: item?.add_to_inventory_qty,
-        refund_value: `${item?.totalRefundAmount}`,
+        refund_value: `${
+          applicableForAllItems || applyEachItem ? item?.totalRefundAmount : item?.price * item?.qty
+        }`,
       })) || [];
 
     const data = {
