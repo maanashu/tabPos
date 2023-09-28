@@ -85,6 +85,10 @@ export const en = {
     phoneNumber: 'Phone Number',
     emailAdd: 'Email Address',
     name: 'Name',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    customerNotSystem: 'Customer not in system',
+    alreadyInsystem: 'Already in system',
   },
   posSale: {
     onlyx: 'x',

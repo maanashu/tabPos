@@ -108,9 +108,7 @@ export const CartAmountPayBy = ({
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
   const qrcodeData = useSelector(getRetail).qrKey;
-
   const cartProducts = cartData?.poscart_products;
-  console.log('cartProducts', cartProducts?.length);
   const saveCartData = { ...getRetailData };
   const serviceCartId = getRetailData?.getserviceCart?.id;
   const servicCartId = getRetailData?.getserviceCart?.id;
@@ -185,7 +183,6 @@ export const CartAmountPayBy = ({
         cartId: cartData.id,
       };
       const res = await dispatch(updateCartByTip(data));
-
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
         dispatch(getQrCodee(cartData?.id));
         setQrPopUp(true);
@@ -736,7 +733,7 @@ export const CartAmountPayBy = ({
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Discount ( MIDApril100)</Text>
+              <Text style={styles._substotalTile}>Discount</Text>
               <Text style={styles._subTotalPrice}>
                 ${cartData?.amount?.discount?.toFixed(2) ?? '0.00'}
               </Text>

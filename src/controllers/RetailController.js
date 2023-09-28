@@ -732,7 +732,7 @@ export class RetailController {
             text2: error.msg,
             visibilityTime: 2000,
           });
-          reject(error.msg);
+          reject(error);
         });
     });
   }
@@ -1240,7 +1240,7 @@ export class RetailController {
             phone_no: data?.phoneNo,
           }
         : {
-            email: data?.phoneEmail,
+            email: data?.phoneEmail.trim(),
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
@@ -1270,7 +1270,6 @@ export class RetailController {
       const endpoint = data?.services
         ? ORDER_URL + ApiOrderInventory.qrcodeServices + `${cartId}`
         : ORDER_URL + ApiOrderInventory.qrCode + `${cartId}`;
-
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1303,8 +1302,6 @@ export class RetailController {
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
-
-            text2: error.msg,
             text2: error?.msg,
             visibilityTime: 2000,
           });

@@ -243,7 +243,6 @@ export class AuthController {
         USER_URL +
         ApiUserInventory.getPosUsers +
         `?page=${data.page}&limit=${data.limit}&seller_id=${data.seller_id}`;
-      console.log('Enspoint', endpoint);
       await HttpClient.get(endpoint)
         .then((response) => {
           if (response?.status_code === 200) {
