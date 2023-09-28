@@ -38,7 +38,7 @@ import {
 import CountryPicker from 'react-native-country-picker-modal';
 import { Table } from 'react-native-table-component';
 import { Dimensions } from 'react-native';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -102,7 +102,7 @@ export function Staff() {
   const [items, setItems] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
+  const [isLoadingBottom, setIsLoadingBottom] = useState(false);
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prevState) => !prevState);
   };
@@ -198,22 +198,20 @@ export function Staff() {
       </View>
     </TouchableOpacity>
   );
-  const isLoadingBottom = useSelector((state) =>
-    isLoadingSelector([TYPE.GET_ALL_POS_USERS], state)
-  );
+  // const isLoadingBottom = useSelector((state) =>
+  //   isLoadingSelector([TYPE.GET_ALL_POS_USERS], state)
+  // );
 
   const renderStaffFooter = useCallback(
     () => (
       <View
-        style={
-          {
-            // marginBottom: ms(20),
-          }
-        }
+        style={{
+          marginBottom: ms(20),
+        }}
       >
         {isLoadingBottom && (
           <ActivityIndicator
-            style={{ marginVertical: 14 }}
+            style={{ marginVertical: 10 }}
             size={'large'}
             color={COLORS.blueLight}
           />
@@ -222,15 +220,19 @@ export function Staff() {
     ),
     [isLoadingBottom]
   );
-  const onLoadMoreProduct = useCallback(() => {
+  const onLoadMoreProduct = useCallback(async () => {
     // console.log('sdasdas', posUserArray);
     if (posUserArraydata?.current_page < posUserArraydata?.total_pages) {
+      setIsLoadingBottom(true);
       const data = {
         page: posUserArraydata?.current_page + 1,
         limit: 10,
         seller_id: sellerID,
       };
-      dispatch(getAllPosUsers(data));
+      const Data = await dispatch(getAllPosUsers(data));
+      if (Data) {
+        setIsLoadingBottom(false);
+      }
     }
   }, [posUserArray]);
   const onRefresh = () => {
