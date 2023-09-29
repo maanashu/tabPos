@@ -373,6 +373,7 @@ export const returnProduct = (data, screen, callback) => async (dispatch) => {
     callback && callback(res);
     dispatch(returnProductSuccess(res?.payload));
   } catch (error) {
+    callback && callback(false);
     dispatch(returnProductError(error.message));
   }
 };

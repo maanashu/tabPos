@@ -35,7 +35,7 @@ export function AddServiceCartModal({
   const getRetailData = useSelector(getRetail);
   const itemData = getRetailData?.getOneService?.product_detail;
   const cartServiceData = getRetailData?.getserviceCart;
-  const timeSlotsData = getRetailData?.timeSlots.filter((timeSlot) => timeSlot.is_available);
+  const timeSlotsData = getRetailData?.timeSlots;
   const [posUserId, setposUserId] = useState(itemData?.pos_staff?.[0]?.user?.unique_uuid);
   const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff?.[0]?.user);
 
