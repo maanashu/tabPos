@@ -843,7 +843,7 @@ export const CartAmountPayBy = ({
                 maxLength={15}
                 returnKeyType="done"
                 keyboardType="number-pad"
-                value={phoneNumber.toString()}
+                value={phoneNumber?.toString()}
                 onChangeText={setPhoneNumber}
                 style={styles.textInputContainer}
                 placeholder={strings.verifyPhone.placeHolderText}
@@ -853,7 +853,7 @@ export const CartAmountPayBy = ({
             </View>
             <CustomKeyboard
               maxCharLength={15}
-              enteredValue={phoneNumber}
+              enteredValue={phoneNumber?.toString()}
               setEnteredValue={setPhoneNumber}
               onClosePress={closeHandler}
               onPayNowPress={() => {
@@ -901,7 +901,7 @@ export const CartAmountPayBy = ({
                 <TextInput
                   style={styles.textInput}
                   placeholder="you@you.mail"
-                  value={email.trim()}
+                  value={email?.trim()}
                   onChangeText={setEmail}
                   keyboardType="email-address"
                   placeholderTextColor={COLORS.solidGrey}

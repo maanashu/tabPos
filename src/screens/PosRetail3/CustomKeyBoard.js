@@ -63,7 +63,7 @@ export const CustomKeyboard = ({
               style={[
                 styles.acceptbtnContainer,
                 {
-                  backgroundColor: enteredValue.length > 0 ? COLORS.primary : COLORS.darkGray,
+                  backgroundColor: enteredValue?.length > 0 ? COLORS.primary : COLORS.darkGray,
                 },
               ]}
             >

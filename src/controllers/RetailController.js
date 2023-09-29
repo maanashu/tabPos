@@ -689,23 +689,11 @@ export class RetailController {
         phone_code: data?.countryCode,
         phone_no: data?.phoneNumber,
       };
-
-      console.log('endpoint', endpoint);
-      console.log('body', body);
-
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
-          Toast.show({
-            text2: error?.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
           reject(error);
         });
     });
