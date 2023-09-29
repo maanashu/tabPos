@@ -76,7 +76,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const userDetalLoader = useSelector((state) => isLoadingSelector([TYPES.GET_USERDETAIL], state));
 
   const saveAndAddCustomer = () => {
-    alert('in progress');
+    alert('only existing customer flow complete');
     return;
     if (!searchCustomer) {
       alert('Please enter phone number');
