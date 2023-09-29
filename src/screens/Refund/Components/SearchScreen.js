@@ -89,7 +89,7 @@ export function SearchScreen(props) {
       setSku(text);
       clearTimeout(debounceTimeout);
       debounceTimeout = setTimeout(() => {
-        if (text.includes('invoice_')) {
+        if (text.includes('Invoice_') || text.includes('invoice_')) {
           dispatch(scanBarCode(text));
         } else {
           dispatch(getOrdersByInvoiceId(text));
