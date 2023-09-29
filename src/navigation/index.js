@@ -22,12 +22,11 @@ export function RootNavigator() {
   const getSettingData = useSelector(getSetting);
   const merchantToken = auth?.merchantLoginData?.token;
   const posUserToken = posUser?.posLoginData?.token;
-
   const getLoginDeatil = getDashboardData?.posLoginDetail;
   const getSessionObj = getDashboardData?.getSesssion;
   const settingData = getSettingData?.getSetting;
   const ShiftTime = parseFloat(settingData?.staff_shift_hrs);
-  const [state, setState] = useState(AppState.currentState);
+  const [state, setState] = useState(false);
 
   useEffect(() => {
     const handleAppStateChange = (nextAppState) => {
@@ -51,9 +50,11 @@ export function RootNavigator() {
 
       const timeDifference = Math.abs(date2 - date1);
       const eightHoursInMilliseconds = ShiftTime * 60 * 60 * 1000;
-      if (timeDifference >= eightHoursInMilliseconds) {
+      // const testMiliseconds = 0.5 * 60 * 1000;
+      if (timeDifference >= eightHoursInMilliseconds && posUserToken) {
         endSession();
       } else {
+        console.log('shift time not expired');
       }
     }
   }, [state]);
@@ -71,7 +72,7 @@ export function RootNavigator() {
       dispatch(getDrawerSessionSuccess(null));
       dispatch(logoutUserFunction());
     } else {
-      alert('something went wrong');
+      console.log('session not ending');
     }
   };
 
