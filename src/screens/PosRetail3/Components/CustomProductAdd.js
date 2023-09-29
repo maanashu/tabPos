@@ -28,7 +28,7 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
   const [productName, setProductName] = useState();
   const [notes, setNotes] = useState();
   const [count, setCount] = useState(1);
-  const timeSlotsData = getRetailData?.timeSlots.filter((timeSlot) => timeSlot.is_available);
+  const timeSlotsData = getRetailData?.timeSlots;
 
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
