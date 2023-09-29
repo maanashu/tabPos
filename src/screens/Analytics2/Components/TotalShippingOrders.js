@@ -123,7 +123,7 @@ export function TotalShippingOrders({ onPressReview }) {
         />
         <HeaderView
           image={totalOrders}
-          text={'Average order value'}
+          text={'Average Order Value'}
           count={
             shippingGraph?.ordersOverView?.averageValue
               ? '$' + shippingGraph?.ordersOverView?.averageValue?.toFixed(2)
@@ -160,7 +160,7 @@ export function TotalShippingOrders({ onPressReview }) {
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting} numberOfLines={2}>
-                <Text style={styles.revenueText}>Average Order View</Text>
+                <Text style={styles.revenueText}>Average Order Value</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>

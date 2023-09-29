@@ -41,7 +41,7 @@ export function Invoices() {
     }
   }, [getSettingData?.getSetting]);
 
-  const clickHandler = id => {
+  const clickHandler = (id) => {
     if (id === 1) {
       const data = {
         invoice_sms_send_status: sms ? false : true,
@@ -71,39 +71,25 @@ export function Invoices() {
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={invoice2} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>
-                  {strings.settings.invoiveHeading}
-                </Text>
+                <Text style={styles.twoStepText}>{strings.settings.invoiveHeading}</Text>
                 <Spacer space={SH(10)} />
-                <Text style={styles.securitysubhead}>
-                  {strings.settings.invoiveSubHeading}
-                </Text>
+                <Text style={styles.securitysubhead}>{strings.settings.invoiveSubHeading}</Text>
                 <Spacer space={SH(20)} />
                 <View style={styles.twoStepMemberCon}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
                       <Image source={smsInvoice} style={styles.teamMember} />
                       <View style={styles.marginLeft}>
-                        <Text
-                          style={[styles.twoStepText, { fontSize: SF(14) }]}
-                        >
+                        <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                           {strings.settings.smshead}
                         </Text>
-                        <Text
-                          style={[styles.securitysubhead, { fontSize: SF(12) }]}
-                        >
+                        <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
                           {strings.settings.smsSubHead}
                         </Text>
                       </View>
                     </View>
-                    <TouchableOpacity
-                      style={styles.vectorIconCon}
-                      onPress={() => clickHandler(1)}
-                    >
-                      <Image
-                        source={sms ? vector : vectorOff}
-                        style={styles.toggleSecurity}
-                      />
+                    <TouchableOpacity style={styles.vectorIconCon} onPress={() => clickHandler(1)}>
+                      <Image source={sms ? vector : vectorOff} style={styles.toggleSecurity} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -112,26 +98,16 @@ export function Invoices() {
                     <View style={styles.dispalyRow}>
                       <Image source={emailInvoice} style={styles.teamMember} />
                       <View style={styles.marginLeft}>
-                        <Text
-                          style={[styles.twoStepText, { fontSize: SF(14) }]}
-                        >
+                        <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                           {strings.settings.emailHead}
                         </Text>
-                        <Text
-                          style={[styles.securitysubhead, { fontSize: SF(12) }]}
-                        >
+                        <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
                           {strings.settings.emailSubHead}
                         </Text>
                       </View>
                     </View>
-                    <TouchableOpacity
-                      style={styles.vectorIconCon}
-                      onPress={() => clickHandler(2)}
-                    >
-                      <Image
-                        source={email ? vector : vectorOff}
-                        style={styles.toggleSecurity}
-                      />
+                    <TouchableOpacity style={styles.vectorIconCon} onPress={() => clickHandler(2)}>
+                      <Image source={email ? vector : vectorOff} style={styles.toggleSecurity} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -140,26 +116,16 @@ export function Invoices() {
                     <View style={styles.dispalyRow}>
                       <Image source={printInvoice} style={styles.teamMember} />
                       <View style={styles.marginLeft}>
-                        <Text
-                          style={[styles.twoStepText, { fontSize: SF(14) }]}
-                        >
+                        <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                           {strings.settings.printHead}
                         </Text>
-                        <Text
-                          style={[styles.securitysubhead, { fontSize: SF(12) }]}
-                        >
+                        <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
                           {strings.settings.printSubHead}
                         </Text>
                       </View>
                     </View>
-                    <TouchableOpacity
-                      style={styles.vectorIconCon}
-                      onPress={() => clickHandler(3)}
-                    >
-                      <Image
-                        source={print ? vector : vectorOff}
-                        style={styles.toggleSecurity}
-                      />
+                    <TouchableOpacity style={styles.vectorIconCon} onPress={() => clickHandler(3)}>
+                      <Image source={print ? vector : vectorOff} style={styles.toggleSecurity} />
                     </TouchableOpacity>
                   </View>
                 </View>

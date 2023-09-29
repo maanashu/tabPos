@@ -25,7 +25,6 @@ export function AddCartDetailModal({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
-  console.log('productDetail', JSON.stringify(productDetail));
 
   // Remove HTML tags
   const withoutHtmlTags = productDetail?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');

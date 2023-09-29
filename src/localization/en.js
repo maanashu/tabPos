@@ -85,6 +85,10 @@ export const en = {
     phoneNumber: 'Phone Number',
     emailAdd: 'Email Address',
     name: 'Name',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    customerNotSystem: 'Customer not in system',
+    alreadyInsystem: 'Already in system',
   },
   posSale: {
     onlyx: 'x',
@@ -290,7 +294,8 @@ export const en = {
     basicSubHead: 'Everything you need to create a store, ship products, and process payments',
     getStart: 'Get Started',
     invoice: 'Invoices',
-    invoiveHeading: 'Taxes and duties',
+    invoiveHeading: 'Invoices',
+    // invoiveHeading: 'Taxes and duties',
     invoiveSubHeading:
       'Add a curbside, drive-through, or in-store pickup. Specify your business hours, the pickup location, and add a brief instruction on how the pickup works for customers.',
     smshead: 'Sms to phone number ',

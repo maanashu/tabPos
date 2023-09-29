@@ -73,8 +73,6 @@ export function SessionHistoryTable({
     posUsers = mappedArray;
   }
 
-  console.log('DSASDASD', JSON.stringify(posUsers));
-
   const getFormattedTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();

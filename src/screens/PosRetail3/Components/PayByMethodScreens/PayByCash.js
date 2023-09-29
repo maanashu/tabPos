@@ -260,7 +260,6 @@ export const PayByCash = ({
                 renderItem={({ item, index }) => <AddedCartItemsCard item={item} index={index} />}
               />
             </View>
-
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Sub-Total</Text>
               <Text style={styles._subTotalPrice}>
@@ -269,7 +268,7 @@ export const PayByCash = ({
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Discount (MIDApril100)</Text>
+              <Text style={styles._substotalTile}>Discount</Text>
               <Text style={styles._subTotalPrice}>
                 ${cartData?.amount?.discount?.toFixed(2) ?? '0.00'}
               </Text>

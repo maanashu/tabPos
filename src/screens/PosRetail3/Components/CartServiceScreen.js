@@ -12,7 +12,9 @@ import {
   cross,
   eraser,
   holdCart,
+  newCustomer,
   notess,
+  plus,
   rightBack,
   search_light,
   sideKeyboard,
@@ -46,6 +48,9 @@ import { getServiceCartLength } from '@/selectors/CartSelector';
 import { useFocusEffect } from '@react-navigation/core';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { CustomProductAdd } from './CustomProductAdd';
+import { NewCustomerAdd } from './NewCustomerAdd';
+import { useCallback } from 'react';
+import { useMemo } from 'react';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -74,8 +79,7 @@ export function CartServiceScreen({
   const [unitPrice, setUnitPrice] = useState();
   const [cartProductId, setCartProductId] = useState();
   const [numPadModal, setNumPadModal] = useState(false);
-
-  console.log(getRetailData?.getserviceCart?.id);
+  const [newCustomerModal, setNewCustomerModal] = useState(false);
 
   useEffect(() => {
     const data = {
@@ -205,6 +209,10 @@ export function CartServiceScreen({
     crossHandler();
     getScreen('Service');
   };
+
+  const closeCustomerAddModal = useCallback(() => setNewCustomerModal(false), []);
+
+  const comeFrom = useMemo(() => 'Service', []);
 
   return (
     <View>
@@ -445,11 +453,18 @@ export function CartServiceScreen({
                   setNumPadModal(true);
                 }}
               >
-                <Image source={sideKeyboard} style={styles.keyboardIcon} />
+                <Image source={plus} style={styles.keyboardIcon} />
               </TouchableOpacity>
               <TouchableOpacity
+                style={styles.holdCartPad}
+                onPress={() => setNewCustomerModal((prev) => !prev)}
+              >
+                <Image source={newCustomer} style={styles.keyboardIcon} />
+              </TouchableOpacity>
+
+              <TouchableOpacity
                 style={[
-                  styles.holdCartCon,
+                  styles.holdCartPad,
                   { borderColor: holdServiceArray?.length > 0 ? COLORS.primary : COLORS.black },
                 ]}
                 onPress={serviceCartStatusHandler}
@@ -461,15 +476,6 @@ export function CartServiceScreen({
                     { tintColor: holdServiceArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
                   ]}
                 />
-
-                <Text
-                  style={[
-                    styles.holdCart,
-                    { color: holdServiceArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
-                  ]}
-                >
-                  {strings.dashboard.holdCart}
-                </Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.holdCartCon} onPress={clearCartHandler}>
                 <Image source={eraser} style={[styles.pause, { tintColor: COLORS.dark_grey }]} />
@@ -601,7 +607,10 @@ export function CartServiceScreen({
                 styles.checkoutButtonSideBar,
                 { opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7 },
               ]}
-              onPress={onPressPayNow}
+              onPress={() => {
+                backCartLoad();
+                onPressPayNow();
+              }}
               disabled={cartServiceData?.appointment_cart_products?.length > 0 ? false : true}
             >
               <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
@@ -624,6 +633,12 @@ export function CartServiceScreen({
       <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
           <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="service" />
+        </KeyboardAvoidingView>
+      </Modal>
+
+      <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
+        <KeyboardAvoidingView behavior="padding">
+          <NewCustomerAdd crossHandler={closeCustomerAddModal} comeFrom={comeFrom} />
         </KeyboardAvoidingView>
       </Modal>
     </View>

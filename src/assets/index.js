@@ -1,6 +1,8 @@
 export { default as homeIcon } from '@/assets/ic_home/ic_home.png';
 export { default as settingsIcon } from '@/assets/ic_settings/ic_settings.png';
 export { default as dropdown } from '@/assets/icons/ic_auth/dropdown.png';
+export { default as EyeHide } from '@/assets/ic_auth/EyeHide.png';
+export { default as EyeShow } from '@/assets/ic_auth/EyeShow.png';
 export { default as crossButton } from '@/assets/icons/ic_auth/crossButton.png';
 export { default as powerAuth } from '@/assets/icons/ic_auth/power.png';
 export { default as verifyIcon } from '@/assets/icons/ic_auth/verifyIcon.png';

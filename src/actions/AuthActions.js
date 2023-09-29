@@ -158,11 +158,13 @@ export const getAllPosUsers = (data, search) => async (dispatch, getState) => {
       storeData.pos_staff = [...storeData.pos_staff, ...pos_staff];
       dispatch(getAllPosUsersSuccess(storeData));
     }
+    return res.payload;
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAllPosUsersReset());
     }
     dispatch(getAllPosUsersError(error.message));
+    return error;
   }
 };
 

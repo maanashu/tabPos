@@ -32,11 +32,13 @@ import {
   userImage,
   vector,
   vectorOff,
+  EyeHide,
+  EyeShow,
 } from '@/assets';
 import CountryPicker from 'react-native-country-picker-modal';
 import { Table } from 'react-native-table-component';
 import { Dimensions } from 'react-native';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -57,6 +59,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { Snackbar } from 'react-native-paper';
 import { useRef } from 'react';
 import { useCallback } from 'react';
+import { RefreshControl } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
@@ -70,6 +73,7 @@ export function Staff() {
   const staffDetailData = getSettingData?.staffDetail;
   // const posUserArray = getAuth?.getAllPosUsers;
   const posUserArraydata = getAuth?.getAllPosUsersData;
+  console.log('PosUserArtaaa', JSON.stringify(posUserArraydata));
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
@@ -96,7 +100,12 @@ export function Staff() {
   const onEndReachedCalledDuringMomentum = useRef(false);
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState(null);
-
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isLoadingBottom, setIsLoadingBottom] = useState(false);
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prevState) => !prevState);
+  };
   // const onToggleSnackBar = (message) => {
   //   setVisible(!visible);
   //   setErrorMessage(message);
@@ -120,7 +129,7 @@ export function Staff() {
       dispatch(getPosUserRole(data));
       const Data = {
         page: 1,
-        limit: 10,
+        limit: 50,
         seller_id: sellerID,
       };
       dispatch(getAllPosUsers(Data));
@@ -189,22 +198,20 @@ export function Staff() {
       </View>
     </TouchableOpacity>
   );
-  const isLoadingBottom = useSelector((state) =>
-    isLoadingSelector([TYPE.GET_ALL_POS_USERS], state)
-  );
+  // const isLoadingBottom = useSelector((state) =>
+  //   isLoadingSelector([TYPE.GET_ALL_POS_USERS], state)
+  // );
 
   const renderStaffFooter = useCallback(
     () => (
       <View
-        style={
-          {
-            // marginBottom: ms(20),
-          }
-        }
+        style={{
+          marginBottom: ms(20),
+        }}
       >
         {isLoadingBottom && (
           <ActivityIndicator
-            style={{ marginVertical: 14 }}
+            style={{ marginVertical: 10 }}
             size={'large'}
             color={COLORS.blueLight}
           />
@@ -213,17 +220,29 @@ export function Staff() {
     ),
     [isLoadingBottom]
   );
-  const onLoadMoreProduct = useCallback(() => {
+  const onLoadMoreProduct = useCallback(async () => {
     // console.log('sdasdas', posUserArray);
     if (posUserArraydata?.current_page < posUserArraydata?.total_pages) {
+      setIsLoadingBottom(true);
       const data = {
         page: posUserArraydata?.current_page + 1,
         limit: 10,
         seller_id: sellerID,
       };
-      dispatch(getAllPosUsers(data));
+      const Data = await dispatch(getAllPosUsers(data));
+      if (Data) {
+        setIsLoadingBottom(false);
+      }
     }
   }, [posUserArray]);
+  const onRefresh = () => {
+    const Data = {
+      page: 1,
+      limit: 50,
+      seller_id: sellerID,
+    };
+    dispatch(getAllPosUsers(Data));
+  };
   const bodyView = () => {
     if (staffDetail) {
       return (
@@ -520,6 +539,14 @@ export function Staff() {
                         onEndReachedCalledDuringMomentum.current = false;
                       }
                     }}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={isRefreshing}
+                        onRefresh={onRefresh}
+                        tintColor="#000" // Change the color of the loading spinner
+                        title="Pull to Refresh" // Optional, you can customize the text
+                      />
+                    }
                   />
                 </View>
               </View>
@@ -617,6 +644,8 @@ export function Staff() {
       };
 
       const responseData = await dispatch(creatPostUser(data));
+      // console.log('datdsats', JSON.stringify(responseData));
+      // return;
       if (responseData) {
         setIsLoading(false);
         if (responseData?.error) {
@@ -636,8 +665,8 @@ export function Staff() {
           });
 
           const Data = {
-            page: posUserArraydata?.current_page + 1,
-            limit: 10,
+            page: 1,
+            limit: 50,
             seller_id: getAuth?.merchantLoginData?.uniqe_id,
           };
           dispatch(getAllPosUsers(Data));
@@ -736,7 +765,12 @@ export function Staff() {
         </View>
       </Modal>
 
-      <Modal animationType="slide" transparent={true} isVisible={staffModal}>
+      <Modal
+        animationIn={'slideInUp'}
+        animationOut={'slideOutDown'}
+        transparent={true}
+        isVisible={staffModal}
+      >
         {!isColorModal ? (
           <View pointerEvents={isLoading ? 'none' : 'auto'} style={[styles.addStaffModalCon]}>
             <View style={styles.addCartConHeader}>
@@ -817,8 +851,9 @@ export function Staff() {
                 </View>
                 <Spacer space={SW(10)} />
                 <Text style={styles.phoneText}>{'One Time Password'}</Text>
-                <View style={styles.textInputView}>
+                <View style={[styles.textInputView, { flexDirection: 'row' }]}>
                   <TextInput
+                    secureTextEntry={!isPasswordVisible}
                     maxLength={15}
                     returnKeyType={'done'}
                     keyboardType={'number-pad'}
@@ -826,11 +861,20 @@ export function Staff() {
                     onChangeText={(text) => {
                       setPosPassword(text);
                     }}
-                    style={styles.textInputContainer}
+                    style={[styles.textInputContainer, { width: windowWidth * 0.4 }]}
                     placeholder={'Password'}
                     placeholderTextColor={COLORS.darkGray}
                     // showSoftInputOnFocus={false}
                   />
+                  <TouchableOpacity
+                    onPress={togglePasswordVisibility}
+                    style={{ height: 24, width: 24 }}
+                  >
+                    <Image
+                      source={isPasswordVisible ? EyeShow : EyeHide}
+                      style={{ resizeMode: 'contain', height: 24, width: 24 }}
+                    />
+                  </TouchableOpacity>
                 </View>
                 <Spacer space={SW(10)} />
                 <Text style={styles.phoneText}>{'Email Address'}</Text>

@@ -41,6 +41,7 @@ import {
   getAllCartSuccess,
   getAvailableOffer,
   getOneProduct,
+  getUserDetailSuccess,
   productUpdatePrice,
   updateCartQty,
 } from '@/actions/RetailAction';
@@ -58,6 +59,8 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { CustomProductAdd } from './CustomProductAdd';
 import { NewCustomerAdd } from './NewCustomerAdd';
+import { useCallback } from 'react';
+import { useMemo } from 'react';
 
 export function CartScreen({
   onPressPayNow,
@@ -92,14 +95,13 @@ export function CartScreen({
   const [productItem, setProductItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState();
 
-  console.log('getRetailData?.getAllCart', getRetailData?.getAllCart?.id);
-
   useEffect(() => {
     const data = {
       seller_id: sellerID,
       servicetype: 'product',
     };
     dispatch(getAvailableOffer(data));
+    dispatch(getUserDetailSuccess([]));
   }, []);
 
   // hold cart Function
@@ -256,6 +258,13 @@ export function CartScreen({
     }
   };
 
+  const closeCustomerAddModal = useCallback(() => {
+    setNewCustomerModal(false);
+    dispatch(getUserDetailSuccess([]));
+  }, []);
+
+  const comeFrom = useMemo(() => 'Product', []);
+
   return (
     <View>
       <View style={styles.homeScreenCon}>
@@ -377,7 +386,10 @@ export function CartScreen({
                             )}
                           </View>
                           <View style={styles.productCartBody}>
-                            <View style={styles.listCountCon}>
+                            <View
+                              style={styles.listCountCon}
+                              pointerEvents={cartEditItem ? 'none' : 'auto'}
+                            >
                               <TouchableOpacity
                                 style={{
                                   width: SW(10),
@@ -495,30 +507,7 @@ export function CartScreen({
                   ]}
                 />
               </TouchableOpacity>
-              {/* <TouchableOpacity
-                style={[
-                  styles.holdCartCon,
-                  { borderColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.black },
-                ]}
-                onPress={cartStatusHandler}
-              >
-                <Image
-                  source={holdCart}
-                  style={[
-                    styles.pause,
-                    { tintColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
-                  ]}
-                />
 
-                <Text
-                  style={[
-                    styles.holdCart,
-                    { color: holdProductArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
-                  ]}
-                >
-                  {strings.dashboard.holdCart}
-                </Text>
-              </TouchableOpacity> */}
               <TouchableOpacity style={styles.holdCartCon} onPress={clearCartHandler}>
                 <Image source={eraser} style={[styles.pause, { tintColor: COLORS.dark_grey }]} />
                 <Text style={styles.holdCart}>{strings.dashboard.clearcart}</Text>
@@ -664,7 +653,10 @@ export function CartScreen({
                 styles.checkoutButtonSideBar,
                 { opacity: cartData?.poscart_products?.length > 0 ? 1 : 0.7 },
               ]}
-              onPress={onPressPayNow}
+              onPress={() => {
+                onPressPayNow();
+                beforeDiscountCartLoad();
+              }}
               disabled={cartData?.poscart_products?.length > 0 ? false : true}
             >
               <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
@@ -704,7 +696,7 @@ export function CartScreen({
 
       <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
         <KeyboardAvoidingView behavior="padding">
-          <NewCustomerAdd crossHandler={() => setNewCustomerModal(false)} comeFrom="product" />
+          <NewCustomerAdd crossHandler={closeCustomerAddModal} comeFrom={comeFrom} />
         </KeyboardAvoidingView>
       </Modal>
     </View>

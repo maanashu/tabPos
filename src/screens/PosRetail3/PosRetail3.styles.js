@@ -634,6 +634,10 @@ export const styles = StyleSheet.create({
     marginLeft: SH(10),
     borderRadius: 3,
   },
+  newCutomersaveCon: {
+    width: SH(160),
+    height: SH(40),
+  },
   discardBtnCon: {
     backgroundColor: COLORS.textInputBackground,
     width: SH(130),
@@ -2193,7 +2197,7 @@ export const styles = StyleSheet.create({
   },
 
   customProductCon: {
-    width: ms(350),
+    width: ms(320),
     height: ms(310),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
@@ -2387,16 +2391,64 @@ export const styles = StyleSheet.create({
     borderWidth: 0,
     alignItems: 'center',
     flexDirection: 'row',
-    height: windowHeight * 0.09,
-    // width: windowWidth * 0.35,
+    height: windowHeight * 0.07,
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 5,
     fontFamily: Fonts.Italic,
   },
   newCusAdd: {
     color: COLORS.dark_grey,
-    fontSize: ms(8),
+    fontSize: ms(7),
     fontFamily: Fonts.Medium,
     marginVertical: ms(4),
+  },
+  searchCustomerCon: {
+    borderWidth: 1,
+    height: windowHeight * 0.07,
+    borderRadius: 10,
+    borderColor: COLORS.solidGrey,
+    paddingHorizontal: SW(2),
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  sideSearchStyle: {
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+    marginLeft: moderateScale(5),
+    marginRight: moderateScale(5),
+    tintColor: COLORS.gerySkies,
+  },
+  searchCustomerInput: {
+    flex: 1,
+    fontFamily: Fonts.Italic,
+    fontSize: SF(11),
+    color: COLORS.solid_grey,
+  },
+
+  newFirstName: {
+    width: ms(140),
+    height: windowHeight * 0.07,
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 5,
+    fontFamily: Fonts.Italic,
+    paddingHorizontal: SW(4),
+  },
+  customerNotSystem: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(7),
+    color: COLORS.red,
+    marginVertical: ms(4),
+  },
+  customerDarkLabel: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(8),
+    color: COLORS.solid_grey,
+  },
+  customerLightdata: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(9),
+    color: COLORS.darkGray,
+    marginTop: ms(3),
   },
 });

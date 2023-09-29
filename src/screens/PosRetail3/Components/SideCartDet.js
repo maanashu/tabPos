@@ -155,10 +155,11 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
 
   const clearCartHandler = () => {
     dispatch(clearAllCart());
-    dispatch(clearLocalCart())
+    dispatch(clearLocalCart());
     crossHandler();
   };
   const userDetalLoader = useSelector((state) => isLoadingSelector([TYPES.GET_USERDETAIL], state));
+
   const phoneNumberSearchFun = (customerPhoneNo) => {
     if (customerPhoneNo?.length > 9) {
       dispatch(getUserDetail(customerPhoneNo));
@@ -167,6 +168,7 @@ export function SideCartDet({ onPressPayNow, crossHandler }) {
       dispatch(getUserDetailSuccess([]));
     }
   };
+
   const removeOneCartHandler = (productId) => {
     const data = {
       cartId: cartData?.id,

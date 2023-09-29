@@ -79,7 +79,6 @@ export function DashBoard({ navigation }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
-
   const getDashboardData = useSelector(getDashboard);
   const getProductListArray = getDashboardData?.searchProductList;
   const getLoginDeatil = getDashboardData?.posLoginDetail;
@@ -87,7 +86,6 @@ export function DashBoard({ navigation }) {
   const getPosUser = getUserData?.posLoginData;
   const onLineOrder = getDashboardData?.onLineOrders?.onLineOrders?.onlineOrders;
   const TotalSale = getDashboardData?.getTotalSale;
-
   const todayCashAmount = TotalSale?.[3]?.total_sale_amount.toFixed(2);
   const todayJbrAmount = TotalSale?.[1]?.total_sale_amount.toFixed(2);
   const todayCardAmount = TotalSale?.[2]?.total_sale_amount.toFixed(2);

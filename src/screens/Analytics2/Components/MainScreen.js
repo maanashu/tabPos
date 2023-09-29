@@ -25,7 +25,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
     { length: Math.ceil(dataLabels?.length / labelInterval) },
     (_, index) => {
       const labelValue = (index + 1) * labelInterval;
-      return labelValue <= maxLabel ? labelValue : maxLabel.toString();
+      return labelValue <= maxLabel ? labelValue : maxLabel?.toString();
     }
   );
 
@@ -70,7 +70,7 @@ export function MainScreen({
   const getPosUser = getUserData?.posLoginData;
 
   const interval = 2;
-  const maxLabel = 30;
+  const maxLabel = analyticStatistics?.profit?.graph_data?.labels?.length;
   const daysLength = 7;
 
   const dataLabelsProfit = analyticStatistics?.profit?.graph_data?.labels;
@@ -134,7 +134,7 @@ export function MainScreen({
             header="Gross Profit"
             subHeader={
               analyticStatistics?.profit?.total_count
-                ? '$' + analyticStatistics?.profit?.total_count
+                ? '$' + analyticStatistics?.profit?.total_count?.toFixed(2)
                 : '0'
             }
             analyticGraphObject={analyticStatistics}
@@ -160,7 +160,7 @@ export function MainScreen({
             header="Total Revenue"
             subHeader={
               analyticStatistics?.revenue?.total_count
-                ? '$' + analyticStatistics?.revenue?.total_count
+                ? '$' + analyticStatistics?.revenue?.total_count?.toFixed(2)
                 : '0'
             }
             analyticGraphObject={analyticStatistics}
@@ -185,7 +185,7 @@ export function MainScreen({
             header="Total Costs"
             subHeader={
               analyticStatistics?.cost?.total_count
-                ? '$' + analyticStatistics?.cost?.total_count
+                ? '$' + analyticStatistics?.cost?.total_count?.toFixed(2)
                 : '0'
             }
             analyticGraphObject={analyticStatistics}

@@ -88,18 +88,36 @@ export const CartAmountPayBy = ({
   const getUserData = useSelector(getUser);
   const updateData = useSelector(getRetail).updateQuantityy;
   const getSettingData = useSelector(getSetting);
+  // console.log('getSetting data', JSON.stringify(getSettingData));
   // jbrcoin: getSettingData?.getSetting?.accept_jbr_coin_payment,
   // cash: getSettingData?.getSetting?.accept_cash_payment,
   // card: getSettingData?.getSetting?.accept_card_payment,
-  const paymentMethodData = [
-    { title: 'Cash', icon: moneyIcon, status: getSettingData?.getSetting?.accept_cash_payment },
-    {
+  const paymentMethodData = [];
+
+  if (Object.keys(getSettingData?.getSetting).length > 0) {
+    paymentMethodData.push(
+      { title: 'Cash', icon: moneyIcon, status: getSettingData.getSetting.accept_cash_payment },
+      {
+        title: 'JBR Coin',
+        icon: qrCodeIcon,
+        status: true,
+      },
+      { title: 'Card', icon: cardPayment, status: getSettingData.getSetting.accept_card_payment }
+    );
+  } else {
+    paymentMethodData.push({
       title: 'JBR Coin',
       icon: qrCodeIcon,
-      status: getSettingData?.getSetting?.accept_jbr_coin_payment,
-    },
-    { title: 'Card', icon: cardPayment, status: getSettingData?.getSetting?.accept_card_payment },
-  ];
+      status: true,
+    });
+  }
+  const receiptData = [{ title: 'No e-recipe', icon: cardPayment }];
+  if (getSettingData?.getSetting?.invoice_sms_send_status) {
+    receiptData.unshift({ title: 'SMS', icon: cardPayment });
+  }
+  if (getSettingData?.getSetting?.invoice_email_send_status) {
+    receiptData.unshift({ title: 'Email', icon: cardPayment });
+  }
   const filteredPaymentMethods = paymentMethodData.filter((item) => item.status);
   const getAuthdata = useSelector(getAuthData);
 
@@ -108,9 +126,7 @@ export const CartAmountPayBy = ({
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
   const qrcodeData = useSelector(getRetail).qrKey;
-
   const cartProducts = cartData?.poscart_products;
-  console.log('cartProducts', cartProducts?.length);
   const saveCartData = { ...getRetailData };
   const serviceCartId = getRetailData?.getserviceCart?.id;
   const servicCartId = getRetailData?.getserviceCart?.id;
@@ -185,7 +201,6 @@ export const CartAmountPayBy = ({
         cartId: cartData.id,
       };
       const res = await dispatch(updateCartByTip(data));
-
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
         dispatch(getQrCodee(cartData?.id));
         setQrPopUp(true);
@@ -540,7 +555,6 @@ export const CartAmountPayBy = ({
                 ))}
               </View>
             </View>
-
             {selectedTipIndex !== null ? (
               <View
                 style={{
@@ -635,20 +649,20 @@ export const CartAmountPayBy = ({
               >
                 <Text style={styles.selectTips}>E-Recipe</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  {RECIPE_DATA.map((item, index) => (
+                  {receiptData.map((item, index) => (
                     <TouchableOpacity
                       onPress={() => {
                         // onPressPaymentMethod({ method: item.title, index: index }),
                         setSelectedRecipeIndex(index);
                         setSelectedRecipeMethod(item.title);
-                        if (index == 0) {
+                        if (item.title == 'SMS') {
                           setPhonePopVisible(true);
                           setPhoneNumber('');
                           //getTipPress();
-                        } else if (index == 1) {
+                        } else if (item.title == 'Email') {
                           setEmailModal(true);
                           //getTipPress();
-                        } else if (index == 2) {
+                        } else if (item.title == 'No e-recipe') {
                           getTipPress(), payNowHandler(), payNowByphone(selectedTipAmount);
                         }
                       }}
@@ -736,7 +750,7 @@ export const CartAmountPayBy = ({
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Discount ( MIDApril100)</Text>
+              <Text style={styles._substotalTile}>Discount</Text>
               <Text style={styles._subTotalPrice}>
                 ${cartData?.amount?.discount?.toFixed(2) ?? '0.00'}
               </Text>

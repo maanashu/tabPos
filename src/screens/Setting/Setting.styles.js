@@ -1198,7 +1198,7 @@ export const styles = StyleSheet.create({
   },
   addStaffModalCon: {
     width: windowWidth * 0.5,
-    height: windowHeight * 0.8,
+    height: windowHeight * 0.94,
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: 10,
