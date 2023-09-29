@@ -67,7 +67,11 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               </Text>
               <Text style={styles._kAddress}>{sellerDetailData?.phone_number ?? '-'}</Text>
               <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
-                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
+                {`Invoice No. #${
+                  singleOrderDetail?.invoices?.invoice_number == undefined
+                    ? ''
+                    : singleOrderDetail?.invoices?.invoice_number
+                }` ?? '-'}
               </Text>
               <View style={styles._flatListContainer}>
                 <FlatList
@@ -260,7 +264,13 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               </Text>
               <Text style={styles._kAddress}>{sellerDetailData?.phone_number ?? '-'}</Text>
               <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
-                {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'}
+                {/* {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'} */}
+
+                {`Invoice No. #${
+                  singleOrderDetail?.invoices?.invoice_number == undefined
+                    ? ''
+                    : singleOrderDetail?.invoices?.invoice_number
+                }` ?? '-'}
               </Text>
               <View style={styles._flatListContainer}>
                 <FlatList

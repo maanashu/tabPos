@@ -441,7 +441,6 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                 customerArray?.map((item, index) => {
                   const currentIndex = startIndex + index;
                   // setIndexStart(index);
-                  console.log('ietn', item?.user_details?.firstname);
                   return (
                     <TouchableOpacity
                       key={index}

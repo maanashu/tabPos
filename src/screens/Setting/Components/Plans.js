@@ -58,7 +58,9 @@ export function Plans() {
       }
     });
   }
-
+  const getActiveSubLoader = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ACTIVE_SUBSCRIPTION], state)
+  );
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.BUY_SUBSCRIPTION], state));
 
   const planTagItem = ({ item }) => {
@@ -275,8 +277,11 @@ export function Plans() {
   );
   return (
     <View>
-      {Object.keys(activePlan).length > 0 && renderPlanView()}
-      {Object.keys(activePlan).length <= 0 && renderBuyView()}
+      {getActiveSubLoader && (
+        <ActivityIndicator style={{ marginTop: ms(50) }} size={'large'} color={COLORS.primary} />
+      )}
+      {Object.keys(activePlan).length > 0 && !getActiveSubLoader && renderPlanView()}
+      {Object.keys(activePlan).length <= 0 && !getActiveSubLoader && renderBuyView()}
 
       <Modal animationType="fade" transparent={true} isVisible={planModal}>
         <View style={styles.planModalcon}>

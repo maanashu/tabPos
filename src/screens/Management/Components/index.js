@@ -61,6 +61,7 @@ export function SessionHistoryTable({
   const [show, setShow] = useState(false);
   const [staffSelect, setStaffSelect] = useState('');
   const [formattedDate, setFormattedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
   const staffSelection = (value) => setStaffSelect(value);
   const getAuth = useSelector(getAuthData);
   // const posUserArray = getAuth?.getAllPosUsers;
@@ -114,6 +115,7 @@ export function SessionHistoryTable({
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
     setDate(fullDate);
     setFormattedDate(formattedDate);
+    setSelectedDate(formattedDate);
   };
   const onDateApply = (selectedDate) => {
     // setSessionHistoryArray([]);
@@ -134,6 +136,7 @@ export function SessionHistoryTable({
     if (newDateFormat) {
       const fullDate = moment(selectedDate).format('YYYY/MM/DD');
       setDateformat(newDateFormat);
+      setSelectedDate(newDateFormat);
       setDate(fullDate);
       dispatch(getSessionHistory(newDateFormat));
     }
@@ -142,11 +145,20 @@ export function SessionHistoryTable({
     setShow(false);
     setDateformat('');
     setDate(new Date());
+    setSelectedDate(null);
     dispatch(getSessionHistory());
   };
   useEffect(() => {
     const newDateFormat = moment(formattedDate).format('YYYY-MM-DD');
-    dispatch(getSessionHistory(newDateFormat, staffSelect));
+    if (staffSelect !== 'none') {
+      dispatch(getSessionHistory(newDateFormat, staffSelect));
+    } else {
+      if (selectedDate == null) {
+        dispatch(getSessionHistory());
+      } else {
+        dispatch(getSessionHistory(newDateFormat));
+      }
+    }
   }, [staffSelect]);
 
   // const tableDataArrayReverse = tableDataArray?.reverse();
@@ -306,7 +318,10 @@ export function SessionHistoryTable({
                             }}
                           />
                           <Text style={[styles.tableTextData, { marginLeft: ms(5) }]}>
-                            {item?.pos_user_detail?.user_profiles?.firstname}
+                            {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
+                            {item?.pos_user_detail?.user_profiles?.firstname == undefined
+                              ? 'Unknown'
+                              : item?.pos_user_detail?.user_profiles?.firstname}
                           </Text>
                         </View>
                       </View>
