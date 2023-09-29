@@ -50,7 +50,7 @@ export function RootNavigator() {
 
       const timeDifference = Math.abs(date2 - date1);
       const eightHoursInMilliseconds = ShiftTime * 60 * 60 * 1000;
-      // const testMiliseconds = 0.5 * 60 * 1000;
+      // const eightHoursInMilliseconds = 0.5 * 60 * 1000;
       if (timeDifference >= eightHoursInMilliseconds && posUserToken) {
         endSession();
       } else {
