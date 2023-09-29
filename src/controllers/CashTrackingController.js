@@ -125,12 +125,9 @@ export class CashTrackingController {
       const endpoint = urlAccDate(newDateFormat);
       HttpClient.get(endpoint)
         .then((response) => {
-          // console.log('SEESSSdfssdfsdf', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
-          console.log('SEESSSdfssdferrororr', JSON.stringify(error));
-
           Toast.show({
             text2: 'History not found',
             position: 'bottom',

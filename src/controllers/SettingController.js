@@ -7,16 +7,13 @@ export class SettingController {
   static async getSetting() {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
-      console.log('setting__Selelelee', sellerID);
       const endpoint =
         USER_URL + ApiUserInventory.getSetting + `/?app_name=pos&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('setting_respomnse', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
-          console.log('setting_error', JSON.stringify(error));
           if (error.statusCode !== 204) {
             Toast.show({
               text2: error.msg,
@@ -36,7 +33,6 @@ export class SettingController {
       const endpoint = USER_URL + ApiUserInventory.getSetting;
       const body = data;
       (body.seller_id = sellerID), (body.app_name = 'pos');
-      console.log('body', data);
       HttpClient.patch(endpoint, body)
         .then((response) => {
           resolve(response);

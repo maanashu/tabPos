@@ -74,7 +74,6 @@ export function Staff() {
   const staffDetailData = getSettingData?.staffDetail;
   // const posUserArray = getAuth?.getAllPosUsers;
   const posUserArraydata = getAuth?.getAllPosUsersData;
-  console.log('PosUserArtaaa', JSON.stringify(posUserArraydata));
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);

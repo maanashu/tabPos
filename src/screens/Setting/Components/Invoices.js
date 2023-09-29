@@ -23,7 +23,6 @@ import { upadteApi } from '@/actions/SettingAction';
 export function Invoices() {
   const dispatch = useDispatch();
   const getSettingData = useSelector(getSetting);
-  console.log('dfsdf', JSON.stringify(getSettingData));
   const data = {
     smsData: getSettingData?.getSetting?.invoice_sms_send_status,
     emailData: getSettingData?.getSetting?.invoice_email_send_status,
