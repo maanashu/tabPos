@@ -494,6 +494,7 @@ export function Calender() {
               <TouchableOpacity
                 onPress={() => {
                   setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
+                  setshouldShowCalendarModeOptions(true);
                   setSelectedStaffEmployeeId(null);
                   if (selectedStaffEmployeeId) {
                     setshowEmployeeHeader(true);
