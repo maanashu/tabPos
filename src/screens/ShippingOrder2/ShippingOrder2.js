@@ -34,6 +34,7 @@ import CurrentShippingStatus from './Components/CurrentShippingStatus';
 import { getReviewDefault, acceptOrder } from '@/actions/DeliveryAction';
 
 import styles from './ShippingOrder2.styles';
+import { useFocusEffect } from '@react-navigation/native';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -59,6 +60,11 @@ export function ShippingOrder2() {
     dispatch(getShippingOrderstatistics());
     dispatch(orderStatusCount(sellerID));
   }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(orderStatusCount(sellerID));
+    }, [])
+  );
 
   useEffect(() => {
     if (ordersList?.length > 0) {
@@ -85,6 +91,7 @@ export function ShippingOrder2() {
   const onPressDrawerHandler = (key) => {
     setOpenShippingOrders(key);
     dispatch(getReviewDefault(key, 4));
+    dispatch(orderStatusCount(sellerID));
   };
 
   const onpressViewHandler = (id) => {
