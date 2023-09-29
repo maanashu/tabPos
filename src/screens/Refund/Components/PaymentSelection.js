@@ -63,6 +63,7 @@ const PaymentSelection = ({
   const [isEmailVisible, setIsEmailVisible] = useState(false);
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState(null);
   const [isReturnConfirmation, setIsReturnConfirmation] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onCheckSelectedReceipt = (index) => {
     if (index === 0) {
@@ -90,10 +91,6 @@ const PaymentSelection = ({
       </TouchableOpacity>
     );
   };
-
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.RETURN_PRODUCTS], state)
-  );
 
   const closeHandler = () => {
     setSelectedRecipeIndex(null);
@@ -127,13 +124,17 @@ const PaymentSelection = ({
       }),
       ...(selectedRecipeIndex === 1 && { email }),
     };
-    dispatch(
-      returnProduct(data, (res) => {
-        if (res) {
-          setIsReturnConfirmation(true);
-        }
-      })
-    );
+
+    const callback = (res) => {
+      if (res) {
+        setIsLoading(false);
+        setIsReturnConfirmation(true);
+      } else {
+        setIsLoading(false);
+      }
+    };
+    setIsLoading(true);
+    dispatch(returnProduct(data, 'refundPaymentSelection', callback));
   };
 
   const onPressreturn = () => {
