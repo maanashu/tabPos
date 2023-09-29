@@ -111,7 +111,7 @@ export class CashTrackingController {
   }
   static async getSessionHistory(newDateFormat, staff) {
     const urlAccDate = (newDateFormat) => {
-      if (newDateFormat !== undefined || (staff !== undefined) !== 'none') {
+      if (newDateFormat !== undefined || staff !== undefined) {
         return (
           USER_URL +
           ApiUserInventory.getSessionHistory +
@@ -125,9 +125,12 @@ export class CashTrackingController {
       const endpoint = urlAccDate(newDateFormat);
       HttpClient.get(endpoint)
         .then((response) => {
+          // console.log('SEESSSdfssdfsdf', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
+          console.log('SEESSSdfssdferrororr', JSON.stringify(error));
+
           Toast.show({
             text2: 'History not found',
             position: 'bottom',

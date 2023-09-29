@@ -146,7 +146,15 @@ export function SessionHistoryTable({
   };
   useEffect(() => {
     const newDateFormat = moment(formattedDate).format('YYYY-MM-DD');
-    dispatch(getSessionHistory(newDateFormat, staffSelect));
+    if (staffSelect !== 'none') {
+      dispatch(getSessionHistory(newDateFormat, staffSelect));
+    } else {
+      if (dateformat == '') {
+        dispatch(getSessionHistory());
+      } else {
+        dispatch(getSessionHistory(newDateFormat));
+      }
+    }
   }, [staffSelect]);
 
   // const tableDataArrayReverse = tableDataArray?.reverse();

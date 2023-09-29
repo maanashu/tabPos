@@ -70,6 +70,7 @@ export function Management() {
   const [sessionHistoryArray, setSessionHistoryArray] = useState(
     drawerData?.getSessionHistory ?? []
   );
+
   const drawerActivity = drawerData?.getDrawerSession?.drawer_activites;
   const historyById = drawerData?.getDrawerSessionById?.[0];
   const [addCash, setAddCash] = useState(false);
