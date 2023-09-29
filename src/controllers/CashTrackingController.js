@@ -111,16 +111,19 @@ export class CashTrackingController {
   }
   static async getSessionHistory(newDateFormat, staff) {
     const urlAccDate = (newDateFormat) => {
-      if (newDateFormat !== undefined || staff !== undefined) {
+      if (newDateFormat !== undefined && staff !== undefined && staff !== '') {
         return (
           USER_URL +
           ApiUserInventory.getSessionHistory +
           `?filter_date=${newDateFormat}&pos_user_id=${staff}`
         );
+      } else if (newDateFormat !== undefined) {
+        return USER_URL + ApiUserInventory.getSessionHistory + `?filter_date=${newDateFormat}`;
       } else {
         return USER_URL + ApiUserInventory.getSessionHistory;
       }
     };
+
     return new Promise((resolve, reject) => {
       const endpoint = urlAccDate(newDateFormat);
       HttpClient.get(endpoint)

@@ -61,6 +61,7 @@ export function SessionHistoryTable({
   const [show, setShow] = useState(false);
   const [staffSelect, setStaffSelect] = useState('');
   const [formattedDate, setFormattedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
   const staffSelection = (value) => setStaffSelect(value);
   const getAuth = useSelector(getAuthData);
   // const posUserArray = getAuth?.getAllPosUsers;
@@ -114,6 +115,7 @@ export function SessionHistoryTable({
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
     setDate(fullDate);
     setFormattedDate(formattedDate);
+    setSelectedDate(formattedDate);
   };
   const onDateApply = (selectedDate) => {
     // setSessionHistoryArray([]);
@@ -134,6 +136,7 @@ export function SessionHistoryTable({
     if (newDateFormat) {
       const fullDate = moment(selectedDate).format('YYYY/MM/DD');
       setDateformat(newDateFormat);
+      setSelectedDate(newDateFormat);
       setDate(fullDate);
       dispatch(getSessionHistory(newDateFormat));
     }
@@ -142,6 +145,7 @@ export function SessionHistoryTable({
     setShow(false);
     setDateformat('');
     setDate(new Date());
+    setSelectedDate(null);
     dispatch(getSessionHistory());
   };
   useEffect(() => {
@@ -149,7 +153,7 @@ export function SessionHistoryTable({
     if (staffSelect !== 'none') {
       dispatch(getSessionHistory(newDateFormat, staffSelect));
     } else {
-      if (dateformat == '') {
+      if (selectedDate == null) {
         dispatch(getSessionHistory());
       } else {
         dispatch(getSessionHistory(newDateFormat));
