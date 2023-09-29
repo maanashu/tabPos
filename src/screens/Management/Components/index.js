@@ -306,7 +306,10 @@ export function SessionHistoryTable({
                             }}
                           />
                           <Text style={[styles.tableTextData, { marginLeft: ms(5) }]}>
-                            {item?.pos_user_detail?.user_profiles?.firstname}
+                            {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
+                            {item?.pos_user_detail?.user_profiles?.firstname == undefined
+                              ? 'Unknown'
+                              : item?.pos_user_detail?.user_profiles?.firstname}
                           </Text>
                         </View>
                       </View>

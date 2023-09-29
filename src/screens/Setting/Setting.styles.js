@@ -1273,7 +1273,7 @@ export const styles = StyleSheet.create({
     height: SW(9),
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: SW(2),
+    // marginTop: SW(2),
   },
   walletConfigMain: {
     // borderWidth: 1,

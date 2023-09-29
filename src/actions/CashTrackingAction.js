@@ -86,6 +86,7 @@ export const getDrawerSessions = () => async (dispatch) => {
   dispatch(getDrawerSessionRequest());
   try {
     const res = await CashTrackingController.getDrawerSession();
+    console.log('dssdsd', res?.payload);
     dispatch(getDrawerSessionSuccess(res?.payload));
   } catch (error) {
     dispatch(getDrawerSessionError(error.message));
@@ -95,6 +96,7 @@ export const getPaymentDrawerSessions = (drawerId) => async (dispatch) => {
   dispatch(getPaymentDrawerHistoryRequest());
   try {
     const res = await CashTrackingController.getPaymentDrawerSessions(drawerId);
+    console.log('DATTATAA', res?.payload);
     dispatch(getPaymentDrawerHistorySuccess(res?.payload));
   } catch (error) {
     dispatch(getPaymentDrawerHistoryError(error.message));

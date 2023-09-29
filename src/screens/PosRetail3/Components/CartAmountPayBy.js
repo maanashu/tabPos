@@ -112,12 +112,13 @@ export const CartAmountPayBy = ({
     });
   }
   const receiptData = [{ title: 'No e-recipe', icon: cardPayment }];
-  if (getSettingData?.getSetting?.invoice_sms_send_status) {
-    receiptData.unshift({ title: 'SMS', icon: cardPayment });
-  }
   if (getSettingData?.getSetting?.invoice_email_send_status) {
     receiptData.unshift({ title: 'Email', icon: cardPayment });
   }
+  if (getSettingData?.getSetting?.invoice_sms_send_status) {
+    receiptData.unshift({ title: 'SMS', icon: cardPayment });
+  }
+
   const filteredPaymentMethods = paymentMethodData.filter((item) => item.status);
   const getAuthdata = useSelector(getAuthData);
 
@@ -565,7 +566,8 @@ export const CartAmountPayBy = ({
                 <View
                   style={{
                     flexDirection: 'row',
-                    justifyContent: filteredPaymentMethods.length > 2 ? 'space-evenly' : null,
+
+                    //  justifyContent: filteredPaymentMethods.length > 2 ? 'space-evenly' : null,
                   }}
                 >
                   {filteredPaymentMethods.map((item, index) => (
@@ -648,7 +650,12 @@ export const CartAmountPayBy = ({
                 }}
               >
                 <Text style={styles.selectTips}>E-Recipe</Text>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    //  justifyContent: 'space-between'
+                  }}
+                >
                   {receiptData.map((item, index) => (
                     <TouchableOpacity
                       onPress={() => {

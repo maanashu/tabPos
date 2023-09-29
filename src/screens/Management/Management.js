@@ -195,7 +195,6 @@ export function Management() {
   const addRemoveLoad = useSelector((state) =>
     isLoadingSelector([TYPES.TRACK_SESSION_SAVE], state)
   );
-
   useEffect(() => {
     if (isFocused) {
       dispatch(getDrawerSessions());

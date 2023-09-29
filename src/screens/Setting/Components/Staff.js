@@ -15,6 +15,7 @@ import {
 import { styles } from '@/screens/Setting/Setting.styles';
 import { ColorPicker, fromHsv } from 'react-native-color-picker';
 import Toast from 'react-native-toast-message';
+import Slider from '@react-native-community/slider';
 import Modal from 'react-native-modal';
 import {
   addIcon,
@@ -93,6 +94,7 @@ export function Staff() {
   const [posPassword, setPosPassword] = useState('');
   const [isColorModal, setIsColorModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [oldColor, setOldColor] = useState(null);
   const userRoles = useSelector(getAppointmentSelector);
   const [visible, setVisible] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
@@ -892,18 +894,43 @@ export function Staff() {
                     // showSoftInputOnFocus={false}
                   />
                 </View>
+                <Spacer space={SW(10)} />
+                <View style={[styles.textInputView, { marginTop: 0 }]}>
+                  <DropDownPicker
+                    placeholder="Select Role"
+                    containerStyle={{
+                      // width: SW(50),
+                      height: SH(35),
+                      borderWidth: 0,
+                      justifyContent: 'center',
+                      // borderWidth: 1,
+                      borderRadius: 7,
+                      // borderColor: COLORS.blue_shade,
+                      marginTop: SW(2),
+                      borderColor: COLORS.textInputBackground,
+                      backgroundColor: COLORS.textInputBackground,
+                    }}
+                    style={{
+                      borderColor: COLORS.textInputBackground,
+                      backgroundColor: COLORS.textInputBackground,
+                    }}
+                    dropDownDirection="TOP"
+                    // dropdownPosition={'top'}
+                    open={open}
+                    value={value}
+                    items={posUsersRole}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    // setItems={setItems}
+                  />
+                </View>
 
                 <Spacer space={SW(10)} />
                 <View
-                  style={{
-                    flexDirection: 'row',
-                    paddingHorizontal: SW(5),
-                    justifyContent: 'space-between',
-                    // height: open ? SW(50) : 0,
-                  }}
+                  style={[styles.textInputView, { marginTop: 0, justifyContent: 'space-around' }]}
                 >
-                  <View>
-                    <Text>is staff member</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text>Staff Member</Text>
                     <TouchableOpacity
                       style={styles.vectorIconCon}
                       onPress={() => setIsStaff(!isStaff)}
@@ -911,7 +938,7 @@ export function Staff() {
                       <Image source={isStaff ? vector : vectorOff} style={styles.toggleSecurity} />
                     </TouchableOpacity>
                   </View>
-                  <View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text>Select Color</Text>
                     <TouchableOpacity
                       style={[
@@ -920,14 +947,17 @@ export function Staff() {
                           backgroundColor: fromHsv(selectedColor),
                           height: SW(10),
                           width: SW(30),
+                          marginLeft: ms(10),
                         },
                       ]}
-                      onPress={() => setIsColorModal(true)}
+                      onPress={() => {
+                        setOldColor(selectedColor), setIsColorModal(true);
+                      }}
                     >
                       {selectedColor !== null && <Text>{fromHsv(selectedColor)}</Text>}
                     </TouchableOpacity>
                   </View>
-                  <View>
+                  {/* <View>
                     <Text>Select Role</Text>
                     <DropDownPicker
                       placeholder="Select Role"
@@ -947,9 +977,9 @@ export function Staff() {
                       setValue={setValue}
                       // setItems={setItems}
                     />
-                  </View>
+                  </View> */}
                 </View>
-                <Spacer space={SW(10)} />
+                <Spacer space={SW(20)} />
               </View>
             </KeyboardAwareScrollView>
             {/* <Snackbar
@@ -968,31 +998,46 @@ export function Staff() {
               { paddingHorizontal: SW(10), justifyContent: 'space-between' },
             ]}
           >
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedColor(oldColor), setIsColorModal(false);
+              }}
+            >
+              <Image
+                source={crossButton}
+                style={[styles.crossBg, { height: SW(15), width: SW(15), alignSelf: 'flex-end' }]}
+              />
+            </TouchableOpacity>
             <ColorPicker
               defaultColor={fromHsv(selectedColor)}
               onColorChange={(color) => setSelectedColor(color)}
               onColorSelected={(color) => setSelectedColor(color)}
               style={{ flex: 1 }}
+              sliderComponent={Slider}
               // hideSliders
             />
-            <View style={styles.colorBottomCon}>
-              <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                  style={styles.continueBtnCon}
-                  onPress={() => {
-                    setIsColorModal(false);
-                  }}
-                >
-                  <Text style={styles.detailBtnCon}>Discard</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.addToCartCon}
-                  onPress={() => setIsColorModal(false)}
-                >
-                  <Text style={styles.addTocartText}>Done</Text>
-                </TouchableOpacity>
+            {selectedColor !== null && (
+              <View style={styles.colorBottomCon}>
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableOpacity
+                    style={styles.continueBtnCon}
+                    onPress={() => {
+                      setSelectedColor(oldColor);
+                      setIsColorModal(false);
+                    }}
+                  >
+                    <Text style={styles.detailBtnCon}>Discard</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.addToCartCon}
+                    onPress={() => setIsColorModal(false)}
+                  >
+                    <Text style={styles.addTocartText}>Done</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
+            )}
           </View>
         )}
         <Toast ref={(ref) => Toast.setRef(ref)} />
