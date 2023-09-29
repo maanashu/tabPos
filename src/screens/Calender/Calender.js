@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -71,6 +71,7 @@ export function Calender() {
   const [showRequestsView, setshowRequestsView] = useState(false);
   const [isCalendarSettingModalVisible, setisCalendarSettingModalVisible] = useState(false);
   const [showEmployeeHeader, setshowEmployeeHeader] = useState(false);
+  const [employeeHeaderLayouts, setEmployeeHeaderLayouts] = useState([]);
   const [showEventDetailModal, setshowEventDetailModal] = useState(false);
   const [eventData, setEventData] = useState({});
 
@@ -340,7 +341,22 @@ export function Calender() {
             const userProfile = item?.user?.user_profiles;
             const userRoles = item?.user?.user_roles[0]?.role?.name;
             return (
-              <View style={styles.headerEmployeeCard} key={index}>
+              <View
+                style={styles.headerEmployeeCard}
+                key={index}
+                onLayout={(event) => {
+                  const { x, y, width, height } = event.nativeEvent.layout;
+                  if (!employeeHeaderLayouts[index]?.width) {
+                    const array = [...employeeHeaderLayouts];
+                    array[index] = {
+                      ...event.nativeEvent.layout,
+                      user_id: userProfile?.user_id,
+                      firstname: userProfile?.firstname,
+                    };
+                    setEmployeeHeaderLayouts(array);
+                  }
+                }}
+              >
                 <Image
                   source={{
                     uri: userProfile?.profile_photo,
@@ -421,7 +437,14 @@ export function Calender() {
                     }
                   }}
                   renderEvent={(event, touchableOpacityProps, allEvents) =>
-                    CustomEventCell(event, touchableOpacityProps, allEvents, calendarMode)
+                    CustomEventCell(
+                      event,
+                      touchableOpacityProps,
+                      allEvents,
+                      calendarMode,
+                      employeeHeaderLayouts,
+                      showEmployeeHeader
+                    )
                   }
                 />
               ) : (

@@ -1,15 +1,28 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { getStartEndFormattedDate } from '@/utils/GlobalMethods';
 import { styles } from '../Calender.styles';
 import { CALENDAR_MODES } from '@/constants/enums';
 
-const CustomEventCell = (event, touchableOpacityProps, allEvents = [], calendarMode) => {
+const CustomEventCell = (
+  event,
+  touchableOpacityProps,
+  allEvents = [],
+  calendarMode,
+  employeeHeaderLayouts = [],
+  showEmployeeHeader = false
+) => {
   const posUserDetils = event?.completeData?.pos_user_details;
   const staffDetails = posUserDetils?.user?.user_profiles;
   const colorCode = posUserDetils?.color_code;
   const totalSlots = allEvents[0]?.completeData?.total_slots;
   const bookedSlots = allEvents[0]?.completeData?.booked_slots;
+
+  var employeeIndex = employeeHeaderLayouts.findIndex(
+    (data) => data?.user_id === staffDetails?.user_id
+  );
+  employeeIndex = employeeIndex > -1 ? employeeIndex : 0;
+
   return (
     <TouchableOpacity
       {...touchableOpacityProps}
@@ -17,6 +30,12 @@ const CustomEventCell = (event, touchableOpacityProps, allEvents = [], calendarM
         ...touchableOpacityProps.style,
         styles.eventContainer,
         { borderLeftColor: colorCode },
+        calendarMode === CALENDAR_MODES.DAY && showEmployeeHeader
+          ? {
+              width: '14.1%',
+              marginLeft: Dimensions.get('screen').width * 0.14 * employeeIndex,
+            }
+          : {},
       ]}
       activeOpacity={0.7}
     >
