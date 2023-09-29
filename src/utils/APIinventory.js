@@ -53,6 +53,7 @@ export const ApiUserInventory = {
   getPaymentHistory: 'drawer_management/payment/history',
   getAcceptMarketing: 'marketings/status',
   marketingUpdate: 'marketings',
+  getUserDetail: 'user_profiles/by-phone-number',
 };
 
 export const ApiProductInventory = {
@@ -154,6 +155,7 @@ export const ApiOrderInventory = {
   customProductAdd: 'poscarts/custom-product',
   customServiceAdd: 'appointment_carts/custom-product',
   getStoreLocation: 'orders/customers/city',
+  attachCustomerInService: 'appointment_carts/attach/user/',
 };
 
 export const ApiWalletInventory = {

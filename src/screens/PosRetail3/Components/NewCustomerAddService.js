@@ -20,6 +20,7 @@ import CountryPicker from 'react-native-country-picker-modal';
 import { strings } from '@/localization';
 import {
   attachCustomer,
+  attachCustomerInService,
   getUserDetail,
   getUserDetailSuccess,
   sendInvitation,
@@ -31,10 +32,10 @@ import { memo } from 'react';
 import { useEffect } from 'react';
 import { emailReg } from '@/utils/validators';
 
-export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
+export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-  const cartData = getRetailData?.getAllCart;
+  const cartServiceData = getRetailData?.getserviceCart;
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const [flag, setFlag] = useState('US');
@@ -110,12 +111,12 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
 
   const saveCustomer = () => {
     const data = {
-      cartId: cartData?.id,
+      cartId: cartServiceData?.id,
       userid: getuserDetailByNo?.user?.unique_uuid,
       customerAdd: 'customerAdd',
     };
     console.log(data);
-    dispatch(attachCustomer(data));
+    dispatch(attachCustomerInService(data));
     clearInput();
     crossHandler();
   };

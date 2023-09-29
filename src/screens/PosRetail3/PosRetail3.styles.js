@@ -2374,7 +2374,7 @@ export const styles = StyleSheet.create({
   },
   countryCodeText: {
     color: COLORS.black,
-    fontSize: SF(18),
+    fontSize: SF(15),
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(8),
   },
@@ -2422,7 +2422,7 @@ export const styles = StyleSheet.create({
   searchCustomerInput: {
     flex: 1,
     fontFamily: Fonts.Italic,
-    fontSize: SF(11),
+    fontSize: SF(12),
     color: COLORS.solid_grey,
   },
 

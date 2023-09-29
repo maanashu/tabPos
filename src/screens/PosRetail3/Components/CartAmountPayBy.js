@@ -125,6 +125,7 @@ export const CartAmountPayBy = ({
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+  console.log(JSON.stringify(cartData));
   const qrcodeData = useSelector(getRetail).qrKey;
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
@@ -139,10 +140,12 @@ export const CartAmountPayBy = ({
   const [phonePopVisible, setPhonePopVisible] = useState(false);
   const [emailModal, setEmailModal] = useState(false);
   const [qrPopUp, setQrPopUp] = useState(false);
+  // const [phoneNumber, setPhoneNumber] = useState(cartData?.user_details?.phone_no ?? '');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
+  console.log(phoneNumber, 'phoneNumber');
+  const [email, setEmail] = useState(cartData?.user_details?.email ?? '');
   const [flag, setFlag] = useState('US');
-  const [countryCode, setCountryCode] = useState('+1');
+  const [countryCode, setCountryCode] = useState(cartData?.user_details?.phone_code ?? '+1');
   const [walletIdInp, setWalletIdInp] = useState();
   const [walletFlag, setWalletFlag] = useState('US');
   const [walletCountryCode, setWalletCountryCode] = useState('+1');
@@ -163,6 +166,13 @@ export const CartAmountPayBy = ({
   // useEffect(() => {
   //   dispatch(getAllCart());
   // }, []);
+
+  useEffect(() => {
+    if (cartData?.user_details) {
+      setEmail(cartData?.user_details?.email);
+      setPhoneNumber(cartData?.user_details?.phone_no);
+    }
+  }, [cartData?.user_details]);
 
   const DATA = [
     { title: 'Cash', icon: moneyIcon },
@@ -343,9 +353,6 @@ export const CartAmountPayBy = ({
     const percentageValue = (percentage / 100) * parseFloat(value);
     return percentageValue.toFixed(2) ?? 0.0;
   }
-  const onChangePhoneNumber = (phone) => {
-    setPhoneNumber(phone);
-  };
   const payNowHandler = () => {
     onPressPaymentMethod({
       method: 'PayBy' + selectedPaymentMethod,
@@ -657,7 +664,7 @@ export const CartAmountPayBy = ({
                         setSelectedRecipeMethod(item.title);
                         if (item.title == 'SMS') {
                           setPhonePopVisible(true);
-                          setPhoneNumber('');
+                          // setPhoneNumber('');
                           //getTipPress();
                         } else if (item.title == 'Email') {
                           setEmailModal(true);
@@ -829,8 +836,8 @@ export const CartAmountPayBy = ({
                 maxLength={15}
                 returnKeyType="done"
                 keyboardType="number-pad"
-                value={phoneNumber.trim()}
-                onChangeText={onChangePhoneNumber}
+                value={phoneNumber.toString()}
+                onChangeText={setPhoneNumber}
                 style={styles.textInputContainer}
                 placeholder={strings.verifyPhone.placeHolderText}
                 placeholderTextColor={COLORS.darkGray}
@@ -876,7 +883,7 @@ export const CartAmountPayBy = ({
                   <TouchableOpacity
                     style={styles.crossButtonCon}
                     onPress={() => {
-                      setEmailModal(false), setSelectedRecipeIndex(null), setEmail('');
+                      setEmailModal(false), setSelectedRecipeIndex(null);
                     }}
                   >
                     <Image source={crossButton} style={styles.crossButton} />

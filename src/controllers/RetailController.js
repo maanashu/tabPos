@@ -682,23 +682,30 @@ export class RetailController {
     });
   }
 
-  static async getUserDetail(customerPhoneNo) {
+  static async getUserDetail(data) {
     return new Promise((resolve, reject) => {
-      const endpoint =
-        WALLET_URL +
-        ApiWalletInventory.getUserDetail +
-        `?page=1&limit=10&search=${customerPhoneNo}`;
-      HttpClient.get(endpoint)
+      const endpoint = USER_URL + ApiUserInventory.getUserDetail;
+      const body = {
+        phone_code: data?.countryCode,
+        phone_no: data?.phoneNumber,
+      };
+
+      console.log('endpoint', endpoint);
+      console.log('body', body);
+
+      HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          // Toast.show({
-          //   text2: error.msg,
-          //   position: 'bottom',
-          //   type: 'error_toast',
-          //   visibilityTime: 1500,
-          // });
+          console.log('error', error);
+          Toast.show({
+            text2: error?.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
           reject(error);
         });
     });
@@ -1201,7 +1208,12 @@ export class RetailController {
   static async attachCustomer(data) {
     return new Promise(async (resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.attachCustomer + `${data.cartId}`;
-      const body = data?.phoneNo
+      console.log('endpoint', endpoint);
+      const body = data?.customerAdd
+        ? {
+            user_id: data?.userid,
+          }
+        : data?.phoneNo
         ? {
             phone_code: data?.countryCode,
             phone_no: data?.phoneNo,
@@ -1209,8 +1221,11 @@ export class RetailController {
         : {
             email: data?.phoneEmail,
           };
+      console.log('endpoint', endpoint);
+      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response', response);
           Toast.show({
             position: 'bottom',
             type: 'success_toast',
@@ -1221,6 +1236,42 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async attachCustomerInService(data) {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.attachCustomerInService + `${data.cartId}`;
+      console.log('endpoint', endpoint);
+      const body = {
+        user_id: data?.userid,
+      };
+
+      console.log('endpoint', endpoint);
+      console.log('body', body);
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          console.log('response', response);
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: response?.msg,
+            visibilityTime: 2000,
+          });
+
+          resolve(response);
+        })
+        .catch((error) => {
+          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

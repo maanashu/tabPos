@@ -699,6 +699,28 @@ const attachCustomerError = (error) => ({
   payload: { error },
 });
 
+// atttach customer in service
+
+const attachCustomerInServiceRequest = () => ({
+  type: TYPES.ATTACH_CUSTOMER_INSERVICE_REQUEST,
+  payload: null,
+});
+
+const attachCustomerInServiceSuccess = () => ({
+  type: TYPES.ATTACH_CUSTOMER_INSERVICE_SUCCESS,
+  payload: null,
+});
+
+const attachCustomerInServiceReset = () => ({
+  type: TYPES.ATTACH_CUSTOMER_INSERVICE_RESET,
+  payload: null,
+});
+
+const attachCustomerInServiceError = (error) => ({
+  type: TYPES.ATTACH_CUSTOMER_INSERVICE_ERROR,
+  payload: { error },
+});
+
 const attachServiceCustomerRequest = () => ({
   type: TYPES.ATTACH_SERVICE_CUSTOMER_REQUEST,
   payload: null,
@@ -1305,11 +1327,11 @@ export const getProductBundle = (id) => async (dispatch) => {
   }
 };
 
-export const getUserDetail = (customerPhoneNo) => async (dispatch) => {
+export const getUserDetail = (data) => async (dispatch) => {
   dispatch(getUserDetailRequest());
   try {
-    const res = await RetailController.getUserDetail(customerPhoneNo);
-    dispatch(getUserDetailSuccess(res));
+    const res = await RetailController.getUserDetail(data);
+    dispatch(getUserDetailSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getUserDetailReset());
@@ -1533,12 +1555,27 @@ export const attachCustomer = (data) => async (dispatch) => {
   dispatch(attachCustomerRequest());
   try {
     const res = await RetailController.attachCustomer(data);
+    dispatch(getAllCart());
     return dispatch(attachCustomerSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(attachCustomerReset());
     }
     dispatch(attachCustomerError(error.message));
+  }
+};
+
+export const attachCustomerInService = (data) => async (dispatch) => {
+  dispatch(attachCustomerInServiceRequest());
+  try {
+    const res = await RetailController.attachCustomerInService(data);
+    dispatch(getServiceCart());
+    return dispatch(attachCustomerInServiceSuccess(res));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(attachCustomerInServiceReset());
+    }
+    dispatch(attachCustomerInServiceError(error.message));
   }
 };
 

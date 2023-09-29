@@ -10,7 +10,7 @@ const INITIALSTATE = {
   SeaProductList: [],
   getAllCart: [],
   productbunList: [],
-  getUserDetail: [],
+  getUserDetail: {},
   getWallet: {},
   walletGetByPhone: [],
   getTips: {},
@@ -160,12 +160,12 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.GET_USERDETAIL_SUCCESS:
       return {
         ...state,
-        getUserDetail: payload?.getUserDetail?.payload?.data ?? [],
+        getUserDetail: payload?.getUserDetail,
       };
     case TYPES.GET_USERDETAIL_RESET:
       return {
         ...state,
-        getUserDetail: [],
+        getUserDetail: {},
       };
     case TYPES.GET_WALLET_SUCCESS:
       return {

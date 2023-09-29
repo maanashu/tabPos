@@ -273,7 +273,6 @@ export const PayByCash = ({
                 ${cartData?.amount?.discount?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
-
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Total Taxes</Text>

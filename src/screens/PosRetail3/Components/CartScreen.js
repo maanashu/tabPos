@@ -263,7 +263,7 @@ export function CartScreen({
     dispatch(getUserDetailSuccess([]));
   }, []);
 
-  const comeFrom = useMemo(() => 'Product', []);
+  const cartidFrom = useMemo(() => cartData?.id, []);
 
   return (
     <View>
@@ -696,7 +696,7 @@ export function CartScreen({
 
       <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
         <KeyboardAvoidingView behavior="padding">
-          <NewCustomerAdd crossHandler={closeCustomerAddModal} comeFrom={comeFrom} />
+          <NewCustomerAdd crossHandler={closeCustomerAddModal} cartid={cartidFrom} />
         </KeyboardAvoidingView>
       </Modal>
     </View>

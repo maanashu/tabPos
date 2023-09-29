@@ -51,6 +51,7 @@ import { CustomProductAdd } from './CustomProductAdd';
 import { NewCustomerAdd } from './NewCustomerAdd';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
+import { NewCustomerAddService } from './NewCustomerAddService';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -211,8 +212,6 @@ export function CartServiceScreen({
   };
 
   const closeCustomerAddModal = useCallback(() => setNewCustomerModal(false), []);
-
-  const comeFrom = useMemo(() => 'Service', []);
 
   return (
     <View>
@@ -457,6 +456,7 @@ export function CartServiceScreen({
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.holdCartPad}
+                // onPress={() => alert('appointment customer add in progress')}
                 onPress={() => setNewCustomerModal((prev) => !prev)}
               >
                 <Image source={newCustomer} style={styles.keyboardIcon} />
@@ -638,7 +638,7 @@ export function CartServiceScreen({
 
       <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
         <KeyboardAvoidingView behavior="padding">
-          <NewCustomerAdd crossHandler={closeCustomerAddModal} comeFrom={comeFrom} />
+          <NewCustomerAddService crossHandler={closeCustomerAddModal} />
         </KeyboardAvoidingView>
       </Modal>
     </View>

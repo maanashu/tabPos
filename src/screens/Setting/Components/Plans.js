@@ -30,7 +30,6 @@ export function Plans() {
   const isFocused = useIsFocused();
   const getPlanData = useSelector(getAllPlansData);
   const activeUserPlan = getPlanData?.activeSubscription;
-  console.log('activeee', activeUserPlan);
   // var activePlan = {};
   const [planModal, setPlanModal] = useState(false);
   const [selectedId, setSelectedId] = useState(1);

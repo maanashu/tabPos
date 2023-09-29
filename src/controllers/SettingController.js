@@ -12,7 +12,6 @@ export class SettingController {
         USER_URL + ApiUserInventory.getSetting + `/?app_name=pos&seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('setting_respomnse', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
