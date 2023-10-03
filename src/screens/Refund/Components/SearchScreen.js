@@ -31,6 +31,9 @@ import {
   scanBarCode,
 } from '@/actions/DashboardAction';
 import { getDrawerSessions } from '@/actions/CashTrackingAction';
+import ReturnOrderInvoice from './ReturnOrderInvoice';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TYPES } from '@/Types/AnalyticsTypes';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -41,7 +44,7 @@ export function SearchScreen(props) {
   const getSearchOrders = useSelector(getDashboard);
   const order = getSearchOrders?.invoiceSearchOrders;
   const param = props?.route?.params?.screen;
-
+  const orderReciept = useSelector(getAnalytics);
   const [sku, setSku] = useState();
   const [isVisibleManual, setIsVisibleManual] = useState(false);
   const [showProductRefund, setShowProductRefund] = useState(false);
@@ -66,7 +69,7 @@ export function SearchScreen(props) {
 
   useEffect(() => {
     setOrderDetail(order?.order?.order_details);
-  }, [order?.order?.order_details && sku]);
+  }, [order, sku]);
 
   const cartHandler = (id, count) => {
     const getArray = orderDetail?.findIndex((attr) => attr?.id === id);
@@ -122,6 +125,8 @@ export function SearchScreen(props) {
     isLoadingSelector([DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID], state)
   );
 
+  const isLoadingInvoice = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
+
   return (
     <View style={styles.container}>
       {!showProductRefund ? (
@@ -151,12 +156,18 @@ export function SearchScreen(props) {
               <OrderWithInvoiceNumber orderData={order} />
             </View>
 
-            <OrderDetail
-              orderData={order}
-              checkboxHandler={cartHandler}
-              enableModal={() => setIsVisibleManual(true)}
-              onPress={() => setShowProductRefund(true)}
-            />
+            {order?.order?.status === 9 && orderReciept?.getOrderData ? (
+              <View style={styles.invoiceContainer}>
+                <ReturnOrderInvoice orderDetail={orderReciept?.getOrderData} />
+              </View>
+            ) : (
+              <OrderDetail
+                orderData={order}
+                checkboxHandler={cartHandler}
+                enableModal={() => setIsVisibleManual(true)}
+                onPress={() => setShowProductRefund(true)}
+              />
+            )}
           </View>
 
           <ManualEntry
@@ -185,7 +196,7 @@ export function SearchScreen(props) {
             setIsVisible={setIsCheckConfirmationModalVisible}
           />
 
-          {isLoading ? (
+          {isLoading || isLoadingInvoice ? (
             <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.2)' }]}>
               <ActivityIndicator color={COLORS.primary} style={styles.loader} size={'large'} />
             </View>
@@ -265,4 +276,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: ms(10),
   },
+  invoiceContainer: { flex: 0.48, backgroundColor: COLORS.white, marginBottom: ms(10) },
 });

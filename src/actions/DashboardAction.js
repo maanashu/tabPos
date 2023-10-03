@@ -1,5 +1,6 @@
 import { DashboardController } from '@/controllers';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { getOrderData } from './AnalyticsAction';
 
 const getOrderDeliveriesRequest = () => ({
   type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_REQUEST,
@@ -336,14 +337,13 @@ export const getOrdersByInvoiceId = (invoice) => async (dispatch) => {
   try {
     const res = await DashboardController.getOrdersByInvoiceId(invoice);
     if (res?.payload?.order) {
-      res?.payload?.order?.order_details?.map((item, index) => {
-        if (item?.qty !== item?.returned_qty) {
-          dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
-        } else {
-          alert('Product already returned');
-          dispatch(getOrdersByInvoiceIdSuccess({}));
-        }
-      });
+      if (res?.payload?.order?.status === 9) {
+        dispatch(getOrderData(res?.payload?.order_id));
+      }
+      dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
+    } else if (res?.payload?.order === null) {
+      alert('Please enter order invoice number instead of return invoice number');
+      dispatch(getOrdersByInvoiceIdSuccess({ order_id }));
     }
   } catch (error) {
     if (error?.msg === 'Invalid invoice number!') {
@@ -383,14 +383,13 @@ export const scanBarCode = (data) => async (dispatch) => {
   try {
     const res = await DashboardController.scanBarCode(data);
     if (res?.payload?.order) {
-      res?.payload?.order?.order_details?.map((item, index) => {
-        if (item?.qty !== item?.returned_qty) {
-          dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
-        } else {
-          alert('Product already returned');
-          dispatch(getOrdersByInvoiceIdSuccess({}));
-        }
-      });
+      if (res?.payload?.order?.status === 9) {
+        dispatch(getOrderData(res?.payload?.order_id));
+      }
+      dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
+    } else if (res?.payload?.order === null) {
+      alert('Please enter order invoice number instead of return invoice number');
+      dispatch(getOrdersByInvoiceIdSuccess({ order_id }));
     }
   } catch (error) {
     if (error?.msg === 'Invalid code!') {
