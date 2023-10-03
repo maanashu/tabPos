@@ -586,7 +586,6 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.5,
     paddingTop: ms(5),
     paddingBottom: ms(20),
-    position: 'absolute',
     alignSelf: 'center',
   },
 
