@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   getGraphOrders,
+  getReviewDefault,
   getShippingOrderstatistics,
   orderStatusCount,
   todayCurrentStatus,
@@ -31,15 +32,17 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import TodayShippingStatus from './Components/TodayShippingStatus';
 import CurrentShippingStatus from './Components/CurrentShippingStatus';
-import { getReviewDefault, acceptOrder } from '@/actions/DeliveryAction';
+import { acceptOrder } from '@/actions/DeliveryAction';
 
 import styles from './ShippingOrder2.styles';
 import { useFocusEffect } from '@react-navigation/native';
+import { getShipping } from '@/selectors/ShippingSelector';
+import ReactNativeModal from 'react-native-modal';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
-  const getGraphOrderData = useSelector(getDelivery);
+  const getGraphOrderData = useSelector(getShipping);
   const getAnalyticsData = useSelector(getAnalytics);
   const ordersList = getGraphOrderData?.getReviewDef;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -51,20 +54,21 @@ export function ShippingOrder2() {
   const [getOrderDetail, setGetOrderDetail] = useState('');
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id);
   const [openWebView, setOpenWebView] = useState(false);
+  const [showLabelPdf, setShowLabelPdf] = useState(false);
 
-  useEffect(() => {
-    dispatch(todayShippingStatus(sellerID));
-    dispatch(todayCurrentStatus(sellerID));
-    dispatch(getReviewDefault(0, 4));
-    dispatch(getGraphOrders());
-    dispatch(getShippingOrderstatistics());
-    dispatch(orderStatusCount(sellerID));
-  }, []);
   useFocusEffect(
     React.useCallback(() => {
       dispatch(orderStatusCount(sellerID));
+      dispatch(todayShippingStatus(sellerID));
+      dispatch(todayCurrentStatus(sellerID));
+      dispatch(getReviewDefault(0, sellerID));
+      dispatch(getGraphOrders());
     }, [])
   );
+
+  useEffect(() => {
+    dispatch(getShippingOrderstatistics());
+  }, []);
 
   useEffect(() => {
     if (ordersList?.length > 0) {
@@ -90,7 +94,7 @@ export function ShippingOrder2() {
 
   const onPressDrawerHandler = (key) => {
     setOpenShippingOrders(key);
-    dispatch(getReviewDefault(key, 4));
+    dispatch(getReviewDefault(key, sellerID));
     dispatch(orderStatusCount(sellerID));
   };
 
@@ -137,7 +141,7 @@ export function ShippingOrder2() {
       acceptOrder(data, () => {
         alert('Order declined successfully');
         setViewAllOrders(false);
-        dispatch(getReviewDefault(0, 4));
+        dispatch(getReviewDefault(0, sellerID));
       })
     );
   };
@@ -218,7 +222,7 @@ export function ShippingOrder2() {
             style={styles.backView}
             onPress={() => {
               setOpenWebView(false);
-              dispatch(getReviewDefault(openShippingOrders, 4));
+              dispatch(getReviewDefault(openShippingOrders, sellerID));
             }}
           >
             <Image source={backArrow2} style={styles.backImageStyle} />
@@ -247,6 +251,28 @@ export function ShippingOrder2() {
           <ActivityIndicator color={COLORS.primary} size={'small'} style={styles.loader} />
         </View>
       ) : null}
+
+      {/* {showLabelPdf && (
+        <ReactNativeModal
+          style={{
+            flex: 1,
+            backgroundColor: COLORS.white,
+            alignSelf: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <WebView
+            source={{ uri: getAnalyticsData?.getOrderData?.shipping_labal?.url }}
+            style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}
+            startInLoadingState
+            renderLoading={() => (
+              <View style={styles.loader}>
+                <ActivityIndicator size={'large'} color={COLORS.primary} style={styles.loader} />
+              </View>
+            )}
+          />
+        </ReactNativeModal>
+      )} */}
     </>
   );
 }
