@@ -12,7 +12,11 @@ let invalidTokenAlertShown = false;
 
 const getTimeZone = RNLocalize.getTimeZone();
 
-const client = axios.create({});
+const client = axios.create({
+  headers: {
+    'Cache-Control': 'no-cache',
+  },
+});
 
 client.interceptors.request.use(async function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
@@ -31,13 +35,6 @@ client.interceptors.request.use(async function (config) {
     }
   };
 
-  // const getRole = () => {
-  //   if (API_URLS_USING_POS_USER_ACCESS_TOKEN(sellerID).includes(config.url)) {
-  //     return { token: register, appName: 'merchant' };
-  //   } else {
-  //     return { token: user, appName: 'pos' };
-  //   }
-  // };
   config.headers = {
     ...config.headers,
     timezone: getTimeZone,
