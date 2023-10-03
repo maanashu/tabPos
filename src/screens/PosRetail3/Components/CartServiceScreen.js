@@ -33,6 +33,7 @@ import {
   getAvailableOffer,
   getOneService,
   getServiceCartSuccess,
+  getUserDetailSuccess,
   serviceUpdatePrice,
   updateServiceCartQty,
 } from '@/actions/RetailAction';
@@ -88,6 +89,7 @@ export function CartServiceScreen({
       servicetype: 'service',
     };
     dispatch(getAvailableOffer(data));
+    dispatch(getUserDetailSuccess({}));
   }, []);
 
   // offline  cart Remove Function
@@ -211,7 +213,10 @@ export function CartServiceScreen({
     getScreen('Service');
   };
 
-  const closeCustomerAddModal = useCallback(() => setNewCustomerModal(false), []);
+  const closeCustomerAddModal = useCallback(() => {
+    setNewCustomerModal(false);
+    dispatch(getUserDetailSuccess({}));
+  }, []);
 
   return (
     <View>

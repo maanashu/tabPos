@@ -138,6 +138,7 @@ export function MainScreen({
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
+  console.log('serviceCartArray', serviceCartArray);
   const cartLength = CART_LENGTH;
   const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
@@ -195,19 +196,6 @@ export function MainScreen({
   const [onHold, setOnHold] = useState(false);
 
   const cartStatusHandler = async () => {
-    // const data =
-    //   holdProductArray?.length > 0
-    //     ? {
-    //         status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
-    //         cartId: holdProductArray?.[0]?.id,
-    //       }
-    //     : {
-    //         status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
-    //         cartId: getRetailData?.getAllCart?.id,
-    //       };
-    // dispatch(changeStatusProductCart(data));
-
-    //New Code------
     if (localCartArray.length > 0) {
       const dataToSend = {
         seller_id: sellerID,

@@ -75,7 +75,7 @@ export default memo(CurrentStatus);
 
 const styles = StyleSheet.create({
   currentStatusView: {
-    flex: 0.8,
+    flex: 1,
     borderRadius: 10,
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
@@ -90,14 +90,14 @@ const styles = StyleSheet.create({
   itemMainViewStyle: {
     borderWidth: 1,
     marginHorizontal: ms(12),
-    marginVertical: ms(3),
+    marginVertical: ms(6),
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.white,
     paddingHorizontal: ms(8),
     alignItems: 'center',
     flexDirection: 'row',
-    paddingVertical: ms(2),
+    paddingVertical: ms(6),
   },
   deliveryTypeImage: {
     width: ms(16),

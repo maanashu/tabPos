@@ -67,7 +67,8 @@ const OrderDetail = ({
                   color: COLORS.primary,
                 }}
               >
-                {userDetail?.invoice?.delivery_date ?? ''}
+                {userDetail?.invoice?.delivery_date ??
+                  moment(userDetail?.created_at).format('YYYY-MM-DD')}
               </Text>
               <Text
                 style={{
@@ -113,7 +114,9 @@ const OrderDetail = ({
                 {strings.shippingOrder.orderDate}
               </Text>
               <Text style={styles.itemCountText}>
-                {userDetail?.date ? moment(userDetail?.date).format('DD/MM/YYYY') : '00:00'}
+                {userDetail?.date
+                  ? moment(userDetail?.date).format('DD/MM/YYYY')
+                  : moment(userDetail?.created_at).format('YYYY-MM-DD')}
               </Text>
             </View>
 
@@ -122,7 +125,7 @@ const OrderDetail = ({
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                 {strings.shippingOrder.orderId}
               </Text>
-              <Text style={styles.itemCountText}>{userDetail?.id}</Text>
+              <Text style={styles.itemCountText}>{`#${userDetail?.id}`}</Text>
             </View>
 
             <Spacer space={SH(15)} />

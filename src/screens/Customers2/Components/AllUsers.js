@@ -475,11 +475,8 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                                   style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
                                   numberOfLines={1}
                                 >
-                                  {item?.user_details?.current_address?.street_address},
                                   {item?.user_details?.current_address?.city},
-                                  {item?.user_details?.current_address?.state},
-                                  {item?.user_details?.current_address?.country},
-                                  {item?.user_details?.current_address?.postal_code}
+                                  {item?.user_details?.current_address?.zipcode}
                                 </Text>
                               ) : (
                                 <Text></Text>

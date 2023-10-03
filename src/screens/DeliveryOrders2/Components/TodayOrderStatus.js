@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Dimensions } from 'react-native';
 
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     marginTop: SH(15),
     paddingVertical: ms(12),
     alignItems: 'flex-start',
+    width: Dimensions.get('window').width / 4,
     backgroundColor: COLORS.white,
   },
   orderStatusText: {

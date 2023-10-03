@@ -123,32 +123,6 @@ export function MainScreen({
         {getPosUser?.user_roles?.length > 0 ? (
           <View>
             <HomeGraph
-              header="Gross Profit"
-              subHeader={'0'}
-              disabled
-              style={{ backgroundColor: COLORS.mid_grey }}
-            />
-          </View>
-        ) : (
-          <HomeGraph
-            header="Gross Profit"
-            subHeader={
-              analyticStatistics?.profit?.total_count
-                ? '$' + analyticStatistics?.profit?.total_count?.toFixed(2)
-                : '0'
-            }
-            analyticGraphObject={analyticStatistics}
-            arrayLength={analyticStatistics?.profit?.graph_data?.datasets?.length}
-            onPress={onPressProfit}
-            labels={labelsProfit}
-            data={analyticStatistics?.profit?.graph_data?.datasets?.[0]?.data}
-            isLoading={isAnalyticStatisticLoading}
-          />
-        )}
-
-        {getPosUser?.user_roles?.length > 0 ? (
-          <View>
-            <HomeGraph
               header="Total Revenue"
               subHeader={'0'}
               disabled
@@ -193,6 +167,32 @@ export function MainScreen({
             onPress={onPressCost}
             labels={labelsCost}
             data={analyticStatistics?.cost?.graph_data?.datasets?.[0]?.data}
+            isLoading={isAnalyticStatisticLoading}
+          />
+        )}
+
+        {getPosUser?.user_roles?.length > 0 ? (
+          <View>
+            <HomeGraph
+              header="Gross Profit"
+              subHeader={'0'}
+              disabled
+              style={{ backgroundColor: COLORS.mid_grey }}
+            />
+          </View>
+        ) : (
+          <HomeGraph
+            header="Gross Profit"
+            subHeader={
+              analyticStatistics?.profit?.total_count
+                ? '$' + analyticStatistics?.profit?.total_count?.toFixed(2)
+                : '0'
+            }
+            analyticGraphObject={analyticStatistics}
+            arrayLength={analyticStatistics?.profit?.graph_data?.datasets?.length}
+            onPress={onPressProfit}
+            labels={labelsProfit}
+            data={analyticStatistics?.profit?.graph_data?.datasets?.[0]?.data}
             isLoading={isAnalyticStatisticLoading}
           />
         )}

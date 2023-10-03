@@ -54,6 +54,7 @@ import {
   qrCodeStatusSuccess,
   Servicesqrcodestatus,
   getAllCart,
+  getServiceCart,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -167,8 +168,8 @@ export const CartAmountPayBy = ({
 
   useEffect(() => {
     if (cartData?.user_details) {
-      setEmail(cartData?.user_details?.email);
-      setPhoneNumber(cartData?.user_details?.phone_no);
+      setEmail(cartData?.user_details?.email ?? '');
+      setPhoneNumber(cartData?.user_details?.phone_no ?? '');
     }
   }, [cartData?.user_details]);
 
@@ -211,8 +212,8 @@ export const CartAmountPayBy = ({
       const res = await dispatch(updateCartByTip(data));
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
         dispatch(getQrCodee(cartData?.id));
-        setQrPopUp(true);
-        // dispatch(getAllCart());
+        // setQrPopUp(true);
+        dispatch(getAllCart());
       }
     } else {
       const data = {
@@ -227,7 +228,8 @@ export const CartAmountPayBy = ({
           services: 'services',
         };
         dispatch(getQrCodee(serviceCartId, data));
-        setQrPopUp(true);
+        // setQrPopUp(true);
+        dispatch(getServiceCart());
       }
     }
   };
@@ -379,6 +381,7 @@ export const CartAmountPayBy = ({
       const data = {
         cartId: servicCartId,
         phoneNo: customerNo,
+        countryCode: countryCode,
       };
       const res = await dispatch(attachServiceCustomer(data));
       if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
@@ -710,6 +713,7 @@ export const CartAmountPayBy = ({
                 style={styles.jobrSaveView}
                 onPress={() => {
                   getTipPress();
+                  setQrPopUp(true);
                 }}
               >
                 {tipLoading ? (
@@ -837,7 +841,7 @@ export const CartAmountPayBy = ({
               <Image source={dropdown} style={styles.dropDownIcon} />
               <Text style={styles.countryCodeText}>{countryCode}</Text>
               <TextInput
-                maxLength={15}
+                maxLength={10}
                 returnKeyType="done"
                 keyboardType="number-pad"
                 value={phoneNumber?.toString()}

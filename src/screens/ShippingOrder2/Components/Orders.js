@@ -16,6 +16,7 @@ import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
 import { getDelivery } from '@/selectors/DeliverySelector';
+import moment from 'moment';
 
 const { height } = Dimensions.get('window');
 
@@ -23,44 +24,50 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
   const getOrdersData = useSelector(getDelivery);
   const ordersList = getOrdersData?.getReviewDef;
 
-  const renderOrderToReview = ({ item }) => (
-    <TouchableOpacity onPress={() => onViewAllHandler(item.id)} style={styles.orderRowStyle}>
-      <View style={styles.orderDetailStyle}>
-        <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={pin} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>{item?.distance ?? '-'}</Text>
+  const renderOrderToReview = ({ item }) => {
+    console.log('item----', item);
+    return (
+      <TouchableOpacity onPress={() => onViewAllHandler(item.id)} style={styles.orderRowStyle}>
+        <View style={styles.orderDetailStyle}>
+          <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={pin} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>{item?.distance ?? '-'}</Text>
+          </View>
         </View>
-      </View>
 
-      <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
-        <Text style={styles.nameTextStyle}>
-          {item?.order_details?.length > 1
-            ? `${item?.order_details?.length} Items`
-            : `${item?.order_details?.length} Item`}
-        </Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={pay} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>{item?.payable_amount ?? '00'}</Text>
-        </View>
-      </View>
-
-      <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
-        <Text style={styles.timeTextStyle}>{item?.invoice?.delivery_date ?? ''}</Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={clock} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>
-            {item?.preffered_delivery_start_time ?? '00.00'}
-            {'- ' + item?.preffered_delivery_end_time ?? '00.00'}
+        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
+          <Text style={styles.nameTextStyle}>
+            {item?.order_details?.length > 1
+              ? `${item?.order_details?.length} Items`
+              : `${item?.order_details?.length} Item`}
           </Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={pay} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>{item?.payable_amount ?? '00'}</Text>
+          </View>
         </View>
-      </View>
 
-      <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
-        <Image source={rightIcon} style={styles.rightIconStyle} />
+        <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
+          <Text style={styles.timeTextStyle}>
+            {item?.invoice?.delivery_date ?? moment(item?.created_at).format('YYYY-MM-DD')}
+          </Text>
+          <View style={styles.locationViewStyle}>
+            <Image source={clock} style={styles.pinImageStyle} />
+            <Text style={styles.distanceTextStyle}>
+              {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
+                item?.preffered_delivery_end_time ?? '00.00'
+              }`}
+            </Text>
+          </View>
+        </View>
+
+        <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
+          <Image source={rightIcon} style={styles.rightIconStyle} />
+        </TouchableOpacity>
       </TouchableOpacity>
-    </TouchableOpacity>
-  );
+    );
+  };
 
   const emptyComponent = () => (
     <View style={styles.emptyView}>

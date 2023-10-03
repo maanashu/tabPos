@@ -699,28 +699,6 @@ const attachCustomerError = (error) => ({
   payload: { error },
 });
 
-// atttach customer in service
-
-const attachCustomerInServiceRequest = () => ({
-  type: TYPES.ATTACH_CUSTOMER_INSERVICE_REQUEST,
-  payload: null,
-});
-
-const attachCustomerInServiceSuccess = () => ({
-  type: TYPES.ATTACH_CUSTOMER_INSERVICE_SUCCESS,
-  payload: null,
-});
-
-const attachCustomerInServiceReset = () => ({
-  type: TYPES.ATTACH_CUSTOMER_INSERVICE_RESET,
-  payload: null,
-});
-
-const attachCustomerInServiceError = (error) => ({
-  type: TYPES.ATTACH_CUSTOMER_INSERVICE_ERROR,
-  payload: { error },
-});
-
 const attachServiceCustomerRequest = () => ({
   type: TYPES.ATTACH_SERVICE_CUSTOMER_REQUEST,
   payload: null,
@@ -1565,24 +1543,11 @@ export const attachCustomer = (data) => async (dispatch) => {
   }
 };
 
-export const attachCustomerInService = (data) => async (dispatch) => {
-  dispatch(attachCustomerInServiceRequest());
-  try {
-    const res = await RetailController.attachCustomerInService(data);
-    dispatch(getServiceCart());
-    return dispatch(attachCustomerInServiceSuccess(res));
-  } catch (error) {
-    if (error?.statusCode === 204) {
-      dispatch(attachCustomerInServiceReset());
-    }
-    dispatch(attachCustomerInServiceError(error.message));
-  }
-};
-
 export const attachServiceCustomer = (data) => async (dispatch) => {
   dispatch(attachServiceCustomerRequest());
   try {
     const res = await RetailController.attachServiceCustomer(data);
+    dispatch(getServiceCart());
     return dispatch(attachServiceCustomerSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -1606,6 +1571,7 @@ export const updateCartByTip = (data) => async (dispatch) => {
   dispatch(updateCartByTipRequest());
   try {
     const res = await RetailController.getTip(data);
+
     return dispatch(updateCartByTipSuccess(res));
   } catch (error) {
     dispatch(updateCartByTipError(error.message));

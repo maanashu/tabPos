@@ -47,6 +47,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const [monthDays, setmonthDays] = useState([]);
   const getuserDetailByNo = getRetailData?.getUserDetail;
   const userLength = Object.keys(getuserDetailByNo)?.length;
+  console.log('getuserDetailByNo', getuserDetailByNo);
   const [defaultFlag, setDefaultFlag] = useState('US');
   const [defaultCountryCode, setDefaultCountryCode] = useState('+1');
   const [defaultPhoneNumber, setDefaultPhoneNumber] = useState(
@@ -76,8 +77,6 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const userDetalLoader = useSelector((state) => isLoadingSelector([TYPES.GET_USERDETAIL], state));
 
   const saveAndAddCustomer = () => {
-    alert('in progress');
-    return;
     if (!searchCustomer) {
       alert('Please enter phone number');
     } else if (!email) {
@@ -90,31 +89,31 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
       alert('Please enter last name');
     } else {
       const data = {
-        cartId: cartid,
-        userid: getuserDetailByNo?.user?.unique_uuid,
-        customerAdd: 'customerAdd',
+        cartId: cartData?.id,
+        email: email,
+        phoneCode: countryCode,
+        phoneNumber: searchCustomer,
+        firstName: firstName,
+        lastName: lastName,
       };
-      console.log(data);
+      console.log('data', data);
       dispatch(attachCustomer(data));
-      // const data = {
-      //   userPhoneNo: searchCustomer,
-      //   userFirstname: firstName,
-      //   userLastName: lastName,
-      //   userEmailAdd: email,
-      // };
-      // dispatch(sendInvitation(data));
-      // clearInput();
-      // crossHandler();
+      clearInput();
+      crossHandler();
     }
   };
 
   const saveCustomer = () => {
-    const data = {
-      cartId: cartData?.id,
-      userid: getuserDetailByNo?.user?.unique_uuid,
-      customerAdd: 'customerAdd',
-    };
-    console.log(data);
+    const data = getuserDetailByNo?.invitation?.id
+      ? {
+          cartId: cartData?.id,
+          invitationId: getuserDetailByNo?.invitation?.id,
+        }
+      : {
+          cartId: cartData?.id,
+          userid: getuserDetailByNo?.user?.unique_uuid,
+          customerAdd: 'customerAdd',
+        };
     dispatch(attachCustomer(data));
     clearInput();
     crossHandler();
@@ -269,57 +268,125 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
         ) : (
           <View>
             {userLength > 0 && detailArea ? (
-              <View>
-                <Spacer space={SH(20)} />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <View style={{ width: ms(140) }}>
-                    <Text style={styles.customerDarkLabel}>{strings.retail.firstName}</Text>
-                    <Text style={styles.customerLightdata}>{getuserDetailByNo?.firstname}</Text>
-                  </View>
-                  <View style={{ width: ms(140) }}>
-                    <Text style={styles.customerDarkLabel}>{strings.retail.lastName}</Text>
-                    <Text style={styles.customerLightdata}>{getuserDetailByNo?.lastname}</Text>
-                  </View>
-                </View>
-                <Spacer space={SH(18)} />
+              getuserDetailByNo?.invitation?.id ? (
                 <View>
-                  <Text style={styles.customerDarkLabel}>{strings.retail.phoneNumber}</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }} pointerEvents="none">
-                    <CountryPicker
-                      countryCode={flag}
-                      // withFilter
-                      // withCallingCode
-                      // disableNativeModal={true}
-                      visible={false}
-                    />
-                    <Image source={dropdown} style={styles.dropDownIcon} />
-                    {/* <Text style={styles.countryCodeText}>{countryCode}</Text> */}
-                    <TextInput
-                      maxLength={15}
-                      returnKeyType={'done'}
-                      keyboardType={'number-pad'}
-                      value={getuserDetailByNo?.full_phone_number}
-                      onChangeText={setDefaultPhoneNumber}
-                      style={styles.textInputContainer}
-                      placeholder={strings.verifyPhone.placeHolderText}
-                      placeholderTextColor={COLORS.gerySkies}
-                      editable={false}
-                      // showSoftInputOnFocus={false}
-                    />
+                  <Spacer space={SH(20)} />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <View style={{ width: ms(140) }}>
+                      <Text style={styles.customerDarkLabel}>{strings.retail.firstName}</Text>
+                      <Text style={styles.customerLightdata}>
+                        {getuserDetailByNo?.invitation?.firstname}
+                      </Text>
+                    </View>
+                    <View style={{ width: ms(140) }}>
+                      <Text style={styles.customerDarkLabel}>{strings.retail.lastName}</Text>
+                      <Text style={styles.customerLightdata}>
+                        {getuserDetailByNo?.invitation?.lastname}
+                      </Text>
+                    </View>
+                  </View>
+                  <Spacer space={SH(18)} />
+                  <View>
+                    <Text style={styles.customerDarkLabel}>{strings.retail.phoneNumber}</Text>
+                    <View
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                      pointerEvents="none"
+                    >
+                      <CountryPicker
+                        countryCode={flag}
+                        // withFilter
+                        // withCallingCode
+                        // disableNativeModal={true}
+                        visible={false}
+                      />
+                      <Image source={dropdown} style={styles.dropDownIcon} />
+                      <Text style={styles.countryCodeText}>
+                        {getuserDetailByNo?.invitation?.phone_code}
+                      </Text>
+                      <TextInput
+                        maxLength={15}
+                        returnKeyType={'done'}
+                        keyboardType={'number-pad'}
+                        value={getuserDetailByNo?.invitation?.phone_no}
+                        onChangeText={setDefaultPhoneNumber}
+                        style={styles.textInputContainer}
+                        placeholder={strings.verifyPhone.placeHolderText}
+                        placeholderTextColor={COLORS.gerySkies}
+                        editable={false}
+                        // showSoftInputOnFocus={false}
+                      />
+                    </View>
+                  </View>
+                  <Spacer space={SH(18)} />
+                  <View>
+                    <Text style={styles.customerDarkLabel}>{strings.retail.emailAdd}</Text>
+                    <Text style={styles.customerLightdata}>
+                      {getuserDetailByNo?.invitation?.email}
+                    </Text>
                   </View>
                 </View>
-                <Spacer space={SH(18)} />
+              ) : (
                 <View>
-                  <Text style={styles.customerDarkLabel}>{strings.retail.emailAdd}</Text>
-                  <Text style={styles.customerLightdata}>{getuserDetailByNo?.user?.email}</Text>
+                  <Spacer space={SH(20)} />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <View style={{ width: ms(140) }}>
+                      <Text style={styles.customerDarkLabel}>{strings.retail.firstName}</Text>
+                      <Text style={styles.customerLightdata}>{getuserDetailByNo?.firstname}</Text>
+                    </View>
+                    <View style={{ width: ms(140) }}>
+                      <Text style={styles.customerDarkLabel}>{strings.retail.lastName}</Text>
+                      <Text style={styles.customerLightdata}>{getuserDetailByNo?.lastname}</Text>
+                    </View>
+                  </View>
+                  <Spacer space={SH(18)} />
+                  <View>
+                    <Text style={styles.customerDarkLabel}>{strings.retail.phoneNumber}</Text>
+                    <View
+                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                      pointerEvents="none"
+                    >
+                      <CountryPicker
+                        countryCode={flag}
+                        // withFilter
+                        // withCallingCode
+                        // disableNativeModal={true}
+                        visible={false}
+                      />
+                      <Image source={dropdown} style={styles.dropDownIcon} />
+                      {/* <Text style={styles.countryCodeText}>{countryCode}</Text> */}
+                      <TextInput
+                        maxLength={15}
+                        returnKeyType={'done'}
+                        keyboardType={'number-pad'}
+                        value={getuserDetailByNo?.full_phone_number}
+                        onChangeText={setDefaultPhoneNumber}
+                        style={styles.textInputContainer}
+                        placeholder={strings.verifyPhone.placeHolderText}
+                        placeholderTextColor={COLORS.gerySkies}
+                        editable={false}
+                        // showSoftInputOnFocus={false}
+                      />
+                    </View>
+                  </View>
+                  <Spacer space={SH(18)} />
+                  <View>
+                    <Text style={styles.customerDarkLabel}>{strings.retail.emailAdd}</Text>
+                    <Text style={styles.customerLightdata}>{getuserDetailByNo?.user?.email}</Text>
+                  </View>
                 </View>
-              </View>
+              )
             ) : userLength == 0 && !detailArea ? null : (
               <View>
                 <Text style={styles.newCusAdd}>{strings.retail.phoneNumber}</Text>

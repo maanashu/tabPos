@@ -136,7 +136,7 @@ export function WeeklyTransaction({
         return 'Rejected';
         break;
       case 9:
-        return 'Returned';
+        return 'Refunded';
         break;
     }
   };
@@ -300,7 +300,7 @@ export function WeeklyTransaction({
               </View>
               <View style={styles.tableHeaderRight}>
                 <Text numberOfLines={1} style={styles.tableTextHea}>
-                  Transaction Id
+                  Invoice Number
                 </Text>
 
                 <View style={styles.flexAlign}>
@@ -367,10 +367,12 @@ export function WeeklyTransaction({
                           </View>
                         </View>
                         <View style={styles.tableHeaderRight}>
-                          <Text style={[styles.tableTextData, { fontSize: SF(12) }]}>
-                            {item.transaction_id ?? null}
+                          <Text
+                            style={[styles.tableTextData, { fontSize: SF(12), marginLeft: ms(15) }]}
+                          >
+                            {item?.invoices?.invoice_number ?? null}
                           </Text>
-                          <Spacer horizontal space={ms(35)} />
+                          <Spacer horizontal space={ms(20)} />
                           <Text style={styles.tableTextData}>
                             {DELIVERY_MODE[item?.delivery_option]}
                           </Text>

@@ -587,6 +587,7 @@ export const styles = StyleSheet.create({
     paddingTop: ms(5),
     paddingBottom: ms(20),
     alignSelf: 'center',
+    height: windowHeight * 0.88,
   },
 
   addCartConHeader: {
@@ -1005,13 +1006,13 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
     fontFamily: Fonts.Regular,
     fontSize: ms(5.5),
-    marginTop: ms(5),
+    marginTop: ms(3),
   },
   _subTotalPrice: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     fontSize: ms(5.5),
-    marginTop: ms(7),
+    marginTop: ms(4),
   },
   _horizontalLine: {
     height: ms(1),

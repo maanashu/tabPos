@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(28),
+    fontSize: SF(20),
     color: COLORS.dark_grey,
   },
   totalText: {

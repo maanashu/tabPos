@@ -31,6 +31,7 @@ export const FinalPaymentScreen = ({
   payDetail,
   cartType,
 }) => {
+  // console.log('payDetail', payDetail);
   const tipData = useSelector(getRetail).tipKey?.payload?.tip;
   const tipamount = Number(tipData);
   const getAuthdata = useSelector(getAuthData);
@@ -51,9 +52,12 @@ export const FinalPaymentScreen = ({
     return totalPayment.toFixed(2);
   };
 
-  const payAmount = totalPayAmount();
+  // const   payAmount = totalPayAmount();
+  const payAmount = cartData?.amount?.total_amount?.toFixed(2);
+  console.log('payAmount', payAmount);
   const ActualPayAmount = payDetail?.tips;
   const changeDue = parseFloat(ActualPayAmount) - parseFloat(payAmount);
+
   const dispatch = useDispatch();
   useFocusEffect(
     React.useCallback(() => {
@@ -171,7 +175,7 @@ export const FinalPaymentScreen = ({
               <Text
                 style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
               >
-                ${totalPayAmount()}
+                {/* ${totalPayAmount()} */}${cartData?.amount?.total_amount?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
             {/* <View style={styles._horizontalLine} /> */}
