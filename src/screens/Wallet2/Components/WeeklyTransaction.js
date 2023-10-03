@@ -233,7 +233,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
         return 'Rejected';
         break;
       case 9:
-        return 'Returned';
+        return 'Refunded';
         break;
     }
   };

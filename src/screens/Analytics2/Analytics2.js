@@ -370,38 +370,6 @@ export function Analytics2() {
                 <Spacer space={SH(25)} />
                 <TouchableOpacity
                   disabled={getPosUser?.user_roles?.length > 0 ? true : false}
-                  // style={[
-                  //   styles.bucketBackgorund,
-                  //   {
-                  //     backgroundColor:
-                  //       selectedScreen === 'TotalProfit'
-                  //         ? COLORS.primary
-                  //         : getPosUser?.user_roles?.length > 0
-                  //         ? COLORS.mid_grey
-                  //         : COLORS.white,
-                  //   },
-                  // ]}
-                  onPress={() => setselectedScreen('TotalProfit')}
-                >
-                  <Image
-                    source={profit}
-                    style={[
-                      styles.sideBarImage,
-                      {
-                        tintColor:
-                          selectedScreen === 'TotalProfit'
-                            ? COLORS.primary
-                            : getPosUser?.user_roles?.length > 0
-                            ? COLORS.mid_grey
-                            : COLORS.black,
-                      },
-                    ]}
-                  />
-                </TouchableOpacity>
-
-                <Spacer space={SH(20)} />
-                <TouchableOpacity
-                  disabled={getPosUser?.user_roles?.length > 0 ? true : false}
                   onPress={() => setselectedScreen('Revenue')}
                 >
                   <Image
@@ -432,6 +400,38 @@ export function Analytics2() {
                       {
                         tintColor:
                           selectedScreen === 'TotalCost'
+                            ? COLORS.primary
+                            : getPosUser?.user_roles?.length > 0
+                            ? COLORS.mid_grey
+                            : COLORS.black,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
+
+                <Spacer space={SH(20)} />
+                <TouchableOpacity
+                  disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+                  // style={[
+                  //   styles.bucketBackgorund,
+                  //   {
+                  //     backgroundColor:
+                  //       selectedScreen === 'TotalProfit'
+                  //         ? COLORS.primary
+                  //         : getPosUser?.user_roles?.length > 0
+                  //         ? COLORS.mid_grey
+                  //         : COLORS.white,
+                  //   },
+                  // ]}
+                  onPress={() => setselectedScreen('TotalProfit')}
+                >
+                  <Image
+                    source={profit}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'TotalProfit'
                             ? COLORS.primary
                             : getPosUser?.user_roles?.length > 0
                             ? COLORS.mid_grey
