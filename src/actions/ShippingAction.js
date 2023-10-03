@@ -329,10 +329,10 @@ export const getGraphOrders = () => async (dispatch) => {
   }
 };
 
-export const getShippingOrderstatistics = () => async (dispatch) => {
+export const getShippingOrderstatistics = (sellerId) => async (dispatch) => {
   dispatch(getShippingOrderstatisticsRequest());
   try {
-    const res = await ShippingController.getShippingOrderstatistics();
+    const res = await ShippingController.getShippingOrderstatistics(sellerId);
     console.log('getShippingOrderstatistics', res);
     dispatch(getShippingOrderstatisticsSuccess(res?.payload));
   } catch (error) {

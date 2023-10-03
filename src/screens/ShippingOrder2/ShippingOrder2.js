@@ -63,12 +63,9 @@ export function ShippingOrder2() {
       dispatch(todayCurrentStatus(sellerID));
       dispatch(getReviewDefault(0, sellerID));
       dispatch(getGraphOrders());
+      dispatch(getShippingOrderstatistics(sellerID));
     }, [])
   );
-
-  useEffect(() => {
-    dispatch(getShippingOrderstatistics());
-  }, []);
 
   useEffect(() => {
     if (ordersList?.length > 0) {

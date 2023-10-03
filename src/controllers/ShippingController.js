@@ -250,7 +250,7 @@ export class ShippingController {
     });
   }
 
-  static async getShippingOrderstatistics() {
+  static async getShippingOrderstatistics(sellerId) {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
