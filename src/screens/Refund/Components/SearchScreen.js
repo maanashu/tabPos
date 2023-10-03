@@ -30,6 +30,7 @@ import {
   getOrdersByInvoiceIdSuccess,
   scanBarCode,
 } from '@/actions/DashboardAction';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -59,6 +60,7 @@ export function SearchScreen(props) {
   }, [param]);
 
   useEffect(() => {
+    dispatch(getDrawerSessions());
     setShowProductRefund(false);
   }, []);
 
