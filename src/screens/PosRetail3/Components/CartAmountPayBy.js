@@ -126,7 +126,6 @@ export const CartAmountPayBy = ({
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
-  console.log(JSON.stringify(cartData));
   const qrcodeData = useSelector(getRetail).qrKey;
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
@@ -141,9 +140,7 @@ export const CartAmountPayBy = ({
   const [phonePopVisible, setPhonePopVisible] = useState(false);
   const [emailModal, setEmailModal] = useState(false);
   const [qrPopUp, setQrPopUp] = useState(false);
-  // const [phoneNumber, setPhoneNumber] = useState(cartData?.user_details?.phone_no ?? '');
   const [phoneNumber, setPhoneNumber] = useState('');
-  console.log(phoneNumber, 'phoneNumber');
   const [email, setEmail] = useState(cartData?.user_details?.email ?? '');
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState(cartData?.user_details?.phone_code ?? '+1');
