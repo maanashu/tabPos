@@ -26,6 +26,8 @@ export class ShippingController {
   }
 
   static async getReviewDefault(status, sellerID) {
+    console.log('status====', status);
+    console.log('sellerID====', sellerID);
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL +
@@ -33,9 +35,11 @@ export class ShippingController {
         `?status=${status}&seller_id=${sellerID}&delivery_option=4`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response====', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error====', error);
           reject(error);
         });
     });
@@ -252,11 +256,14 @@ export class ShippingController {
         ORDER_URL +
         ApiOrderInventory.getOrderstatistics +
         `?seller_id=${sellerId}&filter=week&delivery_option=4`;
+      console.log('endpoint=====', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response=====', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
+          console.log('error=====', JSON.stringify(error));
           Toast.show({
             text2: error.msg,
             position: 'bottom',

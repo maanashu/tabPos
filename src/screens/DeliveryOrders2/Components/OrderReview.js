@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { View, Dimensions, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 
 import { COLORS } from '@/theme';
+import { ms } from 'react-native-size-matters';
 
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 2;

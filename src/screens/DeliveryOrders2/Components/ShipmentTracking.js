@@ -1,6 +1,7 @@
 import React, { useState, memo } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 
+import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 
 import {
@@ -17,12 +18,14 @@ import {
 } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { COLORS, ShadowStyles } from '@/theme';
+import { COLORS, SF, ShadowStyles } from '@/theme';
 
 const ShipmentTracking = ({ orderData, onPressShop }) => {
   const orderStatus = orderData?.status;
   const shopName = orderData?.seller_details?.organization_name;
   const shopAddress = orderData?.seller_details?.current_address?.street_address;
+
+  console.log(JSON.stringify(orderData?.order_delivery));
 
   const [isHideView, setisHideView] = useState(false);
 
@@ -56,7 +59,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
     </>
   );
 
-  const statusView = (heading, stepCompleted) => (
+  const statusView = (heading, stepCompleted, date, status) => (
     <>
       <View style={styles.statusMainView}>
         <View style={{ alignItems: 'center' }}>
@@ -75,8 +78,50 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
 
         <Spacer horizontal space={ms(5)} />
 
-        <View style={styles.statusViewText}>
-          <Text style={styles.statusNameText}>{heading}</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignSelf: 'center',
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <View style={styles.statusViewText}>
+            <Text style={styles.statusNameText}>{heading}</Text>
+            {date ? (
+              <Text style={[styles.currentStatusText, { marginTop: 0 }]}>
+                {date ? moment(date).format('DD MMM YYYY | HH:mm A') : ''}
+              </Text>
+            ) : null}
+          </View>
+
+          {console.log(orderStatus === 3)}
+
+          {status === 3 &&
+            orderData?.order_delivery?.seller_otp &&
+            heading === strings.deliveryOrders.driverAssigned && (
+              <View
+                style={{
+                  width: ms(30),
+                  height: ms(18),
+                  backgroundColor: COLORS.primary,
+                  borderRadius: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: Fonts.SemiBold,
+                    color: COLORS.white,
+                    fontSize: SF(13),
+                  }}
+                >
+                  {orderData?.order_delivery?.seller_otp}
+                </Text>
+              </View>
+            )}
         </View>
       </View>
     </>
@@ -263,12 +308,42 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
           {shipmentHeader}
           {isHideView ? (
             <View style={styles.statusViewStyle}>
-              {statusView(strings.settings.verified, orderStatus >= 5 && true)}
-              {statusView(strings.deliveryOrders.delivered, orderStatus >= 5 && true)}
-              {statusView(strings.deliveryOrders.pickup, orderStatus >= 4 && true)}
-              {statusView(strings.deliveryOrders.driverAssigned, orderStatus >= 3 && true)}
-              {statusView(strings.deliveryOrders.readyToPickup, orderStatus >= 2 && true)}
-              {statusView(strings.deliveryOrders.orderAccepted, orderStatus >= 1 && true)}
+              {statusView(
+                strings.settings.verified,
+                orderStatus >= 5 && true,
+                orderData?.status_desc?.status_5_updated_at,
+                orderStatus
+              )}
+              {statusView(
+                strings.deliveryOrders.delivered,
+                orderStatus >= 5 && true,
+                orderData?.status_desc?.status_5_updated_at,
+                orderStatus
+              )}
+              {statusView(
+                strings.deliveryOrders.pickup,
+                orderStatus >= 4 && true,
+                orderData?.status_desc?.status_4_updated_at,
+                orderStatus
+              )}
+              {statusView(
+                strings.deliveryOrders.driverAssigned,
+                orderStatus >= 3 && true,
+                orderData?.status_desc?.status_3_updated_at,
+                orderStatus
+              )}
+              {statusView(
+                strings.deliveryOrders.readyToPickup,
+                orderStatus >= 2 && true,
+                orderData?.status_desc?.status_2_updated_at,
+                orderStatus
+              )}
+              {statusView(
+                strings.deliveryOrders.orderAccepted,
+                orderStatus >= 1 && true,
+                orderData?.status_desc?.status_1_updated_at,
+                orderStatus
+              )}
             </View>
           ) : (
             <View style={styles.statusViewStyle}>{latestStatus()}</View>
@@ -339,8 +414,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   statusViewText: {
-    top: ms(2),
-    justifyContent: 'flex-end',
+    // top: ms(2),
   },
   arrowView: {
     padding: ms(5),

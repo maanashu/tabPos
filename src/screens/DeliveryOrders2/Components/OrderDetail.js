@@ -79,7 +79,7 @@ const OrderDetail = ({
                 <Text style={styles.itemCountText}>{`#${userDetail?.id}`}</Text>
               </View>
 
-              {userDetail?.status === 2 && (
+              {/* {userDetail?.status === 2 && (
                 <View
                   style={{
                     flexDirection: 'row',
@@ -104,7 +104,7 @@ const OrderDetail = ({
                     {userDetail?.order_delivery?.seller_otp}
                   </Text>
                 </View>
-              )}
+              )} */}
             </View>
 
             <View style={styles.subTotalView}>
