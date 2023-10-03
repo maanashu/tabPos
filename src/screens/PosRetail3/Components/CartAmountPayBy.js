@@ -141,7 +141,6 @@ export const CartAmountPayBy = ({
   const [phonePopVisible, setPhonePopVisible] = useState(false);
   const [emailModal, setEmailModal] = useState(false);
   const [qrPopUp, setQrPopUp] = useState(false);
-  // const [phoneNumber, setPhoneNumber] = useState(cartData?.user_details?.phone_no ?? '');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState(cartData?.user_details?.email ?? '');
   const [flag, setFlag] = useState('US');
