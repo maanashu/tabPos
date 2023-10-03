@@ -359,6 +359,8 @@ export function PosRetail3() {
         TYPES.SERVICE_UPDATE_PRICE,
         TYPES.CUSTOM_PRODUCT_ADD,
         TYPES.CUSTOM_SERVICE_ADD,
+        TYPES.ATTACH_SERVICE_CUSTOMER,
+        TYPES.ATTACH_CUSTOMER,
       ],
       state
     )

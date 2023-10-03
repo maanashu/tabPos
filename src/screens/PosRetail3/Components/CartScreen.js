@@ -73,6 +73,7 @@ export function CartScreen({
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   const cartId = cartData?.id;
+  console.log('cartId', cartId);
   let arr = [getRetailData?.getAllCart];
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -101,7 +102,7 @@ export function CartScreen({
       servicetype: 'product',
     };
     dispatch(getAvailableOffer(data));
-    dispatch(getUserDetailSuccess([]));
+    dispatch(getUserDetailSuccess({}));
   }, []);
 
   // hold cart Function
@@ -260,7 +261,7 @@ export function CartScreen({
 
   const closeCustomerAddModal = useCallback(() => {
     setNewCustomerModal(false);
-    dispatch(getUserDetailSuccess([]));
+    dispatch(getUserDetailSuccess({}));
   }, []);
 
   const cartidFrom = useMemo(() => cartData?.id, []);

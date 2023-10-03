@@ -1196,8 +1196,19 @@ export class RetailController {
   static async attachCustomer(data) {
     return new Promise(async (resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.attachCustomer + `${data.cartId}`;
-      console.log('endpoint', endpoint);
-      const body = data?.customerAdd
+      const body = data?.invitationId
+        ? {
+            invitation_id: data?.invitationId,
+          }
+        : data?.firstName && data?.lastName
+        ? {
+            email: data?.email,
+            phone_no: data?.phoneNumber,
+            phone_code: data?.phoneCode,
+            firstname: data?.firstName,
+            lastname: data?.lastName,
+          }
+        : data?.customerAdd
         ? {
             user_id: data?.userid,
           }
@@ -1209,11 +1220,8 @@ export class RetailController {
         : {
             email: data?.phoneEmail,
           };
-      console.log('endpoint', endpoint);
-      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           Toast.show({
             position: 'bottom',
             type: 'success_toast',
@@ -1224,42 +1232,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
-            text2: error?.msg,
-            visibilityTime: 2000,
-          });
-          reject(error);
-        });
-    });
-  }
-
-  static async attachCustomerInService(data) {
-    return new Promise(async (resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.attachCustomerInService + `${data.cartId}`;
-      console.log('endpoint', endpoint);
-      const body = {
-        user_id: data?.userid,
-      };
-
-      console.log('endpoint', endpoint);
-      console.log('body', body);
-      HttpClient.post(endpoint, body)
-        .then((response) => {
-          console.log('response', response);
-          Toast.show({
-            position: 'bottom',
-            type: 'success_toast',
-            text2: response?.msg,
-            visibilityTime: 2000,
-          });
-
-          resolve(response);
-        })
-        .catch((error) => {
-          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -1274,12 +1246,29 @@ export class RetailController {
   static async attachServiceCustomer(data) {
     return new Promise(async (resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.attachServiceCustomer + `${data.cartId}`;
-      const body = data?.phoneNo
+      const body = data?.invitationId
         ? {
+            invitation_id: data?.invitationId,
+          }
+        : data?.firstName && data?.lastName
+        ? {
+            email: data?.email,
+            phone_no: data?.phoneNumber,
+            phone_code: data?.phoneCode,
+            firstname: data?.firstName,
+            lastname: data?.lastName,
+          }
+        : data?.customerAdd
+        ? {
+            user_id: data?.userid,
+          }
+        : data?.phoneNo
+        ? {
+            phone_code: data?.countryCode,
             phone_no: data?.phoneNo,
           }
         : {
-            email: data?.phoneEmail.trim(),
+            email: data?.phoneEmail,
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
@@ -1293,6 +1282,7 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          alert(error?.msg);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

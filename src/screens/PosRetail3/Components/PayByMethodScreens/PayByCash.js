@@ -40,6 +40,7 @@ export const PayByCash = ({
   const getRetailData = useSelector(getRetail);
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+  console.log('cartData', cartData);
   const [amount, setAmount] = useState();
   const [selectedId, setSelectedId] = useState(1);
   const [cashRate, setCashRate] = useState();
@@ -53,9 +54,11 @@ export const PayByCash = ({
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
-    const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
+    // const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
+    const totalPayment = parseFloat(cartAmount);
     return totalPayment.toFixed(2);
   };
+  console.log('totalPayAmount', totalPayAmount);
 
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
@@ -150,6 +153,7 @@ export const PayByCash = ({
       usd: greaterNotes[1],
     },
   ];
+  console.log('selectCashArray', selectCashArray);
 
   return (
     <SafeAreaView style={styles._innerContainer}>
@@ -275,6 +279,13 @@ export const PayByCash = ({
             </View>
             <View style={styles._horizontalLine} />
             <View style={styles._subTotalContainer}>
+              <Text style={styles._substotalTile}>Tips</Text>
+              <Text style={styles._subTotalPrice}>
+                ${cartData?.amount?.tip?.toFixed(2) ?? '0.00'}
+              </Text>
+            </View>
+            <View style={styles._horizontalLine} />
+            <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Total Taxes</Text>
               <Text style={styles._subTotalPrice}>
                 ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
@@ -295,7 +306,8 @@ export const PayByCash = ({
               <Text
                 style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
               >
-                ${totalPayAmount() ?? '0.00'}
+                {/* ${totalPayAmount() ?? '0.00'} */}$
+                {cartData?.amount?.total_amount?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
             <View style={styles._horizontalLine} />
