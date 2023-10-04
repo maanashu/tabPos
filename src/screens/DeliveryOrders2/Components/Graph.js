@@ -48,9 +48,9 @@ const Graph = () => {
       const setOfThree = [];
       setOfThree.push({
         value: values[0] || 0,
-        spacing: 10,
+        spacing: 5,
         label: day,
-        labelWidth: 60,
+        labelWidth: 90,
         labelTextStyle: {
           color: COLORS.darkGray,
           fontSize: 9,

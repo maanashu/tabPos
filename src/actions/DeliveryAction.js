@@ -198,7 +198,6 @@ export const getOrderCount = () => async (dispatch) => {
   }
 };
 export const getReviewDefault = (status, deliveryOption) => async (dispatch) => {
-  console.log('getReviewDefault');
   dispatch(getReviewDefRequest());
   try {
     const res = await DeliveryController.getReviewDefault(status, deliveryOption);

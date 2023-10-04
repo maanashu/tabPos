@@ -40,7 +40,6 @@ export const PayByCash = ({
   const getRetailData = useSelector(getRetail);
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
-  console.log('cartData', cartData);
   const [amount, setAmount] = useState();
   const [selectedId, setSelectedId] = useState(1);
   const [cashRate, setCashRate] = useState();
@@ -58,7 +57,6 @@ export const PayByCash = ({
     const totalPayment = parseFloat(cartAmount);
     return totalPayment.toFixed(2);
   };
-  console.log('totalPayAmount', totalPayAmount);
 
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
@@ -153,7 +151,6 @@ export const PayByCash = ({
       usd: greaterNotes[1],
     },
   ];
-  console.log('selectCashArray', selectCashArray);
 
   return (
     <SafeAreaView style={styles._innerContainer}>

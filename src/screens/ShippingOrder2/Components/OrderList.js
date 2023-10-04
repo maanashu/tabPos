@@ -10,7 +10,7 @@ import { getDelivery } from '@/selectors/DeliverySelector';
 import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
 import moment from 'moment';
 
-const OrderList = ({ selectedStatus, onViewAllHandler }) => {
+const OrderList = ({ selectedStatus, onViewAllHandler, selectedOrderDetail }) => {
   const getOrdersData = useSelector(getDelivery);
   const ordersList = getOrdersData?.getReviewDef;
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id ?? '');
@@ -20,7 +20,7 @@ const OrderList = ({ selectedStatus, onViewAllHandler }) => {
       onPress={() => {
         onViewAllHandler(item?.id);
         setOrderId(item?.id);
-        console.log('order====', item);
+        selectedOrderDetail(item);
       }}
       style={[
         styles.orderRowStyle,
@@ -52,7 +52,7 @@ const OrderList = ({ selectedStatus, onViewAllHandler }) => {
 
       <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
         <Text style={styles.timeTextStyle}>
-          {item?.invoice?.delivery_date ?? moment(item?.created_at).format('YYYY-MM-DD')}
+          {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
         </Text>
         <View style={styles.locationViewStyle}>
           <Image source={clock} style={styles.pinImageStyle} />

@@ -25,7 +25,6 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
   const ordersList = getOrdersData?.getReviewDef;
 
   const renderOrderToReview = ({ item }) => {
-    console.log('item----', item);
     return (
       <TouchableOpacity onPress={() => onViewAllHandler(item.id)} style={styles.orderRowStyle}>
         <View style={styles.orderDetailStyle}>
@@ -50,7 +49,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
 
         <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
           <Text style={styles.timeTextStyle}>
-            {item?.invoice?.delivery_date ?? moment(item?.created_at).format('YYYY-MM-DD')}
+            {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
           </Text>
           <View style={styles.locationViewStyle}>
             <Image source={clock} style={styles.pinImageStyle} />

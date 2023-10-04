@@ -47,7 +47,6 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const [monthDays, setmonthDays] = useState([]);
   const getuserDetailByNo = getRetailData?.getUserDetail;
   const userLength = Object.keys(getuserDetailByNo)?.length;
-  console.log('getuserDetailByNo', getuserDetailByNo);
   const [defaultFlag, setDefaultFlag] = useState('US');
   const [defaultCountryCode, setDefaultCountryCode] = useState('+1');
   const [defaultPhoneNumber, setDefaultPhoneNumber] = useState(
@@ -96,7 +95,6 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
         firstName: firstName,
         lastName: lastName,
       };
-      console.log('data', data);
       dispatch(attachCustomer(data));
       clearInput();
       crossHandler();

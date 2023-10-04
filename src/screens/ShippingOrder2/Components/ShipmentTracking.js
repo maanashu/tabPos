@@ -7,7 +7,6 @@ import { COLORS } from '@/theme';
 import { down, Fonts, greyRadioArr, radioArrBlue, up } from '@/assets';
 
 const ShipmentTracking = ({ props }) => {
-  console.log('props=====', props?.status);
   const [isHideView, setisHideView] = useState(true);
 
   const currentStatus = (status) => {
