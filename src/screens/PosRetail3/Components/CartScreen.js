@@ -337,147 +337,152 @@ export function CartScreen({
                 </View>
               </View>
             </View>
-            <ScrollView
-            // style={{ borderWidth: 1, paddingBottom: ms(20), height: ms(200) }}
-            // nestedScrollEnabled={true}
-            >
-              {arr?.map((item, index) => (
-                <View key={index}>
-                  {item?.poscart_products?.map((data, ind) => (
-                    <View style={styles.blueListData} key={ind}>
-                      <View style={styles.displayflex}>
-                        <View style={[styles.tableListSide, styles.listLeft]}>
-                          <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
-                            {ind + 1}
-                          </Text>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}
-                          >
-                            <Image
-                              source={{ uri: data.product_details?.image }}
-                              style={styles.columbiaMen}
-                            />
-                            <View style={{ marginLeft: 10 }}>
-                              <Text
-                                style={[styles.blueListDataText, { width: SW(40) }]}
-                                numberOfLines={1}
-                              >
-                                {data.product_details?.name}
-                              </Text>
-                              <Text style={styles.sukNumber}>
-                                UPC: {data?.product_details?.upc}
-                              </Text>
-                            </View>
-                          </View>
-                        </View>
-                        <View style={styles.productCartBodyRight}>
-                          <View style={styles.productCartBody}>
-                            {cartIndex === ind && cartEditItem ? (
-                              <TextInput
-                                value={unitPrice}
-                                onChangeText={setUnitPrice}
-                                style={[styles.unitPriceInput]}
-                                keyboardType="numeric"
-                              />
-                            ) : (
-                              <Text style={styles.blueListDataText} numberOfLines={1}>
-                                ${data?.product_details?.supply?.supply_prices?.selling_price}
-                              </Text>
-                            )}
-                          </View>
-                          <View style={styles.productCartBody}>
-                            <View
-                              style={styles.listCountCon}
-                              pointerEvents={cartEditItem ? 'none' : 'auto'}
-                            >
-                              <TouchableOpacity
-                                style={{
-                                  width: SW(10),
-                                  alignItems: 'center',
-                                }}
-                                onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
-                                disabled={data.qty == 1 ? true : false}
-                              >
-                                <Image source={minus} style={styles.minus} />
-                              </TouchableOpacity>
-                              <Text>{data.qty}</Text>
-                              <TouchableOpacity
-                                style={{
-                                  width: SW(10),
-                                  alignItems: 'center',
-                                }}
-                                onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
-                              >
-                                <Image source={plus} style={styles.minus} />
-                              </TouchableOpacity>
-                            </View>
-                          </View>
-                          <View style={styles.productCartBody}>
-                            <Text style={styles.blueListDataText}>
-                              $
-                              {(
-                                data.product_details?.supply?.supply_prices?.selling_price *
-                                data?.qty
-                              ).toFixed(2)}
+            {/* <ScrollView
+              style={{ borderWidth: 1, paddingBottom: ms(20), height: ms(200) }}
+              nestedScrollEnabled={true}
+            > */}
+            <View style={{ marginBottom: ms(60) }}>
+              <ScrollView style={{ paddingBottom: ms(20) }} showsVerticalScrollIndicator={false}>
+                {arr?.map((item, index) => (
+                  <View key={index}>
+                    {item?.poscart_products?.map((data, ind) => (
+                      <View style={styles.blueListData} key={ind}>
+                        <View style={styles.displayflex}>
+                          <View style={[styles.tableListSide, styles.listLeft]}>
+                            <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
+                              {ind + 1}
                             </Text>
-                          </View>
-                          <View style={styles.productCartBody}>
                             <View
                               style={{
-                                width: ms(45),
                                 flexDirection: 'row',
-                                justifyContent: 'flex-end',
                                 alignItems: 'center',
                               }}
                             >
+                              <Image
+                                source={{ uri: data.product_details?.image }}
+                                style={styles.columbiaMen}
+                              />
+                              <View style={{ marginLeft: 10 }}>
+                                <Text
+                                  style={[styles.blueListDataText, { width: SW(40) }]}
+                                  numberOfLines={1}
+                                >
+                                  {data.product_details?.name}
+                                </Text>
+                                <Text style={styles.sukNumber}>
+                                  UPC: {data?.product_details?.upc}
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                          <View style={styles.productCartBodyRight}>
+                            <View style={styles.productCartBody}>
                               {cartIndex === ind && cartEditItem ? (
-                                <TouchableOpacity
-                                  style={[
-                                    styles.saveButtonCon,
-                                    {
-                                      backgroundColor: unitPrice
-                                        ? COLORS.primary
-                                        : COLORS.textInputBackground,
-                                    },
-                                  ]}
-                                  onPress={saveCartEditFun}
-                                  disabled={unitPrice ? false : true}
-                                >
-                                  <Text
-                                    style={[
-                                      styles.saveText,
-                                      { color: unitPrice ? COLORS.white : COLORS.darkGray },
-                                    ]}
-                                  >
-                                    Save
-                                  </Text>
-                                </TouchableOpacity>
+                                <TextInput
+                                  value={unitPrice}
+                                  onChangeText={setUnitPrice}
+                                  style={[styles.unitPriceInput]}
+                                  keyboardType="numeric"
+                                />
                               ) : (
-                                <TouchableOpacity
-                                  style={[styles.cartEditCon, { marginRight: ms(14) }]}
-                                  onPress={() => cartProductedit(data, ind)}
-                                >
-                                  <Image source={cartEdit} style={styles.cartEdit} />
-                                </TouchableOpacity>
+                                <Text style={styles.blueListDataText} numberOfLines={1}>
+                                  ${data?.product_details?.supply?.supply_prices?.selling_price}
+                                </Text>
                               )}
+                            </View>
+                            <View style={styles.productCartBody}>
+                              <View
+                                style={styles.listCountCon}
+                                pointerEvents={cartEditItem ? 'none' : 'auto'}
+                              >
+                                <TouchableOpacity
+                                  style={{
+                                    width: SW(10),
+                                    alignItems: 'center',
+                                  }}
+                                  onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
+                                  disabled={data.qty == 1 ? true : false}
+                                >
+                                  <Image source={minus} style={styles.minus} />
+                                </TouchableOpacity>
+                                <Text>{data.qty}</Text>
+                                <TouchableOpacity
+                                  style={{
+                                    width: SW(10),
+                                    alignItems: 'center',
+                                  }}
+                                  onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
+                                >
+                                  <Image source={plus} style={styles.minus} />
+                                </TouchableOpacity>
+                              </View>
+                            </View>
+                            <View style={styles.productCartBody}>
+                              <Text style={styles.blueListDataText}>
+                                $
+                                {(
+                                  data.product_details?.supply?.supply_prices?.selling_price *
+                                  data?.qty
+                                ).toFixed(2)}
+                              </Text>
+                            </View>
+                            <View style={styles.productCartBody}>
+                              <View
+                                style={{
+                                  width: ms(45),
+                                  flexDirection: 'row',
+                                  justifyContent: 'flex-end',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                {cartIndex === ind && cartEditItem ? (
+                                  <TouchableOpacity
+                                    style={[
+                                      styles.saveButtonCon,
+                                      {
+                                        backgroundColor: unitPrice
+                                          ? COLORS.primary
+                                          : COLORS.textInputBackground,
+                                      },
+                                    ]}
+                                    onPress={saveCartEditFun}
+                                    disabled={unitPrice ? false : true}
+                                  >
+                                    <Text
+                                      style={[
+                                        styles.saveText,
+                                        { color: unitPrice ? COLORS.white : COLORS.darkGray },
+                                      ]}
+                                    >
+                                      Save
+                                    </Text>
+                                  </TouchableOpacity>
+                                ) : (
+                                  <TouchableOpacity
+                                    style={[styles.cartEditCon, { marginRight: ms(14) }]}
+                                    onPress={() => cartProductedit(data, ind)}
+                                  >
+                                    <Image source={cartEdit} style={styles.cartEdit} />
+                                  </TouchableOpacity>
+                                )}
 
-                              <TouchableOpacity onPress={() => removeOneCartHandler(data.id, ind)}>
-                                <Image source={borderCross} style={styles.borderCross} />
-                              </TouchableOpacity>
+                                <TouchableOpacity
+                                  onPress={() => removeOneCartHandler(data.id, ind)}
+                                >
+                                  <Image source={borderCross} style={styles.borderCross} />
+                                </TouchableOpacity>
+                              </View>
                             </View>
                           </View>
                         </View>
                       </View>
-                    </View>
-                  ))}
-                </View>
-              ))}
+                    ))}
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
 
-              <Spacer space={SH(20)} />
-            </ScrollView>
+            {/* </ScrollView> */}
             <Spacer space={SH(7)} />
           </View>
           <View style={styles.rightSideCon}>

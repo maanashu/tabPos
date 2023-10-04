@@ -1257,7 +1257,7 @@ export const styles = StyleSheet.create({
   },
 
   homeScreenCon: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: COLORS.textInputBackground,
     paddingHorizontal: Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
   },
