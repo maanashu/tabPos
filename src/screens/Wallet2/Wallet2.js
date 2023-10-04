@@ -76,19 +76,34 @@ export function Wallet2() {
   const [transcationTypeId, setTranscationTypeId] = useState(1);
   const [transaction, setTransaction] = useState({ mode_of_payment: 'all' });
   const [fromHome, setFromHome] = useState('');
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+
+  const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+  const endDate = selectedEndDate ? selectedEndDate.toString() : '';
+  const startDated = moment(startDate).format('YYYY-MM-DD');
+  const endDated = moment(endDate).format('YYYY-MM-DD');
+  const [selectDate, setSelectDate] = useState('');
+
+  const currentStartDate = moment().startOf('month').format('MMM D');
+  const currentEndDate = moment().endOf('month').format('MMM D, YYYY');
+  const dateRange = `${currentStartDate} - ${currentEndDate}`;
+  const maxDate = new Date(2030, 6, 3);
+  const formateDate = { start_date: startDated, end_date: endDated };
 
   const onPresFun1 = (value) => {
-    setShow(false);
-    setDateformat('');
-    setDate(new Date());
-    dispatch(getTotalTra(value, sellerID, dateformat));
+    // setShow(false);
+    // setDate(new Date());
+    setSelectedStartDate('');
+    setSelectedEndDate('');
+    dispatch(getTotalTra(value, sellerID, formateDate));
   };
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getTotalTra(time, sellerID));
+      dispatch(getTotalTra(time, sellerID, formateDate));
     }
-  }, [isFocused]);
+  }, [isFocused, selectDate]);
 
   const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
 
@@ -133,6 +148,28 @@ export function Wallet2() {
         break;
     }
   };
+
+  const onDateChange = (date, type) => {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    if (type === 'END_DATE') {
+      setSelectedEndDate(formattedDate);
+    } else {
+      setSelectedStartDate(formattedDate);
+      setSelectedEndDate(null);
+    }
+  };
+  const onSelect = () => {
+    if (!selectedStartDate && !selectedEndDate) {
+      alert('Please Select Date');
+    } else if (selectedStartDate && selectedEndDate) {
+      setShow(false);
+      setSelectTime('');
+      setSelectId('');
+      setSelectDate(!selectDate);
+    } else {
+      alert('Please Select End Date');
+    }
+  };
   const onChangeDate = (selectedDate) => {
     const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
@@ -171,7 +208,7 @@ export function Wallet2() {
     return `${year}-${month}-${day}`;
   };
 
-  const maxDate = getFormattedTodayDate();
+  // const maxDate = getFormattedTodayDate();
   const onCancelFun = () => {
     setShow(false);
     setDateformat('');
@@ -264,7 +301,27 @@ export function Wallet2() {
                     setSelectTime={setSelectTime}
                   />
                 </View>
+
                 <TouchableOpacity
+                  onPress={() => setShow(!show)}
+                  style={[
+                    styles.headerView,
+                    {
+                      borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
+                      marginHorizontal: ms(5),
+                    },
+                  ]}
+                >
+                  <Image source={newCalendar} style={styles.calendarStyle} />
+                  <Text style={styles.dateText}>
+                    {startDate
+                      ? moment(startDate).format('MMM D') +
+                        ' - ' +
+                        moment(endDate).format('MMM D, YYYY')
+                      : dateRange}
+                  </Text>
+                </TouchableOpacity>
+                {/* <TouchableOpacity
                   style={[
                     styles.homeCalenaderBg,
                     {
@@ -280,7 +337,7 @@ export function Wallet2() {
                       { tintColor: selectId == 0 ? COLORS.white : COLORS.darkGray },
                     ]}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 {/* <DateTimePickerModal
                   mode={'date'}
                   isVisible={show}
@@ -384,11 +441,16 @@ export function Wallet2() {
         <View style={styles.calendarModalView}>
           <CalendarPickerModal
             onPress={() => setShow(false)}
-            onDateChange={onChangeDate}
-            onSelectedDate={() => onDateApply(formattedDate)}
-            selectedStartDate={formattedDate}
+            // onDateChange={onChangeDate}
+            // onSelectedDate={() => onDateApply(formattedDate)}
+            // selectedStartDate={formattedDate}
             maxDate={maxDate}
-            onCancelPress={onCancelPressCalendar}
+            // onCancelPress={onCancelPressCalendar}
+            allowRangeSelection={true}
+            onDateChange={onDateChange}
+            // handleOnPressNext={handleOnPressNext}
+            onSelectedDate={onSelect}
+            onCancelPress={() => setShowCalendarModal(false)}
           />
         </View>
       </Modal>

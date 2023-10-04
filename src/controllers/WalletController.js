@@ -9,10 +9,10 @@ export class WalletController {
 
       let endpoint = '';
 
-      if (time !== null) {
-        endpoint = `${BASE_URL}?${sellerParam}&filter=${time}`;
+      if (time === undefined) {
+        endpoint = `${BASE_URL}?${sellerParam}&start_date=${date?.start_date}&end_date=${date?.end_date}`;
       } else {
-        endpoint = `${BASE_URL}?${sellerParam}&date=${date}`;
+        endpoint = `${BASE_URL}?${sellerParam}&filter=${time}`;
       }
       HttpClient.get(endpoint)
         .then((response) => {
