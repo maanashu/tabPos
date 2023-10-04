@@ -583,6 +583,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     width: windowWidth * 0.5,
     paddingTop: ms(5),
+    paddingBottom: ms(20),
     marginVertical: ms(20),
     alignSelf: 'center',
   },

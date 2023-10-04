@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, Text, View, TouchableOpacity, FlatList } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -171,7 +179,7 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
       style={
         comeFrom === 'product'
           ? styles.customProductCon
-          : [styles.customProductCon, { height: ms(400) }]
+          : [styles.customProductCon, { height: 'auto', marginBottom: ms(30) }]
       }
     >
       <View style={styles.headerConCustomProduct}>
@@ -186,63 +194,63 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
           <Text style={styles.addTocartText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
+      <ScrollView>
+        <View style={{ padding: ms(15) }}>
+          <Text style={[styles.zeroText, { fontSize: ms(10), marginBottom: ms(5) }]}>
+            New {comeFrom == 'product' ? 'Product' : 'Service'} Add to Cart
+          </Text>
+          <View style={styles.dollarAddCon}>
+            <Image source={dollar} style={styles.dollar} />
+            <TextInput
+              placeholder="0.00"
+              style={styles.dollarInput}
+              placeholderTextColor={COLORS.row_grey}
+              keyboardType="number-pad"
+              value={amount}
+              onChangeText={setAmount}
+            />
+          </View>
 
-      <View style={{ padding: ms(15) }}>
-        <Text style={[styles.zeroText, { fontSize: ms(10), marginBottom: ms(5) }]}>
-          New {comeFrom == 'product' ? 'Product' : 'Service'} Add to Cart
-        </Text>
-        <View style={styles.dollarAddCon}>
-          <Image source={dollar} style={styles.dollar} />
           <TextInput
-            placeholder="0.00"
-            style={styles.dollarInput}
+            placeholder="Product Name"
+            style={styles.productNameInput}
             placeholderTextColor={COLORS.row_grey}
-            keyboardType="number-pad"
-            value={amount}
-            onChangeText={setAmount}
+            value={productName}
+            onChangeText={setProductName}
           />
-        </View>
 
-        <TextInput
-          placeholder="Product Name"
-          style={styles.productNameInput}
-          placeholderTextColor={COLORS.row_grey}
-          value={productName}
-          onChangeText={setProductName}
-        />
+          <TextInput
+            placeholder="Add Notes"
+            style={styles.addNotesInput}
+            placeholderTextColor={COLORS.darkGray}
+            value={notes}
+            onChangeText={setNotes}
+            numberOfLines={4}
+          />
 
-        <TextInput
-          placeholder="Add Notes"
-          style={styles.addNotesInput}
-          placeholderTextColor={COLORS.darkGray}
-          value={notes}
-          onChangeText={setNotes}
-          numberOfLines={4}
-        />
+          {comeFrom === 'product' ? (
+            <View style={styles.addCartbtnBodyCon}>
+              <View style={styles.counterMainCon}>
+                <TouchableOpacity
+                  onPress={() => setCount(count - 1)}
+                  disabled={count == 1 ? true : false}
+                  style={styles.minusCon}
+                >
+                  <Image source={minus} style={styles.plusButton} />
+                </TouchableOpacity>
+                <View style={styles.oneCon}>
+                  <Text style={styles.zeroText}>{count}</Text>
+                </View>
 
-        {comeFrom === 'product' ? (
-          <View style={styles.addCartbtnBodyCon}>
-            <View style={styles.counterMainCon}>
-              <TouchableOpacity
-                onPress={() => setCount(count - 1)}
-                disabled={count == 1 ? true : false}
-                style={styles.minusCon}
-              >
-                <Image source={minus} style={styles.plusButton} />
-              </TouchableOpacity>
-              <View style={styles.oneCon}>
-                <Text style={styles.zeroText}>{count}</Text>
+                <TouchableOpacity
+                  onPress={() => setCount(count + 1)}
+                  style={styles.minusCon}
+                  disabled={comeFrom == 'product' ? false : true}
+                >
+                  <Image source={plus} style={styles.plusButton} />
+                </TouchableOpacity>
               </View>
-
-              <TouchableOpacity
-                onPress={() => setCount(count + 1)}
-                style={styles.minusCon}
-                disabled={comeFrom == 'product' ? false : true}
-              >
-                <Image source={plus} style={styles.plusButton} />
-              </TouchableOpacity>
-            </View>
-            {/* <TouchableOpacity
+              {/* <TouchableOpacity
             style={[
               styles.closeButtonCon,
               { backgroundColor: amount && productName ? COLORS.primary : COLORS.gerySkies },
@@ -251,51 +259,52 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
           >
             <Text style={[styles.closeText, { color: COLORS.white }]}>Add to Cart</Text>
           </TouchableOpacity> */}
-          </View>
-        ) : (
-          <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginTop: 10,
-              }}
-            >
-              <MonthYearPicker
-                dateType={DATE_TYPE.MONTH}
-                placeholder={'Select Month'}
-                containerStyle={{ marginRight: 10 }}
-                defaultValue={moment().month() + 1}
-                defaultYear={selectedYearData?.value ?? moment().year()}
-                onSelect={(monthData) => {
-                  setselectedMonthData(monthData);
-                }}
-              />
-              <MonthYearPicker
-                dateType={DATE_TYPE.YEAR}
-                placeholder={'Select Year'}
-                defaultValue={moment().year()}
-                onSelect={(yearData) => {
-                  setselectedYearData(yearData);
-                }}
-              />
             </View>
+          ) : (
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: 10,
+                }}
+              >
+                <MonthYearPicker
+                  dateType={DATE_TYPE.MONTH}
+                  placeholder={'Select Month'}
+                  containerStyle={{ marginRight: 10 }}
+                  defaultValue={moment().month() + 1}
+                  defaultYear={selectedYearData?.value ?? moment().year()}
+                  onSelect={(monthData) => {
+                    setselectedMonthData(monthData);
+                  }}
+                />
+                <MonthYearPicker
+                  dateType={DATE_TYPE.YEAR}
+                  placeholder={'Select Year'}
+                  defaultValue={moment().year()}
+                  onSelect={(yearData) => {
+                    setselectedYearData(yearData);
+                  }}
+                />
+              </View>
 
-            <View
-              style={{
-                marginTop: SH(10),
-                borderWidth: 1,
-                borderColor: COLORS.solidGrey,
-                width: '100%',
-              }}
-            >
-              <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
+              <View
+                style={{
+                  marginTop: SH(10),
+                  borderWidth: 1,
+                  borderColor: COLORS.solidGrey,
+                  width: '100%',
+                }}
+              >
+                <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
 
-              <FlatList data={timeSlotsData || []} numColumns={4} renderItem={renderSlotItem} />
+                <FlatList data={timeSlotsData || []} numColumns={4} renderItem={renderSlotItem} />
+              </View>
             </View>
-          </View>
-        )}
-      </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 }
