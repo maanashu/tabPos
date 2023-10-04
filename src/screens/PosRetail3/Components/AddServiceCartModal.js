@@ -49,6 +49,12 @@ export function AddServiceCartModal({
   const [monthDays, setmonthDays] = useState([]);
 
   useEffect(() => {
+    if (itemData) {
+      setposUserId(itemData?.pos_staff?.[0]?.user?.unique_uuid);
+    }
+  }, [itemData]);
+
+  useEffect(() => {
     const params = {
       seller_id: sellerID,
       product_id: itemData?.id,

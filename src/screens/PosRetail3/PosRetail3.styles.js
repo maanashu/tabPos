@@ -577,8 +577,6 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
 
-  // categoryModal css end
-
   // addto cart modal css start
   addCartCon: {
     backgroundColor: 'white',
@@ -586,9 +584,8 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.5,
     paddingTop: ms(5),
     paddingBottom: ms(20),
-    position: 'absolute',
+    marginVertical: ms(20),
     alignSelf: 'center',
-    height: windowHeight * 0.88,
   },
 
   addCartConHeader: {
