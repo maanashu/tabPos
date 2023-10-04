@@ -95,7 +95,6 @@ export function MainScreen({
   const isFocus = useIsFocused();
   const [selectedId, setSelectedId] = useState();
   const [selectedItem, setSelectedItem] = useState();
-
   const [selectedItemQty, setSelectedItemQty] = useState();
   const [categoryModal, setCategoryModal] = useState(false);
   const [subCategoryModal, setSubCategoryModal] = useState(false);
@@ -138,12 +137,10 @@ export function MainScreen({
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
-  console.log('serviceCartArray', serviceCartArray);
+  console.log('productCartArray', productCartArray);
   const cartLength = CART_LENGTH;
   const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
-  // const serviceCartLength = SERVICE_CART_LENGTH;
-  //  const serviceCartLength = CART_LENGTH;
   let arr = [getRetailData?.getAllCart];
   const onEndReachedCalledDuringMomentum = useRef(false);
   const [cartModal, setCartModal] = useState(false);

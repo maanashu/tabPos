@@ -40,7 +40,6 @@ export const PayByCash = ({
   const getRetailData = useSelector(getRetail);
   const cartData =
     cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
-  console.log('cartData', cartData);
   const [amount, setAmount] = useState();
   const [selectedId, setSelectedId] = useState(1);
   const [cashRate, setCashRate] = useState();
@@ -48,17 +47,12 @@ export const PayByCash = ({
   const getAuthdata = useSelector(getAuthData);
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
 
-  useEffect(() => {
-    setCashRate(selectCashArray[0].usd);
-  }, []);
-
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
     // const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
     const totalPayment = parseFloat(cartAmount);
     return totalPayment.toFixed(2);
   };
-  console.log('totalPayAmount', totalPayAmount);
 
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
@@ -89,6 +83,7 @@ export const PayByCash = ({
         }
       };
       dispatch(createOrder(data, callback));
+      setCashRate(localyPay?.usd);
     } else {
       const data = {
         serviceCartId: cartData.id,
@@ -101,6 +96,7 @@ export const PayByCash = ({
         }
       };
       dispatch(createServiceOrder(data, callback));
+      setCashRate(localyPay?.usd);
     }
   };
   const renderItem = ({ item }) => {
@@ -110,7 +106,9 @@ export const PayByCash = ({
       <Item
         item={item}
         onPress={() => {
-          setSelectedId(item.id), setCashRate(item.usd);
+          setSelectedId(item.id);
+          setCashRate(item.usd);
+          setlocalyPay(item);
         }}
         borderColor={borderColor}
       />
@@ -153,7 +151,17 @@ export const PayByCash = ({
       usd: greaterNotes[1],
     },
   ];
-  console.log('selectCashArray', selectCashArray);
+  const [localyPay, setlocalyPay] = useState(selectCashArray?.[0]);
+
+  useEffect(() => {
+    setCashRate(
+      selectedId === 1
+        ? selectCashArray?.[0]?.usd
+        : selectedId === 2
+        ? selectCashArray?.[1]?.usd
+        : selectCashArray?.[2]?.usd
+    );
+  }, [selectedId, selectCashArray]);
 
   return (
     <SafeAreaView style={styles._innerContainer}>

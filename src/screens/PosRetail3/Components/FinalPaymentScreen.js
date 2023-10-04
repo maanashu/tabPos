@@ -54,7 +54,6 @@ export const FinalPaymentScreen = ({
 
   // const   payAmount = totalPayAmount();
   const payAmount = cartData?.amount?.total_amount?.toFixed(2);
-  console.log('payAmount', payAmount);
   const ActualPayAmount = payDetail?.tips;
   const changeDue = parseFloat(ActualPayAmount) - parseFloat(payAmount);
 

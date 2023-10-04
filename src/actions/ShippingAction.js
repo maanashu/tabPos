@@ -289,7 +289,6 @@ export const todayShippingStatus = (sellerID) => async (dispatch) => {
   dispatch(todayShippingStatusRequest());
   try {
     const res = await ShippingController.todayShippingStatus(sellerID);
-    console.log('todayShippingStatus', res);
     dispatch(todayShippingStatusSuccess(res?.payload));
   } catch (error) {
     dispatch(todayShippingStatusError(error.message));
@@ -300,7 +299,6 @@ export const todayCurrentStatus = (sellerID) => async (dispatch) => {
   dispatch(todayCurrentStatusRequest());
   try {
     const res = await ShippingController.todayCurrentStatus(sellerID);
-    console.log('todayCurrentStatus', res);
     dispatch(todayCurrentStatusSuccess(res?.payload));
   } catch (error) {
     dispatch(todayCurrentStatusError(error.message));
@@ -311,7 +309,6 @@ export const orderStatusCount = (sellerID) => async (dispatch) => {
   dispatch(orderStatusCountRequest());
   try {
     const res = await ShippingController.orderStatusCount(sellerID);
-    console.log('orderStatusCount', res);
     dispatch(orderStatusCountSuccess(res?.payload));
   } catch (error) {
     dispatch(orderStatusCountError(error.message));
@@ -322,7 +319,6 @@ export const getGraphOrders = () => async (dispatch) => {
   dispatch(getGraphOrdersRequest());
   try {
     const res = await ShippingController.getGraphOrders();
-    console.log('getGraphOrders', res);
     return dispatch(getGraphOrdersSuccess(res?.payload));
   } catch (error) {
     dispatch(getGraphOrdersError(error.message));
@@ -333,7 +329,6 @@ export const getShippingOrderstatistics = (sellerId) => async (dispatch) => {
   dispatch(getShippingOrderstatisticsRequest());
   try {
     const res = await ShippingController.getShippingOrderstatistics(sellerId);
-    console.log('getShippingOrderstatistics', res);
     dispatch(getShippingOrderstatisticsSuccess(res?.payload));
   } catch (error) {
     dispatch(getShippingOrderstatisticsError(error.message));

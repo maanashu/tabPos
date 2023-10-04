@@ -20,7 +20,6 @@ const OrderList = ({ selectedStatus, onViewAllHandler }) => {
       onPress={() => {
         onViewAllHandler(item?.id);
         setOrderId(item?.id);
-        console.log('order====', item);
       }}
       style={[
         styles.orderRowStyle,

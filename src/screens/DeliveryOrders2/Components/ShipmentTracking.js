@@ -25,8 +25,6 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
   const shopName = orderData?.seller_details?.organization_name;
   const shopAddress = orderData?.seller_details?.current_address?.street_address;
 
-  console.log(JSON.stringify(orderData?.order_delivery));
-
   const [isHideView, setisHideView] = useState(false);
 
   const currentStatus = (status) => {
