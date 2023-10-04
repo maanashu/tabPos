@@ -450,7 +450,7 @@ export function Wallet2() {
             onDateChange={onDateChange}
             // handleOnPressNext={handleOnPressNext}
             onSelectedDate={onSelect}
-            onCancelPress={() => setShowCalendarModal(false)}
+            onCancelPress={() => setShow(false)}
           />
         </View>
       </Modal>
