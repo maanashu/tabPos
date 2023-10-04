@@ -25,7 +25,6 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
   const ordersList = getOrdersData?.getReviewDef;
 
   const renderOrderToReview = ({ item }) => {
-    console.log('item----', item);
     return (
       <TouchableOpacity onPress={() => onViewAllHandler(item.id)} style={styles.orderRowStyle}>
         <View style={styles.orderDetailStyle}>

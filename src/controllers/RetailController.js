@@ -909,15 +909,17 @@ export class RetailController {
     });
   }
 
-  static async getOneProduct(sellerID, productId, offerId) {
+  static async getOneProduct(sellerID, productId) {
     return new Promise((resolve, reject) => {
-      const endpoint = offerId
-        ? PRODUCT_URL +
-          ApiProductInventory.getProduct +
-          `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true&offer_id=${offerId}`
-        : PRODUCT_URL +
-          ApiProductInventory.getProduct +
-          `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
+      const endpoint =
+        //  offerId
+        //   ? PRODUCT_URL +
+        //     ApiProductInventory.getProduct +
+        //     `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true&offer_id=${offerId}`
+        //   :
+        PRODUCT_URL +
+        ApiProductInventory.getProduct +
+        `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

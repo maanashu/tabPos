@@ -146,8 +146,8 @@ export function CartScreen({
 
   const productFun = async (item, index) => {
     beforeDiscountCartLoad();
-    setOfferId(item?.id);
-    const res = await dispatch(getOneProduct(sellerID, item?.product?.id, item?.id));
+    // setOfferId(item?.id);
+    const res = await dispatch(getOneProduct(sellerID, item?.id));
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setAddCartModal(true);
       setProductIndex(index);
@@ -337,7 +337,10 @@ export function CartScreen({
                 </View>
               </View>
             </View>
-            <ScrollView>
+            <ScrollView
+            // style={{ borderWidth: 1, paddingBottom: ms(20), height: ms(200) }}
+            // nestedScrollEnabled={true}
+            >
               {arr?.map((item, index) => (
                 <View key={index}>
                   {item?.poscart_products?.map((data, ind) => (
@@ -472,6 +475,8 @@ export function CartScreen({
                   ))}
                 </View>
               ))}
+
+              <Spacer space={SH(20)} />
             </ScrollView>
             <Spacer space={SH(7)} />
           </View>
@@ -532,24 +537,30 @@ export function CartScreen({
                       >
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <View style={{ borderRadius: 4 }}>
-                            <Image
-                              source={{ uri: item?.product?.image }}
-                              style={styles.offerImage}
-                            />
+                            <Image source={{ uri: item?.image }} style={styles.offerImage} />
                           </View>
                           <View style={{ marginLeft: 4 }}>
                             <Text style={[styles.offerText, { width: ms(90) }]} numberOfLines={1}>
-                              {item.product?.name}
+                              {item?.name}
                             </Text>
                             <Text style={styles.offerPrice}>White/S</Text>
-                            <View style={{ flexDirection: 'row' }}>
-                              <Text style={[styles.offerPrice, styles.lineTrought]}>
-                                ${item.actual_price_per_pack}
-                              </Text>
-                              <Text style={styles.offerPriceDark}>
-                                ${item.offer_price_per_pack}
-                              </Text>
-                            </View>
+                            {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
+                            item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
+                              <View style={{ flexDirection: 'row' }}>
+                                <Text style={[styles.offerPrice, styles.lineTrought]}>
+                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.actual_price}
+                                </Text>
+                                <Text style={styles.offerPriceDark}>
+                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                                </Text>
+                              </View>
+                            ) : (
+                              <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.offerPriceDark}>
+                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                                </Text>
+                              </View>
+                            )}
                           </View>
                         </View>
                         <Image source={addToCart} style={styles.sideAddToCart} />

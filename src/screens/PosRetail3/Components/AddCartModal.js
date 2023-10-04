@@ -271,9 +271,16 @@ export function AddCartModal({
                   <Text style={styles.sizeAndColor}>Size: {sizeName}</Text>
                 )}
               </View>
-              <Text style={styles.colimbiaText}>
-                ${productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-              </Text>
+              {productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+              productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+                <Text style={styles.colimbiaText}>
+                  ${productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                </Text>
+              ) : (
+                <Text style={styles.colimbiaText}>
+                  ${productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                </Text>
+              )}
             </View>
             <View style={{ alignItems: 'center' }}>
               <View style={styles.counterCon}>
