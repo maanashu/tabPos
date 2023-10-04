@@ -90,14 +90,14 @@ const styles = StyleSheet.create({
   itemMainViewStyle: {
     borderWidth: 1,
     marginHorizontal: ms(12),
-    marginVertical: ms(6),
+    marginVertical: ms(3),
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     backgroundColor: COLORS.white,
     paddingHorizontal: ms(8),
     alignItems: 'center',
     flexDirection: 'row',
-    paddingVertical: ms(6),
+    paddingVertical: ms(5),
   },
   deliveryTypeImage: {
     width: ms(16),

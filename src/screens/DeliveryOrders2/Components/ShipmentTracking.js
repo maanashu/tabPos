@@ -94,8 +94,6 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
             ) : null}
           </View>
 
-          {console.log(orderStatus === 3)}
-
           {status === 3 &&
             orderData?.order_delivery?.seller_otp &&
             heading === strings.deliveryOrders.driverAssigned && (

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
 
 import WebView from 'react-native-webview';
+import Pdf from 'react-native-pdf';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -55,6 +56,10 @@ export function ShippingOrder2() {
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id);
   const [openWebView, setOpenWebView] = useState(false);
   const [showLabelPdf, setShowLabelPdf] = useState(false);
+  const source = {
+    uri: 'https://wwwtest.fedex.com/document/v1/cache/retrieve/SH,f86b5c1af8edd0aa794980020268_Merge?isLabel=true&autoPrint=false',
+    cache: true,
+  };
 
   useFocusEffect(
     React.useCallback(() => {
@@ -184,6 +189,7 @@ export function ShippingOrder2() {
                       <OrderList
                         selectedStatus={openShippingOrders}
                         onViewAllHandler={onpressViewHandler}
+                        selectedOrderDetail={(value) => setUserDetail(value)}
                       />
                     </View>
 
@@ -229,6 +235,32 @@ export function ShippingOrder2() {
           </TouchableOpacity>
 
           <Spacer space={SH(20)} />
+
+          {/* <Pdf
+            trustAllCerts={false}
+            activityIndicatorProps={{
+              color: COLORS.primary,
+              progressTintColor: COLORS.primary,
+            }}
+            source={{
+              uri: 'data:application/pdf;base64,/https://wwwtest.fedex.com/document/v1/cache/retrieve/SH,f86b5c1af8edd0aa794980020268_Merge?isLabel=true&autoPrint=false',
+            }}
+            onLoadComplete={(numberOfPages, filePath) => {
+              console.log(`Number of pages: ${numberOfPages}`);
+            }}
+            onPageChanged={(page, numberOfPages) => {
+              console.log(`Current page: ${page}`);
+            }}
+            onError={(error) => {
+              console.log(error);
+            }}
+            onPressLink={(uri) => {
+              console.log(`Link pressed: ${uri}`);
+            }}
+            style={{
+              flex: 1,
+            }}
+          /> */}
 
           <WebView
             source={{ uri: getAnalyticsData?.getOrderData?.tracking_info?.url }}
