@@ -137,7 +137,6 @@ export function MainScreen({
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
-  console.log('productCartArray', productCartArray);
   const cartLength = CART_LENGTH;
   const serviceCartData = getRetailData?.getserviceCart;
   const serviceCartLength = serviceCartData?.appointment_cart_products?.length;
@@ -154,15 +153,11 @@ export function MainScreen({
     product_id: obj.product_id,
     qty: obj.qty,
   }));
-
   const [productServiceType, setProductServiceType] = useState(1);
   const [cateoryView, setCateoryView] = useState(false);
   const [productFilter, setProductFilter] = useState(0);
-
   const [serviceFilter, setServiceFilter] = useState(0);
-
   const [hitBulk, setHitBulk] = useState(true);
-
   const [selectedCartItem, setSelectedCartItems] = useState([]);
   const filterMenuData = JSON.parse(JSON.stringify(catTypeData));
 

@@ -95,7 +95,6 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
         firstName: firstName,
         lastName: lastName,
       };
-      console.log('data', data);
       dispatch(attachCustomer(data));
       clearInput();
       crossHandler();
