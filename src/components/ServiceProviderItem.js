@@ -2,6 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { COLORS } from '@/theme';
 import { ms } from 'react-native-size-matters';
+import { userImage } from '@/assets';
 
 export const ServiceProviderItem = ({ item, onPress, borderColor, containerStyle, imageStyle }) => (
   <TouchableOpacity
@@ -9,7 +10,11 @@ export const ServiceProviderItem = ({ item, onPress, borderColor, containerStyle
     style={[styles.imageSelectedBorder, containerStyle, { borderColor }]}
   >
     <Image
-      source={{ uri: item?.user?.user_profiles?.profile_photo }}
+      source={
+        item?.user?.user_profiles?.profile_photo
+          ? { uri: item?.user?.user_profiles?.profile_photo }
+          : userImage
+      }
       style={[styles.imageStyl, imageStyle]}
     />
   </TouchableOpacity>
