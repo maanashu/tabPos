@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { AddDiscountToCart, ScreenWrapper, Spacer } from '@/components';
-
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   CartAmountPayBy,

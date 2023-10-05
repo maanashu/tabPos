@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Image,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-  Keyboard,
-  ActivityIndicator,
-} from 'react-native';
+import { Image, Text, View, TouchableOpacity, Keyboard, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -18,19 +10,11 @@ import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { TextInput } from 'react-native-gesture-handler';
 import CountryPicker from 'react-native-country-picker-modal';
 import { strings } from '@/localization';
-import {
-  attachCustomer,
-  attachCustomerInService,
-  attachServiceCustomer,
-  getUserDetail,
-  getUserDetailSuccess,
-  sendInvitation,
-} from '@/actions/RetailAction';
+import { attachServiceCustomer, getUserDetail, getUserDetailSuccess } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { useCallback } from 'react';
 import { memo } from 'react';
-import { useEffect } from 'react';
 import { emailReg } from '@/utils/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 

@@ -18,7 +18,6 @@ export { CartScreen } from '@/screens/PosRetail3/Components/CartScreen';
 export { AddCartModal } from '@/screens/PosRetail3/Components/AddCartModal';
 export { AddServiceCartModal } from '@/screens/PosRetail3/Components/AddServiceCartModal';
 export { AddCartDetailModal } from '@/screens/PosRetail3/Components/AddCartDetailModal';
-export { SideCartDet } from '@/screens/PosRetail3/Components/SideCartDet';
 export { CartListModal } from '@/screens/PosRetail3/Components/CartListModal';
 // export { ServiceCartListModal } from '@/screens/PosRetail3/Components/ServiceCartListModal';
 export { CartServiceScreen } from '@/screens/PosRetail3/Components/CartServiceScreen';

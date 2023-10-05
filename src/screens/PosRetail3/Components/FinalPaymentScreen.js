@@ -1,12 +1,4 @@
-import {
-  FlatList,
-  Image,
-  SafeAreaView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { FlatList, Image, SafeAreaView, Text, View } from 'react-native';
 import React from 'react';
 import { ms } from 'react-native-size-matters';
 import { styles } from '../PosRetail3.styles';

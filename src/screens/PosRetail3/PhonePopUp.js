@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Fonts, cross, deleteBack } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';

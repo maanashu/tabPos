@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Image,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-  Keyboard,
-  ActivityIndicator,
-} from 'react-native';
+import { Image, Text, View, TouchableOpacity, Keyboard, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -28,7 +20,6 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { useCallback } from 'react';
 import { memo } from 'react';
-import { useEffect } from 'react';
 import { emailReg } from '@/utils/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -36,11 +27,8 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
-  const [phoneNumber, setPhoneNumber] = useState('');
-
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
-
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -48,8 +36,6 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const [monthDays, setmonthDays] = useState([]);
   const getuserDetailByNo = getRetailData?.getUserDetail;
   const userLength = Object.keys(getuserDetailByNo)?.length;
-  const [defaultFlag, setDefaultFlag] = useState('US');
-  const [defaultCountryCode, setDefaultCountryCode] = useState('+1');
   const [defaultPhoneNumber, setDefaultPhoneNumber] = useState(
     getuserDetailByNo?.full_phone_number
   );
