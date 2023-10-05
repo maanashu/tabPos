@@ -636,7 +636,7 @@ export const styles = StyleSheet.create({
     marginTop: ms(5),
   },
   invoiceTxt: {
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.SemiBold,
     fontSize: ms(7),
     marginVertical: ms(5),
   },
