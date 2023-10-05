@@ -46,7 +46,7 @@ const InvoiceDetails = ({
         </View>
       </View>
       <Text style={styles.priceTitle}>
-        {`${
+        {`-$${
           applicableForAllItems || applyEachItem ? item?.totalRefundAmount : item?.price * item?.qty
         }`}
       </Text>
@@ -71,11 +71,11 @@ const InvoiceDetails = ({
         {`${orderDetail?.seller_details?.phone_number}` ?? '-'}
       </Text>
 
-      <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
+      {/* <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
         Invoice No. # {orderDetail?.invoices?.invoice_number ?? '-'}
-      </Text>
+      </Text> */}
 
-      <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
+      {/* <Spacer space={SH(20)} backgroundColor={COLORS.transparent} /> */}
 
       <View style={{ paddingVertical: 8 }}>
         <FlatList
@@ -91,21 +91,21 @@ const InvoiceDetails = ({
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{'Sub Total'}</Text>
-        <Text style={styles._subTotalPrice}>{`$${subTotal?.toFixed(2)}` ?? '-'}</Text>
+        <Text style={styles._subTotalPrice}>{`-$${subTotal?.toFixed(2)}` ?? '0.0'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{deliveryShippingTitle}</Text>
-        <Text style={styles._subTotalPrice}>{`$${deliveryShippingCharges}` ?? '-'}</Text>
+        <Text style={styles._subTotalPrice}>{`-$${deliveryShippingCharges}` ?? '0.0'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
-        <Text style={styles._subTotalPrice}>{`$${totalTaxes}` ?? '-'}</Text>
+        <Text style={styles._subTotalPrice}>{`-$${totalTaxes}` ?? '0.0'}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
@@ -115,7 +115,7 @@ const InvoiceDetails = ({
           Total
         </Text>
         <Text style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-          {`$${total}` ?? '-'}
+          {`-$${total}` ?? '0.0'}
         </Text>
       </View>
 

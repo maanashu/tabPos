@@ -27,11 +27,19 @@ const Price = ({ orderData, onPresshandler }) => {
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.totalTextStyle2}>{'$'}</Text>
           <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>
-            {orderData?.order?.discount ?? '-'}
+            {orderData?.order?.discount ?? '0.0'}
           </Text>
         </View>
       </View>
-
+      <View style={styles.orderDetailsView}>
+        <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.totalTextStyle2}>{'$'}</Text>
+          <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>
+            {orderData?.order?.tips ?? '0.0'}
+          </Text>
+        </View>
+      </View>
       <View style={styles.orderDetailsView}>
         <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
         <View style={{ flexDirection: 'row' }}>

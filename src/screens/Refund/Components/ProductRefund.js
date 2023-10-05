@@ -602,14 +602,14 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{strings.deliveryOrders.subTotal}</Text>
-                <Text style={styles.subTotalPrice}>{`$${totalRefundAmount?.toFixed(2)}`}</Text>
+                <Text style={styles.subTotalPrice}>{`-$${totalRefundAmount?.toFixed(2)}`}</Text>
               </View>
 
               <Spacer space={SH(10)} />
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{strings.deliveryOrders.totalTax}</Text>
-                <Text style={styles.subTotalPrice}>{`$${calculateRefundTax().toFixed(2)}`}</Text>
+                <Text style={styles.subTotalPrice}>{`-$${calculateRefundTax().toFixed(2)}`}</Text>
               </View>
 
               {finalOrder?.order?.status === 5 ? (
@@ -617,7 +617,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                   <Spacer space={SH(10)} />
                   <View style={styles.totalViewStyle}>
                     <Text style={styles.subTotalText}>{deliveryShippingCharges().title}</Text>
-                    <Text style={styles.subTotalPrice}>{`$${
+                    <Text style={styles.subTotalPrice}>{`-$${
                       applyEachItem || applicableIsCheck
                         ? deliveryShippingCharges().deliveryCharges
                         : 0
@@ -634,7 +634,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                   {strings.wallet.total}
                 </Text>
                 <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
-                  {`$${totalRefundableAmount().toFixed(2)}`}
+                  {`-$${totalRefundableAmount().toFixed(2)}`}
                 </Text>
               </View>
 
