@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF } from '@/theme';
 import { strings } from '@/localization';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { getDelivery } from '@/selectors/DeliverySelector';
@@ -44,7 +44,6 @@ export default memo(TodayOrderStatus);
 const styles = StyleSheet.create({
   orderStatusViewStyle: {
     borderRadius: 10,
-    marginTop: SH(15),
     paddingVertical: ms(12),
     alignItems: 'flex-start',
     width: Dimensions.get('window').width / 4,

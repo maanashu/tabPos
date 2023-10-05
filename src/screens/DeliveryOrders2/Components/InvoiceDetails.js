@@ -1,7 +1,8 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 
 import moment from 'moment';
+import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import MapViewDirections from 'react-native-maps-directions';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -10,25 +11,15 @@ import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
+import { getUser } from '@/selectors/UserSelectors';
+import { getOrderData } from '@/actions/AnalyticsAction';
 import mapCustomStyle from '@/components/MapCustomStyles';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { deliveryHomeIcon, scooter, crossButton, gps, logo_full, Fonts } from '@/assets';
 
 import styles from '../styles';
-import { ms } from 'react-native-size-matters';
-import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import { getUser } from '@/selectors/UserSelectors';
-import { useEffect } from 'react';
-import { getOrderData } from '@/actions/AnalyticsAction';
 
-const InvoiceDetails = ({
-  trackingView,
-  mapRef,
-  orderList,
-  orderData,
-  subTotal,
-  totalTaxes,
-  total,
-}) => {
+const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
   const dispatch = useDispatch();
   const getOrder = useSelector(getAnalytics);
   const getUserData = useSelector(getUser);
@@ -42,6 +33,7 @@ const InvoiceDetails = ({
     <View style={style.container}>
       <View style={style.subContainer}>
         <Text style={style.count}>{item.qty}</Text>
+
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[style.itemName, { width: ms(80) }]} numberOfLines={1}>
             {item?.product_name ?? '-'}
@@ -51,6 +43,7 @@ const InvoiceDetails = ({
           </View>
         </View>
       </View>
+
       <Text style={style.priceTitle}>{`$${item?.price}` ?? '-'}</Text>
     </View>
   );
@@ -79,22 +72,21 @@ const InvoiceDetails = ({
 
           <View style={{ paddingVertical: 8 }}>
             <FlatList
-              data={orderDetail?.order_details ?? []}
               renderItem={renderProductItem}
-              extraData={orderDetail?.order_details}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
+              extraData={orderDetail?.order_details}
+              data={orderDetail?.order_details ?? []}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={styles.contentContainerStyle}
             />
           </View>
 
           <View style={style._horizontalLine} />
 
           <View style={style._subTotalContainer}>
-            <Text style={style._substotalTile}>{'Sub Total'}</Text>
+            <Text style={style._substotalTile}>{strings.deliveryOrders.subTotal}</Text>
             <Text style={style._subTotalPrice}>{`$${orderDetail?.actual_amount}` ?? '-'}</Text>
           </View>
-
-          <View style={style._horizontalLine} />
 
           <View style={style._horizontalLine} />
 
@@ -106,12 +98,8 @@ const InvoiceDetails = ({
           <View style={style._horizontalLine} />
 
           <View style={style._subTotalContainer}>
-            <Text style={[style._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-              Total
-            </Text>
-            <Text style={[style._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-              {`$${orderDetail?.payable_amount}` ?? '-'}
-            </Text>
+            <Text style={style.totalPriceLabel}>{strings.deliveryOrders.total}</Text>
+            <Text style={style.totalPriceText}>{`$${orderDetail?.payable_amount}` ?? '-'}</Text>
           </View>
 
           <View style={[style._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
@@ -248,10 +236,6 @@ const InvoiceDetails = ({
 export default memo(InvoiceDetails);
 
 const style = StyleSheet.create({
-  invoiceMainViewStyle: {
-    paddingHorizontal: ms(10),
-    paddingVertical: ms(15),
-  },
   storeNameText: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
@@ -319,11 +303,23 @@ const style = StyleSheet.create({
     fontSize: ms(5.5),
     marginTop: ms(5),
   },
+  totalPriceLabel: {
+    fontSize: ms(6),
+    color: COLORS.black,
+    marginTop: ms(5),
+    fontFamily: Fonts.SemiBold,
+  },
   _subTotalPrice: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     fontSize: ms(5.5),
     marginTop: ms(7),
+  },
+  totalPriceText: {
+    fontSize: ms(6),
+    marginTop: ms(7),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
   },
   _horizontalLine: {
     height: ms(1),

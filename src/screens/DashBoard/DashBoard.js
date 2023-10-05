@@ -12,6 +12,7 @@ import {
   Platform,
   findNodeHandle,
   Keyboard,
+  RefreshControl,
 } from 'react-native';
 
 import moment from 'moment';
@@ -107,6 +108,7 @@ export function DashBoard({ navigation }) {
   const [sku, setSku] = useState('');
   const [scan, setScan] = useState(false);
   const [scroll, setScroll] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   //  order delivery pagination
 
@@ -445,6 +447,16 @@ export function DashBoard({ navigation }) {
     }
   };
 
+  const onRefresh = () => {
+    const totalPages = getDashboardData?.getOrderDeliveries?.total_pages;
+    if (page <= totalPages) {
+      setPage((prevPage) => prevPage + 1);
+      // if (!isScrolling) return;
+      dispatch(getOrderDeliveries(sellerID, page));
+      dispatch(getPendingOrders(sellerID));
+    }
+  };
+
   const bodyView = () => (
     <View style={styles.homeScreenCon}>
       <View style={styles.displayRow}>
@@ -666,9 +678,14 @@ export function DashBoard({ navigation }) {
                 renderItem={tableListItem}
                 keyExtractor={(item) => item.id}
                 showsVerticalScrollIndicator={false}
-                // ListFooterComponent={renderFooterPost}
-                // onEndReached={debouncedLoadMoreOrder}
-                // onEndReachedThreshold={1}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={onRefresh}
+                    tintColor={COLORS.primary} // Change the color of the loading spinner
+                    title="Pull to Refresh" // Optional, you can customize the text
+                  />
+                }
               />
             )}
           </View>

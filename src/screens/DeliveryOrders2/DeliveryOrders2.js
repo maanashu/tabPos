@@ -49,6 +49,7 @@ import ReturnConfirmation from './Components/ReturnConfirmation';
 import styles from './styles';
 import moment from 'moment';
 import ReturnedOrderDetail from './Components/ReturnedOrderDetail';
+import { getPendingOrders } from '@/actions/DashboardAction';
 
 export function DeliveryOrders2({ route }) {
   const mapRef = useRef(null);
@@ -100,45 +101,43 @@ export function DeliveryOrders2({ route }) {
   const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
   const [changeViewToRecheck, setChangeViewToRecheck] = useState();
 
-  useEffect(() => {
-    if (ordersList?.length > 0) {
-      const interval = setInterval(() => {
-        dispatch(getOrderData(orderId || ordersList?.[0]?.id));
-      }, 60000);
+  // useEffect(() => {
+  //   if (ordersList?.length > 0) {
+  //     const interval = setInterval(() => {
+  //       dispatch(getOrderData(orderId || ordersList?.[0]?.id));
+  //     }, 60000);
 
-      return () => clearInterval(interval);
-    }
-  }, []);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, []);
 
   useFocusEffect(
     React.useCallback(() => {
-      if (ORDER_DETAIL !== null) {
-        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id);
-        setUserDetail(ORDER_DETAIL);
-        setOrderDetail(ORDER_DETAIL?.order_details);
-      }
-      if (!isBack) {
-        setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id);
-        setViewAllOrders(isViewAll);
-      }
-      return () => {
-        setIsBack(false);
-        setViewAllOrders(false);
-        setOrderDetail([]);
-        setSelectedProductId(null);
-      };
+      dispatch(getReviewDefault(0, 1));
+      dispatch(getPendingOrders(sellerID));
+      dispatch(todayOrders());
+      dispatch(deliOrder());
+      dispatch(getOrderCount());
+      dispatch(getOrderstatistics(1));
+      dispatch(getGraphOrders(1));
+      dispatch(getSellerDriverList());
+      // if (ORDER_DETAIL !== null) {
+      //   setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id);
+      //   setUserDetail(ORDER_DETAIL);
+      //   setOrderDetail(ORDER_DETAIL?.order_details);
+      // }
+      // if (!isBack) {
+      //   setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id);
+      //   setViewAllOrders(isViewAll);
+      // }
+      // return () => {
+      //   setIsBack(false);
+      //   setViewAllOrders(false);
+      //   setOrderDetail([]);
+      //   setSelectedProductId(null);
+      // };
     }, [isViewAll, ORDER_DETAIL])
   );
-
-  useEffect(() => {
-    dispatch(todayOrders());
-    dispatch(deliOrder());
-    dispatch(getOrderCount());
-    dispatch(getReviewDefault(0, 1));
-    dispatch(getOrderstatistics(1));
-    dispatch(getGraphOrders(1));
-    dispatch(getSellerDriverList());
-  }, []);
 
   useEffect(() => {
     setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
@@ -479,14 +478,10 @@ export function DeliveryOrders2({ route }) {
     }
   };
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    dispatch(getReviewDefault(3, 1));
+  const onRefresh = () => {
+    dispatch(getReviewDefault(openShippingOrders, 1));
     dispatch(getOrderCount(sellerID));
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
-  }, []);
+  };
 
   const recheckHandler = () => {
     setChangeViewToRecheck(true);
@@ -499,123 +494,121 @@ export function DeliveryOrders2({ route }) {
   };
 
   return (
-    <ScreenWrapper>
+    <>
       {!trackingView ? (
-        <>
-          <View style={styles.container}>
-            <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
+        <SafeAreaView style={styles.container}>
+          <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
 
-            <Spacer space={SH(20)} />
+          <Spacer space={SH(20)} />
 
-            {viewAllOrder ? (
-              <View style={styles.firstRowStyle}>
-                <>
-                  {getDeliveryData?.getReviewDef?.length > 0 ? (
-                    <>
-                      <View
-                        style={[
-                          styles.orderToReviewView,
-                          { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
-                        ]}
-                      >
-                        <FlatList
-                          renderItem={renderOrderToReview}
-                          showsVerticalScrollIndicator={false}
-                          data={getDeliveryData?.getReviewDef ?? []}
-                          ListHeaderComponent={() => (
-                            <View style={styles.headingRowStyle}>
-                              <Text style={styles.ordersToReviewText}>
-                                {getHeaderText(openShippingOrders)}
-                              </Text>
-                            </View>
-                          )}
-                          refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                          }
-                          contentContainerStyle={styles.contentContainerStyle}
-                        />
-                      </View>
-
-                      {changeViewToRecheck ? (
-                        <ReturnedOrderDetail orderDetail={singleOrderDetail} />
-                      ) : (
-                        <OrderDetail
-                          {...{
-                            userDetail,
-                            orderDetail,
-                            renderOrderProducts,
-                            acceptHandler,
-                            declineHandler,
-                            openShippingOrders,
-                            trackHandler,
-                            latitude,
-                            longitude,
-                            location,
-                            sourceCoordinate,
-                            destinationCoordinate,
-                            changeMapState,
-                            mapRef,
-                            onPressShop,
-                          }}
-                        />
-                      )}
-                    </>
-                  ) : (
-                    <View style={styles.emptyView}>
-                      <Text style={styles.noOrdersText}>{'No orders found'}</Text>
+          {viewAllOrder ? (
+            <SafeAreaView style={[styles.firstRowStyle, { flex: 0.98 }]}>
+              <>
+                {getDeliveryData?.getReviewDef?.length > 0 ? (
+                  <>
+                    <View
+                      style={[
+                        styles.orderToReviewView,
+                        { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
+                      ]}
+                    >
+                      <FlatList
+                        renderItem={renderOrderToReview}
+                        showsVerticalScrollIndicator={false}
+                        data={getDeliveryData?.getReviewDef ?? []}
+                        ListHeaderComponent={() => (
+                          <View style={styles.headingRowStyle}>
+                            <Text style={styles.ordersToReviewText}>
+                              {getHeaderText(openShippingOrders)}
+                            </Text>
+                          </View>
+                        )}
+                        refreshControl={
+                          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                        }
+                        contentContainerStyle={styles.contentContainerStyle}
+                      />
                     </View>
-                  )}
-                </>
 
-                <RightSideBar
+                    {changeViewToRecheck ? (
+                      <ReturnedOrderDetail orderDetail={singleOrderDetail} />
+                    ) : (
+                      <OrderDetail
+                        {...{
+                          userDetail,
+                          orderDetail,
+                          renderOrderProducts,
+                          acceptHandler,
+                          declineHandler,
+                          openShippingOrders,
+                          trackHandler,
+                          latitude,
+                          longitude,
+                          location,
+                          sourceCoordinate,
+                          destinationCoordinate,
+                          changeMapState,
+                          mapRef,
+                          onPressShop,
+                        }}
+                      />
+                    )}
+                  </>
+                ) : (
+                  <View style={styles.emptyView}>
+                    <Text style={styles.noOrdersText}>{'No orders found'}</Text>
+                  </View>
+                )}
+              </>
+
+              <RightSideBar
+                {...{
+                  renderDrawer,
+                  viewAllOrder,
+                }}
+              />
+            </SafeAreaView>
+          ) : (
+            <SafeAreaView style={styles.firstRowStyle}>
+              <View>
+                <TodayOrderStatus />
+
+                <Spacer space={ms(10)} />
+
+                <CurrentStatus />
+
+                <Spacer space={ms(10)} />
+
+                <OrderConvertion />
+              </View>
+
+              <View style={{ height: Dimensions.get('window').height - 80 }}>
+                <Graph />
+
+                <Spacer space={SH(15)} />
+
+                <OrderReview
                   {...{
-                    renderDrawer,
-                    viewAllOrder,
+                    renderOrderToReview,
+                    emptyComponent,
+                    headerComponent,
+                    getDeliveryData,
+                    isOrderLoading,
                   }}
                 />
               </View>
-            ) : (
-              <View style={styles.firstRowStyle}>
-                <View style={{ height: Dimensions.get('window').height - 80 }}>
-                  <TodayOrderStatus />
 
-                  <Spacer space={ms(10)} />
-
-                  <CurrentStatus />
-
-                  <Spacer space={ms(10)} />
-
-                  <OrderConvertion />
-                </View>
-
-                <View style={{ height: Dimensions.get('window').height - 80 }}>
-                  <Graph />
-
-                  <Spacer space={SH(15)} />
-
-                  <OrderReview
-                    {...{
-                      renderOrderToReview,
-                      emptyComponent,
-                      headerComponent,
-                      getDeliveryData,
-                      isOrderLoading,
-                    }}
-                  />
-                </View>
-
-                <RightSideBar
-                  {...{
-                    renderDrawer,
-                    viewAllOrder,
-                  }}
-                />
-              </View>
-            )}
-          </View>
+              <RightSideBar
+                {...{
+                  renderDrawer,
+                  viewAllOrder,
+                }}
+              />
+            </SafeAreaView>
+          )}
 
           {isAcceptOrder ? (
-            <View style={[styles.percentageView, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+            <View style={[styles.percentageView, { backgroundColor: 'rgba(0,0,0, 0.2)' }]}>
               <ActivityIndicator
                 size={'small'}
                 color={COLORS.primary}
@@ -623,9 +616,9 @@ export function DeliveryOrders2({ route }) {
               />
             </View>
           ) : null}
-        </>
+        </SafeAreaView>
       ) : (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backView}>
             <Image source={backArrow2} style={styles.backImageStyle} />
             <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
@@ -650,11 +643,11 @@ export function DeliveryOrders2({ route }) {
               }}
             />
           </View>
-        </View>
+        </SafeAreaView>
       )}
 
       {isOrderLoading && viewAllOrder ? (
-        <View style={[styles.percentageView, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+        <View style={[styles.percentageView, { backgroundColor: 'rgba(0,0,0, 0.2)' }]}>
           <ActivityIndicator size={'small'} color={COLORS.primary} style={styles.percentageView} />
         </View>
       ) : null}
@@ -666,6 +659,6 @@ export function DeliveryOrders2({ route }) {
         orderDetail={singleOrderDetail}
         onPressConfirm={onPressConfirmHandler}
       />
-    </ScreenWrapper>
+    </>
   );
 }

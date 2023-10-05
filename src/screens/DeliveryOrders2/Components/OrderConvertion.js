@@ -39,7 +39,7 @@ const OrderConvertion = () => {
     <View style={styles.orderConvertionView}>
       <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
 
-      <Spacer space={ms(10)} />
+      <Spacer space={ms(20)} />
       <View style={styles.piechartViewStyle}>
         <View>
           <PieChart
@@ -54,7 +54,7 @@ const OrderConvertion = () => {
           </View>
         </View>
 
-        <Spacer space={SH(10)} />
+        <Spacer space={SH(20)} />
 
         {orderConversionLoading ? (
           <View style={styles.loaderViewStyle}>
@@ -104,6 +104,7 @@ export default memo(OrderConvertion);
 
 const styles = StyleSheet.create({
   orderConvertionView: {
+    flex: 1.6,
     borderRadius: 10,
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: SW(80),
     justifyContent: 'space-between',
-    paddingVertical: ms(4),
+    paddingVertical: ms(6),
     paddingHorizontal: ms(12),
   },
   orderTypeTextStyle: {
