@@ -250,7 +250,9 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 >{`$${selectedPosStaffCompleteData?.payable_amount}`}</Text>
               </View>
             </View>
-            <Text style={styles.invoiceTxt}>Invoice # V364899978</Text>
+            <Text style={styles.invoiceTxt}>
+              Invoice # {completeData?.invoices?.invoice_number ?? ''}
+            </Text>
           </View>
           <View style={styles.bottomBtnContainer}>
             {selectedPosStaffCompleteData?.status === 1 && (

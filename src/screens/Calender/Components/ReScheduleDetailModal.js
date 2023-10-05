@@ -218,7 +218,9 @@ const ReScheduleDetailModal = ({
             <TouchableOpacity onPress={() => setShowRescheduleModal(false)}>
               <Image source={crossButton} style={styles.crossBg} />
             </TouchableOpacity>
-            <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(10) }}>Booking #MAN8239238</Text>
+            <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(10) }}>
+              Booking #{appointmentData?.id ?? 'ABC'}
+            </Text>
           </View>
           {userDetails && (
             <View

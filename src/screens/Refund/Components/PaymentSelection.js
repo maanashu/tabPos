@@ -154,7 +154,7 @@ const PaymentSelection = ({
             <Text style={styles._totalAmountTitle}>{strings.returnOrder.totalReturnAmount}</Text>
 
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles._dollarSymbol}>{strings.returnOrder.dollar}</Text>
+              <Text style={styles._dollarSymbol}>{'-' + strings.returnOrder.dollar}</Text>
               <Text style={styles._amount}>{payableAmount?.toFixed(2)}</Text>
             </View>
           </View>
@@ -172,7 +172,7 @@ const PaymentSelection = ({
               <TouchableOpacity style={styles._payBYBoxContainer}>
                 <Text style={styles._payByTitle}>{strings.returnOrder.payBy}</Text>
                 <Text style={styles._payByMethod}>{orderData?.order?.mode_of_payment}</Text>
-                <Text style={styles._payByAmount}>{`$${payableAmount?.toFixed(2)}`}</Text>
+                <Text style={styles._payByAmount}>{`-$${payableAmount?.toFixed(2)}`}</Text>
                 <Image
                   source={
                     orderData?.order?.mode_of_payment === strings.returnOrder.cash
