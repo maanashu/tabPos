@@ -48,7 +48,7 @@ const Graph = () => {
       const setOfThree = [];
       setOfThree.push({
         value: values[0] || 0,
-        spacing: 5,
+        spacing: 10,
         label: day,
         labelWidth: 90,
         labelTextStyle: {

@@ -58,7 +58,9 @@ const OrderDetail = ({
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                   {strings.shippingOrder.totalItem}
                 </Text>
-                <Text style={styles.itemCountText}>{userDetail?.total_items}</Text>
+                <Text style={styles.itemCountText}>
+                  {userDetail?.order_details?.length > 0 ? userDetail?.order_details?.length : '0'}
+                </Text>
               </View>
 
               <Spacer space={SH(15)} />

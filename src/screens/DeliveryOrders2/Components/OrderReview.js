@@ -1,8 +1,20 @@
 import React, { memo } from 'react';
-import { View, Dimensions, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import {
+  View,
+  Dimensions,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  RefreshControl,
+} from 'react-native';
 
 import { COLORS } from '@/theme';
 import { ms } from 'react-native-size-matters';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getReviewDefault } from '@/actions/DeliveryAction';
+import { getPendingOrders } from '@/actions/DashboardAction';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 2;
@@ -14,6 +26,16 @@ const OrderReview = ({
   getDeliveryData,
   isOrderLoading,
 }) => {
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    dispatch(getReviewDefault(0, 1));
+    dispatch(getPendingOrders(sellerID));
+  };
+
   return (
     <>
       {isOrderLoading ? (
@@ -30,6 +52,14 @@ const OrderReview = ({
             showsVerticalScrollIndicator={false}
             data={getDeliveryData?.getReviewDef?.slice(0, 3)}
             contentContainerStyle={styles.contentContainerStyle}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={onRefresh}
+                tintColor={COLORS.primary} // Change the color of the loading spinner
+                title="Pull to Refresh" // Optional, you can customize the text
+              />
+            }
           />
         </View>
       )}

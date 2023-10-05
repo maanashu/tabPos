@@ -1,8 +1,8 @@
 import React, { useEffect, useState, memo } from 'react';
 import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { ms, scale } from 'react-native-size-matters';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { COLORS } from '@/theme';
 import { strings } from '@/localization';
@@ -21,24 +21,24 @@ const CurrentStatus = () => {
     const deliveryTypes = [
       {
         key: '1',
+        image: expressType,
         delivery_type_title:
           getDeliveryData?.deliveringOrder?.[0]?.delivery_type_title ?? 'Express Delivery',
         count: getDeliveryData?.deliveringOrder?.[0]?.count ?? 0,
-        image: expressType,
       },
       {
         key: '2',
+        image: oneHourType,
         delivery_type_title:
           getDeliveryData?.deliveringOrder?.[1]?.delivery_type_title ?? '1 hour delivery window',
         count: getDeliveryData?.deliveringOrder?.[1]?.count ?? 0,
-        image: oneHourType,
       },
       {
         key: '3',
+        image: twoHourType,
         delivery_type_title:
           getDeliveryData?.deliveringOrder?.[2]?.delivery_type_title ?? '2 hour delivery window',
         count: getDeliveryData?.deliveringOrder?.[2]?.count ?? 0,
-        image: twoHourType,
       },
     ];
     setDeliveryTypes(deliveryTypes);
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    paddingBottom: ms(10),
+    paddingBottom: ms(5),
     paddingTop: 15,
   },
   currentStatusText: {
