@@ -170,6 +170,7 @@ export function AddCartModal({
       />
     );
   };
+
   const ColorItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
     <TouchableOpacity
       style={[styles.selectColorItem, { backgroundColor, borderColor }]}

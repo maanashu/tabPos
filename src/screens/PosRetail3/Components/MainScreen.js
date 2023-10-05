@@ -987,9 +987,21 @@ export function MainScreen({
                           {item.name}
                         </Text>
                         <Spacer space={SH(6)} />
-                        <Text numberOfLines={1} style={styles.productSubHead}>
-                          Est: 45 ~ 50 min
-                        </Text>
+                        {item.supplies?.[0]?.approx_service_time == null ? (
+                          <Text numberOfLines={1} style={styles.productSubHead}>
+                            Est: 0 min
+                          </Text>
+                        ) : item.supplies?.[0]?.approx_service_time > 5 ? (
+                          <Text numberOfLines={1} style={styles.productSubHead}>
+                            Est: {item.supplies?.[0]?.approx_service_time - 5} -{' '}
+                            {item.supplies?.[0]?.approx_service_time} min
+                          </Text>
+                        ) : (
+                          <Text numberOfLines={1} style={styles.productSubHead}>
+                            Est: 0 - {item.supplies?.[0]?.approx_service_time} min
+                          </Text>
+                        )}
+
                         <Spacer space={SH(6)} />
                         <View>
                           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -1367,13 +1379,13 @@ export function MainScreen({
             }}
           />
         ) : (
-          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-            <CustomProductAdd
-              crossHandler={() => setNumPadModal(false)}
-              comeFrom={customProductOpen}
-              sellerID={sellerID}
-            />
-          </KeyboardAvoidingView>
+          // <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+          <CustomProductAdd
+            crossHandler={() => setNumPadModal(false)}
+            comeFrom={customProductOpen}
+            sellerID={sellerID}
+          />
+          // </KeyboardAvoidingView>
         )}
       </ReactNativeModal>
 

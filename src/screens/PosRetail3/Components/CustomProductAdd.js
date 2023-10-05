@@ -27,6 +27,7 @@ import moment from 'moment';
 import { getDaysAndDates } from '@/utils/GlobalMethods';
 import { TextInput } from 'react-native-gesture-handler';
 import { digits } from '@/utils/validators';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 const windowWidth = Dimensions.get('window').width;
 
 export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
@@ -175,11 +176,11 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
   };
 
   return (
-    <View
+    <KeyboardAwareScrollView
       style={
         comeFrom === 'product'
           ? styles.customProductCon
-          : [styles.customProductCon, { height: 'auto', marginBottom: ms(30) }]
+          : [styles.customProductCon, { height: 'auto' }]
       }
     >
       <View style={styles.headerConCustomProduct}>
@@ -225,7 +226,8 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
             placeholderTextColor={COLORS.darkGray}
             value={notes}
             onChangeText={setNotes}
-            numberOfLines={4}
+            multiline={true}
+            numberOfLines={5}
           />
 
           {comeFrom === 'product' ? (
@@ -305,6 +307,6 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
           )}
         </View>
       </ScrollView>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }

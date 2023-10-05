@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { Keyboard, KeyboardAvoidingView, ScrollView, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
@@ -72,8 +79,7 @@ export function CartServiceScreen({
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
   const [serviceItemSave, setServiceItemSave] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  // const availableOfferArray = getRetailData?.availableOffer;
-  const availableOfferArray = [];
+  const availableOfferArray = getRetailData?.availableOffer;
   const [cartSearch, setCartSearch] = useState('');
   const [offerId, setOfferId] = useState();
   const CART_LENGTH = useSelector(getServiceCartLength);
@@ -83,6 +89,10 @@ export function CartServiceScreen({
   const [cartProductId, setCartProductId] = useState();
   const [numPadModal, setNumPadModal] = useState(false);
   const [newCustomerModal, setNewCustomerModal] = useState(false);
+
+  const availableOfferLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
+  );
 
   useEffect(() => {
     const data = {
@@ -186,8 +196,8 @@ export function CartServiceScreen({
 
   // available Offer function
   const serviceFun = async (item) => {
-    setOfferId(item?.product?.id);
-    const res = await dispatch(getOneService(sellerID, item?.product?.id));
+    // setOfferId(item?.product?.id);
+    const res = await dispatch(getOneService(sellerID, item?.id));
     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
       setAddServiceCartModal(true);
     }
@@ -303,149 +313,173 @@ export function CartServiceScreen({
                 </View>
               </View>
             </View>
-            {arr?.map((item, index) => (
-              <View key={index}>
-                {item?.appointment_cart_products?.map((data, ind) => (
-                  <View style={[styles.blueListData, { height: SH(70) }]} key={ind}>
-                    <View style={styles.displayflex}>
-                      <View style={[styles.cartHeaderLeftSide, { alignItems: 'center' }]}>
-                        <Text
-                          style={[
-                            styles.blueListDataText,
-                            styles.cashLabelWhiteHash,
-                            { textAlignVertical: 'center' },
-                          ]}
-                        >
-                          {ind + 1}
-                        </Text>
-                        <View
-                          style={[
-                            styles.ItemHeader,
-                            { flexDirection: 'row', alignItems: 'center' },
-                          ]}
-                        >
-                          <Image
-                            source={{ uri: data.product_details?.image }}
-                            style={styles.cartItemImage}
-                          />
-
-                          <View style={{ marginLeft: 10 }}>
+            <View style={{ marginBottom: ms(60) }}>
+              <ScrollView style={{ paddingBottom: ms(20) }} showsVerticalScrollIndicator={false}>
+                {arr?.map((item, index) => (
+                  <View key={index}>
+                    {item?.appointment_cart_products?.map((data, ind) => (
+                      <View style={[styles.blueListData, { height: SH(70) }]} key={ind}>
+                        <View style={styles.displayflex}>
+                          <View style={[styles.cartHeaderLeftSide, { alignItems: 'center' }]}>
                             <Text
-                              style={[styles.holdCart, { color: COLORS.dark_grey, width: SW(40) }]}
-                              numberOfLines={1}
+                              style={[
+                                styles.blueListDataText,
+                                styles.cashLabelWhiteHash,
+                                { textAlignVertical: 'center' },
+                              ]}
                             >
-                              {data.product_details?.name}
+                              {ind + 1}
                             </Text>
-                            <Text style={[styles.sukNumber, { width: SW(40) }]} numberOfLines={1}>
-                              {moment(data?.date).format('LL')} @
-                              {data?.start_time + '-' + data?.end_time}
-                            </Text>
-                            <Text style={styles.sukNumber}>Est: 45 ~ 50 min </Text>
-                          </View>
-                        </View>
-                      </View>
-                      <View style={styles.serviceCartRightBody}>
-                        <View style={styles.serviceCartBody}>
-                          <View
-                            style={[
-                              styles.cartBodyRightSide,
-                              {
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                paddingLeft: ms(0),
-                                opacity: cartIndex === ind && cartEditItem ? 0.3 : 1,
-                                width: ms(60),
-                                paddingRight: 30,
-                              },
-                            ]}
-                          >
-                            <Image
-                              source={
-                                {
-                                  uri: data?.pos_user_details?.user?.user_profiles?.profile_photo,
-                                } ?? userImage
-                              }
-                              style={styles.offerImage}
-                            />
-                            <Text style={styles.blueListDataText} numberOfLines={1}>
-                              {data?.pos_user_details?.user?.user_profiles?.firstname}
-                            </Text>
-                          </View>
-                        </View>
-                        <View style={styles.serviceCartBody}>
-                          {cartIndex === ind && cartEditItem ? (
-                            <TextInput
-                              value={unitPrice.toString()}
-                              onChangeText={setUnitPrice}
-                              style={styles.unitPriceInput}
-                              keyboardType="numeric"
-                              multiline={false}
-                            />
-                          ) : (
-                            <Text style={styles.blueListDataText}>
-                              $
-                              {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
-                                2
-                              )}
-                            </Text>
-                          )}
-                        </View>
-                        <View style={styles.serviceCartBody}>
-                          <Text>1</Text>
-                        </View>
-                        <View style={styles.serviceCartBody}>
-                          <Text style={styles.blueListDataText}>
-                            $
-                            {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
-                              2
-                            )}
-                          </Text>
-                        </View>
-                        <View style={styles.serviceCartBody}>
-                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View>
-                              {cartIndex === ind && cartEditItem ? (
-                                <TouchableOpacity
+                            <View
+                              style={[
+                                styles.ItemHeader,
+                                { flexDirection: 'row', alignItems: 'center' },
+                              ]}
+                            >
+                              <Image
+                                source={{ uri: data.product_details?.image }}
+                                style={styles.cartItemImage}
+                              />
+
+                              <View style={{ marginLeft: 10 }}>
+                                <Text
                                   style={[
-                                    styles.saveButtonCon,
-                                    {
-                                      backgroundColor: unitPrice
-                                        ? COLORS.primary
-                                        : COLORS.textInputBackground,
-                                    },
+                                    styles.holdCart,
+                                    { color: COLORS.dark_grey, width: SW(40) },
                                   ]}
-                                  onPress={saveCartEditFun}
-                                  disabled={unitPrice ? false : true}
+                                  numberOfLines={1}
                                 >
-                                  <Text
-                                    style={[
-                                      styles.saveText,
-                                      { color: unitPrice ? COLORS.white : COLORS.darkGray },
-                                    ]}
-                                  >
-                                    Save
+                                  {data.product_details?.name}
+                                </Text>
+                                <Text
+                                  style={[styles.sukNumber, { width: SW(40) }]}
+                                  numberOfLines={1}
+                                >
+                                  {moment(data?.date).format('LL')} @
+                                  {data?.start_time + '-' + data?.end_time}
+                                </Text>
+                                {item.supplies?.[0]?.approx_service_time == null ? (
+                                  <Text style={styles.sukNumber}>Est: 0 min</Text>
+                                ) : item.supplies?.[0]?.approx_service_time > 5 ? (
+                                  <Text style={styles.sukNumber}>
+                                    Est: {item.supplies?.[0]?.approx_service_time - 5} -{' '}
+                                    {item.supplies?.[0]?.approx_service_time} min
                                   </Text>
-                                </TouchableOpacity>
+                                ) : (
+                                  <Text style={styles.sukNumber}>
+                                    Est: 0 - {item.supplies?.[0]?.approx_service_time} min
+                                  </Text>
+                                )}
+                              </View>
+                            </View>
+                          </View>
+                          <View style={styles.serviceCartRightBody}>
+                            <View style={styles.serviceCartBody}>
+                              <View
+                                style={[
+                                  styles.cartBodyRightSide,
+                                  {
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    paddingLeft: ms(0),
+                                    opacity: cartIndex === ind && cartEditItem ? 0.3 : 1,
+                                    width: ms(60),
+                                    paddingRight: 30,
+                                  },
+                                ]}
+                              >
+                                <Image
+                                  source={
+                                    {
+                                      uri: data?.pos_user_details?.user?.user_profiles
+                                        ?.profile_photo,
+                                    } ?? userImage
+                                  }
+                                  style={styles.offerImage}
+                                />
+                                <Text style={styles.blueListDataText} numberOfLines={1}>
+                                  {data?.pos_user_details?.user?.user_profiles?.firstname}
+                                </Text>
+                              </View>
+                            </View>
+                            <View style={styles.serviceCartBody}>
+                              {cartIndex === ind && cartEditItem ? (
+                                <TextInput
+                                  value={unitPrice.toString()}
+                                  onChangeText={setUnitPrice}
+                                  style={styles.unitPriceInput}
+                                  keyboardType="numeric"
+                                  multiline={false}
+                                />
                               ) : (
-                                <TouchableOpacity
-                                  style={styles.cartEditCon}
-                                  onPress={() => serviceCartEdit(data, ind)}
-                                >
-                                  <Image source={cartEdit} style={styles.cartEdit} />
-                                </TouchableOpacity>
+                                <Text style={styles.blueListDataText}>
+                                  $
+                                  {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
+                                    2
+                                  )}
+                                </Text>
                               )}
                             </View>
-                            <TouchableOpacity onPress={() => removeOneCartHandler(data.id, ind)}>
-                              <Image source={borderCross} style={styles.borderCross} />
-                            </TouchableOpacity>
+                            <View style={styles.serviceCartBody}>
+                              <Text>1</Text>
+                            </View>
+                            <View style={styles.serviceCartBody}>
+                              <Text style={styles.blueListDataText}>
+                                $
+                                {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
+                                  2
+                                )}
+                              </Text>
+                            </View>
+                            <View style={styles.serviceCartBody}>
+                              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View>
+                                  {cartIndex === ind && cartEditItem ? (
+                                    <TouchableOpacity
+                                      style={[
+                                        styles.saveButtonCon,
+                                        {
+                                          backgroundColor: unitPrice
+                                            ? COLORS.primary
+                                            : COLORS.textInputBackground,
+                                        },
+                                      ]}
+                                      onPress={saveCartEditFun}
+                                      disabled={unitPrice ? false : true}
+                                    >
+                                      <Text
+                                        style={[
+                                          styles.saveText,
+                                          { color: unitPrice ? COLORS.white : COLORS.darkGray },
+                                        ]}
+                                      >
+                                        Save
+                                      </Text>
+                                    </TouchableOpacity>
+                                  ) : (
+                                    <TouchableOpacity
+                                      style={styles.cartEditCon}
+                                      onPress={() => serviceCartEdit(data, ind)}
+                                    >
+                                      <Image source={cartEdit} style={styles.cartEdit} />
+                                    </TouchableOpacity>
+                                  )}
+                                </View>
+                                <TouchableOpacity
+                                  onPress={() => removeOneCartHandler(data.id, ind)}
+                                >
+                                  <Image source={borderCross} style={styles.borderCross} />
+                                </TouchableOpacity>
+                              </View>
+                            </View>
                           </View>
                         </View>
                       </View>
-                    </View>
+                    ))}
                   </View>
                 ))}
-              </View>
-            ))}
+              </ScrollView>
+            </View>
 
             <Spacer space={SH(7)} />
           </View>
@@ -495,46 +529,64 @@ export function CartServiceScreen({
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
                 </View>
 
-                <FlatList
-                  data={availableOfferArray}
-                  extraData={availableOfferArray}
-                  renderItem={({ item, index }) => (
-                    <TouchableOpacity
-                      style={styles.avaliableOferBodyCon}
-                      key={index}
-                      onPress={() => serviceFun(item)}
-                    >
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{ borderRadius: 4 }}>
-                          <Image source={{ uri: item.product?.image }} style={styles.offerImage} />
-                        </View>
-                        <View style={{ marginLeft: 4 }}>
-                          <Text style={[styles.offerText, [{ width: ms(90) }]]} numberOfLines={1}>
-                            {item.product?.name}
-                          </Text>
-                          <Text style={styles.offerPrice}>White/S</Text>
-                          <View style={{ flexDirection: 'row' }}>
-                            <Text style={[styles.offerPrice, styles.lineTrought]}>
-                              ${item.actual_price_per_pack}
+                {availableOfferLoad ? (
+                  <View style={{ marginTop: ms(30) }}>
+                    <ActivityIndicator size="small" color={COLORS.primary} />
+                  </View>
+                ) : (
+                  <FlatList
+                    data={availableOfferArray}
+                    extraData={availableOfferArray}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) => (
+                      <TouchableOpacity
+                        style={styles.avaliableOferBodyCon}
+                        key={index}
+                        onPress={() => serviceFun(item)}
+                      >
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <View style={{ borderRadius: 4 }}>
+                            <Image source={{ uri: item?.image }} style={styles.offerImage} />
+                          </View>
+                          <View style={{ marginLeft: 4 }}>
+                            <Text style={[styles.offerText, [{ width: ms(90) }]]} numberOfLines={1}>
+                              {item?.name}
                             </Text>
-                            <Text style={styles.offerPriceDark}>${item.offer_price_per_pack}</Text>
+                            <Text style={styles.offerPrice}>White/S</Text>
+                            {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
+                            item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
+                              <View style={{ flexDirection: 'row' }}>
+                                <Text style={[styles.offerPrice, styles.lineTrought]}>
+                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.actual_price}
+                                </Text>
+                                <Text style={[styles.offerPriceDark, { marginLeft: ms(3) }]}>
+                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                                </Text>
+                              </View>
+                            ) : (
+                              <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.offerPriceDark}>
+                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                                </Text>
+                              </View>
+                            )}
                           </View>
                         </View>
+                        <Image source={addToCart} style={styles.sideAddToCart} />
+                      </TouchableOpacity>
+                    )}
+                    style={{ flex: 1 }}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
+                    ListEmptyComponent={() => (
+                      <View style={styles.noProductText}>
+                        <Text style={[styles.emptyListText, { fontSize: SF(16) }]}>
+                          {strings.valiadtion.noData}
+                        </Text>
                       </View>
-                      <Image source={addToCart} style={styles.sideAddToCart} />
-                    </TouchableOpacity>
-                  )}
-                  style={{ flex: 1 }}
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
-                  ListEmptyComponent={() => (
-                    <View style={styles.noProductText}>
-                      <Text style={[styles.emptyListText, { fontSize: SF(16) }]}>
-                        {strings.valiadtion.noData}
-                      </Text>
-                    </View>
-                  )}
-                />
+                    )}
+                  />
+                )}
               </View>
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
@@ -643,9 +695,9 @@ export function CartServiceScreen({
       </Modal>
 
       <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
-        <KeyboardAvoidingView behavior="padding">
-          <NewCustomerAddService crossHandler={closeCustomerAddModal} />
-        </KeyboardAvoidingView>
+        {/* <KeyboardAvoidingView behavior="padding"> */}
+        <NewCustomerAddService crossHandler={closeCustomerAddModal} />
+        {/* </KeyboardAvoidingView> */}
       </Modal>
     </View>
   );

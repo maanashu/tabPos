@@ -30,6 +30,7 @@ import { useCallback } from 'react';
 import { memo } from 'react';
 import { useEffect } from 'react';
 import { emailReg } from '@/utils/validators';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const dispatch = useDispatch();
@@ -166,7 +167,10 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   // };
 
   return (
-    <View style={[styles.customProductCon, { height: ms(330) }]}>
+    <KeyboardAwareScrollView
+      style={[styles.customProductCon, { height: ms(330) }]}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.headerConCustomProduct}>
         {/* <Text style={styles.zeroText}>New Product Add to Cart</Text> */}
         <TouchableOpacity onPress={crossHandler}>
@@ -341,11 +345,15 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                   >
                     <View style={{ width: ms(140) }}>
                       <Text style={styles.customerDarkLabel}>{strings.retail.firstName}</Text>
-                      <Text style={styles.customerLightdata}>{getuserDetailByNo?.firstname}</Text>
+                      <Text style={styles.customerLightdata}>
+                        {getuserDetailByNo?.user_profile?.firstname}
+                      </Text>
                     </View>
                     <View style={{ width: ms(140) }}>
                       <Text style={styles.customerDarkLabel}>{strings.retail.lastName}</Text>
-                      <Text style={styles.customerLightdata}>{getuserDetailByNo?.lastname}</Text>
+                      <Text style={styles.customerLightdata}>
+                        {getuserDetailByNo?.user_profile?.lastname}
+                      </Text>
                     </View>
                   </View>
                   <Spacer space={SH(18)} />
@@ -363,12 +371,14 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                         visible={false}
                       />
                       <Image source={dropdown} style={styles.dropDownIcon} />
-                      {/* <Text style={styles.countryCodeText}>{countryCode}</Text> */}
+                      <Text style={styles.countryCodeText}>
+                        {getuserDetailByNo?.user_profile?.phone_code}
+                      </Text>
                       <TextInput
                         maxLength={15}
                         returnKeyType={'done'}
                         keyboardType={'number-pad'}
-                        value={getuserDetailByNo?.full_phone_number}
+                        value={getuserDetailByNo?.user_profile?.full_phone_number}
                         onChangeText={setDefaultPhoneNumber}
                         style={styles.textInputContainer}
                         placeholder={strings.verifyPhone.placeHolderText}
@@ -381,7 +391,9 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                   <Spacer space={SH(18)} />
                   <View>
                     <Text style={styles.customerDarkLabel}>{strings.retail.emailAdd}</Text>
-                    <Text style={styles.customerLightdata}>{getuserDetailByNo?.user?.email}</Text>
+                    <Text style={styles.customerLightdata}>
+                      {getuserDetailByNo?.user_profile.user?.email}
+                    </Text>
                   </View>
                 </View>
               )
@@ -465,6 +477,6 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
           </View>
         )}
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 });

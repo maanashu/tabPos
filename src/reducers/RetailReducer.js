@@ -36,6 +36,7 @@ const INITIALSTATE = {
   availableOffer: [],
   createOrder: {},
   createServiceOrder: {},
+  availableOffer: [],
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {

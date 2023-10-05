@@ -2195,8 +2195,8 @@ export const styles = StyleSheet.create({
   },
 
   customProductCon: {
-    width: ms(320),
-    height: ms(310),
+    width: ms(350),
+    height: ms(280),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: 10,

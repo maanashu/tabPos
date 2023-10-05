@@ -480,30 +480,32 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart;
-      const body = data?.offerId
-        ? {
-            seller_id: sellerID,
-            supply_id: data.supplyId.toString(),
-            supply_price_id: data.supplyPriceID.toString(),
-            product_id: data.product_id.toString(),
-            app_name: data?.appName,
-            date: data?.date,
-            start_time: data?.startTime,
-            end_time: data?.endTime,
-            pos_user_id: data?.posUserId,
-            offer_id: data?.offerId,
-          }
-        : {
-            seller_id: sellerID,
-            supply_id: data.supplyId.toString(),
-            supply_price_id: data.supplyPriceID.toString(),
-            product_id: data.product_id.toString(),
-            app_name: data?.appName,
-            date: data?.date,
-            start_time: data?.startTime,
-            end_time: data?.endTime,
-            pos_user_id: data?.posUserId,
-          };
+      const body =
+        // data?.offerId
+        //   ? {
+        //       seller_id: sellerID,
+        //       supply_id: data.supplyId.toString(),
+        //       supply_price_id: data.supplyPriceID.toString(),
+        //       product_id: data.product_id.toString(),
+        //       app_name: data?.appName,
+        //       date: data?.date,
+        //       start_time: data?.startTime,
+        //       end_time: data?.endTime,
+        //       pos_user_id: data?.posUserId,
+        //       offer_id: data?.offerId,
+        //     }
+        //   :
+        {
+          seller_id: sellerID,
+          supply_id: data.supplyId.toString(),
+          supply_price_id: data.supplyPriceID.toString(),
+          product_id: data.product_id.toString(),
+          app_name: data?.appName,
+          date: data?.date,
+          start_time: data?.startTime,
+          end_time: data?.endTime,
+          pos_user_id: data?.posUserId,
+        };
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
@@ -1447,7 +1449,6 @@ export class RetailController {
         PRODUCT_URL +
         ApiProductInventory.availableOffer +
         `?app_name=pos&delivery_options=2&page=1&limit=10&seller_id=${data?.seller_id}&service_type=${data?.servicetype}`;
-
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

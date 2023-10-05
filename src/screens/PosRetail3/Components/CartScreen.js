@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -61,6 +62,7 @@ import { CustomProductAdd } from './CustomProductAdd';
 import { NewCustomerAdd } from './NewCustomerAdd';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export function CartScreen({
   onPressPayNow,
@@ -95,6 +97,10 @@ export function CartScreen({
   const [productItem, setProductItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState();
 
+  const availableOfferLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
+  );
+
   useEffect(() => {
     const data = {
       seller_id: sellerID,
@@ -103,6 +109,13 @@ export function CartScreen({
     dispatch(getAvailableOffer(data));
     dispatch(getUserDetailSuccess({}));
   }, []);
+
+  const productPopupFun = async (productId) => {
+    const res = await dispatch(getOneProduct(sellerID, productId));
+    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+      setAddCartModal(true);
+    }
+  };
 
   // hold cart Function
   const cartStatusHandler = () => {
@@ -346,7 +359,14 @@ export function CartScreen({
                 {arr?.map((item, index) => (
                   <View key={index}>
                     {item?.poscart_products?.map((data, ind) => (
-                      <View style={styles.blueListData} key={ind}>
+                      <View
+                        style={styles.blueListData}
+                        key={ind}
+                        // onPress={() => {
+                        //   productPopupFun(data?.product_id);
+                        //   beforeDiscountCartLoad();
+                        // }}
+                      >
                         <View style={styles.displayflex}>
                           <View style={[styles.tableListSide, styles.listLeft]}>
                             <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
@@ -529,62 +549,68 @@ export function CartScreen({
                 <View style={styles.avaliableOfferCon}>
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
                 </View>
-
-                <FlatList
-                  data={availableOfferArray}
-                  extraData={availableOfferArray}
-                  renderItem={({ item, index }) => {
-                    return (
-                      <TouchableOpacity
-                        style={styles.avaliableOferBodyCon}
-                        key={index}
-                        onPress={() => productFun(item, index)}
-                      >
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <View style={{ borderRadius: 4 }}>
-                            <Image source={{ uri: item?.image }} style={styles.offerImage} />
+                {availableOfferLoad ? (
+                  <View style={{ marginTop: ms(30) }}>
+                    <ActivityIndicator size="small" color={COLORS.primary} />
+                  </View>
+                ) : (
+                  <FlatList
+                    data={availableOfferArray}
+                    extraData={availableOfferArray}
+                    renderItem={({ item, index }) => {
+                      return (
+                        <TouchableOpacity
+                          style={styles.avaliableOferBodyCon}
+                          key={index}
+                          onPress={() => productFun(item, index)}
+                        >
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ borderRadius: 4 }}>
+                              <Image source={{ uri: item?.image }} style={styles.offerImage} />
+                            </View>
+                            <View style={{ marginLeft: 4 }}>
+                              <Text style={[styles.offerText, { width: ms(90) }]} numberOfLines={1}>
+                                {item?.name}
+                              </Text>
+                              <Text style={styles.offerPrice}>White/S</Text>
+                              {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
+                              item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
+                                <View style={{ flexDirection: 'row' }}>
+                                  <Text style={[styles.offerPrice, styles.lineTrought]}>
+                                    ${item?.supplies?.[0]?.supply_prices?.[0]?.actual_price}
+                                  </Text>
+                                  <Text style={styles.offerPriceDark}>
+                                    ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                                  </Text>
+                                </View>
+                              ) : (
+                                <View style={{ flexDirection: 'row' }}>
+                                  <Text style={styles.offerPriceDark}>
+                                    ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                                  </Text>
+                                </View>
+                              )}
+                            </View>
                           </View>
-                          <View style={{ marginLeft: 4 }}>
-                            <Text style={[styles.offerText, { width: ms(90) }]} numberOfLines={1}>
-                              {item?.name}
-                            </Text>
-                            <Text style={styles.offerPrice}>White/S</Text>
-                            {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
-                            item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
-                              <View style={{ flexDirection: 'row' }}>
-                                <Text style={[styles.offerPrice, styles.lineTrought]}>
-                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.actual_price}
-                                </Text>
-                                <Text style={styles.offerPriceDark}>
-                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
-                                </Text>
-                              </View>
-                            ) : (
-                              <View style={{ flexDirection: 'row' }}>
-                                <Text style={styles.offerPriceDark}>
-                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-                                </Text>
-                              </View>
-                            )}
-                          </View>
-                        </View>
-                        <Image source={addToCart} style={styles.sideAddToCart} />
-                      </TouchableOpacity>
-                    );
-                  }}
-                  style={{ flex: 1 }}
-                  scrollEnabled={true}
-                  showsVerticalScrollIndicator={false}
-                  keyExtractor={(item, index) => index.toString()}
-                  contentContainerStyle={styles.availbleOfferScroll}
-                  ListEmptyComponent={() => (
-                    <View style={styles.noProductText}>
-                      <Text style={[styles.emptyListText, { fontSize: SF(16) }]}>
-                        {strings.valiadtion.noData}
-                      </Text>
-                    </View>
-                  )}
-                />
+                          <Image source={addToCart} style={styles.sideAddToCart} />
+                        </TouchableOpacity>
+                      );
+                    }}
+                    style={{ flex: 1 }}
+                    scrollEnabled={true}
+                    showsVerticalScrollIndicator={false}
+                    // keyExtractor={(item) => item.id}
+                    keyExtractor={(item, index) => index.toString()}
+                    contentContainerStyle={styles.availbleOfferScroll}
+                    ListEmptyComponent={() => (
+                      <View style={styles.noProductText}>
+                        <Text style={[styles.emptyListText, { fontSize: SF(16) }]}>
+                          {strings.valiadtion.noData}
+                        </Text>
+                      </View>
+                    )}
+                  />
+                )}
               </View>
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
@@ -705,15 +731,15 @@ export function CartScreen({
       </Modal>
 
       <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
-        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-          <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="product" />
-        </KeyboardAvoidingView>
+        {/* <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}> */}
+        <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="product" />
+        {/* </KeyboardAvoidingView> */}
       </Modal>
 
       <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
-        <KeyboardAvoidingView behavior="padding">
-          <NewCustomerAdd crossHandler={closeCustomerAddModal} cartid={cartidFrom} />
-        </KeyboardAvoidingView>
+        {/* <KeyboardAwareScrollView showsVerticalScrollIndicator={false}> */}
+        <NewCustomerAdd crossHandler={closeCustomerAddModal} cartid={cartidFrom} />
+        {/* </KeyboardAwareScrollView> */}
       </Modal>
     </View>
   );

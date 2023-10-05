@@ -224,11 +224,30 @@ export function AddServiceCartModal({
             <View style={styles.detailLeftDetail}>
               <Text style={styles.colimbiaText}>{itemData?.name}</Text>
 
-              <Text style={styles.sizeAndColor}>Est: 45 ~ 50 min </Text>
+              {itemData.supplies?.[0]?.approx_service_time == null ? (
+                <Text style={styles.sizeAndColor}>Est: 0 min</Text>
+              ) : itemData.supplies?.[0]?.approx_service_time > 5 ? (
+                <Text style={styles.sizeAndColor}>
+                  Est: {itemData.supplies?.[0]?.approx_service_time - 5} -{' '}
+                  {itemData.supplies?.[0]?.approx_service_time} min
+                </Text>
+              ) : (
+                <Text style={styles.sizeAndColor}>
+                  Est: 0 - {itemData.supplies?.[0]?.approx_service_time} min
+                </Text>
+              )}
             </View>
-            <Text style={styles.colimbiaText}>
-              ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-            </Text>
+
+            {itemData?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+            itemData?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+              <Text style={styles.colimbiaText}>
+                ${itemData?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+              </Text>
+            ) : (
+              <Text style={styles.colimbiaText}>
+                ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+              </Text>
+            )}
           </View>
           {itemData?.pos_staff?.length > 0 ? (
             <View style={{ alignItems: 'center' }}>
