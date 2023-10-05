@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Image, Text, View, TouchableOpacity, Keyboard, ActivityIndicator } from 'react-native';
+import {
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  Keyboard,
+  ActivityIndicator,
+  TextInput,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -7,7 +15,6 @@ import { Spacer } from '@/components';
 import { crossButton, dropdown, search_light } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import { TextInput } from 'react-native-gesture-handler';
 import CountryPicker from 'react-native-country-picker-modal';
 import { strings } from '@/localization';
 import {
@@ -216,15 +223,13 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
           <Text style={styles.countryCodeText}>{countryCode}</Text>
 
           <TextInput
-            returnKeyType={'done'}
             value={searchCustomer}
             onChangeText={(searchCustomer) => customerPhoneSearchFun(searchCustomer)}
             style={styles.searchCustomerInput}
             placeholder="Customer Phone Number"
             placeholderTextColor={COLORS.gerySkies}
-            keyboardType="number-pad"
+            keyboardType="phone-pad"
             maxLength={10}
-            // showSoftInputOnFocus={false}
           />
         </View>
 
