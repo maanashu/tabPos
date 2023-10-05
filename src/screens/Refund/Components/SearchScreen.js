@@ -30,7 +30,6 @@ import {
   getOrdersByInvoiceIdSuccess,
   scanBarCode,
 } from '@/actions/DashboardAction';
-import { getDrawerSessions } from '@/actions/CashTrackingAction';
 import ReturnOrderInvoice from './ReturnOrderInvoice';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TYPES } from '@/Types/AnalyticsTypes';
@@ -63,7 +62,6 @@ export function SearchScreen(props) {
   }, [param]);
 
   useEffect(() => {
-    dispatch(getDrawerSessions());
     setShowProductRefund(false);
   }, []);
 
