@@ -207,7 +207,10 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
         <View style={styles.searchCustomerCon}>
           <CountryPicker
             onSelect={(code) => {
+              setSearchCustomer('');
               setFlag(code.cca2);
+              dispatch(getUserDetailSuccess({}));
+              setDetailArea(false);
               if (code.callingCode !== []) {
                 setCountryCode('+' + code.callingCode.flat());
               } else {
@@ -221,14 +224,13 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
 
           <Image source={dropdown} style={styles.dropDownIcon} />
           <Text style={styles.countryCodeText}>{countryCode}</Text>
-
           <TextInput
             value={searchCustomer}
             onChangeText={(searchCustomer) => customerPhoneSearchFun(searchCustomer)}
             style={styles.searchCustomerInput}
             placeholder="Customer Phone Number"
             placeholderTextColor={COLORS.gerySkies}
-            keyboardType="phone-pad"
+            keyboardType="number-pad"
             maxLength={10}
           />
         </View>
