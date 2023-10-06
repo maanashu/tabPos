@@ -12,7 +12,6 @@ import {
 import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
-import { useDebouncedCallback } from 'use-lodash-debounce';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   addToCart,
@@ -80,7 +79,6 @@ import { ServiceCartListModal } from './ServiceCartListModal ';
 import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 import { useRef } from 'react';
 import { useCallback } from 'react';
-import { log } from 'react-native-reanimated';
 
 export function MainScreen({
   cartScreenHandler,
@@ -999,7 +997,7 @@ export function MainScreen({
                         <Spacer space={SH(6)} />
                         {item.supplies?.[0]?.approx_service_time == null ? (
                           <Text numberOfLines={1} style={styles.productSubHead}>
-                            Est: 0 min
+                            Est: 40 - 45 min
                           </Text>
                         ) : item.supplies?.[0]?.approx_service_time > 5 ? (
                           <Text numberOfLines={1} style={styles.productSubHead}>
