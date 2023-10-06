@@ -12,7 +12,6 @@ import {
 import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
-import { useDebouncedCallback } from 'use-lodash-debounce';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
   addToCart,
@@ -134,6 +133,7 @@ export function MainScreen({
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
   const productCartArray = getRetailData?.getAllProductCart;
+  // console.log('productCartArray', productCartArray);
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
@@ -186,6 +186,8 @@ export function MainScreen({
   const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [onHold, setOnHold] = useState(false);
+  // console.log('holdProductArray?.length', holdProductArray?.length);
+  // console.log('getRetailData?.getAllCart?.length', getRetailData?.getAllCart?.length);
 
   const cartStatusHandler = async () => {
     if (localCartArray.length > 0) {
@@ -196,7 +198,9 @@ export function MainScreen({
       try {
         eraseClearCart();
         const bulkData = await dispatch(createBulkcart(dataToSend));
+        console.log('bulkData', bulkData);
         if (holdProductArray?.length == 0 || getRetailData?.getAllCart?.length == 0) {
+          console.log('----------', holdProductArray?.length);
           const data =
             holdProductArray?.length > 0
               ? {
@@ -207,6 +211,7 @@ export function MainScreen({
                   status: true,
                   cartId: bulkData?.id,
                 };
+          console.log('data1', data);
 
           dispatch(changeStatusProductCart(data));
         } else {
@@ -220,6 +225,7 @@ export function MainScreen({
                   status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
                   cartId: bulkData?.id,
                 };
+          console.log('data2', data);
 
           dispatch(changeStatusProductCart(data));
         }
@@ -236,6 +242,7 @@ export function MainScreen({
               status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
               cartId: getRetailData?.getAllCart?.id,
             };
+      console.log('data3', data);
 
       dispatch(changeStatusProductCart(data));
       //   if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
@@ -990,7 +997,7 @@ export function MainScreen({
                         <Spacer space={SH(6)} />
                         {item.supplies?.[0]?.approx_service_time == null ? (
                           <Text numberOfLines={1} style={styles.productSubHead}>
-                            Est: 0 min
+                            Est: 40 - 45 min
                           </Text>
                         ) : item.supplies?.[0]?.approx_service_time > 5 ? (
                           <Text numberOfLines={1} style={styles.productSubHead}>
@@ -1373,11 +1380,11 @@ export function MainScreen({
             cartQtyUpdate={cartQtyUpdate}
             clearCart={eraseClearCart}
             checkOutHandler={() => {
-              bulkCart();
+              // bulkCart();
               checkOutHandler();
             }}
             CloseCartModal={() => {
-              bulkCart();
+              // bulkCart();
               setCartModal(false);
             }}
             customAddBtn={() => {

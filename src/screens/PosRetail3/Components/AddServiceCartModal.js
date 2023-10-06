@@ -225,7 +225,7 @@ export function AddServiceCartModal({
               <Text style={styles.colimbiaText}>{itemData?.name}</Text>
 
               {itemData.supplies?.[0]?.approx_service_time == null ? (
-                <Text style={styles.sizeAndColor}>Est: 0 min</Text>
+                <Text style={styles.sizeAndColor}>Est: 40 - 45 min</Text>
               ) : itemData.supplies?.[0]?.approx_service_time > 5 ? (
                 <Text style={styles.sizeAndColor}>
                   Est: {itemData.supplies?.[0]?.approx_service_time - 5} -{' '}

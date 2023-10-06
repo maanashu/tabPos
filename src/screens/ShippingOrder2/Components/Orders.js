@@ -27,6 +27,19 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
   const renderOrderToReview = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => onViewAllHandler(item.id)} style={styles.orderRowStyle}>
+        <View style={{ width: SW(12), alignItems: 'center', alignSelf: 'center' }}>
+          <Text
+            style={{
+              fontFamily: Fonts.SemiBold,
+              fontSize: ms(6),
+              textAlignVertical: 'center',
+              color: COLORS.dark_grey,
+            }}
+          >
+            {`#${item?.id}`}
+          </Text>
+        </View>
+
         <View style={styles.orderDetailStyle}>
           <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
           <View style={styles.locationViewStyle}>
@@ -47,7 +60,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
           </View>
         </View>
 
-        <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
+        <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
           <Text style={styles.timeTextStyle}>
             {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
           </Text>
@@ -130,9 +143,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.blue_shade,
     backgroundColor: COLORS.transparent,
   },
-  orderDetailStyle: {
-    justifyContent: 'center',
-  },
   nameTextStyle: {
     fontFamily: Fonts.Regular,
     fontSize: SF(12),
@@ -159,6 +169,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   orderDetailStyle: {
+    width: SW(30),
     justifyContent: 'center',
   },
   rightIconStyle: {

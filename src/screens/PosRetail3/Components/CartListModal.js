@@ -195,7 +195,10 @@ export function CartListModal({
         <TouchableOpacity
           disabled={isLoading}
           style={styles.crossView}
-          onPress={() => CloseCartModal()}
+          onPress={() => {
+            updateQty();
+            CloseCartModal();
+          }}
         >
           <Image source={crossButton} style={[styles.crossImage]} />
         </TouchableOpacity>

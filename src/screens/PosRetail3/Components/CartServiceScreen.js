@@ -119,14 +119,14 @@ export function CartServiceScreen({
       Toast.show({
         text2: 'Cart not found',
         position: 'bottom',
-        type: 'success_toast',
+        type: 'error_toast',
         visibilityTime: 1500,
       });
     } else if (Object.keys(cartServiceData?.user_details)?.length === 0) {
       Toast.show({
         text2: 'Please attach the customer',
         position: 'bottom',
-        type: 'success_toast',
+        type: 'error_toast',
         visibilityTime: 1500,
       });
     } else {
@@ -389,7 +389,7 @@ export function CartServiceScreen({
                                   {data?.start_time + '-' + data?.end_time}
                                 </Text>
                                 {item.supplies?.[0]?.approx_service_time == null ? (
-                                  <Text style={styles.sukNumber}>Est: 0 min</Text>
+                                  <Text style={styles.sukNumber}>Est: 40 - 45 min</Text>
                                 ) : item.supplies?.[0]?.approx_service_time > 5 ? (
                                   <Text style={styles.sukNumber}>
                                     Est: {item.supplies?.[0]?.approx_service_time - 5} -{' '}
