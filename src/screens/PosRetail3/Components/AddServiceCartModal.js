@@ -35,7 +35,7 @@ export function AddServiceCartModal({
   const getRetailData = useSelector(getRetail);
   const itemData = getRetailData?.getOneService?.product_detail;
   const cartServiceData = getRetailData?.getserviceCart;
-  const timeSlotsData = getRetailData?.timeSlots;
+  const timeSlotsData = getRetailData?.timeSlots?.filter((timeSlot) => timeSlot?.is_available);
   const [posUserId, setposUserId] = useState(itemData?.pos_staff?.[0]?.user?.unique_uuid);
   const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff?.[0]?.user);
 
@@ -341,7 +341,25 @@ export function AddServiceCartModal({
           >
             <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
 
-            <FlatList data={timeSlotsData || []} numColumns={4} renderItem={renderSlotItem} />
+            <FlatList
+              data={timeSlotsData || []}
+              numColumns={4}
+              renderItem={renderSlotItem}
+              ListEmptyComponent={() => (
+                <View
+                  style={{
+                    height: ms(50),
+                    paddingHorizontal: ms(10),
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
+                    There are no slots available for this day
+                  </Text>
+                </View>
+              )}
+            />
           </View>
         </View>
       </ScrollView>
