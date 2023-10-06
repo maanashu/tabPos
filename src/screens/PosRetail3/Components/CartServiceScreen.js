@@ -119,14 +119,14 @@ export function CartServiceScreen({
       Toast.show({
         text2: 'Cart not found',
         position: 'bottom',
-        type: 'success_toast',
+        type: 'error_toast',
         visibilityTime: 1500,
       });
     } else if (Object.keys(cartServiceData?.user_details)?.length === 0) {
       Toast.show({
         text2: 'Please attach the customer',
         position: 'bottom',
-        type: 'success_toast',
+        type: 'error_toast',
         visibilityTime: 1500,
       });
     } else {

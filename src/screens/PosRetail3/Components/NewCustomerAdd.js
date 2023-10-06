@@ -50,6 +50,8 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   );
   const [detailArea, setDetailArea] = useState(false);
 
+  console.log('----', getuserDetailByNo?.user_profile);
+
   useEffect(() => {
     textInputRef.current.focus();
   }, []);
@@ -377,7 +379,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                         maxLength={15}
                         returnKeyType={'done'}
                         keyboardType={'number-pad'}
-                        value={getuserDetailByNo?.user_profile?.full_phone_number}
+                        value={getuserDetailByNo?.user_profile?.phone_no}
                         onChangeText={setDefaultPhoneNumber}
                         style={styles.textInputContainer}
                         placeholder={strings.verifyPhone.placeHolderText}
