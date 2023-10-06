@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Image,
   Text,
@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
-import { crossButton, dropdown, search_light } from '@/assets';
+import { crossButton, dropdown, search_light, user } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -29,8 +29,10 @@ import { useCallback } from 'react';
 import { memo } from 'react';
 import { emailReg } from '@/utils/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useEffect } from 'react';
 
 export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
+  const textInputRef = useRef(null);
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
@@ -47,6 +49,10 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
     getuserDetailByNo?.full_phone_number
   );
   const [detailArea, setDetailArea] = useState(false);
+
+  useEffect(() => {
+    textInputRef.current.focus();
+  }, []);
 
   const customerPhoneSearchFun = useCallback(
     (customerphoneNumber) => {
@@ -103,7 +109,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
         }
       : {
           cartId: cartData?.id,
-          userid: getuserDetailByNo?.user?.unique_uuid,
+          userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
           customerAdd: 'customerAdd',
         };
     dispatch(attachCustomer(data));
@@ -221,7 +227,6 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
             withFilter
             withCallingCode
           />
-
           <Image source={dropdown} style={styles.dropDownIcon} />
           <Text style={styles.countryCodeText}>{countryCode}</Text>
           <TextInput
@@ -232,6 +237,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
             placeholderTextColor={COLORS.gerySkies}
             keyboardType="number-pad"
             maxLength={10}
+            ref={textInputRef}
           />
         </View>
 

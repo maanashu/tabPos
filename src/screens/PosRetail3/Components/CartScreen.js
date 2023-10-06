@@ -101,6 +101,22 @@ export function CartScreen({
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
   );
 
+  const beforeDiscountCartLoad = () => {
+    var arr = getRetailData?.getAllCart;
+    if (arr?.poscart_products?.length > 0) {
+      const products = arr?.poscart_products.map((item) => ({
+        product_id: item?.product_id,
+        qty: item?.qty,
+      }));
+      const data = {
+        updated_products: products,
+      };
+      dispatch(updateCartQty(data, arr.id));
+    } else {
+      // clearCartHandler();
+    }
+  };
+
   useEffect(() => {
     const data = {
       seller_id: sellerID,
@@ -119,6 +135,7 @@ export function CartScreen({
 
   // hold cart Function
   const cartStatusHandler = () => {
+    beforeDiscountCartLoad();
     const data =
       holdProductArray?.length > 0
         ? {
@@ -133,29 +150,14 @@ export function CartScreen({
   };
 
   // offline cart handler function
-  const beforeDiscountCartLoad = () => {
-    var arr = getRetailData?.getAllCart;
-    if (arr?.poscart_products?.length > 0) {
-      const products = arr?.poscart_products.map((item) => ({
-        product_id: item?.product_id,
-        qty: item?.qty,
-      }));
-      const data = {
-        updated_products: products,
-      };
-      dispatch(updateCartQty(data, arr.id));
-    } else {
-      // clearCartHandler();
-    }
-  };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => {
-        beforeDiscountCartLoad();
-      };
-    }, [])
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return () => {
+  //       beforeDiscountCartLoad();
+  //     };
+  //   }, [])
+  // );
 
   const productFun = async (item, index) => {
     beforeDiscountCartLoad();
@@ -284,6 +286,7 @@ export function CartScreen({
         <CustomHeader
           iconShow
           crossHandler={() => {
+            beforeDiscountCartLoad();
             crossHandler();
           }}
         />
@@ -295,6 +298,7 @@ export function CartScreen({
               <TouchableOpacity
                 style={styles.backProScreen}
                 onPress={() => {
+                  beforeDiscountCartLoad();
                   crossHandler();
                   getScreen('Product');
                   // dispatch(getUserDetailSuccess([]));
@@ -518,7 +522,10 @@ export function CartScreen({
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.holdCartPad}
-                onPress={() => setNewCustomerModal((prev) => !prev)}
+                onPress={() => {
+                  beforeDiscountCartLoad();
+                  setNewCustomerModal((prev) => !prev);
+                }}
               >
                 <Image source={newCustomer} style={styles.keyboardIcon} />
               </TouchableOpacity>
@@ -617,8 +624,8 @@ export function CartScreen({
                 <TouchableOpacity
                   style={styles.addDiscountCon}
                   onPress={() => {
-                    addDiscountHandler();
                     beforeDiscountCartLoad();
+                    addDiscountHandler();
                   }}
                   disabled={cartData?.poscart_products?.length > 0 ? false : true}
                 >
@@ -628,8 +635,8 @@ export function CartScreen({
                 <TouchableOpacity
                   style={styles.addDiscountCon}
                   onPress={() => {
-                    addNotesHandler();
                     beforeDiscountCartLoad();
+                    addNotesHandler();
                   }}
                   disabled={cartData?.poscart_products?.length > 0 ? false : true}
                 >
@@ -696,8 +703,8 @@ export function CartScreen({
                 { opacity: cartData?.poscart_products?.length > 0 ? 1 : 0.7 },
               ]}
               onPress={() => {
-                onPressPayNow();
                 beforeDiscountCartLoad();
+                onPressPayNow();
               }}
               disabled={cartData?.poscart_products?.length > 0 ? false : true}
             >
