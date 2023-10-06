@@ -60,6 +60,7 @@ import { NewCustomerAdd } from './NewCustomerAdd';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
 import { NewCustomerAddService } from './NewCustomerAddService';
+import Toast from 'react-native-toast-message';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -72,6 +73,7 @@ export function CartServiceScreen({
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const cartServiceData = getRetailData?.getserviceCart;
+  console.log('cartId', cartServiceData?.id);
   const cartServiceId = getRetailData?.getserviceCart?.id;
   let arr = [getRetailData?.getserviceCart];
   const serviceCartArray = getRetailData?.getAllServiceCart;
@@ -94,24 +96,6 @@ export function CartServiceScreen({
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
   );
 
-  useEffect(() => {
-    const data = {
-      seller_id: sellerID,
-      servicetype: 'service',
-    };
-    dispatch(getAvailableOffer(data));
-    dispatch(getUserDetailSuccess({}));
-  }, []);
-
-  // offline  cart Remove Function
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => {
-        backCartLoad();
-      };
-    }, [])
-  );
-
   const backCartLoad = () => {
     var arr = getRetailData?.getserviceCart;
     if (arr?.appointment_cart_products?.length > 0) {
@@ -122,12 +106,52 @@ export function CartServiceScreen({
       const data = {
         updated_products: products,
       };
+      console.log('data', data);
       dispatch(updateServiceCartQty(data, arr.id));
     }
     // else {
     //   clearCartHandler();
     // }
   };
+
+  const payNowHandler = () => {
+    if (cartServiceData?.appointment_cart_products?.length === 0) {
+      Toast.show({
+        text2: 'Cart not found',
+        position: 'bottom',
+        type: 'success_toast',
+        visibilityTime: 1500,
+      });
+    } else if (Object.keys(cartServiceData?.user_details)?.length === 0) {
+      Toast.show({
+        text2: 'Please attach the customer',
+        position: 'bottom',
+        type: 'success_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      backCartLoad();
+      onPressPayNow();
+    }
+  };
+
+  useEffect(() => {
+    const data = {
+      seller_id: sellerID,
+      servicetype: 'service',
+    };
+    dispatch(getAvailableOffer(data));
+    dispatch(getUserDetailSuccess({}));
+  }, []);
+
+  // offline  cart Remove Function
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return () => {
+  //       backCartLoad();
+  //     };
+  //   }, [])
+  // );
 
   function calculatePercentageValue(value, percentage) {
     if (percentage == '') {
@@ -159,6 +183,8 @@ export function CartServiceScreen({
       const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
       arr.amount.tax = parseFloat(TAX);
       arr.amount.total_amount = arr.amount.products_price + arr.amount.tax;
+      console.log('------------', arr.appointment_cart_products);
+
       var DATA = {
         payload: arr,
       };
@@ -196,6 +222,7 @@ export function CartServiceScreen({
 
   // available Offer function
   const serviceFun = async (item) => {
+    backCartLoad();
     // setOfferId(item?.product?.id);
     const res = await dispatch(getOneService(sellerID, item?.id));
     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
@@ -205,6 +232,7 @@ export function CartServiceScreen({
 
   // hold cart Function
   const serviceCartStatusHandler = () => {
+    backCartLoad();
     const data =
       holdServiceArray?.length > 0
         ? {
@@ -235,7 +263,9 @@ export function CartServiceScreen({
         <CustomHeader
           iconShow
           crossHandler={() => {
+            backCartLoad();
             crossHandler();
+
             // dispatch(getUserDetailSuccess([]));
           }}
         />
@@ -247,7 +277,7 @@ export function CartServiceScreen({
               <TouchableOpacity
                 style={styles.backProScreen}
                 onPress={() => {
-                  // backCartLoad();
+                  backCartLoad();
                   crossHandler();
                   getScreen('Service');
                 }}
@@ -497,7 +527,10 @@ export function CartServiceScreen({
               <TouchableOpacity
                 style={styles.holdCartPad}
                 // onPress={() => alert('appointment customer add in progress')}
-                onPress={() => setNewCustomerModal((prev) => !prev)}
+                onPress={() => {
+                  backCartLoad();
+                  setNewCustomerModal((prev) => !prev);
+                }}
               >
                 <Image source={newCustomer} style={styles.keyboardIcon} />
               </TouchableOpacity>
@@ -593,8 +626,8 @@ export function CartServiceScreen({
                 <TouchableOpacity
                   style={styles.addDiscountCon}
                   onPress={() => {
-                    addDiscountHandler();
                     backCartLoad();
+                    addDiscountHandler();
                   }}
                   disabled={cartServiceData?.length == 0 ? true : false}
                 >
@@ -604,8 +637,8 @@ export function CartServiceScreen({
                 <TouchableOpacity
                   style={styles.addDiscountCon}
                   onPress={() => {
-                    addNotesHandler();
                     backCartLoad();
+                    addNotesHandler();
                   }}
                   disabled={cartServiceData?.length == 0 ? true : false}
                 >
@@ -663,13 +696,19 @@ export function CartServiceScreen({
             <TouchableOpacity
               style={[
                 styles.checkoutButtonSideBar,
-                { opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7 },
+                // { opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7 },
               ]}
-              onPress={() => {
-                backCartLoad();
-                onPressPayNow();
-              }}
-              disabled={cartServiceData?.appointment_cart_products?.length > 0 ? false : true}
+              // onPress={() => {
+              //   backCartLoad();
+              //   onPressPayNow();
+              // }}
+              onPress={() => payNowHandler()}
+              // disabled={
+              //   cartServiceData?.appointment_cart_products?.length > 0 &&
+              //   Object.keys(cartServiceData?.user_details)?.length > 0
+              //     ? false
+              //     : true
+              // }
             >
               <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />

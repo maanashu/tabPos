@@ -459,6 +459,7 @@ export function MainScreen({
   ];
 
   const productFun = async (productId, index, item) => {
+    bulkCart();
     const isProductMatchArray = localCartArray?.find((data) => data.product_id === item.id);
     const cartAddQty = isProductMatchArray?.qty;
     // Create a new object with updated cart_qty value
@@ -1105,6 +1106,7 @@ export function MainScreen({
                   <Spacer space={SH(25)} />
                   <TouchableOpacity
                     onPress={() => {
+                      bulkCart();
                       setNumPadModal((prev) => !prev);
                       setCustomProductOpen('product');
                     }}
@@ -1370,9 +1372,16 @@ export function MainScreen({
           <CartListModal
             cartQtyUpdate={cartQtyUpdate}
             clearCart={eraseClearCart}
-            checkOutHandler={checkOutHandler}
-            CloseCartModal={() => setCartModal(false)}
+            checkOutHandler={() => {
+              bulkCart();
+              checkOutHandler();
+            }}
+            CloseCartModal={() => {
+              bulkCart();
+              setCartModal(false);
+            }}
             customAddBtn={() => {
+              bulkCart();
               setCartModal(false);
               setNumPadModal(true);
               setCustomProductOpen('product');

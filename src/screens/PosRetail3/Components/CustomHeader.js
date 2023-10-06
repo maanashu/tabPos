@@ -13,7 +13,6 @@ moment.suppressDeprecationWarnings = true;
 export function CustomHeader({ crossHandler, iconShow }) {
   const getUserData = useSelector(getUser);
   const getPosUser = getUserData?.posLoginData;
-  // console.log('getPosUser', JSON.stringify(getPosUser));
   return (
     <View style={styles.searchScreenHeader}>
       <View style={styles.displayflex}>

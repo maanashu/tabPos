@@ -101,7 +101,7 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
         }
       : {
           cartId: cartServiceData?.id,
-          userid: getuserDetailByNo?.user?.unique_uuid,
+          userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
           customerAdd: 'customerAdd',
         };
     dispatch(attachServiceCustomer(data));

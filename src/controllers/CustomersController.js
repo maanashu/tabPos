@@ -25,7 +25,6 @@ export class CustomersController {
           : ORDER_URL +
             ApiOrderInventory.getUserOrder +
             `?seller_id=${data?.sellerID}&type=${convertedString}&date=${data?.calenderDate}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
-      console.log('------------', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
