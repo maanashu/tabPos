@@ -36,7 +36,7 @@ const ReScheduleDetailModal = ({
 }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-  const timeSlotsData = getRetailData?.timeSlots;
+  const timeSlotsData = getRetailData?.timeSlots?.filter((timeSlot) => timeSlot?.is_available);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const appointmentDetail = appointmentData?.appointment_details[0];
@@ -375,6 +375,20 @@ const ReScheduleDetailModal = ({
                 data={timeSlotsData || []}
                 numColumns={4}
                 renderItem={renderSlotItem}
+                ListEmptyComponent={() => (
+                  <View
+                    style={{
+                      height: ms(50),
+                      paddingHorizontal: ms(10),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
+                      There are no slots available for this day
+                    </Text>
+                  </View>
+                )}
               />
             </View>
           </View>
