@@ -19,9 +19,7 @@ const Header = ({ viewAllOrder, setViewAllOrder, setIsBack }) => {
           style={styles.backView}
         >
           <Image source={backArrow2} style={styles.backImageStyle} />
-          <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
-            {strings.deliveryOrders.back}
-          </Text>
+          <Text style={styles.currentStatusText}>{strings.deliveryOrders.back}</Text>
         </TouchableOpacity>
       )}
     </>

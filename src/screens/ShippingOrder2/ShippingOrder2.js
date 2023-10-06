@@ -38,7 +38,7 @@ import { acceptOrder } from '@/actions/DeliveryAction';
 import styles from './ShippingOrder2.styles';
 import { useFocusEffect } from '@react-navigation/native';
 import { getShipping } from '@/selectors/ShippingSelector';
-import ReactNativeModal from 'react-native-modal';
+import { ms } from 'react-native-size-matters';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -72,15 +72,15 @@ export function ShippingOrder2() {
     }, [])
   );
 
-  useEffect(() => {
-    if (ordersList?.length > 0) {
-      const interval = setInterval(() => {
-        dispatch(getOrderData(orderId || ordersList?.[0]?.id));
-      }, 30000);
+  // useEffect(() => {
+  //   if (ordersList?.length > 0) {
+  //     const interval = setInterval(() => {
+  //       dispatch(getOrderData(orderId || ordersList?.[0]?.id));
+  //     }, 30000);
 
-      return () => clearInterval(interval);
-    }
-  }, []);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, []);
 
   useEffect(() => {
     setUserDetail(ordersList?.[0] ?? []);
@@ -112,6 +112,8 @@ export function ShippingOrder2() {
       setOpenWebView(true);
     }
   };
+
+  const isOrderLoading = useSelector((state) => isLoadingSelector([TYPES.GET_REVIEW_DEF], state));
 
   const acceptHandler = (id, status) => {
     const data = {
@@ -147,6 +149,25 @@ export function ShippingOrder2() {
       })
     );
   };
+
+  const renderOrderProducts = ({ item }) => (
+    <View style={styles.orderproductView}>
+      <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
+        <Image source={{ uri: item?.product_image }} style={styles.userImageStyle} />
+        <View style={{ paddingLeft: 10, width: ms(100) }}>
+          <Text style={styles.nameTextStyle}>{item?.product_name}</Text>
+          <Text style={styles.varientTextStyle}>{'Box'}</Text>
+        </View>
+      </View>
+      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+        ${Number(item?.price).toFixed(2)}
+      </Text>
+      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
+      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+        ${Number(item?.price).toFixed(2)}
+      </Text>
+    </View>
+  );
 
   return (
     <>
@@ -190,6 +211,7 @@ export function ShippingOrder2() {
                         selectedStatus={openShippingOrders}
                         onViewAllHandler={onpressViewHandler}
                         selectedOrderDetail={(value) => setUserDetail(value)}
+                        selectedOrderProducts={(value) => setOrderDetail(value)}
                       />
                     </View>
 
@@ -199,6 +221,7 @@ export function ShippingOrder2() {
                           openShippingOrders,
                           userDetail,
                           orderDetail,
+                          renderOrderProducts,
                           declineHandler,
                           acceptHandler,
                           trackOrderHandler,
@@ -229,7 +252,7 @@ export function ShippingOrder2() {
             }}
           >
             <Image source={backArrow2} style={styles.backImageStyle} />
-            <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
+            <Text style={[styles.currentStatusText, { color: COLORS.white, paddingLeft: 0 }]}>
               {strings.deliveryOrders.back}
             </Text>
           </TouchableOpacity>
@@ -278,6 +301,12 @@ export function ShippingOrder2() {
       {acceptOrderLoading ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.2)' }]}>
           <ActivityIndicator color={COLORS.primary} size={'small'} style={styles.loader} />
+        </View>
+      ) : null}
+
+      {isOrderLoading && viewAllOrders ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.2)' }]}>
+          <ActivityIndicator size={'small'} color={COLORS.primary} style={styles.loader} />
         </View>
       ) : null}
 

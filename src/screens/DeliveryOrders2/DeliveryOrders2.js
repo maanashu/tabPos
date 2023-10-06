@@ -14,7 +14,7 @@ import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { pay, pin, clock, rightIcon, backArrow2 } from '@/assets';
+import { pay, pin, clock, rightIcon, backArrow2, Fonts } from '@/assets';
 import {
   acceptOrder,
   deliOrder,
@@ -284,6 +284,7 @@ export function DeliveryOrders2({ route }) {
         dispatch(getReviewDefault(item?.key, 1));
         setTrackingView(false);
         dispatch(getOrderCount(sellerID));
+        dispatch(todayOrders());
       }}
       style={styles.firstIconStyle}
     >
@@ -326,6 +327,19 @@ export function DeliveryOrders2({ route }) {
           },
         ]}
       >
+        <View style={{ width: SW(12), alignItems: 'center', alignSelf: 'center' }}>
+          <Text
+            style={{
+              fontFamily: Fonts.SemiBold,
+              fontSize: ms(6),
+              textAlignVertical: 'center',
+              color: COLORS.dark_grey,
+            }}
+          >
+            {`#${item?.id}`}
+          </Text>
+        </View>
+
         <View style={styles.orderDetailStyle}>
           <Text style={styles.nameTextStyle}>{item?.user_details?.firstname || 'user name'}</Text>
           <View style={styles.locationViewStyle}>
@@ -348,7 +362,7 @@ export function DeliveryOrders2({ route }) {
           </View>
         </View>
 
-        <View style={[styles.orderDetailStyle, { width: SW(47) }]}>
+        <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
           <Text style={styles.timeTextStyle}>{deliveryDate}</Text>
           <View style={styles.locationViewStyle}>
             <Image source={clock} style={styles.pinImageStyle} />

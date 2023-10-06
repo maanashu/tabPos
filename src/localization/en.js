@@ -479,7 +479,7 @@ export const en = {
   },
   shippingOrder: {
     shippingStatus: `Today’s Shipping Status`,
-    shippingOrders: 'Shipping Order',
+    shippingOrders: 'Shipping Orders',
     currentStatus: 'Current Status',
     orderConvertion: 'Order convertion',
     incomingOrders: 'Incoming Orders',
@@ -490,8 +490,8 @@ export const en = {
     orderId: 'Order ID',
     completed: 'Completed',
     reviewOrders: 'Shipping Orders to Review',
-    acceptedOrders: 'Shipping Orders Accepted',
-    prepareOrders: 'Shipping Orders to Be Prepared',
+    acceptedOrders: 'Shipping Orders to Prepare',
+    prepareOrders: 'Shipping Orders ready to ship',
   },
   deliveryOrders2: {
     orderStatus: 'Today’s Order Status',
@@ -512,6 +512,7 @@ export const en = {
     returnedOrders: 'Returned Orders',
   },
   buttonStatus: {
+    readyForShipment: 'Ready to Ship',
     reviewButton: 'Accept',
     acceptedButton: 'Order Prepared',
     prepareButton: 'Ready to Pickup',

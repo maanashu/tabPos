@@ -48,6 +48,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
           <Text style={styles.orderStatusHeading}>{strings.deliveryOrders.orderStatus}</Text>
           <Text style={styles.currentStatusText}>{currentStatus(orderStatus)}</Text>
         </View>
+
         <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
           <Image source={isHideView ? down : up} style={styles.downArrowStyle} />
         </TouchableOpacity>
