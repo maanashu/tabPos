@@ -22,6 +22,9 @@ const ListViewItem = ({
   isSendCheckinOTPLoading,
 }) => {
   const userDetails = item?.user_details;
+  const invitedUserDetails = item?.invitation_details;
+  const userId = item?.user_id;
+  const customerDetails = userId != null ? userDetails : invitedUserDetails;
   const userAddress = userDetails?.current_address;
   const posUserDetails = item?.pos_user_details?.user?.user_profiles;
   const dispatch = useDispatch();
@@ -133,20 +136,22 @@ const ListViewItem = ({
     <>
       <View style={[styles.LlistViewHeaderContainer, { marginVertical: ms(5) }]}>
         <View style={[styles.listViewSubContainers, { flex: 0.3, justifyContent: 'flex-start' }]}>
-          {userDetails ? (
+          {userDetails || invitedUserDetails ? (
             <>
               <ProfileImage
-                source={{ uri: userDetails?.profile_photo }}
+                source={{ uri: customerDetails?.profile_photo }}
                 style={styles.customerUserProfile}
               />
               <View style={{ marginLeft: ms(6), flex: 1 }}>
                 <Text style={styles.customerName}>
-                  {userDetails?.firstname + ' ' + userDetails?.lastname}
+                  {customerDetails?.firstname + ' ' + customerDetails?.lastname}
                 </Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image source={pin} style={styles.eventAddressIcon} />
-                  <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
-                </View>
+                {userId !== null && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={pin} style={styles.eventAddressIcon} />
+                    <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
+                  </View>
+                )}
               </View>
             </>
           ) : (
