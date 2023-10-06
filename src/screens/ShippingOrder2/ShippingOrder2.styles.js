@@ -293,13 +293,20 @@ const styles = StyleSheet.create({
   },
   backView: {
     marginTop: 10,
+    marginLeft: 18,
+    width: ms(60),
+    borderRadius: 5,
+    height: ms(25),
+    paddingRight: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 12,
+    justifyContent: 'center',
+    backgroundColor: COLORS.gerySkies,
   },
   backImageStyle: {
-    width: SW(10),
-    height: SW(10),
+    width: SW(8),
+    height: SW(8),
+    tintColor: COLORS.white,
     resizeMode: 'contain',
   },
   orderDetailView: {

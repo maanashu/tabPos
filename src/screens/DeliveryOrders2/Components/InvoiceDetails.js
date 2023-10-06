@@ -68,6 +68,10 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
             {`${orderDetail?.seller_details?.phone_number}` ?? '-'}
           </Text>
 
+          <Text style={[style._commonPayTitle, style.boldInvoice]}>
+            Invoice No. # {orderDetail?.invoices?.invoice_number ?? '-'}
+          </Text>
+
           <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
 
           <View style={{ paddingVertical: 8 }}>
@@ -113,10 +117,6 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
 
           <Text style={style._commonPayTitle}>
             {moment(orderData?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
-          </Text>
-
-          <Text style={style._commonPayTitle}>
-            Invoice No. # {orderDetail?.invoices?.invoice_number ?? '-'}
           </Text>
 
           <Text style={style._commonPayTitle}>
@@ -371,5 +371,9 @@ const style = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: ms(2),
     alignSelf: 'center',
+  },
+  boldInvoice: {
+    alignSelf: 'center',
+    fontFamily: Fonts.SemiBold,
   },
 });

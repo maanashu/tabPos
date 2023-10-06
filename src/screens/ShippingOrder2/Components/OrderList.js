@@ -9,11 +9,21 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
 import moment from 'moment';
+import { useEffect } from 'react';
 
-const OrderList = ({ selectedStatus, onViewAllHandler, selectedOrderDetail }) => {
+const OrderList = ({
+  selectedStatus,
+  onViewAllHandler,
+  selectedOrderDetail,
+  selectedOrderProducts,
+}) => {
   const getOrdersData = useSelector(getDelivery);
   const ordersList = getOrdersData?.getReviewDef;
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id ?? '');
+
+  useEffect(() => {
+    setOrderId(ordersList?.[0]?.id ?? '');
+  }, [getOrdersData?.getReviewDef]);
 
   const renderOrderToReview = ({ item }) => (
     <TouchableOpacity
@@ -21,6 +31,7 @@ const OrderList = ({ selectedStatus, onViewAllHandler, selectedOrderDetail }) =>
         onViewAllHandler(item?.id);
         setOrderId(item?.id);
         selectedOrderDetail(item);
+        selectedOrderProducts(item?.order_details);
       }}
       style={[
         styles.orderRowStyle,
@@ -30,6 +41,19 @@ const OrderList = ({ selectedStatus, onViewAllHandler, selectedOrderDetail }) =>
         },
       ]}
     >
+      <View style={{ width: SW(12), alignItems: 'center', alignSelf: 'center' }}>
+        <Text
+          style={{
+            fontFamily: Fonts.SemiBold,
+            fontSize: ms(6),
+            textAlignVertical: 'center',
+            color: COLORS.dark_grey,
+          }}
+        >
+          {`#${item?.id}`}
+        </Text>
+      </View>
+
       <View style={styles.orderDetailStyle}>
         <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
         <View style={styles.locationViewStyle}>
@@ -50,7 +74,7 @@ const OrderList = ({ selectedStatus, onViewAllHandler, selectedOrderDetail }) =>
         </View>
       </View>
 
-      <View style={[styles.orderDetailStyle, { width: SW(50) }]}>
+      <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
         <Text style={styles.timeTextStyle}>
           {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
         </Text>
@@ -122,11 +146,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     backgroundColor: COLORS.transparent,
-  },
-  orderDetailStyle: {
-    justifyContent: 'center',
   },
   nameTextStyle: {
     fontFamily: Fonts.Regular,
@@ -154,6 +175,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   orderDetailStyle: {
+    width: SW(30),
     justifyContent: 'center',
   },
   rightIconStyle: {
