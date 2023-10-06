@@ -338,12 +338,9 @@ export const getOrdersByInvoiceId = (invoice) => async (dispatch) => {
     const res = await DashboardController.getOrdersByInvoiceId(invoice);
     if (res?.payload?.order) {
       if (res?.payload?.order?.status === 9) {
-        dispatch(getOrderData(res?.payload?.order_id));
+        await dispatch(getOrderData(res?.payload?.order?.id));
       }
       dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
-    } else if (res?.payload?.order === null) {
-      alert('Please enter order invoice number instead of return invoice number');
-      dispatch(getOrdersByInvoiceIdSuccess({ order_id }));
     }
   } catch (error) {
     if (error?.msg === 'Invalid invoice number!') {
@@ -384,12 +381,9 @@ export const scanBarCode = (data) => async (dispatch) => {
     const res = await DashboardController.scanBarCode(data);
     if (res?.payload?.order) {
       if (res?.payload?.order?.status === 9) {
-        dispatch(getOrderData(res?.payload?.order_id));
+        dispatch(getOrderData(res?.payload?.order?.id));
       }
       dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
-    } else if (res?.payload?.order === null) {
-      alert('Please enter order invoice number instead of return invoice number');
-      dispatch(getOrdersByInvoiceIdSuccess({ order_id }));
     }
   } catch (error) {
     if (error?.msg === 'Invalid code!') {
