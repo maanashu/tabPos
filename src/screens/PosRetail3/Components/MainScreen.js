@@ -196,12 +196,9 @@ export function MainScreen({
       try {
         eraseClearCart();
         const bulkData = await dispatch(createBulkcart(dataToSend));
-<<<<<<< HEAD
+        console.log('bulkData', bulkData);
         if (holdProductArray?.length == 0 || getRetailData?.getAllCart?.length == 0) {
-=======
-        // if (holdProductArray?.length == 0 || getRetailData?.getAllCart?.length == 0) {
-        if (holdProductArray?.length == 0 || Object.keys(getRetailData?.getAllCart)?.length == 0) {
->>>>>>> d2013248 (issue solved)
+          console.log('----------', holdProductArray?.length);
           const data =
             holdProductArray?.length > 0
               ? {
@@ -225,6 +222,8 @@ export function MainScreen({
                   status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
                   cartId: bulkData?.id,
                 };
+          console.log('data2', data);
+
           dispatch(changeStatusProductCart(data));
         }
       } catch (error) {}
