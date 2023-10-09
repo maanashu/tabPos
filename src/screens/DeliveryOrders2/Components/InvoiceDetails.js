@@ -37,17 +37,18 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
     dispatch(getOrderData(orderData?.order_id));
   }, []);
 
-  const renderProductItem = ({ item }) => (
+  const renderProductItem = ({ item, index }) => (
     <View style={style.container}>
       <View style={style.subContainer}>
-        <Text style={style.count}>{item?.qty}</Text>
+        <Text style={style.count}>{index}</Text>
 
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[style.itemName, { width: ms(80) }]} numberOfLines={1}>
             {item?.product_name ?? '-'}
           </Text>
           <View style={style.belowSubContainer}>
-            <Text style={style.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
+            <Text style={style.colorsTitle}>{`QTY : ${item?.qty}`}</Text>
+            {/* <Text style={style.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text> */}
           </View>
         </View>
       </View>

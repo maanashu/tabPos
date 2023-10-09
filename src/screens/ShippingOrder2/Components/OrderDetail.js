@@ -63,7 +63,7 @@ const OrderDetail = ({
                 }}
               >
                 {userDetail?.invoice?.delivery_date ??
-                  moment(userDetail?.created_at).format('YYYY-MM-DD')}
+                  moment(userDetail?.created_at).format('DD MMM YYYY')}
               </Text>
               <Text
                 style={{
@@ -111,7 +111,7 @@ const OrderDetail = ({
               <Text style={styles.itemCountText}>
                 {userDetail?.date
                   ? moment(userDetail?.date).format('DD/MM/YYYY')
-                  : moment(userDetail?.created_at).format('YYYY-MM-DD')}
+                  : moment(userDetail?.created_at).format('DD/MM/YYYY')}
               </Text>
             </View>
 

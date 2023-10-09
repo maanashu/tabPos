@@ -151,6 +151,18 @@ const OrderDetail = ({
                 </View>
               </View>
 
+              <View style={styles.orderDetailsView}>
+                <Text style={styles.invoiceText}>{strings.deliveryOrders.deliveryCharges}</Text>
+                <View style={styles.flexDirectionRow}>
+                  <Text style={styles.totalTextStyle2}>{'$'}</Text>
+                  <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
+                    {userDetail?.delivery_charge
+                      ? Number(userDetail?.delivery_charge).toFixed(2)
+                      : '0'}
+                  </Text>
+                </View>
+              </View>
+
               <View
                 style={{
                   borderWidth: 1,
