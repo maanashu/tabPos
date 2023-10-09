@@ -41,7 +41,7 @@ const ReturnInvoice = ({ trackingView, mapRef, orderData }) => {
   const renderProductItem = ({ item, index }) => (
     <View style={style.container}>
       <View style={style.subContainer}>
-        <Text style={style.count}>{index}</Text>
+        <Text style={style.count}>{index + 1}</Text>
 
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[style.itemName, { width: ms(80) }]} numberOfLines={1}>
