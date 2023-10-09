@@ -110,6 +110,13 @@ export function DashBoard({ navigation }) {
   const [scroll, setScroll] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  const paginationData = {
+    total: getDashboardData?.getOrderDeliveries?.total ?? '0',
+    totalPages: getDashboardData?.getOrderDeliveries?.total_pages ?? '0',
+    perPage: getDashboardData?.getOrderDeliveries?.per_page ?? '0',
+    currentPage: getDashboardData?.getOrderDeliveries?.current_page ?? '0',
+  };
+
   //  order delivery pagination
 
   const onLoadMoreOrder = () => {
