@@ -51,7 +51,15 @@ const windowHeight = Dimensions.get('window').height;
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 
-export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) {
+export function WeeklyTransaction({
+  backHandler,
+  orderClickHandler,
+  comeFrom,
+  selectTime,
+  setSelectTime,
+  selectId,
+  setSelectId,
+}) {
   const mapRef = useRef(null);
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -67,8 +75,8 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
 
-  const [selectId, setSelectId] = useState(2);
-  const [selectTime, setSelectTime] = useState({ value: 'week' });
+  // const [selectId, setSelectId] = useState(2);
+  // const [selectTime, setSelectTime] = useState({ value: 'week' });
   const time = selectTime?.value;
   const [page, setPage] = useState(1);
 
