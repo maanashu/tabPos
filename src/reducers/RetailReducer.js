@@ -8,7 +8,7 @@ const INITIALSTATE = {
   brands: [],
   products: [],
   SeaProductList: [],
-  getAllCart: [],
+  getAllCart: {},
   productbunList: [],
   getUserDetail: {},
   getWallet: {},
@@ -146,7 +146,7 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.GET_ALL_CART_RESET:
       return {
         ...state,
-        getAllCart: [],
+        getAllCart: {},
       };
     case TYPES.GET_BUNDLEOFFER_SUCCESS:
       return {

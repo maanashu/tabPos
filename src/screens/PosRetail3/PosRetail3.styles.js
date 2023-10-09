@@ -229,7 +229,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
     fontSize: ms(14),
-    marginTop: ms(2),
+    marginTop: ms(1),
   },
   _payByAmount: {
     fontFamily: Fonts.Regular,
@@ -745,8 +745,11 @@ export const styles = StyleSheet.create({
   addCartDetailBody: {
     height: windowHeight * 0.82,
   },
+  discriptionWidth: {
+    width: windowHeight * 0.86,
+  },
   clothProfileCon: {
-    height: windowHeight * 0.08,
+    // height: windowHeight * 0.20,
     flexDirection: 'row',
   },
   clothProfileDes: {
@@ -1584,14 +1587,19 @@ export const styles = StyleSheet.create({
     backgroundColor: '#F5F6F7',
     height: ms(15),
     width: ms(80),
-    margin: ms(6),
+    margin: ms(3),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
   },
   saveText1: {
     fontSize: ms(8),
-    fontFamily: Fonts.Medium,
+    fontFamily: Fonts.SemiBold,
+  },
+  saveText1dark: {
+    color: COLORS.primary,
+    fontSize: ms(8),
+    fontFamily: Fonts.SemiBold,
   },
   _kCenterContainer: {
     height: '100%',
