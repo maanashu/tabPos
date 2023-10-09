@@ -98,7 +98,6 @@ export function Calender() {
   const [pageNumber, setPageNumber] = useState(1);
 
   const getAppointmentList2 = getAppointmentList?.filter((item) => item.status !== 3);
-
   // Only show appointments on calendar which are approved/Check-In/Completed/CancelledByCustomer
   const getApprovedAppointments = getAppointmentList?.filter(
     (item) => item.status === 1 || item.status === 2 || item.status === 3
@@ -220,7 +219,7 @@ export function Calender() {
       (appointment) => moment(appointment?.date).format('L') === moment(calendarDate).format('L')
     );
     return filteredAppointmentsByDate;
-  }, [calendarDate, getAppointmentList]);
+  }, [calendarDate, getCalenderData]);
 
   const onPressSaveCalendarSettings = (calendarPreferences) => {
     if (calendarPreferences?.defaultCalendarMode === CALENDAR_MODES.DAY) {

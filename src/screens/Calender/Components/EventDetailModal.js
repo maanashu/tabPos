@@ -33,8 +33,8 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   // Show chat Modal
   const [isShowChatModal, setisShowChatModal] = useState(false);
 
-  const userDetails = selectedPosStaffCompleteData?.user_details;
-  const invitedUserDetails = selectedPosStaffCompleteData?.invitation_details;
+  const userDetails = selectedPosStaffCompleteData?.user_details ?? {};
+  const invitedUserDetails = selectedPosStaffCompleteData?.invitation_details ?? {};
   const userId = selectedPosStaffCompleteData?.user_id;
   const customerDetails = userId != null ? userDetails : invitedUserDetails;
   const userAddress = userDetails?.current_address;
@@ -133,47 +133,46 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
           >
             <Image source={crossButton} style={styles.crossStl} />
           </TouchableOpacity>
-          {userDetails ||
-            (invitedUserDetails && (
-              <View style={[styles.customerDetailContainer, { marginTop: ms(15) }]}>
-                <Text style={styles._eventTitle}>Customer:</Text>
+          {customerDetails && (
+            <View style={[styles.customerDetailContainer, { marginTop: ms(15) }]}>
+              <Text style={styles._eventTitle}>Customer:</Text>
 
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginTop: ms(5),
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <ProfileImage
-                    source={{ uri: customerDetails?.profile_photo }}
-                    style={styles.customerUserProfile}
-                  />
-                  <View style={{ marginLeft: ms(6), flex: 1, justifyContent: 'center' }}>
-                    <Text style={styles.customerName}>
-                      {customerDetails?.firstname + ' ' + customerDetails?.lastname}
-                    </Text>
-                    {userId !== null && (
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image source={pin} style={styles.eventAddressIcon} />
-                        <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
-                      </View>
-                    )}
-                  </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: ms(5),
+                  justifyContent: 'space-between',
+                }}
+              >
+                <ProfileImage
+                  source={{ uri: customerDetails?.profile_photo }}
+                  style={styles.customerUserProfile}
+                />
+                <View style={{ marginLeft: ms(6), flex: 1, justifyContent: 'center' }}>
+                  <Text style={styles.customerName}>
+                    {customerDetails?.firstname + ' ' + customerDetails?.lastname}
+                  </Text>
                   {userId !== null && (
-                    <View style={styles.EventDetailoptionsContainer}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          setisShowChatModal(true);
-                        }}
-                      >
-                        <Image source={chatIcon} style={styles.chatIconStl} />
-                      </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Image source={pin} style={styles.eventAddressIcon} />
+                      <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
                     </View>
                   )}
                 </View>
+                {userId !== null && (
+                  <View style={styles.EventDetailoptionsContainer}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setisShowChatModal(true);
+                      }}
+                    >
+                      <Image source={chatIcon} style={styles.chatIconStl} />
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
-            ))}
+            </View>
+          )}
 
           <View style={[styles.assignedContainer, !userDetails && { marginTop: ms(15) }]}>
             <Text style={styles._eventTitle}>Assigned:</Text>

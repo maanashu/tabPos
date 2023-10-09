@@ -54,6 +54,7 @@ export const en = {
     cancelled: 'Cancelled',
     otherFees: 'Other fees',
     deliveryCharges: 'Delivery Charges',
+    shippingCharges: 'Shipping Charges',
     paymentOption: 'Payment Option: ',
     rejected: 'Rejected/Cancelled',
     driverAssigned: 'Driver Assigned',

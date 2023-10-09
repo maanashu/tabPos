@@ -5,7 +5,7 @@ import { styles } from '../../Calender.styles';
 import { Button, Spacer } from '@/components';
 import { memo } from 'react';
 import { ms } from 'react-native-size-matters';
-import { Fonts, editIcon } from '@/assets';
+import { Fonts, editIcon, pin } from '@/assets';
 import { COLORS } from '@/theme';
 import { getCalendarActionButtonTitle } from '@/utils/GlobalMethods';
 import { APPOINTMENT_STATUS } from '@/constants/status';
