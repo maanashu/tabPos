@@ -77,7 +77,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
         </Text>
         <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty ?? '-'}</Text>
         <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
-          {`$${item?.actual_price * item?.qty}` ?? '-'}
+          {`$${item?.price * item?.qty}` ?? '-'}
         </Text>
 
         {item?.isChecked ? (
