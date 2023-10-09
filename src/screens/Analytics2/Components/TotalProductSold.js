@@ -1,5 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 import { backArrow2, locationSales, margin, profit, revenueTotal } from '@/assets';
@@ -8,6 +16,9 @@ import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { COLORS } from '@/theme';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -50,6 +61,10 @@ export function TotalProductSold() {
   const dataLabelsProductSold = soldProduct?.graph_data?.labels;
   const labelsProductSold = generateLabels(dataLabelsProductSold, interval, maxLabel, daysLength);
 
+  const isSoldProductLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_SOLD_PRODUCT], state)
+  );
+
   const getSoldProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart2}>
@@ -77,11 +92,19 @@ export function TotalProductSold() {
   );
 
   const HeaderView = useCallback(
-    ({ image, text, count, style }) => (
+    ({ image, text, count, style, isLoading }) => (
       <View style={[styles.subContainer, style]}>
         <Image source={image} resizeMode="contain" style={styles.imageStyle} />
         <Text style={styles.text}>{text}</Text>
-        <Text style={styles.text2}>{count}</Text>
+        {isLoading ? (
+          <ActivityIndicator
+            color={COLORS.primary}
+            size={'small'}
+            style={{ alignSelf: 'flex-start' }}
+          />
+        ) : (
+          <Text style={styles.text2}>{count}</Text>
+        )}
       </View>
     ),
     []
@@ -101,6 +124,7 @@ export function TotalProductSold() {
               : 0
           }
           style={{ marginHorizontal: ms(5) }}
+          isLoading={isSoldProductLoading}
         />
         <HeaderView
           image={revenueTotal}
@@ -110,6 +134,7 @@ export function TotalProductSold() {
               ? '$' + soldProduct?.productOverview?.totalVolume?.toFixed(2)
               : '$0'
           }
+          isLoading={isSoldProductLoading}
         />
         <HeaderView
           image={margin}
@@ -119,6 +144,7 @@ export function TotalProductSold() {
               ? soldProduct?.productOverview?.totalMargin?.toFixed(2) + '%'
               : '$0'
           }
+          isLoading={isSoldProductLoading}
         />
         <HeaderView
           image={profit}
@@ -128,6 +154,7 @@ export function TotalProductSold() {
               ? '$' + soldProduct?.productOverview?.totalProfit?.toFixed(2)
               : '$0'
           }
+          isLoading={isSoldProductLoading}
         />
       </View>
       {/* 
@@ -209,7 +236,11 @@ export function TotalProductSold() {
             </DataTable.Header>
 
             <View style={styles.mainListContainer}>
-              {soldProduct?.totalProductSoldList?.length === 0 ? (
+              {isSoldProductLoading ? (
+                <View style={styles.loaderView}>
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                </View>
+              ) : soldProduct?.totalProductSoldList?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>

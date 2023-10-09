@@ -1,5 +1,13 @@
 import React, { useCallback } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 import { Fonts, backArrow2, channel, locationSales, totalOrders, totalSales } from '@/assets';
@@ -9,6 +17,8 @@ import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/AnalyticsTypes';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -57,6 +67,10 @@ export function TotalDeliveryOrders({ onPressReview }) {
   const dataLabelsDelivery = analyticOrderGraphs?.delivery_graph?.graph_data?.labels;
   const labelsDelivery = generateLabels(dataLabelsDelivery, interval, maxLabel, daysLength);
 
+  const isAnalyticOrderGraphLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ANALYTIC_ORDER_GRAPHS], state)
+  );
+
   const getDeliveryOrderList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
@@ -91,11 +105,19 @@ export function TotalDeliveryOrders({ onPressReview }) {
   );
 
   const HeaderView = useCallback(
-    ({ image, text, count, style }) => (
+    ({ image, text, count, style, isLoading }) => (
       <View style={[styles.subContainer, style]}>
         <Image source={image} resizeMode="contain" style={styles.imageStyle} />
         <Text style={styles.text}>{text}</Text>
-        <Text style={styles.text2}>{count}</Text>
+        {isLoading ? (
+          <ActivityIndicator
+            color={COLORS.primary}
+            size={'small'}
+            style={{ alignSelf: 'flex-start' }}
+          />
+        ) : (
+          <Text style={styles.text2}>{count}</Text>
+        )}
       </View>
     ),
     []
@@ -111,6 +133,7 @@ export function TotalDeliveryOrders({ onPressReview }) {
           text={'Total Orders'}
           count={deliveryGraph?.ordersOverView?.total_orders}
           style={{ marginHorizontal: ms(5) }}
+          isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
           image={channel}
@@ -120,6 +143,7 @@ export function TotalDeliveryOrders({ onPressReview }) {
               ? deliveryGraph?.ordersOverView?.order_frequency + '/Hour'
               : '0/Hour'
           }
+          isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
           image={totalOrders}
@@ -129,6 +153,7 @@ export function TotalDeliveryOrders({ onPressReview }) {
               ? '$' + deliveryGraph?.ordersOverView?.averageValue?.toFixed(2)
               : '$0'
           }
+          isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
           image={totalSales}
@@ -138,6 +163,7 @@ export function TotalDeliveryOrders({ onPressReview }) {
               ? '$' + deliveryGraph?.ordersOverView?.total_sales_or_actual_amount?.toFixed(2)
               : '$0'
           }
+          isLoading={isAnalyticOrderGraphLoading}
         />
       </View>
 
@@ -181,7 +207,11 @@ export function TotalDeliveryOrders({ onPressReview }) {
                 { height: Platform.OS === 'ios' ? ms(245) : ms(288) },
               ]}
             >
-              {deliveryGraph?.ordersListData?.length === 0 ? (
+              {isAnalyticOrderGraphLoading ? (
+                <View style={styles.loaderView}>
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                </View>
+              ) : deliveryGraph?.ordersListData?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>

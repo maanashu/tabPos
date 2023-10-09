@@ -1,5 +1,13 @@
 import React, { useCallback } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 import {
@@ -16,6 +24,9 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { COLORS } from '@/theme';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -56,6 +67,11 @@ export function TotalProfit() {
 
   const dataLabelsProfit = analyticStatistics?.profit?.graph_data?.labels;
   const labelsProfit = generateLabels(dataLabelsProfit, interval, maxLabel, daysLength);
+
+  const profitStatisticsLoader = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
+  );
+
   const getProfitList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
@@ -99,11 +115,19 @@ export function TotalProfit() {
   );
 
   const HeaderView = useCallback(
-    ({ image, text, count, style }) => (
+    ({ image, text, count, style, isLoading }) => (
       <View style={[styles.subContainer, style]}>
         <Image source={image} resizeMode="contain" style={styles.imageStyle} />
         <Text style={styles.text}>{text}</Text>
-        <Text style={styles.text2}>{count}</Text>
+        {isLoading ? (
+          <ActivityIndicator
+            color={COLORS.primary}
+            size={'small'}
+            style={{ alignSelf: 'flex-start' }}
+          />
+        ) : (
+          <Text style={styles.text2}>{count}</Text>
+        )}
       </View>
     ),
     []
@@ -121,6 +145,7 @@ export function TotalProfit() {
               : 0
           }
           style={{ marginHorizontal: ms(5) }}
+          isLoading={profitStatisticsLoader}
         />
         <HeaderView
           image={revenueTotal}
@@ -130,6 +155,7 @@ export function TotalProfit() {
               ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
               : '$0'
           }
+          isLoading={profitStatisticsLoader}
         />
         <HeaderView
           image={totalOrders}
@@ -139,6 +165,7 @@ export function TotalProfit() {
               ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
               : '$0'
           }
+          isLoading={profitStatisticsLoader}
         />
         <HeaderView
           image={profit}
@@ -148,6 +175,7 @@ export function TotalProfit() {
               ? '$' + analyticStatistics?.overView?.profit_sum?.toFixed(2)
               : '$0'
           }
+          isLoading={profitStatisticsLoader}
         />
       </View>
 
@@ -199,7 +227,11 @@ export function TotalProfit() {
                 { height: Platform.OS === 'ios' ? ms(245) : ms(288) },
               ]}
             >
-              {analyticStatistics?.orderData?.length === 0 ? (
+              {profitStatisticsLoader ? (
+                <View style={styles.loaderView}>
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                </View>
+              ) : analyticStatistics?.orderData?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
