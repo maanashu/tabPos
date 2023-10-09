@@ -1,5 +1,13 @@
 import React, { useCallback } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 import { backArrow2, channel, locationSales, totalOrders, totalSales } from '@/assets';
@@ -11,6 +19,8 @@ import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { NAVIGATION } from '@/constants';
 import { navigate } from '@/navigation/NavigationRef';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -59,6 +69,10 @@ export function TotalPosOrder({ onPressReview }) {
   const dataLabelsPOS = analyticOrderGraphs?.pos_graph?.graph_data?.labels;
   const labelsPOS = generateLabels(dataLabelsPOS, interval, maxLabel, daysLength);
 
+  const isAnalyticOrderGraphLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ANALYTIC_ORDER_GRAPHS], state)
+  );
+
   const getPOSOrderList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
@@ -93,11 +107,19 @@ export function TotalPosOrder({ onPressReview }) {
   );
 
   const HeaderView = useCallback(
-    ({ image, text, count, style }) => (
+    ({ image, text, count, style, isLoading }) => (
       <View style={[styles.subContainer, style]}>
         <Image source={image} resizeMode="contain" style={styles.imageStyle} />
         <Text style={styles.text}>{text}</Text>
-        <Text style={styles.text2}>{count}</Text>
+        {isLoading ? (
+          <ActivityIndicator
+            color={COLORS.primary}
+            size={'small'}
+            style={{ alignSelf: 'flex-start' }}
+          />
+        ) : (
+          <Text style={styles.text2}>{count}</Text>
+        )}
       </View>
     ),
     []
@@ -113,6 +135,7 @@ export function TotalPosOrder({ onPressReview }) {
           text={'Total Orders'}
           count={posGraph?.ordersOverView?.total_orders}
           style={{ marginHorizontal: ms(5) }}
+          isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
           image={channel}
@@ -122,6 +145,7 @@ export function TotalPosOrder({ onPressReview }) {
               ? posGraph?.ordersOverView?.order_frequency + '/Hour'
               : '0/Hour'
           }
+          isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
           image={totalOrders}
@@ -131,6 +155,7 @@ export function TotalPosOrder({ onPressReview }) {
               ? '$' + posGraph?.ordersOverView?.averageValue?.toFixed(2)
               : '$0'
           }
+          isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
           image={totalSales}
@@ -140,6 +165,7 @@ export function TotalPosOrder({ onPressReview }) {
               ? '$' + posGraph?.ordersOverView?.total_sales_or_actual_amount?.toFixed(2)
               : '$0'
           }
+          isLoading={isAnalyticOrderGraphLoading}
         />
       </View>
 
@@ -178,7 +204,11 @@ export function TotalPosOrder({ onPressReview }) {
             </DataTable.Header>
 
             <View style={styles.mainListContainer}>
-              {posGraph?.ordersListData?.length === 0 ? (
+              {isAnalyticOrderGraphLoading ? (
+                <View style={styles.loaderView}>
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                </View>
+              ) : posGraph?.ordersListData?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>

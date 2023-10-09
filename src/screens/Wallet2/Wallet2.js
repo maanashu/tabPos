@@ -416,6 +416,10 @@ export function Wallet2() {
               setInvoiceDetail(true);
             }
           }}
+          selectTime={selectTime}
+          selectId={selectId}
+          setSelectId={setSelectId}
+          setSelectTime={setSelectTime}
         />
       );
     }

@@ -12,7 +12,7 @@ export const CALENDAR_VIEW_MODES = {
 export const DELIVERY_MODE = {
   1: 'Delivery',
   2: 'Reservation',
-  3: 'Pickup',
+  3: 'Walkin',
   4: 'Shipping',
 };
 

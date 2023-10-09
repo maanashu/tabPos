@@ -1,5 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 import { averageOrder, backArrow2, locationSales, profit, totalOrders } from '@/assets';
@@ -8,6 +16,9 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { COLORS } from '@/theme';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -56,6 +67,11 @@ export function TotalInventory() {
 
   const dataLabelsInventory = totalInventory?.graph_data?.labels;
   const labelsInvetory = generateLabels(dataLabelsInventory, interval, maxLabel, daysLength);
+
+  const isInventoryLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_TOTAL_INVENTORY], state)
+  );
+
   const getProductList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart2}>
@@ -83,11 +99,19 @@ export function TotalInventory() {
   );
 
   const HeaderView = useCallback(
-    ({ image, text, count, style }) => (
+    ({ image, text, count, style, isLoading }) => (
       <View style={[styles.subContainer, style]}>
         <Image source={image} resizeMode="contain" style={styles.imageStyle} />
         <Text style={styles.text}>{text}</Text>
-        <Text style={styles.text2}>{count}</Text>
+        {isLoading ? (
+          <ActivityIndicator
+            color={COLORS.primary}
+            size={'small'}
+            style={{ alignSelf: 'flex-start' }}
+          />
+        ) : (
+          <Text style={styles.text2}>{count}</Text>
+        )}
       </View>
     ),
     []
@@ -107,6 +131,7 @@ export function TotalInventory() {
               : 0
           }
           style={{ marginHorizontal: ms(5) }}
+          isLoading={isInventoryLoading}
         />
         <HeaderView
           image={averageOrder}
@@ -116,6 +141,7 @@ export function TotalInventory() {
               ? '$' + totalInventory?.inventoryOverview?.totalInventoryValue?.toFixed(2)
               : '$0'
           }
+          isLoading={isInventoryLoading}
         />
         <HeaderView
           image={totalOrders}
@@ -125,6 +151,7 @@ export function TotalInventory() {
               ? '$' + totalInventory?.inventoryOverview?.avgOrderValue?.toFixed(2)
               : '$0'
           }
+          isLoading={isInventoryLoading}
         />
         <HeaderView
           image={profit}
@@ -134,6 +161,7 @@ export function TotalInventory() {
               ? '$' + totalInventory?.inventoryOverview?.profit?.toFixed(2)
               : '$0'
           }
+          isLoading={isInventoryLoading}
         />
       </View>
 
@@ -229,7 +257,11 @@ export function TotalInventory() {
             </DataTable.Header>
 
             <View style={styles.mainListContainer}>
-              {totalInventory?.productData?.length === 0 ? (
+              {isInventoryLoading ? (
+                <View style={styles.loaderView}>
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                </View>
+              ) : totalInventory?.productData?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
