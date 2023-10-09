@@ -33,6 +33,7 @@ import { getDrawerSessions } from '@/actions/CashTrackingAction';
 import ReactNativeModal from 'react-native-modal';
 import InventoryProducts from './InventoryProducts';
 import RecheckConfirmation from './RecheckConfirmation';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 const { width, height } = Dimensions.get('window');
 
@@ -602,14 +603,18 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{strings.deliveryOrders.subTotal}</Text>
-                <Text style={styles.subTotalPrice}>{`-$${totalRefundAmount?.toFixed(2)}`}</Text>
+                <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
+                  totalRefundAmount
+                )}`}</Text>
               </View>
 
               <Spacer space={SH(10)} />
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{strings.deliveryOrders.totalTax}</Text>
-                <Text style={styles.subTotalPrice}>{`-$${calculateRefundTax().toFixed(2)}`}</Text>
+                <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
+                  calculateRefundTax()
+                )}`}</Text>
               </View>
 
               {finalOrder?.order?.status === 5 ? (
@@ -617,10 +622,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                   <Spacer space={SH(10)} />
                   <View style={styles.totalViewStyle}>
                     <Text style={styles.subTotalText}>{deliveryShippingCharges().title}</Text>
-                    <Text style={styles.subTotalPrice}>{`-$${
+                    <Text style={styles.subTotalPrice}>{`${
                       applyEachItem || applicableIsCheck
-                        ? deliveryShippingCharges().deliveryCharges
-                        : 0
+                        ? formattedReturnPrice(deliveryShippingCharges().deliveryCharges)
+                        : formattedReturnPrice(0)
                     }`}</Text>
                   </View>
                   <Spacer space={SH(10)} />
@@ -634,7 +639,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                   {strings.wallet.total}
                 </Text>
                 <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
-                  {`-$${totalRefundableAmount().toFixed(2)}`}
+                  {`${formattedReturnPrice(totalRefundableAmount())}`}
                 </Text>
               </View>
 
