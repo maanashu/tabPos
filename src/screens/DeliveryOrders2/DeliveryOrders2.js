@@ -50,6 +50,7 @@ import styles from './styles';
 import moment from 'moment';
 import ReturnedOrderDetail from './Components/ReturnedOrderDetail';
 import { getPendingOrders } from '@/actions/DashboardAction';
+import ReturnInvoice from './Components/ReturnInvoice';
 
 export function DeliveryOrders2({ route }) {
   const mapRef = useRef(null);
@@ -641,15 +642,27 @@ export function DeliveryOrders2({ route }) {
           </TouchableOpacity>
 
           <View style={styles.firstRowStyle}>
-            <InvoiceDetails
-              trackingView={() => {
-                setTrackingView(false);
-                dispatch(getReviewDefault(openShippingOrders, 1));
-              }}
-              mapRef={mapRef}
-              orderList={orderDetail}
-              orderData={singleOrderDetail}
-            />
+            {openShippingOrders === '9' ? (
+              <ReturnInvoice
+                trackingView={() => {
+                  setTrackingView(false);
+                  dispatch(getReviewDefault(openShippingOrders, 1));
+                }}
+                mapRef={mapRef}
+                orderList={orderDetail}
+                orderData={singleOrderDetail}
+              />
+            ) : (
+              <InvoiceDetails
+                trackingView={() => {
+                  setTrackingView(false);
+                  dispatch(getReviewDefault(openShippingOrders, 1));
+                }}
+                mapRef={mapRef}
+                orderList={orderDetail}
+                orderData={singleOrderDetail}
+              />
+            )}
             <RightSideBar
               {...{
                 renderDrawer,

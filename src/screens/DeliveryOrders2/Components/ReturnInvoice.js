@@ -1,20 +1,34 @@
-import { getOrderData } from '@/actions/AnalyticsAction';
-import { Fonts, logo_full } from '@/assets';
-import { Spacer } from '@/components';
-import { strings } from '@/localization';
-import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import { getUser } from '@/selectors/UserSelectors';
-import { COLORS, SH } from '@/theme';
+import React, { memo, useEffect } from 'react';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+
 import moment from 'moment';
-import React from 'react';
-import { useEffect } from 'react';
-import { memo } from 'react';
-import { Image } from 'react-native';
-import { FlatList, Text, View, StyleSheet } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
+import MapViewDirections from 'react-native-maps-directions';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
-const ReturnInvoice = ({ orderList, orderData, subTotal, totalTaxes, total }) => {
+import { COLORS, SH } from '@/theme';
+import { Spacer } from '@/components';
+import { strings } from '@/localization';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
+import { getUser } from '@/selectors/UserSelectors';
+import { getOrderData } from '@/actions/AnalyticsAction';
+import mapCustomStyle from '@/components/MapCustomStyles';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { deliveryHomeIcon, scooter, crossButton, gps, logo_full, Fonts } from '@/assets';
+
+import styles from '../styles';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
+
+const ReturnInvoice = ({ trackingView, mapRef, orderData }) => {
   const dispatch = useDispatch();
   const getOrder = useSelector(getAnalytics);
   const getUserData = useSelector(getUser);
@@ -24,121 +38,228 @@ const ReturnInvoice = ({ orderList, orderData, subTotal, totalTaxes, total }) =>
     dispatch(getOrderData(orderData?.order_id));
   }, []);
 
-  const renderProductItem = ({ item }) => {
-    return (
-      <View style={styles.container}>
-        <View style={styles.subContainer}>
-          <Text style={styles.count}>{item.qty}</Text>
-          <View style={{ marginLeft: ms(10) }}>
-            <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-              {item?.product_name ?? '-'}
-            </Text>
-            <View style={styles.belowSubContainer}>
-              <Text style={styles.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
-            </View>
+  const renderProductItem = ({ item }) => (
+    <View style={style.container}>
+      <View style={style.subContainer}>
+        <Text style={style.count}>{item?.qty}</Text>
+
+        <View style={{ marginLeft: ms(10) }}>
+          <Text style={[style.itemName, { width: ms(80) }]} numberOfLines={1}>
+            {item?.product_name ?? '-'}
+          </Text>
+          <View style={style.belowSubContainer}>
+            <Text style={style.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
           </View>
         </View>
-        <Text style={styles.priceTitle}>{`$${item?.totalRefundAmount}` ?? '-'}</Text>
       </View>
-    );
-  };
+
+      <Text style={style.priceTitle}>{`$${item?.price}` ?? '-'}</Text>
+    </View>
+  );
 
   return (
-    <View style={styles.storeDetailView}>
-      <Text style={styles.storeNameText}>
-        {`${orderDetail?.seller_details?.organization_name}` ?? '-'}
-      </Text>
+    <ScrollView style={{ flex: 1 }}>
+      <View style={styles.firstRowStyle}>
+        <View style={styles.storeDetailView}>
+          <Text style={style.storeNameText}>
+            {`${orderDetail?.seller_details?.organization_name}` ?? '-'}
+          </Text>
 
-      <Spacer space={SH(10)} backgroundColor={COLORS.transparent} />
+          <Spacer space={SH(10)} backgroundColor={COLORS.transparent} />
 
-      <Text style={styles.storeAddressText}>
-        {`${orderDetail?.seller_details?.current_address?.street_address ?? '-'}`}
-      </Text>
+          <Text style={style.storeAddressText}>
+            {`${orderDetail?.seller_details?.current_address?.street_address ?? '-'}`}
+          </Text>
 
-      <Spacer space={SH(5)} backgroundColor={COLORS.transparent} />
+          <Spacer space={SH(5)} backgroundColor={COLORS.transparent} />
 
-      <Text style={styles.storeAddressText}>
-        {`${orderDetail?.seller_details?.phone_number}` ?? '-'}
-      </Text>
+          <Text style={style.storeAddressText}>
+            {`${orderDetail?.seller_details?.phone_number}` ?? '-'}
+          </Text>
 
-      <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
+          <Text style={[style._commonPayTitle, style.boldInvoice]}>
+            Invoice No. # {orderDetail?.invoices?.invoice_number ?? '-'}
+          </Text>
 
-      <View style={{ paddingVertical: 8 }}>
-        <FlatList
-          data={orderList ?? []}
-          renderItem={renderProductItem}
-          extraData={orderList}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
-        />
+          <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
+
+          <View style={{ paddingVertical: 8 }}>
+            <FlatList
+              renderItem={renderProductItem}
+              showsVerticalScrollIndicator={false}
+              extraData={orderDetail?.order_details}
+              data={orderDetail?.order_details ?? []}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={styles.contentContainerStyle}
+            />
+          </View>
+
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{strings.deliveryOrders.subTotal}</Text>
+            <Text style={style._subTotalPrice}>
+              {`${formattedReturnPrice(orderDetail?.actual_amount)}` ?? '-'}
+            </Text>
+          </View>
+
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
+            <Text style={style._subTotalPrice}>
+              {`${formattedReturnPrice(orderDetail?.tax)}` ?? '-'}
+            </Text>
+          </View>
+
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{strings.deliveryOrders.deliveryCharges}</Text>
+            <Text style={style._subTotalPrice}>
+              {`${formattedReturnPrice(orderDetail?.delivery_charge)}` ?? '-'}
+            </Text>
+          </View>
+
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
+            <Text style={style.totalPriceLabel}>{strings.deliveryOrders.total}</Text>
+            <Text style={style.totalPriceText}>
+              {`${formattedReturnPrice(orderDetail?.payable_amount)}` ?? '-'}
+            </Text>
+          </View>
+
+          <View style={[style._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
+
+          <View style={style._paymentTitleContainer}>
+            <Text style={style._payTitle}>{strings.deliveryOrders.paymentOption} </Text>
+            <Text style={style._paySubTitle}>
+              {orderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
+            </Text>
+          </View>
+
+          <Text style={style._commonPayTitle}>
+            {moment(orderData?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
+          </Text>
+
+          <Text style={style._commonPayTitle}>
+            POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
+          </Text>
+
+          <Text style={style._commonPayTitle}>
+            User ID : #{orderDetail?.user_details?.id ?? '-'}
+          </Text>
+
+          <Text style={style._thankyou}>{strings.deliveryOrders2.thanks}</Text>
+
+          <Image source={{ uri: orderDetail?.invoices?.barcode }} style={style._barCodeImage} />
+
+          <Image source={logo_full} style={style.logoFull} />
+        </View>
+
+        <View style={styles.mapMainView}>
+          <MapView
+            customMapStyle={mapCustomStyle}
+            ref={mapRef}
+            provider={PROVIDER_GOOGLE}
+            showCompass
+            region={{
+              latitude: orderDetail?.order_delivery?.order_pickup_latitude ?? 0.0,
+              longitude: orderDetail?.order_delivery?.order_pickup_longitude ?? 0.0,
+              latitudeDelta: 0.0992,
+              longitudeDelta: 0.0421,
+            }}
+            initialRegion={{
+              latitude: orderDetail?.order_delivery?.order_delivery_latitude ?? 0.0,
+              longitude: orderDetail?.order_delivery?.order_delivery_longitude ?? 0.0,
+              latitudeDelta: 0.0992,
+              longitudeDelta: 0.0421,
+            }}
+            style={styles.detailMap}
+          >
+            <MapViewDirections
+              key={orderDetail?.order_delivery?.order_pickup_latitude ?? 'key'}
+              origin={{
+                latitude: orderDetail?.order_delivery?.order_pickup_latitude ?? 0.0,
+                longitude: orderDetail?.order_delivery?.order_pickup_longitude ?? 0.0,
+              }}
+              destination={{
+                latitude: orderDetail?.order_delivery?.order_delivery_latitude ?? 0.0,
+                longitude: orderDetail?.order_delivery?.order_delivery_longitude ?? 0.0,
+              }}
+              apikey={GOOGLE_MAP.API_KEYS}
+              strokeWidth={6}
+              strokeColor={COLORS.primary}
+            />
+            <Marker
+              coordinate={{
+                latitude: orderDetail?.order_delivery?.order_pickup_latitude ?? 0.0,
+                longitude: orderDetail?.order_delivery?.order_pickup_longitude ?? 0.0,
+              }}
+            >
+              <View>
+                <Image source={scooter} style={styles.mapMarkerStyle} />
+              </View>
+            </Marker>
+            <Marker
+              coordinate={{
+                latitude: orderDetail?.order_delivery?.order_delivery_latitude ?? 0.0,
+                longitude: orderDetail?.order_delivery?.order_delivery_longitude ?? 0.0,
+              }}
+            >
+              <View>
+                <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
+              </View>
+            </Marker>
+          </MapView>
+
+          <TouchableOpacity
+            onPress={() =>
+              mapRef.current.animateToRegion(
+                {
+                  latitude: orderDetail?.order_delivery?.order_pickup_latitude ?? 0.0,
+                  longitude: orderDetail?.order_delivery?.order_pickup_longitude ?? 0.0,
+                  latitudeDelta: 0.001,
+                  longitudeDelta: 0.001,
+                },
+                1000
+              )
+            }
+            style={styles.gpsViewStyle}
+          >
+            <Image source={gps} style={styles.gpsImageStyle} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={trackingView}
+            style={[
+              styles.expandButtonStyle,
+              {
+                borderColor: COLORS.dark_grey,
+                borderWidth: 1,
+                backgroundColor: COLORS.white,
+              },
+            ]}
+          >
+            <Image source={crossButton} style={styles.rightIconStyle} />
+            <Text
+              style={[styles.acceptTextStyle, { color: COLORS.dark_grey, paddingHorizontal: 12 }]}
+            >
+              {strings.deliveryOrders2.close}
+            </Text>
+          </TouchableOpacity>
+
+          {/* <ShipmentTracking orderData={orderDetail} onPressShop={onPressShop} /> */}
+        </View>
       </View>
-
-      <View style={styles._horizontalLine} />
-
-      <View style={styles._subTotalContainer}>
-        <Text style={styles._substotalTile}>{'Sub Total'}</Text>
-        <Text style={styles._subTotalPrice}>{`$${subTotal}` ?? '-'}</Text>
-      </View>
-
-      <View style={styles._horizontalLine} />
-
-      <View style={styles._horizontalLine} />
-
-      <View style={styles._subTotalContainer}>
-        <Text style={styles._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
-        <Text style={styles._subTotalPrice}>{`$${totalTaxes}` ?? '-'}</Text>
-      </View>
-
-      <View style={styles._horizontalLine} />
-
-      <View style={styles._subTotalContainer}>
-        <Text style={[styles._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-          Total
-        </Text>
-        <Text style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-          {`$${total}` ?? '-'}
-        </Text>
-      </View>
-
-      <View style={[styles._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
-
-      <View style={styles._paymentTitleContainer}>
-        <Text style={styles._payTitle}>{strings.deliveryOrders.paymentOption} </Text>
-        <Text style={styles._paySubTitle}>
-          {orderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
-        </Text>
-      </View>
-
-      <Text style={styles._commonPayTitle}>
-        {moment(orderDetail?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
-      </Text>
-
-      <Text style={styles._commonPayTitle}>
-        Invoice No. # {orderDetail?.invoices?.invoice_number ?? '-'}
-      </Text>
-
-      <Text style={styles._commonPayTitle}>
-        POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
-      </Text>
-
-      <Text style={styles._commonPayTitle}>User ID : #{getUserData?.posLoginData?.id ?? '-'}</Text>
-
-      <Text style={styles._thankyou}>{strings.deliveryOrders2.thanks}</Text>
-
-      <Image source={{ uri: orderDetail?.invoices?.barcode }} style={styles._barCodeImage} />
-
-      <Image source={logo_full} style={styles.logoFull} />
-    </View>
+    </ScrollView>
   );
 };
 
 export default memo(ReturnInvoice);
 
-const styles = StyleSheet.create({
-  invoiceMainViewStyle: {
-    paddingHorizontal: ms(10),
-    paddingVertical: ms(15),
-  },
+const style = StyleSheet.create({
   storeNameText: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
@@ -206,11 +327,23 @@ const styles = StyleSheet.create({
     fontSize: ms(5.5),
     marginTop: ms(5),
   },
+  totalPriceLabel: {
+    fontSize: ms(6),
+    color: COLORS.black,
+    marginTop: ms(5),
+    fontFamily: Fonts.SemiBold,
+  },
   _subTotalPrice: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     fontSize: ms(5.5),
     marginTop: ms(7),
+  },
+  totalPriceText: {
+    fontSize: ms(6),
+    marginTop: ms(7),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
   },
   _horizontalLine: {
     height: ms(1),
@@ -262,5 +395,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: ms(2),
     alignSelf: 'center',
+  },
+  boldInvoice: {
+    alignSelf: 'center',
+    fontFamily: Fonts.SemiBold,
   },
 });

@@ -24,6 +24,7 @@ const OrderDetail = ({
 }) => {
   const oneOrderDetail = useSelector(getAnalytics);
   const getTrackingInfo = oneOrderDetail?.getOrderData?.tracking_info;
+  const profileImage = userDetail?.user_details?.profile_photo;
 
   return (
     <>
@@ -31,22 +32,16 @@ const OrderDetail = ({
         <View style={styles.orderDetailViewStyle}>
           <View style={[styles.locationViewStyle, { flex: 0.95 }]}>
             <Image
-              source={
-                userDetail?.user_details?.profile_photo
-                  ? { uri: userDetail?.user_details?.profile_photo }
-                  : userImage
-              }
+              source={profileImage ? { uri: profileImage } : userImage}
               style={styles.userImageStyle}
             />
 
             <View style={styles.userNameView}>
               <Text style={[styles.totalTextStyle, { padding: 0 }]}>
-                {userDetail?.user_details?.firstname
-                  ? userDetail?.user_details?.firstname
-                  : 'user name'}
+                {userDetail?.user_details?.firstname ? userDetail?.user_details?.firstname : '-'}
               </Text>
               <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
-                {userDetail?.address}
+                {userDetail?.address ?? '-'}
               </Text>
             </View>
           </View>

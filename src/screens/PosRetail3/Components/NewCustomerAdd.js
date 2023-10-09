@@ -50,8 +50,6 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   );
   const [detailArea, setDetailArea] = useState(false);
 
-  console.log('----', getuserDetailByNo?.user_profile);
-
   useEffect(() => {
     textInputRef.current.focus();
   }, []);
