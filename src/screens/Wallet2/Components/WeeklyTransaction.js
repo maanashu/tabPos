@@ -221,7 +221,7 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
         return 'Assign';
         break;
       case 5:
-        return 'Pickup';
+        return 'Walkin';
         break;
       case 6:
         return 'Delivered';
@@ -505,19 +505,19 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
               </View>
               <View style={styles.tableHeaderRight}>
                 <Text numberOfLines={1} style={styles.tableTextHea}>
-                  Transaction Id
+                  Invoice Number
                 </Text>
                 <View style={styles.flexAlign}>
                   <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
                     Transaction type
                   </Text>
-                  <Image source={tableArrow} style={styles.tableArrow} />
+                  {/* <Image source={tableArrow} style={styles.tableArrow} /> */}
                 </View>
                 <View style={styles.flexAlign}>
                   <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
                     Payment Method
                   </Text>
-                  <Image source={tableArrow} style={styles.tableArrow} />
+                  {/* <Image source={tableArrow} style={styles.tableArrow} /> */}
                 </View>
                 <Text style={styles.tableTextHea}>Amount</Text>
                 <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text>
@@ -568,10 +568,12 @@ export function WeeklyTransaction({ backHandler, orderClickHandler, comeFrom }) 
                           </View>
                         </View>
                         <View style={styles.tableHeaderRight}>
-                          <Text style={[styles.tableTextData, { fontSize: SF(12) }]}>
-                            {item.transaction_id ?? null}
+                          <Text
+                            style={[styles.tableTextData, { fontSize: SF(12), marginLeft: ms(15) }]}
+                          >
+                            {item?.invoices?.invoice_number ?? null}
                           </Text>
-                          <Spacer horizontal space={ms(35)} />
+                          <Spacer horizontal space={ms(20)} />
                           <Text style={styles.tableTextData}>
                             {DELIVERY_MODE[item?.delivery_option]}
                           </Text>
