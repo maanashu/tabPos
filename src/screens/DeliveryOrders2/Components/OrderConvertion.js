@@ -25,7 +25,7 @@ const OrderConvertion = () => {
   ];
 
   let sum = 0;
-  series.forEach((num) => {
+  series?.forEach((num) => {
     sum += num;
   });
 
@@ -43,11 +43,11 @@ const OrderConvertion = () => {
       <View style={styles.piechartViewStyle}>
         <View>
           <PieChart
-            series={sum > 0 ? series : [100]}
             coverRadius={0.7}
-            sliceColor={sum > 0 ? sliceColor : [COLORS.light_sky]}
-            coverFill={COLORS.white}
             widthAndHeight={140}
+            coverFill={COLORS.white}
+            series={sum > 0 ? series : [100]}
+            sliceColor={sum > 0 ? sliceColor : [COLORS.light_sky]}
           />
           <View style={styles.percentageView}>
             <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text>
@@ -73,6 +73,7 @@ const OrderConvertion = () => {
               <Text style={styles.orderTypeTextStyle}>
                 {strings.shippingOrder.processingOrders}
               </Text>
+
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
               </Text>
@@ -82,6 +83,7 @@ const OrderConvertion = () => {
               <Text style={styles.orderTypeTextStyle}>
                 {strings.shippingOrder.readyPickupOrders}
               </Text>
+
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
               </Text>
@@ -89,6 +91,7 @@ const OrderConvertion = () => {
 
             <View style={styles.ordersRowView}>
               <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.completed}</Text>
+
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[3]?.percentage)}%` ?? '0'}
               </Text>
@@ -106,15 +109,15 @@ const styles = StyleSheet.create({
   orderConvertionView: {
     flex: 1.6,
     borderRadius: 10,
-    backgroundColor: COLORS.white,
     paddingBottom: ms(10),
+    backgroundColor: COLORS.white,
   },
   orderTextStyle: {
-    fontFamily: Fonts.MaisonBold,
-    fontSize: scale(7),
-    color: COLORS.solid_grey,
-    paddingLeft: ms(12),
     paddingTop: ms(9),
+    fontSize: scale(7),
+    paddingLeft: ms(12),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonBold,
   },
   piechartViewStyle: {
     alignSelf: 'center',
@@ -131,32 +134,32 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   percentageTextStyle: {
-    fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.black,
     textAlign: 'center',
+    fontFamily: Fonts.SemiBold,
   },
   loaderViewStyle: {
     alignItems: 'center',
-    justifyContent: 'center',
     paddingVertical: ms(35),
+    justifyContent: 'center',
   },
   ordersRowView: {
+    width: SW(80),
     flexDirection: 'row',
     alignItems: 'center',
-    width: SW(80),
-    justifyContent: 'space-between',
     paddingVertical: ms(6),
     paddingHorizontal: ms(12),
+    justifyContent: 'space-between',
   },
   orderTypeTextStyle: {
-    fontFamily: Fonts.Medium,
     fontSize: SF(14),
     color: COLORS.dark_grey,
+    fontFamily: Fonts.Medium,
   },
   countTextStyle: {
-    fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
     color: COLORS.dark_grey,
+    fontFamily: Fonts.SemiBold,
   },
 });

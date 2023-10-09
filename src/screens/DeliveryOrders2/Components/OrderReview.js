@@ -1,20 +1,19 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import {
   View,
-  Dimensions,
   FlatList,
-  ActivityIndicator,
+  Dimensions,
   StyleSheet,
   RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 
-import { COLORS } from '@/theme';
-import { ms } from 'react-native-size-matters';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { COLORS } from '@/theme';
+import { getAuthData } from '@/selectors/AuthSelector';
 import { getReviewDefault } from '@/actions/DeliveryAction';
 import { getPendingOrders } from '@/actions/DashboardAction';
-import { getAuthData } from '@/selectors/AuthSelector';
 
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 2;
@@ -56,8 +55,8 @@ const OrderReview = ({
               <RefreshControl
                 refreshing={isRefreshing}
                 onRefresh={onRefresh}
-                tintColor={COLORS.primary} // Change the color of the loading spinner
-                title="Pull to Refresh" // Optional, you can customize the text
+                tintColor={COLORS.primary}
+                title="Pull to Refresh"
               />
             }
           />

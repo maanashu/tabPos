@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import CountryPicker from 'react-native-country-picker-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -25,17 +25,15 @@ import {
   getProductsBySkuSuccess,
 } from '@/actions/DashboardAction';
 import { Spacer } from '@/components';
-import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { SF, SH, COLORS, SW } from '@/theme';
 import InvoiceDetails from './InvoiceDetails';
 import BackButton from '@/components/BackButton';
 import ReturnConfirmation from './ReturnConfirmation';
 import { RECIPE_DATA } from '@/constants/flatListData';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
 import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 const { width, height } = Dimensions.get('window');
 
@@ -171,8 +169,10 @@ const PaymentSelection = ({
             {orderData?.order?.mode_of_payment ? (
               <TouchableOpacity style={styles._payBYBoxContainer}>
                 <Text style={styles._payByTitle}>{strings.returnOrder.payBy}</Text>
-                <Text style={styles._payByMethod}>{orderData?.order?.mode_of_payment}</Text>
-                <Text style={styles._payByAmount}>{`-$${payableAmount?.toFixed(2)}`}</Text>
+                <Text style={styles._payByMethod}>
+                  {(orderData?.order?.mode_of_payment).toUpperCase()}
+                </Text>
+                <Text style={styles._payByAmount}>{`${formattedReturnPrice(payableAmount)}`}</Text>
                 <Image
                   source={
                     orderData?.order?.mode_of_payment === strings.returnOrder.cash
