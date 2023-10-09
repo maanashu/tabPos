@@ -8,6 +8,7 @@ import {
   FlatList,
   Dimensions,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import {
   bell,
@@ -77,6 +78,7 @@ export function Calender() {
 
   const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [week, setWeek] = useState(true);
   const [month, setMonth] = useState(false);
@@ -96,7 +98,6 @@ export function Calender() {
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
-
   const getAppointmentList2 = getAppointmentList?.filter((item) => item.status !== 3);
   // Only show appointments on calendar which are approved/Check-In/Completed/CancelledByCustomer
   const getApprovedAppointments = getAppointmentList?.filter(
@@ -213,6 +214,12 @@ export function Calender() {
     setSelectedStaffEmployeeId(null);
     setshowEmployeeHeader(false);
   };
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await dispatch(getAppointment(pageNumber));
+    setRefreshing(false);
+  }, []);
 
   const getAppointmentsByDate = useMemo(() => {
     const filteredAppointmentsByDate = getAppointmentList.filter(
@@ -449,6 +456,7 @@ export function Calender() {
               ) : (
                 <FlatList
                   data={getAppointmentsByDate}
+                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                   keyExtractor={(_, index) => index.toString()}
                   ListHeaderComponent={<ListViewHeader />}
                   renderItem={renderListViewItem}
@@ -597,6 +605,7 @@ export function Calender() {
                   extraData={appointmentListArr}
                   data={selectedStaffEmployeeId ? getAppointmentByStaffIdList : appointmentListArr}
                   keyExtractor={(_, index) => index}
+                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                   renderItem={eventItem}
                   onEndReached={handleEndReached}
                   onEndReachedThreshold={0.1} // Adjust this value as per your requirements
