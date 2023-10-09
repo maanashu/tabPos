@@ -146,7 +146,7 @@ export default memo(ReturnConfirmation);
 
 const styles = StyleSheet.create({
   modalStyle: {
-    width: Platform.OS === 'android' ? width / 3.2 : width / 3,
+    width: Platform.OS === 'android' ? width / 3.2 : width / 2.8,
     borderRadius: 10,
     alignSelf: 'flex-end',
     backgroundColor: COLORS.white,
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: Platform.OS === 'android' ? width / 3.8 : width / 3.3,
+    width: Platform.OS === 'android' ? width / 3.8 : width / 3.2,
     alignSelf: 'center',
     paddingBottom: ms(20),
     marginHorizontal: 10,
