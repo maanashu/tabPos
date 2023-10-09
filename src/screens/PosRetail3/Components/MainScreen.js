@@ -198,9 +198,7 @@ export function MainScreen({
       try {
         eraseClearCart();
         const bulkData = await dispatch(createBulkcart(dataToSend));
-        console.log('bulkData', bulkData);
         if (holdProductArray?.length == 0 || getRetailData?.getAllCart?.length == 0) {
-          console.log('----------', holdProductArray?.length);
           const data =
             holdProductArray?.length > 0
               ? {
@@ -211,7 +209,6 @@ export function MainScreen({
                   status: true,
                   cartId: bulkData?.id,
                 };
-          console.log('data1', data);
 
           dispatch(changeStatusProductCart(data));
         } else {
@@ -225,7 +222,6 @@ export function MainScreen({
                   status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
                   cartId: bulkData?.id,
                 };
-          console.log('data2', data);
 
           dispatch(changeStatusProductCart(data));
         }
@@ -242,7 +238,6 @@ export function MainScreen({
               status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
               cartId: getRetailData?.getAllCart?.id,
             };
-      console.log('data3', data);
 
       dispatch(changeStatusProductCart(data));
       //   if (getRetailData?.getAllCart?.poscart_products?.length > 0) {

@@ -52,25 +52,25 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         key: '4',
         image: Delivery,
         title: 'Shipped',
-        count: orderStatusCountData?.[4]?.count ?? '0',
+        count: orderStatusCountData?.[5]?.count ?? '0',
       },
       {
         key: '5',
         image: Cart,
         title: 'Delivered',
-        count: orderStatusCountData?.[5]?.count ?? '0',
+        count: orderStatusCountData?.[6]?.count ?? '0',
       },
       {
         key: '7,8',
         image: NoCard,
         title: 'Rejected/Cancelled',
-        count: orderStatusCountData?.[6]?.count ?? '0',
+        count: orderStatusCountData?.[7]?.count ?? '0',
       },
       {
         key: '9',
         image: ReturnTruck,
         title: 'Returned',
-        count: orderStatusCountData?.[7]?.count ?? '0',
+        count: orderStatusCountData?.[8]?.count ?? '0',
       },
     ],
     [orderStatusCountData]
@@ -92,7 +92,10 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
     if (item?.image === Cart) {
       return (
         <View style={styles.bucketBackgorund}>
-          <Image source={item.image} style={[styles.sideBarImage, { tintColor: blueBackground }]} />
+          <Image
+            source={item?.image}
+            style={[styles.sideBarImage, { tintColor: blueBackground }]}
+          />
           <View
             style={[
               styles.bucketBadge,
@@ -107,7 +110,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
       return (
         <View style={styles.bucketBackgorund}>
           <Image
-            source={item.image}
+            source={item?.image}
             style={[styles.sideBarImage, { tintColor: rejectedBackground }]}
           />
           <View
@@ -121,7 +124,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
       return (
         <View style={styles.bucketBackgorund}>
           <Image
-            source={item.image}
+            source={item?.image}
             style={[styles.sideBarImage, { tintColor: returnedbackground }]}
           />
           <View
@@ -141,7 +144,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
       return (
         <View style={styles.bucketBackgorund}>
           <Image
-            source={item.image}
+            source={item?.image}
             style={[
               styles.sideBarImage,
               {
@@ -191,7 +194,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
       <FlatList
         data={statusCount}
         renderItem={renderDrawer}
-        keyExtractor={(item) => item.key.toString()}
+        keyExtractor={(item) => item?.key?.toString()}
       />
     </View>
   );

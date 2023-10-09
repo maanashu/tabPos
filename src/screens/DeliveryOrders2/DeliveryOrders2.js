@@ -10,11 +10,11 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from 'react-native';
+import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 
-import { pay, pin, clock, rightIcon, backArrow2, Fonts } from '@/assets';
 import {
   acceptOrder,
   deliOrder,
@@ -25,6 +25,7 @@ import {
   getSellerDriverList,
   todayOrders,
 } from '@/actions/DeliveryAction';
+import { Spacer } from '@/components';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
@@ -32,24 +33,24 @@ import Header from './Components/Header';
 import OrderDetail from './Components/OrderDetail';
 import OrderReview from './Components/OrderReview';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { ScreenWrapper, Spacer } from '@/components';
 import RightSideBar from './Components/RightSideBar';
 import { getAuthData } from '@/selectors/AuthSelector';
 import CurrentStatus from './Components/CurrentStatus';
+import ReturnInvoice from './Components/ReturnInvoice';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import InvoiceDetails from './Components/InvoiceDetails';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import OrderConvertion from './Components/OrderConvertion';
 import { orderStatusCount } from '@/actions/ShippingAction';
+import { getPendingOrders } from '@/actions/DashboardAction';
 import TodayOrderStatus from './Components/TodayOrderStatus';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import ReturnConfirmation from './Components/ReturnConfirmation';
+import ReturnedOrderDetail from './Components/ReturnedOrderDetail';
+import { pay, pin, clock, rightIcon, backArrow2, Fonts } from '@/assets';
 
 import styles from './styles';
-import moment from 'moment';
-import ReturnedOrderDetail from './Components/ReturnedOrderDetail';
-import { getPendingOrders } from '@/actions/DashboardAction';
 
 export function DeliveryOrders2({ route }) {
   const mapRef = useRef(null);
@@ -101,16 +102,6 @@ export function DeliveryOrders2({ route }) {
   const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
   const [changeViewToRecheck, setChangeViewToRecheck] = useState();
 
-  // useEffect(() => {
-  //   if (ordersList?.length > 0) {
-  //     const interval = setInterval(() => {
-  //       dispatch(getOrderData(orderId || ordersList?.[0]?.id));
-  //     }, 60000);
-
-  //     return () => clearInterval(interval);
-  //   }
-  // }, []);
-
   useFocusEffect(
     React.useCallback(() => {
       dispatch(getReviewDefault(0, 1));
@@ -121,21 +112,6 @@ export function DeliveryOrders2({ route }) {
       dispatch(getOrderstatistics(1));
       dispatch(getGraphOrders(1));
       dispatch(getSellerDriverList());
-      // if (ORDER_DETAIL !== null) {
-      //   setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id);
-      //   setUserDetail(ORDER_DETAIL);
-      //   setOrderDetail(ORDER_DETAIL?.order_details);
-      // }
-      // if (!isBack) {
-      //   setSelectedProductId(ORDER_DETAIL?.order_details[0]?.id);
-      //   setViewAllOrders(isViewAll);
-      // }
-      // return () => {
-      //   setIsBack(false);
-      //   setViewAllOrders(false);
-      //   setOrderDetail([]);
-      //   setSelectedProductId(null);
-      // };
     }, [isViewAll, ORDER_DETAIL])
   );
 
@@ -406,7 +382,6 @@ export function DeliveryOrders2({ route }) {
         <Image source={{ uri: item?.product_image }} style={styles.userImageStyle} />
         <View style={{ paddingLeft: 10, width: ms(100) }}>
           <Text style={styles.nameTextStyle}>{item?.product_name}</Text>
-          <Text style={styles.varientTextStyle}>{'Box'}</Text>
         </View>
       </View>
       <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
@@ -641,15 +616,27 @@ export function DeliveryOrders2({ route }) {
           </TouchableOpacity>
 
           <View style={styles.firstRowStyle}>
-            <InvoiceDetails
-              trackingView={() => {
-                setTrackingView(false);
-                dispatch(getReviewDefault(openShippingOrders, 1));
-              }}
-              mapRef={mapRef}
-              orderList={orderDetail}
-              orderData={singleOrderDetail}
-            />
+            {openShippingOrders === '9' ? (
+              <ReturnInvoice
+                trackingView={() => {
+                  setTrackingView(false);
+                  dispatch(getReviewDefault(openShippingOrders, 1));
+                }}
+                mapRef={mapRef}
+                orderList={orderDetail}
+                orderData={singleOrderDetail}
+              />
+            ) : (
+              <InvoiceDetails
+                trackingView={() => {
+                  setTrackingView(false);
+                  dispatch(getReviewDefault(openShippingOrders, 1));
+                }}
+                mapRef={mapRef}
+                orderList={orderDetail}
+                orderData={singleOrderDetail}
+              />
+            )}
             <RightSideBar
               {...{
                 renderDrawer,
