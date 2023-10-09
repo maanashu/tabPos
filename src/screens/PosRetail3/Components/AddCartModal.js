@@ -34,6 +34,7 @@ export function AddCartModal({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
+
   const productDetail = getRetailData?.getOneProduct;
 
   const sizeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
@@ -227,12 +228,16 @@ export function AddCartModal({
                 styles.backTocartCon,
                 {
                   opacity:
-                    cartData?.length == 0 || cartData?.poscart_products === 'undefined' ? 0.4 : 1,
+                    Object.keys(cartData)?.length == 0 || cartData?.poscart_products === 'undefined'
+                      ? 0.4
+                      : 1,
                 },
               ]}
               onPress={backToCartHandler}
               disabled={
-                cartData?.length == 0 || cartData?.poscart_products === 'undefined' ? true : false
+                Object.keys(cartData)?.length == 0 || cartData?.poscart_products === 'undefined'
+                  ? true
+                  : false
               }
             >
               <Text style={styles.backTocartText}>Back to Cart</Text>

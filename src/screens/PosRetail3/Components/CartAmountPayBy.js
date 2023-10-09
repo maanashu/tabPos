@@ -595,6 +595,31 @@ export const CartAmountPayBy = ({
                         },
                       ]}
                     >
+                      {index == 1 ? (
+                        <View
+                          style={[
+                            styles.saveView,
+                            {
+                              backgroundColor:
+                                selectedPaymentIndex === index
+                                  ? COLORS.blue_shade
+                                  : COLORS.textInputBackground,
+                            },
+                          ]}
+                        >
+                          <Text
+                            style={
+                              selectedPaymentIndex === index
+                                ? styles.saveText1dark
+                                : styles.saveText1
+                            }
+                          >
+                            Save 1%
+                          </Text>
+                        </View>
+                      ) : (
+                        <View style={[styles.saveView, { backgroundColor: COLORS.white }]}></View>
+                      )}
                       <Text
                         style={[
                           styles._payByTitle,
@@ -638,11 +663,6 @@ export const CartAmountPayBy = ({
                           },
                         ]}
                       />
-                      {index == 1 && (
-                        <View style={styles.saveView}>
-                          <Text style={styles.saveText1}>Save 1%</Text>
-                        </View>
-                      )}
                     </TouchableOpacity>
                   ))}
                 </View>
@@ -962,8 +982,14 @@ export const CartAmountPayBy = ({
                       {'Scan to Pay'}
                     </Text>
                     <View style={{ alignItems: 'center' }}>
-                      <Text style={styles._amount}>JBR {(totalPayAmount() * 100).toFixed(0)}</Text>
-                      <Text style={styles._usdText}>USD ${totalPayAmount()}</Text>
+                      {/* <Text style={styles._amount}>JBR {(totalPayAmount() * 100).toFixed(0)}</Text> */}
+                      {/* <Text style={styles._usdText}>USD ${totalPayAmount()}</Text> */}
+                      <Text style={styles._amount}>
+                        JBR {(cartData?.amount?.total_amount * 100).toFixed(0)}
+                      </Text>
+                      <Text style={styles._usdText}>
+                        USD ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                      </Text>
                     </View>
                   </View>
                   <View style={{ width: '60%' }}>

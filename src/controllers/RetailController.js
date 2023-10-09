@@ -525,7 +525,6 @@ export class RetailController {
   static async updateCartQtyy(data, cartId) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.updateCartQty + `/${cartId}`;
-
       HttpClient.put(endpoint, data)
         .then((response) => {
           resolve(response);
