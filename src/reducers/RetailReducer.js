@@ -32,6 +32,7 @@ const INITIALSTATE = {
   bulkData: [],
   getAllProductCart: [],
   timeSlots: [],
+  timeSlotInterval: null,
   getAllServiceCart: [],
   availableOffer: [],
   createOrder: {},
@@ -336,12 +337,14 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.GET_TIME_SLOTS_SUCCESS:
       return {
         ...state,
-        timeSlots: payload.data?.payload,
+        timeSlots: payload.data?.payload?.slots,
+        timeSlotInterval: payload.data?.payload?.interval,
       };
     case TYPES.GET_TIME_SLOTS_RESET:
       return {
         ...state,
-        timeSlots: payload.data?.payload,
+        timeSlots: [],
+        timeSlotInterval: null,
       };
 
     case TYPES.GET_ALL_PRODUCT_CART_SUCCESS:

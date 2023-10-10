@@ -1432,12 +1432,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          // Toast.show({
-          //   text2: 'catgory error',
-          //   position: 'bottom',
-          //   type: 'error_toast',
-          //   visibilityTime: 1500,
-          // });
           reject(error);
         });
     });
