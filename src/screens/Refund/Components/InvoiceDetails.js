@@ -36,13 +36,14 @@ const InvoiceDetails = ({
   const renderProductItem = ({ item, index }) => (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.count}>{item.qty}</Text>
+        <Text style={styles.count}>{index + 1}</Text>
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
             {item?.product_name ?? '-'}
           </Text>
           <View style={styles.belowSubContainer}>
-            <Text style={styles.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
+            <Text style={styles.colorsTitle}>{'Qty: '}</Text>
+            <Text style={styles.colorsTitle}>{item?.qty ?? '-'}</Text>
           </View>
         </View>
       </View>

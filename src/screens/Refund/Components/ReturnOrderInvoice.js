@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
-
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { useSelector } from 'react-redux';
@@ -9,6 +8,7 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { Fonts, logo_full } from '@/assets';
 import { getUser } from '@/selectors/UserSelectors';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 const ReturnOrderInvoice = ({ orderDetail }) => {
   const getUserData = useSelector(getUser);
@@ -18,17 +18,18 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
   const renderProductItem = ({ item, index }) => (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.count}>{item.qty}</Text>
+        <Text style={styles.count}>{index + 1}</Text>
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
             {item?.product_name ?? '-'}
           </Text>
           <View style={styles.belowSubContainer}>
-            <Text style={styles.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
+            <Text style={styles.colorsTitle}>{'Qty: '}</Text>
+            <Text style={styles.colorsTitle}>{item?.qty ?? '-'}</Text>
           </View>
         </View>
       </View>
-      <Text style={styles.priceTitle}>{`-$${item?.price * item?.qty}`}</Text>
+      <Text style={styles.priceTitle}>{`${formattedReturnPrice(item?.price * item?.qty)}`}</Text>
     </View>
   );
 
@@ -69,7 +70,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{'Sub Total'}</Text>
         <Text style={styles._subTotalPrice}>
-          {`-$${returnedData?.products_refunded_amount}` ?? '-'}
+          {`${formattedReturnPrice(returnedData?.products_refunded_amount)}`}
         </Text>
       </View>
 
@@ -78,7 +79,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{'Delivery / Shipping Charges'}</Text>
         <Text style={styles._subTotalPrice}>
-          {`-$${orderDetail?.delivery_charge || orderDetail?.shipping_charge}` ?? '-'}
+          {`${formattedReturnPrice(orderDetail?.delivery_charge || orderDetail?.shipping_charge)}`}
         </Text>
       </View>
 
@@ -86,9 +87,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
-        <Text style={styles._subTotalPrice}>
-          {`-$${parseFloat(returnedData?.tax).toFixed(2)}` ?? '-'}
-        </Text>
+        <Text style={styles._subTotalPrice}>{`${formattedReturnPrice(returnedData?.tax)}`}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
@@ -98,7 +97,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
           Total
         </Text>
         <Text style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-          {`-$${parseFloat(returnedData?.refunded_amount).toFixed(2)}` ?? '-'}
+          {`${formattedReturnPrice(returnedData?.refunded_amount)}`}
         </Text>
       </View>
 
@@ -183,7 +182,7 @@ const styles = StyleSheet.create({
   colorsTitle: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: ms(4.2),
+    fontSize: ms(4.5),
   },
   priceTitle: {
     color: COLORS.black,
