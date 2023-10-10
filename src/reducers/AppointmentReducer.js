@@ -13,7 +13,6 @@ export const appointmentReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.GET_APPOINTMENTS_SUCCESS:
       const { getAppointment } = state;
       const { appointments, pages } = payload;
-      console.log('print JSON response ==>', JSON.stringify(pages));
 
       let updatedAppointments;
 

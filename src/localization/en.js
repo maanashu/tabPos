@@ -440,6 +440,7 @@ export const en = {
     jobrDelivery: 'JOBR Delivery',
     localOff: 'Local Drop-off',
     shippingText: 'Shipping',
+    store: 'Store',
   },
   Languages: {
     languages: 'Languages',
