@@ -99,6 +99,12 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
             <Text style={style._substotalTile}>{strings.deliveryOrders.subTotal}</Text>
             <Text style={style._subTotalPrice}>{`$${orderDetail?.actual_amount}` ?? '-'}</Text>
           </View>
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{'Discount'}</Text>
+            <Text style={style._subTotalPrice}>{`$${orderDetail?.discount}` ?? '-'}</Text>
+          </View>
 
           <View style={style._horizontalLine} />
 
@@ -116,10 +122,22 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
 
           <View style={style._horizontalLine} />
 
-          <View style={style._subTotalContainer}>
-            <Text style={style._substotalTile}>{strings.deliveryOrders.deliveryCharges}</Text>
-            <Text style={style._subTotalPrice}>{`$${orderDetail?.delivery_charge}` ?? '-'}</Text>
-          </View>
+          {(orderDetail?.delivery_charge !== '0' || orderDetail?.shipping_charge !== '0') && (
+            <View style={style._subTotalContainer}>
+              <Text style={style._substotalTile}>
+                {orderDetail?.delivery_charge !== '0'
+                  ? strings.deliveryOrders.deliveryCharges
+                  : strings.deliveryOrders.shippingCharges}
+              </Text>
+              <Text style={style._subTotalPrice}>
+                {`$${
+                  orderDetail?.delivery_charge !== '0'
+                    ? orderDetail?.delivery_charge
+                    : orderDetail?.shipping_charge
+                }` ?? '-'}
+              </Text>
+            </View>
+          )}
 
           <View style={style._horizontalLine} />
 

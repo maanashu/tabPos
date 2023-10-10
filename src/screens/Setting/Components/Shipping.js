@@ -27,7 +27,6 @@ export function Shipping() {
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const getSettingData = useSelector(getSetting);
   const shippingpickupData = getSettingData?.getShippingPickup;
-  console.log('shippingpickupData', JSON.stringify(getSettingData));
 
   const convertShippinDataToArr = () => {
     let arr = [];
