@@ -177,12 +177,30 @@ const ReturnOrderDetail = ({
               </Text>
             </View>
 
-            <View style={styles.orderDetailsView}>
+            {(userDetail?.delivery_charge !== '0' || userDetail?.shipping_charge !== '0') && (
+              <View style={styles.orderDetailsView}>
+                <Text style={styles.invoiceText}>
+                  {userDetail?.delivery_charge !== '0'
+                    ? strings.deliveryOrders.deliveryCharges
+                    : strings.deliveryOrders.shippingCharges}
+                </Text>
+                <View style={styles.flexDirectionRow}>
+                  <Text style={styles.totalTextStyle2}>{'$'}</Text>
+                  <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
+                    {userDetail?.delivery_charge !== '0'
+                      ? Number(userDetail?.delivery_charge)?.toFixed(2)
+                      : Number(userDetail?.shipping_charge)?.toFixed(2)}
+                  </Text>
+                </View>
+              </View>
+            )}
+
+            {/* <View style={styles.orderDetailsView}>
               <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                 {strings.deliveryOrders.subTotalValue}
               </Text>
-            </View>
+            </View> */}
 
             <View style={styles.orderDetailsView}>
               <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
@@ -297,5 +315,12 @@ const styles = StyleSheet.create({
   },
   userNameView: {
     paddingLeft: 10,
+  },
+  orderDetailsView: {
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: 10,
   },
 });
