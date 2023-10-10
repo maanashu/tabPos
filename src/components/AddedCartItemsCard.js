@@ -14,8 +14,8 @@ const AddedCartItemsCard = ({ item, index }) => {
             {item?.product_details?.name}
           </Text>
           <View style={styles.belowSubContainer}>
-            <Text style={styles.colorsTitle}>Colors : Gray</Text>
-            <Text style={styles.sizeTitle}>Size : XXL</Text>
+            {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
+            <Text style={styles.sizeTitle}>Size : XXL</Text> */}
             {/* <Text style={styles.colorsTitle}>QTY : {item?.qty}</Text> */}
           </View>
         </View>
