@@ -36,7 +36,7 @@ const ListViewItem = ({
         <Button
           pending={isChangeStatusLoading}
           title={'Decline'}
-          textStyle={[styles.listCheckinBtnText, { fontSize: ms(7) }]}
+          textStyle={styles.listCheckinBtnText}
           style={[styles.listViewCheckinBtn, { paddingHorizontal: ms(5) }]}
           onPress={() => {
             dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
@@ -46,7 +46,7 @@ const ListViewItem = ({
         <Button
           pending={isChangeStatusLoading}
           title={'Approve'}
-          textStyle={[styles.listCheckinBtnText, { fontSize: ms(7), color: COLORS.white }]}
+          textStyle={[styles.listCheckinBtnText, { color: COLORS.white }]}
           style={[
             styles.listViewCheckinBtn,
             { paddingHorizontal: ms(5), backgroundColor: COLORS.primary },
