@@ -19,6 +19,9 @@ import {
   moneyIcon,
   qrCodeIcon,
   cardPayment,
+  cardReader,
+  tray,
+  printer,
 } from '@/assets';
 
 export const newCustomerDataLoader = [
@@ -140,17 +143,17 @@ export const deviceDropDownArray = [
   {
     id: 2,
     title: 'Card Reader',
-    image: dropScan,
+    image: cardReader,
   },
   {
     id: 3,
     title: 'Cash drawers',
-    image: dropScan,
+    image: tray,
   },
   {
     id: 4,
     title: 'Receipt printers',
-    image: dropScan,
+    image: printer,
   },
 ];
 

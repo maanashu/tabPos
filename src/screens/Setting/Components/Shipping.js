@@ -12,6 +12,8 @@ import {
   locationIcon,
   vectorOff,
   clothes,
+  shippingPlain,
+  dropOff,
 } from '@/assets';
 import { verticalScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
@@ -27,7 +29,7 @@ export function Shipping() {
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const getSettingData = useSelector(getSetting);
   const shippingpickupData = getSettingData?.getShippingPickup;
-  console.log('shippingpickupData', JSON.stringify(getSettingData));
+  // console.log('shippingpickupData', JSON.stringify(getSettingData));
 
   const convertShippinDataToArr = () => {
     let arr = [];
@@ -48,6 +50,7 @@ export function Shipping() {
       id: id,
       is_active: status ? false : true,
     };
+    console.log('sdasds', body);
     dispatch(addressUpdateById(body));
   };
 
@@ -64,7 +67,16 @@ export function Shipping() {
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={localImage} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>{strings.shipping.local}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={styles.twoStepText}>{strings.shipping.local}</Text>
+                  <TouchableOpacity
+                    // onPress={() => addressUpdate(data.id, data.is_active)}
+                    // disabled={item.is_active ? false : true}
+                    style={{ opacity: 0.5 }}
+                  >
+                    <Image source={vectorOff} style={styles.toggleSecurityLarge} />
+                  </TouchableOpacity>
+                </View>
                 <Spacer space={SH(10)} />
                 <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
                 <Spacer space={SH(18)} />
@@ -85,16 +97,17 @@ export function Shipping() {
                             {item.street_address}
                           </Text>
                         </View>
-                        {/* <TouchableOpacity
-                          // onPress={() => addressUpdate(data.id, data.is_active)}
+                        <TouchableOpacity
+                          onPress={() => addressUpdate(item?.id, item?.is_active)}
                           // disabled={item.is_active ? false : true}
-                          style={{ opacity: item.is_active ? 1 : 0.5 }}
+                          style={styles.deleteButton}
                         >
-                          <Image
-                            source={item.is_active ? vector : vectorOff}
+                          <Text style={styles.deleteText}>Delete</Text>
+                          {/* <Image
+                            source={item?.is_active ? vector : vectorOff}
                             style={styles.toggleSecurity}
-                          />
-                        </TouchableOpacity> */}
+                          /> */}
+                        </TouchableOpacity>
                       </View>
                     </View>
                   </View>
@@ -118,7 +131,17 @@ export function Shipping() {
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={jobrDelivery} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>{strings.shipping.jobrDelivery}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={styles.twoStepText}>{strings.shipping.jobrDelivery}</Text>
+
+                  <TouchableOpacity
+                    // onPress={() => addressUpdate(data.id, data.is_active)}
+                    // disabled={item.is_active ? false : true}
+                    style={{ opacity: 0.5 }}
+                  >
+                    <Image source={vectorOff} style={styles.toggleSecurityLarge} />
+                  </TouchableOpacity>
+                </View>
                 <Spacer space={SH(10)} />
                 <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
                 <Spacer space={SH(18)} />
@@ -139,16 +162,17 @@ export function Shipping() {
                             {item.street_address}
                           </Text>
                         </View>
-                        {/* <TouchableOpacity
-                          // onPress={() => addressUpdate(data.id, data.is_active)}
+                        <TouchableOpacity
+                          onPress={() => addressUpdate(item?.id, item?.is_active)}
                           // disabled={item.is_active ? false : true}
-                          style={{ opacity: item.is_active ? 1 : 0.5 }}
+                          style={styles.deleteButton}
                         >
-                          <Image
-                            source={item.is_active ? vector : vectorOff}
+                          <Text style={styles.deleteText}>Delete</Text>
+                          {/* <Image
+                            source={item?.is_active ? vector : vectorOff}
                             style={styles.toggleSecurity}
-                          />
-                        </TouchableOpacity> */}
+                          /> */}
+                        </TouchableOpacity>
                       </View>
                     </View>
                   </View>
@@ -171,9 +195,19 @@ export function Shipping() {
           {/*local drop off address */}
           <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={jobrDelivery} style={styles.securityLogo} />
+              <Image source={dropOff} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>{strings.shipping.localOff}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={styles.twoStepText}>{strings.shipping.localOff}</Text>
+
+                  <TouchableOpacity
+                    // onPress={() => addressUpdate(data.id, data.is_active)}
+                    // disabled={item.is_active ? false : true}
+                    style={{ opacity: 0.5 }}
+                  >
+                    <Image source={vectorOff} style={styles.toggleSecurityLarge} />
+                  </TouchableOpacity>
+                </View>
                 <Spacer space={SH(10)} />
                 <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
                 <Spacer space={SH(18)} />
@@ -191,19 +225,20 @@ export function Shipping() {
                             style={[styles.securitysubhead, { fontSize: SF(12) }]}
                             numberOfLines={1}
                           >
-                            {item.street_address}
+                            {item?.street_address}
                           </Text>
                         </View>
-                        {/* <TouchableOpacity
-                          // onPress={() => addressUpdate(data.id, data.is_active)}
+                        <TouchableOpacity
+                          onPress={() => addressUpdate(item?.id, item?.is_active)}
                           // disabled={item.is_active ? false : true}
-                          style={{ opacity: item.is_active ? 1 : 0.5 }}
+                          style={styles.deleteButton}
                         >
-                          <Image
-                            source={item.is_active ? vector : vectorOff}
+                          <Text style={styles.deleteText}>Delete</Text>
+                          {/* <Image
+                            source={item?.is_active ? vector : vectorOff}
                             style={styles.toggleSecurity}
-                          />
-                        </TouchableOpacity> */}
+                          /> */}
+                        </TouchableOpacity>
                       </View>
                     </View>
                   </View>
@@ -226,9 +261,19 @@ export function Shipping() {
           {/*shipping address */}
           <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={jobrDelivery} style={styles.securityLogo} />
+              <Image source={shippingPlain} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>{strings.shipping.shippingText}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={styles.twoStepText}>{strings.shipping.shippingText}</Text>
+
+                  <TouchableOpacity
+                    // onPress={() => addressUpdate(data.id, data.is_active)}
+                    // disabled={item.is_active ? false : true}
+                    style={{ opacity: 0.5 }}
+                  >
+                    <Image source={vectorOff} style={styles.toggleSecurityLarge} />
+                  </TouchableOpacity>
+                </View>
                 <Spacer space={SH(10)} />
                 <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
                 <Spacer space={SH(18)} />
@@ -249,16 +294,17 @@ export function Shipping() {
                             {item.street_address}
                           </Text>
                         </View>
-                        {/* <TouchableOpacity
-                          // onPress={() => addressUpdate(data.id, data.is_active)}
+                        <TouchableOpacity
+                          onPress={() => addressUpdate(item?.id, item?.is_active)}
                           // disabled={item.is_active ? false : true}
-                          style={{ opacity: item.is_active ? 1 : 0.5 }}
+                          style={styles.deleteButton}
                         >
-                          <Image
-                            source={item.is_active ? vector : vectorOff}
+                          <Text style={styles.deleteText}>Delete</Text>
+                          {/* <Image
+                            source={item?.is_active ? vector : vectorOff}
                             style={styles.toggleSecurity}
-                          />
-                        </TouchableOpacity> */}
+                          /> */}
+                        </TouchableOpacity>
                       </View>
                     </View>
                   </View>
@@ -281,9 +327,19 @@ export function Shipping() {
           {/*store address */}
           <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={jobrDelivery} style={styles.securityLogo} />
+              <Image source={shippingPlain} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>{strings.shipping.store}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={styles.twoStepText}>{strings.shipping.store}</Text>
+
+                  <TouchableOpacity
+                    // onPress={() => addressUpdate(data.id, data.is_active)}
+                    // disabled={item.is_active ? false : true}
+                    style={{ opacity: 0.5 }}
+                  >
+                    <Image source={vectorOff} style={styles.toggleSecurityLarge} />
+                  </TouchableOpacity>
+                </View>
                 <Spacer space={SH(10)} />
                 <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
                 <Spacer space={SH(18)} />
@@ -304,16 +360,17 @@ export function Shipping() {
                             {item.street_address}
                           </Text>
                         </View>
-                        {/* <TouchableOpacity
-                          // onPress={() => addressUpdate(data.id, data.is_active)}
+                        <TouchableOpacity
+                          onPress={() => addressUpdate(item?.id, item?.is_active)}
                           // disabled={item.is_active ? false : true}
-                          style={{ opacity: item.is_active ? 1 : 0.5 }}
+                          style={styles.deleteButton}
                         >
-                          <Image
-                            source={item.is_active ? vector : vectorOff}
+                          <Text style={styles.deleteText}>Delete</Text>
+                          {/* <Image
+                            source={item?.is_active ? vector : vectorOff}
                             style={styles.toggleSecurity}
-                          />
-                        </TouchableOpacity> */}
+                          /> */}
+                        </TouchableOpacity>
                       </View>
                     </View>
                   </View>

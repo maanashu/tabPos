@@ -174,8 +174,14 @@ export { default as rewardFlower } from '@/assets/icons/ic_reward/rewardFlower.p
 export { default as tableProfile } from '@/assets/icons/ic_reward/tableProfile.png';
 export { default as security } from '@/assets/icons/ic_setting/security.png';
 export { default as device } from '@/assets/icons/ic_setting/device.png';
+export { default as cardReader } from '@/assets/icons/ic_setting/cardReader.png';
 export { default as bell } from '@/assets/icons/ic_setting/bell.png';
 export { default as pinLight } from '@/assets/icons/ic_setting/pinLight.png';
+export { default as printer } from '@/assets/icons/ic_setting/printer.png';
+
+export { default as dropOff } from '@/assets/icons/ic_setting/dropOff.png';
+export { default as shippingPlain } from '@/assets/icons/ic_setting/shiping.png';
+
 export { default as plan } from '@/assets/icons/ic_setting/plan.png';
 export { default as invoiceSett } from '@/assets/icons/ic_setting/invoice.png';
 export { default as tax } from '@/assets/icons/ic_setting/tax.png';

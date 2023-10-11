@@ -86,6 +86,7 @@ export class SettingController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('errorr', JSON.stringify(error));
           Toast.show({
             text2: error.msg,
             position: 'bottom',

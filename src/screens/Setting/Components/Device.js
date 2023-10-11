@@ -11,6 +11,9 @@ import {
   scanner,
   toggleSecurity,
   trackCamera,
+  printer,
+  cardReader,
+  tray,
 } from '@/assets';
 import { SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -21,6 +24,7 @@ import { styles } from '@/screens/Setting/Setting.styles';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
+import { SlideInLeft } from 'react-native-reanimated';
 
 export function Device() {
   const isFocused = useIsFocused();
@@ -32,34 +36,48 @@ export function Device() {
 
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(8) }]}>
+      <View style={[styles.flexRow, {}]}>
         <Text style={styles.HeaderLabelText}>{strings.settings.device}</Text>
         <View style={{ zIndex: 99 }}>
           <TouchableOpacity
-            style={styles.addNewButtonCon}
+            style={[styles.addNewButtonCon, { position: null, right: 0 }]}
             onPress={() => setDropTrue(!dropTrue)}
-            activeOpacity={0.3}
+            // activeOpacity={0.3}
           >
             <Image source={addIcon} style={styles.addIcon} />
             <Text style={styles.addNew}>{strings.settings.addNew}</Text>
           </TouchableOpacity>
           {dropTrue ? (
-            <View style={styles.dropdownCon}>
-              <Spacer space={SH(10)} />
-              {deviceDropDownArray.map((item, index) => (
-                <TouchableOpacity
-                  style={[styles.dispalyRow, styles.dropPressArea]}
-                  key={index}
-                  onPress={() => setDropTrue(false)}
-                >
-                  <Image source={item.image} style={styles.dropScan} />
-                  <Text style={styles.dropDownText} numberOfLines={1}>
-                    {item.title}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-              <Spacer space={SH(10)} />
-            </View>
+            <Modal
+              onRequestClose={() => setDropTrue(false)}
+              animationIn={SlideInLeft}
+              transparent={true}
+              backdropOpacity={0.1}
+              isVisible={dropTrue}
+              hasBackdrop
+            >
+              <View
+                style={[
+                  styles.dropdownCon,
+                  { minHeight: SW(65), minWidth: SW(70), justifyContent: 'space-evenly' },
+                ]}
+              >
+                <Spacer space={SH(10)} />
+                {deviceDropDownArray.map((item, index) => (
+                  <TouchableOpacity
+                    style={[styles.dispalyRow, styles.dropPressArea]}
+                    key={index}
+                    onPress={() => setDropTrue(false)}
+                  >
+                    <Image source={item.image} style={styles.dropScan} />
+                    <Text style={styles.dropDownText} numberOfLines={1}>
+                      {item.title}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+                <Spacer space={SH(10)} />
+              </View>
+            </Modal>
           ) : null}
         </View>
       </View>
