@@ -151,9 +151,10 @@ export const styles = StyleSheet.create({
     height: SW(8),
     resizeMode: 'contain',
   },
+
   toggleSecurityLarge: {
-    width: SW(11),
-    height: SW(11),
+    width: SW(12),
+    height: SW(12),
     resizeMode: 'contain',
   },
   marginLeft: {
@@ -301,12 +302,21 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 999,
+    // zIndex: 999,
     paddingHorizontal: moderateScale(5),
 
     position: 'absolute',
     right: 10,
   },
+  deleteButton: {
+    width: SW(20),
+    height: SW(10),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.red,
+    borderRadius: 6,
+  },
+  deleteText: { color: COLORS.white, fontSize: 14 },
   addIcon: {
     width: SW(6),
     height: SW(6),

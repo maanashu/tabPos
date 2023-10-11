@@ -57,6 +57,19 @@ const addressUpdateByIdError = (error) => ({
   payload: { error },
 });
 
+const deleteAddressByIdRequest = () => ({
+  type: TYPES.DELETE_ADDRESS_BY_ID_REQUEST,
+  payload: null,
+});
+const deleteAddressByIdSuccess = () => ({
+  type: TYPES.DELETE_ADDRESS_BY_ID_SUCCESS,
+  payload: null,
+});
+const deleteAddressByIdError = (error) => ({
+  type: TYPES.DELETE_ADDRESS_BY_ID_ERROR,
+  payload: { error },
+});
+
 const getUserAddressRequest = () => ({
   type: TYPES.GET_USER_ADD_REQUEST,
   payload: null,
@@ -224,6 +237,21 @@ const fetchAllNotificationsError = (err) => ({
   payload: { ...err },
 });
 
+const addLanguageRequest = () => ({
+  type: TYPES.ADDRESS_UPDATE_REQUEST,
+  payload: null,
+});
+
+const addLanguageSuccess = (notifications) => ({
+  type: TYPES.ADDRESS_UPDATE_SUCCESS,
+  payload: [...notifications],
+});
+
+const addLanguageError = (err) => ({
+  type: TYPES.ADDRESS_UPDATE_ERROR,
+  payload: { ...err },
+});
+
 const clearStore = () => ({
   type: TYPES.SETTING_CLEAR_STORE,
   payload: null,
@@ -269,6 +297,16 @@ export const addressUpdateById = (body) => async (dispatch) => {
     dispatch(getShippingPickup());
   } catch (error) {
     dispatch(addressUpdateByIdError(error.message));
+  }
+};
+export const deleteAddressById = (address_id) => async (dispatch) => {
+  dispatch(deleteAddressByIdRequest());
+  try {
+    const res = await SettingController.deleteAddressById(address_id);
+    dispatch(deleteAddressByIdSuccess(res));
+    dispatch(getShippingPickup());
+  } catch (error) {
+    dispatch(deleteAddressByIdError(error.message));
   }
 };
 
@@ -402,6 +440,15 @@ export const fetchAllNotifications = () => async (dispatch) => {
   }
 };
 
+export const addLanguage = (data) => async (dispatch) => {
+  dispatch(addLanguageRequest());
+  try {
+    const res = await SettingController.addLanguage(data);
+    dispatch(addLanguageSuccess(res));
+  } catch (error) {
+    dispatch(addLanguageError(error));
+  }
+};
 export const settingClear = () => async (dispatch) => {
   dispatch(clearStore());
 };

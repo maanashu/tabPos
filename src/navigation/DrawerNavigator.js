@@ -266,10 +266,7 @@ export function DrawerNavigator(props) {
               dispatch(addSellingSelection());
             }}
             icon={({ focused }) => (
-              <Image
-                source={focused ? blueSetting : settings}
-                style={focused ? styles.iconStyle2 : styles.iconStyle}
-              />
+              <Image source={focused ? blueSetting : settings} style={styles.iconStyle} />
             )}
           />
         )}
@@ -327,6 +324,12 @@ const styles = StyleSheet.create({
   iconStyle2: {
     width: Platform.OS === 'android' ? SW(7) : SW(10),
     height: Platform.OS === 'android' ? SW(7) : SW(10),
+    marginLeft: 3,
+    resizeMode: 'contain',
+  },
+  iconStyle3: {
+    width: Platform.OS === 'android' ? SW(7) : SW(9),
+    height: Platform.OS === 'android' ? SW(7) : SW(9),
     marginLeft: 3,
     resizeMode: 'contain',
   },

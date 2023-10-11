@@ -447,7 +447,7 @@ export const en = {
     Publishedlanguages: 'Published languages',
     active: "Active in the markets they've been added to and visible to customers.",
     addLanguage: 'Add language',
-    languagesName: 'Language (7)',
+    languagesName: 'Language',
     add: 'Add',
     cancel: 'Cancel',
   },

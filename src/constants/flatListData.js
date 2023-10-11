@@ -19,6 +19,9 @@ import {
   moneyIcon,
   qrCodeIcon,
   cardPayment,
+  cardReader,
+  tray,
+  printer,
 } from '@/assets';
 
 export const newCustomerDataLoader = [
@@ -140,17 +143,17 @@ export const deviceDropDownArray = [
   {
     id: 2,
     title: 'Card Reader',
-    image: dropScan,
+    image: cardReader,
   },
   {
     id: 3,
     title: 'Cash drawers',
-    image: dropScan,
+    image: tray,
   },
   {
     id: 4,
     title: 'Receipt printers',
-    image: dropScan,
+    image: printer,
   },
 ];
 
@@ -213,6 +216,34 @@ export const COUNTRYNAME = [
   { id: 3, name: 'Arabic' },
   { id: 4, name: 'Arabic' },
   { id: 5, name: 'Arabic' },
+];
+
+export const languageList = [
+  {
+    id: 1,
+    name: 'United States of America',
+    image: 'https://flagcdn.com/w320/us.png',
+    status: 'true',
+  },
+  { id: 2, name: 'Russia', image: 'https://flagcdn.com/w320/ru.png', status: 'true' },
+  {
+    id: 3,
+    name: 'Portugal',
+    image: 'https://flagcdn.com/w320/pt.png',
+    status: 'true',
+  },
+  {
+    id: 4,
+    name: 'Spanish',
+    image: 'https://flagcdn.com/w320/es.png',
+    status: 'true',
+  },
+  {
+    id: 5,
+    name: 'Italian',
+    image: 'https://flagcdn.com/w320/it.png',
+    status: 'true',
+  },
 ];
 
 export const catTypeData = [
