@@ -237,6 +237,21 @@ const fetchAllNotificationsError = (err) => ({
   payload: { ...err },
 });
 
+const addLanguageRequest = () => ({
+  type: TYPES.ADDRESS_UPDATE_REQUEST,
+  payload: null,
+});
+
+const addLanguageSuccess = (notifications) => ({
+  type: TYPES.ADDRESS_UPDATE_SUCCESS,
+  payload: [...notifications],
+});
+
+const addLanguageError = (err) => ({
+  type: TYPES.ADDRESS_UPDATE_ERROR,
+  payload: { ...err },
+});
+
 const clearStore = () => ({
   type: TYPES.SETTING_CLEAR_STORE,
   payload: null,
@@ -425,6 +440,15 @@ export const fetchAllNotifications = () => async (dispatch) => {
   }
 };
 
+export const addLanguage = (data) => async (dispatch) => {
+  dispatch(addLanguageRequest());
+  try {
+    const res = await SettingController.addLanguage(data);
+    dispatch(addLanguageSuccess(res));
+  } catch (error) {
+    dispatch(addLanguageError(error));
+  }
+};
 export const settingClear = () => async (dispatch) => {
   dispatch(clearStore());
 };

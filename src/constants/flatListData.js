@@ -218,6 +218,34 @@ export const COUNTRYNAME = [
   { id: 5, name: 'Arabic' },
 ];
 
+export const languageList = [
+  {
+    id: 1,
+    name: 'United States of America',
+    image: 'https://flagcdn.com/w320/us.png',
+    status: 'true',
+  },
+  { id: 2, name: 'Russia', image: 'https://flagcdn.com/w320/ru.png', status: 'true' },
+  {
+    id: 3,
+    name: 'Portugal',
+    image: 'https://flagcdn.com/w320/pt.png',
+    status: 'true',
+  },
+  {
+    id: 4,
+    name: 'Spanish',
+    image: 'https://flagcdn.com/w320/es.png',
+    status: 'true',
+  },
+  {
+    id: 5,
+    name: 'Italian',
+    image: 'https://flagcdn.com/w320/it.png',
+    status: 'true',
+  },
+];
+
 export const catTypeData = [
   {
     id: 1,

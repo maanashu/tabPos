@@ -17,87 +17,136 @@ import {
   vector,
   vectorOff,
   XImage,
+  checkboxSecBlue,
+  checkedCheckboxSquare,
+  checkbox,
+  squareBlank,
 } from '@/assets';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
-import { upadteApi } from '@/actions/SettingAction';
+import { addLanguage, upadteApi } from '@/actions/SettingAction';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { useCallback } from 'react';
 
-const addLanguage = [
-  {
-    id: 1,
-    langauge: 'Spanish',
-    image:
-      'https://png.pngtree.com/png-vector/20210710/ourmid/pngtree-india-flags-png-image_3580807.jpg',
-  },
-  {
-    id: 2,
-    langauge: 'Portuguese ',
-    image:
-      'https://png.pngtree.com/png-vector/20210710/ourmid/pngtree-india-flags-png-image_3580807.jpg',
-  },
-];
+// const addLanguage = [
+//   {
+//     id: 1,
+//     langauge: 'Spanish',
+//     image:
+//       'https://png.pngtree.com/png-vector/20210710/ourmid/pngtree-india-flags-png-image_3580807.jpg',
+//   },
+//   {
+//     id: 2,
+//     langauge: 'Portuguese ',
+//     image:
+//       'https://png.pngtree.com/png-vector/20210710/ourmid/pngtree-india-flags-png-image_3580807.jpg',
+//   },
+// ];
 
 export function Languages() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const getAuthdata = useSelector(getAuthData);
+  const sellerID = getAuthdata?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
   const languageArray = getSettingData?.getSetting?.language;
+  const [languageList, setlanguageList] = useState([
+    {
+      id: 1,
+      name: 'United States of America',
+      image: 'https://flagcdn.com/w320/us.png',
+      status: false,
+    },
+    { id: 2, name: 'Russia', image: 'https://flagcdn.com/w320/ru.png', status: false },
+    {
+      id: 3,
+      name: 'Portugal',
+      image: 'https://flagcdn.com/w320/pt.png',
+      status: false,
+    },
+    {
+      id: 4,
+      name: 'Spanish',
+      image: 'https://flagcdn.com/w320/es.png',
+      status: false,
+    },
+    {
+      id: 5,
+      name: 'Italian',
+      image: 'https://flagcdn.com/w320/it.png',
+      status: false,
+    },
+  ]);
   const [ShowModal, setShowModal] = useState(false);
   const [countryId, setCountryId] = useState(null);
   const [dataArray, setDataArray] = useState();
+  const [selectedLanguage, setSelectedLanguages] = useState([]);
 
-  const languageUpdate = item => {
-    const updatedArray = dataArray.map(dataItem => {
-      if (dataItem === item) {
-        const updateItem = {
-          ...dataItem,
-          status: !dataItem?.status,
-        };
+  // const languageUpdate = (item) => {
+  //   const updatedArray = dataArray.map((dataItem) => {
+  //     if (dataItem === item) {
+  //       const updateItem = {
+  //         ...dataItem,
+  //         status: !dataItem?.status,
+  //       };
 
-        return updateItem;
-      }
-      return dataItem;
-    });
+  //       return updateItem;
+  //     }
+  //     return dataItem;
+  //   });
 
-    setDataArray(updatedArray);
-    const data = {
-      language: updatedArray,
-      app_name: 'pos',
-    };
-    dispatch(upadteApi(data));
-  };
+  //   setDataArray(updatedArray);
+  //   const data = {
+  //     language: updatedArray,
+  //     app_name: 'pos',
+  //   };
+  //   dispatch(upadteApi(data));
+  // };
   useEffect(() => {
     if (getSettingData?.getSetting) {
+      console.log('Settting dataaaa', JSON.stringify(getSettingData?.getSetting?.language));
       setDataArray(getSettingData?.getSetting?.language);
     }
   }, [getSettingData?.getSetting]);
 
   const Item = ({ item, onPress, tintColor }) => (
-    <TouchableOpacity
-      style={styles.countryNameCon}
-      onPress={onPress}
-      activeOpacity={1}
-    >
+    <TouchableOpacity style={styles.countryNameCon} onPress={onPress} activeOpacity={1}>
       <View style={styles.dispalyRow}>
-        <Image source={frameBox} style={[styles.blankCircle, { tintColor }]} />
-        <Image source={spain} style={styles.usaFlag} />
-        <Text style={[styles.selectHead, { fontSize: SF(14) }]}>
-          {item.name}
-        </Text>
+        <Image source={item.status ? checkboxSecBlue : checkbox} style={[styles.blankCircle]} />
+        {/* <Image source={frameBox} style={[styles.blankCircle, { tintColor }]} /> */}
+        <Image source={{ uri: item?.image }} style={styles.usaFlag} />
+        <Text style={[styles.selectHead, { fontSize: SF(14) }]}>{item.name}</Text>
       </View>
     </TouchableOpacity>
   );
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     const tintColor = item.id === countryId ? COLORS.primary : null;
 
     return (
-      <Item
-        item={item}
-        onPress={() => setCountryId(item.id)}
-        tintColor={tintColor}
-      />
+      // <Item
+      //   item={item}
+      //   onPress={() => onSelectLanguage(item, index)}
+
+      //   // tintColor={tintColor}
+      // />
+      <TouchableOpacity
+        onPress={() => onSelectLanguage(item, index)}
+        style={styles.countryNameCon}
+        // onPress={onPress}
+        // activeOpacity={1}
+      >
+        <View style={styles.dispalyRow}>
+          <Image
+            source={item.status ? checkedCheckboxSquare : squareBlank}
+            style={[styles.blankCircle]}
+          />
+          {/* <Image source={frameBox} style={[styles.blankCircle, { tintColor }]} /> */}
+          <Image source={{ uri: item?.image }} style={styles.usaFlag} />
+          <Text style={[styles.selectHead, { fontSize: SF(14) }]}>{item.name}</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -106,70 +155,91 @@ export function Languages() {
       <View style={styles.flexRow}>
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
           <View style={styles.flagCon}>
-            <Image
-              source={{ uri: item.image }}
-              style={[styles.toggleSecurity, { margin: 3 }]}
-            />
+            <Image source={{ uri: item.image }} style={[styles.toggleSecurity, { margin: 3 }]} />
           </View>
           <View style={styles.twoStepVerifiCon}>
-            <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-              {item.name}
-            </Text>
-            <Text
-              style={[styles.securitysubhead, { fontSize: SF(12) }]}
-              numberOfLines={1}
-            >
+            <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>{item.name}</Text>
+            <Text style={[styles.securitysubhead, { fontSize: SF(12) }]} numberOfLines={1}>
               Deafult
             </Text>
           </View>
           <TouchableOpacity
             style={styles.vectorIconCon}
-            onPress={() => languageUpdate(item)}
+            // onPress={() => onSelectLanguage(item)}
           >
-            <Image
-              source={item.status ? vector : vectorOff}
-              style={styles.toggleSecurity}
-            />
+            <Image source={item.status ? vector : vectorOff} style={styles.toggleSecurity} />
           </TouchableOpacity>
         </View>
       </View>
     </View>
   );
+  const onSelectLanguage = (item, index) => {
+    const arr = languageList;
+    arr[index].status = !arr[index].status;
+    setlanguageList(arr);
+    console.log('errer', JSON.stringify(languageList));
+    // const arr = [...selectedLanguage];
+    // const index = arr.indexOf(item);
+    // if (index !== -1) {
+    //   arr.splice(index, 1);
+    // } else {
+    //   arr.push(item);
+    // }
+    // setSelectedLanguages(arr);
+  };
+
+  const onAddLanguage = () => {
+    if (selectedLanguage.length > 0) {
+      const param = {
+        seller_id: sellerID,
+        app_name: 'pos',
+        language: selectedLanguage,
+      };
+      dispatch(addLanguage(param));
+    } else {
+      alert('Please select language');
+    }
+  };
+  const renderLanguages = useCallback(
+    () => (
+      <FlatList
+        data={languageList}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        extraData={languageList}
+      />
+    ),
+    [languageList, ShowModal]
+  );
 
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(8) }]}>
-        <Text style={styles.HeaderLabelText}>
-          {strings.Languages.languages}
-        </Text>
-        {/* <View style={{ zIndex: 99 }}>
+      <View style={[styles.flexRow, { height: SW(8), alignSelf: 'flex-end' }]}>
+        <View style={{ zIndex: 99 }}>
           <TouchableOpacity
-            style={styles.addNewButtonCon}
+            style={[styles.addNewButtonCon, { position: null, right: 0 }]}
             onPress={() => setShowModal(true)}
+            // activeOpacity={0.3}
           >
             <Image source={addIcon} style={styles.addIcon} />
             <Text style={styles.addNew}>{strings.settings.addlanguage}</Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
       </View>
       <Spacer space={SH(20)} />
       <View style={styles.securityMainCon}>
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
           <Image source={languImage} style={styles.securityLogo} />
           <View style={styles.twoStepVerifiCon}>
-            <Text style={styles.twoStepText}>
-              {strings.Languages.Publishedlanguages}
-            </Text>
+            <Text style={styles.twoStepText}>{strings.Languages.Publishedlanguages}</Text>
             <Spacer space={SH(10)} />
-            <Text style={styles.securitysubhead}>
-              {strings.Languages.active}
-            </Text>
+            <Text style={styles.securitysubhead}>{strings.Languages.active}</Text>
             <Spacer space={SH(18)} />
             <FlatList
               data={languageArray}
               extraData={languageArray}
               renderItem={languageRenderItem}
-              keyExtractor={item => item.id}
+              keyExtractor={(item) => item.id}
             />
           </View>
         </View>
@@ -188,28 +258,29 @@ export function Languages() {
           <Spacer space={SH(22)} />
           <View style={{ paddingHorizontal: SW(10), paddingBottom: SW(10) }}>
             <Text style={styles.securitysubhead}>
-              {strings.Languages.languagesName}
+              {strings.Languages.languagesName + ' (' + languageList.length + ')'}
             </Text>
             <Spacer space={SH(15)} />
 
             <View style={styles.countrySelectCon}>
-              <FlatList
-                data={COUNTRYNAME}
+              {renderLanguages()}
+              {/* <FlatList
+                data={languageList}
                 renderItem={renderItem}
-                keyExtractor={item => item.id}
-                extraData={COUNTRYNAME}
-              />
+                keyExtractor={(item) => item.id}
+                extraData={languageList}
+              /> */}
             </View>
             <Spacer space={SH(30)} />
-            <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-            >
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <Button
+                onPress={() => setShowModal(false)}
                 title={strings.Languages.cancel}
                 textStyle={styles.cancel}
                 style={styles.cancelbuttonCon}
               />
               <Button
+                onPress={() => onAddLanguage()}
                 title={strings.Languages.add}
                 textStyle={[styles.cancel, { color: COLORS.white }]}
                 style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
