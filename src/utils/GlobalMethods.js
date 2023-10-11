@@ -239,6 +239,32 @@ const formattedReturnPrice = (price) => {
   return `${sign}$${formattedPrice}`;
 };
 
+const calculateTimeSlotSelection = ({
+  index,
+  timeSlotInterval,
+  estimatedServiceDuration,
+  timeSlotsData,
+}) => {
+  return new Promise((resolve) => {
+    const calculateIndex = Math.ceil(estimatedServiceDuration / timeSlotInterval);
+
+    // Create a copy of the timeSlotsData to avoid mutating the state directly
+    const updatedTimeSlotsData = [...timeSlotsData];
+
+    // Iterate through the time slots
+    for (let i = 0; i < updatedTimeSlotsData.length; i++) {
+      if (i >= index && i < index + calculateIndex) {
+        updatedTimeSlotsData[i].selected = true;
+      } else {
+        updatedTimeSlotsData[i].selected = false;
+      }
+    }
+
+    // Resolve the promise with the modified timeSlotsData
+    resolve(updatedTimeSlotsData);
+  });
+};
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -257,4 +283,5 @@ export {
   capitalizeFirstLetter,
   getCalendarActionButtonTitle,
   formattedReturnPrice,
+  calculateTimeSlotSelection,
 };
