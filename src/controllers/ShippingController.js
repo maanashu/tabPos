@@ -193,7 +193,6 @@ export class ShippingController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error-----------', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',

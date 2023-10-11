@@ -533,7 +533,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   storeDetailView: {
-    width: Dimensions.get('window').width / 3,
+    width: Dimensions.get('window').width / 3.5,
     marginTop: ms(10),
     backgroundColor: COLORS.white,
     borderRadius: 15,

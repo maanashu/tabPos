@@ -29,7 +29,7 @@ import { blankCheckBox, Fonts, PaymentDone, userImage } from '@/assets';
 
 const { width } = Dimensions.get('window');
 
-const ReturnedOrderDetail = ({ orderDetail }) => {
+const ReturnedOrderDetail = ({ orderDetail, onPressBackHandler = () => {} }) => {
   const dispatch = useDispatch();
   const textInputRef = useRef();
   const [productUpc, setProductUpc] = useState('');
@@ -45,6 +45,7 @@ const ReturnedOrderDetail = ({ orderDetail }) => {
       navigate(NAVIGATION.productRefund, {
         productsArray: orderDetail?.order_details,
         orderData: orderDetail,
+        onPressBack: onPressBackHandler,
       });
     } else {
       alert('Please select atleast one product');
@@ -195,6 +196,15 @@ const ReturnedOrderDetail = ({ orderDetail }) => {
             <View style={{ flexDirection: 'row' }}>
               <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
                 {`$${orderDetail?.discount ?? '0'}`}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.orderDetailsView}>
+            <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
+                {`$${orderDetail?.tips ?? '0'}`}
               </Text>
             </View>
           </View>

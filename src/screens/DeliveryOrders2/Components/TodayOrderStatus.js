@@ -31,7 +31,7 @@ const TodayOrderStatus = () => {
             <ActivityIndicator color={COLORS.primary} size={'small'} />
           </View>
         ) : (
-          <Text style={[styles.todayOrderText, { paddingVertical: ms(16) }]}>
+          <Text style={[styles.todayOrderText, { paddingVertical: ms(12) }]}>
             {todayOrderStatusData?.[0]?.count ?? '0'}
           </Text>
         )}
@@ -45,7 +45,7 @@ export default memo(TodayOrderStatus);
 const styles = StyleSheet.create({
   orderStatusViewStyle: {
     borderRadius: 10,
-    paddingVertical: ms(12),
+    paddingVertical: ms(8),
     alignItems: 'flex-start',
     width: Dimensions.get('window').width / 4,
     backgroundColor: COLORS.white,
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   loaderView: {
     alignSelf: 'center',
     alignItems: 'center',
-    paddingVertical: ms(16),
+    paddingVertical: ms(12),
     justifyContent: 'center',
   },
   todayOrdersViewStyle: {

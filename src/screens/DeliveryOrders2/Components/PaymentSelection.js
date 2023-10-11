@@ -33,6 +33,7 @@ import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
 import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
 import { navigate } from '@/navigation/NavigationRef';
 import ReturnInvoice from './ReturnInvoice';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 const { width, height } = Dimensions.get('window');
 
@@ -86,11 +87,16 @@ export function PaymentSelection(props) {
     setIsPhoneVisible(false);
   };
 
-  const onReturnHandler = () => {
-    if (selectedRecipeIndex === null) {
+  const onReturnHandler = async () => {
+    if (
+      !orderFinalData ||
+      !orderFinalData?.order ||
+      !orderFinalData?.order?.mode_of_payment === 'cash'
+    ) {
       alert('Please select e-recipe method');
       return;
     }
+    await dispatch(getDrawerSessions());
     const products =
       orderFinalData?.order?.map((item) => ({
         id: item?.id,

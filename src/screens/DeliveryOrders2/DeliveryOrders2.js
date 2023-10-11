@@ -520,7 +520,10 @@ export function DeliveryOrders2({ route }) {
                     </View>
 
                     {changeViewToRecheck ? (
-                      <ReturnedOrderDetail orderDetail={singleOrderDetail} />
+                      <ReturnedOrderDetail
+                        orderDetail={singleOrderDetail}
+                        onPressBackHandler={() => setChangeViewToRecheck(false)}
+                      />
                     ) : (
                       <OrderDetail
                         {...{
