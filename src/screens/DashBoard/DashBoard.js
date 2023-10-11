@@ -9,9 +9,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   KeyboardAvoidingView,
-  Platform,
-  findNodeHandle,
-  Keyboard,
   RefreshControl,
 } from 'react-native';
 
@@ -19,8 +16,6 @@ import moment from 'moment';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
-
-import { useDebouncedCallback } from 'use-lodash-debounce';
 
 import {
   cashProfile,
@@ -50,6 +45,7 @@ import {
   onLineOrders,
   posLoginDetail,
   searchProductList,
+  getOrderDeliveriesSuccess,
 } from '@/actions/DashboardAction';
 import { strings } from '@/localization';
 import { NAVIGATION } from '@/constants';
@@ -71,7 +67,8 @@ import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 import { styles } from './DashBoard.styles';
 import { scanProductAdd } from '@/actions/RetailAction';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useAnimatedRef } from 'react-native-reanimated';
+import { log, useAnimatedRef } from 'react-native-reanimated';
+import { useCallback } from 'react';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -112,6 +109,7 @@ export function DashBoard({ navigation }) {
   const [scroll, setScroll] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  //  order delivery pagination
   const paginationData = {
     total: getDashboardData?.getOrderDeliveries?.total ?? '0',
     totalPages: getDashboardData?.getOrderDeliveries?.total_pages ?? '0',
@@ -120,55 +118,22 @@ export function DashBoard({ navigation }) {
   };
 
   useEffect(() => {
-    if (getDeliveryData && orderDeliveriesData) {
-      setOrderDeleveriesData((prev) => [...prev, ...getDeliveryData]);
-    }
-  }, [getDeliveryData]);
+    dispatch(getOrderDeliveries(sellerID, 1));
+  }, []);
 
-  const onLoadMoreProduct = () => {
+  const onLoadMoreProduct = useCallback(() => {
     if (paginationData?.currentPage < paginationData?.totalPages) {
-      setPage(page + 1);
+      dispatch(getOrderDeliveries(sellerID, paginationData?.currentPage + 1));
     }
-  };
+  }, [paginationData]);
 
-  useEffect(() => {
-    dispatch(getOrderDeliveries(sellerID, page));
-  }, [page]);
-
-  const renderFooter = () => {
-    <ActivityIndicator size="large" color={COLORS.primary} />;
-  };
-
-  //  order delivery pagination
-
-  const onLoadMoreOrder = () => {
-    const totalPages = getDashboardData?.getOrderDeliveries?.total_pages;
-    if (page <= totalPages) {
-      setPage((prevPage) => prevPage + 1);
-      // if (!isScrolling) return;
-      dispatch(getOrderDeliveries(sellerID, page));
-    }
-  };
-
-  const debouncedLoadMoreOrder = useDebouncedCallback(onLoadMoreOrder, 300);
-
-  const renderFooterPost = () => {
-    return (
-      <View style={{}}>
-        {isLoading && (
-          <ActivityIndicator
-            style={{ marginVertical: 14 }}
-            size={'large'}
-            color={COLORS.blueLight}
-          />
-        )}
-      </View>
-    );
-  };
-
-  const isLoading = useSelector((state) =>
+  const orderLoad = useSelector((state) =>
     isLoadingSelector([DASHBOARDTYPE.GET_ORDER_DELIVERIES], state)
   );
+
+  const renderFooter = () => {
+    return orderLoad ? <ActivityIndicator size="large" color={COLORS.primary} /> : null;
+  };
 
   useEffect(() => {
     setScan(false);
@@ -472,13 +437,8 @@ export function DashBoard({ navigation }) {
   };
 
   const onRefresh = () => {
-    const totalPages = getDashboardData?.getOrderDeliveries?.total_pages;
-    if (page <= totalPages) {
-      setPage((prevPage) => prevPage + 1);
-      // if (!isScrolling) return;
-      dispatch(getOrderDeliveries(sellerID, page));
-      dispatch(getPendingOrders(sellerID));
-    }
+    dispatch(getOrderDeliveries(sellerID, 1));
+    dispatch(getPendingOrders(sellerID));
   };
 
   const bodyView = () => (
@@ -694,7 +654,11 @@ export function DashBoard({ navigation }) {
             <View>
               <Text style={styles.deliveries}>{strings.dashboard.deliveries}</Text>
             </View>
-            {getDeliveryData?.length === 0 || getDeliveryData === undefined ? (
+            {getDeliveryData?.length === 0 || (getDeliveryData === undefined && orderLoad) ? (
+              <View>
+                <Text style={styles.requestNotFound}>Loading...</Text>
+              </View>
+            ) : getDeliveryData?.length === 0 || getDeliveryData === undefined ? (
               <View>
                 <Text style={styles.requestNotFound}>Orders not found</Text>
               </View>
@@ -713,16 +677,17 @@ export function DashBoard({ navigation }) {
                     title="Pull to Refresh" // Optional, you can customize the text
                   />
                 }
-                // onEndReachedThreshold={0.1}
-                // onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
-                // onMomentumScrollBegin={() => {}}
-                // onMomentumScrollEnd={() => {
-                //   if (onEndReachedCalledDuringMomentum.current) {
-                //     onLoadMoreProduct();
-                //     onEndReachedCalledDuringMomentum.current = false;
-                //   }
-                // }}
-                // ListFooterComponent={renderFooter}
+                onEndReachedThreshold={0.1}
+                onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                onMomentumScrollBegin={() => {}}
+                onMomentumScrollEnd={() => {
+                  if (onEndReachedCalledDuringMomentum.current) {
+                    onLoadMoreProduct();
+                    onEndReachedCalledDuringMomentum.current = false;
+                  }
+                }}
+                removeClippedSubviews={true}
+                ListFooterComponent={renderFooter}
               />
             )}
           </View>

@@ -227,7 +227,7 @@ export function Wallet2() {
     },
     {
       aboutTransaction: 'JBR Coin',
-      price: getTotalTraData?.data?.jbr.toFixed(2) ?? '0',
+      price: getTotalTraData?.data?.jbr.toFixed(2) * 100 ?? '0',
       img: jbricon,
       id: '2',
       type: 'jbr',

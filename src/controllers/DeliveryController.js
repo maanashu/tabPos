@@ -85,6 +85,12 @@ export class DeliveryController {
           resolve(response);
         })
         .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
           reject(error);
         });
     });

@@ -46,7 +46,7 @@ export function Customers2() {
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
   const getCustomerStatitics = getCustomerData?.getCustomers;
-  const allCustomerObject = getCustomerStatitics?.total_customers ?? {};
+  const allCustomerObject = getCustomerStatitics?.total_customers ?? getCustomerDummy;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const values =
     getCustomerStatitics === undefined
@@ -55,6 +55,8 @@ export function Customers2() {
   const totalCustomer = values?.reduce((accumulator, value) => {
     return accumulator + value;
   }, 0);
+
+  const totalCustomers = allCustomerObject?.onlineCustomers + allCustomerObject?.walkingCustomers;
 
   const [allUsers, setAllUsers] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
@@ -297,7 +299,7 @@ export function Customers2() {
             <View style={[styles.displayFlex, { marginTop: ms(10) }]}>
               <View>
                 <Text style={styles.totalCusPrimary}>{strings.customers.totalCustomer}</Text>
-                <Text style={styles.totalCustomer}>{totalCustomer ?? '0'}</Text>
+                <Text style={styles.totalCustomer}>{totalCustomers ?? '0'}</Text>
               </View>
               <TouchableOpacity
                 style={styles.viewButtonCon}
