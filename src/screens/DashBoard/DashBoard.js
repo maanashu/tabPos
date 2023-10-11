@@ -71,11 +71,13 @@ import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 import { styles } from './DashBoard.styles';
 import { scanProductAdd } from '@/actions/RetailAction';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useAnimatedRef } from 'react-native-reanimated';
 
 moment.suppressDeprecationWarnings = true;
 
 export function DashBoard({ navigation }) {
   const textInputRef = useRef(null);
+  const onEndReachedCalledDuringMomentum = useRef(false);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -91,8 +93,8 @@ export function DashBoard({ navigation }) {
   const todayJbrAmount = TotalSale?.[1]?.total_sale_amount.toFixed(2);
   const todayCardAmount = TotalSale?.[2]?.total_sale_amount.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-
   const getDeliveryData = getDashboardData?.getOrderDeliveries?.data;
+  const [orderDeliveriesData, setOrderDeleveriesData] = useState([]);
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
 
   const [trackingSession, setTrackingSession] = useState(false);
@@ -110,6 +112,33 @@ export function DashBoard({ navigation }) {
   const [scroll, setScroll] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  const paginationData = {
+    total: getDashboardData?.getOrderDeliveries?.total ?? '0',
+    totalPages: getDashboardData?.getOrderDeliveries?.total_pages ?? '0',
+    perPage: getDashboardData?.getOrderDeliveries?.per_page ?? '0',
+    currentPage: getDashboardData?.getOrderDeliveries?.current_page ?? '0',
+  };
+
+  useEffect(() => {
+    if (getDeliveryData && orderDeliveriesData) {
+      setOrderDeleveriesData((prev) => [...prev, ...getDeliveryData]);
+    }
+  }, [getDeliveryData]);
+
+  const onLoadMoreProduct = () => {
+    if (paginationData?.currentPage < paginationData?.totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(getOrderDeliveries(sellerID, page));
+  }, [page]);
+
+  const renderFooter = () => {
+    <ActivityIndicator size="large" color={COLORS.primary} />;
+  };
+
   //  order delivery pagination
 
   const onLoadMoreOrder = () => {
@@ -122,10 +151,6 @@ export function DashBoard({ navigation }) {
   };
 
   const debouncedLoadMoreOrder = useDebouncedCallback(onLoadMoreOrder, 300);
-
-  useEffect(() => {
-    setPage(1);
-  }, [isFocused]);
 
   const renderFooterPost = () => {
     return (
@@ -211,7 +236,6 @@ export function DashBoard({ navigation }) {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getOrderDeliveries(sellerID, page));
       startTrackingFun();
       clearInput();
       dispatch(getTotalSaleAction(sellerID));
@@ -299,7 +323,7 @@ export function DashBoard({ navigation }) {
     }
   };
 
-  const tableListItem = ({ item }) => (
+  const tableListItem = ({ item, index }) => (
     <TouchableOpacity
       onPress={() => {
         dispatch(addSellingSelection(2));
@@ -689,6 +713,16 @@ export function DashBoard({ navigation }) {
                     title="Pull to Refresh" // Optional, you can customize the text
                   />
                 }
+                // onEndReachedThreshold={0.1}
+                // onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                // onMomentumScrollBegin={() => {}}
+                // onMomentumScrollEnd={() => {
+                //   if (onEndReachedCalledDuringMomentum.current) {
+                //     onLoadMoreProduct();
+                //     onEndReachedCalledDuringMomentum.current = false;
+                //   }
+                // }}
+                // ListFooterComponent={renderFooter}
               />
             )}
           </View>

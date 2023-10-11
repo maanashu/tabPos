@@ -313,7 +313,7 @@ const Graph = () => {
           <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
-        <View>
+        <View style={{ zIndex: -999 }}>
           <BarChart
             data={modifyData}
             noOfSections={7}

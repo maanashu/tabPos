@@ -8,7 +8,7 @@ const AddedCartItemsCard = ({ item, index }) => {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.count}>{index + 1}</Text>
+        <Text style={styles.count}>{item?.qty}</Text>
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
             {item?.product_details?.name}
@@ -16,7 +16,7 @@ const AddedCartItemsCard = ({ item, index }) => {
           <View style={styles.belowSubContainer}>
             {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
             <Text style={styles.sizeTitle}>Size : XXL</Text> */}
-            <Text style={styles.colorsTitle}>QTY : {item?.qty}</Text>
+            {/* <Text style={styles.colorsTitle}>QTY : {item?.qty}</Text> */}
           </View>
         </View>
       </View>

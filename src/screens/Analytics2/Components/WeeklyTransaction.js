@@ -121,7 +121,7 @@ export function WeeklyTransaction({
         return 'Ready For Pickup';
         break;
       case 4:
-        return 'Pickup';
+        return 'Walkin';
         break;
       case 5:
         return 'Delivered';
@@ -308,7 +308,7 @@ export function WeeklyTransaction({
                   <Text numberOfLines={1} style={styles.tableTextHea}>
                     Transaction type
                   </Text>
-                  <Image source={tableArrow} style={styles.tableArrow} />
+                  {/* <Image source={tableArrow} style={styles.tableArrow} /> */}
                 </View>
                 <View
                   style={styles.flexAlign}
@@ -319,7 +319,7 @@ export function WeeklyTransaction({
                   <Text numberOfLines={1} style={styles.tableTextHea}>
                     Payment Method
                   </Text>
-                  <Image source={tableArrow} style={styles.tableArrow} />
+                  {/* <Image source={tableArrow} style={styles.tableArrow} /> */}
                 </View>
 
                 <Text style={styles.tableTextHea}>Amount</Text>

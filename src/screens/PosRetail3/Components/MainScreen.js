@@ -186,8 +186,6 @@ export function MainScreen({
   const [showCart, setShowCart] = useState(getRetailData?.trueCart?.state || false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [onHold, setOnHold] = useState(false);
-  // console.log('holdProductArray?.length', holdProductArray?.length);
-  // console.log('getRetailData?.getAllCart?.length', getRetailData?.getAllCart?.length);
 
   const cartStatusHandler = async () => {
     if (localCartArray.length > 0) {
@@ -198,7 +196,8 @@ export function MainScreen({
       try {
         eraseClearCart();
         const bulkData = await dispatch(createBulkcart(dataToSend));
-        if (holdProductArray?.length == 0 || getRetailData?.getAllCart?.length == 0) {
+        // if (holdProductArray?.length == 0 || getRetailData?.getAllCart?.length == 0) {
+        if (holdProductArray?.length == 0 || Object.keys(getRetailData?.getAllCart)?.length == 0) {
           const data =
             holdProductArray?.length > 0
               ? {
@@ -222,7 +221,6 @@ export function MainScreen({
                   status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
                   cartId: bulkData?.id,
                 };
-
           dispatch(changeStatusProductCart(data));
         }
       } catch (error) {}

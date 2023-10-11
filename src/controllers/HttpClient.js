@@ -21,6 +21,7 @@ const client = axios.create({
 client.interceptors.request.use(async function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
   const user = store.getState().user?.posLoginData?.token;
+  const poss = store.getState().user?.posLoginData;
   const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
   const fcmToken = await getDeviceToken();
   const posNumber = store.getState().user?.posLoginData?.pos_number;

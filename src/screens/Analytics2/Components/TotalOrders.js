@@ -1,5 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 import { backArrow2, locationSales, profit, revenueTotal, totalOrders } from '@/assets';
@@ -9,6 +17,8 @@ import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/AnalyticsTypes';
 
 export function TotalOrders({ onPressReview }) {
   const getAnalyticsData = useSelector(getAnalytics);
@@ -21,6 +31,10 @@ export function TotalOrders({ onPressReview }) {
   // ];
   // console.log('first', JSON.stringify(totalOrder));
   // return false;
+
+  const isTotalOrderLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_TOTAL_ORDER], state)
+  );
 
   const getTotalOrderList = ({ item, index }) => (
     <DataTable.Row>
@@ -53,11 +67,19 @@ export function TotalOrders({ onPressReview }) {
   );
 
   const HeaderView = useCallback(
-    ({ image, text, count, style }) => (
+    ({ image, text, count, style, isLoading }) => (
       <View style={[styles.subContainer, style]}>
         <Image source={image} resizeMode="contain" style={styles.imageStyle} />
         <Text style={styles.text}>{text}</Text>
-        <Text style={styles.text2}>{count}</Text>
+        {isLoading ? (
+          <ActivityIndicator
+            color={COLORS.primary}
+            size={'small'}
+            style={{ alignSelf: 'flex-start' }}
+          />
+        ) : (
+          <Text style={styles.text2}>{count}</Text>
+        )}
       </View>
     ),
     []
@@ -73,6 +95,7 @@ export function TotalOrders({ onPressReview }) {
           text={'Total Orders'}
           count={totalOrder?.ordersOverView?.total_orders}
           style={{ marginHorizontal: ms(5) }}
+          isLoading={isTotalOrderLoading}
         />
         <HeaderView
           image={revenueTotal}
@@ -82,6 +105,7 @@ export function TotalOrders({ onPressReview }) {
               ? '$' + totalOrder?.ordersOverView?.total_volume?.toFixed(2)
               : '$0'
           }
+          isLoading={isTotalOrderLoading}
         />
         <HeaderView
           image={totalOrders}
@@ -91,6 +115,7 @@ export function TotalOrders({ onPressReview }) {
               ? '$' + totalOrder?.ordersOverView?.averageValue?.toFixed(2)
               : '$0'
           }
+          isLoading={isTotalOrderLoading}
         />
         <HeaderView
           image={profit}
@@ -100,6 +125,7 @@ export function TotalOrders({ onPressReview }) {
               ? '$' + totalOrder?.ordersOverView?.total_profit?.toFixed(2)
               : '$0'
           }
+          isLoading={isTotalOrderLoading}
         />
       </View>
 
@@ -138,7 +164,11 @@ export function TotalOrders({ onPressReview }) {
             </DataTable.Header>
 
             <View style={styles.mainListContainer}>
-              {totalOrder?.order_listing?.length === 0 ? (
+              {isTotalOrderLoading ? (
+                <View style={styles.loaderView}>
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                </View>
+              ) : totalOrder?.order_listing?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>

@@ -1,5 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 import {
@@ -16,6 +24,9 @@ import { useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { COLORS } from '@/theme';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -64,6 +75,10 @@ export function TotalCost() {
   const dataLabelsCost = analyticStatistics?.cost?.graph_data?.labels;
   const labelsCost = generateLabels(dataLabelsCost, interval, maxLabel, daysLength);
 
+  const costStatisticsLoader = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
+  );
+
   const getCostList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
@@ -98,11 +113,19 @@ export function TotalCost() {
   );
 
   const HeaderView = useCallback(
-    ({ image, text, count, style }) => (
+    ({ image, text, count, style, isLoading }) => (
       <View style={[styles.subContainer, style]}>
         <Image source={image} resizeMode="contain" style={styles.imageStyle} />
         <Text style={styles.text}>{text}</Text>
-        <Text style={styles.text2}>{count}</Text>
+        {isLoading ? (
+          <ActivityIndicator
+            color={COLORS.primary}
+            size={'small'}
+            style={{ alignSelf: 'flex-start' }}
+          />
+        ) : (
+          <Text style={styles.text2}>{count}</Text>
+        )}
       </View>
     ),
     []
@@ -121,6 +144,7 @@ export function TotalCost() {
               : 0
           }
           style={{ marginHorizontal: ms(5) }}
+          isLoading={costStatisticsLoader}
         />
         <HeaderView
           image={revenueTotal}
@@ -130,6 +154,7 @@ export function TotalCost() {
               ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
               : '$0'
           }
+          isLoading={costStatisticsLoader}
         />
         <HeaderView
           image={totalOrders}
@@ -139,6 +164,7 @@ export function TotalCost() {
               ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
               : '$0'
           }
+          isLoading={costStatisticsLoader}
         />
         <HeaderView
           image={totalCost}
@@ -148,6 +174,7 @@ export function TotalCost() {
               ? '$' + analyticStatistics?.overView?.total_cost?.toFixed(2)
               : '$0'
           }
+          isLoading={costStatisticsLoader}
         />
       </View>
 
@@ -186,7 +213,11 @@ export function TotalCost() {
             </DataTable.Header>
 
             <View style={styles.mainListContainer}>
-              {analyticStatistics?.orderData?.length === 0 ? (
+              {costStatisticsLoader ? (
+                <View style={styles.loaderView}>
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                </View>
+              ) : analyticStatistics?.orderData?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>

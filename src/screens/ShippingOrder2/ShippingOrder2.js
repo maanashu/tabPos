@@ -109,6 +109,7 @@ export function ShippingOrder2() {
       status: status,
       sellerID: sellerID,
     };
+    // return;
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg) {

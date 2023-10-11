@@ -154,30 +154,46 @@ const OrderDetail = ({
                 {strings.deliveryOrders.subTotal}
               </Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                {userDetail?.actual_amount ? userDetail?.actual_amount : '0'}
+                ${Number(userDetail?.actual_amount)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
 
             <View style={styles.orderDetailsView}>
               <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                {userDetail?.discount ? userDetail?.discount : '0'}
+                {/* ${userDetail?.discount ? userDetail?.discount : '0'} */}$
+                {Number(userDetail?.discount)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
 
             <View style={styles.orderDetailsView}>
-              <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
+              <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                {strings.deliveryOrders.subTotalValue}
+                ${Number(userDetail?.tips)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
 
             <View style={styles.orderDetailsView}>
               <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                {userDetail?.tax ? userDetail?.tax : '0'}
+                ${Number(userDetail?.tax)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
+            {(userDetail?.delivery_charge !== '0' || userDetail?.shipping_charge !== '0') && (
+              <View style={styles.orderDetailsView}>
+                <Text style={styles.invoiceText}>
+                  {userDetail?.delivery_charge !== '0'
+                    ? strings.deliveryOrders.deliveryCharges
+                    : strings.deliveryOrders.shippingCharges}
+                </Text>
+                <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+                  $
+                  {userDetail?.delivery_charge !== '0'
+                    ? Number(userDetail?.delivery_charge)?.toFixed(2)
+                    : Number(userDetail?.shipping_charge)?.toFixed(2)}
+                </Text>
+              </View>
+            )}
 
             <View style={styles.orderDetailsView}>
               <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
@@ -204,17 +220,20 @@ const OrderDetail = ({
                 openShippingOrders === '2' ||
                 openShippingOrders === '3' ? (
                   <TouchableOpacity
+                    // onPress={() =>
+                    //   acceptHandler(
+                    //     userDetail?.id,
+                    //     openShippingOrders === '0'
+                    //       ? 1
+                    //       : openShippingOrders === '1'
+                    //       ? 2
+                    //       : openShippingOrders === '2'
+                    //       ? 3
+                    //       : 4
+                    //   )
+                    // }
                     onPress={() =>
-                      acceptHandler(
-                        userDetail?.id,
-                        openShippingOrders === '0'
-                          ? 1
-                          : openShippingOrders === '1'
-                          ? 2
-                          : openShippingOrders === '2'
-                          ? 3
-                          : 4
-                      )
+                      acceptHandler(userDetail?.id, openShippingOrders === '0' ? 3 : 4)
                     }
                     style={[
                       styles.acceptButtonView,

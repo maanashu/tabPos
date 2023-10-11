@@ -152,14 +152,14 @@ export function AddCartDetailModal({
       </View>
       <View style={styles.addCartDetailBody}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.clothProfileCon}>
+          <View style={[styles.clothProfileCon]}>
             <Image source={{ uri: productDetail?.image }} style={styles.profileCloth} />
             <View style={styles.profileClothDes}>
               <Text style={[styles.jacketName, { fontSize: SF(15) }]}>{productDetail?.name}</Text>
               <Text style={styles.clothProfileSubHead}>
                 {productDetail?.category?.name} {'>'} {productDetail?.sub_category?.name}
               </Text>
-              <Text numberOfLines={1} style={styles.clothProfileDes}>
+              <Text style={[styles.clothProfileDes, styles.discriptionWidth]}>
                 {withoutSpecialCharsAndSpaces}
               </Text>
             </View>
@@ -301,6 +301,7 @@ export function AddCartDetailModal({
                 style={styles.toggleSecBlue}
               />
             </View>
+
             <Spacer space={SH(8)} />
           </View>
 

@@ -121,12 +121,13 @@ export function CartServiceScreen({
         visibilityTime: 1500,
       });
     } else if (Object.keys(cartServiceData?.user_details)?.length === 0) {
-      Toast.show({
-        text2: 'Please attach the customer',
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
+      setNewCustomerModal(true);
+      // Toast.show({
+      //   text2: 'Please attach the customer',
+      //   position: 'bottom',
+      //   type: 'error_toast',
+      //   visibilityTime: 1500,
+      // });
     } else {
       backCartLoad();
       onPressPayNow();

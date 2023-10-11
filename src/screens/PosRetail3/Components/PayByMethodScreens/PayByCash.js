@@ -144,11 +144,11 @@ export const PayByCash = ({
     },
     {
       id: 2,
-      usd: greaterNotes[0],
+      usd: greaterNotes[0] <= 5000 ? greaterNotes[0] : totalPayAmount(),
     },
     {
       id: 3,
-      usd: greaterNotes[1],
+      usd: greaterNotes[1] <= 5000 ? greaterNotes[1] : totalPayAmount(),
     },
   ];
   const [localyPay, setlocalyPay] = useState(selectCashArray?.[0]);

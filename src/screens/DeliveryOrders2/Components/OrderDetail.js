@@ -132,11 +132,11 @@ const OrderDetail = ({
               </View>
 
               <View style={styles.orderDetailsView}>
-                <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
+                <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
                 <View style={styles.flexDirectionRow}>
                   <Text style={styles.totalTextStyle2}>{'$'}</Text>
                   <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
-                    {'0.00'}
+                    {Number(userDetail?.tips).toFixed(2) ?? '0'}
                   </Text>
                 </View>
               </View>
@@ -150,18 +150,25 @@ const OrderDetail = ({
                   </Text>
                 </View>
               </View>
-
-              <View style={styles.orderDetailsView}>
-                <Text style={styles.invoiceText}>{strings.deliveryOrders.deliveryCharges}</Text>
-                <View style={styles.flexDirectionRow}>
-                  <Text style={styles.totalTextStyle2}>{'$'}</Text>
-                  <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
-                    {userDetail?.delivery_charge
-                      ? Number(userDetail?.delivery_charge).toFixed(2)
-                      : '0'}
+              {(userDetail?.delivery_charge !== '0' || userDetail?.shipping_charge !== '0') && (
+                <View style={styles.orderDetailsView}>
+                  <Text style={styles.invoiceText}>
+                    {userDetail?.delivery_charge !== '0'
+                      ? strings.deliveryOrders.deliveryCharges
+                      : strings.deliveryOrders.shippingCharges}
                   </Text>
+                  <View style={styles.flexDirectionRow}>
+                    <Text style={styles.totalTextStyle2}>{'$'}</Text>
+                    <Text
+                      style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                    >
+                      {userDetail?.delivery_charge !== '0'
+                        ? Number(userDetail?.delivery_charge)?.toFixed(2)
+                        : Number(userDetail?.shipping_charge)?.toFixed(2)}
+                    </Text>
+                  </View>
                 </View>
-              </View>
+              )}
 
               <View
                 style={{
