@@ -37,17 +37,18 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
     dispatch(getOrderData(orderData?.order_id));
   }, []);
 
-  const renderProductItem = ({ item }) => (
+  const renderProductItem = ({ item, index }) => (
     <View style={style.container}>
       <View style={style.subContainer}>
-        <Text style={style.count}>{item?.qty}</Text>
+        <Text style={style.count}>{index + 1}</Text>
 
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[style.itemName, { width: ms(80) }]} numberOfLines={1}>
             {item?.product_name ?? '-'}
           </Text>
           <View style={style.belowSubContainer}>
-            <Text style={style.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
+            <Text style={style.colorsTitle}>{`QTY : ${item?.qty}`}</Text>
+            {/* <Text style={style.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text> */}
           </View>
         </View>
       </View>
@@ -99,6 +100,12 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
             <Text style={style._substotalTile}>{strings.deliveryOrders.subTotal}</Text>
             <Text style={style._subTotalPrice}>{`$${orderDetail?.actual_amount}` ?? '-'}</Text>
           </View>
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{'Discount'}</Text>
+            <Text style={style._subTotalPrice}>{`$${orderDetail?.discount}` ?? '-'}</Text>
+          </View>
 
           <View style={style._horizontalLine} />
 
@@ -116,10 +123,22 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
 
           <View style={style._horizontalLine} />
 
-          <View style={style._subTotalContainer}>
-            <Text style={style._substotalTile}>{strings.deliveryOrders.deliveryCharges}</Text>
-            <Text style={style._subTotalPrice}>{`$${orderDetail?.delivery_charge}` ?? '-'}</Text>
-          </View>
+          {(orderDetail?.delivery_charge !== '0' || orderDetail?.shipping_charge !== '0') && (
+            <View style={style._subTotalContainer}>
+              <Text style={style._substotalTile}>
+                {orderDetail?.delivery_charge !== '0'
+                  ? strings.deliveryOrders.deliveryCharges
+                  : strings.deliveryOrders.shippingCharges}
+              </Text>
+              <Text style={style._subTotalPrice}>
+                {`$${
+                  orderDetail?.delivery_charge !== '0'
+                    ? orderDetail?.delivery_charge
+                    : orderDetail?.shipping_charge
+                }` ?? '-'}
+              </Text>
+            </View>
+          )}
 
           <View style={style._horizontalLine} />
 

@@ -30,18 +30,18 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         title: 'Orders to Review',
         count: orderStatusCountData?.[0]?.count ?? '0',
       },
-      {
-        key: '1',
-        image: drawerdeliveryTruck,
-        title: 'Accepted',
-        count: orderStatusCountData?.[1]?.count ?? '0',
-      },
-      {
-        key: '2',
-        image: timer,
-        title: 'Order Preparing ',
-        count: orderStatusCountData?.[2]?.count ?? '0',
-      },
+      // {
+      //   key: '1',
+      //   image: drawerdeliveryTruck,
+      //   title: 'Accepted',
+      //   count: orderStatusCountData?.[1]?.count ?? '0',
+      // },
+      // {
+      //   key: '2',
+      //   image: timer,
+      //   title: 'Order Preparing ',
+      //   count: orderStatusCountData?.[2]?.count ?? '0',
+      // },
       {
         key: '3',
         image: Group,
