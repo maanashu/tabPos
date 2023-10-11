@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import { COUNTRYNAME } from '@/constants/flatListData';
@@ -86,7 +86,16 @@ export function Languages() {
   const [ShowModal, setShowModal] = useState(false);
   const [countryId, setCountryId] = useState(null);
   const [dataArray, setDataArray] = useState();
-  const [languageArray, setLanguageArray] = useState(getSettingData?.getSetting?.language);
+  // const [languageArray, setLanguageArray] = useState(getSettingData?.getSetting?.language);
+  const [languageArray, setLanguageArray] = useState([
+    {
+      // id: 5,
+      name: 'English',
+      image: 'https://flagcdn.com/w320/us.png',
+      status: true,
+    },
+  ]);
+
   const [selectedLanguage, setSelectedLanguages] = useState([]);
 
   // const languageUpdate = (item) => {
@@ -170,6 +179,7 @@ export function Languages() {
             </Text>
           </View>
           <TouchableOpacity
+            disabled
             style={styles.vectorIconCon}
             onPress={() => onToggleLanguage(item, index)}
           >
@@ -230,7 +240,10 @@ export function Languages() {
         <View style={{ zIndex: 99 }}>
           <TouchableOpacity
             style={[styles.addNewButtonCon, { position: null, right: 0 }]}
-            onPress={() => setShowModal(true)}
+            onPress={
+              () => Alert.alert('Coming soon')
+              // setShowModal(true)
+            }
             // activeOpacity={0.3}
           >
             <Image source={addIcon} style={styles.addIcon} />
