@@ -57,6 +57,19 @@ const addressUpdateByIdError = (error) => ({
   payload: { error },
 });
 
+const deleteAddressByIdRequest = () => ({
+  type: TYPES.DELETE_ADDRESS_BY_ID_REQUEST,
+  payload: null,
+});
+const deleteAddressByIdSuccess = () => ({
+  type: TYPES.DELETE_ADDRESS_BY_ID_SUCCESS,
+  payload: null,
+});
+const deleteAddressByIdError = (error) => ({
+  type: TYPES.DELETE_ADDRESS_BY_ID_ERROR,
+  payload: { error },
+});
+
 const getUserAddressRequest = () => ({
   type: TYPES.GET_USER_ADD_REQUEST,
   payload: null,
@@ -269,6 +282,16 @@ export const addressUpdateById = (body) => async (dispatch) => {
     dispatch(getShippingPickup());
   } catch (error) {
     dispatch(addressUpdateByIdError(error.message));
+  }
+};
+export const deleteAddressById = (address_id) => async (dispatch) => {
+  dispatch(deleteAddressByIdRequest());
+  try {
+    const res = await SettingController.deleteAddressById(address_id);
+    dispatch(deleteAddressByIdSuccess(res));
+    dispatch(getShippingPickup());
+  } catch (error) {
+    dispatch(deleteAddressByIdError(error.message));
   }
 };
 
