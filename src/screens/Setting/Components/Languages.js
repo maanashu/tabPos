@@ -50,29 +50,34 @@ export function Languages() {
   const getAuthdata = useSelector(getAuthData);
   const sellerID = getAuthdata?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
-  const languageArray = getSettingData?.getSetting?.language;
+  // const languageArray = getSettingData?.getSetting?.language;
   const [languageList, setlanguageList] = useState([
     {
-      id: 1,
+      // id: 1,
       name: 'United States of America',
       image: 'https://flagcdn.com/w320/us.png',
       status: false,
     },
-    { id: 2, name: 'Russia', image: 'https://flagcdn.com/w320/ru.png', status: false },
     {
-      id: 3,
+      // id: 2,
+      name: 'Russia',
+      image: 'https://flagcdn.com/w320/ru.png',
+      status: false,
+    },
+    {
+      // id: 3,
       name: 'Portugal',
       image: 'https://flagcdn.com/w320/pt.png',
       status: false,
     },
     {
-      id: 4,
+      // id: 4,
       name: 'Spanish',
       image: 'https://flagcdn.com/w320/es.png',
       status: false,
     },
     {
-      id: 5,
+      // id: 5,
       name: 'Italian',
       image: 'https://flagcdn.com/w320/it.png',
       status: false,
@@ -81,6 +86,7 @@ export function Languages() {
   const [ShowModal, setShowModal] = useState(false);
   const [countryId, setCountryId] = useState(null);
   const [dataArray, setDataArray] = useState();
+  const [languageArray, setLanguageArray] = useState(getSettingData?.getSetting?.language);
   const [selectedLanguage, setSelectedLanguages] = useState([]);
 
   // const languageUpdate = (item) => {
@@ -150,7 +156,7 @@ export function Languages() {
     );
   };
 
-  const languageRenderItem = ({ item }) => (
+  const languageRenderItem = ({ item, index }) => (
     <View style={styles.twoStepMemberCon}>
       <View style={styles.flexRow}>
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
@@ -165,7 +171,7 @@ export function Languages() {
           </View>
           <TouchableOpacity
             style={styles.vectorIconCon}
-            // onPress={() => onSelectLanguage(item)}
+            onPress={() => onToggleLanguage(item, index)}
           >
             <Image source={item.status ? vector : vectorOff} style={styles.toggleSecurity} />
           </TouchableOpacity>
@@ -174,21 +180,26 @@ export function Languages() {
     </View>
   );
   const onSelectLanguage = (item, index) => {
-    const arr = languageList;
+    const arr = [...languageList];
     arr[index].status = !arr[index].status;
     setlanguageList(arr);
-    console.log('errer', JSON.stringify(languageList));
-    // const arr = [...selectedLanguage];
-    // const index = arr.indexOf(item);
-    // if (index !== -1) {
-    //   arr.splice(index, 1);
-    // } else {
-    //   arr.push(item);
-    // }
-    // setSelectedLanguages(arr);
+    const arrL = [...selectedLanguage];
+    const indexItem = arrL.indexOf(item);
+    if (indexItem !== -1) {
+      arrL.splice(indexItem, 1);
+    } else {
+      arrL.push(item);
+    }
+    setSelectedLanguages(arr);
   };
-
-  const onAddLanguage = () => {
+  const onToggleLanguage = (item, index) => {
+    const arr = [...languageArray];
+    arr[index].status = !arr[index].status;
+    setLanguageArray(arr);
+    const body = { language: arr };
+    dispatch(upadteApi(body));
+  };
+  const onAddLanguage = async () => {
     if (selectedLanguage.length > 0) {
       const param = {
         seller_id: sellerID,
@@ -196,6 +207,7 @@ export function Languages() {
         language: selectedLanguage,
       };
       dispatch(addLanguage(param));
+      setShowModal(false);
     } else {
       alert('Please select language');
     }
@@ -263,13 +275,13 @@ export function Languages() {
             <Spacer space={SH(15)} />
 
             <View style={styles.countrySelectCon}>
-              {renderLanguages()}
-              {/* <FlatList
+              {/* {renderLanguages()} */}
+              <FlatList
                 data={languageList}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 extraData={languageList}
-              /> */}
+              />
             </View>
             <Spacer space={SH(30)} />
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
