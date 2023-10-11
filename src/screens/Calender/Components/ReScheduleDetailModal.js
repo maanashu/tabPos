@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 import moment from 'moment';
 import Modal from 'react-native-modal';
 import { styles } from '../Calender.styles';
-import { getDaysAndDates } from '@/utils/GlobalMethods';
+import { calculateTimeSlotSelection, getDaysAndDates } from '@/utils/GlobalMethods';
 import CustomAlert from '@/components/CustomAlert';
 import { strings } from '@/localization';
 import { changeAppointmentStatus, rescheduleAppointment } from '@/actions/AppointmentAction';
@@ -36,7 +36,9 @@ const ReScheduleDetailModal = ({
 }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-  const timeSlotsData = getRetailData?.timeSlots?.filter((timeSlot) => timeSlot?.is_available);
+
+  const timeSlotInterval = getRetailData?.timeSlotInterval;
+  const estimatedServiceTime = appointmentData?.approx_service_time;
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const appointmentDetail = appointmentData?.appointment_details[0];
@@ -46,7 +48,6 @@ const ReScheduleDetailModal = ({
   const getStaffUsers = getCalenderData?.staffUsers;
   const [posUserId, setposUserId] = useState(null);
   const [providerDetail, setProviderDetail] = useState(null);
-  const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
   const [selectedDate, setselectedDate] = useState(
     moment(appointmentData?.date).format('YYYY-MM-DD')
@@ -54,6 +55,7 @@ const ReScheduleDetailModal = ({
 
   const [preSelectedStartTime, setpreSelectedStartTime] = useState(appointmentData?.start_time);
   const [preSelectedEndTime, setpreSelectedEndTime] = useState(appointmentData?.end_time);
+  const [timeSlotsData, setTimeSlotsData] = useState([]);
 
   const [selectedMonthData, setselectedMonthData] = useState(null);
   const [selectedYearData, setselectedYearData] = useState(null);
@@ -63,6 +65,12 @@ const ReScheduleDetailModal = ({
   const userDetails = appointmentData?.user_details;
   const userAddress = userDetails?.current_address;
 
+  useEffect(() => {
+    if (getRetailData?.timeSlots) {
+      const timeSlots = getRetailData?.timeSlots?.filter((timeSlot) => timeSlot?.is_available);
+      setTimeSlotsData([...timeSlots]);
+    }
+  }, [getRetailData?.timeSlots]);
   useEffect(() => {
     setProviderDetail(posUserDetails?.user);
     setposUserId(posUserDetails?.user?.unique_uuid);
@@ -83,6 +91,24 @@ const ReScheduleDetailModal = ({
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
 
+  const handleTimeSlotClick = async (selectedSlotIndex) => {
+    const updateSelectedTimeSlots = await calculateTimeSlotSelection({
+      index: selectedSlotIndex,
+      timeSlotInterval: timeSlotInterval,
+      estimatedServiceDuration: estimatedServiceTime,
+      timeSlotsData: timeSlotsData,
+    });
+    // Update the state with the modified timeSlotsData
+    setTimeSlotsData(updateSelectedTimeSlots);
+
+    const selectedTimeSlots = timeSlotsData.filter((timeSlot) => timeSlot.selected);
+    const startTime = selectedTimeSlots[0].start_time;
+    const endTime = selectedTimeSlots[selectedTimeSlots.length - 1].end_time;
+
+    const selectedTimeSlot = { start_time: startTime, end_time: endTime };
+    setSelectedTimeSlotData(selectedTimeSlot);
+  };
+
   const renderWeekItem = ({ item, index }) => {
     return (
       <TouchableOpacity
@@ -95,7 +121,6 @@ const ReScheduleDetailModal = ({
         onPress={() => {
           setselectedDate(item?.completeDate);
           //Clear previous day selected time slot values
-          setselectedTimeSlotIndex(null);
           setSelectedTimeSlotData('');
           setpreSelectedStartTime('');
           setpreSelectedEndTime('');
@@ -133,11 +158,10 @@ const ReScheduleDetailModal = ({
         width: '25.1%',
         height: ms(24),
         borderColor: COLORS.solidGrey,
-        backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
+        backgroundColor: item?.selected ? COLORS.primary : COLORS.white,
       }}
       onPress={() => {
-        setselectedTimeSlotIndex(index);
-        setSelectedTimeSlotData(item);
+        handleTimeSlotClick(index);
       }}
     >
       <Text
@@ -146,7 +170,7 @@ const ReScheduleDetailModal = ({
           fontSize: ms(6.2),
           color: !item?.is_available
             ? COLORS.row_grey
-            : selectedTimeSlotIndex === index
+            : item?.selected
             ? COLORS.white
             : COLORS.dark_grey,
         }}
@@ -275,7 +299,7 @@ const ReScheduleDetailModal = ({
                     {appointmentDetail?.product_name}
                   </Text>
                   <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(9), marginTop: ms(5) }}>
-                    Est 45-60 mins
+                    Est {estimatedServiceTime - 5} - {estimatedServiceTime} mins
                   </Text>
                 </View>
                 <Text style={[styles.selected, { fontSize: ms(12) }]}>
