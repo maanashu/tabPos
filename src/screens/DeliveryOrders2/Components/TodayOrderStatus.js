@@ -23,18 +23,19 @@ const TodayOrderStatus = () => {
     <View style={styles.orderStatusViewStyle}>
       <Text style={styles.orderStatusText}>{strings.deliveryOrders2.orderStatus}</Text>
 
-      {orderStatusLoading ? (
-        <View style={styles.loaderView}>
-          <ActivityIndicator color={COLORS.primary} size={'small'} />
-        </View>
-      ) : (
-        <>
-          <View style={styles.todayOrdersViewStyle}>
-            <Text style={styles.todayOrderText}>{strings.deliveryOrders2.deliveryOrders}</Text>
-            <Text style={styles.todayOrderText}>{todayOrderStatusData?.[0]?.count ?? '0'}</Text>
+      <View style={styles.todayOrdersViewStyle}>
+        <Text style={styles.todayOrderText}>{strings.deliveryOrders2.deliveryOrders}</Text>
+
+        {orderStatusLoading ? (
+          <View style={styles.loaderView}>
+            <ActivityIndicator color={COLORS.primary} size={'small'} />
           </View>
-        </>
-      )}
+        ) : (
+          <Text style={[styles.todayOrderText, { paddingVertical: ms(16) }]}>
+            {todayOrderStatusData?.[0]?.count ?? '0'}
+          </Text>
+        )}
+      </View>
     </View>
   );
 };
@@ -63,12 +64,13 @@ const styles = StyleSheet.create({
   },
   todayOrdersViewStyle: {
     flexDirection: 'row',
+    paddingRight: 20,
+    width: Dimensions.get('window').width / 6.5,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   todayOrderText: {
     fontSize: SF(14),
-    paddingTop: ms(10),
     paddingLeft: ms(15),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,

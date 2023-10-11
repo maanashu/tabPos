@@ -922,7 +922,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: ms(8),
     backgroundColor: COLORS.white,
   },
-  listCheckinBtnText: { color: COLORS.primary, fontFamily: Fonts.Regular, fontWeight: '500' },
+  listCheckinBtnText: {
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+    fontSize: ms(7),
+    fontWeight: '500',
+  },
   lineViewValues: { fontFamily: Fonts.Regular, fontSize: ms(8.5) },
   noAppointmentEmpty: {
     fontFamily: Fonts.SemiBold,

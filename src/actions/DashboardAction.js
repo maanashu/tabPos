@@ -1,6 +1,7 @@
 import { DashboardController } from '@/controllers';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { getOrderData } from './AnalyticsAction';
+import { store } from '@/store';
 
 const getOrderDeliveriesRequest = () => ({
   type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_REQUEST,
@@ -322,7 +323,8 @@ export const onLineOrders = (sellerID) => async (dispatch) => {
   }
 };
 
-export const getPendingOrders = (sellerID) => async (dispatch) => {
+export const getPendingOrders = () => async (dispatch) => {
+  const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
   dispatch(getPendingOrdersRequest());
   try {
     const res = await DashboardController.getPendingOrders(sellerID);

@@ -59,8 +59,10 @@ const ReturnedOrderDetail = ({ orderDetail }) => {
             source={item?.product_image ? { uri: item?.product_image } : userImage}
             style={styles.userImageStyle}
           />
-          <View style={{ paddingLeft: 10, width: ms(100) }}>
-            <Text style={styles.nameTextStyle}>{item?.product_name ?? '-'}</Text>
+          <View style={{ paddingLeft: 10, width: ms(80) }}>
+            <Text numberOfLines={1} style={styles.nameTextStyle}>
+              {item?.product_name ?? '-'}
+            </Text>
             <Text style={styles.varientTextStyle}>{`${item?.product_details?.sku ?? '-'}`}</Text>
           </View>
         </View>
@@ -68,7 +70,7 @@ const ReturnedOrderDetail = ({ orderDetail }) => {
         <View
           style={[
             styles.shippingOrderHeader,
-            { paddingTop: 0, width: ms(100), justifyContent: 'space-between' },
+            { paddingTop: 0, width: ms(80), justifyContent: 'space-between' },
           ]}
         >
           <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
@@ -100,7 +102,7 @@ const ReturnedOrderDetail = ({ orderDetail }) => {
 
   const onChangeHandler = (text) => {
     setProductUpc(text);
-    if (text?.length >= 12) {
+    if (text?.length > 0) {
       dispatch(getProductByUpc(text, getProduct));
     }
   };
@@ -284,7 +286,7 @@ const styles = StyleSheet.create({
   scanBarCodeView: {
     height: ms(30),
     borderRadius: 5,
-    width: width / 2.8,
+    width: width / 3,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',

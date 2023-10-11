@@ -580,11 +580,11 @@ export function ProductRefund(props) {
 
             <TouchableOpacity
               onPress={() => setIsCheckConfirmationModalVisible(true)}
-              disabled={buttonText === 'Applied' ? false : true}
+              disabled={orders?.length > 0 ? false : true}
               style={[
                 styles.nextButtonStyle,
                 {
-                  backgroundColor: buttonText === 'Applied' ? COLORS.primary : COLORS.gerySkies,
+                  backgroundColor: orders?.length > 0 ? COLORS.primary : COLORS.gerySkies,
                 },
               ]}
             >
