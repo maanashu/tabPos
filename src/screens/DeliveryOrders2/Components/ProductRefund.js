@@ -59,19 +59,27 @@ export function ProductRefund(props) {
     }
   }, []);
 
-  const refundHandler = (key, newText) => {
-    setButtonText('Apply Refund');
-    const updatedDataArray = orders?.map((item, index) => {
+  const refundHandler = (key, newText, item) => {
+    const parsedNewText = parseFloat(newText);
+    const finalText = isNaN(parsedNewText) ? 0 : parsedNewText;
+    const isSmallerThanUnitPrice = finalText <= parseFloat(item?.price);
+
+    const updatedDataArray = orders.map((order, index) => {
       if (index === key) {
         return {
-          ...item,
-          refundAmount: parseFloat(newText),
-          totalRefundAmount: parseFloat(newText) * item?.qty || 0,
+          ...order,
+          refundAmount: isSmallerThanUnitPrice ? finalText : '',
+          totalRefundAmount: isSmallerThanUnitPrice ? finalText * item.qty : 0.0,
         };
       }
-      return item;
+      return order;
     });
+
     setOrders(updatedDataArray);
+
+    if (!isSmallerThanUnitPrice) {
+      alert('Refund amount should not be greater than unit price');
+    }
   };
 
   const addRemoveQty = (symbol, itemIndex) => {
@@ -90,7 +98,11 @@ export function ProductRefund(props) {
   };
 
   const totalRefundAmount = orders?.reduce((accumulator, currentValue) => {
-    const totalRefund = accumulator + currentValue?.totalRefundAmount;
+    const price =
+      applicableIsCheck || applyEachItem
+        ? currentValue.totalRefundAmount
+        : currentValue.price * currentValue.qty;
+    const totalRefund = accumulator + price;
     return totalRefund;
   }, 0);
 
@@ -147,7 +159,9 @@ export function ProductRefund(props) {
                   ]}
                   value={item?.refundAmount}
                   keyboardType={'number-pad'}
-                  onChangeText={(text) => refundHandler(index, text)}
+                  onChangeText={(text) => {
+                    refundHandler(index, text, item);
+                  }}
                 />
               </View>
             ) : (
@@ -192,7 +206,10 @@ export function ProductRefund(props) {
 
             <View style={styles.productCartBody}>
               <Text style={styles.blueListDataText} numberOfLines={1}>
-                ${(item?.totalRefundAmount).toFixed(2) ?? 0}
+                $
+                {applicableIsCheck || applyEachItem
+                  ? (item?.totalRefundAmount).toFixed(2) ?? 0
+                  : item.price * item.qty}
               </Text>
             </View>
           </View>
@@ -293,10 +310,36 @@ export function ProductRefund(props) {
     }
   };
 
+  const formattedReturnPrice = (price) => {
+    // Convert price to a number, defaulting to 0 if it's falsy or not a number
+    const numericPrice = parseFloat(price) || 0;
+
+    // Format the numeric price with 2 decimal places
+    const formattedPrice = numericPrice.toFixed(2);
+
+    // Determine the sign and prepend accordingly
+    const sign = numericPrice == 0 ? '' : '-';
+
+    return `${sign}$${formattedPrice}`;
+  };
+
+  const deliveryShippingCharges = () => {
+    let deliveryCharges;
+    let title;
+    if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '1') {
+      deliveryCharges = finalOrder?.order?.delivery_charge;
+      title = 'Delivery Charges';
+    } else {
+      title = '';
+      deliveryCharges = 0;
+    }
+    return { title, deliveryCharges };
+  };
+
   return (
     <View style={styles.container}>
       <>
-        <CustomHeader crossHandler={() => goBack()} />
+        <CustomHeader crossHandler={() => props?.route?.params?.onPressBack()} iconShow />
 
         <View
           style={{
@@ -553,26 +596,45 @@ export function ProductRefund(props) {
 
             <View style={styles.totalViewStyle}>
               <Text style={styles.subTotalText}>{strings.deliveryOrders.subTotal}</Text>
-              <Text style={styles.subTotalPrice}>{`$${totalRefundAmount}`}</Text>
+              <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
+                totalRefundAmount
+              )}`}</Text>
             </View>
 
             <Spacer space={SH(10)} />
 
             <View style={styles.totalViewStyle}>
               <Text style={styles.subTotalText}>{strings.deliveryOrders.totalTax}</Text>
-              <Text style={styles.subTotalPrice}>{`$${
-                applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0
-              }`}</Text>
+              <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
+                calculateRefundTax()
+              )}`}</Text>
             </View>
 
             <Spacer space={SH(10)} />
+
+            {/* {finalOrder?.order?.status === 5 ? (
+              <>
+                <Spacer space={SH(10)} />
+                <View style={styles.totalViewStyle}>
+                  <Text style={styles.subTotalText}>{deliveryShippingCharges().title}</Text>
+                  <Text style={styles.subTotalPrice}>{`${
+                    applyEachItem || applicableIsCheck
+                      ? formattedReturnPrice(deliveryShippingCharges().deliveryCharges)
+                      : formattedReturnPrice(0)
+                  }`}</Text>
+                </View>
+                <Spacer space={SH(10)} />
+              </>
+            ) : null} */}
+
+            {/* <Spacer space={SH(10)} /> */}
 
             <View style={styles.totalViewStyle}>
               <Text style={[styles.subTotalText, { fontFamily: Fonts.MaisonBold }]}>
                 {strings.wallet.total}
               </Text>
               <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
-                {`$${applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0}`}
+                {`${formattedReturnPrice(totalRefundableAmount())}`}
               </Text>
             </View>
 
@@ -580,11 +642,11 @@ export function ProductRefund(props) {
 
             <TouchableOpacity
               onPress={() => setIsCheckConfirmationModalVisible(true)}
-              disabled={buttonText === 'Applied' ? false : true}
+              disabled={orders?.length > 0 ? false : true}
               style={[
                 styles.nextButtonStyle,
                 {
-                  backgroundColor: buttonText === 'Applied' ? COLORS.primary : COLORS.gerySkies,
+                  backgroundColor: orders?.length > 0 ? COLORS.primary : COLORS.gerySkies,
                 },
               ]}
             >

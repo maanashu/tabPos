@@ -112,7 +112,7 @@ export function DeliveryOrders2({ route }) {
       dispatch(getOrderstatistics(1));
       dispatch(getGraphOrders(1));
       dispatch(getSellerDriverList());
-    }, [isViewAll, ORDER_DETAIL])
+    }, [])
   );
 
   useEffect(() => {
@@ -520,7 +520,10 @@ export function DeliveryOrders2({ route }) {
                     </View>
 
                     {changeViewToRecheck ? (
-                      <ReturnedOrderDetail orderDetail={singleOrderDetail} />
+                      <ReturnedOrderDetail
+                        orderDetail={singleOrderDetail}
+                        onPressBackHandler={() => setChangeViewToRecheck(false)}
+                      />
                     ) : (
                       <OrderDetail
                         {...{
