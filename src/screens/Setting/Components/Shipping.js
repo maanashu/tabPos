@@ -81,8 +81,8 @@ export function Shipping() {
                   <TouchableOpacity
                     onPress={() =>
                       addressUpdate(
-                        shippingpickupData?.local_pickup[0]?.id,
-                        shippingpickupData?.local_pickup[0]?.is_active,
+                        shippingpickupData?.local_pickup?.[0]?.id,
+                        shippingpickupData?.local_pickup?.[0]?.is_active,
                         'local_pickup'
                       )
                     }
@@ -90,7 +90,7 @@ export function Shipping() {
                     style={{ opacity: 0.5 }}
                   >
                     <Image
-                      source={shippingpickupData?.local_pickup[0]?.is_active ? vector : vectorOff}
+                      source={shippingpickupData?.local_pickup?.[0]?.is_active ? vector : vectorOff}
                       style={styles.toggleSecurityLarge}
                     />
                   </TouchableOpacity>
@@ -100,10 +100,12 @@ export function Shipping() {
                 <Spacer space={SH(18)} />
                 {shippingpickupData?.local_pickup?.map((item, index) => (
                   <View
-                    pointerEvents={shippingpickupData?.local_pickup[0]?.is_active ? 'auto' : 'none'}
+                    pointerEvents={
+                      shippingpickupData?.local_pickup?.[0]?.is_active ? 'auto' : 'none'
+                    }
                     style={[
                       styles.twoStepMemberCon,
-                      !shippingpickupData?.local_pickup[0]?.is_active && { opacity: 0.3 },
+                      !shippingpickupData?.local_pickup?.[0]?.is_active && { opacity: 0.3 },
                     ]}
                     key={index}
                   >
@@ -162,8 +164,8 @@ export function Shipping() {
                   <TouchableOpacity
                     onPress={() =>
                       addressUpdate(
-                        shippingpickupData?.jobr_delivery[0]?.id,
-                        shippingpickupData?.jobr_delivery[0]?.is_active,
+                        shippingpickupData?.jobr_delivery?.[0]?.id,
+                        shippingpickupData?.jobr_delivery?.[0]?.is_active,
                         'jobr_delivery'
                       )
                     }
@@ -171,7 +173,9 @@ export function Shipping() {
                     style={{ opacity: 0.5 }}
                   >
                     <Image
-                      source={shippingpickupData?.jobr_delivery[0]?.is_active ? vector : vectorOff}
+                      source={
+                        shippingpickupData?.jobr_delivery?.[0]?.is_active ? vector : vectorOff
+                      }
                       style={styles.toggleSecurityLarge}
                     />
                   </TouchableOpacity>
@@ -182,11 +186,11 @@ export function Shipping() {
                 {shippingpickupData?.jobr_delivery?.map((item, index) => (
                   <View
                     pointerEvents={
-                      shippingpickupData?.jobr_delivery[0]?.is_active ? 'auto' : 'none'
+                      shippingpickupData?.jobr_delivery?.[0]?.is_active ? 'auto' : 'none'
                     }
                     style={[
                       styles.twoStepMemberCon,
-                      !shippingpickupData?.jobr_delivery[0]?.is_active && { opacity: 0.3 },
+                      !shippingpickupData?.jobr_delivery?.[0]?.is_active && { opacity: 0.3 },
                     ]}
                     key={index}
                   >
@@ -246,8 +250,8 @@ export function Shipping() {
                   <TouchableOpacity
                     onPress={() =>
                       addressUpdate(
-                        shippingpickupData?.local_drop_off[0]?.id,
-                        shippingpickupData?.local_drop_off[0]?.is_active,
+                        shippingpickupData?.local_drop_off?.[0]?.id,
+                        shippingpickupData?.local_drop_off?.[0]?.is_active,
                         'local_drop_off'
                       )
                     }
@@ -255,7 +259,9 @@ export function Shipping() {
                     style={{ opacity: 0.5 }}
                   >
                     <Image
-                      source={shippingpickupData?.local_drop_off[0]?.is_active ? vector : vectorOff}
+                      source={
+                        shippingpickupData?.local_drop_off?.[0]?.is_active ? vector : vectorOff
+                      }
                       style={styles.toggleSecurityLarge}
                     />
                   </TouchableOpacity>
@@ -266,11 +272,11 @@ export function Shipping() {
                 {shippingpickupData?.local_drop_off?.map((item, index) => (
                   <View
                     pointerEvents={
-                      shippingpickupData?.local_drop_off[0]?.is_active ? 'auto' : 'none'
+                      shippingpickupData?.local_drop_off?.[0]?.is_active ? 'auto' : 'none'
                     }
                     style={[
                       styles.twoStepMemberCon,
-                      !shippingpickupData?.local_drop_off[0]?.is_active && { opacity: 0.3 },
+                      !shippingpickupData?.local_drop_off?.[0]?.is_active && { opacity: 0.3 },
                     ]}
                     key={index}
                   >
@@ -330,8 +336,8 @@ export function Shipping() {
                   <TouchableOpacity
                     onPress={() =>
                       addressUpdate(
-                        shippingpickupData?.shipping[0]?.id,
-                        shippingpickupData?.shipping[0]?.is_active,
+                        shippingpickupData?.shipping?.[0]?.id,
+                        shippingpickupData?.shipping?.[0]?.is_active,
                         'shipping'
                       )
                     }
@@ -339,7 +345,7 @@ export function Shipping() {
                     style={{ opacity: 0.5 }}
                   >
                     <Image
-                      source={shippingpickupData?.shipping[0]?.is_active ? vector : vectorOff}
+                      source={shippingpickupData?.shipping?.[0]?.is_active ? vector : vectorOff}
                       style={styles.toggleSecurityLarge}
                     />
                   </TouchableOpacity>
@@ -349,10 +355,10 @@ export function Shipping() {
                 <Spacer space={SH(18)} />
                 {shippingpickupData?.shipping?.map((item, index) => (
                   <View
-                    pointerEvents={shippingpickupData?.shipping[0]?.is_active ? 'auto' : 'none'}
+                    pointerEvents={shippingpickupData?.shipping?.[0]?.is_active ? 'auto' : 'none'}
                     style={[
                       styles.twoStepMemberCon,
-                      !shippingpickupData?.shipping[0]?.is_active && { opacity: 0.3 },
+                      !shippingpickupData?.shipping?.[0]?.is_active && { opacity: 0.3 },
                     ]}
                     key={index}
                   >
@@ -412,8 +418,8 @@ export function Shipping() {
                   <TouchableOpacity
                     onPress={() =>
                       addressUpdate(
-                        shippingpickupData?.store_type[0]?.id,
-                        shippingpickupData?.store_type[0]?.is_active,
+                        shippingpickupData?.store_type?.[0]?.id,
+                        shippingpickupData?.store_type?.[0]?.is_active,
                         'store_type'
                       )
                     }
@@ -421,7 +427,7 @@ export function Shipping() {
                     style={{ opacity: 0.5 }}
                   >
                     <Image
-                      source={shippingpickupData?.store_type[0]?.is_active ? vector : vectorOff}
+                      source={shippingpickupData?.store_type?.[0]?.is_active ? vector : vectorOff}
                       style={styles.toggleSecurityLarge}
                     />
                   </TouchableOpacity>
@@ -431,10 +437,10 @@ export function Shipping() {
                 <Spacer space={SH(18)} />
                 {shippingpickupData?.store_type?.map((item, index) => (
                   <View
-                    pointerEvents={shippingpickupData?.store_type[0]?.is_active ? 'auto' : 'none'}
+                    pointerEvents={shippingpickupData?.store_type?.[0]?.is_active ? 'auto' : 'none'}
                     style={[
                       styles.twoStepMemberCon,
-                      !shippingpickupData?.store_type[0]?.is_active && { opacity: 0.3 },
+                      !shippingpickupData?.store_type?.[0]?.is_active && { opacity: 0.3 },
                     ]}
                     key={index}
                   >
