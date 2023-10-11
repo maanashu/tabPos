@@ -178,9 +178,11 @@ export function Staff() {
       <View style={styles.flexRow}>
         <View style={styles.dispalyRow}>
           <Image
-            source={{
-              uri: item.user?.user_profiles?.profile_photo ?? null,
-            }}
+            source={
+              item.user?.user_profiles?.profile_photo
+                ? { uri: item.user?.user_profiles?.profile_photo }
+                : userImage
+            }
             style={styles.teamMember}
           />
           <View style={styles.marginLeft}>
@@ -195,7 +197,7 @@ export function Staff() {
             </Text>
           </View>
         </View>
-        <Image source={rightBack} style={styles.arrowStyle} />
+        <Image source={rightBack} style={[styles.arrowStyle, { alignSelf: 'center' }]} />
       </View>
     </TouchableOpacity>
   );

@@ -136,8 +136,8 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.38,
   },
   teamMember: {
-    width: SW(12),
-    height: SW(12),
+    width: SW(10),
+    height: SW(10),
     resizeMode: 'contain',
     borderRadius: 100,
   },

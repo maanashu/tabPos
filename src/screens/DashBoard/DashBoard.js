@@ -32,6 +32,7 @@ import {
   sellingBucket,
   sessionEndBar,
   productReturn,
+  userImage,
 } from '@/assets';
 import {
   addSellingSelection,
@@ -451,7 +452,7 @@ export function DashBoard({ navigation }) {
               source={
                 getPosUser?.user_profiles?.profile_photo
                   ? { uri: getPosUser?.user_profiles?.profile_photo }
-                  : cashProfile
+                  : userImage
               }
               style={styles.cashProfile}
             />
