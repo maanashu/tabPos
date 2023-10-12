@@ -48,10 +48,10 @@ export function TotalOrders({ onPressReview }) {
         <Text style={styles.revenueDataText}>{item?.total_orders}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.new_consumer}</Text>
+        <Text style={styles.revenueDataText}>{item?.new_consumer}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.consumer_returning?.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText}>{item?.consumer_returning?.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
