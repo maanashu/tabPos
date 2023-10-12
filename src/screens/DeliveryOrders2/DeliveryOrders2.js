@@ -376,23 +376,25 @@ export function DeliveryOrders2({ route }) {
     </View>
   );
 
-  const renderOrderProducts = ({ item }) => (
-    <View style={styles.orderproductView}>
-      <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
-        <Image source={{ uri: item?.product_image }} style={styles.userImageStyle} />
-        <View style={{ paddingLeft: 10, width: ms(100) }}>
-          <Text style={styles.nameTextStyle}>{item?.product_name}</Text>
+  const renderOrderProducts = ({ item }) => {
+    return (
+      <View style={styles.orderproductView}>
+        <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
+          <Image source={{ uri: item?.product_image }} style={styles.userImageStyle} />
+          <View style={{ paddingLeft: 10, width: ms(100) }}>
+            <Text style={styles.nameTextStyle}>{item?.product_name}</Text>
+          </View>
         </View>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+          ${Number(item?.price).toFixed(2)}
+        </Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+          ${Number(item?.price).toFixed(2)}
+        </Text>
       </View>
-      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
-        ${Number(item?.price).toFixed(2)}
-      </Text>
-      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
-      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
-        ${Number(item?.price).toFixed(2)}
-      </Text>
-    </View>
-  );
+    );
+  };
 
   const acceptHandler = (id) => {
     const data = {
@@ -491,7 +493,7 @@ export function DeliveryOrders2({ route }) {
           <Spacer space={SH(20)} />
 
           {viewAllOrder ? (
-            <SafeAreaView style={[styles.firstRowStyle, { flex: 0.98 }]}>
+            <SafeAreaView style={styles.firstRowStyle}>
               <>
                 {getDeliveryData?.getReviewDef?.length > 0 ? (
                   <>

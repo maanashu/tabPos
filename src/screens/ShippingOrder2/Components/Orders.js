@@ -44,7 +44,9 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
           <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
           <View style={styles.locationViewStyle}>
             <Image source={pin} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>{item?.distance ?? '-'}</Text>
+            <Text style={styles.distanceTextStyle}>
+              {item?.distance ? `${item.distance} miles` : '0'}
+            </Text>
           </View>
         </View>
 

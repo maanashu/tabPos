@@ -82,6 +82,8 @@ const OrderDetail = ({
     }
   };
 
+  console.log('user====', userDetail);
+
   return (
     <>
       <View style={styles.orderDetailView}>
@@ -96,8 +98,13 @@ const OrderDetail = ({
               <Text style={[styles.totalTextStyle, { padding: 0 }]}>
                 {userDetail?.user_details?.firstname ? userDetail?.user_details?.firstname : '-'}
               </Text>
+
               <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
-                {userDetail?.address ?? '-'}
+                {`${userDetail?.address}, ${userDetail?.city}`}
+              </Text>
+
+              <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
+                {`${userDetail?.state}, ${userDetail?.country}`}
               </Text>
             </View>
           </View>
@@ -235,18 +242,11 @@ const OrderDetail = ({
                 ${Number(userDetail?.tax)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
-            {(userDetail?.delivery_charge !== '0' || userDetail?.shipping_charge !== '0') && (
+            {userDetail?.shipping_charge !== '0' && (
               <View style={styles.orderDetailsView}>
-                <Text style={styles.invoiceText}>
-                  {userDetail?.delivery_charge !== '0'
-                    ? strings.deliveryOrders.deliveryCharges
-                    : strings.deliveryOrders.shippingCharges}
-                </Text>
+                <Text style={styles.invoiceText}>{strings.deliveryOrders.shippingCharges}</Text>
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                  $
-                  {userDetail?.delivery_charge !== '0'
-                    ? Number(userDetail?.delivery_charge)?.toFixed(2)
-                    : Number(userDetail?.shipping_charge)?.toFixed(2)}
+                  ${Number(userDetail?.shipping_charge)?.toFixed(2)}
                 </Text>
               </View>
             )}

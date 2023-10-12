@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 10,
-    width: Dimensions.get('window').width / ms(1.5),
+    width: Dimensions.get('window').width / 2.6,
     paddingVertical: 10,
     borderColor: COLORS.blue_shade,
   },
