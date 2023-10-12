@@ -65,9 +65,10 @@ export function Analytics2() {
   const [filter, setFilter] = useState({ value: 'week' });
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [channels, setChannels] = useState(false);
-  const [channelValue, setChannelValue] = useState('pos');
+  const [channelValue, setChannelValue] = useState('all');
   const [fromInVoice, setFromInvoice] = useState(false);
   const [channelItem, setChannelItem] = useState([
+    { label: 'ALL', value: 'all' },
     { label: 'B2B', value: 'b2b' },
     { label: 'POS', value: 'pos' },
     { label: 'B2C', value: 'b2c' },

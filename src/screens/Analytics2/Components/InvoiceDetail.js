@@ -79,7 +79,8 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
           color={COLORS.primary}
           style={{ marginTop: ms(100) }}
         />
-      ) : singleOrderDetail?.delivery_option == 1 || singleOrderDetail?.delivery_option == 4 ? (
+      ) : (singleOrderDetail?.delivery_option == 1 || singleOrderDetail?.delivery_option == 4) &&
+        singleOrderDetail?.status !== 0 ? (
         <View style={[styles.firstRowStyle]}>
           <View style={styles.invoiceDetailSection}>
             <View style={[{ height: '100%', alignItems: 'center' }]}>
