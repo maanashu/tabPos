@@ -65,6 +65,14 @@ const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
 
+// const convertText = (text) => {
+//   return text
+//     .toLowerCase()
+//     .split('_')
+//     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+//     .join(' ');
+// };
+
 export function Staff() {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -109,6 +117,8 @@ export function Staff() {
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prevState) => !prevState);
   };
+  // const convertedText = convertText(staffDetailData?.employment_type);
+
   // const onToggleSnackBar = (message) => {
   //   setVisible(!visible);
   //   setErrorMessage(message);
@@ -319,7 +329,7 @@ export function Staff() {
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Employment Type</Text>
-                      <Text style={styles.joinDatelight}>{staffDetailData?.employment_type}</Text>
+                      <Text style={styles.joinDatelight}> {staffDetailData?.employment_type}</Text>
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Leave taken</Text>
