@@ -259,8 +259,8 @@ export function MainScreen({
               <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
                 {isTotalOrderLoading ? (
                   <ActivityIndicator color={COLORS.primary} size={'small'} />
-                ) : totalOrder?.totalAmount ? (
-                  totalOrder?.totalAmount
+                ) : totalOrder?.total_orders ? (
+                  totalOrder?.total_orders
                 ) : (
                   '0'
                 )}

@@ -174,7 +174,7 @@ export const styles = StyleSheet.create({
   horizontalCustomerCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 3,
-    width: ms(100),
+    width: Platform.OS === 'android' ? ms(100) : ms(75),
     height: ms(20),
     justifyContent: 'center',
     alignItems: 'center',

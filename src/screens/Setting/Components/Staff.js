@@ -305,7 +305,7 @@ export function Staff() {
                         <Image source={location} style={styles.Phonelight} />
                         {data?.user?.user_profiles?.current_address ? (
                           <Text
-                            style={[styles.terryText, { width: ms(250) }]}
+                            style={[styles.terryText, { width: ms(210) }]}
                           >{`${data?.user?.user_profiles?.current_address?.street_address}, ${data?.user?.user_profiles?.current_address?.city}, ${data?.user?.user_profiles?.current_address?.state}, ${data?.user?.user_profiles?.current_address?.zipcode}`}</Text>
                         ) : (
                           <Text style={styles.terryText}>{'-----'}</Text>
