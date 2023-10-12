@@ -79,6 +79,7 @@ export function Shipping() {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <Text style={styles.twoStepText}>{strings.shipping.local}</Text>
                   <TouchableOpacity
+                    disabled={true}
                     onPress={() =>
                       addressUpdate(
                         shippingpickupData?.local_pickup?.[0]?.id,
@@ -124,17 +125,18 @@ export function Shipping() {
                             {item.street_address}
                           </Text>
                         </View>
-                        <TouchableOpacity
-                          onPress={() => deleteAddress(item?.id)}
-                          // disabled={item.is_active ? false : true}
-                          style={styles.deleteButton}
-                        >
-                          <Text style={styles.deleteText}>Delete</Text>
-                          {/* <Image
+                        {/* <Image
                             source={item?.is_active ? vector : vectorOff}
                             style={styles.toggleSecurity}
                           /> */}
-                        </TouchableOpacity>
+                        {/* <TouchableOpacity
+                          onPress={() => deleteAddress(item?.id)}
+                          
+                          style={styles.deleteButton}
+                        >
+                          <Text style={styles.deleteText}>Delete</Text>
+                         
+                        </TouchableOpacity> */}
                       </View>
                     </View>
                   </View>
@@ -162,6 +164,7 @@ export function Shipping() {
                   <Text style={styles.twoStepText}>{strings.shipping.jobrDelivery}</Text>
 
                   <TouchableOpacity
+                    disabled={true}
                     onPress={() =>
                       addressUpdate(
                         shippingpickupData?.jobr_delivery?.[0]?.id,
@@ -209,17 +212,13 @@ export function Shipping() {
                             {item.street_address}
                           </Text>
                         </View>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           onPress={() => deleteAddress(item?.id)}
-                          // disabled={item.is_active ? false : true}
                           style={styles.deleteButton}
                         >
                           <Text style={styles.deleteText}>Delete</Text>
-                          {/* <Image
-                            source={item?.is_active ? vector : vectorOff}
-                            style={styles.toggleSecurity}
-                          /> */}
-                        </TouchableOpacity>
+                         
+                        </TouchableOpacity> */}
                       </View>
                     </View>
                   </View>
@@ -248,6 +247,7 @@ export function Shipping() {
                   <Text style={styles.twoStepText}>{strings.shipping.localOff}</Text>
 
                   <TouchableOpacity
+                    disabled={true}
                     onPress={() =>
                       addressUpdate(
                         shippingpickupData?.local_drop_off?.[0]?.id,
@@ -295,17 +295,14 @@ export function Shipping() {
                             {item?.street_address}
                           </Text>
                         </View>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           onPress={() => deleteAddress(item?.id)}
                           // disabled={item.is_active ? false : true}
                           style={styles.deleteButton}
                         >
                           <Text style={styles.deleteText}>Delete</Text>
-                          {/* <Image
-                            source={item?.is_active ? vector : vectorOff}
-                            style={styles.toggleSecurity}
-                          /> */}
-                        </TouchableOpacity>
+                         
+                        </TouchableOpacity> */}
                       </View>
                     </View>
                   </View>
@@ -334,6 +331,7 @@ export function Shipping() {
                   <Text style={styles.twoStepText}>{strings.shipping.shippingText}</Text>
 
                   <TouchableOpacity
+                    disabled={true}
                     onPress={() =>
                       addressUpdate(
                         shippingpickupData?.shipping?.[0]?.id,
@@ -377,17 +375,14 @@ export function Shipping() {
                             {item.street_address}
                           </Text>
                         </View>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           onPress={() => deleteAddress(item?.id)}
                           // disabled={item.is_active ? false : true}
                           style={styles.deleteButton}
                         >
                           <Text style={styles.deleteText}>Delete</Text>
-                          {/* <Image
-                            source={item?.is_active ? vector : vectorOff}
-                            style={styles.toggleSecurity}
-                          /> */}
-                        </TouchableOpacity>
+                         
+                        </TouchableOpacity> */}
                       </View>
                     </View>
                   </View>
@@ -416,6 +411,7 @@ export function Shipping() {
                   <Text style={styles.twoStepText}>{strings.shipping.store}</Text>
 
                   <TouchableOpacity
+                    disabled={true}
                     onPress={() =>
                       addressUpdate(
                         shippingpickupData?.store_type?.[0]?.id,
@@ -459,17 +455,14 @@ export function Shipping() {
                             {item.street_address}
                           </Text>
                         </View>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           onPress={() => addressUpdate(item?.id, item?.is_active)}
                           // disabled={item.is_active ? false : true}
                           style={styles.deleteButton}
                         >
                           <Text style={styles.deleteText}>Delete</Text>
-                          {/* <Image
-                            source={item?.is_active ? vector : vectorOff}
-                            style={styles.toggleSecurity}
-                          /> */}
-                        </TouchableOpacity>
+                         
+                        </TouchableOpacity> */}
                       </View>
                     </View>
                   </View>
