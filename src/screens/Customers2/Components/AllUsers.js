@@ -24,7 +24,7 @@ import {
   unionRight,
   userImage,
 } from '@/assets';
-import { Spacer, TableDropdown } from '@/components';
+import { DaySelector, Spacer, TableDropdown } from '@/components';
 import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { styles } from '@/screens/Customers2/Customers2.styles';
@@ -71,6 +71,15 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [defaultDate, setDefaultDate] = useState(new Date());
   const [dropdownSelect, setDropdownSelect] = useState('none');
   const onchangeValue = (value) => setDropdownSelect(value);
+  const [selectId, setSelectId] = useState(2);
+  const [selectTime, setSelectTime] = useState({ value: 'week' });
+
+  const time = selectTime?.value;
+
+  const onPresFun = () => {
+    setFormatedDate();
+    setDate();
+  };
 
   const areaSelector = [
     areaData?.map((item, index) => ({
@@ -103,9 +112,10 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
       limit: paginationModalValue,
       area: dropdownSelect,
       calenderDate: formatedDate,
+      dayWisefilter: time,
     };
     dispatch(getUserOrder(data));
-  }, [selectedId, paginationModalValue, page, dropdownSelect, formatedDate]);
+  }, [time, selectedId, paginationModalValue, page, dropdownSelect, formatedDate]);
 
   const paginationInchandler = () => {
     setPage(page + 1);
@@ -221,7 +231,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
           </View>
         </View>
       </View>
-      <View style={{ paddingLeft: ms(10) }}>
+      <View style={{ paddingHorizontal: ms(10), flexDirection: 'row', alignItems: 'center' }}>
         <FlatList
           data={dummyCustomerData}
           extraData={dummyCustomerData}
@@ -229,6 +239,15 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
           keyExtractor={(item) => item.id}
           horizontal
         />
+
+        <View>
+          <DaySelector
+            onPresFun={onPresFun}
+            selectId={selectId}
+            setSelectId={setSelectId}
+            setSelectTime={setSelectTime}
+          />
+        </View>
       </View>
       <Spacer space={SH(10)} />
       {/* Date and Area section */}
@@ -269,12 +288,13 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
               <CalendarPickerModal
                 onPress={() => {
                   setShow(false);
-                  setFormatedDate();
+                  // setFormatedDate();
                 }}
                 onDateChange={onChangeDate}
                 onSelectedDate={() => {
                   setShow(false);
                   setFormatedDate(date);
+                  setSelectId(0);
                 }}
                 maxDate={maxDate}
                 selectedStartDate={defaultDate}
@@ -282,6 +302,8 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                   setShow(false);
                   setFormatedDate();
                   setDate();
+                  setSelectId(2);
+                  setSelectTime({ value: 'week' });
                 }}
               />
             </View>
@@ -460,7 +482,12 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                           </Text>
                           <View style={[styles.flexAlign, { marginLeft: 10 }]}>
                             <Image
-                              source={{ uri: item?.user_details?.profile_photo } ?? userImage}
+                              source={
+                                item?.user_details?.profile_photo == null ||
+                                item?.user_details?.profile_photo == ''
+                                  ? userImage
+                                  : { uri: item?.user_details?.profile_photo }
+                              }
                               style={styles.lovingStyleData}
                             />
                             {/* <Image source={userImage} style={styles.lovingStyleData} /> */}

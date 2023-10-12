@@ -1473,13 +1473,25 @@ export const styles = StyleSheet.create({
   headerView: {
     flexDirection: 'row',
     // padding: SW(2),
-    height: ms(20),
+    height: SH(28),
     paddingHorizontal: ms(3),
     alignItems: 'center',
     backgroundColor: COLORS.white,
     marginHorizontal: SW(5),
-    borderRadius: SW(2),
+    borderRadius: 3,
     borderColor: COLORS.gerySkies,
     borderWidth: 1,
+  },
+  dateText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
+    marginLeft: ms(4),
+  },
+  dateText2: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.gerySkies,
+    fontSize: SF(12),
+    marginLeft: ms(4),
   },
 });

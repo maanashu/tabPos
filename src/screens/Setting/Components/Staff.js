@@ -261,11 +261,17 @@ export function Staff() {
                 <View style={styles.profileBodycon}>
                   <View style={{ flexDirection: 'row' }}>
                     <Image
-                      source={{ uri: data?.user_profiles?.profile_photo }}
+                      source={
+                        data?.user?.user_profiles?.profile_photo
+                          ? { uri: data?.user?.user_profiles?.profile_photo }
+                          : userImage
+                      }
                       style={styles.profileImageStaff}
                     />
                     <View style={styles.litMorecon}>
-                      <Text style={styles.staffName}>{data?.user_profiles?.firstname}</Text>
+                      <Text
+                        style={styles.staffName}
+                      >{`${data?.user?.user_profiles?.firstname} ${data?.user?.user_profiles?.lastname} `}</Text>
                       <View style={styles.dispalyRow}>
                         <Image
                           source={shieldPerson}
@@ -276,16 +282,22 @@ export function Staff() {
                       <View style={styles.dispalyRow}>
                         <Image source={Phone_light} style={styles.Phonelight} />
                         <Text style={styles.terryText}>
-                          {data?.user_profiles?.full_phone_number}
+                          {data?.user?.user_profiles?.full_phone_number}
                         </Text>
                       </View>
                       <View style={styles.dispalyRow}>
                         <Image source={email} style={styles.Phonelight} />
-                        <Text style={styles.terryText}>{data?.email}</Text>
+                        <Text style={styles.terryText}>{data?.user?.email}</Text>
                       </View>
                       <View style={styles.dispalyRow}>
                         <Image source={location} style={styles.Phonelight} />
-                        <Text style={styles.terryText}>4849 Owagner Lane Seattle, WA 98101</Text>
+                        {data?.user?.user_profiles?.current_address ? (
+                          <Text
+                            style={styles.terryText}
+                          >{`${data?.user?.user_profiles?.current_address?.street_address}, ${data?.user?.user_profiles?.current_address?.city}, ${data?.user?.user_profiles?.current_address?.state}, ${data?.user?.user_profiles?.current_address?.zipcode}`}</Text>
+                        ) : (
+                          <Text style={styles.terryText}>{'-----'}</Text>
+                        )}
                       </View>
                     </View>
                   </View>
@@ -550,6 +562,7 @@ export function Staff() {
                         title="Pull to Refresh" // Optional, you can customize the text
                       />
                     }
+                    showsVerticalScrollIndicator={false}
                   />
                 </View>
               </View>

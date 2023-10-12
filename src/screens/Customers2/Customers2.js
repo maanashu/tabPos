@@ -125,10 +125,19 @@ export function Customers2() {
     },
   ];
   const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
-  const onViewUser = (id, type) => {
-    setSaveCustomerId(id);
-    setSaveCustomerType(type);
-    setAllUsers(true);
+  const onViewUser = (id, type, count) => {
+    if (count == 0) {
+      Toast.show({
+        text2: 'Customer Not Found',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      setSaveCustomerId(id);
+      setSaveCustomerType(type);
+      setAllUsers(true);
+    }
   };
   const bodyView = () => {
     if (userDetails) {
@@ -277,7 +286,7 @@ export function Customers2() {
                   return (
                     <View style={[styles.custometrCon, styles.flexAlignNew]}>
                       <TouchableOpacity
-                        onPress={() => onViewUser(item.cID, item.type)}
+                        onPress={() => onViewUser(item.cID, item.type, item?.count)}
                         style={styles.flexAlign}
                       >
                         <Image source={item.img} style={styles.newCustomer} />

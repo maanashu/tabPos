@@ -356,6 +356,13 @@ export function WeeklyTransaction({
                   }}
                   maxDate={maxDate}
                   selectedStartDate={defaultDate}
+                  onCancelPress={() => {
+                    setShow(false);
+                    // setFormatedDate();
+                    // setDate();
+                    // setSelectId(2);
+                    // setSelectTime({ value: 'week' });
+                  }}
                 />
               </View>
             </Modal>

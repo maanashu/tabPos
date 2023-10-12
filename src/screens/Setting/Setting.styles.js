@@ -1051,7 +1051,7 @@ export const styles = StyleSheet.create({
   backButtonCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 3,
-    width: windowWidth * 0.07,
+    width: windowWidth * 0.08,
     alignItems: 'center',
     flexDirection: 'row',
   },

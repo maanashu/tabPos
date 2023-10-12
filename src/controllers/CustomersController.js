@@ -13,23 +13,35 @@ export class CustomersController {
         data?.area === 'none' && data?.calenderDate === undefined
           ? ORDER_URL +
             ApiOrderInventory.getUserOrder +
-            `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}`
+            `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}&filter=${data?.dayWisefilter}`
           : data?.calenderDate !== undefined && data?.area == 'none'
           ? ORDER_URL +
             ApiOrderInventory.getUserOrder +
-            `?seller_id=${data?.sellerID}&type=${convertedString}&date=${data?.calenderDate}&page=${data?.page}&limit=${data?.limit}`
+            `?seller_id=${data?.sellerID}&type=${convertedString}&${
+              data?.calenderDate === undefined
+                ? `filter=${data?.dayWisefilter}`
+                : `date=${data?.calenderDate}`
+            }&page=${data?.page}&limit=${data?.limit}`
           : data?.calenderDate === undefined && data?.area !== 'none'
           ? ORDER_URL +
             ApiOrderInventory.getUserOrder +
-            `?seller_id=${data?.sellerID}&type=${convertedString}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`
+            `?seller_id=${data?.sellerID}&type=${convertedString}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}&filter=${data?.dayWisefilter}`
           : ORDER_URL +
             ApiOrderInventory.getUserOrder +
-            `?seller_id=${data?.sellerID}&type=${convertedString}&date=${data?.calenderDate}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
+            `?seller_id=${data?.sellerID}&type=${convertedString}&${
+              data?.calenderDate === undefined
+                ? `filter=${data?.dayWisefilter}`
+                : `date=${data?.calenderDate}`
+            }&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
+
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          // console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          // console.log('error', error);
           error?.msg &&
             Toast.show({
               text2: error.msg,
