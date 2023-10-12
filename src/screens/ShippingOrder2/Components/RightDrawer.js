@@ -52,7 +52,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         key: '4',
         image: Delivery,
         title: 'Shipped',
-        count: orderStatusCountData?.[5]?.count ?? '0',
+        count: orderStatusCountData?.[4]?.count ?? '0',
       },
       {
         key: '5',
@@ -64,7 +64,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         key: '7,8',
         image: NoCard,
         title: 'Rejected/Cancelled',
-        count: orderStatusCountData?.[7]?.count ?? '0',
+        count: orderStatusCountData?.[6]?.count ?? '0',
       },
       {
         key: '9',
@@ -184,7 +184,11 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
   };
 
   const renderDrawer = ({ item }) => (
-    <TouchableOpacity style={styles.drawerIconView} onPress={() => onPressDrawerHandler(item?.key)}>
+    <TouchableOpacity
+      disabled={item?.count > 0 ? false : true}
+      style={styles.drawerIconView}
+      onPress={() => onPressDrawerHandler(item?.key)}
+    >
       {showBadge(item)}
     </TouchableOpacity>
   );

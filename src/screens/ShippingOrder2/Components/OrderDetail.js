@@ -26,6 +26,62 @@ const OrderDetail = ({
   const getTrackingInfo = oneOrderDetail?.getOrderData?.tracking_info;
   const profileImage = userDetail?.user_details?.profile_photo;
 
+  const buttonFunction = () => {
+    if (openShippingOrders === '0') {
+      return (
+        <View style={styles.shippingOrdersViewStyle}>
+          <TouchableOpacity
+            onPress={() => declineHandler(userDetail?.id)}
+            style={styles.declineButtonStyle}
+          >
+            <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => acceptHandler(userDetail?.id, 3)}
+            style={[styles.acceptButtonView, { width: ms(80) }]}
+          >
+            <Text style={styles.acceptTextStyle}>{strings.buttonStatus.reviewButton}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (openShippingOrders === '3') {
+      return (
+        <View style={styles.shippingOrdersViewStyle}>
+          <TouchableOpacity
+            onPress={() => acceptHandler(userDetail?.id, 4)}
+            style={[styles.acceptButtonView, { width: ms(170) }]}
+          >
+            <Text style={styles.acceptTextStyle}>{strings.buttonStatus.printlabel}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (openShippingOrders === '4' || openShippingOrders === '5') {
+      return (
+        <View style={styles.shippingOrdersViewStyle}>
+          <TouchableOpacity
+            onPress={() => trackOrderHandler(getTrackingInfo)}
+            style={[styles.acceptButtonView, { width: ms(140) }]}
+          >
+            <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (openShippingOrders === '7,8') {
+      return (
+        <View style={styles.shippingOrdersViewStyle}>
+          <View
+            onPress={() => trackOrderHandler(getTrackingInfo)}
+            style={[styles.acceptButtonView, { backgroundColor: COLORS.washGrey, width: ms(140) }]}
+          >
+            <Text style={[styles.acceptTextStyle, { color: COLORS.text }]}>
+              {'Cancelled by user'}
+            </Text>
+          </View>
+        </View>
+      );
+    }
+  };
+
   return (
     <>
       <View style={styles.orderDetailView}>
@@ -201,7 +257,10 @@ const OrderDetail = ({
             </View>
 
             <Spacer space={ms(10)} />
-            {openShippingOrders == '0' ||
+
+            {buttonFunction()}
+
+            {/* {openShippingOrders == '0' ||
             openShippingOrders == '1' ||
             openShippingOrders == '2' ||
             openShippingOrders === '3' ? (
@@ -220,18 +279,6 @@ const OrderDetail = ({
                 openShippingOrders === '2' ||
                 openShippingOrders === '3' ? (
                   <TouchableOpacity
-                    // onPress={() =>
-                    //   acceptHandler(
-                    //     userDetail?.id,
-                    //     openShippingOrders === '0'
-                    //       ? 1
-                    //       : openShippingOrders === '1'
-                    //       ? 2
-                    //       : openShippingOrders === '2'
-                    //       ? 3
-                    //       : 4
-                    //   )
-                    // }
                     onPress={() =>
                       acceptHandler(userDetail?.id, openShippingOrders === '0' ? 3 : 4)
                     }
@@ -263,7 +310,7 @@ const OrderDetail = ({
                   <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
                 </TouchableOpacity>
               </View>
-            )}
+            )} */}
           </View>
         </View>
       </View>

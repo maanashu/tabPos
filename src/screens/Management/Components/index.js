@@ -64,6 +64,7 @@ export function SessionHistoryTable({
   const [selectedDate, setSelectedDate] = useState(null);
   const staffSelection = (value) => setStaffSelect(value);
   const getAuth = useSelector(getAuthData);
+  // const posUserArray = getAuth?.getAllPosUsers;
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
   var posUsers = [];
   if (posUserArray.length > 0) {

@@ -54,14 +54,9 @@ import styles from './styles';
 
 export function DeliveryOrders2({ route }) {
   const mapRef = useRef(null);
-  var isViewAll;
-  var ORDER_DETAIL;
-  if (route.params && route.params.isViewAll) {
-    isViewAll = route.params.isViewAll;
-    ORDER_DETAIL = route.params.ORDER_DETAIL;
-  } else {
-    isViewAll = false;
-    ORDER_DETAIL = null;
+  var screen;
+  if (route?.params && route?.params.screen) {
+    screen = route.params.screen;
   }
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -86,7 +81,6 @@ export function DeliveryOrders2({ route }) {
     longitude: singleOrderDetail?.coordinates?.[1],
   };
 
-  const [viewAllOrders, setViewAllOrders] = useState(isViewAll);
   const [openShippingOrders, setOpenShippingOrders] = useState('0');
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? []);
   const [isBack, setIsBack] = useState();
@@ -114,6 +108,11 @@ export function DeliveryOrders2({ route }) {
       dispatch(getSellerDriverList());
     }, [])
   );
+
+  useEffect(() => {
+    setViewAllOrder(false);
+    setTrackingView(false);
+  }, [screen]);
 
   useEffect(() => {
     setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
@@ -255,6 +254,7 @@ export function DeliveryOrders2({ route }) {
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
+      disabled={item?.count > 0 ? false : true}
       onPress={() => {
         setOpenShippingOrders(item?.key);
         dispatch(getReviewDefault(item?.key, 1));

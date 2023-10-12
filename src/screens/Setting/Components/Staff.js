@@ -71,9 +71,9 @@ export function Staff() {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
-  // const staffDetailData = getSettingData?.staffDetail;
+  console.log('getSettingData?.staffDetail', JSON.stringify(getSettingData?.staffDetail));
+  const staffDetailData = getSettingData?.staffDetail;
   // const posUserArray = getAuth?.getAllPosUsers;
-  const staffDetailData = [];
   const posUserArraydata = getAuth?.getAllPosUsersData;
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
   // console.log('posUserArray', JSON.stringify(posUserArray));
@@ -309,7 +309,9 @@ export function Staff() {
                     <Spacer space={SH(2)} />
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Joined Date</Text>
-                      <Text style={styles.joinDatelight}>Sep 20, 2022</Text>
+                      <Text style={styles.joinDatelight}>
+                        {moment(staffDetailData?.created_at).format('ll')}
+                      </Text>
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Active Since</Text>
@@ -317,7 +319,7 @@ export function Staff() {
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Employment Type</Text>
-                      <Text style={styles.joinDatelight}>Full-Time</Text>
+                      <Text style={styles.joinDatelight}>{staffDetailData?.employment_type}</Text>
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Leave taken</Text>
@@ -332,19 +334,19 @@ export function Staff() {
               <View style={styles.hourcontainer}>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Hour rate</Text>
-                  <Text style={styles.hourRateLigh}>JBR 1500/h</Text>
+                  <Text style={styles.hourRateLigh}>JBR {staffDetailData?.hourly_rate}/h</Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Over time rate</Text>
-                  <Text style={styles.hourRateLigh}>JBR 2500/h</Text>
+                  <Text style={styles.hourRateLigh}>JBR {staffDetailData?.overtime_rate}/h</Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Payment Cycle</Text>
-                  <Text style={styles.hourRateLigh}>Weekly</Text>
+                  <Text style={styles.hourRateLigh}>{staffDetailData?.payment_cycle}</Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Billing</Text>
-                  <Text style={styles.hourRateLigh}>Automatic</Text>
+                  <Text style={styles.hourRateLigh}>{staffDetailData?.billing_type}</Text>
                 </View>
               </View>
               <Spacer space={SH(14)} />
@@ -389,7 +391,7 @@ export function Staff() {
                     </View>
                   </View>
 
-                  {staffDetailData?.map((item, index) => (
+                  {/* {staffDetailData?.map((item, index) => (
                     <View style={{}}>
                       <TouchableOpacity
                         style={styles.tableDataCon}
@@ -504,7 +506,7 @@ export function Staff() {
                         </View>
                       ) : null}
                     </View>
-                  ))}
+                  ))} */}
                 </Table>
               </View>
             </ScrollView>

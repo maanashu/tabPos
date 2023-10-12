@@ -53,7 +53,6 @@ client.interceptors.request.use(async function (config) {
   if (posNumber) {
     config.headers['pos-no'] = posNumber;
   }
-
   return config;
 });
 
