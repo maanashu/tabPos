@@ -54,7 +54,7 @@ export function TotalOrders({ onPressReview }) {
         <Text style={styles.revenueDataText}>{item?.consumer_returning?.toFixed(2)}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText2}>${item?.amount}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
@@ -84,7 +84,7 @@ export function TotalOrders({ onPressReview }) {
     ),
     []
   );
-
+  console.log('first', totalOrder?.order_listing);
   return (
     <View style={styles.flex1}>
       <Text style={styles.graphTitle}> {'Total Orders'}</Text>
