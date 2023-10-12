@@ -6,7 +6,7 @@ const INITIALSTATE = {
   getUserAddress: [],
   getCountries: [],
   getState: [],
-  staffDetail: [],
+  staffDetail: {},
   getTax: [],
   getTaxTrue: [],
   getGoogleCode: {},
@@ -63,7 +63,7 @@ export const settingReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.STAFF_DETAIL_RESET:
       return {
         ...state,
-        staffDetail: [],
+        staffDetail: {},
       };
     case TYPES.GET_TAX_SUCCESS:
       return {

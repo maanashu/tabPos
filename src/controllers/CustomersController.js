@@ -3,6 +3,7 @@ import { ORDER_URL, ApiOrderInventory, USER_URL, ApiUserInventory } from '@/util
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 import { store } from '@/store';
+import { log } from 'react-native-reanimated';
 
 export class CustomersController {
   static async getUserOrder(data) {
@@ -33,15 +34,11 @@ export class CustomersController {
                 ? `filter=${data?.dayWisefilter}`
                 : `date=${data?.calenderDate}`
             }&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
-
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          // console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          // console.log('error', error);
           error?.msg &&
             Toast.show({
               text2: error.msg,

@@ -32,8 +32,6 @@ export function Shipping() {
   const getSettingData = useSelector(getSetting);
   const shippingpickupData = getSettingData?.getShippingPickup;
 
-  // console.log('shippingpickupData', JSON.stringify(getSettingData));
-
   const convertShippinDataToArr = () => {
     let arr = [];
     for (let key in shippingpickupData) {
@@ -54,7 +52,6 @@ export function Shipping() {
       address_type: type,
       seller_id: sellerID,
     };
-    console.log('sdasds', body);
 
     dispatch(addressUpdateById(body));
   };

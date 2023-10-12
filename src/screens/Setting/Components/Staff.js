@@ -71,10 +71,12 @@ export function Staff() {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
-  const staffDetailData = getSettingData?.staffDetail;
+  // const staffDetailData = getSettingData?.staffDetail;
   // const posUserArray = getAuth?.getAllPosUsers;
+  const staffDetailData = [];
   const posUserArraydata = getAuth?.getAllPosUsersData;
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
+  // console.log('posUserArray', JSON.stringify(posUserArray));
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [staffModal, setStaffModal] = useState(false);
@@ -137,15 +139,15 @@ export function Staff() {
     }
   }, [isFocused]);
 
-  const staffDetailhandler = async (id) => {
+  const staffDetailhandler = async (id, staffId) => {
     if (posRole === 'admin') {
-      const res = await dispatch(getStaffDetail());
+      const res = await dispatch(getStaffDetail(staffId));
       if (res?.type === 'STAFF_DETAIL_SUCCESS') {
         setStaffDetail(true);
       }
     } else {
       if (posUserId === id) {
-        const res = await dispatch(getStaffDetail());
+        const res = await dispatch(getStaffDetail(staffId));
         if (res?.type === 'STAFF_DETAIL_SUCCESS') {
           setStaffDetail(true);
         } else {
@@ -171,7 +173,7 @@ export function Staff() {
       style={styles.twoStepMemberCon}
       // onPress={() => setStaffDetail(true)}
       onPress={() => {
-        staffDetailhandler(item?.user?.id);
+        staffDetailhandler(item?.user?.id, item?.id);
         setData(item);
       }}
     >
@@ -187,7 +189,7 @@ export function Staff() {
           />
           <View style={styles.marginLeft}>
             <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-              {item.user?.user_profiles?.firstname}
+              {`${item.user?.user_profiles?.firstname} ${item.user?.user_profiles?.lastname}`}
             </Text>
             <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
               {item?.user?.user_roles?.length > 0
@@ -293,7 +295,7 @@ export function Staff() {
                         <Image source={location} style={styles.Phonelight} />
                         {data?.user?.user_profiles?.current_address ? (
                           <Text
-                            style={styles.terryText}
+                            style={[styles.terryText, { width: ms(250) }]}
                           >{`${data?.user?.user_profiles?.current_address?.street_address}, ${data?.user?.user_profiles?.current_address?.city}, ${data?.user?.user_profiles?.current_address?.state}, ${data?.user?.user_profiles?.current_address?.zipcode}`}</Text>
                         ) : (
                           <Text style={styles.terryText}>{'-----'}</Text>

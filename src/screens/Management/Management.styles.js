@@ -51,6 +51,8 @@ export const styles = StyleSheet.create({
     // borderWidth: 3,
     fontSize: SF(15),
     paddingLeft: 5,
+    padding: 0,
+    margin: 0,
   },
   truckStyle: {
     width: SH(32),

@@ -64,8 +64,6 @@ export function SessionHistoryTable({
   const [selectedDate, setSelectedDate] = useState(null);
   const staffSelection = (value) => setStaffSelect(value);
   const getAuth = useSelector(getAuthData);
-  // const posUserArray = getAuth?.getAllPosUsers;
-  console.log('auth data', JSON.stringify(getAuth));
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
   var posUsers = [];
   if (posUserArray.length > 0) {
@@ -149,6 +147,7 @@ export function SessionHistoryTable({
     setSelectedDate(null);
     dispatch(getSessionHistory());
   };
+
   useEffect(() => {
     const newDateFormat = moment(formattedDate).format('YYYY-MM-DD');
     if (staffSelect !== 'none') {
@@ -321,7 +320,7 @@ export function SessionHistoryTable({
                           <Text style={[styles.tableTextData, { marginLeft: ms(5) }]}>
                             {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
                             {item?.pos_user_detail?.user_profiles?.firstname == undefined
-                              ? 'Unknown'
+                              ? 'System Ended'
                               : item?.pos_user_detail?.user_profiles?.firstname}
                           </Text>
                         </View>

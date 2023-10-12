@@ -348,10 +348,10 @@ export const getState = (id) => async (dispatch) => {
   }
 };
 
-export const getStaffDetail = () => async (dispatch) => {
+export const getStaffDetail = (id) => async (dispatch) => {
   dispatch(staffDetailRequest());
   try {
-    const res = await SettingController.staffDetail();
+    const res = await SettingController.staffDetail(id);
     return dispatch(staffDetailSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {

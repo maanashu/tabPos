@@ -172,9 +172,9 @@ export class SettingController {
     });
   }
 
-  static async staffDetail() {
+  static async staffDetail(id) {
     return new Promise((resolve, reject) => {
-      const endpoint = USER_URL + ApiUserInventory.staffDetail;
+      const endpoint = USER_URL + ApiUserInventory.staffDetail + `?id=${id}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
