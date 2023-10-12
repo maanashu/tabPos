@@ -284,6 +284,7 @@ export function ProductRefund(props) {
         ['applyToEachItemKey']: applyEachItem,
       }));
       setOrders(newArray);
+
       const data = {
         order: orders,
         orderData: finalOrder,
@@ -291,8 +292,10 @@ export function ProductRefund(props) {
         applicableForAllItems: applicableIsCheck,
         payableAmount: totalRefundableAmount(),
         subTotal: totalRefundAmount,
-        totalTaxes: applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0,
-        total: applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0,
+        totalTaxes: calculateRefundTax().toFixed(2),
+        total: totalRefundableAmount().toFixed(2),
+        deliveryShippingTitle: deliveryShippingCharges().title,
+        deliveryShippingCharges: deliveryShippingCharges().deliveryCharges,
       };
       navigate(NAVIGATION.paymentSelection, { screen: data });
     } else {
@@ -303,8 +306,10 @@ export function ProductRefund(props) {
         applicableForAllItems: applicableIsCheck,
         payableAmount: totalRefundableAmount(),
         subTotal: totalRefundAmount,
-        totalTaxes: applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0,
-        total: applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0,
+        totalTaxes: calculateRefundTax().toFixed(2),
+        total: totalRefundableAmount().toFixed(2),
+        deliveryShippingTitle: deliveryShippingCharges().title,
+        deliveryShippingCharges: deliveryShippingCharges().deliveryCharges,
       };
       navigate(NAVIGATION.paymentSelection, { screen: data });
     }

@@ -120,7 +120,6 @@ export function Languages() {
   // };
   useEffect(() => {
     if (getSettingData?.getSetting) {
-      console.log('Settting dataaaa', JSON.stringify(getSettingData?.getSetting?.language));
       setDataArray(getSettingData?.getSetting?.language);
     }
   }, [getSettingData?.getSetting]);

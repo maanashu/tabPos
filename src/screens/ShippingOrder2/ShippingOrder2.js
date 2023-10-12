@@ -37,6 +37,7 @@ import TodayShippingStatus from './Components/TodayShippingStatus';
 import CurrentShippingStatus from './Components/CurrentShippingStatus';
 
 import styles from './ShippingOrder2.styles';
+import { getPendingOrders } from '@/actions/DashboardAction';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ export function ShippingOrder2() {
       dispatch(todayCurrentStatus(sellerID));
       dispatch(getReviewDefault(0, sellerID));
       dispatch(getGraphOrders());
+      dispatch(getPendingOrders(sellerID));
       dispatch(getShippingOrderstatistics(sellerID));
     }, [])
   );

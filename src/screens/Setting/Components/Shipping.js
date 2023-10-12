@@ -31,7 +31,6 @@ export function Shipping() {
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const getSettingData = useSelector(getSetting);
   const shippingpickupData = getSettingData?.getShippingPickup;
-  console.log('shippingpickupData', JSON.stringify(shippingpickupData));
 
   // console.log('shippingpickupData', JSON.stringify(getSettingData));
 
@@ -55,7 +54,6 @@ export function Shipping() {
       address_type: type,
       seller_id: sellerID,
     };
-    console.log('sdasds', body);
 
     dispatch(addressUpdateById(body));
   };
