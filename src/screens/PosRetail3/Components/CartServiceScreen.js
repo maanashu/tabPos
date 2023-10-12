@@ -73,7 +73,6 @@ export function CartServiceScreen({
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const cartServiceData = getRetailData?.getserviceCart;
-  console.log('cartId', cartServiceData?.id);
   const cartServiceId = getRetailData?.getserviceCart?.id;
   let arr = [getRetailData?.getserviceCart];
   const serviceCartArray = getRetailData?.getAllServiceCart;
@@ -106,7 +105,6 @@ export function CartServiceScreen({
       const data = {
         updated_products: products,
       };
-      console.log('data', data);
       dispatch(updateServiceCartQty(data, arr.id));
     }
     // else {
@@ -123,12 +121,13 @@ export function CartServiceScreen({
         visibilityTime: 1500,
       });
     } else if (Object.keys(cartServiceData?.user_details)?.length === 0) {
-      Toast.show({
-        text2: 'Please attach the customer',
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 1500,
-      });
+      setNewCustomerModal(true);
+      // Toast.show({
+      //   text2: 'Please attach the customer',
+      //   position: 'bottom',
+      //   type: 'error_toast',
+      //   visibilityTime: 1500,
+      // });
     } else {
       backCartLoad();
       onPressPayNow();
@@ -183,7 +182,6 @@ export function CartServiceScreen({
       const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
       arr.amount.tax = parseFloat(TAX);
       arr.amount.total_amount = arr.amount.products_price + arr.amount.tax;
-      console.log('------------', arr.appointment_cart_products);
 
       var DATA = {
         payload: arr,

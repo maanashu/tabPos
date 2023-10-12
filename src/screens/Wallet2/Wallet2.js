@@ -103,7 +103,7 @@ export function Wallet2() {
     if (isFocused) {
       dispatch(getTotalTra(time, sellerID, formateDate));
     }
-  }, [isFocused, selectDate]);
+  }, [isFocused, selectDate, time]);
 
   const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
 
@@ -313,7 +313,7 @@ export function Wallet2() {
                   ]}
                 >
                   <Image source={newCalendar} style={styles.calendarStyle} />
-                  <Text style={styles.dateText}>
+                  <Text style={startDate ? styles.dateText : styles.dateText2}>
                     {startDate
                       ? moment(startDate).format('MMM D') +
                         ' - ' +
@@ -454,7 +454,13 @@ export function Wallet2() {
             onDateChange={onDateChange}
             // handleOnPressNext={handleOnPressNext}
             onSelectedDate={onSelect}
-            onCancelPress={() => setShow(false)}
+            onCancelPress={() => {
+              setShow(false);
+              // setSelectedStartDate('');
+              // setSelectedEndDate('');
+              // setSelectId(2);
+              // setSelectTime({ value: 'week' });
+            }}
           />
         </View>
       </Modal>

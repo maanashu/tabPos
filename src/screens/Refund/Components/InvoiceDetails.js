@@ -12,6 +12,7 @@ import { Fonts, logo_full } from '@/assets';
 import { getUser } from '@/selectors/UserSelectors';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 const InvoiceDetails = ({
   orderList,
@@ -35,19 +36,22 @@ const InvoiceDetails = ({
   const renderProductItem = ({ item, index }) => (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.count}>{item.qty}</Text>
+        <Text style={styles.count}>{index + 1}</Text>
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
             {item?.product_name ?? '-'}
           </Text>
           <View style={styles.belowSubContainer}>
-            <Text style={styles.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
+            <Text style={styles.colorsTitle}>{'Qty: '}</Text>
+            <Text style={styles.colorsTitle}>{item?.qty ?? '-'}</Text>
           </View>
         </View>
       </View>
       <Text style={styles.priceTitle}>
-        {`-$${
-          applicableForAllItems || applyEachItem ? item?.totalRefundAmount : item?.price * item?.qty
+        {`${
+          applicableForAllItems || applyEachItem
+            ? formattedReturnPrice(item?.totalRefundAmount)
+            : formattedReturnPrice(item?.price * item?.qty)
         }`}
       </Text>
     </View>
@@ -91,21 +95,23 @@ const InvoiceDetails = ({
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{'Sub Total'}</Text>
-        <Text style={styles._subTotalPrice}>{`-$${subTotal?.toFixed(2)}` ?? '0.0'}</Text>
+        <Text style={styles._subTotalPrice}>{`${formattedReturnPrice(subTotal)}`}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{deliveryShippingTitle}</Text>
-        <Text style={styles._subTotalPrice}>{`-$${deliveryShippingCharges}` ?? '0.0'}</Text>
+        <Text style={styles._subTotalPrice}>{`${formattedReturnPrice(
+          deliveryShippingCharges
+        )}`}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
 
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
-        <Text style={styles._subTotalPrice}>{`-$${totalTaxes}` ?? '0.0'}</Text>
+        <Text style={styles._subTotalPrice}>{`${formattedReturnPrice(totalTaxes)}`}</Text>
       </View>
 
       <View style={styles._horizontalLine} />
@@ -115,7 +121,7 @@ const InvoiceDetails = ({
           Total
         </Text>
         <Text style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}>
-          {`-$${total}` ?? '0.0'}
+          {`${formattedReturnPrice(total)}`}
         </Text>
       </View>
 

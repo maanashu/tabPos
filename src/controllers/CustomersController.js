@@ -3,6 +3,7 @@ import { ORDER_URL, ApiOrderInventory, USER_URL, ApiUserInventory } from '@/util
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 import { store } from '@/store';
+import { log } from 'react-native-reanimated';
 
 export class CustomersController {
   static async getUserOrder(data) {
@@ -13,18 +14,26 @@ export class CustomersController {
         data?.area === 'none' && data?.calenderDate === undefined
           ? ORDER_URL +
             ApiOrderInventory.getUserOrder +
-            `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}`
+            `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}&filter=${data?.dayWisefilter}`
           : data?.calenderDate !== undefined && data?.area == 'none'
           ? ORDER_URL +
             ApiOrderInventory.getUserOrder +
-            `?seller_id=${data?.sellerID}&type=${convertedString}&date=${data?.calenderDate}&page=${data?.page}&limit=${data?.limit}`
+            `?seller_id=${data?.sellerID}&type=${convertedString}&${
+              data?.calenderDate === undefined
+                ? `filter=${data?.dayWisefilter}`
+                : `date=${data?.calenderDate}`
+            }&page=${data?.page}&limit=${data?.limit}`
           : data?.calenderDate === undefined && data?.area !== 'none'
           ? ORDER_URL +
             ApiOrderInventory.getUserOrder +
-            `?seller_id=${data?.sellerID}&type=${convertedString}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`
+            `?seller_id=${data?.sellerID}&type=${convertedString}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}&filter=${data?.dayWisefilter}`
           : ORDER_URL +
             ApiOrderInventory.getUserOrder +
-            `?seller_id=${data?.sellerID}&type=${convertedString}&date=${data?.calenderDate}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
+            `?seller_id=${data?.sellerID}&type=${convertedString}&${
+              data?.calenderDate === undefined
+                ? `filter=${data?.dayWisefilter}`
+                : `date=${data?.calenderDate}`
+            }&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

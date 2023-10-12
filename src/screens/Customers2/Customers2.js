@@ -46,7 +46,7 @@ export function Customers2() {
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
   const getCustomerStatitics = getCustomerData?.getCustomers;
-  const allCustomerObject = getCustomerStatitics?.total_customers ?? {};
+  const allCustomerObject = getCustomerStatitics?.total_customers ?? getCustomerDummy;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const values =
     getCustomerStatitics === undefined
@@ -55,6 +55,8 @@ export function Customers2() {
   const totalCustomer = values?.reduce((accumulator, value) => {
     return accumulator + value;
   }, 0);
+
+  const totalCustomers = allCustomerObject?.onlineCustomers + allCustomerObject?.walkingCustomers;
 
   const [allUsers, setAllUsers] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
@@ -123,10 +125,19 @@ export function Customers2() {
     },
   ];
   const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
-  const onViewUser = (id, type) => {
-    setSaveCustomerId(id);
-    setSaveCustomerType(type);
-    setAllUsers(true);
+  const onViewUser = (id, type, count) => {
+    if (count == 0) {
+      Toast.show({
+        text2: 'Customer Not Found',
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 1500,
+      });
+    } else {
+      setSaveCustomerId(id);
+      setSaveCustomerType(type);
+      setAllUsers(true);
+    }
   };
   const bodyView = () => {
     if (userDetails) {
@@ -275,7 +286,7 @@ export function Customers2() {
                   return (
                     <View style={[styles.custometrCon, styles.flexAlignNew]}>
                       <TouchableOpacity
-                        onPress={() => onViewUser(item.cID, item.type)}
+                        onPress={() => onViewUser(item.cID, item.type, item?.count)}
                         style={styles.flexAlign}
                       >
                         <Image source={item.img} style={styles.newCustomer} />
@@ -297,7 +308,7 @@ export function Customers2() {
             <View style={[styles.displayFlex, { marginTop: ms(10) }]}>
               <View>
                 <Text style={styles.totalCusPrimary}>{strings.customers.totalCustomer}</Text>
-                <Text style={styles.totalCustomer}>{totalCustomer ?? '0'}</Text>
+                <Text style={styles.totalCustomer}>{totalCustomers ?? '0'}</Text>
               </View>
               <TouchableOpacity
                 style={styles.viewButtonCon}

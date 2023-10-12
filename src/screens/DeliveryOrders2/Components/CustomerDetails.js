@@ -14,17 +14,19 @@ const CustomerDetails = ({ orderDetail }) => {
     <View style={styles.orderDetailViewStyle}>
       <View style={styles.locationViewStyle}>
         <Image
-          source={userDetails?.profile_photo ? { uri: userDetails?.profile_photo } : userImage}
           style={styles.userImageStyle}
+          source={userDetails?.profile_photo ? { uri: userDetails?.profile_photo } : userImage}
         />
 
         <View style={styles.userNameView}>
           <Text style={styles.totalTextStyle}>
             {`${userDetails?.firstname} ${userDetails?.lastname}`}
           </Text>
+
           <Text style={styles.badgetext}>
             {`${userDetails?.current_address?.street_address}, ${userDetails?.current_address?.city}`}
           </Text>
+
           <Text style={styles.badgetext}>
             {`${userDetails?.current_address?.state}, ${userDetails?.current_address?.country}`}
           </Text>
@@ -38,6 +40,7 @@ const CustomerDetails = ({ orderDetail }) => {
           <Text style={styles.datetextStyle}>
             {moment(orderDetail?.invoices?.delivery_date).format('DD MMM YYYY')}
           </Text>
+
           <Text style={styles.preferredTextStyle}>
             {`${orderDetail?.preffered_delivery_start_time ?? '-'} - ${
               orderDetail?.preffered_delivery_end_time ?? '-'

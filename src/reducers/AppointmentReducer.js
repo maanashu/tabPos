@@ -14,22 +14,33 @@ export const appointmentReducer = (state = INITIALSTATE, { payload, type }) => {
       const { getAppointment } = state;
       const { appointments, pages } = payload;
 
-      // Merge the existing data with the new data based on the unique identifier 'id'
-      const mergedAppointments = getAppointment.map(
-        (existingItem) =>
-          appointments.find((newItem) => existingItem.id === newItem.id) || existingItem
-      );
+      let updatedAppointments;
 
-      // Add any new unique appointments that were not in the existing data
-      const newUniqueAppointments = appointments.filter(
-        (newItem) => !getAppointment.some((existingItem) => existingItem.id === newItem.id)
-      );
+      // Check if the page number is 1
+      if (pages?.currentPages === 1) {
+        // If it's page 1, replace the existing data with the new data
+        updatedAppointments = appointments;
+      } else {
+        // If it's not page 1, merge the existing data with the new data based on 'id'
+        const mergedAppointments = getAppointment.map(
+          (existingItem) =>
+            appointments.find((newItem) => existingItem.id === newItem.id) || existingItem
+        );
+
+        // Add any new unique appointments that were not in the existing data
+        const newUniqueAppointments = appointments.filter(
+          (newItem) => !getAppointment.some((existingItem) => existingItem.id === newItem.id)
+        );
+
+        updatedAppointments = [...mergedAppointments, ...newUniqueAppointments];
+      }
 
       return {
         ...state,
-        getAppointment: [...mergedAppointments, ...newUniqueAppointments],
+        getAppointment: updatedAppointments,
         pages: pages,
       };
+
     case TYPES.GET_APPOINTMENTS_RESET:
       return {
         ...state,

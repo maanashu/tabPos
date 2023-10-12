@@ -11,13 +11,12 @@ import {
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 
-const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
-
 export class DeliveryController {
   static async getOrderCount() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${sellerId}&delivery_option=1`;
+        ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${sellerID}&delivery_option=1`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -36,10 +35,11 @@ export class DeliveryController {
 
   static async getReviewDefault(status, deliveryOption) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerId}&delivery_option=${deliveryOption}`;
+        `?status=${status}&seller_id=${sellerID}&delivery_option=${deliveryOption}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -52,10 +52,11 @@ export class DeliveryController {
 
   static async getOrders(status) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerId}&delivery_option=1`;
+        `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -85,6 +86,13 @@ export class DeliveryController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
           reject(error);
         });
     });
@@ -105,8 +113,9 @@ export class DeliveryController {
 
   static async deliverygraph() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
-        ORDER_URL + ApiOrderInventory.shippingGraph + `?seller_id=${sellerId}&filter=week`;
+        ORDER_URL + ApiOrderInventory.shippingGraph + `?seller_id=${sellerID}&filter=week`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -125,7 +134,8 @@ export class DeliveryController {
 
   static async deliveringOrder() {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.deliveringOrder + `?seller_id=${sellerId}`;
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint = ORDER_URL + ApiOrderInventory.deliveringOrder + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -144,7 +154,8 @@ export class DeliveryController {
 
   static async todayOrders() {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.todayOrders + `?seller_id=${sellerId}`;
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint = ORDER_URL + ApiOrderInventory.todayOrders + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -163,10 +174,11 @@ export class DeliveryController {
 
   static async getOrderstatistics(delivery) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderstatistics +
-        `?seller_id=${sellerId}&filter=week&delivery_option=${delivery}`;
+        `?seller_id=${sellerID}&filter=week&delivery_option=${delivery}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -185,10 +197,11 @@ export class DeliveryController {
 
   static async getGraphOrders() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.graphOrders +
-        `?seller_id=${sellerId}&filter=week&delivery_option=1`;
+        `?seller_id=${sellerID}&filter=week&delivery_option=1`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -207,7 +220,8 @@ export class DeliveryController {
 
   static async getSellerDriverList() {
     return new Promise((resolve, reject) => {
-      const endpoint = USER_URL + ApiUserInventory.getSellerDrivers + `?sellerId=${sellerId}`;
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint = USER_URL + ApiUserInventory.getSellerDrivers + `?sellerId=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

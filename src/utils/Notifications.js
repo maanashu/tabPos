@@ -1,9 +1,8 @@
 import messaging from '@react-native-firebase/messaging';
 import notifee, { AuthorizationStatus } from '@notifee/react-native';
-import { getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
+import { deliOrder, getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
 import { store } from '@/store';
-
-const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+import { getPendingOrders } from '@/actions/DashboardAction';
 
 // Request user permission for notifications
 const requestPermission = async () => {
@@ -32,15 +31,20 @@ const getDeviceToken = async () => {
 const onMessageReceivedForeground = async (message) => {
   if (message?.data?.type === 'order_delivered') {
     store.dispatch(getReviewDefault(5, 1));
+    store.dispatch(getReviewDefault(5, 4));
     store.dispatch(getOrderCount());
     store.dispatch(todayOrders());
   }
   if (message?.data?.type === 'order_received') {
     store.dispatch(getReviewDefault(0, 1));
+    store.dispatch(getReviewDefault(0, 4));
     store.dispatch(getOrderCount());
+    store.dispatch(getPendingOrders());
+    store.dispatch(deliOrder());
   }
   if (message?.data?.type === 'order_pickup') {
     store.dispatch(getReviewDefault(4, 1));
+    store.dispatch(getReviewDefault(4, 4));
     store.dispatch(getOrderCount());
   }
   await notifee.displayNotification({
@@ -56,16 +60,20 @@ const onMessageReceivedForeground = async (message) => {
 const onMessageReceivedBackground = async (message) => {
   if (message?.data?.type === 'order_delivered') {
     store.dispatch(getReviewDefault(5, 1));
+    store.dispatch(getReviewDefault(5, 4));
     store.dispatch(getOrderCount());
     store.dispatch(todayOrders());
   }
   if (message?.data?.type === 'order_received') {
     store.dispatch(getReviewDefault(0, 1));
+    store.dispatch(getReviewDefault(0, 4));
     store.dispatch(getOrderCount());
+    store.dispatch(getPendingOrders());
+    store.dispatch(deliOrder());
   }
-
   if (message?.data?.type === 'order_pickup') {
     store.dispatch(getReviewDefault(4, 1));
+    store.dispatch(getReviewDefault(4, 4));
     store.dispatch(getOrderCount());
   }
   await notifee.displayNotification({

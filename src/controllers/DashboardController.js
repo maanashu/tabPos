@@ -15,12 +15,12 @@ import { HttpClient } from './HttpClient';
 export class DashboardController {
   static async getOrderDeliveries(sellerID, page) {
     return new Promise((resolve, reject) => {
-      // const endpoint =
-      //   ORDER_URL +
-      //   ApiOrderInventory.getOrderUser +
-      //   `?seller_id=${sellerID}&delivery_option=1&page=${page}&limit=10`;
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&delivery_option=1`;
+        ORDER_URL +
+        ApiOrderInventory.getOrderUser +
+        `?seller_id=${sellerID}&delivery_option=1&page=${page}&limit=10`;
+      // const endpoint =
+      //   ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&delivery_option=1`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -279,7 +279,7 @@ export class DashboardController {
           ) {
             alert('Product already returned!');
             if (screen === 'delivery') {
-              navigate(NAVIGATION.deliveryOrders2, { data: 'return' });
+              navigate(NAVIGATION.deliveryOrders2, { screen: 'delivery' });
             } else {
               navigate('SearchScreen', { screen: 'return' });
             }

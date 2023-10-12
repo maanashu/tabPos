@@ -29,7 +29,7 @@ import { blankCheckBox, Fonts, PaymentDone, userImage } from '@/assets';
 
 const { width } = Dimensions.get('window');
 
-const ReturnedOrderDetail = ({ orderDetail }) => {
+const ReturnedOrderDetail = ({ orderDetail, onPressBackHandler = () => {} }) => {
   const dispatch = useDispatch();
   const textInputRef = useRef();
   const [productUpc, setProductUpc] = useState('');
@@ -45,6 +45,7 @@ const ReturnedOrderDetail = ({ orderDetail }) => {
       navigate(NAVIGATION.productRefund, {
         productsArray: orderDetail?.order_details,
         orderData: orderDetail,
+        onPressBack: onPressBackHandler,
       });
     } else {
       alert('Please select atleast one product');
@@ -59,8 +60,10 @@ const ReturnedOrderDetail = ({ orderDetail }) => {
             source={item?.product_image ? { uri: item?.product_image } : userImage}
             style={styles.userImageStyle}
           />
-          <View style={{ paddingLeft: 10, width: ms(100) }}>
-            <Text style={styles.nameTextStyle}>{item?.product_name ?? '-'}</Text>
+          <View style={{ paddingLeft: 10, width: ms(80) }}>
+            <Text numberOfLines={1} style={styles.nameTextStyle}>
+              {item?.product_name ?? '-'}
+            </Text>
             <Text style={styles.varientTextStyle}>{`${item?.product_details?.sku ?? '-'}`}</Text>
           </View>
         </View>
@@ -68,7 +71,7 @@ const ReturnedOrderDetail = ({ orderDetail }) => {
         <View
           style={[
             styles.shippingOrderHeader,
-            { paddingTop: 0, width: ms(100), justifyContent: 'space-between' },
+            { paddingTop: 0, width: ms(80), justifyContent: 'space-between' },
           ]}
         >
           <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
@@ -100,7 +103,7 @@ const ReturnedOrderDetail = ({ orderDetail }) => {
 
   const onChangeHandler = (text) => {
     setProductUpc(text);
-    if (text?.length >= 12) {
+    if (text?.length > 0) {
       dispatch(getProductByUpc(text, getProduct));
     }
   };
@@ -198,6 +201,15 @@ const ReturnedOrderDetail = ({ orderDetail }) => {
           </View>
 
           <View style={styles.orderDetailsView}>
+            <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
+                {`$${orderDetail?.tips ?? '0'}`}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.orderDetailsView}>
             <Text style={styles.invoiceText}>{strings.deliveryOrders.deliveryCharges}</Text>
             <View style={{ flexDirection: 'row' }}>
               <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
@@ -284,7 +296,7 @@ const styles = StyleSheet.create({
   scanBarCodeView: {
     height: ms(30),
     borderRadius: 5,
-    width: width / 2.8,
+    width: width / 3,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',

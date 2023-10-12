@@ -65,16 +65,26 @@ const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
 
+// const convertText = (text) => {
+//   return text
+//     .toLowerCase()
+//     .split('_')
+//     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+//     .join(' ');
+// };
+
 export function Staff() {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
+  console.log('getSettingData?.staffDetail', JSON.stringify(getSettingData?.staffDetail));
   const staffDetailData = getSettingData?.staffDetail;
   // const posUserArray = getAuth?.getAllPosUsers;
   const posUserArraydata = getAuth?.getAllPosUsersData;
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
+  // console.log('posUserArray', JSON.stringify(posUserArray));
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [staffModal, setStaffModal] = useState(false);
@@ -107,6 +117,8 @@ export function Staff() {
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prevState) => !prevState);
   };
+  // const convertedText = convertText(staffDetailData?.employment_type);
+
   // const onToggleSnackBar = (message) => {
   //   setVisible(!visible);
   //   setErrorMessage(message);
@@ -137,15 +149,15 @@ export function Staff() {
     }
   }, [isFocused]);
 
-  const staffDetailhandler = async (id) => {
+  const staffDetailhandler = async (id, staffId) => {
     if (posRole === 'admin') {
-      const res = await dispatch(getStaffDetail());
+      const res = await dispatch(getStaffDetail(staffId));
       if (res?.type === 'STAFF_DETAIL_SUCCESS') {
         setStaffDetail(true);
       }
     } else {
       if (posUserId === id) {
-        const res = await dispatch(getStaffDetail());
+        const res = await dispatch(getStaffDetail(staffId));
         if (res?.type === 'STAFF_DETAIL_SUCCESS') {
           setStaffDetail(true);
         } else {
@@ -171,21 +183,23 @@ export function Staff() {
       style={styles.twoStepMemberCon}
       // onPress={() => setStaffDetail(true)}
       onPress={() => {
-        staffDetailhandler(item?.user?.id);
+        staffDetailhandler(item?.user?.id, item?.id);
         setData(item);
       }}
     >
       <View style={styles.flexRow}>
         <View style={styles.dispalyRow}>
           <Image
-            source={{
-              uri: item.user?.user_profiles?.profile_photo ?? null,
-            }}
+            source={
+              item.user?.user_profiles?.profile_photo
+                ? { uri: item.user?.user_profiles?.profile_photo }
+                : userImage
+            }
             style={styles.teamMember}
           />
           <View style={styles.marginLeft}>
             <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-              {item.user?.user_profiles?.firstname}
+              {`${item.user?.user_profiles?.firstname} ${item.user?.user_profiles?.lastname}`}
             </Text>
             <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
               {item?.user?.user_roles?.length > 0
@@ -195,7 +209,7 @@ export function Staff() {
             </Text>
           </View>
         </View>
-        <Image source={rightBack} style={styles.arrowStyle} />
+        <Image source={rightBack} style={[styles.arrowStyle, { alignSelf: 'center' }]} />
       </View>
     </TouchableOpacity>
   );
@@ -259,11 +273,17 @@ export function Staff() {
                 <View style={styles.profileBodycon}>
                   <View style={{ flexDirection: 'row' }}>
                     <Image
-                      source={{ uri: data?.user_profiles?.profile_photo }}
+                      source={
+                        data?.user?.user_profiles?.profile_photo
+                          ? { uri: data?.user?.user_profiles?.profile_photo }
+                          : userImage
+                      }
                       style={styles.profileImageStaff}
                     />
                     <View style={styles.litMorecon}>
-                      <Text style={styles.staffName}>{data?.user_profiles?.firstname}</Text>
+                      <Text
+                        style={styles.staffName}
+                      >{`${data?.user?.user_profiles?.firstname} ${data?.user?.user_profiles?.lastname} `}</Text>
                       <View style={styles.dispalyRow}>
                         <Image
                           source={shieldPerson}
@@ -274,16 +294,22 @@ export function Staff() {
                       <View style={styles.dispalyRow}>
                         <Image source={Phone_light} style={styles.Phonelight} />
                         <Text style={styles.terryText}>
-                          {data?.user_profiles?.full_phone_number}
+                          {data?.user?.user_profiles?.full_phone_number}
                         </Text>
                       </View>
                       <View style={styles.dispalyRow}>
                         <Image source={email} style={styles.Phonelight} />
-                        <Text style={styles.terryText}>{data?.email}</Text>
+                        <Text style={styles.terryText}>{data?.user?.email}</Text>
                       </View>
                       <View style={styles.dispalyRow}>
                         <Image source={location} style={styles.Phonelight} />
-                        <Text style={styles.terryText}>4849 Owagner Lane Seattle, WA 98101</Text>
+                        {data?.user?.user_profiles?.current_address ? (
+                          <Text
+                            style={[styles.terryText, { width: ms(210) }]}
+                          >{`${data?.user?.user_profiles?.current_address?.street_address}, ${data?.user?.user_profiles?.current_address?.city}, ${data?.user?.user_profiles?.current_address?.state}, ${data?.user?.user_profiles?.current_address?.zipcode}`}</Text>
+                        ) : (
+                          <Text style={styles.terryText}>{'-----'}</Text>
+                        )}
                       </View>
                     </View>
                   </View>
@@ -293,7 +319,9 @@ export function Staff() {
                     <Spacer space={SH(2)} />
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Joined Date</Text>
-                      <Text style={styles.joinDatelight}>Sep 20, 2022</Text>
+                      <Text style={styles.joinDatelight}>
+                        {moment(staffDetailData?.created_at).format('ll')}
+                      </Text>
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Active Since</Text>
@@ -301,7 +329,7 @@ export function Staff() {
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Employment Type</Text>
-                      <Text style={styles.joinDatelight}>Full-Time</Text>
+                      <Text style={styles.joinDatelight}> {staffDetailData?.employment_type}</Text>
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Leave taken</Text>
@@ -316,19 +344,19 @@ export function Staff() {
               <View style={styles.hourcontainer}>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Hour rate</Text>
-                  <Text style={styles.hourRateLigh}>JBR 1500/h</Text>
+                  <Text style={styles.hourRateLigh}>JBR {staffDetailData?.hourly_rate}/h</Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Over time rate</Text>
-                  <Text style={styles.hourRateLigh}>JBR 2500/h</Text>
+                  <Text style={styles.hourRateLigh}>JBR {staffDetailData?.overtime_rate}/h</Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Payment Cycle</Text>
-                  <Text style={styles.hourRateLigh}>Weekly</Text>
+                  <Text style={styles.hourRateLigh}>{staffDetailData?.payment_cycle}</Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Billing</Text>
-                  <Text style={styles.hourRateLigh}>Automatic</Text>
+                  <Text style={styles.hourRateLigh}>{staffDetailData?.billing_type}</Text>
                 </View>
               </View>
               <Spacer space={SH(14)} />
@@ -373,7 +401,7 @@ export function Staff() {
                     </View>
                   </View>
 
-                  {staffDetailData?.map((item, index) => (
+                  {/* {staffDetailData?.map((item, index) => (
                     <View style={{}}>
                       <TouchableOpacity
                         style={styles.tableDataCon}
@@ -488,7 +516,7 @@ export function Staff() {
                         </View>
                       ) : null}
                     </View>
-                  ))}
+                  ))} */}
                 </Table>
               </View>
             </ScrollView>
@@ -548,6 +576,7 @@ export function Staff() {
                         title="Pull to Refresh" // Optional, you can customize the text
                       />
                     }
+                    showsVerticalScrollIndicator={false}
                   />
                 </View>
               </View>

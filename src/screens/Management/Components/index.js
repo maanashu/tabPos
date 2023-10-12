@@ -148,6 +148,7 @@ export function SessionHistoryTable({
     setSelectedDate(null);
     dispatch(getSessionHistory());
   };
+
   useEffect(() => {
     const newDateFormat = moment(formattedDate).format('YYYY-MM-DD');
     if (staffSelect !== 'none') {
@@ -226,8 +227,8 @@ export function SessionHistoryTable({
                 </Text>
               </View>
               <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={1}>
-                  Ended By
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Ended By System
                 </Text>
               </View>
               <View style={styles.profileheaderChildView}>
@@ -291,7 +292,7 @@ export function SessionHistoryTable({
                           {moment(item.created_at).format('YYYY/MM/DD') ?? ''}
                         </Text>
                       </View>
-                      <View style={styles.profileheaderChildView}>
+                      <View style={[styles.profileheaderChildView, { marginLeft: SW(-5) }]}>
                         <Text style={styles.tableTextData} numberOfLines={1}>
                           {item.start_session == null
                             ? ''
@@ -320,7 +321,7 @@ export function SessionHistoryTable({
                           <Text style={[styles.tableTextData, { marginLeft: ms(5) }]}>
                             {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
                             {item?.pos_user_detail?.user_profiles?.firstname == undefined
-                              ? 'Unknown'
+                              ? 'System Ended'
                               : item?.pos_user_detail?.user_profiles?.firstname}
                           </Text>
                         </View>
@@ -337,13 +338,13 @@ export function SessionHistoryTable({
                           {'.00'}
                         </Text>
                       </View>
-                      <View style={styles.profileheaderChildView}>
+                      <View style={[styles.profileheaderChildView, { marginLeft: SW(-3) }]}>
                         <Text style={styles.tableTextData} numberOfLines={1}>
                           ${item.removed_cash}
                           {'.00'}
                         </Text>
                       </View>
-                      <View style={styles.profileheaderChildView}>
+                      <View style={[styles.profileheaderChildView, { marginLeft: SW(-3) }]}>
                         <Text style={styles.tableTextData} numberOfLines={1}>
                           ${item.counted_cash}
                           {'.00'}

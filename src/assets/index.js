@@ -6,6 +6,7 @@ export { default as EyeShow } from '@/assets/ic_auth/EyeShow.png';
 export { default as crossButton } from '@/assets/icons/ic_auth/crossButton.png';
 export { default as powerAuth } from '@/assets/icons/ic_auth/power.png';
 export { default as verifyIcon } from '@/assets/icons/ic_auth/verifyIcon.png';
+export { default as userImage } from '@/assets/ic_auth/userImage.png';
 export { default as profilePic } from '@/assets/icons/ic_auth/profilePic.png';
 export { default as toastcross } from '@/assets/icons/ic_auth/toastcross.png';
 export { default as toastcheck } from '@/assets/icons/ic_auth/toastcheck.png';
@@ -83,7 +84,7 @@ export { default as transactionChart } from '@/assets/icons/ic_wallet/transactio
 export { default as wallet2 } from '@/assets/icons/ic_wallet/wallet.png';
 export { default as delivery } from '@/assets/icons/ic_deliveryOrder/delivery.png';
 export { default as parcel } from '@/assets/icons/ic_deliveryOrder/parcel.png';
-export { default as userImage } from '@/assets/icons/ic_deliveryOrder/userImage.png';
+// export { default as userImage } from '@/assets/icons/ic_deliveryOrder/userImage.png';
 export { default as user } from '@/assets/icons/ic_deliveryOrder/user.png';
 export { default as deliveryLine } from '@/assets/icons/ic_deliveryOrder/deliveryBlue.png';
 export { default as radio } from '@/assets/icons/ic_deliveryOrder/radio.png';
@@ -174,8 +175,14 @@ export { default as rewardFlower } from '@/assets/icons/ic_reward/rewardFlower.p
 export { default as tableProfile } from '@/assets/icons/ic_reward/tableProfile.png';
 export { default as security } from '@/assets/icons/ic_setting/security.png';
 export { default as device } from '@/assets/icons/ic_setting/device.png';
+export { default as cardReader } from '@/assets/icons/ic_setting/cardReader.png';
 export { default as bell } from '@/assets/icons/ic_setting/bell.png';
 export { default as pinLight } from '@/assets/icons/ic_setting/pinLight.png';
+export { default as printer } from '@/assets/icons/ic_setting/printer.png';
+
+export { default as dropOff } from '@/assets/icons/ic_setting/dropOff.png';
+export { default as shippingPlain } from '@/assets/icons/ic_setting/shiping.png';
+
 export { default as plan } from '@/assets/icons/ic_setting/plan.png';
 export { default as invoiceSett } from '@/assets/icons/ic_setting/invoice.png';
 export { default as tax } from '@/assets/icons/ic_setting/tax.png';

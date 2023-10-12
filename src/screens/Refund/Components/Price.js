@@ -1,8 +1,6 @@
 import React, { memo } from 'react';
 import { View, Text, Platform, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
-
 import { ms } from 'react-native-size-matters';
-
 import { Fonts } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
@@ -40,13 +38,6 @@ const Price = ({ orderData, onPresshandler }) => {
           </Text>
         </View>
       </View>
-      <View style={styles.orderDetailsView}>
-        <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={styles.totalTextStyle2}>{'$'}</Text>
-          <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>{'0.00'}</Text>
-        </View>
-      </View>
 
       <View style={styles.orderDetailsView}>
         <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
@@ -55,6 +46,31 @@ const Price = ({ orderData, onPresshandler }) => {
           <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>
             {orderData?.order?.tax}
           </Text>
+        </View>
+      </View>
+      {(orderData?.order?.delivery_charge !== '0' || orderData?.order?.shipping_charge !== '0') && (
+        <View style={styles.orderDetailsView}>
+          <Text style={styles.invoiceText}>
+            {orderData?.order?.delivery_charge !== '0'
+              ? strings.deliveryOrders.deliveryCharges
+              : strings.deliveryOrders.shippingCharges}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.totalTextStyle2}>{'$'}</Text>
+            <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>
+              {orderData?.order?.delivery_charge !== '0'
+                ? orderData?.order?.delivery_charge
+                : orderData?.order?.shipping_charge}
+            </Text>
+          </View>
+        </View>
+      )}
+
+      <View style={styles.orderDetailsView}>
+        <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={styles.totalTextStyle2}>{'$'}</Text>
+          <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>{'0.00'}</Text>
         </View>
       </View>
 

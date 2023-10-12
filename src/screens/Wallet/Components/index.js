@@ -1,9 +1,8 @@
 import React from 'react';
-import { Text, TouchableOpacity, View, Image, Dimensions } from 'react-native';
-import { COLORS, SH, SW, SF } from '@/theme';
+import { Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
+
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import {
-  angela,
   checkArrow,
   crossButton,
   deliverCheck,
@@ -25,6 +24,7 @@ import {
 } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
+import { COLORS, SH, SW, SF } from '@/theme';
 import { styles } from '@/screens/Wallet/Wallet.styles';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 const windowHeight = Dimensions.get('window').height;

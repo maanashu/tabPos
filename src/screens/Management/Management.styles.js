@@ -51,6 +51,8 @@ export const styles = StyleSheet.create({
     // borderWidth: 3,
     fontSize: SF(15),
     paddingLeft: 5,
+    padding: 0,
+    margin: 0,
   },
   truckStyle: {
     width: SH(32),
@@ -714,7 +716,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   profileheaderChildView: {
-    width: Platform.OS === 'android' ? ms(85) : ms(65),
+    width: Platform.OS === 'android' ? SW(38) : ms(65),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(3),

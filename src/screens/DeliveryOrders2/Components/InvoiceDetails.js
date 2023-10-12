@@ -1,5 +1,13 @@
 import React, { memo, useEffect } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
@@ -29,17 +37,18 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
     dispatch(getOrderData(orderData?.order_id));
   }, []);
 
-  const renderProductItem = ({ item }) => (
+  const renderProductItem = ({ item, index }) => (
     <View style={style.container}>
       <View style={style.subContainer}>
-        <Text style={style.count}>{item.qty}</Text>
+        <Text style={style.count}>{index + 1}</Text>
 
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[style.itemName, { width: ms(80) }]} numberOfLines={1}>
             {item?.product_name ?? '-'}
           </Text>
           <View style={style.belowSubContainer}>
-            <Text style={style.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text>
+            <Text style={style.colorsTitle}>{`QTY : ${item?.qty}`}</Text>
+            {/* <Text style={style.colorsTitle}>{item?.product_details?.sku ?? '-'}</Text> */}
           </View>
         </View>
       </View>
@@ -49,7 +58,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1 }}>
       <View style={styles.firstRowStyle}>
         <View style={styles.storeDetailView}>
           <Text style={style.storeNameText}>
@@ -91,6 +100,12 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
             <Text style={style._substotalTile}>{strings.deliveryOrders.subTotal}</Text>
             <Text style={style._subTotalPrice}>{`$${orderDetail?.actual_amount}` ?? '-'}</Text>
           </View>
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{'Discount'}</Text>
+            <Text style={style._subTotalPrice}>{`$${orderDetail?.discount}` ?? '-'}</Text>
+          </View>
 
           <View style={style._horizontalLine} />
 
@@ -98,6 +113,32 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
             <Text style={style._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
             <Text style={style._subTotalPrice}>{`$${orderDetail?.tax}` ?? '-'}</Text>
           </View>
+
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{strings.deliveryOrders.tips}</Text>
+            <Text style={style._subTotalPrice}>{`$${orderDetail?.tips}` ?? '-'}</Text>
+          </View>
+
+          <View style={style._horizontalLine} />
+
+          {(orderDetail?.delivery_charge !== '0' || orderDetail?.shipping_charge !== '0') && (
+            <View style={style._subTotalContainer}>
+              <Text style={style._substotalTile}>
+                {orderDetail?.delivery_charge !== '0'
+                  ? strings.deliveryOrders.deliveryCharges
+                  : strings.deliveryOrders.shippingCharges}
+              </Text>
+              <Text style={style._subTotalPrice}>
+                {`$${
+                  orderDetail?.delivery_charge !== '0'
+                    ? orderDetail?.delivery_charge
+                    : orderDetail?.shipping_charge
+                }` ?? '-'}
+              </Text>
+            </View>
+          )}
 
           <View style={style._horizontalLine} />
 
@@ -124,7 +165,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
           </Text>
 
           <Text style={style._commonPayTitle}>
-            User ID : #{getUserData?.posLoginData?.id ?? '-'}
+            User ID : #{orderDetail?.user_details?.id ?? '-'}
           </Text>
 
           <Text style={style._thankyou}>{strings.deliveryOrders2.thanks}</Text>
@@ -229,7 +270,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
           {/* <ShipmentTracking orderData={orderDetail} onPressShop={onPressShop} /> */}
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

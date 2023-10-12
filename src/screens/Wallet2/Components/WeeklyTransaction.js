@@ -356,6 +356,13 @@ export function WeeklyTransaction({
                   }}
                   maxDate={maxDate}
                   selectedStartDate={defaultDate}
+                  onCancelPress={() => {
+                    setShow(false);
+                    // setFormatedDate();
+                    // setDate();
+                    // setSelectId(2);
+                    // setSelectTime({ value: 'week' });
+                  }}
                 />
               </View>
             </Modal>
@@ -513,7 +520,7 @@ export function WeeklyTransaction({
               </View>
               <View style={styles.tableHeaderRight}>
                 <Text numberOfLines={1} style={styles.tableTextHea}>
-                  Invoice Number
+                  Invoice ID
                 </Text>
                 <View style={styles.flexAlign}>
                   <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
@@ -556,7 +563,7 @@ export function WeeklyTransaction({
                     >
                       <View style={styles.displayFlex}>
                         <View style={styles.tableHeaderLeft}>
-                          <Text style={styles.tableTextDataFirst}>{currentIndex}</Text>
+                          <Text style={[styles.tableTextDataFirst]}>{currentIndex}</Text>
                           <View
                             style={{
                               flexDirection: 'column',
@@ -577,7 +584,7 @@ export function WeeklyTransaction({
                         </View>
                         <View style={styles.tableHeaderRight}>
                           <Text
-                            style={[styles.tableTextData, { fontSize: SF(12), marginLeft: ms(15) }]}
+                            style={[styles.tableTextData, { fontSize: SF(12), marginLeft: ms(10) }]}
                           >
                             {item?.invoices?.invoice_number ?? null}
                           </Text>
@@ -591,15 +598,15 @@ export function WeeklyTransaction({
                           <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
 
                           <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
-                          <View
+                          {/* <View
                             style={{
                               marginLeft: ms(-15),
                             }}
-                          >
-                            <Text style={styles.tableTextData}>
-                              {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
-                            </Text>
-                          </View>
+                          > */}
+                          <Text style={styles.tableTextData}>
+                            {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
+                          </Text>
+                          {/* </View> */}
                           <View
                             style={{
                               width: SF(110),

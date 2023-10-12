@@ -21,8 +21,11 @@ const client = axios.create({
 client.interceptors.request.use(async function (config) {
   const register = store.getState().auth?.merchantLoginData?.token;
   const user = store.getState().user?.posLoginData?.token;
+  const poss = store.getState().user?.posLoginData;
   const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
   const fcmToken = await getDeviceToken();
+  const posNumber = store.getState().user?.posLoginData?.pos_number;
+  console.log('user', user);
 
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
@@ -47,6 +50,9 @@ client.interceptors.request.use(async function (config) {
     config.headers['fcm-token'] = fcmToken;
   }
 
+  if (posNumber) {
+    config.headers['pos-no'] = posNumber;
+  }
   return config;
 });
 

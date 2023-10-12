@@ -77,16 +77,8 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
 
         <Spacer horizontal space={ms(5)} />
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignSelf: 'center',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <View style={styles.statusViewText}>
+        <View style={styles.eachStatusViewStyle}>
+          <View>
             <Text style={styles.statusNameText}>{heading}</Text>
             {date ? (
               <Text style={[styles.currentStatusText, { marginTop: 0 }]}>
@@ -95,30 +87,13 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
             ) : null}
           </View>
 
-          {status === 3 &&
-            orderData?.order_delivery?.seller_otp &&
-            heading === strings.deliveryOrders.driverAssigned && (
-              <View
-                style={{
-                  width: ms(30),
-                  height: ms(18),
-                  backgroundColor: COLORS.primary,
-                  borderRadius: 10,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: Fonts.SemiBold,
-                    color: COLORS.white,
-                    fontSize: SF(13),
-                  }}
-                >
-                  {orderData?.order_delivery?.seller_otp}
-                </Text>
-              </View>
-            )}
+          {status === 3 && heading === strings.deliveryOrders.driverAssigned && (
+            <View style={styles.sellerOtpViewStyle}>
+              <Text style={styles.sellerOtpTextStyle}>
+                {orderData?.order_delivery?.seller_otp ?? '1234'}
+              </Text>
+            </View>
+          )}
         </View>
       </View>
     </>
@@ -158,20 +133,16 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
 
       <Spacer horizontal space={ms(5)} />
 
-      <View style={styles.statusViewText}>
+      <View>
         {heading === 'Return to Shop' && orderStatus === 7 && orderData?.is_delivery_dispute ? (
           <TouchableOpacity onPress={onPressShop}>
             <Text style={styles.statusNameText}>{heading}</Text>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={styles.storeDetailViewStyle}>
               <Image style={styles.verifiedIconStyle} source={storeLogo} />
               <View>
                 <Text style={styles.statusNameText}>{shopName ?? '-'}</Text>
-                <Text
-                  style={[styles.statusNameText, { fontSize: ms(5), fontFamily: Fonts.Regular }]}
-                >
-                  {shopAddress ?? '-'}
-                </Text>
+                <Text style={styles.addressTextStyle}>{shopAddress ?? '-'}</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -181,15 +152,11 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
           <View>
             <Text style={styles.statusNameText}>{heading}</Text>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={styles.storeDetailViewStyle}>
               <Image style={styles.verifiedIconStyle} source={storeLogo} />
               <View>
                 <Text style={styles.statusNameText}>{shopName ?? '-'}</Text>
-                <Text
-                  style={[styles.statusNameText, { fontSize: ms(5), fontFamily: Fonts.Regular }]}
-                >
-                  {shopAddress ?? '-'}
-                </Text>
+                <Text style={styles.addressTextStyle}>{shopAddress ?? '-'}</Text>
               </View>
             </View>
           </View>
@@ -209,7 +176,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
 
         <Spacer horizontal space={ms(5)} />
 
-        <View style={styles.statusViewText}>
+        <View>
           <Text style={styles.statusNameText}>{currentStatus(orderStatus)}</Text>
         </View>
       </View>
@@ -233,6 +200,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
 
             <View style={styles.bottomLine} />
           </>
+
           {isHideView ? (
             <View style={styles.statusViewStyle}>
               {returnStatusView('Return CODE')}
@@ -252,7 +220,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
 
                 <Spacer horizontal space={ms(5)} />
 
-                <View style={styles.statusViewText}>
+                <View>
                   <Text style={styles.statusNameText}>{strings.deliveryOrders.cancelled}</Text>
                 </View>
               </View>
@@ -267,6 +235,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
                 <Text style={styles.orderStatusHeading}>{strings.deliveryOrders.orderStatus}</Text>
                 <Text style={styles.currentStatusText}>{strings.deliveryOrders.returned}</Text>
               </View>
+
               <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
                 <Image source={isHideView ? down : up} style={styles.downArrowStyle} />
               </TouchableOpacity>
@@ -293,7 +262,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
 
                 <Spacer horizontal space={ms(5)} />
 
-                <View style={styles.statusViewText}>
+                <View>
                   <Text style={styles.statusNameText}>{strings.deliveryOrders.returned}</Text>
                 </View>
               </View>
@@ -410,15 +379,41 @@ const styles = StyleSheet.create({
     height: ms(10),
     resizeMode: 'contain',
   },
-  statusViewText: {
-    // top: ms(2),
-  },
   arrowView: {
     padding: ms(5),
   },
   statusViewStyle: {
     paddingTop: ms(10),
     paddingHorizontal: ms(10),
+  },
+  addressTextStyle: {
+    fontSize: ms(5),
+    color: COLORS.black,
+    fontFamily: Fonts.Regular,
+  },
+  storeDetailViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  sellerOtpViewStyle: {
+    width: ms(30),
+    height: ms(18),
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.primary,
+  },
+  sellerOtpTextStyle: {
+    fontSize: SF(13),
+    color: COLORS.white,
+    fontFamily: Fonts.SemiBold,
+  },
+  eachStatusViewStyle: {
+    flex: 1,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 

@@ -30,18 +30,18 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         title: 'Orders to Review',
         count: orderStatusCountData?.[0]?.count ?? '0',
       },
-      {
-        key: '1',
-        image: drawerdeliveryTruck,
-        title: 'Accepted',
-        count: orderStatusCountData?.[1]?.count ?? '0',
-      },
-      {
-        key: '2',
-        image: timer,
-        title: 'Order Preparing ',
-        count: orderStatusCountData?.[2]?.count ?? '0',
-      },
+      // {
+      //   key: '1',
+      //   image: drawerdeliveryTruck,
+      //   title: 'Accepted',
+      //   count: orderStatusCountData?.[1]?.count ?? '0',
+      // },
+      // {
+      //   key: '2',
+      //   image: timer,
+      //   title: 'Order Preparing ',
+      //   count: orderStatusCountData?.[2]?.count ?? '0',
+      // },
       {
         key: '3',
         image: Group,
@@ -58,7 +58,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         key: '5',
         image: Cart,
         title: 'Delivered',
-        count: orderStatusCountData?.[5]?.count ?? '0',
+        count: orderStatusCountData?.[6]?.count ?? '0',
       },
       {
         key: '7,8',
@@ -70,7 +70,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         key: '9',
         image: ReturnTruck,
         title: 'Returned',
-        count: orderStatusCountData?.[7]?.count ?? '0',
+        count: orderStatusCountData?.[8]?.count ?? '0',
       },
     ],
     [orderStatusCountData]
@@ -92,7 +92,10 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
     if (item?.image === Cart) {
       return (
         <View style={styles.bucketBackgorund}>
-          <Image source={item.image} style={[styles.sideBarImage, { tintColor: blueBackground }]} />
+          <Image
+            source={item?.image}
+            style={[styles.sideBarImage, { tintColor: blueBackground }]}
+          />
           <View
             style={[
               styles.bucketBadge,
@@ -107,7 +110,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
       return (
         <View style={styles.bucketBackgorund}>
           <Image
-            source={item.image}
+            source={item?.image}
             style={[styles.sideBarImage, { tintColor: rejectedBackground }]}
           />
           <View
@@ -121,7 +124,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
       return (
         <View style={styles.bucketBackgorund}>
           <Image
-            source={item.image}
+            source={item?.image}
             style={[styles.sideBarImage, { tintColor: returnedbackground }]}
           />
           <View
@@ -141,7 +144,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
       return (
         <View style={styles.bucketBackgorund}>
           <Image
-            source={item.image}
+            source={item?.image}
             style={[
               styles.sideBarImage,
               {
@@ -181,7 +184,11 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
   };
 
   const renderDrawer = ({ item }) => (
-    <TouchableOpacity style={styles.drawerIconView} onPress={() => onPressDrawerHandler(item?.key)}>
+    <TouchableOpacity
+      disabled={item?.count > 0 ? false : true}
+      style={styles.drawerIconView}
+      onPress={() => onPressDrawerHandler(item?.key)}
+    >
       {showBadge(item)}
     </TouchableOpacity>
   );
@@ -191,7 +198,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
       <FlatList
         data={statusCount}
         renderItem={renderDrawer}
-        keyExtractor={(item) => item.key.toString()}
+        keyExtractor={(item) => item?.key?.toString()}
       />
     </View>
   );

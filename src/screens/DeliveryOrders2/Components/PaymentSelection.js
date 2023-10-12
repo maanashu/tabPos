@@ -20,7 +20,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { moderateScale, moderateVerticalScale, ms, verticalScale } from 'react-native-size-matters';
 
 import { returnProduct } from '@/actions/DashboardAction';
-import { InvoiceDetail, Spacer } from '@/components';
+import { Spacer } from '@/components';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { SF, SH, COLORS, SW } from '@/theme';
@@ -31,8 +31,9 @@ import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
 import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
-import { goBack, navigate } from '@/navigation/NavigationRef';
+import { navigate } from '@/navigation/NavigationRef';
 import ReturnInvoice from './ReturnInvoice';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 const { width, height } = Dimensions.get('window');
 
@@ -86,11 +87,16 @@ export function PaymentSelection(props) {
     setIsPhoneVisible(false);
   };
 
-  const onReturnHandler = () => {
-    if (selectedRecipeIndex === null) {
+  const onReturnHandler = async () => {
+    if (
+      !orderFinalData ||
+      !orderFinalData?.order ||
+      !orderFinalData?.order?.mode_of_payment === 'cash'
+    ) {
       alert('Please select e-recipe method');
       return;
     }
+    await dispatch(getDrawerSessions());
     const products =
       orderFinalData?.order?.map((item) => ({
         id: item?.id,
@@ -227,9 +233,9 @@ export function PaymentSelection(props) {
             <View style={styles.textInputView}>
               <CountryPicker
                 onSelect={(code) => {
-                  setFlag(code.cca2);
-                  if (code.callingCode !== []) {
-                    setCountryCode('+' + code.callingCode.flat());
+                  setFlag(code?.cca2);
+                  if (code?.callingCode !== []) {
+                    setCountryCode('+' + code?.callingCode.flat());
                   } else {
                     setCountryCode('');
                   }

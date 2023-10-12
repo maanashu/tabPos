@@ -3,16 +3,15 @@ import {
   View,
   Text,
   Image,
-  StyleSheet,
-  Dimensions,
+  Platform,
   FlatList,
   TextInput,
+  StyleSheet,
+  Dimensions,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 
 import { useDispatch } from 'react-redux';
-import ReactNativeModal from 'react-native-modal';
 import { moderateScale, ms, scale, verticalScale } from 'react-native-size-matters';
 
 import {
@@ -25,13 +24,13 @@ import {
   checkedCheckboxSquare,
 } from '@/assets';
 import { Spacer } from '@/components';
+import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
-import { goBack, navigate } from '@/navigation/NavigationRef';
 import RecheckConfirmation from './RecheckConfirmation';
 import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
+import { goBack, navigate } from '@/navigation/NavigationRef';
 import { CustomHeader } from '@/screens/PosRetail3/Components';
 import { getDrawerSessions } from '@/actions/CashTrackingAction';
-import { NAVIGATION } from '@/constants';
 
 const { width, height } = Dimensions.get('window');
 
@@ -53,51 +52,57 @@ export function ProductRefund(props) {
   useEffect(() => {
     if (orderData) {
       const filterSelectedProducts = finalOrder?.order_details?.filter((e) => e?.isChecked);
-      const updatedDataArray = filterSelectedProducts.map((item) => {
+      const updatedDataArray = filterSelectedProducts?.map((item) => {
         return { ...item, refundAmount: 0, totalRefundAmount: 0 };
       });
       setOrders(updatedDataArray);
     }
   }, []);
 
-  const refundHandler = (key, newText) => {
-    setButtonText('Apply Refund');
-    const updatedDataArray = orders?.map((item, index) => {
+  const refundHandler = (key, newText, item) => {
+    const parsedNewText = parseFloat(newText);
+    const finalText = isNaN(parsedNewText) ? 0 : parsedNewText;
+    const isSmallerThanUnitPrice = finalText <= parseFloat(item?.price);
+
+    const updatedDataArray = orders.map((order, index) => {
       if (index === key) {
         return {
-          ...item,
-          refundAmount: parseFloat(newText),
-          totalRefundAmount: parseFloat(newText) * item.qty || 0,
+          ...order,
+          refundAmount: isSmallerThanUnitPrice ? finalText : '',
+          totalRefundAmount: isSmallerThanUnitPrice ? finalText * item.qty : 0.0,
         };
       }
-      return item;
+      return order;
     });
+
     setOrders(updatedDataArray);
+
+    if (!isSmallerThanUnitPrice) {
+      alert('Refund amount should not be greater than unit price');
+    }
   };
 
   const addRemoveQty = (symbol, itemIndex) => {
-    // Create a copy of the orders array to avoid mutating the original state
     const updatedOrders = [...orders];
-
-    // Find the selected item in the copy
     const selectedItem = updatedOrders[itemIndex];
     const originalOrderArr = products[itemIndex];
 
-    if (symbol === '+' && selectedItem.qty < originalOrderArr.qty) {
-      // Increase the qty of the selected item
+    if (symbol === '+' && selectedItem?.qty < originalOrderArr?.qty) {
       selectedItem.qty += 1;
-      selectedItem.totalRefundAmount = selectedItem.qty * selectedItem.refundAmount;
-    } else if (symbol === '-' && selectedItem.qty > 1) {
-      // Decrease the qty of the selected item, but ensure it doesn't go below 0
+      selectedItem.totalRefundAmount = selectedItem?.qty * selectedItem?.refundAmount;
+    } else if (symbol === '-' && selectedItem?.qty > 1) {
       selectedItem.qty -= 1;
-      selectedItem.totalRefundAmount = selectedItem.qty * selectedItem.refundAmount;
+      selectedItem.totalRefundAmount = selectedItem?.qty * selectedItem?.refundAmount;
     }
-    // Update the state with the modified copy of the orders array
     setOrders(updatedOrders);
   };
 
   const totalRefundAmount = orders?.reduce((accumulator, currentValue) => {
-    const totalRefund = accumulator + currentValue.totalRefundAmount;
+    const price =
+      applicableIsCheck || applyEachItem
+        ? currentValue.totalRefundAmount
+        : currentValue.price * currentValue.qty;
+    const totalRefund = accumulator + price;
     return totalRefund;
   }, 0);
 
@@ -154,7 +159,9 @@ export function ProductRefund(props) {
                   ]}
                   value={item?.refundAmount}
                   keyboardType={'number-pad'}
-                  onChangeText={(text) => refundHandler(index, text)}
+                  onChangeText={(text) => {
+                    refundHandler(index, text, item);
+                  }}
                 />
               </View>
             ) : (
@@ -182,7 +189,9 @@ export function ProductRefund(props) {
                 >
                   <Image source={minus} style={styles.minus} />
                 </TouchableOpacity>
+
                 <Text>{`${item?.qty}`}</Text>
+
                 <TouchableOpacity
                   style={{
                     width: SW(10),
@@ -197,7 +206,10 @@ export function ProductRefund(props) {
 
             <View style={styles.productCartBody}>
               <Text style={styles.blueListDataText} numberOfLines={1}>
-                ${(item?.totalRefundAmount).toFixed(2) ?? 0}
+                $
+                {applicableIsCheck || applyEachItem
+                  ? (item?.totalRefundAmount).toFixed(2) ?? 0
+                  : item.price * item.qty}
               </Text>
             </View>
           </View>
@@ -268,10 +280,11 @@ export function ProductRefund(props) {
   const getOrdersDetail = () => {
     if (applyEachItem) {
       const newArray = orders.map((obj) => ({
-        ...obj, // Copy all existing key-value pairs
-        ['applyToEachItemKey']: applyEachItem, //
+        ...obj,
+        ['applyToEachItemKey']: applyEachItem,
       }));
       setOrders(newArray);
+
       const data = {
         order: orders,
         orderData: finalOrder,
@@ -279,8 +292,10 @@ export function ProductRefund(props) {
         applicableForAllItems: applicableIsCheck,
         payableAmount: totalRefundableAmount(),
         subTotal: totalRefundAmount,
-        totalTaxes: applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0,
-        total: applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0,
+        totalTaxes: calculateRefundTax().toFixed(2),
+        total: totalRefundableAmount().toFixed(2),
+        deliveryShippingTitle: deliveryShippingCharges().title,
+        deliveryShippingCharges: deliveryShippingCharges().deliveryCharges,
       };
       navigate(NAVIGATION.paymentSelection, { screen: data });
     } else {
@@ -291,17 +306,45 @@ export function ProductRefund(props) {
         applicableForAllItems: applicableIsCheck,
         payableAmount: totalRefundableAmount(),
         subTotal: totalRefundAmount,
-        totalTaxes: applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0,
-        total: applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0,
+        totalTaxes: calculateRefundTax().toFixed(2),
+        total: totalRefundableAmount().toFixed(2),
+        deliveryShippingTitle: deliveryShippingCharges().title,
+        deliveryShippingCharges: deliveryShippingCharges().deliveryCharges,
       };
       navigate(NAVIGATION.paymentSelection, { screen: data });
     }
   };
 
+  const formattedReturnPrice = (price) => {
+    // Convert price to a number, defaulting to 0 if it's falsy or not a number
+    const numericPrice = parseFloat(price) || 0;
+
+    // Format the numeric price with 2 decimal places
+    const formattedPrice = numericPrice.toFixed(2);
+
+    // Determine the sign and prepend accordingly
+    const sign = numericPrice == 0 ? '' : '-';
+
+    return `${sign}$${formattedPrice}`;
+  };
+
+  const deliveryShippingCharges = () => {
+    let deliveryCharges;
+    let title;
+    if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '1') {
+      deliveryCharges = finalOrder?.order?.delivery_charge;
+      title = 'Delivery Charges';
+    } else {
+      title = '';
+      deliveryCharges = 0;
+    }
+    return { title, deliveryCharges };
+  };
+
   return (
     <View style={styles.container}>
       <>
-        <CustomHeader crossHandler={() => goBack()} />
+        <CustomHeader crossHandler={() => props?.route?.params?.onPressBack()} iconShow />
 
         <View
           style={{
@@ -363,11 +406,11 @@ export function ProductRefund(props) {
                     const updatedDataArray = orders?.map((item) => ({
                       ...item,
                       refundAmount: isPercentageLabel
-                        ? (item.price * parseFloat(text)) / 100
+                        ? (item?.price * parseFloat(text)) / 100
                         : parseFloat(text),
                       totalRefundAmount: isPercentageLabel
-                        ? (item.price * parseFloat(text) * item.qty) / 100
-                        : parseFloat(text) * item.qty,
+                        ? (item?.price * parseFloat(text) * item?.qty) / 100
+                        : parseFloat(text) * item?.qty,
                     }));
 
                     setOrders(updatedDataArray);
@@ -558,26 +601,45 @@ export function ProductRefund(props) {
 
             <View style={styles.totalViewStyle}>
               <Text style={styles.subTotalText}>{strings.deliveryOrders.subTotal}</Text>
-              <Text style={styles.subTotalPrice}>{`$${totalRefundAmount}`}</Text>
+              <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
+                totalRefundAmount
+              )}`}</Text>
             </View>
 
             <Spacer space={SH(10)} />
 
             <View style={styles.totalViewStyle}>
               <Text style={styles.subTotalText}>{strings.deliveryOrders.totalTax}</Text>
-              <Text style={styles.subTotalPrice}>{`$${
-                applyEachItem || applicableIsCheck ? calculateRefundTax().toFixed(2) : 0
-              }`}</Text>
+              <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
+                calculateRefundTax()
+              )}`}</Text>
             </View>
 
             <Spacer space={SH(10)} />
+
+            {/* {finalOrder?.order?.status === 5 ? (
+              <>
+                <Spacer space={SH(10)} />
+                <View style={styles.totalViewStyle}>
+                  <Text style={styles.subTotalText}>{deliveryShippingCharges().title}</Text>
+                  <Text style={styles.subTotalPrice}>{`${
+                    applyEachItem || applicableIsCheck
+                      ? formattedReturnPrice(deliveryShippingCharges().deliveryCharges)
+                      : formattedReturnPrice(0)
+                  }`}</Text>
+                </View>
+                <Spacer space={SH(10)} />
+              </>
+            ) : null} */}
+
+            {/* <Spacer space={SH(10)} /> */}
 
             <View style={styles.totalViewStyle}>
               <Text style={[styles.subTotalText, { fontFamily: Fonts.MaisonBold }]}>
                 {strings.wallet.total}
               </Text>
               <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
-                {`$${applyEachItem || applicableIsCheck ? totalRefundableAmount().toFixed(2) : 0}`}
+                {`${formattedReturnPrice(totalRefundableAmount())}`}
               </Text>
             </View>
 
@@ -585,11 +647,11 @@ export function ProductRefund(props) {
 
             <TouchableOpacity
               onPress={() => setIsCheckConfirmationModalVisible(true)}
-              disabled={buttonText === 'Applied' ? false : true}
+              disabled={orders?.length > 0 ? false : true}
               style={[
                 styles.nextButtonStyle,
                 {
-                  backgroundColor: buttonText === 'Applied' ? COLORS.primary : COLORS.gerySkies,
+                  backgroundColor: orders?.length > 0 ? COLORS.primary : COLORS.gerySkies,
                 },
               ]}
             >

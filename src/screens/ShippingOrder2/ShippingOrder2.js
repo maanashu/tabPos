@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
 
 import WebView from 'react-native-webview';
-import Pdf from 'react-native-pdf';
+import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   getGraphOrders,
@@ -25,20 +26,18 @@ import OrderList from './Components/OrderList';
 import OrderDetail from './Components/OrderDetail';
 import RightDrawer from './Components/RightDrawer';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { acceptOrder } from '@/actions/DeliveryAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import OrderConversion from './Components/OrderConversion';
-import { getDelivery } from '@/selectors/DeliverySelector';
+import { getShipping } from '@/selectors/ShippingSelector';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import TodayShippingStatus from './Components/TodayShippingStatus';
 import CurrentShippingStatus from './Components/CurrentShippingStatus';
-import { acceptOrder } from '@/actions/DeliveryAction';
 
 import styles from './ShippingOrder2.styles';
-import { useFocusEffect } from '@react-navigation/native';
-import { getShipping } from '@/selectors/ShippingSelector';
-import { ms } from 'react-native-size-matters';
+import { getPendingOrders } from '@/actions/DashboardAction';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -68,19 +67,10 @@ export function ShippingOrder2() {
       dispatch(todayCurrentStatus(sellerID));
       dispatch(getReviewDefault(0, sellerID));
       dispatch(getGraphOrders());
+      dispatch(getPendingOrders(sellerID));
       dispatch(getShippingOrderstatistics(sellerID));
     }, [])
   );
-
-  // useEffect(() => {
-  //   if (ordersList?.length > 0) {
-  //     const interval = setInterval(() => {
-  //       dispatch(getOrderData(orderId || ordersList?.[0]?.id));
-  //     }, 30000);
-
-  //     return () => clearInterval(interval);
-  //   }
-  // }, []);
 
   useEffect(() => {
     setUserDetail(ordersList?.[0] ?? []);
@@ -156,7 +146,7 @@ export function ShippingOrder2() {
         <Image source={{ uri: item?.product_image }} style={styles.userImageStyle} />
         <View style={{ paddingLeft: 10, width: ms(100) }}>
           <Text style={styles.nameTextStyle}>{item?.product_name}</Text>
-          <Text style={styles.varientTextStyle}>{'Box'}</Text>
+          {/* <Text style={styles.varientTextStyle}>{item?.product_details?.sku}</Text> */}
         </View>
       </View>
       <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>

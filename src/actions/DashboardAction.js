@@ -1,12 +1,13 @@
 import { DashboardController } from '@/controllers';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { getOrderData } from './AnalyticsAction';
+import { store } from '@/store';
 
 const getOrderDeliveriesRequest = () => ({
   type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_REQUEST,
   payload: null,
 });
-const getOrderDeliveriesSuccess = (getOrderDeliveries) => ({
+export const getOrderDeliveriesSuccess = (getOrderDeliveries) => ({
   type: DASHBOARDTYPE.GET_ORDER_DELIVERIES_SUCCESS,
   payload: { getOrderDeliveries },
 });
@@ -208,11 +209,23 @@ const scanBarCodeRequest = () => ({
   payload: null,
 });
 
-export const getOrderDeliveries = (sellerID, page) => async (dispatch) => {
+export const getOrderDeliveries = (sellerID, page, callback) => async (dispatch, getState) => {
   dispatch(getOrderDeliveriesRequest());
+  const orderDeleveriesProduct = store.getState()?.dashboard?.getOrderDeliveries;
   try {
     const res = await DashboardController.getOrderDeliveries(sellerID, page);
-    dispatch(getOrderDeliveriesSuccess(res?.payload));
+    const prevorderDeleveriesProduct = { ...orderDeleveriesProduct };
+    if (orderDeleveriesProduct && Object.keys(orderDeleveriesProduct).length > 0 && page > 1) {
+      prevorderDeleveriesProduct.total = res?.payload?.total;
+      prevorderDeleveriesProduct.current_page = res?.payload?.current_page;
+      prevorderDeleveriesProduct.total_pages = res?.payload?.total_pages;
+      prevorderDeleveriesProduct.per_page = res?.payload?.per_page;
+      prevorderDeleveriesProduct.data = prevorderDeleveriesProduct.data.concat(res?.payload?.data);
+      dispatch(getOrderDeliveriesSuccess(prevorderDeleveriesProduct));
+    } else {
+      dispatch(getOrderDeliveriesSuccess(res?.payload));
+    }
+    callback && callback(res);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getOrderDeliveriesReset());
@@ -322,7 +335,8 @@ export const onLineOrders = (sellerID) => async (dispatch) => {
   }
 };
 
-export const getPendingOrders = (sellerID) => async (dispatch) => {
+export const getPendingOrders = () => async (dispatch) => {
+  const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
   dispatch(getPendingOrdersRequest());
   try {
     const res = await DashboardController.getPendingOrders(sellerID);

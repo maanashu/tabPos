@@ -160,7 +160,6 @@ export const getAppointment = (pageNumber) => async (dispatch) => {
   try {
     const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
     const res = await AppointmentController.getAppointment(pageNumber);
-
     const currentPages = res?.payload?.current_page;
     const totalPages = res?.payload?.total_pages;
     const pages = { currentPages: currentPages, totalPages: totalPages };
@@ -170,7 +169,13 @@ export const getAppointment = (pageNumber) => async (dispatch) => {
     if (error?.statusCode === 204) {
       dispatch(getAppointmentReset());
     }
-    dispatch(getAppointmentError(error.message));
+    Toast.show({
+      text2: error?.msg || 'Something went wrong while fetching appointments',
+      position: 'bottom',
+      type: 'error_toast',
+      visibilityTime: 9000,
+    });
+    dispatch(getAppointmentError(error?.message));
   }
 };
 

@@ -525,7 +525,6 @@ export class RetailController {
   static async updateCartQtyy(data, cartId) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.updateCartQty + `/${cartId}`;
-
       HttpClient.put(endpoint, data)
         .then((response) => {
           resolve(response);
@@ -1349,15 +1348,11 @@ export class RetailController {
       const body = {
         status: data.status,
       };
-      console.log('endpoint', endpoint);
-      console.log('body', body);
       HttpClient.put(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           if (error?.statusCode != 204) {
             Toast.show({
               text2: error?.msg,
@@ -1436,12 +1431,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          // Toast.show({
-          //   text2: 'catgory error',
-          //   position: 'bottom',
-          //   type: 'error_toast',
-          //   visibilityTime: 1500,
-          // });
           reject(error);
         });
     });

@@ -80,8 +80,26 @@ export class SettingController {
 
   static async addressUpdateById(body) {
     return new Promise((resolve, reject) => {
-      const endpoint = USER_URL + ApiUserInventory.getShippingPickup;
-      HttpClient.put(endpoint, body)
+      const endpoint = USER_URL + ApiUserInventory.getShippingPickup + '/change-status';
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+  static async deleteAddressById(address_id) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getShippingPickup + '/' + address_id;
+      HttpClient.delete(endpoint)
         .then((response) => {
           resolve(response);
         })
@@ -154,9 +172,9 @@ export class SettingController {
     });
   }
 
-  static async staffDetail() {
+  static async staffDetail(id) {
     return new Promise((resolve, reject) => {
-      const endpoint = USER_URL + ApiUserInventory.staffDetail;
+      const endpoint = USER_URL + ApiUserInventory.staffDetail + `?id=${id}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -316,6 +334,25 @@ export class SettingController {
           resolve(response?.payload?.data);
         })
         .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static async addLanguage(body) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getSetting;
+      HttpClient.put(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
           reject(error);
         });
     });

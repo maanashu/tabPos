@@ -19,7 +19,7 @@ import { addToServiceCart, getTimeSlots } from '@/actions/RetailAction';
 import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker';
 import { useEffect } from 'react';
 import moment from 'moment';
-import { getDaysAndDates } from '@/utils/GlobalMethods';
+import { calculateTimeSlotSelection, getDaysAndDates } from '@/utils/GlobalMethods';
 import { ServiceProviderItem } from '@/components/ServiceProviderItem';
 const windowWidth = Dimensions.get('window').width;
 
@@ -35,18 +35,27 @@ export function AddServiceCartModal({
   const getRetailData = useSelector(getRetail);
   const itemData = getRetailData?.getOneService?.product_detail;
   const cartServiceData = getRetailData?.getserviceCart;
-  const timeSlotsData = getRetailData?.timeSlots?.filter((timeSlot) => timeSlot?.is_available);
+
+  const timeSlotInterval = getRetailData?.timeSlotInterval;
+  const estimatedServiceTime = itemData?.supplies?.[0]?.approx_service_time;
   const [posUserId, setposUserId] = useState(itemData?.pos_staff?.[0]?.user?.unique_uuid);
   const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff?.[0]?.user);
 
-  const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
   const [selectedDate, setselectedDate] = useState(moment(new Date()).format('YYYY-MM-DD'));
+  const [timeSlotsData, setTimeSlotsData] = useState([]);
 
   const [selectedMonthData, setselectedMonthData] = useState(null);
   const [selectedYearData, setselectedYearData] = useState(null);
 
   const [monthDays, setmonthDays] = useState([]);
+
+  useEffect(() => {
+    if (getRetailData?.timeSlots) {
+      const timeSlots = getRetailData?.timeSlots?.filter((timeSlot) => timeSlot?.is_available);
+      setTimeSlotsData([...timeSlots]);
+    }
+  }, [getRetailData?.timeSlots]);
 
   useEffect(() => {
     if (itemData) {
@@ -74,6 +83,24 @@ export function AddServiceCartModal({
     setProviderDetail(item?.user);
   };
 
+  const handleTimeSlotClick = async (selectedSlotIndex) => {
+    const updateSelectedTimeSlots = await calculateTimeSlotSelection({
+      index: selectedSlotIndex,
+      timeSlotInterval: timeSlotInterval,
+      estimatedServiceDuration: estimatedServiceTime,
+      timeSlotsData: timeSlotsData,
+    });
+    // Update the state with the modified timeSlotsData
+    setTimeSlotsData(updateSelectedTimeSlots);
+
+    const selectedTimeSlots = timeSlotsData.filter((timeSlot) => timeSlot.selected);
+    const startTime = selectedTimeSlots[0].start_time;
+    const endTime = selectedTimeSlots[selectedTimeSlots.length - 1].end_time;
+
+    const selectedTimeSlot = { start_time: startTime, end_time: endTime };
+    setSelectedTimeSlotData(selectedTimeSlot);
+  };
+
   const renderWeekItem = ({ item, index }) => (
     <TouchableOpacity
       style={{
@@ -84,8 +111,6 @@ export function AddServiceCartModal({
       }}
       onPress={() => {
         setselectedDate(item?.completeDate);
-        //Clear previous day selected time slot values
-        setselectedTimeSlotIndex(null);
         setSelectedTimeSlotData('');
       }}
     >
@@ -120,11 +145,10 @@ export function AddServiceCartModal({
         width: '25.1%',
         height: ms(23),
         borderColor: COLORS.solidGrey,
-        backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
+        backgroundColor: item?.selected ? COLORS.primary : COLORS.white,
       }}
       onPress={() => {
-        setselectedTimeSlotIndex(index);
-        setSelectedTimeSlotData(item);
+        handleTimeSlotClick(index);
       }}
     >
       <Text
@@ -133,7 +157,7 @@ export function AddServiceCartModal({
           fontSize: ms(6.2),
           color: !item?.is_available
             ? COLORS.row_grey
-            : selectedTimeSlotIndex === index
+            : item?.selected
             ? COLORS.white
             : COLORS.dark_grey,
         }}
@@ -160,6 +184,7 @@ export function AddServiceCartModal({
       alert('Please select a time slot for the service');
       return;
     }
+
     const data = {
       supplyId: itemData?.supplies?.[0]?.id,
       supplyPriceID: itemData?.supplies?.[0]?.supply_prices[0]?.id,

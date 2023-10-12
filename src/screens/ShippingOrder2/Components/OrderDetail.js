@@ -24,6 +24,65 @@ const OrderDetail = ({
 }) => {
   const oneOrderDetail = useSelector(getAnalytics);
   const getTrackingInfo = oneOrderDetail?.getOrderData?.tracking_info;
+  const profileImage = userDetail?.user_details?.profile_photo;
+
+  const buttonFunction = () => {
+    if (openShippingOrders === '0') {
+      return (
+        <View style={styles.shippingOrdersViewStyle}>
+          <TouchableOpacity
+            onPress={() => declineHandler(userDetail?.id)}
+            style={styles.declineButtonStyle}
+          >
+            <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => acceptHandler(userDetail?.id, 3)}
+            style={[styles.acceptButtonView, { width: ms(80) }]}
+          >
+            <Text style={styles.acceptTextStyle}>{strings.buttonStatus.reviewButton}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (openShippingOrders === '3') {
+      return (
+        <View style={styles.shippingOrdersViewStyle}>
+          <TouchableOpacity
+            onPress={() => acceptHandler(userDetail?.id, 4)}
+            style={[styles.acceptButtonView, { width: ms(170) }]}
+          >
+            <Text style={styles.acceptTextStyle}>{strings.buttonStatus.printlabel}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (openShippingOrders === '4' || openShippingOrders === '5') {
+      return (
+        <View style={styles.shippingOrdersViewStyle}>
+          <TouchableOpacity
+            onPress={() => trackOrderHandler(getTrackingInfo)}
+            style={[styles.acceptButtonView, { width: ms(140) }]}
+          >
+            <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (openShippingOrders === '7,8') {
+      return (
+        <View style={styles.shippingOrdersViewStyle}>
+          <View
+            onPress={() => trackOrderHandler(getTrackingInfo)}
+            style={[styles.acceptButtonView, { backgroundColor: COLORS.washGrey, width: ms(140) }]}
+          >
+            <Text style={[styles.acceptTextStyle, { color: COLORS.text }]}>
+              {'Cancelled by user'}
+            </Text>
+          </View>
+        </View>
+      );
+    }
+  };
+
+  console.log('user====', userDetail);
 
   return (
     <>
@@ -31,22 +90,21 @@ const OrderDetail = ({
         <View style={styles.orderDetailViewStyle}>
           <View style={[styles.locationViewStyle, { flex: 0.95 }]}>
             <Image
-              source={
-                userDetail?.user_details?.profile_photo
-                  ? { uri: userDetail?.user_details?.profile_photo }
-                  : userImage
-              }
+              source={profileImage ? { uri: profileImage } : userImage}
               style={styles.userImageStyle}
             />
 
             <View style={styles.userNameView}>
               <Text style={[styles.totalTextStyle, { padding: 0 }]}>
-                {userDetail?.user_details?.firstname
-                  ? userDetail?.user_details?.firstname
-                  : 'user name'}
+                {userDetail?.user_details?.firstname ? userDetail?.user_details?.firstname : '-'}
               </Text>
+
               <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
-                {userDetail?.address}
+                {`${userDetail?.address}, ${userDetail?.city}`}
+              </Text>
+
+              <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
+                {`${userDetail?.state}, ${userDetail?.country}`}
               </Text>
             </View>
           </View>
@@ -68,7 +126,7 @@ const OrderDetail = ({
                 }}
               >
                 {userDetail?.invoice?.delivery_date ??
-                  moment(userDetail?.created_at).format('YYYY-MM-DD')}
+                  moment(userDetail?.created_at).format('DD MMM YYYY')}
               </Text>
               <Text
                 style={{
@@ -116,7 +174,7 @@ const OrderDetail = ({
               <Text style={styles.itemCountText}>
                 {userDetail?.date
                   ? moment(userDetail?.date).format('DD/MM/YYYY')
-                  : moment(userDetail?.created_at).format('YYYY-MM-DD')}
+                  : moment(userDetail?.created_at).format('DD/MM/YYYY')}
               </Text>
             </View>
 
@@ -159,30 +217,39 @@ const OrderDetail = ({
                 {strings.deliveryOrders.subTotal}
               </Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                {userDetail?.actual_amount ? userDetail?.actual_amount : '0'}
+                ${Number(userDetail?.actual_amount)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
 
             <View style={styles.orderDetailsView}>
               <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                {userDetail?.discount ? userDetail?.discount : '0'}
+                {/* ${userDetail?.discount ? userDetail?.discount : '0'} */}$
+                {Number(userDetail?.discount)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
 
             <View style={styles.orderDetailsView}>
-              <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
+              <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                {strings.deliveryOrders.subTotalValue}
+                ${Number(userDetail?.tips)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
 
             <View style={styles.orderDetailsView}>
               <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                {userDetail?.tax ? userDetail?.tax : '0'}
+                ${Number(userDetail?.tax)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
+            {userDetail?.shipping_charge !== '0' && (
+              <View style={styles.orderDetailsView}>
+                <Text style={styles.invoiceText}>{strings.deliveryOrders.shippingCharges}</Text>
+                <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+                  ${Number(userDetail?.shipping_charge)?.toFixed(2)}
+                </Text>
+              </View>
+            )}
 
             <View style={styles.orderDetailsView}>
               <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
@@ -190,7 +257,10 @@ const OrderDetail = ({
             </View>
 
             <Spacer space={ms(10)} />
-            {openShippingOrders == '0' ||
+
+            {buttonFunction()}
+
+            {/* {openShippingOrders == '0' ||
             openShippingOrders == '1' ||
             openShippingOrders == '2' ||
             openShippingOrders === '3' ? (
@@ -210,16 +280,7 @@ const OrderDetail = ({
                 openShippingOrders === '3' ? (
                   <TouchableOpacity
                     onPress={() =>
-                      acceptHandler(
-                        userDetail?.id,
-                        openShippingOrders === '0'
-                          ? 1
-                          : openShippingOrders === '1'
-                          ? 2
-                          : openShippingOrders === '2'
-                          ? 3
-                          : 4
-                      )
+                      acceptHandler(userDetail?.id, openShippingOrders === '0' ? 3 : 4)
                     }
                     style={[
                       styles.acceptButtonView,
@@ -249,7 +310,7 @@ const OrderDetail = ({
                   <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
                 </TouchableOpacity>
               </View>
-            )}
+            )} */}
           </View>
         </View>
       </View>
