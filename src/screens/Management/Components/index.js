@@ -528,6 +528,9 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
   const cashIn = drawerData?.drawerHistory?.cash_in;
   const cashOut = drawerData?.drawerHistory?.cash_out;
 
+  const totalNetPayment =
+    drawerData?.drawerHistory?.cash_in?.total + drawerData?.drawerHistory?.cash_out?.total;
+
   const correctWay = (transaction_type) => {
     if (transaction_type === 'start_tracking_session') {
       return 'Start tracking session';
@@ -591,7 +594,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             </View>
             <Text style={styles.cashDrawerText}>
               {strings.management.usd}
-              {cashIn?.total ?? '0'}
+              {cashIn?.total.toFixed(2) ?? '0'}
             </Text>
           </TouchableOpacity>
           {viewCashInArray && (
@@ -613,7 +616,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 </View>
                 <Text style={styles.paymentBodyText}>
                   {strings.management.usd}
-                  {cashIn?.sales?.total}
+                  {cashIn?.sales?.total.toFixed(2)}
                 </Text>
               </TouchableOpacity>
               {salesExpandedView && (
@@ -623,7 +626,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashIn?.sales?.cash}
+                      {cashIn?.sales?.cash.toFixed(2)}
                     </Text>
                   </View>
                   <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -631,7 +634,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashIn?.sales?.card}
+                      {cashIn?.sales?.card.toFixed(2)}
                     </Text>
                   </View>
                   <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -639,7 +642,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashIn?.sales?.jobr_coin}
+                      {cashIn?.sales?.jobr_coin.toFixed(2)}
                     </Text>
                   </View>
                 </View>
@@ -685,7 +688,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 </View>
                 <Text style={styles.paymentBodyText}>
                   {strings.management.usd}
-                  {cashIn?.manual?.total}
+                  {cashIn?.manual?.total.toFixed(2)}
                 </Text>
               </TouchableOpacity>
               {manualInExpandedView && (
@@ -695,7 +698,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashIn?.manual?.cash}
+                      {cashIn?.manual?.cash.toFixed(2)}
                     </Text>
                   </View>
                   <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -703,7 +706,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashIn?.manual?.card}
+                      {cashIn?.manual?.card.toFixed(2)}
                     </Text>
                   </View>
                   <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -711,7 +714,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashIn?.manual?.jobr_coin}
+                      {cashIn?.manual?.jobr_coin.toFixed(2)}
                     </Text>
                   </View>
                 </View>
@@ -719,7 +722,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             </>
           )}
 
-          {viewCashInArray && (
+          {/* {viewCashInArray && (
             <>
               <TouchableOpacity
                 style={styles.paymentBodyCon}
@@ -772,9 +775,9 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 </View>
               )}
             </>
-          )}
+          )} */}
 
-          {viewCashInArray && (
+          {/* {viewCashInArray && (
             <>
               <TouchableOpacity
                 style={styles.paymentBodyCon}
@@ -827,7 +830,8 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 </View>
               )}
             </>
-          )}
+          )} */}
+
           <TouchableOpacity
             style={styles.paymentOptionsView}
             onPress={() => setViewCashOutArray((prev) => !prev)}
@@ -844,7 +848,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             </View>
             <Text style={styles.cashDrawerText}>
               {strings.management.usd}
-              {cashOut?.total ?? '0'}
+              {cashOut?.total.toFixed(2) ?? '0'}
             </Text>
           </TouchableOpacity>
           {viewCashOutArray && (
@@ -865,7 +869,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 </View>
                 <Text style={styles.paymentBodyText}>
                   {strings.management.usd}
-                  {cashOut?.refund?.total}
+                  {cashOut?.refund?.total.toFixed(2)}
                 </Text>
               </TouchableOpacity>
               {salesOutExpandedView && (
@@ -875,7 +879,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashOut?.refund?.cash}
+                      {cashOut?.refund?.cash.toFixed(2)}
                     </Text>
                   </View>
                   <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -883,7 +887,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashOut?.refund?.card}
+                      {cashOut?.refund?.card.toFixed(2)}
                     </Text>
                   </View>
                   <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -891,7 +895,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashOut?.refund?.jobr_coin}
+                      {cashOut?.refund?.jobr_coin.toFixed(2)}
                     </Text>
                   </View>
                 </View>
@@ -916,7 +920,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 </View>
                 <Text style={styles.paymentBodyText}>
                   {strings.management.usd}
-                  {cashOut?.manual?.total}
+                  {cashOut?.manual?.total.toFixed(2)}
                 </Text>
               </TouchableOpacity>
               {manualOutExpandedView && (
@@ -926,7 +930,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashOut?.manual?.cash}
+                      {cashOut?.manual?.cash.toFixed(2)}
                     </Text>
                   </View>
                   <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -934,7 +938,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashOut?.manual?.card}
+                      {cashOut?.manual?.card.toFixed(2)}
                     </Text>
                   </View>
                   <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -942,7 +946,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
 
                     <Text style={styles.paymentBodyText}>
                       {strings.management.usd}
-                      {cashOut?.manual?.jobr_coin}
+                      {cashOut?.manual?.jobr_coin.toFixed(2)}
                     </Text>
                   </View>
                 </View>
@@ -950,7 +954,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             </>
           )}
 
-          {viewCashOutArray && (
+          {/* {viewCashOutArray && (
             <>
               <TouchableOpacity
                 style={styles.paymentBodyCon}
@@ -1002,9 +1006,9 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 </View>
               )}
             </>
-          )}
+          )} */}
 
-          {viewCashOutArray && (
+          {/* {viewCashOutArray && (
             <>
               <TouchableOpacity
                 style={styles.paymentBodyCon}
@@ -1056,14 +1060,14 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                 </View>
               )}
             </>
-          )}
+          )} */}
           <View style={styles.netPaymentHeader}>
             <Text style={styles.sectionListHeader}>{strings.management.netPayment}</Text>
             <Text style={styles.sectionListHeader}>
               {strings.management.totalCash}
               {/* {sessionHistoryArray?.cash_balance} */}
-              {cashIn?.total + cashOut?.total}
-              {'.00'}
+              {totalNetPayment.toFixed(2)}
+              {/* {'.00'} */}
             </Text>
           </View>
           <Spacer space={SH(60)} />
