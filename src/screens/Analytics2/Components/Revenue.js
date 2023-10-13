@@ -160,7 +160,7 @@ export function Revenue() {
         />
         <HeaderView
           image={productSelling}
-          text={'Transaction Volume'}
+          text={'Total Volume'}
           count={
             analyticStatistics?.overView?.transaction
               ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
@@ -200,7 +200,7 @@ export function Revenue() {
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Transaction Volume</Text>
+                <Text style={styles.revenueText}>Total Volume</Text>
               </DataTable.Title>
             </DataTable.Header>
 

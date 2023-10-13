@@ -194,7 +194,7 @@ export function TotalCost() {
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Transaction Volume</Text>
+                <Text style={styles.revenueText}>Total Volume</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>

@@ -177,7 +177,7 @@ const Graph = () => {
       const values = DATA?.datasets?.map((dataset) => dataset[index]);
       const setOfThree = [];
       setOfThree.push({
-        value: values[0] || 0,
+        value: showJBR ? values[0] / 100 || 0 : 0,
         spacing: 10,
         label: day,
         labelWidth: 80,
@@ -187,15 +187,15 @@ const Graph = () => {
         JBR: true,
       });
       setOfThree.push({
-        value: values[1] || 0,
+        value: showCash ? values[1] || 0 : 0,
         spacing: 10,
-        frontColor: showJBR ? COLORS.darkBlue : COLORS.white,
+        frontColor: showCash ? COLORS.darkBlue : COLORS.white,
         Cash: true,
       });
       setOfThree.push({
-        value: values[2] || 0,
+        value: showCard ? values[2] || 0 : 0,
         spacing: 25,
-        frontColor: showJBR ? COLORS.violet : COLORS.white,
+        frontColor: showCard ? COLORS.violet : COLORS.white,
         Card: true,
       });
 
@@ -212,7 +212,7 @@ const Graph = () => {
       const setOfThree = [];
       if (type === 'JBR') {
         setOfThree.push({
-          value: values[0] || 0,
+          value: value ? values[0] / 100 || 0 : 0,
           spacing: 10,
           label: day,
           labelWidth: 80,
@@ -223,8 +223,7 @@ const Graph = () => {
         });
       } else {
         setOfThree.push({
-          value: values[0] || 0,
-          spacing: 10,
+          value: showJBR ? values[0] / 100 || 0 : 0,
           label: day,
           labelWidth: 80,
           labelTextStyle: { color: COLORS.darkGray, fontSize: 11, marginLeft: ms(10) },
@@ -235,14 +234,14 @@ const Graph = () => {
       }
       if (type === 'CASH') {
         setOfThree.push({
-          value: values[1] || 0,
+          value: value ? values[1] || 0 : 0,
           spacing: 10,
           frontColor: value ? COLORS.darkBlue : COLORS.white,
           Cash: true,
         });
       } else {
         setOfThree.push({
-          value: values[1] || 0,
+          value: showCash ? values[1] || 0 : 0,
           spacing: 10,
           frontColor: showCash ? COLORS.darkBlue : COLORS.white,
           Cash: true,
@@ -250,14 +249,14 @@ const Graph = () => {
       }
       if (type === 'CARD') {
         setOfThree.push({
-          value: values[2] || 0,
+          value: value ? values[2] || 0 : 0,
           spacing: 10,
           frontColor: value ? COLORS.violet : COLORS.white,
           Card: true,
         });
       } else {
         setOfThree.push({
-          value: values[2] || 0,
+          value: showCard ? values[2] || 0 : 0,
           spacing: 10,
           frontColor: showCard ? COLORS.violet : COLORS.white,
           Card: true,
@@ -348,7 +347,7 @@ const Graph = () => {
           <BarChart
             data={modifyData}
             barWidth={SW(3.5)}
-            spacing={SW(35.2)}
+            // spacing={SW(35.2)}
             roundedTop
             // hideRules
             xAxisThickness={1}

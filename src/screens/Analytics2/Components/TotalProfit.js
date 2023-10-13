@@ -198,7 +198,7 @@ export function TotalProfit() {
               </DataTable.Title>
 
               <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
-                <Text style={styles.revenueText}>Transaction Volume</Text>
+                <Text style={styles.revenueText}>Total Volume</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
