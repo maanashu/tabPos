@@ -63,6 +63,7 @@ import { NewCustomerAdd } from './NewCustomerAdd';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 export function CartScreen({
   onPressPayNow,
@@ -673,10 +674,7 @@ export function CartScreen({
                   cartData?.discount_flag === 'percentage' ? '(%)' : ''
                 } `}</Text>
                 <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                  ${' '}
-                  {cartData?.amount?.discount === 0
-                    ? '0.00'
-                    : cartData?.amount?.discount.toFixed(2) ?? '0.00'}
+                  {formattedReturnPrice(cartData?.amount?.discount)}
                 </Text>
               </View>
 

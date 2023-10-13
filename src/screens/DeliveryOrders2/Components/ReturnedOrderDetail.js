@@ -26,6 +26,7 @@ import { navigate } from '@/navigation/NavigationRef';
 import { getProductByUpc } from '@/actions/DeliveryAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { blankCheckBox, Fonts, PaymentDone, userImage } from '@/assets';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 const { width } = Dimensions.get('window');
 
@@ -195,7 +196,7 @@ const ReturnedOrderDetail = ({ orderDetail, onPressBackHandler = () => {} }) => 
             <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
             <View style={{ flexDirection: 'row' }}>
               <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
-                {`$${orderDetail?.discount ?? '0'}`}
+                {formattedReturnPrice(orderDetail?.discount)}
               </Text>
             </View>
           </View>

@@ -1650,7 +1650,10 @@ export function Management() {
           <Spacer space={SH(30)} />
           <TouchableOpacity
             style={styles.sessionHistoryView}
-            onPress={() => (setSessionHistory(true), dispatch(getSessionHistory()))}
+            onPress={() =>
+              setSessionHistory(true)
+              // dispatch(getSessionHistory()
+            }
           >
             <Text style={styles.sessionHistoryText}>{strings.management.sessionHistory}</Text>
             <Image source={rightIcon} style={styles.rightIconStyle} />

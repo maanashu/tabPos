@@ -109,30 +109,48 @@ export class CashTrackingController {
         });
     });
   }
-  static async getSessionHistory(newDateFormat, staff) {
-    const urlAccDate = (newDateFormat) => {
-      if (newDateFormat !== undefined && staff !== undefined && staff !== '') {
-        return (
-          USER_URL +
-          ApiUserInventory.getSessionHistory +
-          `?filter_date=${newDateFormat}&pos_user_id=${staff}`
-        );
-      } else if (newDateFormat !== undefined) {
-        return USER_URL + ApiUserInventory.getSessionHistory + `?filter_date=${newDateFormat}`;
-      } else {
-        return USER_URL + ApiUserInventory.getSessionHistory;
-      }
-    };
+
+  static async getSessionHistory(data) {
+    // const urlAccDate = (newDateFormat) => {
+    //   if (newDateFormat !== undefined && staff !== undefined && staff !== '') {
+    //     return (
+    //       USER_URL +
+    //       ApiUserInventory.getSessionHistory +
+    //       `?filter_date=${newDateFormat}&pos_user_id=${staff}`
+    //     );
+    //   } else if (newDateFormat !== undefined) {
+    //     return USER_URL + ApiUserInventory.getSessionHistory + `?filter_date=${newDateFormat}`;
+    //   } else {
+    //     return USER_URL + ApiUserInventory.getSessionHistory;
+    //   }
+    // };
 
     return new Promise((resolve, reject) => {
-      const endpoint = urlAccDate(newDateFormat);
+      const endpoint =
+        data?.calenderDate === undefined && data?.staffId === 'none'
+          ? USER_URL +
+            ApiUserInventory.getSessionHistory +
+            `?page=${data?.page}&limit=${data?.limit}`
+          : data?.calenderDate !== undefined && data?.staffId === 'none'
+          ? USER_URL +
+            ApiUserInventory.getSessionHistory +
+            `?page=${data?.page}&limit=${data?.limit}&filter_date=${data?.calenderDate}`
+          : data?.calenderDate === undefined && data?.staffId !== 'none'
+          ? USER_URL +
+            ApiUserInventory.getSessionHistory +
+            `?page=${data?.page}&limit=${data?.limit}&pos_user_id=${data?.staffId}`
+          : USER_URL +
+            ApiUserInventory.getSessionHistory +
+            `?page=${data?.page}&limit=${data?.limit}&pos_user_id=${data?.staffId}&filter_date=${data?.calenderDate}`;
+
+      console.log('endpoint=----------', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
           Toast.show({
-            text2: 'History not found',
+            text2: error?.msg,
             position: 'bottom',
             type: 'error_toast',
             visibilityTime: 1500,

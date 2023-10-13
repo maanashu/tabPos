@@ -65,6 +65,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { DATA } from '@/constants/flatListData';
 import { getUser } from '@/selectors/UserSelectors';
 import { getSetting } from '@/selectors/SettingSelector';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -787,7 +788,7 @@ export const CartAmountPayBy = ({
             <View style={styles._subTotalContainer}>
               <Text style={styles._substotalTile}>Discount</Text>
               <Text style={styles._subTotalPrice}>
-                ${cartData?.amount?.discount?.toFixed(2) ?? '0.00'}
+                {formattedReturnPrice(cartData?.amount?.discount)}
               </Text>
             </View>
 

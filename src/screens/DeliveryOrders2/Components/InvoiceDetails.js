@@ -26,6 +26,7 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { deliveryHomeIcon, scooter, crossButton, gps, logo_full, Fonts } from '@/assets';
 
 import styles from '../styles';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
   const dispatch = useDispatch();
@@ -98,27 +99,33 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
 
           <View style={style._subTotalContainer}>
             <Text style={style._substotalTile}>{strings.deliveryOrders.subTotal}</Text>
-            <Text style={style._subTotalPrice}>{`$${orderDetail?.actual_amount}` ?? '-'}</Text>
+            <Text style={style._subTotalPrice}>
+              {`$${Number(orderDetail?.actual_amount)?.toFixed(2)}` ?? '-'}
+            </Text>
           </View>
           <View style={style._horizontalLine} />
 
           <View style={style._subTotalContainer}>
             <Text style={style._substotalTile}>{'Discount'}</Text>
-            <Text style={style._subTotalPrice}>{`$${orderDetail?.discount}` ?? '-'}</Text>
+            <Text style={style._subTotalPrice}>{formattedReturnPrice(orderDetail?.discount)}</Text>
           </View>
 
           <View style={style._horizontalLine} />
 
           <View style={style._subTotalContainer}>
             <Text style={style._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
-            <Text style={style._subTotalPrice}>{`$${orderDetail?.tax}` ?? '-'}</Text>
+            <Text style={style._subTotalPrice}>
+              {`$${Number(orderDetail?.tax)?.toFixed(2)}` ?? '-'}
+            </Text>
           </View>
 
           <View style={style._horizontalLine} />
 
           <View style={style._subTotalContainer}>
             <Text style={style._substotalTile}>{strings.deliveryOrders.tips}</Text>
-            <Text style={style._subTotalPrice}>{`$${orderDetail?.tips}` ?? '-'}</Text>
+            <Text style={style._subTotalPrice}>
+              {`$${Number(orderDetail?.tips)?.toFixed(2)}` ?? '-'}
+            </Text>
           </View>
 
           <View style={style._horizontalLine} />
@@ -133,8 +140,8 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
               <Text style={style._subTotalPrice}>
                 {`$${
                   orderDetail?.delivery_charge !== '0'
-                    ? orderDetail?.delivery_charge
-                    : orderDetail?.shipping_charge
+                    ? Number(orderDetail?.delivery_charge)?.toFixed(2)
+                    : Number(orderDetail?.shipping_charge)?.toFixed(2)
                 }` ?? '-'}
               </Text>
             </View>

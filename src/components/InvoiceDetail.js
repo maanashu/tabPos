@@ -33,6 +33,7 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import ShipmentTracking from '@/screens/DeliveryOrders2/Components/ShipmentTracking';
 import { getUser } from '@/selectors/UserSelectors';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 export function InvoiceDetail({ mapRef, closeHandler }) {
   const dispatch = useDispatch();
@@ -103,34 +104,40 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               <View style={styles._subTotalContainer}>
                 <Text style={styles._substotalTile}>Sub-Total</Text>
                 <Text style={styles._subTotalPrice}>
-                  ${singleOrderDetail?.total_sale_price ?? '0'}
+                  ${Number(singleOrderDetail?.total_sale_price)?.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
 
               <View style={styles._horizontalLine} />
               <View style={styles._subTotalContainer}>
                 <Text style={styles._substotalTile}>Discount</Text>
-                <Text style={styles._subTotalPrice}>${singleOrderDetail?.discount ?? '0'}</Text>
+                <Text style={styles._subTotalPrice}>
+                  {formattedReturnPrice(singleOrderDetail?.discount)}
+                </Text>
               </View>
 
               <View style={styles._horizontalLine} />
 
               <View style={styles._subTotalContainer}>
                 <Text style={styles._substotalTile}>Tips</Text>
-                <Text style={styles._subTotalPrice}>${singleOrderDetail?.tips ?? '0'}</Text>
+                <Text style={styles._subTotalPrice}>
+                  ${Number(singleOrderDetail?.tips)?.toFixed(2) ?? '0.00'}
+                </Text>
               </View>
 
               <View style={styles._horizontalLine} />
 
               <View style={styles._subTotalContainer}>
                 <Text style={styles._substotalTile}>Total Taxes</Text>
-                <Text style={styles._subTotalPrice}>${singleOrderDetail?.tax ?? '0'}</Text>
+                <Text style={styles._subTotalPrice}>
+                  ${Number(singleOrderDetail?.tax)?.toFixed(2) ?? '0.00'}
+                </Text>
               </View>
               <View style={styles._horizontalLine} />
               <View style={styles._subTotalContainer}>
                 <Text style={styles._substotalTile}>Delivery charges</Text>
                 <Text style={styles._subTotalPrice}>
-                  ${singleOrderDetail?.delivery_charge ?? '0'}
+                  ${Number(singleOrderDetail?.delivery_charge)?.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
 
@@ -145,7 +152,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                 <Text
                   style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
                 >
-                  ${singleOrderDetail?.payable_amount ?? '0'}
+                  ${Number(singleOrderDetail?.payable_amount)?.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
               {/* <View style={styles._horizontalLine} /> */}
@@ -302,34 +309,40 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               <View style={styles._subTotalContainer}>
                 <Text style={styles._substotalTile}>Sub-Total</Text>
                 <Text style={styles._subTotalPrice}>
-                  ${singleOrderDetail?.total_sale_price ?? '0'}
+                  ${Number(singleOrderDetail?.total_sale_price)?.toFixed(2) ?? '0'}
                 </Text>
               </View>
 
               <View style={styles._horizontalLine} />
               <View style={styles._subTotalContainer}>
                 <Text style={styles._substotalTile}>Discount</Text>
-                <Text style={styles._subTotalPrice}>${singleOrderDetail?.discount ?? '0'}</Text>
+                <Text style={styles._subTotalPrice}>
+                  {formattedReturnPrice(singleOrderDetail?.discount)}
+                </Text>
               </View>
 
               <View style={styles._horizontalLine} />
 
               <View style={styles._subTotalContainer}>
                 <Text style={styles._substotalTile}>Tips</Text>
-                <Text style={styles._subTotalPrice}>${singleOrderDetail?.tips ?? '0'}</Text>
+                <Text style={styles._subTotalPrice}>
+                  ${Number(singleOrderDetail?.tips)?.toFixed(2) ?? '0.00'}
+                </Text>
               </View>
 
               <View style={styles._horizontalLine} />
 
               <View style={styles._subTotalContainer}>
                 <Text style={styles._substotalTile}>Total Taxes</Text>
-                <Text style={styles._subTotalPrice}>${singleOrderDetail?.tax ?? '0'}</Text>
+                <Text style={styles._subTotalPrice}>
+                  ${Number(singleOrderDetail?.tax)?.toFixed(2) ?? '0.00'}
+                </Text>
               </View>
               <View style={styles._horizontalLine} />
               <View style={styles._subTotalContainer}>
                 <Text style={styles._substotalTile}>Delivery charges</Text>
                 <Text style={styles._subTotalPrice}>
-                  ${singleOrderDetail?.delivery_charge ?? '0'}
+                  ${Number(singleOrderDetail?.delivery_charge)?.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
 
@@ -344,7 +357,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                 <Text
                   style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
                 >
-                  ${singleOrderDetail?.payable_amount ?? '0'}
+                  ${Number(singleOrderDetail?.payable_amount)?.toFixed(2) ?? '0.00'}
                 </Text>
               </View>
               {/* <View style={styles._horizontalLine} /> */}

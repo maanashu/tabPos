@@ -61,6 +61,7 @@ import { useCallback } from 'react';
 import { useMemo } from 'react';
 import { NewCustomerAddService } from './NewCustomerAddService';
 import Toast from 'react-native-toast-message';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -387,7 +388,7 @@ export function CartServiceScreen({
                                   {data?.start_time + '-' + data?.end_time}
                                 </Text>
                                 {item.supplies?.[0]?.approx_service_time == null ? (
-                                  <Text style={styles.sukNumber}>Est: 40 - 45 min</Text>
+                                  <Text style={styles.sukNumber}>Estimated Time Not found</Text>
                                 ) : item.supplies?.[0]?.approx_service_time > 5 ? (
                                   <Text style={styles.sukNumber}>
                                     Est: {item.supplies?.[0]?.approx_service_time - 5} -{' '}
@@ -669,10 +670,7 @@ export function CartServiceScreen({
                   cartServiceData?.discount_flag === 'percentage' ? '(%)' : ''
                 } `}</Text>
                 <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                  ${' '}
-                  {cartServiceData?.amount?.discount === 0
-                    ? '0.00'
-                    : cartServiceData?.amount?.discount.toFixed(2) ?? '0.00'}
+                  {formattedReturnPrice(cartServiceData?.amount?.discount)}
                 </Text>
               </View>
               <View

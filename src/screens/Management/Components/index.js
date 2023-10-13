@@ -8,11 +8,8 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-
 import Modal from 'react-native-modal';
-
 import { COLORS, SF, SH, SW } from '@/theme';
-import { List } from 'react-native-paper';
 import { moderateScale, ms } from 'react-native-size-matters';
 import {
   allien,
@@ -21,16 +18,16 @@ import {
   dropdown,
   dropdown2,
   Fonts,
-  roundCalender,
+  mask,
+  maskRight,
+  Union,
+  unionRight,
   up,
-  userImage,
 } from '@/assets';
 import { strings } from '@/localization';
 import { styles } from '@/screens/Management/Management.styles';
 import { Spacer, TableDropdown } from '@/components';
-import { Table, TableWrapper, Row, Col } from 'react-native-table-component';
-const windowWidth = Dimensions.get('window').width;
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Table } from 'react-native-table-component';
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
@@ -46,25 +43,30 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
 const windowHeight = Dimensions.get('window').height;
 
+import DropDownPicker from 'react-native-dropdown-picker';
+import { PAGINATION_DATA } from '@/constants/enums';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/CashtrackingTypes';
+
 moment.suppressDeprecationWarnings = true;
 
 export function SessionHistoryTable({
   tableTouchHandler,
-  tableDataArray,
+  // tableDataArray,
   sessionHistoryLoad,
   // oneItemSend,
   setSessionHistoryArray,
 }) {
   const dispatch = useDispatch();
-  const [date, setDate] = useState(new Date());
-  const [dateformat, setDateformat] = useState('');
-  const [show, setShow] = useState(false);
-  const [staffSelect, setStaffSelect] = useState('');
-  const [formattedDate, setFormattedDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
-  const staffSelection = (value) => setStaffSelect(value);
   const getAuth = useSelector(getAuthData);
-  // const posUserArray = getAuth?.getAllPosUsers;
+  const drawerData = useSelector(getCashTracking);
+  const sessionHistoryData = drawerData?.getSessionHistory;
+  const tableDataArray = drawerData?.getSessionHistory?.data;
+  const payloadLength = Object.keys(drawerData?.getSessionHistory)?.length ?? 0;
+  const [show, setShow] = useState(false);
+  const [staffSelect, setStaffSelect] = useState('none');
+  const [formattedDate, setFormattedDate] = useState(new Date());
+  const staffSelection = (value) => setStaffSelect(value);
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
   var posUsers = [];
   if (posUserArray.length > 0) {
@@ -73,6 +75,38 @@ export function SessionHistoryTable({
     });
     posUsers = mappedArray;
   }
+  const [page, setPage] = useState(1);
+  const [paginationModalOpen, setPaginationModalOpen] = useState(false);
+  const [paginationModalValue, setPaginationModalValue] = useState(10);
+  const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
+
+  const [dateformat, setDateformat] = useState('');
+  const [date, setDate] = useState();
+  const [formatedDate, setFormatedDate] = useState();
+  const [defaultDate, setDefaultDate] = useState(new Date());
+  const isHistoryLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_SESSION_HISTORY], state)
+  );
+  const startIndex = (page - 1) * paginationModalValue + 1;
+  const [ind, setInd] = useState();
+
+  const paginationData = {
+    total: sessionHistoryData?.total ?? '0',
+    totalPages: sessionHistoryData?.total_pages ?? '0',
+    perPage: sessionHistoryData?.per_page ?? '0',
+    currentPage: sessionHistoryData?.current_page ?? '0',
+  };
+
+  useEffect(() => {
+    const data = {
+      page: page,
+      limit: paginationModalValue,
+      calenderDate: formatedDate,
+      staffId: staffSelect,
+    };
+    console.log('data', data);
+    dispatch(getSessionHistory(data));
+  }, [page, paginationModalValue, formatedDate, staffSelect]);
 
   const getFormattedTodayDate = () => {
     const today = new Date();
@@ -83,87 +117,17 @@ export function SessionHistoryTable({
   };
 
   const maxDate = getFormattedTodayDate();
-  // const onChangeDate = (selectedDate) => {
-  //   setSessionHistoryArray([]);
-  //   const currentDate = moment().format('MM/DD/YYYY');
-  //   const selected = moment(selectedDate).format('MM/DD/YYYY');
-  //   setShow(false);
-  //   const month = selectedDate.getMonth() + 1;
-  //   const selectedMonth = month < 10 ? '0' + month : month;
-  //   const day = selectedDate.getDate();
-  //   const selectedDay = day < 10 ? '0' + day : day;
-  //   const year = selectedDate.getFullYear();
-  //   const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
-  //   const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
-  //   setDateformat(newDateFormat);
-  //   setDate(fullDate);
-  //   if (newDateFormat) {
-  //     dispatch(getSessionHistory(newDateFormat));
-  //   }
-  // };
-  // const onCancelFun = () => {
-  //   setShow(false);
-  //   setDateformat('');
-  //   setDate(new Date());
-  //   dispatch(getSessionHistory());
-  // };
 
   //New calendar changes
 
   const onChangeDate = (selectedDate) => {
+    setDefaultDate(selectedDate);
     const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
-    setDate(fullDate);
-    setFormattedDate(formattedDate);
-    setSelectedDate(formattedDate);
-  };
-  const onDateApply = (selectedDate) => {
-    // setSessionHistoryArray([]);
-    // const currentDate = moment().format('MM/DD/YYYY');
-    // const selected = moment(selectedDate).format('MM/DD/YYYY');
-    // setShow(false);
-    // const month = selectedDate?.getMonth() + 1;
-    // const selectedMonth = month < 10 ? '0' + month : month;
-    // const day = selectedDate.getDate();
-    // const selectedDay = day < 10 ? '0' + day : day;
-    // const year = selectedDate.getFullYear();
-    // const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
-    // const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
-    // setDateformat(newDateFormat);
-    // setDate(fullDate);
-    setShow(false);
-    const newDateFormat = moment(selectedDate).format('YYYY-MM-DD');
-    if (newDateFormat) {
-      const fullDate = moment(selectedDate).format('YYYY/MM/DD');
-      setDateformat(newDateFormat);
-      setSelectedDate(newDateFormat);
-      setDate(fullDate);
-      dispatch(getSessionHistory(newDateFormat));
-    }
-  };
-  const onCancelPressCalendar = () => {
-    setShow(false);
-    setDateformat('');
-    setDate(new Date());
-    setSelectedDate(null);
-    dispatch(getSessionHistory());
+    setDateformat(formattedDate);
+    setDate(formattedDate);
   };
 
-  useEffect(() => {
-    const newDateFormat = moment(formattedDate).format('YYYY-MM-DD');
-    if (staffSelect !== 'none') {
-      dispatch(getSessionHistory(newDateFormat, staffSelect));
-    } else {
-      if (selectedDate == null) {
-        dispatch(getSessionHistory());
-      } else {
-        dispatch(getSessionHistory(newDateFormat));
-      }
-    }
-  }, [staffSelect]);
-
-  // const tableDataArrayReverse = tableDataArray?.reverse();
-  const tableDataArrayReverse = tableDataArray?.slice().reverse();
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
@@ -183,19 +147,128 @@ export function SessionHistoryTable({
               style={styles.txtInput}
             />
           </TouchableOpacity>
-          {/* <DateTimePickerModal
-            mode={'date'}
-            isVisible={show}
-            onConfirm={onChangeDate}
-            onCancel={() => onCancelFun()}
-            maximumDate={new Date()}
-          /> */}
-
           <View style={{ marginHorizontal: moderateScale(10) }}>
             <TableDropdown placeholder="Select Staff" selected={staffSelection} data={posUsers} />
           </View>
         </View>
       </View>
+
+      {/*Calendar pagination section */}
+      <View
+        style={[styles.jbrTypeCon, { zIndex: -1, opacity: payloadLength === 0 ? 0.4 : 1 }]}
+        pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
+      >
+        <View style={styles.paginationEnd}>
+          <Text style={[styles.paginationCount, { fontSize: 12 }]}>
+            {strings.customers.showResult}
+          </Text>
+          <View style={{ marginHorizontal: moderateScale(10) }}>
+            <DropDownPicker
+              ArrowUpIconComponent={({ style }) => (
+                <Image source={dropdown2} style={styles.dropDownIconPagination} />
+              )}
+              ArrowDownIconComponent={({ style }) => (
+                <Image source={dropdown2} style={styles.dropDownIconPagination} />
+              )}
+              style={styles.dropdown}
+              containerStyle={[
+                styles.containerStylePagination,
+                { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+              ]}
+              dropDownContainerStyle={styles.dropDownContainerStyle}
+              listItemLabelStyle={styles.listItemLabelStyle}
+              labelStyle={styles.labelStyle}
+              selectedItemLabelStyle={styles.selectedItemLabelStyle}
+              open={paginationModalOpen}
+              value={paginationModalValue}
+              items={paginationModalItems}
+              setOpen={() => setPaginationModalOpen(!paginationModalOpen)}
+              setValue={setPaginationModalValue}
+              setItems={setPaginationModalItems}
+              placeholder="10"
+              placeholderStyle={styles.placeholderStylePagination}
+              // onSelectItem={item => selectedNo(item.value)}
+            />
+          </View>
+          <TouchableOpacity
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
+              },
+            ]}
+            onPress={() => {
+              setPage(page - 1);
+              setInd(ind - 1);
+            }}
+            disabled={paginationData?.currentPage == 1 ? true : false}
+          >
+            <Image
+              source={Union}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor:
+                    paginationData?.currentPage == 1 ? COLORS.gerySkies : COLORS.solid_grey,
+                },
+              ]}
+            />
+          </TouchableOpacity>
+          <View style={styles.unionCon}>
+            <Image source={mask} style={styles.unionStyle} />
+          </View>
+          <View
+            style={{
+              width: ms(70),
+            }}
+          >
+            {isHistoryLoad ? (
+              <ActivityIndicator size="small" />
+            ) : (
+              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
+                {startIndex} - {startIndex + (tableDataArray?.length - 1)} of{' '}
+                {paginationData?.total}
+              </Text>
+            )}
+          </View>
+          <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
+            <Image
+              source={maskRight}
+              style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
+            />
+          </View>
+          <TouchableOpacity
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor:
+                  paginationData?.currentPage == paginationData?.totalPages
+                    ? COLORS.washGrey
+                    : COLORS.white,
+              },
+            ]}
+            onPress={() => {
+              setPage(page + 1);
+              setInd(ind + 1);
+            }}
+            disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
+          >
+            <Image
+              source={unionRight}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.gerySkies
+                      : COLORS.solid_grey,
+                },
+              ]}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <View style={[styles.tableMainView]}>
         <Table>
           <View
@@ -205,12 +278,9 @@ export function SessionHistoryTable({
             ]}
           >
             <View style={styles.profileheaderUnderView}>
-              {/* <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}> */}
               <View style={{ alignItems: 'center', justifyContent: 'center', marginStart: ms(15) }}>
                 <Text style={[styles.tableTextHeader]}>#</Text>
               </View>
-
-              {/* </View> */}
               <View style={styles.profileheaderChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={1}>
                   Date
@@ -259,7 +329,7 @@ export function SessionHistoryTable({
             </View>
           </View>
 
-          <View style={{ height: windowHeight * 0.67 }}>
+          <View style={{ height: windowHeight * 0.65 }}>
             <ScrollView
               contentContainerStyle={{ flexGrow: 1 }}
               showsVerticalScrollIndicator={false}
@@ -268,100 +338,103 @@ export function SessionHistoryTable({
                 <View style={{ marginTop: 100 }}>
                   <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
-              ) : tableDataArrayReverse?.length === 0 ? (
+              ) : tableDataArray?.length === 0 ? (
                 <View style={{ marginTop: 80 }}>
                   <Text style={styles.userNotFound}>History not found</Text>
                 </View>
               ) : (
-                tableDataArrayReverse?.map((item, index) => (
-                  <TouchableOpacity
-                    style={styles.tableDataCon}
-                    onPress={
-                      () => tableTouchHandler(item)
+                tableDataArray?.map((item, index) => {
+                  const currentIndex = startIndex + index;
+                  return (
+                    <TouchableOpacity
+                      style={styles.tableDataCon}
+                      onPress={
+                        () => tableTouchHandler(item)
 
-                      // ,oneItemSend(item)
-                    }
-                    key={index}
-                  >
-                    <View style={styles.profileheaderUnderData}>
-                      {/* <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}> */}
-                      <Text style={[styles.tableTextData]}>{index + 1}</Text>
-                      {/* </View> */}
-                      <View style={styles.profileheaderChildView}>
-                        <Text style={styles.tableTextData}>
-                          {moment(item.created_at).format('YYYY/MM/DD') ?? ''}
-                        </Text>
-                      </View>
-                      <View style={[styles.profileheaderChildView, { marginLeft: SW(-5) }]}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          {item.start_session == null
-                            ? ''
-                            : moment(item.start_session).format('hh:mm A') ?? ''}
-                        </Text>
-                      </View>
-                      <View style={styles.profileheaderChildView}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          {item.end_session == null
-                            ? ''
-                            : moment(item.end_session).format('hh:mm A') ?? ''}
-                        </Text>
-                      </View>
-                      <View style={styles.profileheaderChildView}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <Image
-                            source={{ uri: item?.pos_user_detail?.user_profiles?.profile_photo }}
-                            style={{
-                              width: ms(15),
-                              height: ms(15),
-                              resizeMode: 'contain',
-                              borderRadius: 100,
-                              // marginLeft: ms(-15),
-                            }}
-                          />
-                          <Text style={[styles.tableTextData, { marginLeft: ms(5) }]}>
-                            {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
-                            {item?.pos_user_detail?.user_profiles?.firstname == undefined
-                              ? 'System Ended'
-                              : item?.pos_user_detail?.user_profiles?.firstname}
+                        // ,oneItemSend(item)
+                      }
+                      key={index}
+                    >
+                      <View style={styles.profileheaderUnderData}>
+                        {/* <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}> */}
+                        <Text style={[styles.tableTextData]}>{currentIndex}</Text>
+                        {/* </View> */}
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData}>
+                            {moment(item.created_at).format('YYYY/MM/DD') ?? ''}
+                          </Text>
+                        </View>
+                        <View style={[styles.profileheaderChildView, { marginLeft: SW(-5) }]}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {item.start_session == null
+                              ? ''
+                              : moment(item.start_session).format('hh:mm A') ?? ''}
+                          </Text>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {item.end_session == null
+                              ? ''
+                              : moment(item.end_session).format('hh:mm A') ?? ''}
+                          </Text>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image
+                              source={{ uri: item?.pos_user_detail?.user_profiles?.profile_photo }}
+                              style={{
+                                width: ms(15),
+                                height: ms(15),
+                                resizeMode: 'contain',
+                                borderRadius: 100,
+                                // marginLeft: ms(-15),
+                              }}
+                            />
+                            <Text style={[styles.tableTextData, { marginLeft: ms(5) }]}>
+                              {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
+                              {item?.pos_user_detail?.user_profiles?.firstname == undefined
+                                ? 'System Ended'
+                                : item?.pos_user_detail?.user_profiles?.firstname}
+                            </Text>
+                          </View>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            ${item.start_tracking_session}
+                            {'.00'}
+                          </Text>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            ${item.add_cash}
+                            {'.00'}
+                          </Text>
+                        </View>
+                        <View style={[styles.profileheaderChildView, { marginLeft: SW(-3) }]}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            ${item.removed_cash}
+                            {'.00'}
+                          </Text>
+                        </View>
+                        <View style={[styles.profileheaderChildView, { marginLeft: SW(-3) }]}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            ${item.counted_cash}
+                            {'.00'}
+                          </Text>
+                        </View>
+                        <View style={[styles.profileheaderChildView]}>
+                          <Text style={[styles.tableTextData]} numberOfLines={1}>
+                            {item.end_tracking_session < 0 ? '-' : null} $
+                            {item.end_tracking_session < 0
+                              ? Math.abs(item.end_tracking_session)
+                              : item.end_tracking_session}
+                            {'.00'}
                           </Text>
                         </View>
                       </View>
-                      <View style={styles.profileheaderChildView}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          ${item.start_tracking_session}
-                          {'.00'}
-                        </Text>
-                      </View>
-                      <View style={styles.profileheaderChildView}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          ${item.add_cash}
-                          {'.00'}
-                        </Text>
-                      </View>
-                      <View style={[styles.profileheaderChildView, { marginLeft: SW(-3) }]}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          ${item.removed_cash}
-                          {'.00'}
-                        </Text>
-                      </View>
-                      <View style={[styles.profileheaderChildView, { marginLeft: SW(-3) }]}>
-                        <Text style={styles.tableTextData} numberOfLines={1}>
-                          ${item.counted_cash}
-                          {'.00'}
-                        </Text>
-                      </View>
-                      <View style={[styles.profileheaderChildView]}>
-                        <Text style={[styles.tableTextData]} numberOfLines={1}>
-                          {item.end_tracking_session < 0 ? '-' : null} $
-                          {item.end_tracking_session < 0
-                            ? Math.abs(item.end_tracking_session)
-                            : item.end_tracking_session}
-                          {'.00'}
-                        </Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                ))
+                    </TouchableOpacity>
+                  );
+                })
               )}
             </ScrollView>
           </View>
@@ -379,12 +452,21 @@ export function SessionHistoryTable({
       >
         <View style={styles.calendarModalView}>
           <CalendarPickerModal
-            onPress={() => setShow(false)}
+            onPress={() => {
+              setShow(false);
+            }}
             onDateChange={onChangeDate}
-            onSelectedDate={() => onDateApply(formattedDate)}
+            onSelectedDate={() => {
+              setShow(false);
+              setFormatedDate(date);
+            }}
             selectedStartDate={formattedDate}
             maxDate={maxDate}
-            onCancelPress={onCancelPressCalendar}
+            onCancelPress={() => {
+              setShow(false);
+              setFormatedDate();
+              setDate();
+            }}
           />
         </View>
       </Modal>

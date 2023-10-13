@@ -111,11 +111,11 @@ export const trackSessionSave = (data) => async (dispatch) => {
   }
 };
 
-export const getSessionHistory = (newDateFormat, staff) => async (dispatch) => {
+export const getSessionHistory = (data) => async (dispatch) => {
   dispatch(getSessionHistoryRequest());
   try {
-    const res = await CashTrackingController.getSessionHistory(newDateFormat, staff);
-    dispatch(getSessionHistorySuccess(res?.payload?.data));
+    const res = await CashTrackingController.getSessionHistory(data);
+    dispatch(getSessionHistorySuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getSessionHistoryReset());
