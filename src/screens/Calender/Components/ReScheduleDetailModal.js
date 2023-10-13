@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, Text, View, TouchableOpacity, FlatList } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
@@ -25,6 +33,8 @@ import { ServiceProviderItem } from '@/components/ServiceProviderItem';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ScrollView } from 'react-native-gesture-handler';
 import { memo } from 'react';
+import { TYPES } from '@/Types/Types';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -90,6 +100,10 @@ const ReScheduleDetailModal = ({
     const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
+
+  const isLoadingTimeSlot = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_TIME_SLOTS], state)
+  );
 
   const handleTimeSlotClick = async (selectedSlotIndex) => {
     const updateSelectedTimeSlots = await calculateTimeSlotSelection({
@@ -299,7 +313,7 @@ const ReScheduleDetailModal = ({
                     {appointmentDetail?.product_name}
                   </Text>
                   <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(9), marginTop: ms(5) }}>
-                    Est {estimatedServiceTime - 5} - {estimatedServiceTime} mins
+                    Est {estimatedServiceTime} mins
                   </Text>
                 </View>
                 <Text style={[styles.selected, { fontSize: ms(12) }]}>
@@ -393,27 +407,32 @@ const ReScheduleDetailModal = ({
               }}
             >
               <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
-
-              <FlatList
-                scrollEnabled={false}
-                data={timeSlotsData || []}
-                numColumns={4}
-                renderItem={renderSlotItem}
-                ListEmptyComponent={() => (
-                  <View
-                    style={{
-                      height: ms(50),
-                      paddingHorizontal: ms(10),
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
-                      There are no slots available for this day
-                    </Text>
-                  </View>
-                )}
-              />
+              {isLoadingTimeSlot ? (
+                <View style={{ paddingVertical: ms(40) }}>
+                  <ActivityIndicator size={'large'} />
+                </View>
+              ) : (
+                <FlatList
+                  scrollEnabled={false}
+                  data={timeSlotsData || []}
+                  numColumns={4}
+                  renderItem={renderSlotItem}
+                  ListEmptyComponent={() => (
+                    <View
+                      style={{
+                        height: ms(50),
+                        paddingHorizontal: ms(10),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
+                        There are no slots available for this day
+                      </Text>
+                    </View>
+                  )}
+                />
+              )}
             </View>
           </View>
           <View
