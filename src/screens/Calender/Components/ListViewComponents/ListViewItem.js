@@ -146,12 +146,14 @@ const ListViewItem = ({
                 <Text style={styles.customerName}>
                   {customerDetails?.firstname + ' ' + customerDetails?.lastname}
                 </Text>
-                {userId !== null && (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={pin} style={styles.eventAddressIcon} />
-                    <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
-                  </View>
-                )}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  {/* <Image source={pin} style={styles.eventAddressIcon} /> */}
+                  <Text style={styles.eventAddress}>
+                    {userId !== null
+                      ? customerDetails?.phone_number
+                      : customerDetails?.phone_code + customerDetails?.phone_no}
+                  </Text>
+                </View>
               </View>
             </>
           ) : (
