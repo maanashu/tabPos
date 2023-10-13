@@ -253,7 +253,7 @@ export function MainScreen({
       <View style={styles.flexDirectionRow}>
         <View style={styles.totalProductCon}>
           <Spacer space={SH(20)} />
-          <View style={styles.displayFlex}>
+          <View style={[styles.displayFlex, { alignItems: 'baseline' }]}>
             <View>
               <Text style={styles.darkBlackText}>Total Orders</Text>
               <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
@@ -273,12 +273,12 @@ export function MainScreen({
               </View>
               <View style={styles.flexAlign}>
                 <View style={[styles.bullets, { backgroundColor: COLORS.violet }]} />
-                <Text style={styles.bulletText}>{'Online Orders'}</Text>
+                <Text style={styles.bulletText}>{'B2C Orders'}</Text>
               </View>
-              <View style={styles.flexAlign}>
+              {/* <View style={styles.flexAlign}>
                 <View style={[styles.bullets, { backgroundColor: COLORS.darkBlue }]} />
                 <Text style={styles.bulletText}>{'Shipping Orders'}</Text>
-              </View>
+              </View> */}
             </View>
           </View>
           <Spacer space={SH(5)} />
