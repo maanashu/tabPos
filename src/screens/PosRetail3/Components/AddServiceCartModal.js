@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
@@ -21,6 +22,8 @@ import { useEffect } from 'react';
 import moment from 'moment';
 import { calculateTimeSlotSelection, getDaysAndDates } from '@/utils/GlobalMethods';
 import { ServiceProviderItem } from '@/components/ServiceProviderItem';
+import { TYPES } from '@/Types/Types';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 const windowWidth = Dimensions.get('window').width;
 
 export function AddServiceCartModal({
@@ -78,6 +81,10 @@ export function AddServiceCartModal({
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
 
+  const isLoadingTimeSlot = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_TIME_SLOTS], state)
+  );
+  console.log('check loading time slot', isLoadingTimeSlot);
   const onClickServiceProvider = (item) => {
     setposUserId(item?.user?.unique_uuid);
     setProviderDetail(item?.user);
@@ -366,25 +373,31 @@ export function AddServiceCartModal({
           >
             <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
 
-            <FlatList
-              data={timeSlotsData || []}
-              numColumns={4}
-              renderItem={renderSlotItem}
-              ListEmptyComponent={() => (
-                <View
-                  style={{
-                    height: ms(50),
-                    paddingHorizontal: ms(10),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
-                    There are no slots available for this day
-                  </Text>
-                </View>
-              )}
-            />
+            {isLoadingTimeSlot ? (
+              <View style={{ paddingVertical: ms(40) }}>
+                <ActivityIndicator size={'large'} />
+              </View>
+            ) : (
+              <FlatList
+                data={timeSlotsData || []}
+                numColumns={4}
+                renderItem={renderSlotItem}
+                ListEmptyComponent={() => (
+                  <View
+                    style={{
+                      height: ms(50),
+                      paddingHorizontal: ms(10),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
+                      There are no slots available for this day
+                    </Text>
+                  </View>
+                )}
+              />
+            )}
           </View>
         </View>
       </ScrollView>

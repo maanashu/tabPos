@@ -597,6 +597,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: ms(6),
     color: COLORS.solid_grey,
+    marginTop: ms(2),
   },
   eventAddressIcon: {
     height: ms(10),
