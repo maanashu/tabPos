@@ -991,14 +991,9 @@ export function MainScreen({
                           <Text numberOfLines={1} style={styles.productSubHead}>
                             Estimated Time Not found
                           </Text>
-                        ) : item.supplies?.[0]?.approx_service_time > 5 ? (
-                          <Text numberOfLines={1} style={styles.productSubHead}>
-                            Est: {item.supplies?.[0]?.approx_service_time - 5} -{' '}
-                            {item.supplies?.[0]?.approx_service_time} min
-                          </Text>
                         ) : (
                           <Text numberOfLines={1} style={styles.productSubHead}>
-                            Est: 0 - {item.supplies?.[0]?.approx_service_time} min
+                            Est: {item.supplies?.[0]?.approx_service_time} min
                           </Text>
                         )}
 

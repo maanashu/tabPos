@@ -104,7 +104,6 @@ export function SessionHistoryTable({
       calenderDate: formatedDate,
       staffId: staffSelect,
     };
-    console.log('data', data);
     dispatch(getSessionHistory(data));
   }, [page, paginationModalValue, formatedDate, staffSelect]);
 

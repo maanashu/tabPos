@@ -387,16 +387,12 @@ export function CartServiceScreen({
                                   {moment(data?.date).format('LL')} @
                                   {data?.start_time + '-' + data?.end_time}
                                 </Text>
-                                {item.supplies?.[0]?.approx_service_time == null ? (
+
+                                {data?.product_details?.supply?.approx_service_time == null ? (
                                   <Text style={styles.sukNumber}>Estimated Time Not found</Text>
-                                ) : item.supplies?.[0]?.approx_service_time > 5 ? (
-                                  <Text style={styles.sukNumber}>
-                                    Est: {item.supplies?.[0]?.approx_service_time - 5} -{' '}
-                                    {item.supplies?.[0]?.approx_service_time} min
-                                  </Text>
                                 ) : (
                                   <Text style={styles.sukNumber}>
-                                    Est: 0 - {item.supplies?.[0]?.approx_service_time} min
+                                    Est: {data?.product_details?.supply?.approx_service_time} min
                                   </Text>
                                 )}
                               </View>

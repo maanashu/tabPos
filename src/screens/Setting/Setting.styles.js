@@ -1039,7 +1039,7 @@ export const styles = StyleSheet.create({
     height: SW(5),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
-    alignSelf: 'flex-start',
+    // alignSelf: 'flex-start',
   },
   arrowStyle2: {
     width: SW(5),

@@ -271,7 +271,6 @@ const Graph = () => {
   useEffect(() => {
     convertData();
   }, [getTotalTraData]);
-  console.log('modifydata', JSON.stringify(modifyData));
   return (
     <View style={styles.graphViewStyle}>
       <View style={styles.flexRow}>

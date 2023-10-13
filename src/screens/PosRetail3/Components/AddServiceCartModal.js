@@ -84,7 +84,6 @@ export function AddServiceCartModal({
   const isLoadingTimeSlot = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TIME_SLOTS], state)
   );
-  console.log('check loading time slot', isLoadingTimeSlot);
   const onClickServiceProvider = (item) => {
     setposUserId(item?.user?.unique_uuid);
     setProviderDetail(item?.user);
@@ -258,14 +257,9 @@ export function AddServiceCartModal({
 
               {itemData.supplies?.[0]?.approx_service_time == null ? (
                 <Text style={styles.sizeAndColor}>Estimated Time Not found</Text>
-              ) : itemData.supplies?.[0]?.approx_service_time > 5 ? (
-                <Text style={styles.sizeAndColor}>
-                  Est: {itemData.supplies?.[0]?.approx_service_time - 5} -{' '}
-                  {itemData.supplies?.[0]?.approx_service_time} min
-                </Text>
               ) : (
                 <Text style={styles.sizeAndColor}>
-                  Est: 0 - {itemData.supplies?.[0]?.approx_service_time} min
+                  Est: {itemData.supplies?.[0]?.approx_service_time} min
                 </Text>
               )}
             </View>
