@@ -50,114 +50,114 @@ const Graph = () => {
     }
   }
 
-  const barData = [
-    {
-      value: 10,
-      spacing: 2,
-      label: '11/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-      intialSapce: 0,
-    },
-    {
-      value: 56,
-      label: '',
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 66, frontColor: COLORS.darkBlue },
-    {
-      value: 45,
-      spacing: 2,
-      label: '12/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-      intialSapce: 0,
-    },
-    {
-      value: 3,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 7, frontColor: COLORS.darkBlue },
-    {
-      value: 50,
-      spacing: 2,
-      label: '13/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-      intialSapce: 0,
-    },
-    {
-      value: 89,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 22, frontColor: COLORS.darkBlue },
-    {
-      value: 88,
-      spacing: 2,
-      label: '13/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-      intialSapce: 0,
-    },
-    {
-      value: 44,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 22, frontColor: COLORS.darkBlue },
-    {
-      value: 88,
-      spacing: 2,
-      label: '13/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-      intialSapce: 0,
-    },
-    {
-      value: 44,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 22, frontColor: COLORS.darkBlue },
-    {
-      value: 66,
-      spacing: 2,
-      label: '13/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-      intialSapce: 0,
-    },
-    {
-      value: 56,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 22, frontColor: COLORS.darkBlue },
-    {
-      value: 23,
-      spacing: 2,
-      label: '13/20/2023',
-      labelWidth: 70,
-      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-      frontColor: COLORS.primary,
-      intialSapce: 0,
-    },
-    {
-      value: 1,
-      spacing: 2,
-      frontColor: COLORS.violet,
-    },
-    { value: 22, frontColor: COLORS.darkBlue },
-  ];
+  // const barData = [
+  //   {
+  //     value: 10,
+  //     spacing: 2,
+  //     label: '11/20/2023',
+  //     labelWidth: 70,
+  //     labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+  //     frontColor: COLORS.primary,
+  //     intialSapce: 0,
+  //   },
+  //   {
+  //     value: 56,
+  //     label: '',
+  //     spacing: 2,
+  //     frontColor: COLORS.violet,
+  //   },
+  //   { value: 66, frontColor: COLORS.darkBlue },
+  //   {
+  //     value: 45,
+  //     spacing: 2,
+  //     label: '12/20/2023',
+  //     labelWidth: 70,
+  //     labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+  //     frontColor: COLORS.primary,
+  //     intialSapce: 0,
+  //   },
+  //   {
+  //     value: 3,
+  //     spacing: 2,
+  //     frontColor: COLORS.violet,
+  //   },
+  //   { value: 7, frontColor: COLORS.darkBlue },
+  //   {
+  //     value: 50,
+  //     spacing: 2,
+  //     label: '13/20/2023',
+  //     labelWidth: 70,
+  //     labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+  //     frontColor: COLORS.primary,
+  //     intialSapce: 0,
+  //   },
+  //   {
+  //     value: 89,
+  //     spacing: 2,
+  //     frontColor: COLORS.violet,
+  //   },
+  //   { value: 22, frontColor: COLORS.darkBlue },
+  //   {
+  //     value: 88,
+  //     spacing: 2,
+  //     label: '13/20/2023',
+  //     labelWidth: 70,
+  //     labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+  //     frontColor: COLORS.primary,
+  //     intialSapce: 0,
+  //   },
+  //   {
+  //     value: 44,
+  //     spacing: 2,
+  //     frontColor: COLORS.violet,
+  //   },
+  //   { value: 22, frontColor: COLORS.darkBlue },
+  //   {
+  //     value: 88,
+  //     spacing: 2,
+  //     label: '13/20/2023',
+  //     labelWidth: 70,
+  //     labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+  //     frontColor: COLORS.primary,
+  //     intialSapce: 0,
+  //   },
+  //   {
+  //     value: 44,
+  //     spacing: 2,
+  //     frontColor: COLORS.violet,
+  //   },
+  //   { value: 22, frontColor: COLORS.darkBlue },
+  //   {
+  //     value: 66,
+  //     spacing: 2,
+  //     label: '13/20/2023',
+  //     labelWidth: 70,
+  //     labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+  //     frontColor: COLORS.primary,
+  //     intialSapce: 0,
+  //   },
+  //   {
+  //     value: 56,
+  //     spacing: 2,
+  //     frontColor: COLORS.violet,
+  //   },
+  //   { value: 22, frontColor: COLORS.darkBlue },
+  //   {
+  //     value: 23,
+  //     spacing: 2,
+  //     label: '13/20/2023',
+  //     labelWidth: 70,
+  //     labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+  //     frontColor: COLORS.primary,
+  //     intialSapce: 0,
+  //   },
+  //   {
+  //     value: 1,
+  //     spacing: 2,
+  //     frontColor: COLORS.violet,
+  //   },
+  //   { value: 22, frontColor: COLORS.darkBlue },
+  // ];
   const getFrontColor = (type, value) => {
     const frontColors = {
       JBR: COLORS.primary,
@@ -182,20 +182,20 @@ const Graph = () => {
         label: day,
         labelWidth: 80,
         labelTextStyle: { color: COLORS.darkGray, fontSize: 11, marginLeft: ms(10) },
-        frontColor: COLORS.primary,
+        frontColor: showJBR ? COLORS.primary : COLORS.white,
         initialSpace: 0,
         JBR: true,
       });
       setOfThree.push({
         value: values[1] || 0,
         spacing: 10,
-        frontColor: COLORS.darkBlue,
+        frontColor: showJBR ? COLORS.darkBlue : COLORS.white,
         Cash: true,
       });
       setOfThree.push({
         value: values[2] || 0,
         spacing: 25,
-        frontColor: COLORS.violet,
+        frontColor: showJBR ? COLORS.violet : COLORS.white,
         Card: true,
       });
 
@@ -271,7 +271,7 @@ const Graph = () => {
   useEffect(() => {
     convertData();
   }, [getTotalTraData]);
-
+  console.log('modifydata', JSON.stringify(modifyData));
   return (
     <View style={styles.graphViewStyle}>
       <View style={styles.flexRow}>

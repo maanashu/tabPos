@@ -174,7 +174,7 @@ export function Languages() {
           <View style={styles.twoStepVerifiCon}>
             <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>{item.name}</Text>
             <Text style={[styles.securitysubhead, { fontSize: SF(12) }]} numberOfLines={1}>
-              Deafult
+              Default
             </Text>
           </View>
           <TouchableOpacity
