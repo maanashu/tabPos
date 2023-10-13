@@ -156,26 +156,37 @@ export function Staff() {
         setStaffDetail(true);
       }
     } else {
-      if (posUserId === id) {
-        const res = await dispatch(getStaffDetail(staffId));
-        if (res?.type === 'STAFF_DETAIL_SUCCESS') {
-          setStaffDetail(true);
-        } else {
-          Toast.show({
-            text2: 'Staff profil not found',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
-        }
+      const res = await dispatch(getStaffDetail(staffId));
+      if (res?.type === 'STAFF_DETAIL_SUCCESS') {
+        setStaffDetail(true);
       } else {
         Toast.show({
-          text2: 'You Can Only See Your Profile',
+          text2: 'Staff profil not found',
           position: 'bottom',
           type: 'error_toast',
-          visibilityTime: 2000,
+          visibilityTime: 1500,
         });
       }
+      // if (posUserId === id) {
+      //   const res = await dispatch(getStaffDetail(staffId));
+      //   if (res?.type === 'STAFF_DETAIL_SUCCESS') {
+      //     setStaffDetail(true);
+      //   } else {
+      //     Toast.show({
+      //       text2: 'Staff profil not found',
+      //       position: 'bottom',
+      //       type: 'error_toast',
+      //       visibilityTime: 1500,
+      //     });
+      //   }
+      // } else {
+      //   Toast.show({
+      //     text2: 'You Can Only See Your Profile',
+      //     position: 'bottom',
+      //     type: 'error_toast',
+      //     visibilityTime: 2000,
+      //   });
+      // }
     }
   };
   const userRenderItem = ({ item }) => (
@@ -199,7 +210,13 @@ export function Staff() {
           />
           <View style={styles.marginLeft}>
             <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-              {`${item.user?.user_profiles?.firstname} ${item.user?.user_profiles?.lastname}`}
+              {`${
+                item.user?.user_profiles?.firstname == null
+                  ? ''
+                  : item.user?.user_profiles?.firstname
+              } ${
+                item.user?.user_profiles?.lastname == null ? '' : item.user?.user_profiles?.lastname
+              }`}
             </Text>
             <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
               {item?.user?.user_roles?.length > 0
