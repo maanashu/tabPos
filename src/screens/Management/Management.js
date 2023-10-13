@@ -111,6 +111,11 @@ export function Management() {
   };
   const cashIn = drawerData?.drawerHistory?.cash_in;
   const cashOut = drawerData?.drawerHistory?.cash_out;
+  const cashTotalNet =
+    Number(drawerData?.drawerHistory?.cash_in?.total) +
+    Number(drawerData?.drawerHistory?.cash_out?.total);
+  const cashOutNet = Number(drawerData?.drawerHistory?.cash_out?.total);
+  // alert(cashOut?.total);
   const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
 
@@ -933,7 +938,7 @@ export function Management() {
               <View>
                 <Text style={styles.usdText}>
                   {strings.management.usd}
-                  {SessionData?.cashBalance}
+                  {SessionData?.cashBalance.toFixed(2)}
                 </Text>
               </View>
               <Text
@@ -992,7 +997,7 @@ export function Management() {
                   </View>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashSum ?? '0'}
+                    {cashSum.toFixed(2) ?? '0'}
                   </Text>
                 </TouchableOpacity>
                 {viewCashInArray && (
@@ -1069,7 +1074,7 @@ export function Management() {
                       </View>
                       <Text style={styles.paymentBodyText}>
                         {strings.management.usd}
-                        {cashIn?.sales?.total}
+                        {cashIn?.sales?.total.toFixed(2)}
                       </Text>
                     </TouchableOpacity>
                     {salesExpandedView && (
@@ -1079,7 +1084,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.sales?.cash}
+                            {cashIn?.sales?.cash.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1087,7 +1092,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.sales?.card}
+                            {cashIn?.sales?.card.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1095,7 +1100,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.sales?.jobr_coin}
+                            {cashIn?.sales?.jobr_coin.toFixed(2)}
                           </Text>
                         </View>
                       </View>
@@ -1120,7 +1125,7 @@ export function Management() {
                       </View>
                       <Text style={styles.paymentBodyText}>
                         {strings.management.usd}
-                        {cashIn?.manual?.total}
+                        {cashIn?.manual?.total.toFixed(2)}
                       </Text>
                     </TouchableOpacity>
                     {manualInExpandedView && (
@@ -1130,7 +1135,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.manual?.cash}
+                            {cashIn?.manual?.cash.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1138,7 +1143,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.manual?.card}
+                            {cashIn?.manual?.card.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1146,13 +1151,13 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.manual?.jobr_coin}
+                            {cashIn?.manual?.jobr_coin.toFixed(2)}
                           </Text>
                         </View>
                       </View>
                     )}
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                       style={styles.paymentBodyCon}
                       onPress={() => setDelieveryFeeInExpandedView((prev) => !prev)}
                     >
@@ -1252,7 +1257,7 @@ export function Management() {
                           </Text>
                         </View>
                       </View>
-                    )}
+                    )} */}
 
                     {/* <View
                       style={styles.paymentBodyCon}
@@ -1320,7 +1325,7 @@ export function Management() {
                   </View>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashOutSum ?? '0'}
+                    {cashOutSum.toFixed(2) ?? '0'}
                   </Text>
                 </TouchableOpacity>
                 {viewCashOutArray && (
@@ -1343,7 +1348,7 @@ export function Management() {
                       </View>
                       <Text style={styles.paymentBodyText}>
                         {strings.management.usd}
-                        {cashOut?.refund?.total}
+                        {cashOut?.refund?.total.toFixed(2)}
                       </Text>
                     </TouchableOpacity>
                     {salesOutExpandedView && (
@@ -1353,7 +1358,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.refund?.cash}
+                            {cashOut?.refund?.cash.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1361,7 +1366,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.refund?.card}
+                            {cashOut?.refund?.card.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1369,7 +1374,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.refund?.jobr_coin}
+                            {cashOut?.refund?.jobr_coin.toFixed(2)}
                           </Text>
                         </View>
                       </View>
@@ -1415,7 +1420,7 @@ export function Management() {
                       </View>
                       <Text style={styles.paymentBodyText}>
                         {strings.management.usd}
-                        {cashOut?.manual?.total}
+                        {cashOut?.manual?.total.toFixed(2)}
                       </Text>
                     </TouchableOpacity>
                     {manualOutExpandedView && (
@@ -1425,7 +1430,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.manual?.cash}
+                            {cashOut?.manual?.cash.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1433,7 +1438,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.manual?.card}
+                            {cashOut?.manual?.card.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1441,14 +1446,14 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.manual?.jobr_coin}
+                            {cashOut?.manual?.jobr_coin.toFixed(2)}
                           </Text>
                         </View>
                       </View>
                     )}
                   </>
                 )}
-
+                {/* 
                 {viewCashOutArray && (
                   <>
                     <TouchableOpacity
@@ -1469,7 +1474,7 @@ export function Management() {
                       </View>
                       <Text style={styles.paymentBodyText}>
                         {strings.management.usd}
-                        {cashOut?.delivery_fees?.total}
+                        {cashOut?.delivery_fees?.total.toFixed(2)}
                       </Text>
                     </TouchableOpacity>
                     {delieveryFeeOutExpandedView && (
@@ -1479,7 +1484,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.delivery_fees?.cash}
+                            {cashOut?.delivery_fees?.cash.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1487,7 +1492,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.delivery_fees?.card}
+                            {cashOut?.delivery_fees?.card.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1495,7 +1500,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.delivery_fees?.jobr_coin}
+                            {cashOut?.delivery_fees?.jobr_coin.toFixed(2)}
                           </Text>
                         </View>
                       </View>
@@ -1555,12 +1560,12 @@ export function Management() {
                       </View>
                     )}
                   </>
-                )}
+                )} */}
                 <View style={[styles.paymentOptionsView, { borderBottomWidth: 0 }]}>
                   <Text style={styles.cashDrawerText}>{strings.management.netPayment}</Text>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashIn?.total + cashOut?.total}
+                    {cashTotalNet.toFixed(2)}
                     {/* {SessionData?.cashBalance} */}
                   </Text>
                 </View>
@@ -1650,8 +1655,8 @@ export function Management() {
           <Spacer space={SH(30)} />
           <TouchableOpacity
             style={styles.sessionHistoryView}
-            onPress={() =>
-              setSessionHistory(true)
+            onPress={
+              () => setSessionHistory(true)
               // dispatch(getSessionHistory()
             }
           >
