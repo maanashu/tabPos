@@ -9,9 +9,10 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { moderateScale, ms, scale, verticalScale } from 'react-native-size-matters';
 
 import {
@@ -26,11 +27,13 @@ import {
 import { Spacer } from '@/components';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
+import { navigate } from '@/navigation/NavigationRef';
 import RecheckConfirmation from './RecheckConfirmation';
 import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
-import { goBack, navigate } from '@/navigation/NavigationRef';
 import { CustomHeader } from '@/screens/PosRetail3/Components';
 import { getDrawerSessions } from '@/actions/CashTrackingAction';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 
 const { width, height } = Dimensions.get('window');
 
@@ -46,7 +49,6 @@ export function ProductRefund(props) {
   const [applyEachItem, setApplyEachItem] = useState(false);
   const [selectType, setSelectType] = useState('dollar');
   const [buttonText, setButtonText] = useState('Apply Refund');
-  const [changeView, setChangeView] = useState('TotalItems');
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
   useEffect(() => {
@@ -58,6 +60,10 @@ export function ProductRefund(props) {
       setOrders(updatedDataArray);
     }
   }, []);
+
+  const isLoading = useSelector((state) =>
+    isLoadingSelector([DASHBOARDTYPE.RETURN_PRODUCTS], state)
+  );
 
   const refundHandler = (key, newText, item) => {
     const parsedNewText = parseFloat(newText);
@@ -674,6 +680,12 @@ export function ProductRefund(props) {
         isVisible={isCheckConfirmationModalVisible}
         setIsVisible={setIsCheckConfirmationModalVisible}
       />
+
+      {isLoading ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.3)' }]}>
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -892,5 +904,12 @@ const styles = StyleSheet.create({
     width: ms(14),
     height: ms(14),
     resizeMode: 'contain',
+  },
+  loader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });

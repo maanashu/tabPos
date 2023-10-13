@@ -86,7 +86,6 @@ export class DeliveryController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

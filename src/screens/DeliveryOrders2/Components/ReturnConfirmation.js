@@ -15,20 +15,13 @@ import ReactNativeModal from 'react-native-modal';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import {
-  angela,
-  cross,
-  crossButton,
-  dropScan,
-  Fonts,
-  PaymentDone,
-  userImage,
-  watchLogo,
-} from '@/assets';
+import { crossButton, dropScan, Fonts, PaymentDone, userImage, watchLogo } from '@/assets';
 
 const { width } = Dimensions.get('window');
 
 const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck, orderDetail }) => {
+  const userDetails = orderDetail?.user_details;
+
   return (
     <ReactNativeModal
       isVisible={isVisible}
@@ -39,26 +32,20 @@ const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck, orderDeta
       <View style={styles.headingRowStyle}>
         <Text style={styles.headingTextStyle}>{strings.returnOrder.heading}</Text>
 
-        <TouchableOpacity
-          style={{
-            width: SH(34),
-            height: SH(34),
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => setIsVisible(false)}
-        >
+        <TouchableOpacity style={styles.crossIconViewStyle} onPress={() => setIsVisible(false)}>
           <Image source={crossButton} style={styles.crossIconStyle} />
         </TouchableOpacity>
       </View>
 
       <Spacer space={SH(30)} />
+
       <View style={styles.returnConfirmedView}>
         <Image source={PaymentDone} style={styles.tickIconStyle} />
         <Text style={styles.returnConfirmedTextStyle}>{strings.returnOrder.returnConfirmed}</Text>
       </View>
 
       <Spacer space={SH(30)} />
+
       <View style={styles.customerViewStyle}>
         <Text style={[styles.returnConfirmedTextStyle, { textAlign: 'left' }]}>
           {strings.returnOrder.customer}
@@ -66,22 +53,17 @@ const ReturnConfirmation = ({ isVisible, setIsVisible, onPressRecheck, orderDeta
 
         <View style={styles.customerDetailViewStyle}>
           <Image
-            source={
-              orderDetail?.user_details?.profile_photo
-                ? { uri: orderDetail?.user_details?.profile_photo }
-                : userImage
-            }
+            source={userDetails?.profile_photo ? { uri: userDetails?.profile_photo } : userImage}
             style={styles.userImageStyle}
           />
 
           <View>
             <Text style={styles.customerNameStyle}>
-              {`${orderDetail?.user_details?.firstname} ${orderDetail?.user_details?.lastname}` ??
-                '-'}
+              {`${userDetails?.firstname} ${userDetails?.lastname}` ?? '-'}
             </Text>
             <Text
               style={styles.addressTextStyle}
-            >{`${orderDetail?.user_details?.current_address?.street_address}, ${orderDetail?.user_details?.current_address?.city}, ${orderDetail?.user_details?.current_address?.country}`}</Text>
+            >{`${userDetails?.current_address?.street_address}, ${userDetails?.current_address?.city}, ${userDetails?.current_address?.country}`}</Text>
           </View>
         </View>
       </View>
@@ -163,6 +145,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: SH(30),
     paddingTop: ms(20),
     justifyContent: 'space-between',
+  },
+  crossIconViewStyle: {
+    width: SH(34),
+    height: SH(34),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   crossIconStyle: {
     width: SH(24),

@@ -112,6 +112,10 @@ export function DeliveryOrders2({ route }) {
   useEffect(() => {
     setViewAllOrder(false);
     setTrackingView(false);
+    setChangeViewToRecheck(false);
+    dispatch(getReviewDefault(0, 1));
+    dispatch(getOrderCount());
+    setOpenShippingOrders('0');
   }, [screen]);
 
   useEffect(() => {
@@ -388,9 +392,9 @@ export function DeliveryOrders2({ route }) {
         <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
           ${Number(item?.price).toFixed(2)}
         </Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{`X ${item?.qty}`}</Text>
         <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
-          ${Number(item?.price).toFixed(2)}
+          ${Number(item?.price).toFixed(2) * item?.qty}
         </Text>
       </View>
     );
