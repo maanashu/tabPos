@@ -61,7 +61,7 @@ export function SessionHistoryTable({
   const getAuth = useSelector(getAuthData);
   const drawerData = useSelector(getCashTracking);
   const sessionHistoryData = drawerData?.getSessionHistory;
-  const tableDataArray = drawerData?.getSessionHistory?.data;
+  const tableDataArray = drawerData?.getSessionHistory?.data ?? [];
   const payloadLength = Object.keys(drawerData?.getSessionHistory)?.length ?? 0;
   const [show, setShow] = useState(false);
   const [staffSelect, setStaffSelect] = useState('none');

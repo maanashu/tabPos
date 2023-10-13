@@ -142,17 +142,19 @@ export class CashTrackingController {
           : USER_URL +
             ApiUserInventory.getSessionHistory +
             `?page=${data?.page}&limit=${data?.limit}&pos_user_id=${data?.staffId}&filter_date=${data?.calenderDate}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error?.msg,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          console.log('error', error);
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
           reject(error);
         });
     });
