@@ -5,11 +5,11 @@ import {
   Image,
   FlatList,
   Platform,
+  TextInput,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
-  TextInput,
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
@@ -19,21 +19,21 @@ import CountryPicker from 'react-native-country-picker-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { moderateScale, moderateVerticalScale, ms, verticalScale } from 'react-native-size-matters';
 
-import { returnProduct } from '@/actions/DashboardAction';
 import { Spacer } from '@/components';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
+import ReturnInvoice from './ReturnInvoice';
 import { SF, SH, COLORS, SW } from '@/theme';
 import BackButton from '@/components/BackButton';
+import { navigate } from '@/navigation/NavigationRef';
 import ReturnConfirmation from './ReturnConfirmation';
 import { RECIPE_DATA } from '@/constants/flatListData';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { returnProduct } from '@/actions/DashboardAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
 import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
-import { navigate } from '@/navigation/NavigationRef';
-import ReturnInvoice from './ReturnInvoice';
-import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 const { width, height } = Dimensions.get('window');
 
@@ -44,6 +44,7 @@ export function PaymentSelection(props) {
 
   const [flag, setFlag] = useState('US');
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+1');
   const [isPhoneVisible, setIsPhoneVisible] = useState(false);
@@ -78,9 +79,9 @@ export function PaymentSelection(props) {
     );
   };
 
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.RETURN_PRODUCTS], state)
-  );
+  // const isLoading = useSelector((state) =>
+  //   isLoadingSelector([DASHBOARDTYPE.RETURN_PRODUCTS], state)
+  // );
 
   const closeHandler = () => {
     setSelectedRecipeIndex(null);
@@ -99,7 +100,7 @@ export function PaymentSelection(props) {
     await dispatch(getDrawerSessions());
     const products =
       orderFinalData?.order?.map((item) => ({
-        id: item?.id,
+        id: item?.product_id,
         qty: item?.qty ?? 1,
         write_off_qty: item?.write_off_qty,
         add_to_inventory_qty: item?.add_to_inventory_qty,
@@ -117,9 +118,11 @@ export function PaymentSelection(props) {
       }),
       ...(selectedRecipeIndex === 1 && { email }),
     };
+    setIsLoading(true);
     dispatch(
       returnProduct(data, 'delivery', (res) => {
         if (res) {
+          setIsLoading(false);
           alert('Product returned successfully');
           navigate(NAVIGATION.deliveryOrders2, { screen: 'delivery' });
         }
@@ -234,7 +237,7 @@ export function PaymentSelection(props) {
               <CountryPicker
                 onSelect={(code) => {
                   setFlag(code?.cca2);
-                  if (code?.callingCode !== []) {
+                  if (code?.callingCode?.length > 0) {
                     setCountryCode('+' + code?.callingCode.flat());
                   } else {
                     setCountryCode('');
@@ -324,7 +327,7 @@ export function PaymentSelection(props) {
       </ReactNativeModal>
 
       {isLoading ? (
-        <View style={[styles.loader, { flex: 1, backgroundColor: 'rgba(0,0,0,0.3)' }]}>
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.3)' }]}>
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
@@ -459,7 +462,7 @@ const styles = StyleSheet.create({
     marginHorizontal: ms(4),
     justifyContent: 'center',
     borderColor: COLORS.solidGrey,
-    width: Platform.OS === 'ios' ? ms(95) : ms(127),
+    width: Platform.OS === 'ios' ? ms(95) : ms(120),
   },
   _payByMethodReceipe: {
     fontSize: ms(12),

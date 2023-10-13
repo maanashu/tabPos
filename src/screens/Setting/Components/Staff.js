@@ -79,7 +79,6 @@ export function Staff() {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
-  console.log('getSettingData?.staffDetail', JSON.stringify(getSettingData?.staffDetail));
   const staffDetailData = getSettingData?.staffDetail;
   // const posUserArray = getAuth?.getAllPosUsers;
   const posUserArraydata = getAuth?.getAllPosUsersData;

@@ -7,7 +7,7 @@ const INITIALSTATE = {
   getOneManufactureDetails: {},
   getMessageHeads: [],
 };
-export const chatReducer = (state = { INITIALSTATE }, { payload, type }) => {
+export const chatReducer = (state = INITIALSTATE, { payload, type }) => {
   switch (type) {
     case TYPES.CLEAR_STORE:
       return {};

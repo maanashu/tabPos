@@ -82,8 +82,6 @@ const OrderDetail = ({
     }
   };
 
-  console.log('user====', userDetail);
-
   return (
     <>
       <View style={styles.orderDetailView}>
