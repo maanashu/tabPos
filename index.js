@@ -5,7 +5,9 @@
 import { AppRegistry, Platform } from 'react-native';
 import { App } from '@/App';
 import { name as appName } from './app.json';
-import notifee from '@notifee/react-native';
+import notifee, { EventType } from '@notifee/react-native';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 if (Platform.OS === 'android') {
   notifee.createChannel({
@@ -15,11 +17,17 @@ if (Platform.OS === 'android') {
 }
 
 notifee.onBackgroundEvent(async ({ type, detail }) => {
-  if (type === 'PRESS') {
-    // Handle notification press event
-  } else if (type === 'ACTION_PRESS') {
-    // Handle notification action press event
+  console.log('background event');
+  if (type === EventType.PRESS) {
+    // App was terminated, handle the notification and open the desired screen
+    await handleNotification(detail.notification);
   }
 });
+
+const handleNotification = (notification) => {
+  if (notification) {
+    navigate(NAVIGATION.deliveryOrders2, { screen: 'delivery' });
+  }
+};
 
 AppRegistry.registerComponent(appName, () => App);

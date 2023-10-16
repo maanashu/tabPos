@@ -1,8 +1,10 @@
 import messaging from '@react-native-firebase/messaging';
-import notifee, { AuthorizationStatus } from '@notifee/react-native';
+import notifee, { AuthorizationStatus, EventType } from '@notifee/react-native';
 import { deliOrder, getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
 import { store } from '@/store';
-import { getPendingOrders } from '@/actions/DashboardAction';
+import { addSellingSelection, getPendingOrders } from '@/actions/DashboardAction';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 // Request user permission for notifications
 const requestPermission = async () => {
@@ -29,6 +31,7 @@ const getDeviceToken = async () => {
 
 // Handle incoming push notifications when the app is in the foreground
 const onMessageReceivedForeground = async (message) => {
+  console.log('onMessageReceivedForeground');
   if (message?.data?.type === 'order_delivered') {
     store.dispatch(getReviewDefault(5, 1));
     store.dispatch(getReviewDefault(5, 4));
@@ -52,12 +55,16 @@ const onMessageReceivedForeground = async (message) => {
     body: message.notification.body,
     android: {
       channelId: 'default',
+      pressAction: {
+        id: 'default',
+      },
     },
   });
 };
 
 // Handle incoming push notifications when the app is in the background or closed
 const onMessageReceivedBackground = async (message) => {
+  console.log('onMessageReceivedBackground');
   if (message?.data?.type === 'order_delivered') {
     store.dispatch(getReviewDefault(5, 1));
     store.dispatch(getReviewDefault(5, 4));
@@ -81,6 +88,9 @@ const onMessageReceivedBackground = async (message) => {
     body: message.notification.body,
     android: {
       channelId: 'default',
+      pressAction: {
+        id: 'default',
+      },
     },
   });
 };
