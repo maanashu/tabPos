@@ -1,10 +1,9 @@
 import messaging from '@react-native-firebase/messaging';
-import notifee, { AuthorizationStatus, EventType } from '@notifee/react-native';
-import { deliOrder, getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
+import notifee, { AuthorizationStatus } from '@notifee/react-native';
+
 import { store } from '@/store';
-import { addSellingSelection, getPendingOrders } from '@/actions/DashboardAction';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
+import { getPendingOrders } from '@/actions/DashboardAction';
+import { deliOrder, getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
 
 // Request user permission for notifications
 const requestPermission = async () => {
