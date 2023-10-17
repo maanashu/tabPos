@@ -646,7 +646,14 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
               <Spacer space={SH(20)} />
 
               <TouchableOpacity
-                onPress={() => setIsCheckConfirmationModalVisible(true)}
+                onPress={() => {
+                  if (finalOrder?.order?.order_type === 'service') {
+                    setIsCheckConfirmationModalVisible(false);
+                    getOrdersDetail();
+                  } else {
+                    setIsCheckConfirmationModalVisible(true);
+                  }
+                }}
                 disabled={orders?.length > 0 ? false : true}
                 style={[
                   styles.nextButtonStyle,
