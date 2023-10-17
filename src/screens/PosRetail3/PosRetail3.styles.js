@@ -2459,7 +2459,7 @@ export const styles = StyleSheet.create({
   },
   scnStyle: {
     width: SW(16),
-    height: SW(17),
+    height: ms(32),
     resizeMode: 'contain',
   },
   upcInputContainer: {
