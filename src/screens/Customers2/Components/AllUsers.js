@@ -43,6 +43,8 @@ import { TYPES } from '@/Types/CustomersTypes';
 import { PAGINATION_DATA } from '@/constants/enums';
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 const result = Dimensions.get('window').height - 50;
 
 const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustomeType }) => {
@@ -218,7 +220,13 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
           <Text style={styles.backTitle}>{'Back'}</Text>
         </TouchableOpacity>
         <View style={styles.deliveryView}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.customers2,
+              })
+            }
+          >
             <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>

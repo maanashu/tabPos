@@ -43,27 +43,22 @@ export default function NotificationsList(props) {
     dispatch(fetchAllNotifications());
   }, []);
 
-  const isLoading = useSelector(state =>
+  const isLoading = useSelector((state) =>
     isLoadingSelector([TYPES.FETCH_ALL_NOTIFICATIONS], state)
   );
 
   const sectionedNotifications = useMemo(() => {
     return notifications?.reduce((acc, curr) => {
-      const date = moment(curr?.notification?.created_at).format(
-        'MMMM DD, YYYY'
-      );
+      const date = moment(curr?.notification?.created_at).format('MMMM DD, YYYY');
       let title = date;
       if (moment(date).isSame(moment(), strings.common.day)) {
         title = strings.common.today;
       } else if (
-        moment(date).isSame(
-          moment().subtract(1, strings.common.days),
-          strings.common.day
-        )
+        moment(date).isSame(moment().subtract(1, strings.common.days), strings.common.day)
       ) {
         title = strings.common.yesterday;
       }
-      const groupIndex = acc?.findIndex(group => group?.title === title);
+      const groupIndex = acc?.findIndex((group) => group?.title === title);
       if (groupIndex === -1) {
         acc.push({
           title,
@@ -76,7 +71,7 @@ export default function NotificationsList(props) {
     }, []);
   }, [notifications]);
 
-  const notificationIcons = item => {
+  const notificationIcons = (item) => {
     if (item?.notification?.event_name === 'payment_request_recieved') {
       return (
         <>
@@ -98,10 +93,7 @@ export default function NotificationsList(props) {
       return <Image style={styles.notificationImg} source={wallet} />;
     } else if (item?.notification?.event_name === 'wallet_recharge_request') {
       return (
-        <Image
-          style={[styles.notificationImg, { tintColor: COLORS.primary }]}
-          source={cash}
-        />
+        <Image style={[styles.notificationImg, { tintColor: COLORS.primary }]} source={cash} />
       );
     } else if (
       item?.notification?.event_name === 'balance_withdraw' ||
@@ -114,9 +106,7 @@ export default function NotificationsList(props) {
         <Image
           style={styles.notificationImg}
           source={
-            item?.notification?.user_image
-              ? { uri: item?.notification?.user_image }
-              : cashProfile
+            item?.notification?.user_image ? { uri: item?.notification?.user_image } : cashProfile
           }
         />
       );
@@ -140,17 +130,12 @@ export default function NotificationsList(props) {
 
   const renderItem = ({ item, index }) => (
     <View
-      style={[
-        styles.notificationItem,
-        !item?.is_read && { backgroundColor: COLORS.inputBorder },
-      ]}
+      style={[styles.notificationItem, !item?.is_read && { backgroundColor: COLORS.inputBorder }]}
     >
       <View style={styles.imgContainer}>
         {notificationIcons(item)}
         <View style={styles.notificationTextView}>
-          <Text style={styles.notificationTitle}>
-            {item?.notification?.title}
-          </Text>
+          <Text style={styles.notificationTitle}>{item?.notification?.title}</Text>
           <Text style={styles.notificationDescrip}>
             {item?.notification?.description.length > 70
               ? `${item?.notification?.description?.slice(0, 70)}...`
@@ -171,9 +156,7 @@ export default function NotificationsList(props) {
       {isLoading ? (
         <ActivityIndicator color={COLORS.primary} />
       ) : (
-        <Text style={styles.notificationDescrip}>
-          {strings.notifications.noData}
-        </Text>
+        <Text style={styles.notificationDescrip}>{strings.notifications.noData}</Text>
       )}
     </View>
   );
@@ -187,7 +170,7 @@ export default function NotificationsList(props) {
         showsVerticalScrollIndicator={false}
         sections={sectionedNotifications || []}
         ListEmptyComponent={ListEmptyComponent}
-        keyExtractor={item => item?.notification_id}
+        keyExtractor={(item) => item?.notification_id}
         renderSectionHeader={({ section: { title } }) => (
           <View style={{ backgroundColor: COLORS.white }}>
             <Text style={styles.notificationHeader}>{title}</Text>
