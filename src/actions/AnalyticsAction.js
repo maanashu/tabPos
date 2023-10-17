@@ -1,4 +1,5 @@
 import { AnalyticsController } from '@/controllers';
+import { store } from '@/store';
 import { TYPES } from '@/Types/AnalyticsTypes';
 
 const getTotalProGraphRequest = () => ({
@@ -520,12 +521,31 @@ export const getTotalInventory = (sellerID, data) => async (dispatch) => {
   }
 };
 
-export const getSoldProduct = (sellerID, data) => async (dispatch) => {
+export const getSoldProduct = (sellerID, data, page, callback) => async (dispatch) => {
+  // console.log('dhkfhdgkhfdkhgf', sellerID, data, page);
   dispatch(getSoldProductRequest());
+  const orderSoldProduct = store.getState()?.analytics?.getSoldProduct;
   try {
-    const res = await AnalyticsController.getSoldProduct(sellerID, data);
-    dispatch(getSoldProductSuccess(res?.payload));
+    const res = await AnalyticsController.getSoldProduct(sellerID, data, page);
+    const prevorderSoldProduct = { ...orderSoldProduct };
+    if (orderSoldProduct && Object.keys(orderSoldProduct).length > 0 && page > 1) {
+      prevorderSoldProduct.total = res?.payload?.total;
+      prevorderSoldProduct.current_page = res?.payload?.current_page;
+      prevorderSoldProduct.total_pages = res?.payload?.total_pages;
+      prevorderSoldProduct.per_page = res?.payload?.per_page;
+      prevorderSoldProduct.data = prevorderSoldProduct?.data?.concat(res?.payload?.data);
+      dispatch(getSoldProductSuccess(prevorderSoldProduct));
+    } else {
+      dispatch(getSoldProductSuccess(res?.payload));
+    }
+    callback && callback(res);
+    // console.log('gsdjgfjsdgf', res);
+
+    // const res = await AnalyticsController.getSoldProduct(sellerID, data, page);
+    // dispatch(getSoldProductSuccess(res?.payload));
   } catch (error) {
+    console.log('errorerrorerror', error);
+
     dispatch(getSoldProductError(error.message));
   }
 };

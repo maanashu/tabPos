@@ -117,6 +117,8 @@ export function Analytics2() {
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [invoiceDetail, setInvoiceDetail] = useState(false);
   const [orderId, setOrderId] = useState(null);
+  const [appName, setAppName] = useState('');
+  const [deliveryOption, setDeliveryOption] = useState();
 
   const handleOnPressNext = () => {
     // Perform actions when "Next" button is pressed
@@ -157,7 +159,7 @@ export function Analytics2() {
       dispatch(getAnalyticOrderGraphs(sellerID, data));
       dispatch(getTotalOrder(sellerID, data));
       dispatch(getTotalInventory(sellerID, data));
-      dispatch(getSoldProduct(sellerID, data));
+      dispatch(getSoldProduct(sellerID, data, 1));
       getData();
     }, [filter, channelValue, selectDate])
   );
@@ -211,6 +213,9 @@ export function Analytics2() {
         onPressOrders={() => setselectedScreen('TotalOrders')}
         onPressInventory={() => setselectedScreen('TotalInventory')}
         onPressPosOrder={() => setselectedScreen('TotalPosOrder')}
+        filter={filter?.value}
+        startDated={startDated}
+        endDated={endDated}
       />
     ),
     ['TotalProfit']: <TotalProfit />,
@@ -221,6 +226,8 @@ export function Analytics2() {
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
           setDate(item);
+          setDeliveryOption(1);
+          setAppName();
         }}
       />
     ),
@@ -229,15 +236,19 @@ export function Analytics2() {
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
           setDate(item);
+          // setDeliveryOption(4);
+          // setAppName();
         }}
       />
     ),
-    ['TotalProductSold']: <TotalProductSold />,
+    ['TotalProductSold']: <TotalProductSold sellerID={sellerID} data={data} />,
     ['TotalOrders']: (
       <TotalOrders
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
           setDate(item);
+          // setAppName();
+          // setDeliveryOption();
         }}
       />
     ),
@@ -246,6 +257,8 @@ export function Analytics2() {
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
           setDate(item);
+          // setAppName('pos');
+          // setDeliveryOption();
         }}
       />
     ),
@@ -255,7 +268,6 @@ export function Analytics2() {
     setFromInvoice(true);
     setInvoiceDetail(false);
   };
-
   const transactionList = () => {
     if (invoiceDetail) {
       return (
@@ -279,7 +291,8 @@ export function Analytics2() {
           }}
           selectTime={date}
           FromInvoice={fromInVoice}
-          orderType={selectedScreen === 'TotalOrders' ? 'none' : 'product'}
+          // appName={appName}
+          // deliveryOption={deliveryOption}
         />
       );
     }

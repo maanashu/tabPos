@@ -382,17 +382,21 @@ export class AnalyticsController {
     });
   }
 
-  static async getSoldProduct(sellerID, data) {
+  static async getSoldProduct(sellerID, data, page) {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
       const endpoint = `${
         ORDER_URL + ApiOrderInventory.getSoldProduct
-      }?seller_id=${sellerID}&${params}`;
+      }?seller_id=${sellerID}&${params}&page=${page}&limit=11`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          // console.log('asdasdyastrd', JSON.stringify(response));
+
           resolve(response);
         })
         .catch((error) => {
+          // console('ashgfhdfashd', error);
           reject(error);
         });
     });

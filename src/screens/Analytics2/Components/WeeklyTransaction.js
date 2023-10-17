@@ -46,7 +46,8 @@ export function WeeklyTransaction({
   orderClickHandler,
   selectTime,
   FromInvoice,
-  orderType,
+  appName,
+  deliveryOption,
 }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -85,6 +86,7 @@ export function WeeklyTransaction({
 
     dispatch(getTotalTraType(data));
   }, [selectId, formatedDate]);
+  // console.log('jsgfsdgfksdgfk', deliveryOption, appName);
 
   useEffect(() => {
     const data = {
@@ -94,8 +96,10 @@ export function WeeklyTransaction({
       limit: paginationModalValue,
       sellerId: sellerID,
       calendarDate: formatedDate,
-      orderType: orderType,
+      orderType: 'none',
       status: 'none',
+      // appName: appName,
+      // deliveryOption: deliveryOption,
     };
     if (!fromInVoice) {
       dispatch(getTotakTraDetail(data));
