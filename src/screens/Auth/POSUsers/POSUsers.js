@@ -278,8 +278,9 @@ export function POSUsers({ navigation }) {
                       style={styles.profileImage}
                     />
 
-                    <Text style={styles.firstName}>{item.user?.user_profiles?.firstname}</Text>
-
+                    <Text style={styles.firstName} numberOfLines={1}>
+                      {`${item.user?.user_profiles?.firstname} ${item.user?.user_profiles?.lastname} `}
+                    </Text>
                     <Text style={styles.role} numberOfLines={1}>
                       {item.user?.user_roles?.length > 0
                         ? item.user?.user_roles?.map((item) => item.role?.name)

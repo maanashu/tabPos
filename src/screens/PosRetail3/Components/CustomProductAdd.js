@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
-import { cross, crossButton, dollar, Fonts, minus, plus } from '@/assets';
+import { cross, crossButton, dollar, Fonts, minus, plus, scn } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
@@ -28,13 +28,16 @@ import { getDaysAndDates } from '@/utils/GlobalMethods';
 import { TextInput } from 'react-native-gesture-handler';
 import { digits } from '@/utils/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useRef } from 'react';
 const windowWidth = Dimensions.get('window').width;
 
 export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
   const dispatch = useDispatch();
+  const textInputRef = useRef(null);
   const getRetailData = useSelector(getRetail);
   const [amount, setAmount] = useState();
   const [productName, setProductName] = useState();
+  const [upcCode, setUpcCode] = useState();
   const [notes, setNotes] = useState();
   const [count, setCount] = useState(1);
   const timeSlotsData = getRetailData?.timeSlots?.filter((timeSlot) => timeSlot?.is_available);
@@ -139,10 +142,15 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
         alert('Please enter valid amount');
       } else if (!productName) {
         alert('Please enter product name');
+      } else if (!upcCode) {
+        alert('Please enter upc code');
+      } else if (upcCode && digits.test(upcCode) === false) {
+        alert('Please enter valid upc code');
       } else {
         const data = {
           price: amount,
           productName: productName,
+          upc: upcCode,
           qty: count,
           notes: notes,
         };
@@ -213,12 +221,28 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
           </View>
 
           <TextInput
-            placeholder="Product Name"
+            placeholder={comeFrom == 'product' ? 'Product Name' : 'Service Name'}
             style={styles.productNameInput}
             placeholderTextColor={COLORS.row_grey}
             value={productName}
             onChangeText={setProductName}
           />
+          {comeFrom == 'product' ? (
+            <View style={[styles.upcInputContainer]}>
+              <TextInput
+                placeholder="UPC Code"
+                style={styles.upcInput}
+                placeholderTextColor={COLORS.row_grey}
+                value={upcCode}
+                onChangeText={setUpcCode}
+                keyboardType="number-pad"
+                ref={textInputRef}
+              />
+              <TouchableOpacity onPress={() => textInputRef.current.focus()}>
+                <Image source={scn} style={styles.scnStyle} />
+              </TouchableOpacity>
+            </View>
+          ) : null}
 
           <TextInput
             placeholder="Add Notes"
