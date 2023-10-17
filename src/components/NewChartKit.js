@@ -4,7 +4,62 @@ import { StyleSheet, View, Dimensions, Platform } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { ms } from 'react-native-size-matters';
 
-export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
+export function NewChartKit({
+  arrayLength,
+  labels,
+  data,
+  data1,
+  data2,
+  filter,
+  startDated,
+  endDated,
+}) {
+  const resultArr = [];
+  const resultArr1 = [];
+  const resultArr2 = [];
+  let divisor = 0;
+
+  function processAndPopulateResult(data, resultArr) {
+    let tempTotal = 0;
+
+    data?.forEach((val, i) => {
+      tempTotal += val;
+
+      if ((i + 1) % divisor === 0) {
+        resultArr?.push(tempTotal);
+        tempTotal = 0;
+      }
+    });
+
+    resultArr[resultArr?.length - 1] += tempTotal;
+  }
+  const timeDifference = new Date(endDated) - new Date(startDated);
+
+  // Convert milliseconds to days
+  const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+  // console.log('===========daysDifference', daysDifference);
+
+  if (filter === 'today') {
+    divisor = 4;
+  } else if (filter === 'week') {
+    divisor = 1;
+  } else if (filter === 'month') {
+    divisor = 6;
+  } else if (daysDifference <= 7) {
+    divisor = 1;
+  } else if (daysDifference > 7 || daysDifference < 14) {
+    divisor = 2;
+  } else if (daysDifference > 14 || daysDifference < 23) {
+    divisor = 3;
+  } else if (daysDifference < 24) {
+    divisor = 4;
+  } else if (daysDifference > 24) {
+    divisor = 6;
+  }
+  processAndPopulateResult(data, resultArr);
+  processAndPopulateResult(data1, resultArr1);
+  processAndPopulateResult(data2, resultArr2);
+
   return (
     <View>
       {data === undefined ? (
@@ -72,17 +127,17 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
             labels: labels,
             datasets: [
               {
-                data: data,
+                data: resultArr,
                 strokeWidth: 2,
                 color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
               },
               {
-                data: data1,
+                data: resultArr1,
                 strokeWidth: 2,
                 color: (opacity = 1) => `rgba(107, 132, 211, ${opacity})`, // optional
               },
               {
-                data: data2,
+                data: resultArr2,
                 strokeWidth: 2,
                 color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`, // optional
               },
@@ -130,7 +185,7 @@ export function NewChartKit({ arrayLength, labels, data, data1, data2 }) {
             labels: labels,
             datasets: [
               {
-                data: data,
+                data: resultArr,
                 strokeWidth: 2,
                 color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
               },

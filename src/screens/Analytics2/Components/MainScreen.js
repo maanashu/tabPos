@@ -20,13 +20,19 @@ import { ms } from 'react-native-size-matters';
 import { useEffect } from 'react';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
-  const labelInterval = Math.ceil(dataLabels?.length / daysLength);
-  const dayLabels = Array.from(
-    { length: Math.ceil(dataLabels?.length / labelInterval) },
-    (_, index) => {
-      const labelValue = (index + 1) * labelInterval;
-      return labelValue <= maxLabel ? labelValue : maxLabel?.toString();
-    }
+  // const labelInterval = Math.ceil(dataLabels?.length / daysLength);
+  // const dayLabels = Array.from(
+  //   { length: Math.ceil(dataLabels?.length / labelInterval) },
+  //   (_, index) => {
+  //     const labelValue = (index + 1) * labelInterval;
+  //     return labelValue <= maxLabel ? labelValue : maxLabel?.toString();
+  //   }
+  // );
+
+  const labelInterval = Math.floor(maxLabel / daysLength);
+
+  const dayLabels = Array.from({ length: daysLength }, (_, index) =>
+    index === daysLength - 1 ? maxLabel : (index + 1) * labelInterval
   );
 
   const filterMonthsByInterval = (monthsArray) => {
@@ -59,6 +65,9 @@ export function MainScreen({
   onPressOrders,
   onPressInventory,
   onPressProducts,
+  filter,
+  startDated,
+  endDated,
 }) {
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
@@ -71,7 +80,7 @@ export function MainScreen({
 
   const interval = 2;
   const maxLabel = analyticStatistics?.profit?.graph_data?.labels?.length;
-  const daysLength = 7;
+  const daysLength = 6;
 
   const dataLabelsProfit = analyticStatistics?.profit?.graph_data?.labels;
   const labelsProfit = generateLabels(dataLabelsProfit, interval, maxLabel, daysLength);
@@ -94,9 +103,9 @@ export function MainScreen({
   const dataLabelsInventory = totalInventory?.graph_data?.labels;
   const labelsInvetory = generateLabels(dataLabelsInventory, interval, maxLabel, daysLength);
 
-  const dataLabelsProductSold = soldProduct?.graph_data?.labels;
+  const dataLabelsProductSold = soldProduct?.graphData?.labels;
   const labelsProductSold = generateLabels(dataLabelsProductSold, interval, maxLabel, daysLength);
-
+  console.log('gjgsdfgsdjf', JSON.stringify(totalOrder?.graphData));
   const profitStatisticsLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
   );
@@ -116,7 +125,7 @@ export function MainScreen({
   const isSoldProductLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_SOLD_PRODUCT], state)
   );
-
+  // console.log('===========graphData', JSON.stringify(analyticStatistics?.revenue?.graph_data));
   return (
     <View>
       <View style={styles.flexDirectionRow}>
@@ -143,6 +152,9 @@ export function MainScreen({
             labels={labelsRevenue}
             data={analyticStatistics?.revenue?.graph_data?.datasets?.[0]?.data}
             isLoading={isAnalyticStatisticLoading}
+            filter={filter}
+            startDated={startDated}
+            endDated={endDated}
           />
         )}
         {getPosUser?.user_roles?.length > 0 ? (
@@ -168,6 +180,9 @@ export function MainScreen({
             labels={labelsCost}
             data={analyticStatistics?.cost?.graph_data?.datasets?.[0]?.data}
             isLoading={isAnalyticStatisticLoading}
+            filter={filter}
+            startDated={startDated}
+            endDated={endDated}
           />
         )}
 
@@ -194,6 +209,9 @@ export function MainScreen({
             labels={labelsProfit}
             data={analyticStatistics?.profit?.graph_data?.datasets?.[0]?.data}
             isLoading={isAnalyticStatisticLoading}
+            filter={filter}
+            startDated={startDated}
+            endDated={endDated}
           />
         )}
       </View>
@@ -214,6 +232,9 @@ export function MainScreen({
           data1={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[1]?.data}
           data2={analyticOrderGraphs?.pos_graph?.graph_data?.datasets?.[2]?.data}
           isLoading={isAnalyticOrderGraphLoading}
+          filter={filter}
+          startDated={startDated}
+          endDated={endDated}
         />
         <HomeGraph
           header="Total Delivery Orders"
@@ -230,6 +251,9 @@ export function MainScreen({
           data1={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[1]?.data}
           data2={analyticOrderGraphs?.delivery_graph?.graph_data?.datasets?.[2]?.data}
           isLoading={isAnalyticOrderGraphLoading}
+          filter={filter}
+          startDated={startDated}
+          endDated={endDated}
         />
 
         <HomeGraph
@@ -248,6 +272,9 @@ export function MainScreen({
           data2={analyticOrderGraphs?.shipping_graph?.graph_data?.datasets?.[2]?.data}
           bulletText="Shipped"
           isLoading={isAnalyticOrderGraphLoading}
+          filter={filter}
+          startDated={startDated}
+          endDated={endDated}
         />
       </View>
       <View style={styles.flexDirectionRow}>
@@ -297,6 +324,9 @@ export function MainScreen({
               dateInterval={5}
               dateTodayInterval={4}
               isLoading={isTotalOrderLoading}
+              filter={filter}
+              startDated={startDated}
+              endDated={endDated}
             />
           </TouchableOpacity>
         </View>
@@ -310,6 +340,9 @@ export function MainScreen({
           labels={labelsInvetory}
           data={totalInventory?.graph_data?.datasets?.[0]?.data}
           isLoading={isInventoryLoading}
+          filter={filter}
+          startDated={startDated}
+          endDated={endDated}
         />
 
         <HomeGraph
@@ -317,10 +350,13 @@ export function MainScreen({
           subHeader={soldProduct?.total_count ? soldProduct?.total_count : '0'}
           onPress={onPressProducts}
           analyticGraphObject={soldProduct}
-          arrayLength={soldProduct?.graph_data?.datasets?.length}
+          arrayLength={soldProduct?.graphData?.datasets?.length}
           labels={labelsProductSold}
-          data={soldProduct?.graph_data?.datasets?.[0]?.data}
+          data={soldProduct?.graphData?.datasets?.[0]?.data}
           isLoading={isSoldProductLoading}
+          filter={filter}
+          startDated={startDated}
+          endDated={endDated}
         />
       </View>
     </View>
