@@ -75,11 +75,15 @@ export function ShippingOrder2() {
   useEffect(() => {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
+    dispatch(getOrderData(ordersList?.[0]?.id));
+    setOrderId(ordersList?.[0]?.id);
   }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
 
   useEffect(() => {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
+    dispatch(getOrderData(ordersList?.[0]?.id));
+    setOrderId(ordersList?.[0]?.id);
   }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
 
   const acceptOrderLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));

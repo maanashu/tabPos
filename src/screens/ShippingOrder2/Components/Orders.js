@@ -118,7 +118,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
       </View>
 
       <FlatList
-        data={ordersList?.slice(0, 4)}
+        data={ordersList?.slice(0, 3)}
         renderItem={renderOrderToReview}
         ListEmptyComponent={emptyComponent}
         showsVerticalScrollIndicator={false}
