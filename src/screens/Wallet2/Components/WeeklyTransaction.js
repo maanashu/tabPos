@@ -50,6 +50,8 @@ import { DELIVERY_MODE, PAGINATION_DATA, months, weeklyStatus } from '@/constant
 const windowHeight = Dimensions.get('window').height;
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function WeeklyTransaction({
   backHandler,
@@ -361,7 +363,13 @@ export function WeeklyTransaction({
           <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
         </TouchableOpacity>
         <View style={styles.deliveryView}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.wallet2,
+              })
+            }
+          >
             <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
           </TouchableOpacity>
           <View style={[styles.searchView, { backgroundColor: COLORS.textInputBackground }]}>

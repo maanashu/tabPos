@@ -470,6 +470,7 @@ export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue, 
             };
             dispatch(getMainProduct(ids));
             productFilterCount(productArrayLength?.[0]);
+            closeHandler();
           }}
         >
           <Text style={styles.ApplyText}>Apply</Text>

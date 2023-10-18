@@ -12,6 +12,7 @@ import { Fonts, scooter, userImage } from '@/assets';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 import styles from '../ShippingOrder2.styles';
+import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
 
 const OrderDetail = ({
   openShippingOrders,
@@ -81,8 +82,6 @@ const OrderDetail = ({
       );
     }
   };
-
-  console.log('user====', userDetail);
 
   return (
     <>
@@ -225,7 +224,8 @@ const OrderDetail = ({
               <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                 {/* ${userDetail?.discount ? userDetail?.discount : '0'} */}$
-                {Number(userDetail?.discount)?.toFixed(2) ?? '0.00'}
+                {/* {Number(userDetail?.discount)?.toFixed(2) ?? '0.00'} */}
+                {formattedReturnPriceWithoutSign(userDetail?.discount)}
               </Text>
             </View>
 

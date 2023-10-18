@@ -18,7 +18,6 @@ export const walletReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         getTotalTra: {},
       };
-
     case TYPES.GET_TOTAL_TRA_DETAIL_SUCCESS:
       return {
         ...state,

@@ -22,8 +22,6 @@ export function HomeGraph({
   startDated,
   endDated,
 }) {
-  // console.log('started===========', startDated);
-
   return (
     <View style={[styles.totalProductCon, style]}>
       <Spacer space={SH(10)} />

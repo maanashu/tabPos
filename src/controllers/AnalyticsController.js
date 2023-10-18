@@ -387,16 +387,12 @@ export class AnalyticsController {
       const params = new URLSearchParams(data).toString();
       const endpoint = `${
         ORDER_URL + ApiOrderInventory.getSoldProduct
-      }?seller_id=${sellerID}&${params}&page=${page}&limit=11`;
-      console.log('endpoint', endpoint);
+      }?seller_id=${sellerID}&${params}&page=${page}&limit=10`;
       HttpClient.get(endpoint)
         .then((response) => {
-          // console.log('asdasdyastrd', JSON.stringify(response));
-
           resolve(response);
         })
         .catch((error) => {
-          // console('ashgfhdfashd', error);
           reject(error);
         });
     });

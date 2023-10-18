@@ -17,6 +17,7 @@ import mapCustomStyle from '@/components/MapCustomStyles';
 import { deliveryHomeIcon, expand, Fonts, gps, scooter } from '@/assets';
 
 import styles from '../styles';
+import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
 
 const OrderDetail = ({
   userDetail,
@@ -126,7 +127,8 @@ const OrderDetail = ({
                 <View style={styles.flexDirectionRow}>
                   <Text style={styles.totalTextStyle2}>{'$'}</Text>
                   <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
-                    {userDetail?.discount ? Number(userDetail?.discount).toFixed(2) : '0'}
+                    {/* {userDetail?.discount ? Number(userDetail?.discount).toFixed(2) : '0'} */}
+                    {formattedReturnPriceWithoutSign(userDetail?.discount)}
                   </Text>
                 </View>
               </View>

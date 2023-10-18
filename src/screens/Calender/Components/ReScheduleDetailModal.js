@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, Text, View, TouchableOpacity, FlatList } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
@@ -25,6 +33,8 @@ import { ServiceProviderItem } from '@/components/ServiceProviderItem';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { ScrollView } from 'react-native-gesture-handler';
 import { memo } from 'react';
+import { TYPES } from '@/Types/Types';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -43,7 +53,7 @@ const ReScheduleDetailModal = ({
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const appointmentDetail = appointmentData?.appointment_details[0];
   const posUserDetails = appointmentData?.pos_user_details;
-
+  const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const getCalenderData = useSelector(getAppointmentSelector);
   const getStaffUsers = getCalenderData?.staffUsers;
   const [posUserId, setposUserId] = useState(null);
@@ -71,6 +81,7 @@ const ReScheduleDetailModal = ({
       setTimeSlotsData([...timeSlots]);
     }
   }, [getRetailData?.timeSlots]);
+
   useEffect(() => {
     setProviderDetail(posUserDetails?.user);
     setposUserId(posUserDetails?.user?.unique_uuid);
@@ -91,23 +102,9 @@ const ReScheduleDetailModal = ({
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
 
-  const handleTimeSlotClick = async (selectedSlotIndex) => {
-    const updateSelectedTimeSlots = await calculateTimeSlotSelection({
-      index: selectedSlotIndex,
-      timeSlotInterval: timeSlotInterval,
-      estimatedServiceDuration: estimatedServiceTime,
-      timeSlotsData: timeSlotsData,
-    });
-    // Update the state with the modified timeSlotsData
-    setTimeSlotsData(updateSelectedTimeSlots);
-
-    const selectedTimeSlots = timeSlotsData.filter((timeSlot) => timeSlot.selected);
-    const startTime = selectedTimeSlots[0].start_time;
-    const endTime = selectedTimeSlots[selectedTimeSlots.length - 1].end_time;
-
-    const selectedTimeSlot = { start_time: startTime, end_time: endTime };
-    setSelectedTimeSlotData(selectedTimeSlot);
-  };
+  const isLoadingTimeSlot = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_TIME_SLOTS], state)
+  );
 
   const renderWeekItem = ({ item, index }) => {
     return (
@@ -121,6 +118,7 @@ const ReScheduleDetailModal = ({
         onPress={() => {
           setselectedDate(item?.completeDate);
           //Clear previous day selected time slot values
+          setselectedTimeSlotIndex(null);
           setSelectedTimeSlotData('');
           setpreSelectedStartTime('');
           setpreSelectedEndTime('');
@@ -158,10 +156,11 @@ const ReScheduleDetailModal = ({
         width: '25.1%',
         height: ms(24),
         borderColor: COLORS.solidGrey,
-        backgroundColor: item?.selected ? COLORS.primary : COLORS.white,
+        backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
       }}
       onPress={() => {
-        handleTimeSlotClick(index);
+        setselectedTimeSlotIndex(index);
+        setSelectedTimeSlotData(item);
       }}
     >
       <Text
@@ -170,7 +169,7 @@ const ReScheduleDetailModal = ({
           fontSize: ms(6.2),
           color: !item?.is_available
             ? COLORS.row_grey
-            : item?.selected
+            : selectedTimeSlotIndex === index
             ? COLORS.white
             : COLORS.dark_grey,
         }}
@@ -299,7 +298,7 @@ const ReScheduleDetailModal = ({
                     {appointmentDetail?.product_name}
                   </Text>
                   <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(9), marginTop: ms(5) }}>
-                    Est {estimatedServiceTime - 5} - {estimatedServiceTime} mins
+                    Est {estimatedServiceTime} mins
                   </Text>
                 </View>
                 <Text style={[styles.selected, { fontSize: ms(12) }]}>
@@ -393,27 +392,32 @@ const ReScheduleDetailModal = ({
               }}
             >
               <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
-
-              <FlatList
-                scrollEnabled={false}
-                data={timeSlotsData || []}
-                numColumns={4}
-                renderItem={renderSlotItem}
-                ListEmptyComponent={() => (
-                  <View
-                    style={{
-                      height: ms(50),
-                      paddingHorizontal: ms(10),
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
-                      There are no slots available for this day
-                    </Text>
-                  </View>
-                )}
-              />
+              {isLoadingTimeSlot ? (
+                <View style={{ paddingVertical: ms(40) }}>
+                  <ActivityIndicator size={'large'} />
+                </View>
+              ) : (
+                <FlatList
+                  scrollEnabled={false}
+                  data={timeSlotsData || []}
+                  numColumns={4}
+                  renderItem={renderSlotItem}
+                  ListEmptyComponent={() => (
+                    <View
+                      style={{
+                        height: ms(50),
+                        paddingHorizontal: ms(10),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
+                        There are no slots available for this day
+                      </Text>
+                    </View>
+                  )}
+                />
+              )}
             </View>
           </View>
           <View

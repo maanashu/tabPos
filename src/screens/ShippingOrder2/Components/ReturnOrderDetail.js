@@ -20,6 +20,7 @@ import { COLORS, SF, SH } from '@/theme';
 import { Fonts, scooter, userImage } from '@/assets';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
 
 const { width, height } = Dimensions.get('window');
 
@@ -173,7 +174,7 @@ const ReturnOrderDetail = ({
             <View style={styles.orderDetailsView}>
               <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                {userDetail?.discount ? userDetail?.discount : '0'}
+                {formattedReturnPriceWithoutSign(userDetail?.discount)}
               </Text>
             </View>
 

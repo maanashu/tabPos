@@ -36,7 +36,7 @@ const ListViewItem = ({
         <Button
           pending={isChangeStatusLoading}
           title={'Decline'}
-          textStyle={[styles.listCheckinBtnText, { fontSize: ms(7) }]}
+          textStyle={styles.listCheckinBtnText}
           style={[styles.listViewCheckinBtn, { paddingHorizontal: ms(5) }]}
           onPress={() => {
             dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
@@ -46,7 +46,7 @@ const ListViewItem = ({
         <Button
           pending={isChangeStatusLoading}
           title={'Approve'}
-          textStyle={[styles.listCheckinBtnText, { fontSize: ms(7), color: COLORS.white }]}
+          textStyle={[styles.listCheckinBtnText, { color: COLORS.white }]}
           style={[
             styles.listViewCheckinBtn,
             { paddingHorizontal: ms(5), backgroundColor: COLORS.primary },
@@ -146,12 +146,14 @@ const ListViewItem = ({
                 <Text style={styles.customerName}>
                   {customerDetails?.firstname + ' ' + customerDetails?.lastname}
                 </Text>
-                {userId !== null && (
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={pin} style={styles.eventAddressIcon} />
-                    <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
-                  </View>
-                )}
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  {/* <Image source={pin} style={styles.eventAddressIcon} /> */}
+                  <Text style={styles.eventAddress}>
+                    {userId !== null
+                      ? customerDetails?.phone_number
+                      : customerDetails?.phone_code + customerDetails?.phone_no}
+                  </Text>
+                </View>
               </View>
             </>
           ) : (

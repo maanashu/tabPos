@@ -79,12 +79,15 @@ export function Staff() {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
-  console.log('getSettingData?.staffDetail', JSON.stringify(getSettingData?.staffDetail));
   const staffDetailData = getSettingData?.staffDetail;
+
+  const targetDate = moment(staffDetailData?.created_at);
+  const currentDate = moment();
+  const differenceInDays = targetDate?.diff(currentDate, 'days');
+
   // const posUserArray = getAuth?.getAllPosUsers;
   const posUserArraydata = getAuth?.getAllPosUsersData;
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
-  // console.log('posUserArray', JSON.stringify(posUserArray));
   const [staffDetail, setStaffDetail] = useState(false);
   const [invoiceModal, setInvoiceModal] = useState(false);
   const [staffModal, setStaffModal] = useState(false);
@@ -117,6 +120,10 @@ export function Staff() {
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prevState) => !prevState);
   };
+  const originalemployementType = staffDetailData?.employment_type;
+  const words = originalemployementType?.split('_');
+  const capitalizedWords = words?.map((word) => word?.charAt?.(0).toUpperCase() + word?.slice?.(1));
+  const finalEmploymentType = capitalizedWords?.join(' ');
   // const convertedText = convertText(staffDetailData?.employment_type);
 
   // const onToggleSnackBar = (message) => {
@@ -253,7 +260,6 @@ export function Staff() {
     [isLoadingBottom]
   );
   const onLoadMoreProduct = useCallback(async () => {
-    // console.log('sdasdas', posUserArray);
     if (posUserArraydata?.current_page < posUserArraydata?.total_pages) {
       setIsLoadingBottom(true);
       const data = {
@@ -267,6 +273,7 @@ export function Staff() {
       }
     }
   }, [posUserArray]);
+
   const onRefresh = () => {
     const Data = {
       page: 1,
@@ -342,15 +349,17 @@ export function Staff() {
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Active Since</Text>
-                      <Text style={styles.joinDatelight}>265 days</Text>
+                      <Text style={styles.joinDatelight}>
+                        {String(differenceInDays)?.replace('-', '')} {'days'}
+                      </Text>
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Employment Type</Text>
-                      <Text style={styles.joinDatelight}> {staffDetailData?.employment_type}</Text>
+                      <Text style={styles.joinDatelight}>{finalEmploymentType ?? '-----'}</Text>
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Leave taken</Text>
-                      <Text style={styles.joinDatelight}>3 days</Text>
+                      <Text style={styles.joinDatelight}>{staffDetailData?.leave ?? '-----'}</Text>
                     </View>
                   </View>
                 </View>
@@ -361,19 +370,30 @@ export function Staff() {
               <View style={styles.hourcontainer}>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Hour rate</Text>
-                  <Text style={styles.hourRateLigh}>JBR {staffDetailData?.hourly_rate}/h</Text>
+                  <Text style={styles.hourRateLigh}>
+                    JBR {staffDetailData?.hourly_rate ?? '0'}/h
+                  </Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Over time rate</Text>
-                  <Text style={styles.hourRateLigh}>JBR {staffDetailData?.overtime_rate}/h</Text>
+                  <Text style={styles.hourRateLigh}>
+                    JBR {staffDetailData?.overtime_rate ?? '0'}/h
+                  </Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Payment Cycle</Text>
-                  <Text style={styles.hourRateLigh}>{staffDetailData?.payment_cycle}</Text>
+                  <Text style={styles.hourRateLigh}>
+                    {/* {staffDetailData?.payment_cycle?.toLocaleUpperCase()} */}
+                    {staffDetailData?.payment_cycle?.charAt?.(0)?.toUpperCase() +
+                      staffDetailData?.payment_cycle?.slice?.(1) ?? '-----'}
+                  </Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Billing</Text>
-                  <Text style={styles.hourRateLigh}>{staffDetailData?.billing_type}</Text>
+                  <Text style={styles.hourRateLigh}>
+                    {staffDetailData?.billing_type?.charAt?.(0)?.toUpperCase() +
+                      staffDetailData?.billing_type?.slice?.(1) ?? '-----'}
+                  </Text>
                 </View>
               </View>
               <Spacer space={SH(14)} />
@@ -418,12 +438,12 @@ export function Staff() {
                     </View>
                   </View>
 
-                  {/* {staffDetailData?.map((item, index) => (
+                  {staffDetailData?.pos_staff_salary?.map((item, index) => (
                     <View style={{}}>
                       <TouchableOpacity
                         style={styles.tableDataCon}
                         onPress={() => {
-                          setExpandView(true), setIndex(index);
+                          setExpandView(!expandView), setIndex(index);
                         }}
                         key={index}
                       >
@@ -438,7 +458,7 @@ export function Staff() {
                               style={[
                                 styles.text,
                                 styles.hourRateLigh,
-                                { textAlign: 'left', width: '100%' },
+                                { textAlign: 'left', width: '100%', fontFamily: Fonts.SemiBold },
                               ]}
                               numberOfLines={2}
                             >
@@ -453,7 +473,14 @@ export function Staff() {
                             <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
                               JBR {item.amount}
                             </Text>
-                            <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
+                            <Text
+                              style={[
+                                styles.text,
+                                styles.hourRateLigh,
+                                { color: item.status === true ? COLORS.bluish_green : COLORS.red },
+                              ]}
+                              numberOfLines={1}
+                            >
                               {item.status === true ? 'paid' : 'Unpaid'}
                             </Text>
                             <TouchableOpacity onPress={() => setInvoiceModal(true)}>
@@ -533,7 +560,7 @@ export function Staff() {
                         </View>
                       ) : null}
                     </View>
-                  ))} */}
+                  ))}
                 </Table>
               </View>
             </ScrollView>
@@ -691,8 +718,6 @@ export function Staff() {
       };
 
       const responseData = await dispatch(creatPostUser(data));
-      // console.log('datdsats', JSON.stringify(responseData));
-      // return;
       if (responseData) {
         setIsLoading(false);
         if (responseData?.error) {

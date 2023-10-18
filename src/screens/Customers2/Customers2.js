@@ -38,6 +38,8 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import UserDetail from './Components/UserDetail';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function Customers2() {
   const mapRef = useRef(null);
@@ -252,7 +254,11 @@ export function Customers2() {
               <Text style={styles.deliveryText}>{strings.customers.users}</Text>
             </View>
             <View style={styles.deliveryView}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigate(NAVIGATION.notificationsList, { screen: NAVIGATION.customers2 })
+                }
+              >
                 <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
               </TouchableOpacity>
               <View style={styles.searchView}>

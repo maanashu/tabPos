@@ -499,6 +499,7 @@ export const ServiceFilterDropDown = ({
             };
             dispatch(getMainServices(ids));
             serviceFilterCount(serviceArrayLength);
+            closeHandler();
           }}
         >
           <Text style={styles.ApplyText}>Apply</Text>

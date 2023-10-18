@@ -169,12 +169,12 @@ export const getAppointment = (pageNumber) => async (dispatch) => {
     if (error?.statusCode === 204) {
       dispatch(getAppointmentReset());
     }
-    Toast.show({
-      text2: error?.msg || 'Something went wrong while fetching appointments',
-      position: 'bottom',
-      type: 'error_toast',
-      visibilityTime: 9000,
-    });
+    // Toast.show({
+    //   text2: error?.msg || 'Something went wrong while fetching appointments',
+    //   position: 'bottom',
+    //   type: 'error_toast',
+    //   visibilityTime: 9000,
+    // });
     dispatch(getAppointmentError(error?.message));
   }
 };

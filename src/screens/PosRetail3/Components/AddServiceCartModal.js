@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
@@ -21,6 +22,8 @@ import { useEffect } from 'react';
 import moment from 'moment';
 import { calculateTimeSlotSelection, getDaysAndDates } from '@/utils/GlobalMethods';
 import { ServiceProviderItem } from '@/components/ServiceProviderItem';
+import { TYPES } from '@/Types/Types';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 const windowWidth = Dimensions.get('window').width;
 
 export function AddServiceCartModal({
@@ -38,6 +41,7 @@ export function AddServiceCartModal({
 
   const timeSlotInterval = getRetailData?.timeSlotInterval;
   const estimatedServiceTime = itemData?.supplies?.[0]?.approx_service_time;
+  const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [posUserId, setposUserId] = useState(itemData?.pos_staff?.[0]?.user?.unique_uuid);
   const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff?.[0]?.user);
 
@@ -78,27 +82,12 @@ export function AddServiceCartModal({
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
 
+  const isLoadingTimeSlot = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_TIME_SLOTS], state)
+  );
   const onClickServiceProvider = (item) => {
     setposUserId(item?.user?.unique_uuid);
     setProviderDetail(item?.user);
-  };
-
-  const handleTimeSlotClick = async (selectedSlotIndex) => {
-    const updateSelectedTimeSlots = await calculateTimeSlotSelection({
-      index: selectedSlotIndex,
-      timeSlotInterval: timeSlotInterval,
-      estimatedServiceDuration: estimatedServiceTime,
-      timeSlotsData: timeSlotsData,
-    });
-    // Update the state with the modified timeSlotsData
-    setTimeSlotsData(updateSelectedTimeSlots);
-
-    const selectedTimeSlots = timeSlotsData.filter((timeSlot) => timeSlot.selected);
-    const startTime = selectedTimeSlots[0].start_time;
-    const endTime = selectedTimeSlots[selectedTimeSlots.length - 1].end_time;
-
-    const selectedTimeSlot = { start_time: startTime, end_time: endTime };
-    setSelectedTimeSlotData(selectedTimeSlot);
   };
 
   const renderWeekItem = ({ item, index }) => (
@@ -111,6 +100,8 @@ export function AddServiceCartModal({
       }}
       onPress={() => {
         setselectedDate(item?.completeDate);
+        //Clear previous day selected time slot values
+        setselectedTimeSlotIndex(null);
         setSelectedTimeSlotData('');
       }}
     >
@@ -145,10 +136,11 @@ export function AddServiceCartModal({
         width: '25.1%',
         height: ms(23),
         borderColor: COLORS.solidGrey,
-        backgroundColor: item?.selected ? COLORS.primary : COLORS.white,
+        backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
       }}
       onPress={() => {
-        handleTimeSlotClick(index);
+        setselectedTimeSlotIndex(index);
+        setSelectedTimeSlotData(item);
       }}
     >
       <Text
@@ -157,7 +149,7 @@ export function AddServiceCartModal({
           fontSize: ms(6.2),
           color: !item?.is_available
             ? COLORS.row_grey
-            : item?.selected
+            : selectedTimeSlotIndex === index
             ? COLORS.white
             : COLORS.dark_grey,
         }}
@@ -250,15 +242,10 @@ export function AddServiceCartModal({
               <Text style={styles.colimbiaText}>{itemData?.name}</Text>
 
               {itemData.supplies?.[0]?.approx_service_time == null ? (
-                <Text style={styles.sizeAndColor}>Est: 40 - 45 min</Text>
-              ) : itemData.supplies?.[0]?.approx_service_time > 5 ? (
-                <Text style={styles.sizeAndColor}>
-                  Est: {itemData.supplies?.[0]?.approx_service_time - 5} -{' '}
-                  {itemData.supplies?.[0]?.approx_service_time} min
-                </Text>
+                <Text style={styles.sizeAndColor}>Estimated Time Not found</Text>
               ) : (
                 <Text style={styles.sizeAndColor}>
-                  Est: 0 - {itemData.supplies?.[0]?.approx_service_time} min
+                  Est: {itemData.supplies?.[0]?.approx_service_time} min
                 </Text>
               )}
             </View>
@@ -366,25 +353,31 @@ export function AddServiceCartModal({
           >
             <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
 
-            <FlatList
-              data={timeSlotsData || []}
-              numColumns={4}
-              renderItem={renderSlotItem}
-              ListEmptyComponent={() => (
-                <View
-                  style={{
-                    height: ms(50),
-                    paddingHorizontal: ms(10),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
-                    There are no slots available for this day
-                  </Text>
-                </View>
-              )}
-            />
+            {isLoadingTimeSlot ? (
+              <View style={{ paddingVertical: ms(40) }}>
+                <ActivityIndicator size={'large'} />
+              </View>
+            ) : (
+              <FlatList
+                data={timeSlotsData || []}
+                numColumns={4}
+                renderItem={renderSlotItem}
+                ListEmptyComponent={() => (
+                  <View
+                    style={{
+                      height: ms(50),
+                      paddingHorizontal: ms(10),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
+                      There are no slots available for this day
+                    </Text>
+                  </View>
+                )}
+              />
+            )}
           </View>
         </View>
       </ScrollView>

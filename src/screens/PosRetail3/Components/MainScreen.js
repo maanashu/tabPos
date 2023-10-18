@@ -989,16 +989,11 @@ export function MainScreen({
                         <Spacer space={SH(6)} />
                         {item.supplies?.[0]?.approx_service_time == null ? (
                           <Text numberOfLines={1} style={styles.productSubHead}>
-                            Est: 40 - 45 min
-                          </Text>
-                        ) : item.supplies?.[0]?.approx_service_time > 5 ? (
-                          <Text numberOfLines={1} style={styles.productSubHead}>
-                            Est: {item.supplies?.[0]?.approx_service_time - 5} -{' '}
-                            {item.supplies?.[0]?.approx_service_time} min
+                            Estimated Time Not found
                           </Text>
                         ) : (
                           <Text numberOfLines={1} style={styles.productSubHead}>
-                            Est: 0 - {item.supplies?.[0]?.approx_service_time} min
+                            Est: {item.supplies?.[0]?.approx_service_time} min
                           </Text>
                         )}
 

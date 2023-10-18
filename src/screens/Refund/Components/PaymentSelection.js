@@ -102,7 +102,7 @@ const PaymentSelection = ({
     }
     const products =
       order?.map((item) => ({
-        id: item?.id,
+        id: item?.product_id,
         qty: item?.qty ?? 1,
         write_off_qty: item?.write_off_qty,
         add_to_inventory_qty: item?.add_to_inventory_qty,

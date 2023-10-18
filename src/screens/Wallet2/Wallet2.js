@@ -42,6 +42,8 @@ import { getOrderData } from '@/actions/AnalyticsAction';
 import { WeeklyTransaction } from './Components/WeeklyTransaction';
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function Wallet2() {
   const mapRef = useRef(null);
@@ -272,7 +274,13 @@ export function Wallet2() {
               <Text style={styles.deliveryText}>{strings.wallet.wallet}</Text>
             </View>
             <View style={styles.deliveryView}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigate(NAVIGATION.notificationsList, {
+                    screen: NAVIGATION.wallet2,
+                  })
+                }
+              >
                 <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
               </TouchableOpacity>
               <View style={styles.searchView}>

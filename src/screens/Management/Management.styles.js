@@ -761,4 +761,91 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
+
+  // pagination table ui css
+  jbrTypeCon: {
+    backgroundColor: COLORS.textInputBackground,
+    height: SH(55),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(8),
+  },
+  paginationEnd: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  paginationCount: {
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
+    paddingHorizontal: moderateScale(12),
+  },
+  dropDownIconPagination: {
+    width: SW(4),
+    height: SW(4),
+    resizeMode: 'contain',
+    tintColor: COLORS.darkGreen,
+  },
+  dropdown: {
+    alignSelf: 'center',
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    zIndex: Platform.OS === 'ios' ? 100 : 0,
+  },
+  containerStylePagination: {
+    width: SW(25),
+    height: SH(35),
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderRadius: 3,
+    borderColor: COLORS.solidGrey,
+    backgroundColor: COLORS.white,
+    color: COLORS.solidGrey,
+  },
+  dropDownContainerStyle: {
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 7,
+    ...ShadowStyles.shadow,
+    backgroundColor: COLORS.white,
+    top: Platform.OS === 'android' ? 30 : 35,
+    zIndex: Platform.OS === 'ios' ? 100 : 1,
+  },
+  listItemLabelStyle: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+  },
+  labelStyle: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+  },
+  selectedItemLabelStyle: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+  },
+  placeholderStylePagination: {
+    fontSize: SF(12),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
+  },
+
+  unionCon: {
+    backgroundColor: COLORS.washGrey,
+    height: SH(40),
+    justifyContent: 'center',
+    borderRadius: 4,
+    marginRight: 7,
+  },
+  unionStyle: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+    paddingHorizontal: moderateScale(12),
+  },
+  paginationCount: {
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    color: COLORS.black,
+    paddingHorizontal: moderateScale(12),
+  },
 });
