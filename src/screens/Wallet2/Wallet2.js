@@ -44,6 +44,11 @@ import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import {
+  getOrdersByInvoiceId,
+  getOrdersByInvoiceIdSuccess,
+  scanBarCode,
+} from '@/actions/DashboardAction';
 
 export function Wallet2() {
   const mapRef = useRef(null);
@@ -80,6 +85,7 @@ export function Wallet2() {
   const [fromHome, setFromHome] = useState('');
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [sku, setSku] = useState();
 
   const startDate = selectedStartDate ? selectedStartDate.toString() : '';
   const endDate = selectedEndDate ? selectedEndDate.toString() : '';
@@ -255,6 +261,22 @@ export function Wallet2() {
     setInvoiceDetail(false);
     setWeeklyTrasaction(true);
   };
+  const onSearchInvoiceHandler = (text) => {
+    if (text) {
+      setSku(text);
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        if (text.includes('Invoice_') || text.includes('invoice_')) {
+          dispatch(scanBarCode(text));
+        } else {
+          dispatch(getOrdersByInvoiceId(text));
+        }
+      }, 500);
+    } else {
+      setSku('');
+      dispatch(getOrdersByInvoiceIdSuccess({}));
+    }
+  };
   const bodyView = () => {
     if (invoiceDetail) {
       return (
@@ -287,9 +309,11 @@ export function Wallet2() {
                 <View style={styles.flexAlign}>
                   <Image source={search_light} style={styles.searchImage} />
                   <TextInput
+                    value={sku}
                     placeholder={strings.wallet.searchHere}
                     style={styles.textInputStyles}
                     placeholderTextColor={COLORS.darkGray}
+                    onChangeText={(text) => onSearchInvoiceHandler(text)}
                   />
                 </View>
                 <Image source={scn} style={styles.scnStyle} />

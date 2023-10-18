@@ -355,6 +355,7 @@ export const getOrdersByInvoiceId = (invoice) => async (dispatch) => {
         await dispatch(getOrderData(res?.payload?.order?.id));
       }
       dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
+      console.log('sucess wallet invoice', res?.payload);
     }
   } catch (error) {
     if (error?.msg === 'Invalid invoice number!') {
