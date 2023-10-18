@@ -11,7 +11,7 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { moderateScale, ms } from 'react-native-size-matters';
-
+import { debounce } from 'lodash';
 import Header from './Header';
 import { Spacer } from '@/components';
 import OrderDetail from './OrderDetail';
@@ -33,6 +33,7 @@ import {
 import ReturnOrderInvoice from './ReturnOrderInvoice';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TYPES } from '@/Types/AnalyticsTypes';
+import { useCallback } from 'react';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -88,36 +89,15 @@ export function SearchScreen(props) {
   };
 
   const onSearchInvoiceHandler = (text) => {
-    if (text) {
-      setSku(text);
-      clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(() => {
-        if (text.includes('Invoice_') || text.includes('invoice_')) {
-          dispatch(scanBarCode(text));
-        } else {
-          dispatch(getOrdersByInvoiceId(text));
-        }
-      }, 500);
+    console.log('searched invoice text: ' + text);
+    if (text.includes('Invoice_') || text.includes('invoice_')) {
+      dispatch(scanBarCode(text));
     } else {
-      setSku('');
-      dispatch(getOrdersByInvoiceIdSuccess({}));
+      dispatch(getOrdersByInvoiceId(text));
     }
   };
 
-  // const attributesHandler = () => {
-  //   const getArray = orderDetail?.findIndex((attr) => attr?.product_id === id);
-  //   if (getArray !== -1) {
-  //     const newProdArray = [...orderDetail];
-  //     console.log('newProdArray====', JSON.stringify(newProdArray));
-  //     if (newProdArray[0]?.attributes?.length > 0) {
-  //       setOrderDetail(newProdArray);
-  //     }
-  //     // newProdArray[getArray].isChecked = true;
-  //     // setOrderDetail(newProdArray);
-  //   } else {
-  //     alert('Product not found in the order');
-  //   }
-  // }
+  const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
 
   const isLoading = useSelector((state) =>
     isLoadingSelector([DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID], state)
@@ -141,7 +121,10 @@ export function SearchScreen(props) {
                     ref={textInputRef}
                     style={styles.searchInput}
                     placeholder={'Search invoice here'}
-                    onChangeText={(text) => onSearchInvoiceHandler(text)}
+                    onChangeText={(text) => {
+                      setSku(text);
+                      debouncedSearchInvoice(text);
+                    }}
                   />
                 </View>
                 <TouchableOpacity onPress={() => textInputRef.current.focus()}>
