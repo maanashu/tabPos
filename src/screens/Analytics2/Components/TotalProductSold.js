@@ -262,7 +262,7 @@ export function TotalProductSold({ sellerID, data }) {
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={[styles.mainListContainer, { height: ms(250) }]}>
+            <View style={[styles.mainListContainer]}>
               {/* {isSoldProductLoading ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.primary} size={'small'} />

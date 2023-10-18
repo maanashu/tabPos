@@ -137,6 +137,7 @@ export const ApiOrderInventory = {
   attachServiceCustomer: 'appointment_carts/attach/user/',
   // getSoldProduct: 'order_details/pos/product_count/sold',
   getSoldProduct: 'orders/statistics/product/sold',
+  getTotalInventory: 'orders/statistics/inventory',
   tip: 'poscarts/',
   serviceTip: 'appointment_carts/',
   pendingOrders: 'orders/pos/pending-orders-count',

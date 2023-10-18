@@ -692,7 +692,9 @@ export function WeeklyTransaction({
                           <Text
                             style={[styles.tableTextData, { fontSize: SF(12), marginLeft: ms(10) }]}
                           >
-                            {item?.invoices?.invoice_number ?? null}
+                            {item?.is_returned_order
+                              ? item?.return_detail?.invoices?.invoice_number
+                              : item?.invoices?.invoice_number}
                           </Text>
                           <Spacer horizontal space={ms(20)} />
                           <Text style={styles.tableTextData}>
