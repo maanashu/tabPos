@@ -57,7 +57,6 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const [show, setShow] = useState(false);
   const customerArray = getCustomerData?.getUserOrder?.data ?? [];
   const payloadLength = Object.keys(getCustomerData?.getUserOrder)?.length ?? 0;
-
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [dateformat, setDateformat] = useState('');
   const [date, setDate] = useState();
@@ -525,7 +524,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
                           <View style={styles.tableHeaderRightInner}>
                             <Text style={styles.tableTextData} numberOfLines={1}>
                               {'$'}
-                              {item?.life_time_spent?.toFixed(2)}
+                              {item?.life_time_spent}
                             </Text>
                           </View>
                         </View>
