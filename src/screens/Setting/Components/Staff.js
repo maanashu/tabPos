@@ -80,6 +80,7 @@ export function Staff() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
+  console.log('staffDetailData', JSON.stringify(staffDetailData));
   const targetDate = moment(staffDetailData?.pos_staff_detail?.created_at);
   const currentDate = moment();
   const differenceInDays = targetDate?.diff(currentDate, 'days');
@@ -410,11 +411,15 @@ export function Staff() {
                   </View>
                   <View style={styles.hourRateBodyCon}>
                     <Text style={styles.joinDateDark}>Time Tracked</Text>
-                    <Text style={styles.hourRateLigh}>JBR 2500/h</Text>
+                    <Text style={styles.hourRateLigh}>
+                      JBR {Number(staffDetailData?.pos_staff_detail?.time_tracked)?.toFixed(2)}/h
+                    </Text>
                   </View>
                   <View style={styles.hourRateBodyCon}>
                     <Text style={styles.joinDateDark}>Weekly Tracking Limit</Text>
-                    <Text style={styles.hourRateLigh}>1 h 30 m</Text>
+                    <Text style={styles.hourRateLigh}>
+                      {staffDetailData?.pos_staff_detail?.weekly_time_tracking_limit}
+                    </Text>
                   </View>
                 </View>
               </View>
