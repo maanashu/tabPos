@@ -260,7 +260,6 @@ export function Staff() {
     [isLoadingBottom]
   );
   const onLoadMoreProduct = useCallback(async () => {
-    // console.log('sdasdas', posUserArray);
     if (posUserArraydata?.current_page < posUserArraydata?.total_pages) {
       setIsLoadingBottom(true);
       const data = {
@@ -718,8 +717,6 @@ export function Staff() {
       };
 
       const responseData = await dispatch(creatPostUser(data));
-      // console.log('datdsats', JSON.stringify(responseData));
-      // return;
       if (responseData) {
         setIsLoading(false);
         if (responseData?.error) {

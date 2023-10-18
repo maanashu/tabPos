@@ -60,10 +60,10 @@ export function TotalProductSold({ sellerID, data }) {
   const onEndReachedCalledDuringMomentum = useRef(false);
 
   const paginationData = {
-    total: soldProduct?.totalProductSoldList?.total ?? '0',
-    totalPages: soldProduct?.totalProductSoldList?.total_pages ?? '0',
-    perPage: soldProduct?.totalProductSoldList?.per_page ?? '0',
-    currentPage: soldProduct?.totalProductSoldList?.current_page ?? '0',
+    total: soldProduct?.totalProductSoldList?.total,
+    totalPages: soldProduct?.totalProductSoldList?.total_pages,
+    perPage: soldProduct?.totalProductSoldList?.per_page,
+    currentPage: soldProduct?.totalProductSoldList?.current_page,
   };
 
   const isSoldProductLoading = useSelector((state) =>
@@ -78,7 +78,6 @@ export function TotalProductSold({ sellerID, data }) {
   const renderFooter = () => {
     return isSoldProductLoading ? <ActivityIndicator size="large" color={COLORS.primary} /> : null;
   };
-  console.log('paginationData', data);
   const interval = 1;
   const maxLabel = 31;
   const daysLength = 31;
@@ -258,7 +257,7 @@ export function TotalProductSold({ sellerID, data }) {
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={styles.mainListContainer}>
+            <View style={[styles.mainListContainer, { height: ms(270) }]}>
               {/* {isSoldProductLoading ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.primary} size={'small'} />
@@ -274,6 +273,7 @@ export function TotalProductSold({ sellerID, data }) {
                   <FlatList
                     style={styles.listStyle}
                     data={soldProduct?.totalProductSoldList?.data}
+                    extraData={soldProduct?.totalProductSoldList?.data}
                     renderItem={getSoldProductList}
                     keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}

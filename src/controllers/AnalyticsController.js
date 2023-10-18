@@ -391,12 +391,9 @@ export class AnalyticsController {
       console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          // console.log('asdasdyastrd', JSON.stringify(response));
-
           resolve(response);
         })
         .catch((error) => {
-          // console('ashgfhdfashd', error);
           reject(error);
         });
     });

@@ -86,7 +86,6 @@ export function WeeklyTransaction({
 
     dispatch(getTotalTraType(data));
   }, [selectId, formatedDate]);
-  // console.log('jsgfsdgfksdgfk', deliveryOption, appName);
 
   useEffect(() => {
     const data = {

@@ -105,7 +105,6 @@ export function MainScreen({
 
   const dataLabelsProductSold = soldProduct?.graphData?.labels;
   const labelsProductSold = generateLabels(dataLabelsProductSold, interval, maxLabel, daysLength);
-  console.log('gjgsdfgsdjf', JSON.stringify(totalOrder?.graphData));
   const profitStatisticsLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
   );
@@ -125,7 +124,6 @@ export function MainScreen({
   const isSoldProductLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_SOLD_PRODUCT], state)
   );
-  // console.log('===========graphData', JSON.stringify(analyticStatistics?.revenue?.graph_data));
   return (
     <View>
       <View style={styles.flexDirectionRow}>
