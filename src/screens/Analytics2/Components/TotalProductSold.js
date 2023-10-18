@@ -66,8 +66,6 @@ export function TotalProductSold({ sellerID, data }) {
     perPage: soldProduct?.totalProductSoldList?.per_page,
     currentPage: soldProduct?.totalProductSoldList?.current_page,
   };
-  console.log('paginationData', paginationData);
-  console.log('soldProduct', soldProduct);
 
   const isSoldProductLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_SOLD_PRODUCT], state)

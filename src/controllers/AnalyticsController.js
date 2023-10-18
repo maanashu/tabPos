@@ -388,7 +388,6 @@ export class AnalyticsController {
       const endpoint = `${
         ORDER_URL + ApiOrderInventory.getSoldProduct
       }?seller_id=${sellerID}&${params}&page=${page}&limit=10`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
