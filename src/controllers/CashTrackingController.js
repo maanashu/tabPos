@@ -157,6 +157,31 @@ export class CashTrackingController {
         });
     });
   }
+  static async sendSessionHistory(drawer_id) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.sendSessionHistory + '?drawer_id=' + drawer_id;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          Toast.show({
+            text2: 'Email sent successfully',
+            position: 'bottom',
+            // type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          resolve(response);
+        })
+        .catch((error) => {
+          error?.msg &&
+            Toast.show({
+              text2: error?.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          reject(error);
+        });
+    });
+  }
   static async endTrackingSession(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.trackSessionSave;

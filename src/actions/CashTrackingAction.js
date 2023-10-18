@@ -56,6 +56,23 @@ const getSessionHistoryReset = () => ({
   payload: null,
 });
 
+const sendSessionHistoryRequest = () => ({
+  type: TYPES.SEND_SESSION_HISTORY_REQUEST,
+  payload: null,
+});
+const sendSessionHistorySuccess = (getSessionHistory) => ({
+  type: TYPES.SEND_SESSION_HISTORY_SUCCESS,
+  payload: { getSessionHistory },
+});
+const sendSessionHistoryError = (error) => ({
+  type: TYPES.SEND_SESSION_HISTORY_ERROR,
+  payload: { error },
+});
+const sendSessionHistoryReset = () => ({
+  type: TYPES.SEND_SESSION_HISTORY_RESET,
+  payload: null,
+});
+
 const endTrackingSessionRequest = () => ({
   type: TYPES.END_TRACKING_REQUEST,
   payload: null,
@@ -121,6 +138,19 @@ export const getSessionHistory = (data) => async (dispatch) => {
       dispatch(getSessionHistoryReset());
     }
     dispatch(getSessionHistoryError(error.message));
+  }
+};
+export const sendSessionHistory = (drawer_id) => async (dispatch) => {
+  dispatch(sendSessionHistoryRequest());
+  try {
+    const res = await CashTrackingController.sendSessionHistory(drawer_id);
+    dispatch(sendSessionHistorySuccess(res?.payload));
+    return res;
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(sendSessionHistoryReset());
+    }
+    dispatch(sendSessionHistoryError(error.message));
   }
 };
 export const endTrackingSession = (data) => async (dispatch) => {

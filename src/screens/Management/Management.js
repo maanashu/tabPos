@@ -46,6 +46,7 @@ import {
   getDrawerSessions,
   getPaymentDrawerSessions,
   getSessionHistory,
+  sendSessionHistory,
   trackSessionSave,
 } from '@/actions/CashTrackingAction';
 import { getCashTracking } from '@/selectors/CashTrackingSelector';
@@ -197,6 +198,9 @@ export function Management() {
   const sessionHistoryLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_SESSION_HISTORY], state)
   );
+  const sendEmailLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.SEND_SESSION_HISTORY], state)
+  );
   const oneHistoryLoad = useSelector((state) => isLoadingSelector([TYPES.GET_SESSION_BYID], state));
   const addRemoveLoad = useSelector((state) =>
     isLoadingSelector([TYPES.TRACK_SESSION_SAVE], state)
@@ -329,13 +333,17 @@ export function Management() {
     setSessionHistory(false), setSummaryHistory(true);
     dispatch(getPaymentDrawerSessions(item.id));
   };
-  const emailButtonHandler = () => {
-    dispatch(logoutUserFunction());
+  const emailButtonHandler = async () => {
+    const data = await sendSessionHistory(SessionData?.id)(dispatch);
+    if (data) {
+      dispatch(logoutUserFunction());
+      setSummaryHistory(false), setSummaryHistory(false), setViewSession(false);
+      setHistoryHeader(false);
+      setViewSession(false);
+      setHistoryHeader(false);
+    }
+
     // navigate(NAVIGATION.dashBoard);
-    setSummaryHistory(false), setSummaryHistory(false), setViewSession(false);
-    setHistoryHeader(false);
-    setViewSession(false);
-    setHistoryHeader(false);
     // setSummaryHistory(false),
     //   setViewSession(false),
     //   contentFunction(),
@@ -601,7 +609,7 @@ export function Management() {
             </View>
             {/* <View style={{ flex: 1 }} /> */}
             <Button
-              style={styles.saveButton}
+              style={[styles.saveButton, countFirst !== '' && { backgroundColor: COLORS.primary }]}
               textStyle={styles.buttonText}
               title={strings.management.next}
               // onPress={() => (setEndSession(false), setCashSummary(true))}
@@ -823,7 +831,10 @@ export function Management() {
   const endSessionModal = () => {
     return (
       <Modal transparent isVisible={endSession || cashSummary || endSelectAmount || removeUsd}>
-        <KeyboardAwareScrollView contentContainerStyle={styles.modalMainView}>
+        <KeyboardAwareScrollView
+          keyboardShouldPersistTaps="always"
+          contentContainerStyle={styles.modalMainView}
+        >
           {endSessionFunction()}
         </KeyboardAwareScrollView>
       </Modal>
@@ -907,6 +918,7 @@ export function Management() {
             <Spacer space={SH(20)} />
             {historyHeader === true ? (
               <Button
+                disable={sendEmailLoad}
                 title={strings.management.sendEmailButton}
                 textStyle={[styles.buttonText, { color: COLORS.darkGray }]}
                 style={styles.senEmailButton}
