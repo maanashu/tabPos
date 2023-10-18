@@ -80,12 +80,9 @@ export function Staff() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
-  console.log('staffDetailData', JSON.stringify(staffDetailData));
-
   const targetDate = moment(staffDetailData?.pos_staff_detail?.created_at);
   const currentDate = moment();
   const differenceInDays = targetDate?.diff(currentDate, 'days');
-
   // const posUserArray = getAuth?.getAllPosUsers;
   const posUserArraydata = getAuth?.getAllPosUsersData;
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
@@ -444,14 +441,13 @@ export function Staff() {
                     </View>
                   </View>
 
-                  {staffDetailData?.result?.results?.map((item, index) => (
-                    <View style={{}}>
+                  {staffDetailData?.results?.results?.map((item, index) => (
+                    <View key={index}>
                       <TouchableOpacity
                         style={styles.tableDataCon}
                         onPress={() => {
                           setExpandView(!expandView), setIndex(index);
                         }}
-                        key={index}
                       >
                         <View style={styles.flexRow}>
                           <View
