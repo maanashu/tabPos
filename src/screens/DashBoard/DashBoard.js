@@ -33,6 +33,7 @@ import {
   sessionEndBar,
   productReturn,
   userImage,
+  scanSearch,
 } from '@/assets';
 import {
   addSellingSelection,
@@ -429,10 +430,10 @@ export function DashBoard({ navigation }) {
   };
 
   const onChangeFun = (search) => {
-    if (search.length > 3) {
+    if (search.length > 2) {
       dispatch(searchProductList(search, sellerID));
       setSearchModal(true);
-    } else if (search.length < 3) {
+    } else if (search.length < 2) {
       setSearchModal(false);
     }
   };
@@ -597,35 +598,35 @@ export function DashBoard({ navigation }) {
               <View>
                 <Image source={search_light} style={styles.searchStyle} />
               </View>
-              {/* {scan ? ( */}
-              <TextInput
-                placeholder="Scan Product"
-                style={styles.searchInput}
-                // editable={false}
-                value={sku}
-                onChangeText={(sku) => {
-                  onSetSkuFun(sku);
-                }}
-                ref={textInputRef}
-              />
-              {/* ) : ( */}
-              {/* <TextInput
-                placeholder="Search"
-                style={styles.searchInput}
-                value={search}
-                onChangeText={(search) => {
-                  setSearch(search);
-                  onChangeFun(search);
-                }}
-              /> */}
-              {/* )} */}
+              {scan ? (
+                <TextInput
+                  placeholder="Scan Product"
+                  style={styles.searchInput}
+                  // editable={false}
+                  value={sku}
+                  onChangeText={(sku) => {
+                    onSetSkuFun(sku);
+                  }}
+                  ref={textInputRef}
+                />
+              ) : (
+                <TextInput
+                  placeholder="Search"
+                  style={styles.searchInput}
+                  value={search}
+                  onChangeText={(search) => {
+                    setSearch(search);
+                    onChangeFun(search);
+                  }}
+                />
+              )}
             </View>
             <TouchableOpacity
-              onPress={() => textInputRef.current.focus()}
-              // onPress={() => setScan(!scan)}
+              // onPress={() => textInputRef.current.focus()}
+              onPress={() => setScan(!scan)}
             >
-              {/* <Image source={scan ? scanSearch : scn} style={styles.scnStyle} /> */}
-              <Image source={scn} style={styles.scnStyle} />
+              <Image source={scan ? scanSearch : scn} style={styles.scnStyle} />
+              {/* <Image source={scn} style={styles.scnStyle} /> */}
             </TouchableOpacity>
           </View>
 

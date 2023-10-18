@@ -445,14 +445,14 @@ export const styles = StyleSheet.create({
   // searching list Modal css start
   searchproductCon: {
     width: windowWidth * 0.6,
-    height: windowHeight * 0.9,
+    height: windowHeight * 0.8,
     backgroundColor: COLORS.white,
     borderRadius: 12,
     position: 'absolute',
     top: 0,
-    left: 10,
+    right: 0,
     paddingHorizontal: moderateScale(12),
-    marginLeft: moderateScale(10),
+    // marginLeft: moderateScale(10),
   },
   searchInputWraper: {
     backgroundColor: COLORS.textInputBackground,
@@ -487,7 +487,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: moderateScale(8),
   },
   searchingProductCon: {
-    height: windowHeight * 0.8,
+    height: windowHeight * 0.7,
   },
 
   flatlistHeight: {
@@ -539,7 +539,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: windowWidth * 0.4,
     alignSelf: 'center',
-    height: windowHeight * 0.7,
+    height: windowHeight * 0.25,
   },
   availablestockHeading: {
     color: COLORS.bluish_green,
