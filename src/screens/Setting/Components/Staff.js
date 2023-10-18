@@ -273,6 +273,7 @@ export function Staff() {
       }
     }
   }, [posUserArray]);
+
   const onRefresh = () => {
     const Data = {
       page: 1,
