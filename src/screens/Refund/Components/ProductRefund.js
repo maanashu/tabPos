@@ -178,7 +178,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              ${item?.actual_price ?? '0'}
+              ${item?.price ?? '0'}
             </Text>
           </View>
 
