@@ -87,21 +87,46 @@ export function WeeklyTransaction({
     dispatch(getTotalTraType(data));
   }, [selectId, formatedDate]);
 
+  const typeSelect = () => {
+    if (appName === undefined && deliveryOption === undefined) {
+      return {
+        transaction_type: transaction?.modeOfPayment,
+        page: page,
+        limit: paginationModalValue,
+      };
+    } else if (appName !== undefined && deliveryOption === undefined) {
+      return {
+        transaction_type: transaction?.modeOfPayment,
+        page: page,
+        limit: paginationModalValue,
+        app_name: appName,
+      };
+    } else if (appName === undefined && deliveryOption !== undefined) {
+      return {
+        transaction_type: transaction?.modeOfPayment,
+        page: page,
+        limit: paginationModalValue,
+        delivery_option: deliveryOption,
+      };
+    }
+  };
+  const filterSelect = () => {
+    if (selectTime?.value === undefined) {
+      return {
+        date: formatedDate,
+      };
+    } else {
+      return {
+        filter_by: time,
+      };
+    }
+  };
+
+  const typeSelectData = typeSelect();
+  const filterData = filterSelect();
   useEffect(() => {
-    const data = {
-      dayWiseFilter: time,
-      transactionType: transaction?.modeOfPayment,
-      page: page,
-      limit: paginationModalValue,
-      sellerId: sellerID,
-      calendarDate: formatedDate,
-      orderType: 'none',
-      status: 'none',
-      // appName: appName,
-      // deliveryOption: deliveryOption,
-    };
     if (!fromInVoice) {
-      dispatch(getTotakTraDetail(data));
+      dispatch(getTotakTraDetail(sellerID, typeSelectData, filterData));
     }
   }, [selectId, transaction, page, paginationModalValue, formatedDate]);
 
@@ -373,7 +398,9 @@ export function WeeklyTransaction({
                           <Text
                             style={[styles.tableTextData, { fontSize: SF(12), marginLeft: ms(15) }]}
                           >
-                            {item?.invoices?.invoice_number ?? null}
+                            {item?.is_returned_order
+                              ? item?.return_detail?.invoices?.invoice_number
+                              : item?.invoices?.invoice_number}
                           </Text>
                           <Spacer horizontal space={ms(20)} />
                           <Text style={styles.tableTextData}>

@@ -57,6 +57,7 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
     latitude: singleOrderDetail?.coordinates?.[0] ?? 0.0,
     longitude: singleOrderDetail?.coordinates?.[1] ?? 0.0,
   };
+
   useEffect(() => {
     getOrder();
   }, []);
@@ -96,14 +97,18 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
               <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
                 {/* {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'} */}
                 {`Invoice No. #${
-                  singleOrderDetail?.invoices?.invoice_number == undefined
-                    ? ''
+                  singleOrderDetail?.is_returned_order
+                    ? singleOrderDetail?.return_detail?.invoices?.invoice_number
                     : singleOrderDetail?.invoices?.invoice_number
-                }` ?? '-'}
+                }`}
               </Text>
               <View style={styles._flatListContainer}>
                 <FlatList
-                  data={singleOrderDetail?.order_details}
+                  data={
+                    singleOrderDetail?.is_returned_order
+                      ? singleOrderDetail?.return_detail?.return_details
+                      : singleOrderDetail?.order_details
+                  }
                   style={{ width: '100%' }}
                   renderItem={({ item, index }) => {
                     return (
@@ -112,16 +117,25 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
                           <Text style={styles.count}>{index + 1}</Text>
                           <View style={{ marginLeft: ms(10) }}>
                             <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-                              {item?.product_details?.name}
+                              {singleOrderDetail?.is_returned_order
+                                ? item?.order_details?.product_name
+                                : item?.product_details?.name}
                             </Text>
                             <View style={styles.belowSubContainer}>
                               {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
                             <Text style={styles.sizeTitle}>Size : XXL</Text> */}
-                              <Text style={styles.colorsTitle}>QTY : {item?.qty ?? '-'}</Text>
+                              <Text style={styles.colorsTitle}>
+                                QTY :
+                                {singleOrderDetail?.is_returned_order
+                                  ? item?.order_details?.qty
+                                  : item?.qty}
+                              </Text>
                             </View>
                           </View>
                         </View>
-                        <Text style={styles.priceTitle}>${item?.price ?? '0.00'}</Text>
+                        {singleOrderDetail?.is_returned_order
+                          ? item?.order_details?.price
+                          : item?.price ?? '0.00'}
                       </View>
                     );
                   }}
@@ -302,14 +316,18 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
               <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
                 {/* {`Invoice No. #${singleOrderDetail?.invoices?.invoice_number}` ?? '-'} */}
                 {`Invoice No. #${
-                  singleOrderDetail?.invoices?.invoice_number == undefined
-                    ? ''
+                  singleOrderDetail?.is_returned_order
+                    ? singleOrderDetail?.return_detail?.invoices?.invoice_number
                     : singleOrderDetail?.invoices?.invoice_number
-                }` ?? '-'}
+                }`}
               </Text>
               <View style={styles._flatListContainer}>
                 <FlatList
-                  data={singleOrderDetail?.order_details}
+                  data={
+                    singleOrderDetail?.is_returned_order
+                      ? singleOrderDetail?.return_detail?.return_details
+                      : singleOrderDetail?.order_details
+                  }
                   style={{ width: '100%' }}
                   renderItem={({ item, index }) => {
                     return (
@@ -318,16 +336,28 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
                           <Text style={styles.count}>{index + 1}</Text>
                           <View style={{ marginLeft: ms(10) }}>
                             <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-                              {item?.product_details?.name}
+                              {singleOrderDetail?.is_returned_order
+                                ? item?.order_details?.product_name
+                                : item?.product_details?.name}
                             </Text>
                             <View style={styles.belowSubContainer}>
                               {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
                   <Text style={styles.sizeTitle}>Size : XXL</Text> */}
-                              <Text style={styles.colorsTitle}>QTY : {item?.qty ?? '-'}</Text>
+                              <Text style={styles.colorsTitle}>
+                                QTY :
+                                {singleOrderDetail?.is_returned_order
+                                  ? item?.order_details?.qty
+                                  : item?.qty}
+                              </Text>
                             </View>
                           </View>
                         </View>
-                        <Text style={styles.priceTitle}>${item?.price ?? '0.00'}</Text>
+                        <Text style={styles.priceTitle}>
+                          $
+                          {singleOrderDetail?.is_returned_order
+                            ? item?.order_details?.price
+                            : item?.price ?? '0.00'}
+                        </Text>
                       </View>
                     );
                   }}

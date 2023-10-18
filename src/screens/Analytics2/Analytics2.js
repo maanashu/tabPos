@@ -117,7 +117,7 @@ export function Analytics2() {
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
   const [invoiceDetail, setInvoiceDetail] = useState(false);
   const [orderId, setOrderId] = useState(null);
-  const [appName, setAppName] = useState('');
+  const [appName, setAppName] = useState();
   const [deliveryOption, setDeliveryOption] = useState();
 
   const handleOnPressNext = () => {
@@ -236,8 +236,8 @@ export function Analytics2() {
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
           setDate(item);
-          // setDeliveryOption(4);
-          // setAppName();
+          setDeliveryOption(4);
+          setAppName();
         }}
       />
     ),
@@ -247,8 +247,8 @@ export function Analytics2() {
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
           setDate(item);
-          // setAppName();
-          // setDeliveryOption();
+          setAppName();
+          setDeliveryOption();
         }}
       />
     ),
@@ -257,8 +257,8 @@ export function Analytics2() {
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
           setDate(item);
-          // setAppName('pos');
-          // setDeliveryOption();
+          setAppName('pos');
+          setDeliveryOption();
         }}
       />
     ),
@@ -291,8 +291,8 @@ export function Analytics2() {
           }}
           selectTime={date}
           FromInvoice={fromInVoice}
-          // appName={appName}
-          // deliveryOption={deliveryOption}
+          appName={appName}
+          deliveryOption={deliveryOption}
         />
       );
     }
