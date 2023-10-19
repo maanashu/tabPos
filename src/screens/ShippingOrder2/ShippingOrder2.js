@@ -4,6 +4,7 @@ import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } 
 
 import WebView from 'react-native-webview';
 import { ms } from 'react-native-size-matters';
+import RNPrint from 'react-native-print';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -15,7 +16,7 @@ import {
   todayCurrentStatus,
   todayShippingStatus,
 } from '@/actions/ShippingAction';
-import { backArrow2 } from '@/assets';
+import { backArrow2, printer } from '@/assets';
 import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
 import Graph from './Components/Graph';
@@ -38,6 +39,7 @@ import CurrentShippingStatus from './Components/CurrentShippingStatus';
 
 import styles from './ShippingOrder2.styles';
 import { getPendingOrders } from '@/actions/DashboardAction';
+import Pdf from 'react-native-pdf';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -55,10 +57,8 @@ export function ShippingOrder2() {
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id);
   const [openWebView, setOpenWebView] = useState(false);
   const [showLabelPdf, setShowLabelPdf] = useState(false);
-  const source = {
-    uri: 'https://wwwtest.fedex.com/document/v1/cache/retrieve/SH,f86b5c1af8edd0aa794980020268_Merge?isLabel=true&autoPrint=false',
-    cache: true,
-  };
+
+  const pdfUrl = `https://wwwtest.fedex.com/document/v1/cache/retrieve/SH,a15bf7a1d505fb02794981946074_Merge?isLabel=true&autoPrint=false`;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -163,6 +163,10 @@ export function ShippingOrder2() {
     </View>
   );
 
+  const printPdf = async () => {
+    await RNPrint.print({ filePath: pdfUrl });
+  };
+
   return (
     <>
       {!openWebView ? (
@@ -238,18 +242,33 @@ export function ShippingOrder2() {
         </>
       ) : (
         <View style={[styles.container, { flexDirection: 'column' }]}>
-          <TouchableOpacity
-            style={styles.backView}
-            onPress={() => {
-              setOpenWebView(false);
-              dispatch(getReviewDefault(openShippingOrders, sellerID));
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingRight: 20,
             }}
           >
-            <Image source={backArrow2} style={styles.backImageStyle} />
-            <Text style={[styles.currentStatusText, { color: COLORS.white, paddingLeft: 0 }]}>
-              {strings.deliveryOrders.back}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.backView}
+              onPress={() => {
+                setOpenWebView(false);
+                dispatch(getReviewDefault(openShippingOrders, sellerID));
+              }}
+            >
+              <Image source={backArrow2} style={styles.backImageStyle} />
+              <Text style={[styles.currentStatusText, { color: COLORS.white, paddingLeft: 0 }]}>
+                {strings.deliveryOrders.back}
+              </Text>
+            </TouchableOpacity>
+
+            {/* <TouchableOpacity style={styles.backView} onPress={printPdf}>
+              <Image source={printer} style={styles.backImageStyle} />
+              <Text style={[styles.currentStatusText, { color: COLORS.white, paddingLeft: 5 }]}>
+                {'Print'}
+              </Text>
+            </TouchableOpacity> */}
+          </View>
 
           <Spacer space={SH(20)} />
 
@@ -260,7 +279,8 @@ export function ShippingOrder2() {
               progressTintColor: COLORS.primary,
             }}
             source={{
-              uri: 'data:application/pdf;base64,/https://wwwtest.fedex.com/document/v1/cache/retrieve/SH,f86b5c1af8edd0aa794980020268_Merge?isLabel=true&autoPrint=false',
+              uri: pdfUrl,
+              cache: true,
             }}
             onLoadComplete={(numberOfPages, filePath) => {
               console.log(`Number of pages: ${numberOfPages}`);

@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   todayOrdersViewStyle: {
     flexDirection: 'row',
     paddingRight: 20,
-    width: Dimensions.get('window').width / 6.5,
+    width: Dimensions.get('window').width / 6,
     alignItems: 'center',
     justifyContent: 'space-between',
   },

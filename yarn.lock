@@ -6991,6 +6991,11 @@ react-native-pie-chart@^3.0.1:
   dependencies:
     d3-shape "^3.2.0"
 
+react-native-print@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/react-native-print/-/react-native-print-0.11.0.tgz#3dc69fb05552f0c5da5be0dd345a93e1604621d1"
+  integrity sha512-hFDzb9dVJVT8c3VHNNWgkPfLF3Jfyw0WVJ3o7wUmSMmi5hJx6b++veNJ3J95d3lW3Y0sZUpGbn9+yzXrLANnJQ==
+
 react-native-pure-chart@^0.0.24:
   version "0.0.24"
   resolved "https://registry.npmjs.org/react-native-pure-chart/-/react-native-pure-chart-0.0.24.tgz"
