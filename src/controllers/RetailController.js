@@ -1580,7 +1580,6 @@ export class RetailController {
             qty: data?.qty,
             upc: data?.upc,
           };
-      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);

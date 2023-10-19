@@ -36,6 +36,8 @@ import { addTocart } from '@/actions/RetailAction';
 import { moderateScale } from 'react-native-size-matters';
 import { navigate } from '@/navigation/NavigationRef';
 import { getDrawerSessions } from '@/actions/CashTrackingAction';
+import { useRef } from 'react';
+import { useEffect } from 'react';
 
 export function PosSearchListModal({
   listFalseHandler,
@@ -48,6 +50,7 @@ export function PosSearchListModal({
   onPlusBtn,
 }) {
   const isFocused = useIsFocused();
+  const textInputref = useRef(null);
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
@@ -71,6 +74,10 @@ export function PosSearchListModal({
         return strings.returnOrder.reservation;
     }
   };
+
+  useEffect(() => {
+    textInputref?.current.focus();
+  }, []);
 
   const handleQuantitySelection = (item, action) => {
     setSelectedQuantities((prevQuantities) => {
@@ -152,7 +159,6 @@ export function PosSearchListModal({
       supplyId: item?.supplies?.[0]?.id,
       supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
     };
-    console.log('data', data);
     dispatch(addTocart(data));
     setAddRemoveSelectedId(null);
     setCount(1);
@@ -306,6 +312,7 @@ export function PosSearchListModal({
             style={styles.searchInput2}
             value={search}
             onChangeText={(search) => (setSearch(search), onChangeFun(search))}
+            ref={textInputref}
           />
         </View>
         <TouchableOpacity onPress={listFalseHandler}>

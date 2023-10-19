@@ -96,7 +96,6 @@ export function SearchScreen(props) {
   };
 
   const onSearchInvoiceHandler = (text) => {
-    console.log('searched invoice text: ' + text);
     if (text.includes('Invoice_') || text.includes('invoice_')) {
       dispatch(scanBarCode(text));
     } else {

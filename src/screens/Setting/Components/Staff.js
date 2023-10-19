@@ -286,7 +286,13 @@ export function Staff() {
     if (staffDetail) {
       return (
         <View>
-          <TouchableOpacity style={styles.backButtonCon} onPress={() => setStaffDetail(false)}>
+          <TouchableOpacity
+            style={styles.backButtonCon}
+            onPress={() => {
+              setExpandView(false);
+              setStaffDetail(false);
+            }}
+          >
             <Image source={backArrow} style={styles.backButtonArrow} />
             <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
           </TouchableOpacity>

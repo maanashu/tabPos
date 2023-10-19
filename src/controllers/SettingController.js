@@ -175,14 +175,11 @@ export class SettingController {
   static async staffDetail(id) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.staffDetail + `?id=${id}`;
-      console.log('endpoint1111111111111', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',

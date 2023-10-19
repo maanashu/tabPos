@@ -92,7 +92,6 @@ export function DashBoard({ navigation }) {
   const todayJbrAmount = TotalSale?.[1]?.total_sale_amount.toFixed(2);
   const todayCardAmount = TotalSale?.[2]?.total_sale_amount.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  console.log('sellerID', sellerID);
   const getDeliveryData = getDashboardData?.getOrderDeliveries?.data;
   const [orderDeliveriesData, setOrderDeleveriesData] = useState([]);
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
@@ -432,7 +431,7 @@ export function DashBoard({ navigation }) {
   };
 
   const onChangeFun = async (search) => {
-    if (search.length > 3) {
+    if (search.length > 2) {
       const res = await dispatch(
         searchProductList(search, sellerID, (res) => {
           // if (Object.keys(res?.invoiceData)?.length > 0) {
@@ -443,7 +442,7 @@ export function DashBoard({ navigation }) {
         })
       );
       setSearchModal(true);
-    } else if (search.length < 3) {
+    } else if (search.length < 2) {
       setSearchModal(false);
     }
   };
