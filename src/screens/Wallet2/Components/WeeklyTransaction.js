@@ -304,13 +304,13 @@ export function WeeklyTransaction({
         return 'Ready Pickup';
         break;
       case 4:
-        return 'Assign';
-        break;
-      case 5:
         return 'Walkin';
         break;
-      case 6:
+      case 5:
         return 'Delivered';
+        break;
+      case 6:
+        return 'Pickup By Customer';
         break;
       case 7:
         return 'Cancelled';
@@ -641,7 +641,7 @@ export function WeeklyTransaction({
                   {/* <Image source={tableArrow} style={styles.tableArrow} /> */}
                 </View>
                 <Text style={styles.tableTextHea}>Amount</Text>
-                <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text>
+                {/* <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text> */}
 
                 <Text style={[styles.tableTextHea, { paddingHorizontal: 25 }]}>Status</Text>
               </View>
@@ -711,9 +711,9 @@ export function WeeklyTransaction({
                               marginLeft: ms(-15),
                             }}
                           > */}
-                          <Text style={styles.tableTextData}>
+                          {/* <Text style={styles.tableTextData}>
                             {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
-                          </Text>
+                          </Text> */}
                           {/* </View> */}
                           <View
                             style={{
@@ -723,10 +723,14 @@ export function WeeklyTransaction({
                               alignItems: 'center',
                               height: SH(24),
                               justifyContent: 'center',
-                              marginLeft: ms(-35),
+                              marginLeft: ms(-20),
                             }}
                           >
-                            <Text style={styles.tableTextDataCom}>{statusFun(item.status)}</Text>
+                            <Text style={[styles.tableTextDataCom, { textAlign: 'center' }]}>
+                              {item?.is_returned_order && statusFun(item.status) === 'Delivered'
+                                ? 'Returned'
+                                : statusFun(item.status)}
+                            </Text>
                           </View>
                         </View>
                       </View>

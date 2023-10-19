@@ -351,7 +351,7 @@ export function WeeklyTransaction({
                 </View>
 
                 <Text style={styles.tableTextHea}>Amount</Text>
-                <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text>
+                {/* <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text> */}
 
                 <Text style={[styles.tableTextHea, { paddingHorizontal: 25 }]}>Status</Text>
               </View>
@@ -412,7 +412,7 @@ export function WeeklyTransaction({
                           <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
 
                           <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
-                          <View
+                          {/* <View
                             style={{
                               marginLeft: ms(-15),
                             }}
@@ -420,22 +420,23 @@ export function WeeklyTransaction({
                             <Text style={styles.tableTextData}>
                               {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
                             </Text>
-                          </View>
+                          </View> */}
                           <TouchableOpacity
                             style={{
                               width: SF(110),
                               borderRadius: ms(3),
                               backgroundColor: COLORS.bluish_green,
                               alignItems: 'center',
-
                               justifyContent: 'center',
-                              marginLeft: ms(-35),
+                              marginLeft: ms(-20),
                               paddingVertical: ms(2),
                             }}
                             onPress={() => orderClickHandler(item?.id)}
                           >
                             <Text style={[styles.tableTextDataCom, { textAlign: 'center' }]}>
-                              {statusFun(item.status)}
+                              {item?.is_returned_order && statusFun(item.status) === 'Delivered'
+                                ? 'Returned'
+                                : statusFun(item.status)}
                             </Text>
                           </TouchableOpacity>
                         </View>
