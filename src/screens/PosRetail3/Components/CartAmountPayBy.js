@@ -98,21 +98,34 @@ export const CartAmountPayBy = ({
 
   if (Object.keys(getSettingData?.getSetting).length > 0) {
     paymentMethodData.push(
-      { title: 'Cash', icon: moneyIcon, status: getSettingData.getSetting.accept_cash_payment },
+      {
+        title: 'Cash',
+        icon: moneyIcon,
+        status: getSettingData.getSetting.accept_cash_payment,
+        id: 1,
+      },
       {
         title: 'JBR Coin',
         icon: qrCodeIcon,
         status: true,
+        id: 2,
       },
-      { title: 'Card', icon: cardPayment, status: getSettingData.getSetting.accept_card_payment }
+      {
+        title: 'Card',
+        icon: cardPayment,
+        status: getSettingData.getSetting.accept_card_payment,
+        id: 3,
+      }
     );
   } else {
     paymentMethodData.push({
       title: 'JBR Coin',
       icon: qrCodeIcon,
       status: true,
+      id: 2,
     });
   }
+  console.log('Setting Dataa', JSON.stringify(getSettingData?.getSetting));
   const receiptData = [{ title: 'No e-recipe', icon: cardPayment }];
   if (getSettingData?.getSetting?.invoice_email_send_status) {
     receiptData.unshift({ title: 'Email', icon: cardPayment });
@@ -137,6 +150,7 @@ export const CartAmountPayBy = ({
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
   const [selectedPaymentIndex, setSelectedPaymentIndex] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState(null);
   const [selectedRecipeMethod, setSelectedRecipeMethod] = useState(null);
   const [phonePopVisible, setPhonePopVisible] = useState(false);
@@ -582,6 +596,7 @@ export const CartAmountPayBy = ({
                     <TouchableOpacity
                       onPress={() => {
                         // index==1 && onPressPaymentMethod({ method: item.title, index: index })
+                        setSelectedPaymentId(item.id);
                         setSelectedPaymentIndex(index);
                         setSelectedRecipeIndex(null);
                         setSelectedPaymentMethod(item.title);
@@ -671,7 +686,7 @@ export const CartAmountPayBy = ({
             ) : (
               <View style={styles._payBYBoxContainerEmpty} />
             )}
-            {selectedPaymentIndex !== null && selectedPaymentIndex !== 1 && (
+            {selectedPaymentIndex !== null && selectedPaymentId !== 2 && (
               <View
                 style={{
                   marginTop: ms(7),
@@ -728,7 +743,7 @@ export const CartAmountPayBy = ({
               </View>
             )}
 
-            {selectedPaymentIndex == 1 && (
+            {selectedPaymentId == 2 && (
               <TouchableOpacity
                 isLoading={true}
                 style={styles.jobrSaveView}

@@ -370,8 +370,8 @@ export class AnalyticsController {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
       const endpoint = `${
-        PRODUCT_URL + ApiProductInventory.getTotalInventory
-      }?seller_id=${sellerID}&${params}`;
+        ORDER_URL + ApiOrderInventory.getTotalInventory
+      }?seller_id=${sellerID}&${params}&page=1&limit=20`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -382,12 +382,12 @@ export class AnalyticsController {
     });
   }
 
-  static async getSoldProduct(sellerID, data) {
+  static async getSoldProduct(sellerID, data, page) {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
       const endpoint = `${
         ORDER_URL + ApiOrderInventory.getSoldProduct
-      }?seller_id=${sellerID}&${params}`;
+      }?seller_id=${sellerID}&${params}&page=${page}&limit=15`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

@@ -18,6 +18,9 @@ export function HomeGraph({
   disabled,
   style,
   isLoading,
+  filter,
+  startDated,
+  endDated,
 }) {
   return (
     <View style={[styles.totalProductCon, style]}>
@@ -58,6 +61,9 @@ export function HomeGraph({
             labels={labels}
             data1={data1}
             data2={data2}
+            filter={filter}
+            startDated={startDated}
+            endDated={endDated}
           />
         </TouchableOpacity>
       )}

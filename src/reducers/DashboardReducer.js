@@ -5,7 +5,7 @@ const INITIALSTATE = {
   getSesssion: {},
   getTotalSale: [],
   posLoginDetail: {},
-  searchProductList: [],
+  searchProductList: {},
   onLineOrders: {},
   selection: {},
   pendingOrders: {},
@@ -75,7 +75,7 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
     case DASHBOARDTYPE.SEARCH_PRODUCT_LIST_RESET:
       return {
         ...state,
-        searchProductList: [],
+        searchProductList: {},
       };
     case DASHBOARDTYPE.ONLINE_ORDERS_SUCCESS:
       return {

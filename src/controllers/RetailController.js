@@ -1570,6 +1570,7 @@ export class RetailController {
             description: data?.notes,
             type: 'physical',
             qty: data?.qty,
+            upc: data?.upc,
           }
         : {
             seller_id: sellerID,
@@ -1577,6 +1578,7 @@ export class RetailController {
             name: data?.productName,
             type: 'physical',
             qty: data?.qty,
+            upc: data?.upc,
           };
       HttpClient.post(endpoint, body)
         .then((response) => {

@@ -46,7 +46,8 @@ export function WeeklyTransaction({
   orderClickHandler,
   selectTime,
   FromInvoice,
-  orderType,
+  appName,
+  deliveryOption,
 }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -86,19 +87,46 @@ export function WeeklyTransaction({
     dispatch(getTotalTraType(data));
   }, [selectId, formatedDate]);
 
+  const typeSelect = () => {
+    if (appName === undefined && deliveryOption === undefined) {
+      return {
+        transaction_type: transaction?.modeOfPayment,
+        page: page,
+        limit: paginationModalValue,
+      };
+    } else if (appName !== undefined && deliveryOption === undefined) {
+      return {
+        transaction_type: transaction?.modeOfPayment,
+        page: page,
+        limit: paginationModalValue,
+        app_name: appName,
+      };
+    } else if (appName === undefined && deliveryOption !== undefined) {
+      return {
+        transaction_type: transaction?.modeOfPayment,
+        page: page,
+        limit: paginationModalValue,
+        delivery_option: deliveryOption,
+      };
+    }
+  };
+  const filterSelect = () => {
+    if (selectTime?.value === undefined) {
+      return {
+        date: formatedDate,
+      };
+    } else {
+      return {
+        filter_by: time,
+      };
+    }
+  };
+
+  const typeSelectData = typeSelect();
+  const filterData = filterSelect();
   useEffect(() => {
-    const data = {
-      dayWiseFilter: time,
-      transactionType: transaction?.modeOfPayment,
-      page: page,
-      limit: paginationModalValue,
-      sellerId: sellerID,
-      calendarDate: formatedDate,
-      orderType: orderType,
-      status: 'none',
-    };
     if (!fromInVoice) {
-      dispatch(getTotakTraDetail(data));
+      dispatch(getTotakTraDetail(sellerID, typeSelectData, filterData));
     }
   }, [selectId, transaction, page, paginationModalValue, formatedDate]);
 
@@ -323,7 +351,7 @@ export function WeeklyTransaction({
                 </View>
 
                 <Text style={styles.tableTextHea}>Amount</Text>
-                <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text>
+                {/* <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text> */}
 
                 <Text style={[styles.tableTextHea, { paddingHorizontal: 25 }]}>Status</Text>
               </View>
@@ -370,7 +398,9 @@ export function WeeklyTransaction({
                           <Text
                             style={[styles.tableTextData, { fontSize: SF(12), marginLeft: ms(15) }]}
                           >
-                            {item?.invoices?.invoice_number ?? null}
+                            {item?.is_returned_order
+                              ? item?.return_detail?.invoices?.invoice_number
+                              : item?.invoices?.invoice_number}
                           </Text>
                           <Spacer horizontal space={ms(20)} />
                           <Text style={styles.tableTextData}>
@@ -382,7 +412,7 @@ export function WeeklyTransaction({
                           <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
 
                           <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
-                          <View
+                          {/* <View
                             style={{
                               marginLeft: ms(-15),
                             }}
@@ -390,22 +420,23 @@ export function WeeklyTransaction({
                             <Text style={styles.tableTextData}>
                               {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
                             </Text>
-                          </View>
+                          </View> */}
                           <TouchableOpacity
                             style={{
                               width: SF(110),
                               borderRadius: ms(3),
                               backgroundColor: COLORS.bluish_green,
                               alignItems: 'center',
-
                               justifyContent: 'center',
-                              marginLeft: ms(-35),
+                              marginLeft: ms(-20),
                               paddingVertical: ms(2),
                             }}
                             onPress={() => orderClickHandler(item?.id)}
                           >
                             <Text style={[styles.tableTextDataCom, { textAlign: 'center' }]}>
-                              {statusFun(item.status)}
+                              {item?.is_returned_order && statusFun(item.status) === 'Delivered'
+                                ? 'Returned'
+                                : statusFun(item.status)}
                             </Text>
                           </TouchableOpacity>
                         </View>

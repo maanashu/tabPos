@@ -303,11 +303,12 @@ export const posLoginDetail = () => async (dispatch) => {
   }
 };
 
-export const searchProductList = (search, sellerID) => async (dispatch) => {
+export const searchProductList = (search, sellerID, callback) => async (dispatch) => {
   dispatch(searchProductListRequest());
   try {
     const res = await DashboardController.searchProductList(search, sellerID);
-    dispatch(searchProductListSuccess(res?.payload?.data));
+    callback && callback(res?.payload);
+    dispatch(searchProductListSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(searchProductListReset());

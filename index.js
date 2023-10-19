@@ -17,7 +17,6 @@ if (Platform.OS === 'android') {
 }
 
 notifee.onBackgroundEvent(async ({ type, detail }) => {
-  console.log('background event');
   if (type === EventType.PRESS) {
     // App was terminated, handle the notification and open the desired screen
     await handleNotification(detail.notification);

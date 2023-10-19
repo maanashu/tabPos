@@ -170,7 +170,7 @@ export class DashboardController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.searchProductList +
-        `?app_name=pos&delivery_options=3&search=${search}&seller_id=${sellerID}`;
+        `?app_name=pos&delivery_options=3&search=${search}&seller_id=${sellerID}&need_invoice_search=true`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

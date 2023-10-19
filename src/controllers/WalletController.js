@@ -24,48 +24,14 @@ export class WalletController {
     });
   }
 
-  static async getTotakTraDetail(data) {
+  static async getTotakTraDetail(sellerID, typeSelectData, filterData) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(typeSelectData).toString();
+      const paramsFilter = new URLSearchParams(filterData).toString();
       const endpoint =
-        data?.status === 'none' && data?.orderType === 'none'
-          ? ORDER_URL +
-            ApiOrderInventory.getTotakTraDetail +
-            `?seller_id=${data?.sellerId}&transaction_type=${data?.transactionType}&page=${
-              data?.page
-            }&limit=${data?.limit}&${
-              data?.calendarDate == undefined
-                ? `filter_by=${data?.dayWiseFilter}`
-                : `date=${data?.calendarDate}`
-            }`
-          : data?.status !== 'none' && data?.orderType === 'none'
-          ? ORDER_URL +
-            ApiOrderInventory.getTotakTraDetail +
-            `?seller_id=${data?.sellerId}&transaction_type=${data?.transactionType}&page=${
-              data?.page
-            }&limit=${data?.limit}&${
-              data?.calendarDate == undefined
-                ? `filter_by=${data?.dayWiseFilter}`
-                : `date=${data?.calendarDate}`
-            }&status=${data?.status}`
-          : data?.status === 'none' && data?.orderType !== 'none'
-          ? ORDER_URL +
-            ApiOrderInventory.getTotakTraDetail +
-            `?seller_id=${data?.sellerId}&transaction_type=${data?.transactionType}&page=${
-              data?.page
-            }&limit=${data?.limit}&${
-              data?.calendarDate == undefined
-                ? `filter_by=${data?.dayWiseFilter}`
-                : `date=${data?.calendarDate}`
-            }&order_type=${data?.orderType}`
-          : ORDER_URL +
-            ApiOrderInventory.getTotakTraDetail +
-            `?seller_id=${data?.sellerId}&transaction_type=${data?.transactionType}&page=${
-              data?.page
-            }&limit=${data?.limit}&${
-              data?.calendarDate == undefined
-                ? `filter_by=${data?.dayWiseFilter}`
-                : `date=${data?.calendarDate}`
-            }&order_type=${data?.orderType}&status=${data?.status}`;
+        ORDER_URL +
+        ApiOrderInventory.getTotakTraDetail +
+        `?seller_id=${sellerID}&${params}&${paramsFilter}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

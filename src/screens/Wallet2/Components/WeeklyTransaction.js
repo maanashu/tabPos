@@ -50,6 +50,8 @@ import { DELIVERY_MODE, PAGINATION_DATA, months, weeklyStatus } from '@/constant
 const windowHeight = Dimensions.get('window').height;
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function WeeklyTransaction({
   backHandler,
@@ -59,6 +61,8 @@ export function WeeklyTransaction({
   setSelectTime,
   selectId,
   setSelectId,
+  selectDate,
+  setSelectDate,
 }) {
   const mapRef = useRef(null);
   const dispatch = useDispatch();
@@ -101,6 +105,21 @@ export function WeeklyTransaction({
 
   const orderTypeSelection = (value) => setOrderTypeSelect(value);
   const [orderTypeSelect, setOrderTypeSelect] = useState('none');
+
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+
+  const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+  const endDate = selectedEndDate ? selectedEndDate.toString() : '';
+  const startDated = moment(startDate).format('YYYY-MM-DD');
+  const endDated = moment(endDate).format('YYYY-MM-DD');
+  // const [selectDate, setSelectDate] = useState('');
+
+  const currentStartDate = moment().startOf('month').format('MMM D');
+  const currentEndDate = moment().endOf('month').format('MMM D, YYYY');
+  const dateRange = `${currentStartDate} - ${currentEndDate}`;
+  const formateDate = { start_date: startDated, end_date: endDated };
+  // console.log('fgkdhfgkd', startDated, endDated);
 
   const orderTypeArray = [
     {
@@ -163,18 +182,53 @@ export function WeeklyTransaction({
     dispatch(getTotalTraType(data));
   }, [selectId, formatedDate]);
 
+  const typeSelect = () => {
+    if (statusSelect === 'none' && orderTypeSelect === 'none') {
+      return {
+        transaction_type: transaction?.modeOfPayment,
+        page: page,
+        limit: paginationModalValue,
+      };
+    } else if (statusSelect !== 'none' && orderTypeSelect === 'none') {
+      return {
+        transaction_type: transaction?.modeOfPayment,
+        page: page,
+        limit: paginationModalValue,
+        status: statusSelect,
+      };
+    } else if (statusSelect === 'none' && orderTypeSelect !== 'none') {
+      return {
+        transaction_type: transaction?.modeOfPayment,
+        page: page,
+        limit: paginationModalValue,
+        order_type: orderTypeSelect,
+      };
+    } else if (statusSelect !== 'none' && orderTypeSelect !== 'none') {
+      return {
+        transaction_type: transaction?.modeOfPayment,
+        page: page,
+        limit: paginationModalValue,
+        status: statusSelect,
+        order_type: orderTypeSelect,
+      };
+    }
+  };
+  const filterSelect = () => {
+    if (selectTime?.value === undefined) {
+      return {
+        start_date: startDated,
+        end_date: endDated,
+      };
+    } else {
+      return {
+        filter_by: time,
+      };
+    }
+  };
+  const typeSelectData = typeSelect();
+  const filterData = filterSelect();
   useEffect(() => {
-    const data = {
-      dayWiseFilter: time,
-      transactionType: transaction?.modeOfPayment,
-      page: page,
-      limit: paginationModalValue,
-      sellerId: sellerID,
-      calendarDate: formatedDate,
-      orderType: orderTypeSelect,
-      status: statusSelect,
-    };
-    dispatch(getTotakTraDetail(data));
+    dispatch(getTotakTraDetail(sellerID, typeSelectData, filterData));
   }, [
     selectId,
     transaction,
@@ -183,8 +237,32 @@ export function WeeklyTransaction({
     formatedDate,
     orderTypeSelect,
     statusSelect,
+    startDated,
+    endDated,
+    selectDate,
   ]);
 
+  const onDateChange = (date, type) => {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    if (type === 'END_DATE') {
+      setSelectedEndDate(formattedDate);
+    } else {
+      setSelectedStartDate(formattedDate);
+      setSelectedEndDate(null);
+    }
+  };
+  const onSelect = () => {
+    if (!selectedStartDate && !selectedEndDate) {
+      alert('Please Select Date');
+    } else if (selectedStartDate && selectedEndDate) {
+      setShow(false);
+      setSelectTime('');
+      setSelectId('');
+      setSelectDate(!selectDate);
+    } else {
+      alert('Please Select End Date');
+    }
+  };
   const onChangeDate = (selectedDate) => {
     setDefaultDate(selectedDate);
     const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
@@ -198,7 +276,7 @@ export function WeeklyTransaction({
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-  const maxDate = getFormattedTodayDate();
+  const maxDate = new Date(2030, 6, 3);
 
   const isTotalTraLoad = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
 
@@ -226,13 +304,13 @@ export function WeeklyTransaction({
         return 'Ready Pickup';
         break;
       case 4:
-        return 'Assign';
-        break;
-      case 5:
         return 'Walkin';
         break;
-      case 6:
+      case 5:
         return 'Delivered';
+        break;
+      case 6:
+        return 'Pickup By Customer';
         break;
       case 7:
         return 'Cancelled';
@@ -285,7 +363,13 @@ export function WeeklyTransaction({
           <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
         </TouchableOpacity>
         <View style={styles.deliveryView}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.wallet2,
+              })
+            }
+          >
             <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
           </TouchableOpacity>
           <View style={[styles.searchView, { backgroundColor: COLORS.textInputBackground }]}>
@@ -315,21 +399,23 @@ export function WeeklyTransaction({
               />
             </View>
             <TouchableOpacity
+              onPress={() => setShow(!show)}
               style={[
-                styles.homeCalenaderBg,
+                styles.headerView,
                 {
-                  backgroundColor: selectId == 0 ? COLORS.primary : COLORS.textInputBackground,
+                  borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
+                  marginHorizontal: ms(5),
                 },
               ]}
-              onPress={() => setShow(!show)}
             >
-              <Image
-                source={newCalendar}
-                style={[
-                  styles.calendarStyle,
-                  { tintColor: selectId == 0 ? COLORS.white : COLORS.darkGray },
-                ]}
-              />
+              <Image source={newCalendar} style={styles.calendarStyle} />
+              <Text style={startDate ? styles.dateText : styles.dateText2}>
+                {startDate
+                  ? moment(startDate).format('MMM D') +
+                    ' - ' +
+                    moment(endDate).format('MMM D, YYYY')
+                  : dateRange}
+              </Text>
             </TouchableOpacity>
             <Modal
               isVisible={show}
@@ -341,6 +427,26 @@ export function WeeklyTransaction({
             >
               <View style={styles.calendarModalView}>
                 <CalendarPickerModal
+                  onPress={() => setShow(false)}
+                  // onDateChange={onChangeDate}
+                  // onSelectedDate={() => onDateApply(formattedDate)}
+                  // selectedStartDate={formattedDate}
+                  maxDate={maxDate}
+                  // onCancelPress={onCancelPressCalendar}
+                  allowRangeSelection={true}
+                  onDateChange={onDateChange}
+                  // handleOnPressNext={handleOnPressNext}
+                  onSelectedDate={onSelect}
+                  onCancelPress={() => {
+                    setShow(false);
+                    // setSelectedStartDate('');
+                    // setSelectedEndDate('');
+                    // setSelectId(2);
+                    // setSelectTime({ value: 'week' });
+                  }}
+                />
+
+                {/* <CalendarPickerModal
                   onPress={() => {
                     setShow(false);
                     setDefaultDate();
@@ -363,7 +469,7 @@ export function WeeklyTransaction({
                     // setSelectId(2);
                     // setSelectTime({ value: 'week' });
                   }}
-                />
+                /> */}
               </View>
             </Modal>
           </View>
@@ -535,7 +641,7 @@ export function WeeklyTransaction({
                   {/* <Image source={tableArrow} style={styles.tableArrow} /> */}
                 </View>
                 <Text style={styles.tableTextHea}>Amount</Text>
-                <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text>
+                {/* <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text> */}
 
                 <Text style={[styles.tableTextHea, { paddingHorizontal: 25 }]}>Status</Text>
               </View>
@@ -586,7 +692,9 @@ export function WeeklyTransaction({
                           <Text
                             style={[styles.tableTextData, { fontSize: SF(12), marginLeft: ms(10) }]}
                           >
-                            {item?.invoices?.invoice_number ?? null}
+                            {item?.is_returned_order
+                              ? item?.return_detail?.invoices?.invoice_number
+                              : item?.invoices?.invoice_number}
                           </Text>
                           <Spacer horizontal space={ms(20)} />
                           <Text style={styles.tableTextData}>
@@ -603,9 +711,9 @@ export function WeeklyTransaction({
                               marginLeft: ms(-15),
                             }}
                           > */}
-                          <Text style={styles.tableTextData}>
+                          {/* <Text style={styles.tableTextData}>
                             {item.refunded_amount !== null ? '$' + item.refunded_amount : '$0'}
-                          </Text>
+                          </Text> */}
                           {/* </View> */}
                           <View
                             style={{
@@ -615,10 +723,14 @@ export function WeeklyTransaction({
                               alignItems: 'center',
                               height: SH(24),
                               justifyContent: 'center',
-                              marginLeft: ms(-35),
+                              marginLeft: ms(-20),
                             }}
                           >
-                            <Text style={styles.tableTextDataCom}>{statusFun(item.status)}</Text>
+                            <Text style={[styles.tableTextDataCom, { textAlign: 'center' }]}>
+                              {item?.is_returned_order && statusFun(item.status) === 'Delivered'
+                                ? 'Returned'
+                                : statusFun(item.status)}
+                            </Text>
                           </View>
                         </View>
                       </View>

@@ -33,6 +33,7 @@ import {
   sessionEndBar,
   productReturn,
   userImage,
+  scanSearch,
 } from '@/assets';
 import {
   addSellingSelection,
@@ -274,6 +275,7 @@ export function DashBoard({ navigation }) {
         DASHBOARDTYPE.GET_DRAWER_SESSION,
         DASHBOARDTYPE.GET_DRAWER_SESSION_POST,
         DASHBOARDTYPE.START_TRACKING_SESSION,
+        DASHBOARDTYPE.SEARCH_PRODUCT_LIST,
       ],
       state
     )
@@ -428,11 +430,19 @@ export function DashBoard({ navigation }) {
     );
   };
 
-  const onChangeFun = (search) => {
-    if (search.length > 3) {
-      dispatch(searchProductList(search, sellerID));
+  const onChangeFun = async (search) => {
+    if (search.length > 2) {
+      const res = await dispatch(
+        searchProductList(search, sellerID, (res) => {
+          // if (Object.keys(res?.invoiceData)?.length > 0) {
+          //   alert('dfghjkl;');
+          // } else {
+          //   setSearchModal(true);
+          // }
+        })
+      );
       setSearchModal(true);
-    } else if (search.length < 3) {
+    } else if (search.length < 2) {
       setSearchModal(false);
     }
   };
@@ -467,7 +477,6 @@ export function DashBoard({ navigation }) {
           </Text>
           <Text style={styles.cashLabel}>ID : {getPosUser?.user_profiles?.user_id ?? '0'}</Text>
           <Spacer space={SH(10)} />
-
           <View style={styles.todaySaleCon}>
             <View style={styles.displayflex}>
               <Text style={styles.todaySale}>{strings.dashboard.todaySale}</Text>
@@ -597,35 +606,35 @@ export function DashBoard({ navigation }) {
               <View>
                 <Image source={search_light} style={styles.searchStyle} />
               </View>
-              {/* {scan ? ( */}
-              <TextInput
-                placeholder="Scan Product"
-                style={styles.searchInput}
-                // editable={false}
-                value={sku}
-                onChangeText={(sku) => {
-                  onSetSkuFun(sku);
-                }}
-                ref={textInputRef}
-              />
-              {/* ) : ( */}
-              {/* <TextInput
-                placeholder="Search"
-                style={styles.searchInput}
-                value={search}
-                onChangeText={(search) => {
-                  setSearch(search);
-                  onChangeFun(search);
-                }}
-              /> */}
-              {/* )} */}
+              {scan ? (
+                <TextInput
+                  placeholder="Scan Product"
+                  style={styles.searchInput}
+                  // editable={false}
+                  value={sku}
+                  onChangeText={(sku) => {
+                    onSetSkuFun(sku);
+                  }}
+                  ref={textInputRef}
+                />
+              ) : (
+                <TextInput
+                  placeholder="Search"
+                  style={styles.searchInput}
+                  value={search}
+                  onChangeText={(search) => {
+                    setSearch(search);
+                    onChangeFun(search);
+                  }}
+                />
+              )}
             </View>
             <TouchableOpacity
-              onPress={() => textInputRef.current.focus()}
-              // onPress={() => setScan(!scan)}
+              // onPress={() => textInputRef.current.focus()}
+              onPress={() => setScan(!scan)}
             >
-              {/* <Image source={scan ? scanSearch : scn} style={styles.scnStyle} /> */}
-              <Image source={scn} style={styles.scnStyle} />
+              <Image source={scan ? scanSearch : scn} style={styles.scnStyle} />
+              {/* <Image source={scn} style={styles.scnStyle} /> */}
             </TouchableOpacity>
           </View>
 

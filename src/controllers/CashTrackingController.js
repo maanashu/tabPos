@@ -33,7 +33,6 @@ export class CashTrackingController {
       const endpoint = drawerId
         ? USER_URL + `${ApiUserInventory.getPaymentHistory}?drawer_id=${drawerId}`
         : USER_URL + ApiUserInventory.getPaymentHistory;
-
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -142,9 +141,33 @@ export class CashTrackingController {
           : USER_URL +
             ApiUserInventory.getSessionHistory +
             `?page=${data?.page}&limit=${data?.limit}&pos_user_id=${data?.staffId}&filter_date=${data?.calenderDate}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          error?.msg &&
+            Toast.show({
+              text2: error?.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          reject(error);
+        });
+    });
+  }
+  static async sendSessionHistory(drawer_id) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.sendSessionHistory + '?drawer_id=' + drawer_id;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          Toast.show({
+            text2: 'Email sent successfully',
+            position: 'bottom',
+            // type: 'error_toast',
+            visibilityTime: 1500,
+          });
           resolve(response);
         })
         .catch((error) => {
@@ -169,6 +192,7 @@ export class CashTrackingController {
         transaction_type: data.transactionType,
         mode_of_cash: data.modeOfcash,
       };
+
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);

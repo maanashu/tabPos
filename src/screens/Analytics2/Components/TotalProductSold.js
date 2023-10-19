@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -12,13 +12,15 @@ import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 import { backArrow2, locationSales, margin, profit, revenueTotal } from '@/assets';
 import { DataTable } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { COLORS } from '@/theme';
+import { getSoldProduct } from '@/actions/AnalyticsAction';
+import { useDebouncedCallback } from 'use-lodash-debounce';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -50,20 +52,43 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalProductSold() {
+export function TotalProductSold({ sellerID, data }) {
+  const dispatch = useDispatch();
+
   const getAnalyticsData = useSelector(getAnalytics);
   const soldProduct = getAnalyticsData?.getSoldProduct;
+  const [page, setPage] = useState(1);
+  const onEndReachedCalledDuringMomentum = useRef(false);
 
+  const paginationData = {
+    total: soldProduct?.totalProductSoldList?.total,
+    totalPages: soldProduct?.totalProductSoldList?.total_pages,
+    perPage: soldProduct?.totalProductSoldList?.per_page,
+    currentPage: soldProduct?.totalProductSoldList?.current_page,
+  };
+
+  const isSoldProductLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_SOLD_PRODUCT], state)
+  );
+  const onLoadMoreProduct = useCallback(() => {
+    if (!isSoldProductLoading) {
+      if (paginationData?.currentPage < paginationData?.totalPages) {
+        dispatch(getSoldProduct(sellerID, data, paginationData?.currentPage + 1));
+      }
+    }
+  }, [paginationData]);
+
+  const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
+
+  const renderFooter = () => {
+    return isSoldProductLoading ? <ActivityIndicator size="large" color={COLORS.primary} /> : null;
+  };
   const interval = 1;
   const maxLabel = 31;
   const daysLength = 31;
 
   const dataLabelsProductSold = soldProduct?.graph_data?.labels;
   const labelsProductSold = generateLabels(dataLabelsProductSold, interval, maxLabel, daysLength);
-
-  const isSoldProductLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_SOLD_PRODUCT], state)
-  );
 
   const getSoldProductList = ({ item, index }) => (
     <DataTable.Row>
@@ -73,20 +98,22 @@ export function TotalProductSold() {
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.upc}</Text>
+        <Text style={styles.revenueDataText}>{item?.product_upc}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.price}</Text>
+        <Text style={styles.revenueDataText}>${item?.total_price}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
         {/* <Text style={styles.revenueDataText}>{item?.order?.total_items}</Text> */}
 
-        <Text style={styles.revenueDataText}>{item?.qty}</Text>
+        <Text style={styles.revenueDataText}>{item?.in_stock_qty}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{moment(item?.created_at).format('YYYY-MM-DD')}</Text>
+        <Text style={styles.revenueDataText}>
+          {moment(item?.last_sold_date).format('YYYY-MM-DD')}
+        </Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
@@ -235,12 +262,14 @@ export function TotalProductSold() {
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={styles.mainListContainer}>
-              {isSoldProductLoading ? (
+            <View style={[styles.mainListContainer]}>
+              {/* {isSoldProductLoading ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
-              ) : soldProduct?.totalProductSoldList?.length === 0 ? (
+              ) :  */}
+
+              {soldProduct?.totalProductSoldList?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
@@ -248,12 +277,25 @@ export function TotalProductSold() {
                 <View style={styles.listView}>
                   <FlatList
                     style={styles.listStyle}
-                    data={soldProduct?.totalProductSoldList}
+                    data={soldProduct?.totalProductSoldList?.data}
+                    extraData={soldProduct?.totalProductSoldList?.data}
                     renderItem={getSoldProductList}
                     keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
-                    bounces={false}
+                    // bounces={false}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                    onMomentumScrollBegin={() => {}}
+                    onMomentumScrollEnd={() => {
+                      if (onEndReachedCalledDuringMomentum.current) {
+                        // onLoadMoreProduct();
+                        debouncedLoadMoreProduct();
+                        onEndReachedCalledDuringMomentum.current = false;
+                      }
+                    }}
+                    removeClippedSubviews={true}
+                    ListFooterComponent={renderFooter}
                   />
                 </View>
               )}

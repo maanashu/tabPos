@@ -360,6 +360,7 @@ export function PosRetail3() {
         TYPES.CUSTOM_SERVICE_ADD,
         TYPES.ATTACH_SERVICE_CUSTOMER,
         TYPES.ATTACH_CUSTOMER,
+        TYPES.CREATE_SERVICE_ORDER,
       ],
       state
     )
