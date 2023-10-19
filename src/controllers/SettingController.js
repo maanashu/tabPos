@@ -218,7 +218,7 @@ export class SettingController {
     });
   }
 
-  static async getTaxTrue(data) {
+  static async getTgetPosDetailWeeklyaxTrue(data) {
     return new Promise((resolve, reject) => {
       const endpoint =
         USER_URL +
@@ -356,6 +356,19 @@ export class SettingController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
+          reject(error);
+        });
+    });
+  }
+
+  static async getPosDetailWeekly(weekNo) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getPosDetailWeekly + `?week_no=${weekNo}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
           reject(error);
         });
     });

@@ -252,6 +252,24 @@ const addLanguageError = (err) => ({
   payload: { ...err },
 });
 
+// get pos detail by weekly
+const getPosDetailWeeklyRequest = () => ({
+  type: TYPES.GET_POSDETAIL_WEEKLY_REQUEST,
+  payload: null,
+});
+const getPosDetailWeeklySuccess = (getPosDetailWeekly) => ({
+  type: TYPES.GET_POSDETAIL_WEEKLY_SUCCESS,
+  payload: { getPosDetailWeekly },
+});
+const getPosDetailWeeklyError = (error) => ({
+  type: TYPES.GET_POSDETAIL_WEEKLY_ERROR,
+  payload: { error },
+});
+const getPosDetailWeeklyReset = () => ({
+  type: TYPES.GET_POSDETAIL_WEEKLY_RESET,
+  payload: null,
+});
+
 const clearStore = () => ({
   type: TYPES.SETTING_CLEAR_STORE,
   payload: null,
@@ -449,6 +467,20 @@ export const addLanguage = (data) => async (dispatch) => {
     dispatch(addLanguageError(error));
   }
 };
+
+export const getPosDetailWeekly = (weekNo) => async (dispatch) => {
+  dispatch(getPosDetailWeeklyRequest());
+  try {
+    const res = await SettingController.getPosDetailWeekly(weekNo);
+    dispatch(getPosDetailWeeklySuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getPosDetailWeeklyReset());
+    }
+    dispatch(getPosDetailWeeklyError(error.message));
+  }
+};
+
 export const settingClear = () => async (dispatch) => {
   dispatch(clearStore());
 };
