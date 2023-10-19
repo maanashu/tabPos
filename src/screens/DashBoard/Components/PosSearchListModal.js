@@ -12,7 +12,18 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { styles } from '@/screens/DashBoard/DashBoard.styles';
-import { Fonts, backArrow2, crossButton, minus, plus } from '@/assets';
+import {
+  Fonts,
+  backArrow2,
+  clock,
+  clothes,
+  crossButton,
+  minus,
+  pay,
+  pin,
+  plus,
+  rightIcon,
+} from '@/assets';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -23,6 +34,8 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
 import { addTocart } from '@/actions/RetailAction';
 import { moderateScale } from 'react-native-size-matters';
+import { navigate } from '@/navigation/NavigationRef';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 export function PosSearchListModal({
   listFalseHandler,
@@ -46,6 +59,18 @@ export function PosSearchListModal({
   const [addRemoveSelectedId, setAddRemoveSelectedId] = useState(null);
   const [bundleData, setBundleData] = useState();
   const [count, setCount] = useState(1);
+  const getDeliveryType = (type) => {
+    switch (type) {
+      case '1':
+        return strings.deliveryOrders.delivery;
+      case '3':
+        return strings.returnOrder.inStore;
+      case '4':
+        return strings.shipping.shippingText;
+      default:
+        return strings.returnOrder.reservation;
+    }
+  };
 
   const handleQuantitySelection = (item, action) => {
     setSelectedQuantities((prevQuantities) => {
@@ -291,20 +316,99 @@ export function PosSearchListModal({
         </TouchableOpacity>
       </View>
       <View style={styles.searchingProductCon}>
-        {isSearchProLoading ? (
-          <View style={{ marginTop: 100 }}>
-            <ActivityIndicator size="large" color={COLORS.indicator} />
-          </View>
+        {Object.keys(getProductListArray?.invoiceData)?.length > 0 ? (
+          <TouchableOpacity
+            style={styles.orderRowStyle}
+            onPress={async () => {
+              listFalseHandler();
+              await dispatch(getDrawerSessions());
+              navigate('SearchScreen', {
+                invoiceNumber: getProductListArray?.invoiceData?.invoice_number,
+              });
+            }}
+          >
+            <Text style={styles.invoiceNumberTextStyle}>
+              {`#${getProductListArray?.invoiceData?.invoice_number}` ?? '-'}
+            </Text>
+
+            <View style={styles.orderDetailStyle}>
+              <Text style={styles.nameTextStyle}>
+                {getProductListArray?.invoiceData?.order?.user_details
+                  ? `${getProductListArray?.invoiceData?.order?.user_details?.user_profiles?.firstname} ${getProductListArray?.invoiceData?.order?.user_details?.user_profiles?.lastname}`
+                  : '-'}
+              </Text>
+
+              {getProductListArray?.invoiceData?.order?.delivery_option !== '3' ? (
+                <View style={styles.locationViewStyle}>
+                  <Image source={pin} style={styles.pinImageStyle} />
+                  <Text style={styles.distanceTextStyle}>
+                    {getProductListArray?.invoiceData?.distance ?? '-'}
+                  </Text>
+                </View>
+              ) : (
+                <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
+                  <Text style={styles.nameTextStyle}>{'-'}</Text>
+                </View>
+              )}
+            </View>
+
+            <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
+              <Text style={styles.nameTextStyle}>
+                {getProductListArray?.invoiceData?.order?.total_items ?? '-'}
+              </Text>
+              <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
+                <Image source={pay} style={styles.pinImageStyle} />
+                <Text style={styles.distanceTextStyle}>
+                  {getProductListArray?.invoiceData?.order?.payable_amount ?? '-'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.orderDetailStyle}>
+              <Text style={styles.timeTextStyle}>{strings.returnOrder.customer}</Text>
+              <View style={styles.locationViewStyle}>
+                <Image source={clock} style={styles.pinImageStyle} />
+                <Text style={styles.distanceTextStyle}>
+                  {getDeliveryType(getProductListArray?.invoiceData?.order?.delivery_option)}
+                </Text>
+              </View>
+            </View>
+
+            <View style={[styles.orderDetailStyle, { width: SH(24) }]}>
+              <Image source={rightIcon} style={styles.rightIconStyle} />
+            </View>
+          </TouchableOpacity>
         ) : (
           <FlatList
-            data={getProductListArray}
-            extraData={getProductListArray}
+            data={getProductListArray?.data}
+            extraData={getProductListArray?.data}
             renderItem={renderSearchItem}
             keyExtractor={(item, index) => String(index)}
             style={styles.flatlistHeight}
             ListEmptyComponent={renderEmptyProducts}
           />
         )}
+        {/* {isSearchProLoading ? (
+          <View style={{ marginTop: 100 }}>
+            <ActivityIndicator size="large" color={COLORS.indicator} />
+          </View>
+        ) : (
+          
+          
+
+              <FlatList
+              data={getProductListArray?.data}
+              extraData={getProductListArray?.data}
+              renderItem={renderSearchItem}
+              keyExtractor={(item, index) => String(index)}
+              style={styles.flatlistHeight}
+              ListEmptyComponent={renderEmptyProducts}
+            />
+          
+
+      
+         
+        )} */}
       </View>
     </View>
   );

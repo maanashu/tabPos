@@ -44,6 +44,7 @@ export function SearchScreen(props) {
   const getSearchOrders = useSelector(getDashboard);
   const order = getSearchOrders?.invoiceSearchOrders;
   const param = props?.route?.params?.screen;
+  const serachInvoice = props?.route?.params?.invoiceNumber;
   const orderReciept = useSelector(getAnalytics);
   const [sku, setSku] = useState();
   const [isVisibleManual, setIsVisibleManual] = useState(false);
@@ -61,6 +62,13 @@ export function SearchScreen(props) {
       dispatch(getOrdersByInvoiceIdSuccess({}));
     }
   }, [param]);
+
+  useEffect(() => {
+    if (serachInvoice) {
+      setSku(serachInvoice);
+      onSearchInvoiceHandler(serachInvoice);
+    }
+  }, [serachInvoice]);
 
   useEffect(() => {
     setShowProductRefund(false);

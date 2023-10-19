@@ -76,6 +76,7 @@ export function CartScreen({
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   const cartId = cartData?.id;
+  console.log('cartId', cartId);
   let arr = [getRetailData?.getAllCart];
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;

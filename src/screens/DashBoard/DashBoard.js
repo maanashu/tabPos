@@ -276,6 +276,7 @@ export function DashBoard({ navigation }) {
         DASHBOARDTYPE.GET_DRAWER_SESSION,
         DASHBOARDTYPE.GET_DRAWER_SESSION_POST,
         DASHBOARDTYPE.START_TRACKING_SESSION,
+        // DASHBOARDTYPE.SEARCH_PRODUCT_LIST,
       ],
       state
     )
@@ -430,11 +431,19 @@ export function DashBoard({ navigation }) {
     );
   };
 
-  const onChangeFun = (search) => {
-    if (search.length > 2) {
-      dispatch(searchProductList(search, sellerID));
+  const onChangeFun = async (search) => {
+    if (search.length > 3) {
+      const res = await dispatch(
+        searchProductList(search, sellerID, (res) => {
+          // if (Object.keys(res?.invoiceData)?.length > 0) {
+          //   alert('dfghjkl;');
+          // } else {
+          //   setSearchModal(true);
+          // }
+        })
+      );
       setSearchModal(true);
-    } else if (search.length < 2) {
+    } else if (search.length < 3) {
       setSearchModal(false);
     }
   };
@@ -469,7 +478,6 @@ export function DashBoard({ navigation }) {
           </Text>
           <Text style={styles.cashLabel}>ID : {getPosUser?.user_profiles?.user_id ?? '0'}</Text>
           <Spacer space={SH(10)} />
-
           <View style={styles.todaySaleCon}>
             <View style={styles.displayflex}>
               <Text style={styles.todaySale}>{strings.dashboard.todaySale}</Text>
