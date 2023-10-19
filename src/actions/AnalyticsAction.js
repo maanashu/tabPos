@@ -523,23 +523,26 @@ export const getTotalInventory = (sellerID, data) => async (dispatch) => {
 
 export const getSoldProduct = (sellerID, data, page, callback) => async (dispatch) => {
   dispatch(getSoldProductRequest());
-  // const orderSoldProduct = store.getState()?.analytics?.getSoldProduct?.totalProductSoldList;
+  const orderSoldProduct = store.getState()?.analytics?.getSoldProduct;
   try {
     const res = await AnalyticsController.getSoldProduct(sellerID, data, page);
-    // const prevorderSoldProduct = { ...orderSoldProduct };
-    // if (orderSoldProduct && Object.keys(orderSoldProduct).length > 0 && page > 1) {
-    //   prevorderSoldProduct.total = res?.payload?.totalProductSoldList?.total;
-    //   prevorderSoldProduct.current_page = res?.payload?.totalProductSoldList?.current_page;
-    //   prevorderSoldProduct.total_pages = res?.payload?.totalProductSoldList?.total_pages;
-    //   prevorderSoldProduct.per_page = res?.payload?.totalProductSoldList?.per_page;
-    //   prevorderSoldProduct.data = prevorderSoldProduct?.data?.concat(
-    //     res?.payload?.totalProductSoldList?.data
-    //   );
-    //   dispatch(getSoldProductSuccess(prevorderSoldProduct));
-    // } else {
-    //   dispatch(getSoldProductSuccess(res?.payload));
-    // }
-    dispatch(getSoldProductSuccess(res?.payload));
+    const prevorderSoldProduct = { ...orderSoldProduct };
+    if (orderSoldProduct && Object.keys(orderSoldProduct).length > 0 && page > 1) {
+      prevorderSoldProduct.totalProductSoldList.total = res?.payload?.totalProductSoldList?.total;
+      prevorderSoldProduct.totalProductSoldList.current_page =
+        res?.payload?.totalProductSoldList?.current_page;
+      prevorderSoldProduct.totalProductSoldList.total_pages =
+        res?.payload?.totalProductSoldList?.total_pages;
+      prevorderSoldProduct.totalProductSoldList.per_page =
+        res?.payload?.totalProductSoldList?.per_page;
+      prevorderSoldProduct.totalProductSoldList.data =
+        prevorderSoldProduct?.totalProductSoldList.data?.concat(
+          res?.payload?.totalProductSoldList?.data
+        );
+      dispatch(getSoldProductSuccess(prevorderSoldProduct));
+    } else {
+      dispatch(getSoldProductSuccess(res?.payload));
+    }
     callback && callback(res);
   } catch (error) {
     dispatch(getSoldProductError(error.message));

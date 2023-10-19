@@ -60,7 +60,6 @@ export function TotalInventory() {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const totalInventory = getAnalyticsData?.getTotalInventory;
-
   const interval = 1;
   const maxLabel = 31;
   const daysLength = 31;
@@ -76,24 +75,28 @@ export function TotalInventory() {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart2}>
         <Text>{index + 1 + '.     '}</Text>
-        <Text style={styles.revenueDataText}>{item?.products?.name}</Text>
+        <Text style={styles.revenueDataText}>{item?.name}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
-        <Text style={styles.revenueDataText}>{item?.products?.category?.category_name}</Text>
+        <Text style={styles.revenueDataText}>{item?.category?.name}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
-        <Text style={styles.revenueDataText}>{item?.products?.upc}</Text>
+        <Text style={styles.revenueDataText}>{item?.upc}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
-        <Text style={styles.revenueDataText}>${item?.supply_prices[0]?.selling_price}</Text>
-      </DataTable.Cell>
-
-      <DataTable.Cell style={styles.dateTableSetting2}>
-        <Text style={styles.revenueDataText}>{item?.rest_quantity}</Text>
+        <Text style={styles.revenueDataText}>
+          ${item?.supplies[0]?.cost_price * item?.supplies[0]?.rest_quantity}
+        </Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting2}>
-        <Text style={styles.revenueDataText}>{moment(item?.updated_at).format('YYYY-MM-DD')}</Text>
+        <Text style={styles.revenueDataText}>{item?.supplies[0]?.rest_quantity}</Text>
+      </DataTable.Cell>
+
+      <DataTable.Cell style={styles.dateTableSetting2}>
+        <Text style={styles.revenueDataText}>
+          {moment(item?.last_sold_date).format('YYYY-MM-DD')}
+        </Text>
       </DataTable.Cell>
     </DataTable.Row>
   );
@@ -126,8 +129,8 @@ export function TotalInventory() {
           image={locationSales}
           text={'Total Inventory'}
           count={
-            totalInventory?.inventoryOverview?.totalInventory
-              ? totalInventory?.inventoryOverview?.totalInventory
+            totalInventory?.inventory_overview?.total_inventory
+              ? totalInventory?.inventory_overview?.total_inventory
               : 0
           }
           style={{ marginHorizontal: ms(5) }}
@@ -137,8 +140,8 @@ export function TotalInventory() {
           image={averageOrder}
           text={'Total Inventory Value'}
           count={
-            totalInventory?.inventoryOverview?.totalInventoryValue
-              ? '$' + totalInventory?.inventoryOverview?.totalInventoryValue?.toFixed(2)
+            totalInventory?.inventory_overview?.total_inventory_cost
+              ? '$' + totalInventory?.inventory_overview?.total_inventory_cost?.toFixed(2)
               : '$0'
           }
           isLoading={isInventoryLoading}
@@ -147,8 +150,8 @@ export function TotalInventory() {
           image={totalOrders}
           text={'Average Order Value'}
           count={
-            totalInventory?.inventoryOverview?.avgOrderValue
-              ? '$' + totalInventory?.inventoryOverview?.avgOrderValue?.toFixed(2)
+            totalInventory?.inventory_overview?.average_value
+              ? '$' + totalInventory?.inventory_overview?.average_value?.toFixed(2)
               : '$0'
           }
           isLoading={isInventoryLoading}
@@ -157,8 +160,8 @@ export function TotalInventory() {
           image={profit}
           text={'Gross Profit'}
           count={
-            totalInventory?.inventoryOverview?.profit
-              ? '$' + totalInventory?.inventoryOverview?.profit?.toFixed(2)
+            totalInventory?.inventory_overview?.total_profit
+              ? '$' + totalInventory?.inventory_overview?.total_profit?.toFixed(2)
               : '$0'
           }
           isLoading={isInventoryLoading}
@@ -261,7 +264,7 @@ export function TotalInventory() {
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
-              ) : totalInventory?.productData?.length === 0 ? (
+              ) : totalInventory?.inventory_list?.data?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
@@ -269,7 +272,7 @@ export function TotalInventory() {
                 <View style={styles.listView}>
                   <FlatList
                     style={styles.listStyle}
-                    data={totalInventory?.productData}
+                    data={totalInventory?.inventory_list?.data}
                     renderItem={getProductList}
                     keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}

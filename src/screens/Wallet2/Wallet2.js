@@ -452,6 +452,17 @@ export function Wallet2() {
           selectId={selectId}
           setSelectId={setSelectId}
           setSelectTime={setSelectTime}
+          setSelectDate={setSelectDate}
+          selectDate={selectDate}
+          // setSelectedEndDate={setSelectedEndDate}
+          // setSelectedStartDate={setSelectDate}
+          // startDate={startDate}
+          // endDate={endDate}
+          // dateRange={dateRange}
+          // selectedStartDate={selectedStartDate}
+          // selectedEndDate={selectedEndDate}
+          // setSelectDate={setSelectDate}
+          // selectDate={selectDate}
         />
       );
     }

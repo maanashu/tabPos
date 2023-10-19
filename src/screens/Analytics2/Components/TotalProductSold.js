@@ -20,6 +20,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { COLORS } from '@/theme';
 import { getSoldProduct } from '@/actions/AnalyticsAction';
+import { useDebouncedCallback } from 'use-lodash-debounce';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -70,10 +71,14 @@ export function TotalProductSold({ sellerID, data }) {
     isLoadingSelector([TYPES.GET_SOLD_PRODUCT], state)
   );
   const onLoadMoreProduct = useCallback(() => {
-    if (paginationData?.currentPage < paginationData?.totalPages) {
-      dispatch(getSoldProduct(sellerID, data, paginationData?.currentPage + 1));
+    if (!isSoldProductLoading) {
+      if (paginationData?.currentPage < paginationData?.totalPages) {
+        dispatch(getSoldProduct(sellerID, data, paginationData?.currentPage + 1));
+      }
     }
-  }, [paginationData, data]);
+  }, [paginationData]);
+
+  const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
 
   const renderFooter = () => {
     return isSoldProductLoading ? <ActivityIndicator size="large" color={COLORS.primary} /> : null;
@@ -257,7 +262,7 @@ export function TotalProductSold({ sellerID, data }) {
               </DataTable.Title>
             </DataTable.Header>
 
-            <View style={[styles.mainListContainer, { height: ms(270) }]}>
+            <View style={[styles.mainListContainer]}>
               {/* {isSoldProductLoading ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.primary} size={'small'} />
@@ -279,16 +284,17 @@ export function TotalProductSold({ sellerID, data }) {
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     // bounces={false}
-                    onEndReachedThreshold={0.5}
+                    onEndReachedThreshold={0.1}
                     onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
                     onMomentumScrollBegin={() => {}}
                     onMomentumScrollEnd={() => {
                       if (onEndReachedCalledDuringMomentum.current) {
-                        onLoadMoreProduct();
+                        // onLoadMoreProduct();
+                        debouncedLoadMoreProduct();
                         onEndReachedCalledDuringMomentum.current = false;
                       }
                     }}
-                    // removeClippedSubviews={true}
+                    removeClippedSubviews={true}
                     ListFooterComponent={renderFooter}
                   />
                 </View>

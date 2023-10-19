@@ -80,11 +80,10 @@ export function Staff() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
-
-  const targetDate = moment(staffDetailData?.created_at);
+  console.log('staffDetailData', JSON.stringify(staffDetailData));
+  const targetDate = moment(staffDetailData?.pos_staff_detail?.created_at);
   const currentDate = moment();
   const differenceInDays = targetDate?.diff(currentDate, 'days');
-
   // const posUserArray = getAuth?.getAllPosUsers;
   const posUserArraydata = getAuth?.getAllPosUsersData;
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
@@ -120,7 +119,7 @@ export function Staff() {
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prevState) => !prevState);
   };
-  const originalemployementType = staffDetailData?.employment_type;
+  const originalemployementType = staffDetailData?.pos_staff_detail?.employment_type;
   const words = originalemployementType?.split('_');
   const capitalizedWords = words?.map((word) => word?.charAt?.(0).toUpperCase() + word?.slice?.(1));
   const finalEmploymentType = capitalizedWords?.join(' ');
@@ -168,7 +167,7 @@ export function Staff() {
         setStaffDetail(true);
       } else {
         Toast.show({
-          text2: 'Staff profil not found',
+          text2: 'Staff profile not found',
           position: 'bottom',
           type: 'error_toast',
           visibilityTime: 1500,
@@ -273,6 +272,7 @@ export function Staff() {
       }
     }
   }, [posUserArray]);
+
   const onRefresh = () => {
     const Data = {
       page: 1,
@@ -343,7 +343,7 @@ export function Staff() {
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Joined Date</Text>
                       <Text style={styles.joinDatelight}>
-                        {moment(staffDetailData?.created_at).format('ll')}
+                        {moment(staffDetailData?.pos_staff_detail?.created_at).format('ll')}
                       </Text>
                     </View>
                     <View style={styles.flexRow}>
@@ -358,7 +358,9 @@ export function Staff() {
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Leave taken</Text>
-                      <Text style={styles.joinDatelight}>{staffDetailData?.leave ?? '-----'}</Text>
+                      <Text style={styles.joinDatelight}>
+                        {staffDetailData?.pos_staff_detail?.leave ?? '-----'}
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -370,28 +372,28 @@ export function Staff() {
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Hour rate</Text>
                   <Text style={styles.hourRateLigh}>
-                    JBR {staffDetailData?.hourly_rate ?? '0'}/h
+                    JBR {staffDetailData?.pos_staff_detail?.hourly_rate ?? '0'}/h
                   </Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Over time rate</Text>
                   <Text style={styles.hourRateLigh}>
-                    JBR {staffDetailData?.overtime_rate ?? '0'}/h
+                    JBR {staffDetailData?.pos_staff_detail?.overtime_rate ?? '0'}/h
                   </Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Payment Cycle</Text>
                   <Text style={styles.hourRateLigh}>
                     {/* {staffDetailData?.payment_cycle?.toLocaleUpperCase()} */}
-                    {staffDetailData?.payment_cycle?.charAt?.(0)?.toUpperCase() +
-                      staffDetailData?.payment_cycle?.slice?.(1) ?? '-----'}
+                    {staffDetailData?.pos_staff_detail?.payment_cycle?.charAt?.(0)?.toUpperCase() +
+                      staffDetailData?.pos_staff_detail?.payment_cycle?.slice?.(1) ?? '-----'}
                   </Text>
                 </View>
                 <View style={styles.hourRateBodyCon}>
                   <Text style={styles.joinDateDark}>Billing</Text>
                   <Text style={styles.hourRateLigh}>
-                    {staffDetailData?.billing_type?.charAt?.(0)?.toUpperCase() +
-                      staffDetailData?.billing_type?.slice?.(1) ?? '-----'}
+                    {staffDetailData?.pos_staff_detail?.billing_type?.charAt?.(0)?.toUpperCase() +
+                      staffDetailData?.pos_staff_detail?.billing_type?.slice?.(1) ?? '-----'}
                   </Text>
                 </View>
               </View>
@@ -402,15 +404,22 @@ export function Staff() {
                 <View style={styles.hourcontainer}>
                   <View style={styles.hourRateBodyCon}>
                     <Text style={styles.joinDateDark}>Current Billing Cycle</Text>
-                    <Text style={styles.hourRateLigh}>May 29, 2023 - Jun 4, 2023</Text>
+                    <Text style={styles.hourRateLigh}>
+                      {staffDetailData?.pos_staff_detail?.current_billing_cycle?.start} -{' '}
+                      {staffDetailData?.pos_staff_detail?.current_billing_cycle?.start}
+                    </Text>
                   </View>
                   <View style={styles.hourRateBodyCon}>
                     <Text style={styles.joinDateDark}>Time Tracked</Text>
-                    <Text style={styles.hourRateLigh}>JBR 2500/h</Text>
+                    <Text style={styles.hourRateLigh}>
+                      JBR {Number(staffDetailData?.pos_staff_detail?.time_tracked)?.toFixed(2)}/h
+                    </Text>
                   </View>
                   <View style={styles.hourRateBodyCon}>
                     <Text style={styles.joinDateDark}>Weekly Tracking Limit</Text>
-                    <Text style={styles.hourRateLigh}>1 h 30 m</Text>
+                    <Text style={styles.hourRateLigh}>
+                      {staffDetailData?.pos_staff_detail?.weekly_time_tracking_limit}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -437,14 +446,13 @@ export function Staff() {
                     </View>
                   </View>
 
-                  {staffDetailData?.pos_staff_salary?.map((item, index) => (
-                    <View style={{}}>
+                  {staffDetailData?.results?.results?.map((item, index) => (
+                    <View key={index}>
                       <TouchableOpacity
                         style={styles.tableDataCon}
                         onPress={() => {
                           setExpandView(!expandView), setIndex(index);
                         }}
-                        key={index}
                       >
                         <View style={styles.flexRow}>
                           <View
@@ -461,16 +469,15 @@ export function Staff() {
                               ]}
                               numberOfLines={2}
                             >
-                              {moment(item.start_time).format('LL')} -{' '}
-                              {moment(item.end_time).format('LL')}
+                              {item.date}
                             </Text>
                           </View>
                           <View style={styles.dateHeadAlign}>
                             <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
-                              {item.duration}
+                              {Number(item.duration)?.toFixed(2)}
                             </Text>
                             <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
-                              JBR {item.amount}
+                              JBR {Number(item.amount)?.toFixed(2)}
                             </Text>
                             <Text
                               style={[
