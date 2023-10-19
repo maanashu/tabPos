@@ -12,8 +12,9 @@ import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 const ReturnOrderInvoice = ({ orderDetail }) => {
   const getUserData = useSelector(getUser);
-  const returnedData = orderDetail?.returns;
-  const returnInvoiceData = orderDetail?.returns?.invoices;
+  const returnedData = orderDetail?.return;
+  const returnInvoiceData = returnedData?.invoices;
+  const sellerDetails = returnedData?.seller_details;
 
   const renderProductItem = ({ item, index }) => (
     <View style={styles.container}>
@@ -21,34 +22,36 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
         <Text style={styles.count}>{index + 1}</Text>
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-            {item?.product_name ?? '-'}
+            {item?.order_details?.product_name ?? '-'}
           </Text>
           <View style={styles.belowSubContainer}>
             <Text style={styles.colorsTitle}>{'Qty: '}</Text>
-            <Text style={styles.colorsTitle}>{item?.qty ?? '-'}</Text>
+            <Text style={styles.colorsTitle}>{item?.order_details?.qty ?? '-'}</Text>
           </View>
         </View>
       </View>
-      <Text style={styles.priceTitle}>{`${formattedReturnPrice(item?.price * item?.qty)}`}</Text>
+      <Text style={styles.priceTitle}>{`${formattedReturnPrice(
+        item?.order_details?.price * item?.order_details?.qty
+      )}`}</Text>
     </View>
   );
 
   return (
     <View style={styles.invoiceMainViewStyle}>
       <Text style={styles.storeNameText}>
-        {`${orderDetail?.seller_details?.organization_name}` ?? '-'}
+        {`${sellerDetails?.user_profiles?.organization_name}` ?? '-'}
       </Text>
 
       <Spacer space={SH(10)} backgroundColor={COLORS.transparent} />
 
       <Text style={styles.storeAddressText}>
-        {`${orderDetail?.seller_details?.current_address?.street_address}` ?? '-'}
+        {`${sellerDetails?.user_locations[0]?.formatted_address}` ?? '-'}
       </Text>
 
       <Spacer space={SH(5)} backgroundColor={COLORS.transparent} />
 
       <Text style={styles.storeAddressText}>
-        {`${orderDetail?.seller_details?.phone_number}` ?? '-'}
+        {`${sellerDetails?.user_profiles?.full_phone_number}` ?? '-'}
       </Text>
       <Text style={[styles._commonPayTitle, styles.boldInvoice]}>
         Invoice No. # {returnInvoiceData?.invoice_number ?? '-'}
@@ -58,7 +61,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
 
       <View style={{ paddingVertical: 8 }}>
         <FlatList
-          data={orderDetail?.order_details ?? []}
+          data={returnedData?.return_details ?? []}
           renderItem={renderProductItem}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
@@ -79,7 +82,9 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
       <View style={styles._subTotalContainer}>
         <Text style={styles._substotalTile}>{'Delivery / Shipping Charges'}</Text>
         <Text style={styles._subTotalPrice}>
-          {`${formattedReturnPrice(orderDetail?.delivery_charge || orderDetail?.shipping_charge)}`}
+          {`${formattedReturnPrice(
+            returnedData?.delivery_charge || returnedData?.shipping_charge
+          )}`}
         </Text>
       </View>
 
@@ -106,12 +111,12 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
       <View style={styles._paymentTitleContainer}>
         <Text style={styles._payTitle}>{strings.deliveryOrders.paymentOption} </Text>
         <Text style={styles._paySubTitle}>
-          {orderDetail?.mode_of_payment?.toUpperCase() ?? '-'}
+          {returnedData?.mode_of_payment?.toUpperCase() ?? '-'}
         </Text>
       </View>
 
       <Text style={styles._commonPayTitle}>
-        {moment(orderDetail?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
+        {moment(returnedData?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
       </Text>
 
       <Text style={styles._commonPayTitle}>
@@ -123,7 +128,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
         Status - Returned
       </Text>
       <Text style={styles._thankyou}>{strings.deliveryOrders2.thanks}</Text>
-      <Image source={{ uri: orderDetail?.invoices?.barcode }} style={styles._barCodeImage} />
+      <Image source={{ uri: returnedData?.invoices?.barcode }} style={styles._barCodeImage} />
       <Image source={logo_full} style={styles.logoFull} />
     </View>
   );
