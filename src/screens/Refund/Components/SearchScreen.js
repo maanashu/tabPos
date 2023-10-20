@@ -42,6 +42,7 @@ export function SearchScreen(props) {
   const getSearchOrders = useSelector(getDashboard);
   const order = getSearchOrders?.invoiceSearchOrders;
   const param = props?.route?.params?.screen;
+  const serachInvoice = props?.route?.params?.invoiceNumber;
   const [sku, setSku] = useState();
   const [isVisibleManual, setIsVisibleManual] = useState(false);
   const [showProductRefund, setShowProductRefund] = useState(false);
@@ -60,6 +61,13 @@ export function SearchScreen(props) {
       }
     }, [param])
   );
+
+  useEffect(() => {
+    if (serachInvoice) {
+      setSku(serachInvoice);
+      onSearchInvoiceHandler(serachInvoice);
+    }
+  }, [serachInvoice]);
 
   useEffect(() => {
     setShowProductRefund(false);
@@ -88,7 +96,6 @@ export function SearchScreen(props) {
   };
 
   const onSearchInvoiceHandler = (text) => {
-    console.log('searched invoice text: ' + text);
     if (text.includes('Invoice_') || text.includes('invoice_')) {
       dispatch(scanBarCode(text));
     } else {

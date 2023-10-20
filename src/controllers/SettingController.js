@@ -175,14 +175,11 @@ export class SettingController {
   static async staffDetail(id) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.staffDetail + `?id=${id}`;
-      console.log('endpoint1111111111111', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -218,7 +215,7 @@ export class SettingController {
     });
   }
 
-  static async getTaxTrue(data) {
+  static async getTgetPosDetailWeeklyaxTrue(data) {
     return new Promise((resolve, reject) => {
       const endpoint =
         USER_URL +
@@ -356,6 +353,19 @@ export class SettingController {
             type: 'error_toast',
             visibilityTime: 1500,
           });
+          reject(error);
+        });
+    });
+  }
+
+  static async getPosDetailWeekly(weekNo) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getPosDetailWeekly + `?week_no=${weekNo}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
           reject(error);
         });
     });

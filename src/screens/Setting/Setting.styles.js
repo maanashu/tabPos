@@ -1458,4 +1458,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
     width: windowWidth * 0.5,
   },
+  staffScrollableArea: {
+    height: windowHeight * 0.8,
+  },
 });

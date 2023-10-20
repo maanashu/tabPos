@@ -55,6 +55,7 @@ export const ApiUserInventory = {
   getAcceptMarketing: 'marketings/status',
   marketingUpdate: 'marketings',
   getUserDetail: 'user_profiles/by-phone-number',
+  getPosDetailWeekly: 'pos_staff_salary/get-data-basis-of-week',
 };
 
 export const ApiProductInventory = {

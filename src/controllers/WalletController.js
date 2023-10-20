@@ -32,7 +32,6 @@ export class WalletController {
         ORDER_URL +
         ApiOrderInventory.getTotakTraDetail +
         `?seller_id=${sellerID}&${params}&${paramsFilter}`;
-
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
