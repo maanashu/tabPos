@@ -347,11 +347,12 @@ export const getPendingOrders = () => async (dispatch) => {
   }
 };
 
-export const getOrdersByInvoiceId = (invoice) => async (dispatch) => {
+export const getOrdersByInvoiceId = (invoice, callback) => async (dispatch) => {
   dispatch(getOrdersByInvoiceIdRequest());
   try {
     const res = await DashboardController.getOrdersByInvoiceId(invoice);
     dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
+    callback && callback(res);
   } catch (error) {
     if (error?.msg === 'Invalid invoice number!') {
       dispatch(getOrdersByInvoiceIdReset());

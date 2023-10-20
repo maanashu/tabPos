@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { styles } from '@/screens/Wallet2/Wallet2.styles';
 import { getCustomerDummy } from '@/constants/flatListData';
 import { strings } from '@/localization';
@@ -23,9 +23,11 @@ import {
   cashIcon,
   jbricon,
   Fonts,
+  backArrow,
 } from '@/assets';
 import moment from 'moment';
-import { DaySelector, InvoiceDetail, ScreenWrapper } from '@/components';
+import { debounce } from 'lodash';
+import { DaySelector, InvoiceDetail, ScreenWrapper, Spacer } from '@/components';
 import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,6 +46,18 @@ import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import {
+  getOrdersByInvoiceId,
+  getOrdersByInvoiceIdSuccess,
+  scanBarCode,
+} from '@/actions/DashboardAction';
+import OrderWithInvoiceNumber from '../Refund/Components/OrderWithInvoiceNumber';
+import { getDashboard } from '@/selectors/DashboardSelector';
+import ReturnOrderInvoice from '../Refund/Components/ReturnOrderInvoice';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { Loader } from '@/components/Loader';
+import WalletInvoice from './Components/WalletInvoice';
 
 export function Wallet2() {
   const mapRef = useRef(null);
@@ -53,6 +67,10 @@ export function Wallet2() {
   const getAuth = useSelector(getAuthData);
   const getWalletData = useSelector(getWallet);
   const getCustomerData = useSelector(getCustomers);
+  const getSearchOrders = useSelector(getDashboard);
+  const searchData = getSearchOrders?.invoiceSearchOrders;
+  const orderReciept = useSelector(getAnalytics);
+  const order = getSearchOrders?.invoiceSearchOrders;
   const getTotalTraData = getWalletData?.getTotalTra;
   const getCustomerStatitics = getCustomerData?.getCustomers;
   const getTotalTraDetail = getWalletData?.getTotakTraDetail;
@@ -80,6 +98,8 @@ export function Wallet2() {
   const [fromHome, setFromHome] = useState('');
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [sku, setSku] = useState();
+  const [isInvoiceView, setInvoiceView] = useState(false);
 
   const startDate = selectedStartDate ? selectedStartDate.toString() : '';
   const endDate = selectedEndDate ? selectedEndDate.toString() : '';
@@ -108,6 +128,9 @@ export function Wallet2() {
   }, [isFocused, selectDate, time]);
 
   const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
+  const onSeachLoad = useSelector((state) =>
+    isLoadingSelector([DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID], state)
+  );
 
   let desiredModeOfPayment = historytype; // Replace with the desired mode_of_payment value or "all"
   let filteredData;
@@ -255,6 +278,21 @@ export function Wallet2() {
     setInvoiceDetail(false);
     setWeeklyTrasaction(true);
   };
+  const onSearchInvoiceHandler = (text) => {
+    console.log('searched invoice text: ' + text);
+    if (text.includes('Invoice_') || text.includes('invoice_')) {
+      dispatch(scanBarCode(text));
+    } else {
+      dispatch(
+        getOrdersByInvoiceId(text, (res) => {
+          // alert('ok');
+          setInvoiceView(true);
+          setWalletHome(false);
+        })
+      );
+    }
+  };
+  const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
   const bodyView = () => {
     if (invoiceDetail) {
       return (
@@ -273,7 +311,11 @@ export function Wallet2() {
               <Image source={wallet} style={[styles.truckStyle, { marginLeft: 10 }]} />
               <Text style={styles.deliveryText}>{strings.wallet.wallet}</Text>
             </View>
+
             <View style={styles.deliveryView}>
+              {onSeachLoad && (
+                <ActivityIndicator color={COLORS.primary} size="small" style={{ right: SW(10) }} />
+              )}
               <TouchableOpacity
                 onPress={() =>
                   navigate(NAVIGATION.notificationsList, {
@@ -287,9 +329,14 @@ export function Wallet2() {
                 <View style={styles.flexAlign}>
                   <Image source={search_light} style={styles.searchImage} />
                   <TextInput
+                    value={sku}
                     placeholder={strings.wallet.searchHere}
                     style={styles.textInputStyles}
                     placeholderTextColor={COLORS.darkGray}
+                    onChangeText={(text) => {
+                      setSku(text);
+                      debouncedSearchInvoice(text);
+                    }}
                   />
                 </View>
                 <Image source={scn} style={styles.scnStyle} />
@@ -440,6 +487,68 @@ export function Wallet2() {
           // setSelectDate={setSelectDate}
           // selectDate={selectDate}
         />
+      );
+    } else if (isInvoiceView) {
+      return (
+        <>
+          <View style={styles.headerMainView}>
+            <View style={styles.deliveryView}>
+              <TouchableOpacity
+                onPress={() => {
+                  setWalletHome(true);
+                  setInvoiceView(false);
+                }}
+              >
+                <Image source={backArrow} style={[styles.truckStyle, { marginLeft: 10 }]} />
+              </TouchableOpacity>
+              <Image source={wallet} style={[styles.truckStyle, { marginLeft: 10 }]} />
+              <Text style={styles.deliveryText}>{strings.wallet.orderDetail}</Text>
+            </View>
+            <View style={styles.deliveryView}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigate(NAVIGATION.notificationsList, {
+                    screen: NAVIGATION.wallet2,
+                  })
+                }
+              >
+                <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
+              </TouchableOpacity>
+              <View style={styles.searchView}>
+                <View style={styles.flexAlign}>
+                  <Image source={search_light} style={styles.searchImage} />
+                  <TextInput
+                    value={sku}
+                    placeholder={strings.wallet.searchHere}
+                    style={styles.textInputStyles}
+                    placeholderTextColor={COLORS.darkGray}
+                    onChangeText={(text) => {
+                      setSku(text);
+                      debouncedSearchInvoice(text);
+                    }}
+                  />
+                </View>
+                <Image source={scn} style={styles.scnStyle} />
+              </View>
+            </View>
+          </View>
+
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <View style={{ flex: 0.85 }}>
+              {onSeachLoad ? (
+                <View style={{ marginTop: SH(50) }}>
+                  <Loader />
+                </View>
+              ) : (
+                <OrderWithInvoiceNumber orderData={searchData} />
+              )}
+            </View>
+            <Spacer horizontal={SW(10)} />
+            <View style={styles.invoiceContainer}>
+              <WalletInvoice orderDetail={searchData} />
+            </View>
+          </View>
+        </>
       );
     }
   };
