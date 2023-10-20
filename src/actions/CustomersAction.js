@@ -113,11 +113,12 @@ const getStoreLocationReset = () => ({
   payload: null,
 });
 
-export const getUserOrder = (data) => async (dispatch) => {
+export const getUserOrder = (data, callback) => async (dispatch) => {
   dispatch(getUserOrderRequest());
   try {
     const res = await CustomersController.getUserOrder(data);
     dispatch(getUserOrderSuccess(res?.payload));
+    callback && callback(res?.payload);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getUserOrderReset());
