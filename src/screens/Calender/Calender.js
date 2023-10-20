@@ -17,20 +17,24 @@ import {
   calendarIcon,
   todayCalendarIcon,
   calendarSettingsIcon,
+  crossButton,
+  Fonts,
 } from '@/assets';
 import { strings } from '@/localization';
-import { COLORS } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import { ScreenWrapper } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import { Calendar } from '@/components/CustomCalendar';
 import { CALENDAR_MODES, CALENDAR_VIEW_MODES } from '@/constants/enums';
 import moment from 'moment';
+import { debounce } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   changeAppointmentStatus,
   getAppointment,
   getStaffUsersList,
+  searchAppointments,
 } from '@/actions/AppointmentAction';
 import Modal from 'react-native-modal';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
@@ -80,6 +84,9 @@ export function Calender() {
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [searchedAppointments, setSearchedAppointments] = useState([]);
+  const [searchedText, setSearchedText] = useState('');
   const [week, setWeek] = useState(true);
   const [month, setMonth] = useState(false);
   const [day, setDay] = useState(false);
@@ -222,7 +229,7 @@ export function Calender() {
   }, []);
 
   const getAppointmentsByDate = useMemo(() => {
-    const filteredAppointmentsByDate = getAppointmentList.filter(
+    const filteredAppointmentsByDate = getAppointmentList?.filter(
       (appointment) => moment(appointment?.date).format('L') === moment(calendarDate).format('L')
     );
     return filteredAppointmentsByDate;
@@ -262,6 +269,18 @@ export function Calender() {
     return <EventItemCard item={item} index={index} />;
   };
 
+  const onSearchAppoinment = (searchText) => {
+    if (searchText != '') {
+      setSearchedAppointments([]);
+    }
+    const callback = (searchData) => {
+      setSearchedAppointments(searchData?.data);
+    };
+    dispatch(searchAppointments(pageNumber, searchText, callback));
+  };
+
+  const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), []);
+
   const renderListViewItem = ({ item, index }) => {
     const appointmentId = item?.id;
     return (
@@ -283,6 +302,31 @@ export function Calender() {
         }}
         onPressMarkComplete={() => {
           dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
+        }}
+      />
+    );
+  };
+
+  const renderSearchListViewItem = ({ item, index }) => {
+    const appointmentId = item?.id;
+    return (
+      <ListViewItem
+        item={item}
+        index={index}
+        isChangeStatusLoading={isChangeStatusLoading}
+        onPressCheckin={() => {
+          setSelectedPosStaffCompleteData(item);
+          dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
+          setShowSearchModal(false);
+        }}
+        onPressEdit={() => {
+          setSelectedPosStaffCompleteData(item);
+          setshowRescheduleTimeModal(true);
+          setShowSearchModal(false);
+        }}
+        onPressMarkComplete={() => {
+          dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
+          setShowSearchModal(false);
         }}
       />
     );
@@ -318,14 +362,33 @@ export function Calender() {
           >
             <Image source={bell} style={[styles.truckStyle, { right: 25 }]} />
           </TouchableOpacity>
-          <View style={styles.searchView}>
+          <TouchableOpacity
+            style={styles.searchView}
+            onPress={() => {
+              setShowSearchModal(true);
+              setSearchedAppointments([]);
+              setSearchedText('');
+            }}
+          >
             <Image source={search_light} style={styles.searchImage} />
-            <TextInput
+            <View
+              style={{
+                height: SH(40),
+                width: SW(70),
+                paddingLeft: 5,
+                justifyContent: 'center',
+              }}
+            >
+              <Text style={{ color: COLORS.darkGray, fontSize: ms(10), fontFamily: Fonts.Regular }}>
+                {strings.deliveryOrders.search}
+              </Text>
+            </View>
+            {/* <TextInput
               placeholder={strings.deliveryOrders.search}
               style={styles.textInputStyle}
               placeholderTextColor={COLORS.darkGray}
-            />
-          </View>
+            /> */}
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -654,6 +717,56 @@ export function Calender() {
           </View>
         </Modal>
 
+        <Modal isVisible={showSearchModal}>
+          <View
+            style={{
+              marginHorizontal: ms(40),
+              marginVertical: ms(40),
+              backgroundColor: 'white',
+              borderRadius: ms(5),
+              paddingHorizontal: ms(20),
+              paddingVertical: ms(20),
+              minHeight: '70%',
+            }}
+          >
+            <TouchableOpacity
+              style={{ position: 'absolute', top: ms(5), right: ms(7) }}
+              onPress={() => setShowSearchModal(false)}
+            >
+              <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
+            </TouchableOpacity>
+            <View style={[styles.searchView, { marginVertical: ms(10) }]}>
+              <Image source={search_light} style={styles.searchImage} />
+              <TextInput
+                placeholder={strings.deliveryOrders.search}
+                style={styles.textInputStyle}
+                placeholderTextColor={COLORS.darkGray}
+                value={searchedText}
+                onChangeText={(searchText) => {
+                  // const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
+                  setSearchedText(searchText);
+                  debouncedSearchAppointment(searchText);
+                }}
+              />
+            </View>
+            <FlatList
+              data={searchedAppointments}
+              extraData={searchedText}
+              keyExtractor={(_, index) => index.toString()}
+              ListHeaderComponent={<ListViewHeader />}
+              renderItem={renderSearchListViewItem}
+              ListEmptyComponent={() => (
+                <Text style={styles.noAppointmentEmpty}>There are no appointments</Text>
+              )}
+            />
+          </View>
+          <ReScheduleDetailModal
+            showRecheduleModal={showRescheduleTimeModal}
+            setShowRescheduleModal={setshowRescheduleTimeModal}
+            appointmentData={selectedPosStaffCompleteData}
+            setshowEventDetailModal={setshowEventDetailModal}
+          />
+        </Modal>
         <ReScheduleDetailModal
           showRecheduleModal={showRescheduleTimeModal}
           setShowRescheduleModal={setshowRescheduleTimeModal}

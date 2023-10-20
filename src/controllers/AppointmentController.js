@@ -3,7 +3,7 @@ import { HttpClient } from './HttpClient';
 import { store } from '@/store';
 
 export class AppointmentController {
-  static async getAppointment(pageNumber = 1, posUserId) {
+  static async getAppointment(pageNumber = 1, posUserId, searchText = '') {
     return new Promise((resolve, reject) => {
       const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
       const defaultQueryParams = {
@@ -16,6 +16,9 @@ export class AppointmentController {
         page: pageNumber,
         limit: 10,
       };
+      if (searchText) {
+        queryParams.search = searchText;
+      }
 
       // Check if pos user id is available
       if (posUserId) {
@@ -24,7 +27,6 @@ export class AppointmentController {
       }
 
       const stringifiedQueryParams = new URLSearchParams(queryParams);
-
       const endpoint = ORDER_URL + ApiOrderInventory.getAppointment + `?` + stringifiedQueryParams;
 
       HttpClient.get(endpoint)
