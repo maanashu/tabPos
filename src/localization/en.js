@@ -431,6 +431,7 @@ export const en = {
     point: 'Points:',
     wallet: 'Wallet',
     searchHere: 'Search here',
+    orderDetail: 'Order Details',
   },
   shipping: {
     shipping: 'Shipping & Pickups',

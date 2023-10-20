@@ -346,7 +346,7 @@ export const getPendingOrders = () => async (dispatch) => {
   }
 };
 
-export const getOrdersByInvoiceId = (invoice) => async (dispatch) => {
+export const getOrdersByInvoiceId = (invoice, callback) => async (dispatch) => {
   dispatch(getOrdersByInvoiceIdRequest());
   try {
     const res = await DashboardController.getOrdersByInvoiceId(invoice);
@@ -355,8 +355,9 @@ export const getOrdersByInvoiceId = (invoice) => async (dispatch) => {
         await dispatch(getOrderData(res?.payload?.order?.id));
       }
       dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
-      console.log('sucess wallet invoice', res?.payload);
+      callback && callback(res);
     }
+    return;
   } catch (error) {
     if (error?.msg === 'Invalid invoice number!') {
       dispatch(getOrdersByInvoiceIdReset());
