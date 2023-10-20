@@ -10,6 +10,7 @@ import {
   TextInput,
   ScrollView,
   ActivityIndicator,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import {
@@ -23,9 +24,11 @@ import {
   maskRight,
   unionRight,
   userImage,
+  Fonts,
+  crossButton,
 } from '@/assets';
 import { DaySelector, Spacer, TableDropdown } from '@/components';
-import { COLORS, SF, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { styles } from '@/screens/Customers2/Customers2.styles';
 import moment from 'moment';
@@ -45,6 +48,9 @@ import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import { debounce } from 'lodash';
+import CustomerListView from './CustomerListView';
+import { useCallback } from 'react';
 const result = Dimensions.get('window').height - 50;
 
 const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustomeType }) => {
@@ -74,6 +80,9 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
   const onchangeValue = (value) => setDropdownSelect(value);
   const [selectId, setSelectId] = useState(2);
   const [selectTime, setSelectTime] = useState({ value: 'week' });
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [searchedText, setSearchedText] = useState('');
+  const [searchedAppointments, setSearchedCustomer] = useState([]);
 
   const time = selectTime?.value;
 
@@ -211,6 +220,27 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
       <Text style={[styles.horizCustomerText, { color }]}>{item.name}</Text>
     </TouchableOpacity>
   );
+
+  const onSearchAppoinment = (searchText) => {
+    if (searchText != '') {
+      setSearchedCustomer([]);
+    }
+    const callback = (searchData) => {
+      setSearchedCustomer(searchData?.data);
+    };
+
+    const data = {
+      sellerID: sellerID,
+      customerType: 'all_customers',
+      calenderDate: undefined,
+      dayWisefilter: time,
+      area: 'none',
+      search: searchText,
+    };
+
+    dispatch(getUserOrder(data, callback));
+  };
+  const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), []);
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.headerMainView}>
@@ -228,14 +258,33 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
           >
             <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
           </TouchableOpacity>
-          <View style={styles.searchView}>
+          <TouchableOpacity
+            style={styles.searchView}
+            onPress={() => {
+              setShowSearchModal(true);
+              setSearchedCustomer([]);
+              setSearchedText('');
+            }}
+          >
             <Image source={search_light} style={styles.searchImage} />
-            <TextInput
-              placeholder={strings.deliveryOrders.search}
-              style={styles.textInputStyles}
-              placeholderTextColor={COLORS.darkGray}
-            />
-          </View>
+            <View
+              style={{
+                height: SH(40),
+                width: SW(70),
+                paddingLeft: 5,
+                justifyContent: 'center',
+              }}
+            >
+              <Text style={{ color: COLORS.darkGray, fontSize: ms(10), fontFamily: Fonts.Regular }}>
+                {strings.deliveryOrders.search}
+              </Text>
+            </View>
+            {/* <TextInput
+                  placeholder={strings.deliveryOrders.search}
+                  style={styles.textInputStyles}
+                  placeholderTextColor={COLORS.darkGray}
+                /> */}
+          </TouchableOpacity>
         </View>
       </View>
       <View style={{ paddingHorizontal: ms(10), flexDirection: 'row', alignItems: 'center' }}>
@@ -545,6 +594,51 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
           </View>
         </Table>
       </View>
+      <Modal isVisible={showSearchModal}>
+        <KeyboardAvoidingView style={{ flex: 1 }}>
+          <View
+            style={{
+              marginHorizontal: ms(40),
+              marginVertical: ms(40),
+              backgroundColor: 'white',
+              borderRadius: ms(5),
+              paddingHorizontal: ms(20),
+              paddingVertical: ms(20),
+              minHeight: '70%',
+            }}
+          >
+            <TouchableOpacity
+              style={{ position: 'absolute', top: ms(5), right: ms(7) }}
+              onPress={() => setShowSearchModal(false)}
+            >
+              <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
+            </TouchableOpacity>
+            <View style={[styles.searchView, { marginVertical: ms(10) }]}>
+              <Image source={search_light} style={styles.searchImage} />
+              <TextInput
+                placeholder={strings.deliveryOrders.search}
+                style={styles.textInputStyle}
+                placeholderTextColor={COLORS.darkGray}
+                value={searchedText}
+                onChangeText={(searchText) => {
+                  // const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
+                  setSearchedText(searchText);
+                  debouncedSearchAppointment(searchText);
+                }}
+              />
+            </View>
+            <CustomerListView
+              searchedAppointments={searchedAppointments}
+              profileClickHandler={(item, customerId, customerTypes) => {
+                setUserProfile(true);
+                setUserData(item);
+                setShowSearchModal(false);
+                // dispatch(getOrderUser(item?.user_id, sellerID));
+              }}
+            />
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
     </View>
   );
 };

@@ -543,4 +543,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(5),
     borderRadius: SW(5),
   },
+  textInputStyle: {
+    height: SH(40),
+    width: '100%',
+    fontFamily: Fonts.Italic,
+    fontSize: SF(12),
+    paddingLeft: 5,
+    margin: 0,
+    padding: 0,
+  },
 });
