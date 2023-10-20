@@ -229,7 +229,7 @@ export function Calender() {
   }, []);
 
   const getAppointmentsByDate = useMemo(() => {
-    const filteredAppointmentsByDate = getAppointmentList.filter(
+    const filteredAppointmentsByDate = getAppointmentList?.filter(
       (appointment) => moment(appointment?.date).format('L') === moment(calendarDate).format('L')
     );
     return filteredAppointmentsByDate;
