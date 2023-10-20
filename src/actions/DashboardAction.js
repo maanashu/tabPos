@@ -303,11 +303,12 @@ export const posLoginDetail = () => async (dispatch) => {
   }
 };
 
-export const searchProductList = (search, sellerID) => async (dispatch) => {
+export const searchProductList = (search, sellerID, callback) => async (dispatch) => {
   dispatch(searchProductListRequest());
   try {
     const res = await DashboardController.searchProductList(search, sellerID);
-    dispatch(searchProductListSuccess(res?.payload?.data));
+    callback && callback(res?.payload);
+    dispatch(searchProductListSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(searchProductListReset());
@@ -350,14 +351,8 @@ export const getOrdersByInvoiceId = (invoice, callback) => async (dispatch) => {
   dispatch(getOrdersByInvoiceIdRequest());
   try {
     const res = await DashboardController.getOrdersByInvoiceId(invoice);
-    if (res?.payload?.order) {
-      if (res?.payload?.order?.status === 9) {
-        await dispatch(getOrderData(res?.payload?.order?.id));
-      }
-      dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
-      callback && callback(res);
-    }
-    return;
+    dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
+    callback && callback(res);
   } catch (error) {
     if (error?.msg === 'Invalid invoice number!') {
       dispatch(getOrdersByInvoiceIdReset());
@@ -395,12 +390,7 @@ export const scanBarCode = (data) => async (dispatch) => {
   dispatch(scanBarCodeRequest());
   try {
     const res = await DashboardController.scanBarCode(data);
-    if (res?.payload?.order) {
-      if (res?.payload?.order?.status === 9) {
-        dispatch(getOrderData(res?.payload?.order?.id));
-      }
-      dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
-    }
+    dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
   } catch (error) {
     if (error?.msg === 'Invalid code!') {
       dispatch(getOrdersByInvoiceIdReset());

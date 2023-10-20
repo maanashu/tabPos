@@ -11,6 +11,7 @@ const INITIALSTATE = {
   getTaxTrue: [],
   getGoogleCode: {},
   notifications: [],
+  getPosDetailWeekly: [],
 };
 
 export const settingReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -94,6 +95,17 @@ export const settingReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         notifications: [...payload],
+      };
+
+    case TYPES.GET_POSDETAIL_WEEKLY_SUCCESS:
+      return {
+        ...state,
+        getPosDetailWeekly: payload.getPosDetailWeekly,
+      };
+    case TYPES.GET_POSDETAIL_WEEKLY_RESET:
+      return {
+        ...state,
+        getPosDetailWeekly: [],
       };
 
     case TYPES.SETTING_CLEAR_STORE:

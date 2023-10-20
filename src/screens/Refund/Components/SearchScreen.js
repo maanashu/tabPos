@@ -31,20 +31,18 @@ import {
   scanBarCode,
 } from '@/actions/DashboardAction';
 import ReturnOrderInvoice from './ReturnOrderInvoice';
-import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import { TYPES } from '@/Types/AnalyticsTypes';
 import { useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 
 export function SearchScreen(props) {
-  let debounceTimeout;
   const textInputRef = useRef();
   const dispatch = useDispatch();
   const getSearchOrders = useSelector(getDashboard);
   const order = getSearchOrders?.invoiceSearchOrders;
   const param = props?.route?.params?.screen;
-  const orderReciept = useSelector(getAnalytics);
+  const serachInvoice = props?.route?.params?.invoiceNumber;
   const [sku, setSku] = useState();
   const [isVisibleManual, setIsVisibleManual] = useState(false);
   const [showProductRefund, setShowProductRefund] = useState(false);
@@ -53,14 +51,23 @@ export function SearchScreen(props) {
   const [finalOrderDetail, setFinalOrderDetail] = useState([]);
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
+  useFocusEffect(
+    useCallback(() => {
+      if (param === 'return' || param === 'Dashboard') {
+        setOrderDetail([]);
+        setSku();
+        setShowProductRefund(false);
+        dispatch(getOrdersByInvoiceIdSuccess({}));
+      }
+    }, [param])
+  );
+
   useEffect(() => {
-    if (param === 'return' || param === 'Dashboard') {
-      setOrderDetail([]);
-      setSku();
-      setShowProductRefund(false);
-      dispatch(getOrdersByInvoiceIdSuccess({}));
+    if (serachInvoice) {
+      setSku(serachInvoice);
+      onSearchInvoiceHandler(serachInvoice);
     }
-  }, [param]);
+  }, [serachInvoice]);
 
   useEffect(() => {
     setShowProductRefund(false);
@@ -89,7 +96,6 @@ export function SearchScreen(props) {
   };
 
   const onSearchInvoiceHandler = (text) => {
-    console.log('searched invoice text: ' + text);
     if (text.includes('Invoice_') || text.includes('invoice_')) {
       dispatch(scanBarCode(text));
     } else {
@@ -102,8 +108,6 @@ export function SearchScreen(props) {
   const isLoading = useSelector((state) =>
     isLoadingSelector([DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID], state)
   );
-
-  const isLoadingInvoice = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
 
   return (
     <View style={styles.container}>
@@ -137,9 +141,10 @@ export function SearchScreen(props) {
               <OrderWithInvoiceNumber orderData={order} />
             </View>
 
-            {order?.order?.status === 9 && orderReciept?.getOrderData ? (
+            {(order?.order?.status === 9 && order?.return !== null) ||
+            (order?.order === null && order?.return !== null) ? (
               <View style={styles.invoiceContainer}>
-                <ReturnOrderInvoice orderDetail={orderReciept?.getOrderData} />
+                <ReturnOrderInvoice orderDetail={order} />
               </View>
             ) : (
               <OrderDetail
@@ -177,7 +182,7 @@ export function SearchScreen(props) {
             setIsVisible={setIsCheckConfirmationModalVisible}
           />
 
-          {isLoading || isLoadingInvoice ? (
+          {isLoading ? (
             <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.2)' }]}>
               <ActivityIndicator color={COLORS.primary} style={styles.loader} size={'large'} />
             </View>

@@ -44,7 +44,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
-import { getStaffDetail } from '@/actions/SettingAction';
+import { getPosDetailWeekly, getStaffDetail } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
 // import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import moment from 'moment';
@@ -80,7 +80,8 @@ export function Staff() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
-  console.log('staffDetailData', JSON.stringify(staffDetailData));
+  const weeklyData = getSettingData?.getPosDetailWeekly;
+  console.log('weeklyData', weeklyData);
   const targetDate = moment(staffDetailData?.pos_staff_detail?.created_at);
   const currentDate = moment();
   const differenceInDays = targetDate?.diff(currentDate, 'days');
@@ -285,12 +286,18 @@ export function Staff() {
     if (staffDetail) {
       return (
         <View>
-          <TouchableOpacity style={styles.backButtonCon} onPress={() => setStaffDetail(false)}>
+          <TouchableOpacity
+            style={styles.backButtonCon}
+            onPress={() => {
+              setExpandView(false);
+              setStaffDetail(false);
+            }}
+          >
             <Image source={backArrow} style={styles.backButtonArrow} />
             <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
           </TouchableOpacity>
           <Spacer space={SH(20)} />
-          <View>
+          <View style={styles.staffScrollableArea}>
             <ScrollView>
               <View style={styles.profileMaincon}>
                 <View style={styles.profileBodycon}>
@@ -451,7 +458,9 @@ export function Staff() {
                       <TouchableOpacity
                         style={styles.tableDataCon}
                         onPress={() => {
-                          setExpandView(!expandView), setIndex(index);
+                          setExpandView(!expandView);
+                          setIndex(index);
+                          dispatch(getPosDetailWeekly(item.weekNo));
                         }}
                       >
                         <View style={styles.flexRow}>
@@ -510,61 +519,83 @@ export function Staff() {
                           </View>
                         </View>
                       </TouchableOpacity>
-                      {expandView && Index === index ? (
-                        <View style={styles.sideLeftSideBar}>
-                          <View
-                            style={[
-                              styles.tableDataCon,
-                              {
-                                backgroundColor: COLORS.textInputBackground,
-                                borderWidth: 1,
-                              },
-                            ]}
-                          >
-                            <View style={styles.flexRow}>
+                      {expandView && Index === index
+                        ? weeklyData?.map((data, index) => (
+                            <View style={styles.sideLeftSideBar} key={index}>
                               <View
-                                style={{
-                                  flexDirection: 'row',
-                                  width: windowWidth * 0.16,
-                                }}
+                                style={[
+                                  styles.tableDataCon,
+                                  {
+                                    backgroundColor: COLORS.textInputBackground,
+                                    borderWidth: 1,
+                                  },
+                                ]}
                               >
-                                <Text
-                                  style={[styles.text, styles.hourRateLigh, { textAlign: 'left' }]}
-                                  numberOfLines={1}
-                                >
-                                  1 May, 2022
-                                </Text>
-                              </View>
-                              <View style={styles.dateHeadAlign}>
-                                <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
-                                  10:05:32 pm
-                                </Text>
-                                <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
-                                  05:12:32 pm
-                                </Text>
-                                <Text style={[styles.text, styles.hourRateLigh]} numberOfLines={1}>
-                                  08h 07m 00s
-                                </Text>
-                                <TouchableOpacity onPress={() => setInvoiceModal(true)}>
-                                  <Text
-                                    style={[
-                                      styles.text,
-                                      styles.hourRateLigh,
-                                      { color: COLORS.primary },
-                                    ]}
-                                    numberOfLines={1}
+                                <View style={styles.flexRow}>
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      width: windowWidth * 0.16,
+                                    }}
                                   >
-                                    {null}
-                                  </Text>
-                                </TouchableOpacity>
-                                <View style={[styles.text, { alignItems: 'center' }]}>
-                                  <Image source={null} style={styles.arrowStyle} />
+                                    <Text
+                                      style={[
+                                        styles.text,
+                                        styles.hourRateLigh,
+                                        { textAlign: 'left' },
+                                      ]}
+                                      numberOfLines={1}
+                                    >
+                                      {moment(data?.start_time).format('LL')}
+                                    </Text>
+                                  </View>
+                                  <View style={styles.dateHeadAlign}>
+                                    <Text
+                                      style={[styles.text, styles.hourRateLigh]}
+                                      numberOfLines={1}
+                                    >
+                                      {Number(data?.duration)?.toFixed(2)}
+                                    </Text>
+                                    <Text
+                                      style={[styles.text, styles.hourRateLigh]}
+                                      numberOfLines={1}
+                                    >
+                                      {Number(data?.amount)?.toFixed(2)}
+                                    </Text>
+                                    <Text
+                                      style={[
+                                        styles.text,
+                                        styles.hourRateLigh,
+                                        {
+                                          color:
+                                            data.status === true ? COLORS.bluish_green : COLORS.red,
+                                        },
+                                      ]}
+                                      numberOfLines={1}
+                                    >
+                                      {data.status === true ? 'paid' : 'Unpaid'}
+                                    </Text>
+                                    <TouchableOpacity onPress={() => setInvoiceModal(true)}>
+                                      <Text
+                                        style={[
+                                          styles.text,
+                                          styles.hourRateLigh,
+                                          { color: COLORS.primary },
+                                        ]}
+                                        numberOfLines={1}
+                                      >
+                                        {null}
+                                      </Text>
+                                    </TouchableOpacity>
+                                    <View style={[styles.text, { alignItems: 'center' }]}>
+                                      <Image source={null} style={styles.arrowStyle} />
+                                    </View>
+                                  </View>
                                 </View>
                               </View>
                             </View>
-                          </View>
-                        </View>
-                      ) : null}
+                          ))
+                        : null}
                     </View>
                   ))}
                 </Table>

@@ -776,4 +776,64 @@ export const styles = StyleSheet.create({
     marginTop: 50,
     fontSize: SF(20),
   },
+
+  orderRowStyle: {
+    borderWidth: 1,
+    borderRadius: 5,
+    marginVertical: 10,
+    paddingVertical: 17,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 20,
+    paddingHorizontal: 20,
+    borderColor: COLORS.row_grey,
+    justifyContent: 'space-between',
+    // backgroundColor: COLORS.textInputBackground,
+  },
+  invoiceNumberTextStyle: {
+    fontSize: SF(10),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
+    textAlignVertical: 'center',
+  },
+  orderDetailStyle: {
+    width: SW(30),
+  },
+  nameTextStyle: {
+    fontSize: SF(14),
+    textAlign: 'center',
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+  },
+  locationViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  pinImageStyle: {
+    width: SH(16),
+    height: SH(16),
+    resizeMode: 'contain',
+  },
+  distanceTextStyle: {
+    paddingLeft: 5,
+    fontSize: SF(9),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+  },
+  distanceTextStyle: {
+    paddingLeft: 5,
+    fontSize: SF(9),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.Regular,
+  },
+  timeTextStyle: {
+    fontSize: SF(12),
+    color: COLORS.primary,
+    fontFamily: Fonts.SemiBold,
+  },
+  rightIconStyle: {
+    width: SH(24),
+    height: SH(24),
+    resizeMode: 'contain',
+  },
 });
