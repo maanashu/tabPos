@@ -279,7 +279,6 @@ export function Wallet2() {
     setWeeklyTrasaction(true);
   };
   const onSearchInvoiceHandler = (text) => {
-    console.log('searched invoice text: ' + text);
     if (text.includes('Invoice_') || text.includes('invoice_')) {
       dispatch(scanBarCode(text));
     } else {

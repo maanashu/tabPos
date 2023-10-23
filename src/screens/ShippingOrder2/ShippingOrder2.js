@@ -57,8 +57,7 @@ export function ShippingOrder2() {
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id);
   const [openWebView, setOpenWebView] = useState(false);
   const [showLabelPdf, setShowLabelPdf] = useState(false);
-
-  const pdfUrl = `https://wwwtest.fedex.com/document/v1/cache/retrieve/SH,a15bf7a1d505fb02794981946074_Merge?isLabel=true&autoPrint=false`;
+  const [pdfUrl, setPdfUrl] = useState('');
 
   useFocusEffect(
     React.useCallback(() => {
@@ -103,7 +102,18 @@ export function ShippingOrder2() {
 
   const trackOrderHandler = (info) => {
     if (info) {
+      setShowLabelPdf(false);
+      setPdfUrl('');
       setOpenWebView(true);
+    }
+  };
+
+  const printLabelHandler = (item) => {
+    if (item?.label_url) {
+      setShowLabelPdf(true);
+      setPdfUrl(item?.label_url);
+      setOpenWebView(true);
+      acceptHandler(item?.id, 4);
     }
   };
 
@@ -223,6 +233,7 @@ export function ShippingOrder2() {
                           declineHandler,
                           acceptHandler,
                           trackOrderHandler,
+                          printLabelHandler,
                         }}
                       />
                     </View>
@@ -262,53 +273,59 @@ export function ShippingOrder2() {
               </Text>
             </TouchableOpacity>
 
-            {/* <TouchableOpacity style={styles.backView} onPress={printPdf}>
-              <Image source={printer} style={styles.backImageStyle} />
-              <Text style={[styles.currentStatusText, { color: COLORS.white, paddingLeft: 5 }]}>
-                {'Print'}
-              </Text>
-            </TouchableOpacity> */}
+            {showLabelPdf && pdfUrl ? (
+              <TouchableOpacity style={styles.backView} onPress={printPdf}>
+                <Image source={printer} style={styles.backImageStyle} />
+                <Text style={[styles.currentStatusText, { color: COLORS.white, paddingLeft: 5 }]}>
+                  {'Print'}
+                </Text>
+              </TouchableOpacity>
+            ) : null}
           </View>
 
           <Spacer space={SH(20)} />
 
-          {/* <Pdf
-            trustAllCerts={false}
-            activityIndicatorProps={{
-              color: COLORS.primary,
-              progressTintColor: COLORS.primary,
-            }}
-            source={{
-              uri: pdfUrl,
-              cache: true,
-            }}
-            onLoadComplete={(numberOfPages, filePath) => {
-              console.log(`Number of pages: ${numberOfPages}`);
-            }}
-            onPageChanged={(page, numberOfPages) => {
-              console.log(`Current page: ${page}`);
-            }}
-            onError={(error) => {
-              console.log(error);
-            }}
-            onPressLink={(uri) => {
-              console.log(`Link pressed: ${uri}`);
-            }}
-            style={{
-              flex: 1,
-            }}
-          /> */}
+          {!showLabelPdf ? (
+            <WebView
+              source={{ uri: getAnalyticsData?.getOrderData?.tracking_info?.url }}
+              style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}
+              startInLoadingState
+              renderLoading={() => (
+                <View style={styles.loader}>
+                  <ActivityIndicator size={'large'} color={COLORS.primary} style={styles.loader} />
+                </View>
+              )}
+            />
+          ) : null}
 
-          <WebView
-            source={{ uri: getAnalyticsData?.getOrderData?.tracking_info?.url }}
-            style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}
-            startInLoadingState
-            renderLoading={() => (
-              <View style={styles.loader}>
-                <ActivityIndicator size={'large'} color={COLORS.primary} style={styles.loader} />
-              </View>
-            )}
-          />
+          {showLabelPdf && pdfUrl && (
+            <Pdf
+              trustAllCerts={false}
+              activityIndicatorProps={{
+                color: COLORS.primary,
+                progressTintColor: COLORS.primary,
+              }}
+              source={{
+                uri: pdfUrl,
+                cache: true,
+              }}
+              onLoadComplete={(numberOfPages, filePath) => {
+                console.log(`Number of pages: ${numberOfPages}`);
+              }}
+              onPageChanged={(page, numberOfPages) => {
+                console.log(`Current page: ${page}`);
+              }}
+              onError={(error) => {
+                console.log(error);
+              }}
+              onPressLink={(uri) => {
+                console.log(`Link pressed: ${uri}`);
+              }}
+              style={{
+                flex: 1,
+              }}
+            />
+          )}
         </View>
       )}
 
@@ -323,28 +340,6 @@ export function ShippingOrder2() {
           <ActivityIndicator size={'small'} color={COLORS.primary} style={styles.loader} />
         </View>
       ) : null}
-
-      {/* {showLabelPdf && (
-        <ReactNativeModal
-          style={{
-            flex: 1,
-            backgroundColor: COLORS.white,
-            alignSelf: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <WebView
-            source={{ uri: getAnalyticsData?.getOrderData?.shipping_labal?.url }}
-            style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}
-            startInLoadingState
-            renderLoading={() => (
-              <View style={styles.loader}>
-                <ActivityIndicator size={'large'} color={COLORS.primary} style={styles.loader} />
-              </View>
-            )}
-          />
-        </ReactNativeModal>
-      )} */}
     </>
   );
 }

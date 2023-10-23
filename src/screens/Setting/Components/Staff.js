@@ -81,7 +81,7 @@ export function Staff() {
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
   const weeklyData = getSettingData?.getPosDetailWeekly;
-  console.log('weeklyData', weeklyData);
+
   const targetDate = moment(staffDetailData?.pos_staff_detail?.created_at);
   const currentDate = moment();
   const differenceInDays = targetDate?.diff(currentDate, 'days');

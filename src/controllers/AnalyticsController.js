@@ -387,11 +387,7 @@ export class AnalyticsController {
       const params = new URLSearchParams(data).toString();
       const endpoint = `${
         ORDER_URL + ApiOrderInventory.getSoldProduct
-<<<<<<< Updated upstream
-      }?seller_id=${sellerID}&${params}&page=${page}&limit=15`;
-=======
       }?seller_id=${sellerID}&${params}&page=${page}&limit=20`;
->>>>>>> Stashed changes
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

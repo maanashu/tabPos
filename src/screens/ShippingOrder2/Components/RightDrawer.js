@@ -4,17 +4,7 @@ import { View, Image, Text, FlatList, StyleSheet, TouchableOpacity } from 'react
 import { useSelector } from 'react-redux';
 import { ms, verticalScale } from 'react-native-size-matters';
 
-import {
-  Cart,
-  Delivery,
-  drawerdeliveryTruck,
-  Fonts,
-  Group,
-  NoCard,
-  ReturnTruck,
-  task,
-  timer,
-} from '@/assets';
+import { Cart, Delivery, Fonts, Group, NoCard, ReturnTruck, task } from '@/assets';
 import { COLORS, SF, SW } from '@/theme';
 import { getShipping } from '@/selectors/ShippingSelector';
 

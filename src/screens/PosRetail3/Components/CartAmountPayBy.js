@@ -125,7 +125,7 @@ export const CartAmountPayBy = ({
       id: 2,
     });
   }
-  console.log('Setting Dataa', JSON.stringify(getSettingData?.getSetting));
+
   const receiptData = [{ title: 'No e-recipe', icon: cardPayment }];
   if (getSettingData?.getSetting?.invoice_email_send_status) {
     receiptData.unshift({ title: 'Email', icon: cardPayment });

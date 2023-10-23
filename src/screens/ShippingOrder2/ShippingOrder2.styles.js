@@ -324,10 +324,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   orderDetailViewStyle: {
-    alignSelf: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
     marginHorizontal: 10,
     paddingVertical: 30,
     borderRadius: 10,

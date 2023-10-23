@@ -186,7 +186,6 @@ export const searchAppointments =
   async (dispatch) => {
     try {
       const res = await AppointmentController.getAppointment(pageNumber, null, searchText);
-      console.log('print JSON response ==>', JSON.stringify(res.payload));
       callback && callback(res?.payload);
     } catch (error) {
       if (error?.statusCode === 204) {

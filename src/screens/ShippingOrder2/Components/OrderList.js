@@ -32,7 +32,6 @@ const OrderList = ({
         setOrderId(item?.id);
         selectedOrderDetail(item);
         selectedOrderProducts(item?.order_details);
-        console.log(JSON.stringify(item));
       }}
       style={[
         styles.orderRowStyle,

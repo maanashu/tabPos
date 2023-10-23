@@ -105,10 +105,6 @@ export function MainScreen({
 
   const dataLabelsProductSold = soldProduct?.graphData?.labels;
   const labelsProductSold = generateLabels(dataLabelsProductSold, interval, maxLabel, daysLength);
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
   const profitStatisticsLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
   );

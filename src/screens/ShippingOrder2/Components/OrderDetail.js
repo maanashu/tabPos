@@ -22,6 +22,7 @@ const OrderDetail = ({
   declineHandler,
   acceptHandler,
   trackOrderHandler,
+  printLabelHandler,
 }) => {
   const oneOrderDetail = useSelector(getAnalytics);
   const getTrackingInfo = oneOrderDetail?.getOrderData?.tracking_info;
@@ -49,7 +50,7 @@ const OrderDetail = ({
       return (
         <View style={styles.shippingOrdersViewStyle}>
           <TouchableOpacity
-            onPress={() => acceptHandler(userDetail?.id, 4)}
+            onPress={() => printLabelHandler(oneOrderDetail?.getOrderData)}
             style={[styles.acceptButtonView, { width: ms(170) }]}
           >
             <Text style={styles.acceptTextStyle}>{strings.buttonStatus.printlabel}</Text>
@@ -86,8 +87,8 @@ const OrderDetail = ({
   return (
     <>
       <View style={styles.orderDetailView}>
-        <View style={styles.orderDetailViewStyle}>
-          <View style={[styles.locationViewStyle, { flex: 0.95 }]}>
+        <View style={[styles.orderDetailViewStyle, { flex: 1 / 2 }]}>
+          <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.8 }]}>
             <Image
               source={profileImage ? { uri: profileImage } : userImage}
               style={styles.userImageStyle}
@@ -108,12 +109,7 @@ const OrderDetail = ({
             </View>
           </View>
 
-          <View
-            style={[
-              styles.locationViewStyle,
-              { width: ms(120), right: Platform.OS === 'ios' ? 20 : 15 },
-            ]}
-          >
+          <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.3 }]}>
             <Image source={scooter} style={styles.scooterImageStyle} />
 
             <View style={[styles.userNameView, { paddingLeft: 5 }]}>
@@ -145,6 +141,65 @@ const OrderDetail = ({
             </View>
           </View>
         </View>
+
+        {/* <View style={styles.orderDetailViewStyle}>
+          <View
+            style={[styles.locationViewStyle, { flex: 0.7, borderWidth: 2, borderColor: 'green' }]}
+          >
+            <Image
+              source={profileImage ? { uri: profileImage } : userImage}
+              style={styles.userImageStyle}
+            />
+
+            <View style={styles.userNameView}>
+              <Text style={[styles.totalTextStyle, { padding: 0 }]}>
+                {userDetail?.user_details?.firstname ? userDetail?.user_details?.firstname : '-'}
+              </Text>
+
+              <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
+                {`${userDetail?.address}, ${userDetail?.city}`}
+              </Text>
+
+              <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
+                {`${userDetail?.state}, ${userDetail?.country}`}
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={[styles.locationViewStyle, { flex: 0.2, borderWidth: 2, borderColor: 'red' }]}
+          >
+            <Image source={scooter} style={styles.scooterImageStyle} />
+
+            <View style={[styles.userNameView, { paddingLeft: 5 }]}>
+              <Text
+                style={{
+                  fontFamily: Fonts.Bold,
+                  fontSize: SF(14),
+                  color: COLORS.primary,
+                }}
+              >
+                {userDetail?.invoice?.delivery_date ??
+                  moment(userDetail?.created_at).format('DD MMM YYYY')}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: Fonts.Medium,
+                  fontSize: SF(11),
+                  color: COLORS.dark_grey,
+                }}
+              >
+                {userDetail?.preffered_delivery_start_time
+                  ? userDetail?.preffered_delivery_start_time
+                  : '00.00'}
+                {'-'}{' '}
+                {userDetail?.preffered_delivery_end_time
+                  ? userDetail?.preffered_delivery_end_time
+                  : '00.00'}
+              </Text>
+            </View>
+          </View>
+        </View> */}
 
         <View style={{ height: ms(300) }}>
           <FlatList
@@ -259,58 +314,6 @@ const OrderDetail = ({
             <Spacer space={ms(10)} />
 
             {buttonFunction()}
-
-            {/* {openShippingOrders == '0' ||
-            openShippingOrders == '1' ||
-            openShippingOrders == '2' ||
-            openShippingOrders === '3' ? (
-              <View style={styles.shippingOrdersViewStyle}>
-                {openShippingOrders === '0' ? (
-                  <TouchableOpacity
-                    onPress={() => declineHandler(userDetail?.id)}
-                    style={styles.declineButtonStyle}
-                  >
-                    <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
-                  </TouchableOpacity>
-                ) : null}
-
-                {openShippingOrders === '0' ||
-                openShippingOrders === '1' ||
-                openShippingOrders === '2' ||
-                openShippingOrders === '3' ? (
-                  <TouchableOpacity
-                    onPress={() =>
-                      acceptHandler(userDetail?.id, openShippingOrders === '0' ? 3 : 4)
-                    }
-                    style={[
-                      styles.acceptButtonView,
-                      { width: openShippingOrders > '0' ? ms(170) : ms(80) },
-                    ]}
-                  >
-                    <Text style={styles.acceptTextStyle}>
-                      {openShippingOrders === '0'
-                        ? strings.buttonStatus.reviewButton
-                        : openShippingOrders === '1'
-                        ? strings.buttonStatus.acceptedButton
-                        : openShippingOrders === '2'
-                        ? strings.buttonStatus.readyForShipment
-                        : openShippingOrders === '3'
-                        ? strings.buttonStatus.printlabel
-                        : ''}
-                    </Text>
-                  </TouchableOpacity>
-                ) : null}
-              </View>
-            ) : (
-              <View style={styles.shippingOrdersViewStyle}>
-                <TouchableOpacity
-                  onPress={() => trackOrderHandler(getTrackingInfo)}
-                  style={[styles.acceptButtonView, { width: ms(140) }]}
-                >
-                  <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
-                </TouchableOpacity>
-              </View>
-            )} */}
           </View>
         </View>
       </View>
