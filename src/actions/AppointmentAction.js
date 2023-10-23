@@ -155,29 +155,46 @@ const verifyCheckinOTPError = (error) => ({
   payload: { error },
 });
 
-export const getAppointment = (pageNumber) => async (dispatch) => {
-  dispatch(getAppointmentRequest());
-  try {
-    const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
-    const res = await AppointmentController.getAppointment(pageNumber);
-    const currentPages = res?.payload?.current_page;
-    const totalPages = res?.payload?.total_pages;
-    const pages = { currentPages: currentPages, totalPages: totalPages };
-    dispatch(getAppointmentSuccess(res?.payload?.data, pages));
-    dispatch(getPendingOrders(sellerId));
-  } catch (error) {
-    if (error?.statusCode === 204) {
-      dispatch(getAppointmentReset());
+export const getAppointment =
+  (pageNumber = 1) =>
+  async (dispatch) => {
+    dispatch(getAppointmentRequest());
+    try {
+      const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const res = await AppointmentController.getAppointment(pageNumber);
+      const currentPages = res?.payload?.current_page;
+      const totalPages = res?.payload?.total_pages;
+      const pages = { currentPages: currentPages, totalPages: totalPages };
+      dispatch(getAppointmentSuccess(res?.payload?.data, pages));
+      dispatch(getPendingOrders(sellerId));
+    } catch (error) {
+      if (error?.statusCode === 204) {
+        dispatch(getAppointmentReset());
+      }
+      // Toast.show({
+      //   text2: error?.msg || 'Something went wrong while fetching appointments',
+      //   position: 'bottom',
+      //   type: 'error_toast',
+      //   visibilityTime: 9000,
+      // });
+      dispatch(getAppointmentError(error?.message));
     }
-    // Toast.show({
-    //   text2: error?.msg || 'Something went wrong while fetching appointments',
-    //   position: 'bottom',
-    //   type: 'error_toast',
-    //   visibilityTime: 9000,
-    // });
-    dispatch(getAppointmentError(error?.message));
-  }
-};
+  };
+
+export const searchAppointments =
+  (pageNumber = 1, searchText = '', callback) =>
+  async (dispatch) => {
+    try {
+      const res = await AppointmentController.getAppointment(pageNumber, null, searchText);
+      console.log('print JSON response ==>', JSON.stringify(res.payload));
+      callback && callback(res?.payload);
+    } catch (error) {
+      if (error?.statusCode === 204) {
+        console.log('there is no data in search results');
+      }
+      console.log('Error in search results', error);
+    }
+  };
 
 export const getAppointmentByStaffId = (pageNumber, posUserId) => async (dispatch) => {
   dispatch(getAppointmentByStaffIdRequest());

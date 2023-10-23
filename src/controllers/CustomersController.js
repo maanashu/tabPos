@@ -10,11 +10,11 @@ export class CustomersController {
     let originalString = data?.customerType;
     let convertedString = originalString.toLowerCase().replace(/\s+/g, '_');
     return new Promise((resolve, reject) => {
-      const endpoint =
-        data?.area === 'none' && data?.calenderDate === undefined
+      const endpoint = data?.search
+        ? data?.area === 'none' && data?.calenderDate === undefined
           ? ORDER_URL +
             ApiOrderInventory.getUserOrder +
-            `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}&filter=${data?.dayWisefilter}`
+            `?seller_id=${data?.sellerID}&type=${convertedString}&filter=${data?.dayWisefilter}&search=${data?.search}`
           : data?.calenderDate !== undefined && data?.area == 'none'
           ? ORDER_URL +
             ApiOrderInventory.getUserOrder +
@@ -22,18 +22,41 @@ export class CustomersController {
               data?.calenderDate === undefined
                 ? `filter=${data?.dayWisefilter}`
                 : `date=${data?.calenderDate}`
-            }&page=${data?.page}&limit=${data?.limit}`
+            }&search=${data?.search}`
           : data?.calenderDate === undefined && data?.area !== 'none'
           ? ORDER_URL +
             ApiOrderInventory.getUserOrder +
-            `?seller_id=${data?.sellerID}&type=${convertedString}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}&filter=${data?.dayWisefilter}`
+            `?seller_id=${data?.sellerID}&type=${convertedString}&area=${data?.area}&filter=${data?.dayWisefilter}&search=${data?.search}`
           : ORDER_URL +
             ApiOrderInventory.getUserOrder +
             `?seller_id=${data?.sellerID}&type=${convertedString}&${
               data?.calenderDate === undefined
                 ? `filter=${data?.dayWisefilter}`
                 : `date=${data?.calenderDate}`
-            }&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
+            }&area=${data?.area}&search=${data?.search}`
+        : data?.area === 'none' && data?.calenderDate === undefined
+        ? ORDER_URL +
+          ApiOrderInventory.getUserOrder +
+          `?seller_id=${data?.sellerID}&type=${convertedString}&page=${data?.page}&limit=${data?.limit}&filter=${data?.dayWisefilter}`
+        : data?.calenderDate !== undefined && data?.area == 'none'
+        ? ORDER_URL +
+          ApiOrderInventory.getUserOrder +
+          `?seller_id=${data?.sellerID}&type=${convertedString}&${
+            data?.calenderDate === undefined
+              ? `filter=${data?.dayWisefilter}`
+              : `date=${data?.calenderDate}`
+          }&page=${data?.page}&limit=${data?.limit}`
+        : data?.calenderDate === undefined && data?.area !== 'none'
+        ? ORDER_URL +
+          ApiOrderInventory.getUserOrder +
+          `?seller_id=${data?.sellerID}&type=${convertedString}&area=${data?.area}&page=${data?.page}&limit=${data?.limit}&filter=${data?.dayWisefilter}`
+        : ORDER_URL +
+          ApiOrderInventory.getUserOrder +
+          `?seller_id=${data?.sellerID}&type=${convertedString}&${
+            data?.calenderDate === undefined
+              ? `filter=${data?.dayWisefilter}`
+              : `date=${data?.calenderDate}`
+          }&area=${data?.area}&page=${data?.page}&limit=${data?.limit}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

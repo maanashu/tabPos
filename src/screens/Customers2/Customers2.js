@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,9 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  KeyboardAvoidingView,
 } from 'react-native';
-import { COLORS } from '@/theme';
+import { COLORS, SH, SW } from '@/theme';
 import { styles } from '@/screens/Customers2/Customers2.styles';
 import { getCustomerDummy } from '@/constants/flatListData';
 import { strings } from '@/localization';
@@ -20,6 +21,8 @@ import {
   returnCustomer,
   onlineCutomer,
   walkinCustomer,
+  Fonts,
+  crossButton,
 } from '@/assets';
 import { DaySelector, InvoiceDetail, ScreenWrapper } from '@/components';
 import { moderateScale, ms } from 'react-native-size-matters';
@@ -27,7 +30,13 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useEffect } from 'react';
-import { getArea, getCustomer, getOrderUser, getStoreLocation } from '@/actions/CustomersAction';
+import {
+  getArea,
+  getCustomer,
+  getOrderUser,
+  getStoreLocation,
+  getUserOrder,
+} from '@/actions/CustomersAction';
 import { getCustomers } from '@/selectors/CustomersSelector';
 import Graph from './Components/Graph';
 import AllUsers from './Components/AllUsers';
@@ -40,6 +49,9 @@ import { TYPES } from '@/Types/AnalyticsTypes';
 import UserDetail from './Components/UserDetail';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import Modal from 'react-native-modal';
+import CustomerListView from './Components/CustomerListView';
+import { debounce } from 'lodash';
 
 export function Customers2() {
   const mapRef = useRef(null);
@@ -71,6 +83,12 @@ export function Customers2() {
   const [selectTime, setSelectTime] = useState({ value: 'week' });
   const time = selectTime?.value;
   const [orderId, setOrderId] = useState();
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [searchedText, setSearchedText] = useState('');
+  const [searchedAppointments, setSearchedCustomer] = useState([]);
+  const [customerType, setCustomerType] = useState(
+    saveCustomeType === undefined ? 'all_customers' : saveCustomeType
+  );
 
   const closeHandler = () => {
     setInvoiceDetail(false);
@@ -91,6 +109,27 @@ export function Customers2() {
       dispatch(getCustomer(time, sellerID));
     }
   }, [isFocused]);
+
+  const onSearchAppoinment = (searchText) => {
+    if (searchText != '') {
+      setSearchedCustomer([]);
+    }
+    const callback = (searchData) => {
+      setSearchedCustomer(searchData?.data);
+    };
+
+    const data = {
+      sellerID: sellerID,
+      customerType: customerType,
+      calenderDate: undefined,
+      dayWisefilter: time,
+      area: 'none',
+      search: searchText,
+    };
+
+    dispatch(getUserOrder(data, callback));
+  };
+  const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), []);
 
   const newCustomerData = [
     {
@@ -261,14 +300,35 @@ export function Customers2() {
               >
                 <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
               </TouchableOpacity>
-              <View style={styles.searchView}>
+              <TouchableOpacity
+                style={styles.searchView}
+                onPress={() => {
+                  setShowSearchModal(true);
+                  setSearchedCustomer([]);
+                  setSearchedText('');
+                }}
+              >
                 <Image source={search_light} style={styles.searchImage} />
-                <TextInput
+                <View
+                  style={{
+                    height: SH(40),
+                    width: SW(70),
+                    paddingLeft: 5,
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text
+                    style={{ color: COLORS.darkGray, fontSize: ms(10), fontFamily: Fonts.Regular }}
+                  >
+                    {strings.deliveryOrders.search}
+                  </Text>
+                </View>
+                {/* <TextInput
                   placeholder={strings.deliveryOrders.search}
                   style={styles.textInputStyles}
                   placeholderTextColor={COLORS.darkGray}
-                />
-              </View>
+                /> */}
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.homeBodyCon}>
@@ -343,6 +403,54 @@ export function Customers2() {
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
+      <Modal isVisible={showSearchModal}>
+        <KeyboardAvoidingView style={{ flex: 1 }}>
+          <View
+            style={{
+              marginHorizontal: ms(40),
+              marginVertical: ms(40),
+              backgroundColor: 'white',
+              borderRadius: ms(5),
+              paddingHorizontal: ms(20),
+              paddingVertical: ms(20),
+              minHeight: '70%',
+            }}
+          >
+            <TouchableOpacity
+              style={{ position: 'absolute', top: ms(5), right: ms(7) }}
+              onPress={() => setShowSearchModal(false)}
+            >
+              <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
+            </TouchableOpacity>
+            <View style={[styles.searchView, { marginVertical: ms(10) }]}>
+              <Image source={search_light} style={styles.searchImage} />
+              <TextInput
+                placeholder={strings.deliveryOrders.search}
+                style={styles.textInputStyle}
+                placeholderTextColor={COLORS.darkGray}
+                value={searchedText}
+                onChangeText={(searchText) => {
+                  // const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
+                  setSearchedText(searchText);
+                  debouncedSearchAppointment(searchText);
+                }}
+              />
+            </View>
+            <CustomerListView
+              searchedAppointments={searchedAppointments}
+              profileClickHandler={(item, customerId, customerTypes) => {
+                setSaveCustomerId(customerId);
+                setSaveCustomerType(customerTypes);
+                setAllUsers(true);
+                setUserProfile(true);
+                setUserData(item);
+                setShowSearchModal(false);
+                // dispatch(getOrderUser(item?.user_id, sellerID));
+              }}
+            />
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
     </ScreenWrapper>
   );
 }

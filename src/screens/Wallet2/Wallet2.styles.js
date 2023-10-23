@@ -1494,4 +1494,11 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     marginLeft: ms(4),
   },
+  invoiceContainer: {
+    flex: 0.48,
+    backgroundColor: COLORS.white,
+    marginBottom: ms(10),
+    right: SW(5),
+    height: SH(700),
+  },
 });

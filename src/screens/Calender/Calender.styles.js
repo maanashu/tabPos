@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   },
   textInputStyle: {
     height: SH(40),
-    width: SW(70),
+    width: '100%',
     fontFamily: Fonts.Italic,
     fontSize: SF(12),
     paddingLeft: 5,

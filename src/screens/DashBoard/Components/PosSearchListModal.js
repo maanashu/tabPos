@@ -323,7 +323,7 @@ export function PosSearchListModal({
         </TouchableOpacity>
       </View>
       <View style={styles.searchingProductCon}>
-        {Object.keys(getProductListArray?.invoiceData)?.length > 0 ? (
+        {Object?.keys(getProductListArray?.invoiceData)?.length > 0 ? (
           <TouchableOpacity
             style={styles.orderRowStyle}
             onPress={async () => {
