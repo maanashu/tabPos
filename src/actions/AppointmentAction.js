@@ -182,7 +182,7 @@ export const getAppointment =
   };
 
 export const searchAppointments =
-  (pageNumber = 1, searchText = '', callback) =>
+  (pageNumber = 1, searchText, callback) =>
   async (dispatch) => {
     try {
       const res = await AppointmentController.getAppointment(pageNumber, null, searchText);
@@ -193,6 +193,7 @@ export const searchAppointments =
         console.log('there is no data in search results');
       }
       console.log('Error in search results', error);
+      callback && callback(null);
     }
   };
 

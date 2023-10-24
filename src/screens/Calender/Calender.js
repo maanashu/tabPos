@@ -57,6 +57,8 @@ import ReScheduleDetailModal from './Components/ReScheduleDetailModal';
 import ListViewItem from './Components/ListViewComponents/ListViewItem';
 import ListViewHeader from './Components/ListViewComponents/ListViewHeader';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
+import { Modal as PaperModal } from 'react-native-paper';
+import { useRef } from 'react';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -83,6 +85,9 @@ export function Calender() {
   const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+
+  const searchAppoinmentInputRef = useRef(null);
+  const [isLoadingSearchAppoinment, setIsLoadingSearchAppoinment] = useState(false);
 
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [searchedAppointments, setSearchedAppointments] = useState([]);
@@ -274,7 +279,12 @@ export function Calender() {
       setSearchedAppointments([]);
     }
     const callback = (searchData) => {
-      setSearchedAppointments(searchData?.data);
+      if (searchData === null) {
+        setSearchedAppointments([]);
+      } else {
+        setSearchedAppointments(searchData?.data);
+      }
+      setIsLoadingSearchAppoinment(false);
     };
     dispatch(searchAppointments(pageNumber, searchText, callback));
   };
@@ -317,16 +327,22 @@ export function Calender() {
         onPressCheckin={() => {
           setSelectedPosStaffCompleteData(item);
           dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
-          setShowSearchModal(false);
+          onSearchAppoinment(searchedText);
         }}
         onPressEdit={() => {
           setSelectedPosStaffCompleteData(item);
           setshowRescheduleTimeModal(true);
-          setShowSearchModal(false);
+          onSearchAppoinment(searchedText);
         }}
         onPressMarkComplete={() => {
           dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
-          setShowSearchModal(false);
+          onSearchAppoinment(searchedText);
+        }}
+        onPressAccept={() => {
+          onSearchAppoinment(searchedText);
+        }}
+        onPressReject={() => {
+          onSearchAppoinment(searchedText);
         }}
       />
     );
@@ -368,6 +384,9 @@ export function Calender() {
               setShowSearchModal(true);
               setSearchedAppointments([]);
               setSearchedText('');
+              setTimeout(() => {
+                searchAppoinmentInputRef.current.focus();
+              }, 300);
             }}
           >
             <Image source={search_light} style={styles.searchImage} />
@@ -383,11 +402,6 @@ export function Calender() {
                 {strings.deliveryOrders.search}
               </Text>
             </View>
-            {/* <TextInput
-              placeholder={strings.deliveryOrders.search}
-              style={styles.textInputStyle}
-              placeholderTextColor={COLORS.darkGray}
-            /> */}
           </TouchableOpacity>
         </View>
       </View>
@@ -717,56 +731,50 @@ export function Calender() {
           </View>
         </Modal>
 
-        <Modal isVisible={showSearchModal}>
-          <View
-            style={{
-              marginHorizontal: ms(40),
-              marginVertical: ms(40),
-              backgroundColor: 'white',
-              borderRadius: ms(5),
-              paddingHorizontal: ms(20),
-              paddingVertical: ms(20),
-              minHeight: '70%',
-            }}
-          >
+        <PaperModal visible={showSearchModal}>
+          <View style={styles.searchAppointmentModalContainer}>
             <TouchableOpacity
-              style={{ position: 'absolute', top: ms(5), right: ms(7) }}
-              onPress={() => setShowSearchModal(false)}
+              style={styles.closeSearchBtn}
+              onPress={() => {
+                setShowSearchModal(false);
+                setSearchedText('');
+                setIsLoadingSearchAppoinment(false);
+              }}
             >
-              <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
+              <Image source={crossButton} style={styles.closeImageSearchBtn} />
             </TouchableOpacity>
             <View style={[styles.searchView, { marginVertical: ms(10) }]}>
               <Image source={search_light} style={styles.searchImage} />
               <TextInput
-                placeholder={strings.deliveryOrders.search}
+                ref={searchAppoinmentInputRef}
+                placeholder={'Search appointments with service name, customer name or phone number'}
                 style={styles.textInputStyle}
                 placeholderTextColor={COLORS.darkGray}
                 value={searchedText}
                 onChangeText={(searchText) => {
-                  // const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
+                  setIsLoadingSearchAppoinment(true);
                   setSearchedText(searchText);
                   debouncedSearchAppointment(searchText);
                 }}
               />
             </View>
-            <FlatList
-              data={searchedAppointments}
-              extraData={searchedText}
-              keyExtractor={(_, index) => index.toString()}
-              ListHeaderComponent={<ListViewHeader />}
-              renderItem={renderSearchListViewItem}
-              ListEmptyComponent={() => (
-                <Text style={styles.noAppointmentEmpty}>There are no appointments</Text>
-              )}
-            />
+            {isLoadingSearchAppoinment ? (
+              <ActivityIndicator size="large" color={COLORS.indicator} />
+            ) : (
+              <FlatList
+                data={searchedAppointments}
+                extraData={searchedAppointments}
+                keyExtractor={(_, index) => index.toString()}
+                ListHeaderComponent={searchedAppointments?.length > 0 && <ListViewHeader />}
+                renderItem={renderSearchListViewItem}
+                ListEmptyComponent={() => (
+                  <Text style={styles.noAppointmentEmpty}>There are no appointments</Text>
+                )}
+              />
+            )}
           </View>
-          <ReScheduleDetailModal
-            showRecheduleModal={showRescheduleTimeModal}
-            setShowRescheduleModal={setshowRescheduleTimeModal}
-            appointmentData={selectedPosStaffCompleteData}
-            setshowEventDetailModal={setshowEventDetailModal}
-          />
-        </Modal>
+        </PaperModal>
+
         <ReScheduleDetailModal
           showRecheduleModal={showRescheduleTimeModal}
           setShowRescheduleModal={setshowRescheduleTimeModal}

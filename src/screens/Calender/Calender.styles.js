@@ -945,4 +945,22 @@ export const styles = StyleSheet.create({
     paddingHorizontal: SW(5),
     borderRadius: SW(5),
   },
+  closeImageSearchBtn: { height: ms(20), width: ms(20) },
+  closeSearchBtn: { position: 'absolute', top: ms(5), right: ms(7) },
+  searchAppointmentModalContainer: {
+    marginHorizontal: ms(40),
+    marginVertical: ms(40),
+    backgroundColor: 'white',
+    borderRadius: ms(5),
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(20),
+    minHeight: '70%',
+  },
+  cancelSavebtnReschedule: {
+    flex: 1,
+    flexDirection: 'row',
+    marginTop: ms(10),
+    marginHorizontal: ms(26),
+    alignSelf: 'center',
+  },
 });
