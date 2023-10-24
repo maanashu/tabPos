@@ -1207,8 +1207,10 @@ export const addTocart = (data) => async (dispatch) => {
     const res = await RetailController.addTocart(data);
     dispatch(addTocartSuccess(res));
     dispatch(getAllCart());
+    return res;
   } catch (error) {
     dispatch(addTocartError(error.message));
+    return error;
   }
 };
 

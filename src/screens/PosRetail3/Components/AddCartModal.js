@@ -14,6 +14,7 @@ import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ms } from 'react-native-size-matters';
+import { Loader } from '@/components/Loader';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -56,6 +57,7 @@ export function AddCartModal({
   const [variantId, setVariantId] = useState();
   const loader = useSelector((state) => isLoadingSelector([TYPES.CHECK_SUPPLIES_VARIANT], state));
   const [arraydId, setArrayId] = useState([]);
+  const [addToCartLoader, setAddToCartLoader] = useState(false);
 
   const addToCartHandler = async () => {
     if (productDetail?.product_detail?.supplies?.[0]?.attributes?.length === 0) {
@@ -103,19 +105,19 @@ export function AddCartModal({
             .join(),
           supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
         };
-        crossHandler();
-        const res = await dispatch(checkSuppliedVariant(data));
-        if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
-          const data = {
-            seller_id: sellerID,
-            service_id: productDetail?.product_detail?.service_id,
-            product_id: productDetail?.product_detail?.id,
-            qty: count,
-            supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-            supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-            supplyVariantId: res?.payload?.id,
-          };
 
+        const res = await dispatch(checkSuppliedVariant(data));
+
+        const Data = {
+          seller_id: sellerID,
+          service_id: productDetail?.product_detail?.service_id,
+          product_id: productDetail?.product_detail?.id,
+          qty: count,
+          supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+          supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+          supplyVariantId: res?.payload?.id,
+        };
+        if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
           //New Changes
           // var arr = getRetailData?.getAllCart;
           // const products = arr?.poscart_products.map((item) => ({
@@ -144,8 +146,20 @@ export function AddCartModal({
           //   seller_id: sellerID,
           //   products: products,
           // };
-          openFrom === 'main' && addToLocalCart(productItem, productIndex, count);
-          dispatch(addTocart(data));
+          setAddToCartLoader(true);
+
+          const res = await dispatch(addTocart(Data));
+          console.log('responssdds', JSON.stringify(res));
+          if (res?.msg !== 'Wrong supply variant choosen.') {
+            setAddToCartLoader(false);
+            crossHandler();
+            openFrom === 'main' &&
+              addToLocalCart(selectedItem, productIndex, count, Data?.supplyVariantId);
+          } else {
+            setAddToCartLoader(false);
+            alert('Wrong supply variant choosen.');
+          }
+
           // crossHandler();
         }
       }
@@ -218,7 +232,11 @@ export function AddCartModal({
     <View style={styles.addCartCon}>
       <View>
         <View style={styles.addCartConHeader}>
-          <TouchableOpacity onPress={crossHandler}>
+          <TouchableOpacity
+            // disabled={addToCartLoader}
+
+            onPress={crossHandler}
+          >
             <Image source={crossButton} style={styles.crossBg} />
           </TouchableOpacity>
           {/* disable */}
@@ -247,7 +265,11 @@ export function AddCartModal({
               <Text style={styles.detailBtnCon}>Details</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.addToCartCon} onPress={addToCartHandler}>
-              <Text style={styles.addTocartText}>Add to Cart</Text>
+              {addToCartLoader ? (
+                <ActivityIndicator color={'white'} />
+              ) : (
+                <Text style={styles.addTocartText}>Add to Cart</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>

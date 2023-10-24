@@ -332,6 +332,7 @@ export function MainScreen({
           qty: obj.qty,
           supply_id: obj.supply_id,
           supply_price_id: obj.supply_price_id,
+          supply_variant_id: obj?.supply_variant_id,
         }));
         dispatch(addLocalCart(cartmatchId));
         setSelectedCartItems(cartmatchId);
@@ -350,6 +351,7 @@ export function MainScreen({
         qty: obj.qty,
         supply_id: obj.supply_id,
         supply_price_id: obj.supply_price_id,
+        supply_variant_id: obj?.supply_variant_id,
       }));
       dispatch(addLocalCart(cartmatchId));
       setSelectedCartItems(cartmatchId);
@@ -362,6 +364,7 @@ export function MainScreen({
         seller_id: sellerID,
         products: localCartArray,
       };
+
       try {
         dispatch(createBulkcart(dataToSend));
       } catch (error) {}
@@ -378,28 +381,45 @@ export function MainScreen({
       setCartModal(false);
     }
   }, [cartLength]);
-
-  const onClickAddCart = (item, index, cartQty) => {
+  const checkAttributes = async (item, index, cartQty) => {
+    if (item?.supplies?.[0]?.attributes?.length !== 0) {
+      const res = await dispatch(getOneProduct(sellerID, item?.id));
+      if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+        setSelectedItemQty(item?.cart_qty);
+        setSelectedItem(item);
+        setAddCartModal(true);
+        setProductIndex(index);
+        setProductItem(item);
+      }
+    } else {
+      onClickAddCart(item, index, cartQty);
+    }
+  };
+  const onClickAddCart = (item, index, cartQty, supplyVarientId) => {
     const mainProductArray = getRetailData?.getMainProduct;
 
     const cartArray = selectedCartItem;
 
     const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
-
     const DATA = {
       product_id: item?.id,
       qty: 1,
       supply_id: item?.supplies?.[0]?.id,
       supply_price_id: item?.supplies?.[0]?.supply_prices[0]?.id,
     };
+    if (supplyVarientId) {
+      DATA.supply_variant_id = supplyVarientId;
+    }
     if (existingItemIndex === -1) {
       cartArray.push(DATA);
       dispatch(updateCartLength(cartLength + 1));
     } else {
       cartArray[existingItemIndex].qty = cartQty + 1;
     }
-    setSelectedCartItems(cartArray);
     dispatch(addLocalCart(cartArray));
+
+    setSelectedCartItems(cartArray);
+
     ///
     mainProductArray.data[index].cart_qty += 1;
     dispatch(getMainProductSuccess(mainProductArray));
@@ -554,7 +574,10 @@ export function MainScreen({
 
           <TouchableOpacity
             // activeOpacity={1}
-            onPress={() => onClickAddCart(item, index, cartAddQty)}
+            onPress={
+              () => checkAttributes(item, index, cartAddQty)
+              // onClickAddCart(item, index, cartAddQty)
+            }
           >
             <FastImage
               source={isProductMatchArray ? addToCartBlue : addToCart}
@@ -1450,6 +1473,7 @@ export function MainScreen({
             cartQty={selectedItemQty}
             productIndex={productIndex}
             selectedItem={selectedItem}
+            productItem={productItem}
             onClickAddCartModal={onClickAddCartModal}
             addToLocalCart={onClickAddCart}
             backToCartHandler={() => cartScreenHandler()}
