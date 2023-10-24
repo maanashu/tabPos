@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -70,7 +70,7 @@ import { styles } from './DashBoard.styles';
 import { scanProductAdd } from '@/actions/RetailAction';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { log, useAnimatedRef } from 'react-native-reanimated';
-import { useCallback } from 'react';
+import { debounce } from 'lodash';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -447,6 +447,8 @@ export function DashBoard({ navigation }) {
     }
   };
 
+  const debouncedSearch = useCallback(debounce(onChangeFun, 1000), []);
+
   const onRefresh = () => {
     dispatch(getOrderDeliveries(sellerID, 1));
     dispatch(getPendingOrders(sellerID));
@@ -624,7 +626,8 @@ export function DashBoard({ navigation }) {
                   value={search}
                   onChangeText={(search) => {
                     setSearch(search);
-                    onChangeFun(search);
+                    debouncedSearch(search);
+                    // onChangeFun(search);
                   }}
                 />
               )}
@@ -773,7 +776,10 @@ export function DashBoard({ navigation }) {
               getProductListArray={getProductListArray}
               search={search}
               setSearch={setSearch}
-              onChangeFun={onChangeFun}
+              // onChangeFun={onChangeFun}
+              onChangeFun={(search) => {
+                debouncedSearch(search);
+              }}
               viewDetailHandler={(item) => (
                 setSearchModal(false), setSearchModalDetail(true), setproductDet(item)
               )}

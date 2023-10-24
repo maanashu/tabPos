@@ -353,6 +353,7 @@ export const en = {
     addlanguage: 'Add Language',
     businessName: 'Business Name',
     staff: 'Staff',
+    request: 'Request',
   },
   dashboard: {
     todaySale: "Today's Sales",

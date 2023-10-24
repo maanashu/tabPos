@@ -44,7 +44,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
-import { getPosDetailWeekly, getStaffDetail } from '@/actions/SettingAction';
+import { getPosDetailWeekly, getStaffDetail, staffRequest } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
 // import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import moment from 'moment';
@@ -54,8 +54,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { creatPostUser, getPosUserRole } from '@/actions/AppointmentAction';
 import { digits, emailReg } from '@/utils/validators';
 import { getAppointmentSelector, getPosUserRoles } from '@/selectors/AppointmentSelector';
-import { TYPES } from '@/Types/AppointmentTypes';
-import { TYPES as TYPE } from '@/Types/Types';
+import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { Snackbar } from 'react-native-paper';
 import { useRef } from 'react';
@@ -138,6 +137,7 @@ export function Staff() {
     });
     posUsersRole = mappedArray;
   }
+  const requestLoad = useSelector((state) => isLoadingSelector([TYPES.STAFF_REQUEST], state));
 
   useEffect(() => {
     if (isFocused) {
@@ -458,7 +458,7 @@ export function Staff() {
                       <TouchableOpacity
                         style={styles.tableDataCon}
                         onPress={() => {
-                          setExpandView(!expandView);
+                          setExpandView(true);
                           setIndex(index);
                           dispatch(getPosDetailWeekly(item.weekNo));
                         }}
@@ -478,7 +478,7 @@ export function Staff() {
                               ]}
                               numberOfLines={2}
                             >
-                              {item.date}
+                              {item.start_date} - {item.end_date}
                             </Text>
                           </View>
                           <View style={styles.dateHeadAlign}>
@@ -498,22 +498,43 @@ export function Staff() {
                             >
                               {item.status === true ? 'paid' : 'Unpaid'}
                             </Text>
-                            <TouchableOpacity onPress={() => setInvoiceModal(true)}>
-                              <Text
-                                style={[
-                                  styles.text,
-                                  styles.hourRateLigh,
-                                  { color: COLORS.primary },
-                                ]}
-                                numberOfLines={1}
+                            {item.status === true ? (
+                              <TouchableOpacity onPress={() => setInvoiceModal(true)}>
+                                <Text
+                                  style={[
+                                    styles.text,
+                                    styles.hourRateLigh,
+                                    { color: COLORS.primary },
+                                  ]}
+                                  numberOfLines={1}
+                                >
+                                  View Payment
+                                </Text>
+                              </TouchableOpacity>
+                            ) : (
+                              <TouchableOpacity
+                                style={styles.requestButtoncon}
+                                onPress={() => {
+                                  const data = {
+                                    start_date: item?.start_date,
+                                    end_date: item?.end_date,
+                                    staff_details_id: item?.pos_staff_detail?.id?.toString(),
+                                  };
+                                  dispatch(staffRequest(data));
+                                }}
                               >
-                                View Payment
-                              </Text>
-                            </TouchableOpacity>
+                                <Text style={styles.requestText}>{strings.settings.request}</Text>
+                              </TouchableOpacity>
+                            )}
+
                             <View style={[styles.text, { alignItems: 'center' }]}>
                               <Image
                                 source={rightBack}
-                                style={expandView ? styles.arrowStyle2 : styles.arrowStyle}
+                                style={
+                                  expandView && Index === index
+                                    ? styles.arrowStyle2
+                                    : styles.arrowStyle
+                                }
                               />
                             </View>
                           </View>

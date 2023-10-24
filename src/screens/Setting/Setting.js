@@ -58,6 +58,7 @@ export function Setting() {
       // dispatch(getShippingPickup());
     }
   }, [isFocused]);
+
   const isLoad = useSelector((state) =>
     isLoadingSelector(
       [
@@ -66,10 +67,11 @@ export function Setting() {
         TYPES.GET_SHIPPICK,
         TYPES.ADDRESS_UPDATE,
         TYPES.GET_USER_ADD,
-        TYPES.GET_ALL_POS_USERS,
+        // TYPES.GET_ALL_POS_USERS,
         TYPES.STAFF_DETAIL,
         TYPES.GET_TAX,
         TYPES.VERIFY_GOOGLE_CODE,
+        // TYPES.STAFF_REQUEST,
       ],
       state
     )

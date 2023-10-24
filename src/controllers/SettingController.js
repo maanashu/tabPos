@@ -370,4 +370,24 @@ export class SettingController {
         });
     });
   }
+
+  static async staffRequest(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.staffRequest;
+      HttpClient.post(endpoint, data)
+        .then((response) => {
+          Toast.show({
+            text2: response?.msg,
+            position: 'bottom',
+            type: 'success_toast',
+            visibilityTime: 1500,
+          });
+          resolve(response);
+        })
+        .catch((error) => {
+          alert(error?.msg);
+          reject(error);
+        });
+    });
+  }
 }

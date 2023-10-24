@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions, ViewPagerAndroidBase, Platform } from 'react-na
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
-import { verticalScale, moderateScale, scale } from 'react-native-size-matters';
+import { verticalScale, moderateScale, scale, ms } from 'react-native-size-matters';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -1039,7 +1039,6 @@ export const styles = StyleSheet.create({
     height: SW(5),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
-    // alignSelf: 'flex-start',
   },
   arrowStyle2: {
     width: SW(5),
@@ -1460,5 +1459,19 @@ export const styles = StyleSheet.create({
   },
   staffScrollableArea: {
     height: windowHeight * 0.8,
+  },
+  requestButtoncon: {
+    backgroundColor: COLORS.primary,
+    width: ms(50),
+    height: ms(20),
+    borderRadius: ms(3),
+    marginLeft: ms(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  requestText: {
+    color: COLORS.white,
+    fontSize: ms(7),
+    fontFamily: Fonts.Regular,
   },
 });

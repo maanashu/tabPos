@@ -269,9 +269,26 @@ const getPosDetailWeeklyReset = () => ({
   type: TYPES.GET_POSDETAIL_WEEKLY_RESET,
   payload: null,
 });
-
 const clearStore = () => ({
   type: TYPES.SETTING_CLEAR_STORE,
+  payload: null,
+});
+
+// staff request
+const staffRequestRequest = () => ({
+  type: TYPES.STAFF_REQUEST_REQUEST,
+  payload: null,
+});
+const staffRequestSuccess = () => ({
+  type: TYPES.STAFF_REQUEST_SUCCESS,
+  payload: null,
+});
+const staffRequestError = (error) => ({
+  type: TYPES.STAFF_REQUEST_ERROR,
+  payload: { error },
+});
+const staffRequestReset = () => ({
+  type: TYPES.STAFF_REQUEST_RESET,
   payload: null,
 });
 
@@ -478,6 +495,19 @@ export const getPosDetailWeekly = (weekNo) => async (dispatch) => {
       dispatch(getPosDetailWeeklyReset());
     }
     dispatch(getPosDetailWeeklyError(error.message));
+  }
+};
+
+export const staffRequest = (data) => async (dispatch) => {
+  dispatch(staffRequestRequest());
+  try {
+    const res = await SettingController.staffRequest(data);
+    dispatch(staffRequestSuccess(res));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(staffRequestReset());
+    }
+    dispatch(staffRequestError(error.message));
   }
 };
 
