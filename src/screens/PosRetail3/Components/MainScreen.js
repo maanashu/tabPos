@@ -332,7 +332,8 @@ export function MainScreen({
           qty: obj.qty,
           supply_id: obj.supply_id,
           supply_price_id: obj.supply_price_id,
-          supply_variant_id: obj?.supply_variant_id,
+          // supply_variant_id: obj?.supply_variant_id,
+          ...(obj.supply_variant_id && { supply_variant_id: obj.supply_variant_id }),
         }));
         dispatch(addLocalCart(cartmatchId));
         setSelectedCartItems(cartmatchId);
@@ -351,7 +352,8 @@ export function MainScreen({
         qty: obj.qty,
         supply_id: obj.supply_id,
         supply_price_id: obj.supply_price_id,
-        supply_variant_id: obj?.supply_variant_id,
+        // supply_variant_id: obj?.supply_variant_id,
+        ...(obj.supply_variant_id && { supply_variant_id: obj.supply_variant_id }),
       }));
       dispatch(addLocalCart(cartmatchId));
       setSelectedCartItems(cartmatchId);
@@ -364,6 +366,7 @@ export function MainScreen({
         seller_id: sellerID,
         products: localCartArray,
       };
+      console.log('datsdatdsas', JSON.stringify(dataToSend));
 
       try {
         dispatch(createBulkcart(dataToSend));
