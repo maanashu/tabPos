@@ -36,6 +36,7 @@ import {
   getOrderUser,
   getStoreLocation,
   getUserOrder,
+  searchCustomer,
 } from '@/actions/CustomersAction';
 import { getCustomers } from '@/selectors/CustomersSelector';
 import Graph from './Components/Graph';
@@ -70,7 +71,7 @@ export function Customers2() {
     return accumulator + value;
   }, 0);
 
-  const totalCustomers = allCustomerObject?.onlineCustomers + allCustomerObject?.walkingCustomers;
+  const totalCustomers = allCustomerObject?.totalCustomer;
 
   const [allUsers, setAllUsers] = useState(false);
   const [userProfile, setUserProfile] = useState(false);
@@ -120,16 +121,16 @@ export function Customers2() {
 
     const data = {
       sellerID: sellerID,
-      customerType: customerType,
+      customerType: 'all_customers',
       calenderDate: undefined,
       dayWisefilter: time,
       area: 'none',
       search: searchText,
     };
 
-    dispatch(getUserOrder(data, callback));
+    dispatch(searchCustomer(data, callback));
   };
-  const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), []);
+  const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), [time]);
 
   const newCustomerData = [
     {

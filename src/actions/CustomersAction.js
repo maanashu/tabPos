@@ -127,6 +127,18 @@ export const getUserOrder = (data, callback) => async (dispatch) => {
   }
 };
 
+export const searchCustomer = (data, callback) => async (dispatch) => {
+  try {
+    const res = await CustomersController.getUserOrder(data);
+    callback && callback(res?.payload);
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      console.log('there is no data in search results');
+    }
+    console.log('Error in search results', error);
+  }
+};
+
 export const getOrderUser = (data) => async (dispatch) => {
   dispatch(getOrderUserRequest());
   try {

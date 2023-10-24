@@ -87,46 +87,19 @@ export function WeeklyTransaction({
     dispatch(getTotalTraType(data));
   }, [selectId, formatedDate]);
 
-  const typeSelect = () => {
-    if (appName === undefined && deliveryOption === undefined) {
-      return {
-        transaction_type: transaction?.modeOfPayment,
-        page: page,
-        limit: paginationModalValue,
-      };
-    } else if (appName !== undefined && deliveryOption === undefined) {
-      return {
-        transaction_type: transaction?.modeOfPayment,
-        page: page,
-        limit: paginationModalValue,
-        app_name: appName,
-      };
-    } else if (appName === undefined && deliveryOption !== undefined) {
-      return {
-        transaction_type: transaction?.modeOfPayment,
-        page: page,
-        limit: paginationModalValue,
-        delivery_option: deliveryOption,
-      };
-    }
-  };
-  const filterSelect = () => {
-    if (selectTime?.value === undefined) {
-      return {
-        date: formatedDate,
-      };
-    } else {
-      return {
-        filter_by: time,
-      };
-    }
-  };
-
-  const typeSelectData = typeSelect();
-  const filterData = filterSelect();
   useEffect(() => {
+    const data = {
+      dayWiseFilter: time,
+      transactionType: transaction?.modeOfPayment,
+      page: page,
+      limit: paginationModalValue,
+      sellerId: sellerID,
+      calendarDate: formatedDate,
+      delivery_option: deliveryOption,
+      app_name: appName,
+    };
     if (!fromInVoice) {
-      dispatch(getTotakTraDetail(sellerID, typeSelectData, filterData));
+      dispatch(getTotakTraDetail(data));
     }
   }, [selectId, transaction, page, paginationModalValue, formatedDate]);
 

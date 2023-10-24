@@ -39,7 +39,7 @@ import { Table } from 'react-native-table-component';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { getUserOrder } from '@/actions/CustomersAction';
+import { getUserOrder, searchCustomer } from '@/actions/CustomersAction';
 import { getCustomers } from '@/selectors/CustomersSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CustomersTypes';
@@ -51,6 +51,7 @@ import { NAVIGATION } from '@/constants';
 import { debounce } from 'lodash';
 import CustomerListView from './CustomerListView';
 import { useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 const result = Dimensions.get('window').height - 50;
 
 const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustomeType }) => {
@@ -237,10 +238,11 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
       area: 'none',
       search: searchText,
     };
-
-    dispatch(getUserOrder(data, callback));
+    dispatch(searchCustomer(data, callback));
   };
-  const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), []);
+
+  const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), [time]);
+
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.headerMainView}>
@@ -294,6 +296,7 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           horizontal
+          showsHorizontalScrollIndicator={false}
         />
 
         <View>
@@ -630,8 +633,8 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
             <CustomerListView
               searchedAppointments={searchedAppointments}
               profileClickHandler={(item, customerId, customerTypes) => {
-                setUserProfile(true);
-                setUserData(item);
+                // setUserProfile(true);
+                // setUserData(item);
                 setShowSearchModal(false);
                 // dispatch(getOrderUser(item?.user_id, sellerID));
               }}

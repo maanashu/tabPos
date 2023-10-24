@@ -424,16 +424,16 @@ export function Wallet2() {
               setInvoiceDetail(true);
             }
           }}
-          selectTime={selectTime}
-          selectId={selectId}
-          setSelectId={setSelectId}
-          setSelectTime={setSelectTime}
+          // selectTime={selectTime}
+          // selectId={selectId}
+          // setSelectId={setSelectId}
+          // setSelectTime={setSelectTime}
           setSelectDate={setSelectDate}
           selectDate={selectDate}
           // setSelectedEndDate={setSelectedEndDate}
           // setSelectedStartDate={setSelectDate}
-          // startDate={startDate}
-          // endDate={endDate}
+          // startDatefilter={startDate}
+          // endDatefilter={endDate}
           // dateRange={dateRange}
           // selectedStartDate={selectedStartDate}
           // selectedEndDate={selectedEndDate}
