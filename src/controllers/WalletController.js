@@ -24,14 +24,41 @@ export class WalletController {
     });
   }
 
-  static async getTotakTraDetail(sellerID, typeSelectData, filterData) {
+  static async getTotakTraDetail(data) {
     return new Promise((resolve, reject) => {
-      const params = new URLSearchParams(typeSelectData).toString();
-      const paramsFilter = new URLSearchParams(filterData).toString();
-      const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getTotakTraDetail +
-        `?seller_id=${sellerID}&${params}&${paramsFilter}`;
+      const baseEndpoint = `${ORDER_URL}${ApiOrderInventory.getTotakTraDetail}?seller_id=${data?.sellerId}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`;
+
+      let queryParams = [];
+
+      if (data?.calendarDate === undefined) {
+        if (data?.start_date && data?.end_date === 'Invalid date') {
+          queryParams.push(`filter_by=${data?.dayWiseFilter}`);
+        } else {
+          queryParams.push(`start_date=${data?.start_date}`);
+          queryParams.push(`end_date=${data?.end_date}`);
+        }
+      } else {
+        queryParams.push(`date=${data?.calendarDate}`);
+      }
+      if (data?.delivery_option || data?.app_name) {
+        if (data?.delivery_option !== undefined) {
+          queryParams.push(`delivery_option=${data?.delivery_option}`);
+        }
+        if (data?.app_name !== undefined) {
+          queryParams.push(`app_name=${data?.app_name}`);
+        }
+      } else {
+        if (data?.status !== 'none') {
+          queryParams.push(`status=${data?.status}`);
+        }
+        if (data?.orderType !== 'none') {
+          queryParams.push(`order_type=${data?.orderType}`);
+        }
+      }
+      const queryString = queryParams.join('&');
+
+      const endpoint = `${baseEndpoint}&${queryString}`;
+      console.log('endPoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

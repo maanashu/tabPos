@@ -57,10 +57,10 @@ export function WeeklyTransaction({
   backHandler,
   orderClickHandler,
   comeFrom,
-  selectTime,
-  setSelectTime,
-  selectId,
-  setSelectId,
+  // selectTime,
+  // setSelectTime,
+  // selectId,
+  // setSelectId,
   selectDate,
   setSelectDate,
 }) {
@@ -79,8 +79,8 @@ export function WeeklyTransaction({
   const [paginationModalValue, setPaginationModalValue] = useState(10);
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
 
-  // const [selectId, setSelectId] = useState(2);
-  // const [selectTime, setSelectTime] = useState({ value: 'week' });
+  const [selectId, setSelectId] = useState(2);
+  const [selectTime, setSelectTime] = useState({ value: 'week' });
   const time = selectTime?.value;
   const [page, setPage] = useState(1);
 
@@ -170,6 +170,8 @@ export function WeeklyTransaction({
   ];
 
   const onPresFun = (value) => {
+    setSelectedStartDate('');
+    setSelectedEndDate('');
     setFormatedDate();
   };
 
@@ -182,53 +184,20 @@ export function WeeklyTransaction({
     dispatch(getTotalTraType(data));
   }, [selectId, formatedDate]);
 
-  const typeSelect = () => {
-    if (statusSelect === 'none' && orderTypeSelect === 'none') {
-      return {
-        transaction_type: transaction?.modeOfPayment,
-        page: page,
-        limit: paginationModalValue,
-      };
-    } else if (statusSelect !== 'none' && orderTypeSelect === 'none') {
-      return {
-        transaction_type: transaction?.modeOfPayment,
-        page: page,
-        limit: paginationModalValue,
-        status: statusSelect,
-      };
-    } else if (statusSelect === 'none' && orderTypeSelect !== 'none') {
-      return {
-        transaction_type: transaction?.modeOfPayment,
-        page: page,
-        limit: paginationModalValue,
-        order_type: orderTypeSelect,
-      };
-    } else if (statusSelect !== 'none' && orderTypeSelect !== 'none') {
-      return {
-        transaction_type: transaction?.modeOfPayment,
-        page: page,
-        limit: paginationModalValue,
-        status: statusSelect,
-        order_type: orderTypeSelect,
-      };
-    }
-  };
-  const filterSelect = () => {
-    if (selectTime?.value === undefined) {
-      return {
-        start_date: startDated,
-        end_date: endDated,
-      };
-    } else {
-      return {
-        filter_by: time,
-      };
-    }
-  };
-  const typeSelectData = typeSelect();
-  const filterData = filterSelect();
   useEffect(() => {
-    dispatch(getTotakTraDetail(sellerID, typeSelectData, filterData));
+    const data = {
+      dayWiseFilter: time,
+      transactionType: transaction?.modeOfPayment,
+      page: page,
+      limit: paginationModalValue,
+      sellerId: sellerID,
+      calendarDate: formatedDate,
+      orderType: orderTypeSelect,
+      status: statusSelect,
+      start_date: startDated,
+      end_date: endDated,
+    };
+    dispatch(getTotakTraDetail(data));
   }, [
     selectId,
     transaction,
