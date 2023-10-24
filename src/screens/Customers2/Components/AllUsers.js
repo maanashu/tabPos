@@ -54,7 +54,17 @@ import { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 const result = Dimensions.get('window').height - 50;
 
-const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustomeType }) => {
+const AllUsers = ({
+  backHandler,
+  profileClickHandler,
+  saveCustomerId,
+  saveCustomeType,
+  setSaveCustomerId,
+  setSaveCustomerType,
+  setAllUsers,
+  setUserProfile,
+  setUserData,
+}) => {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
@@ -195,8 +205,8 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
     },
     {
       id: 5,
-      name: 'Walking Customers',
-      type: 'walking_customers',
+      name: 'Walkin Customers',
+      type: 'walkin_customers',
     },
   ];
 
@@ -632,9 +642,12 @@ const AllUsers = ({ backHandler, profileClickHandler, saveCustomerId, saveCustom
             </View>
             <CustomerListView
               searchedAppointments={searchedAppointments}
-              profileClickHandler={(item, customerId, customerTypes) => {
-                // setUserProfile(true);
-                // setUserData(item);
+              profileHandler={(item, customerId, customerTypes) => {
+                setSaveCustomerId(customerId);
+                setSaveCustomerType(customerTypes);
+                setAllUsers(true);
+                setUserProfile(true);
+                setUserData(item);
                 setShowSearchModal(false);
                 // dispatch(getOrderUser(item?.user_id, sellerID));
               }}
