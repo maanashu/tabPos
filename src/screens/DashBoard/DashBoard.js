@@ -295,7 +295,7 @@ export function DashBoard({ navigation }) {
     <TouchableOpacity
       onPress={() => {
         dispatch(addSellingSelection(2));
-        navigation.navigate(NAVIGATION.deliveryOrders2, { isViewAll: true, ORDER_DETAIL: item });
+        navigation.navigate(NAVIGATION.deliveryOrders2, { ORDER_DETAIL: item });
       }}
       style={[styles.reviewRenderView]}
     >

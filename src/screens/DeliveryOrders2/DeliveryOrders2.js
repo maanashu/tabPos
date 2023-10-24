@@ -53,17 +53,21 @@ import { pay, pin, clock, rightIcon, backArrow2, Fonts } from '@/assets';
 import styles from './styles';
 
 export function DeliveryOrders2({ route }) {
-  const mapRef = useRef(null);
   var screen;
+  var ORDER_DATA;
   if (route?.params && route?.params.screen) {
     screen = route.params.screen;
   }
+  if (route?.params && route?.params?.ORDER_DETAIL) {
+    ORDER_DATA = route?.params?.ORDER_DETAIL;
+  }
+
+  const mapRef = useRef(null);
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getDeliveryData = useSelector(getDelivery);
   const oneOrderDetail = useSelector(getAnalytics);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const ordersList = getDeliveryData?.getReviewDef;
   const singleOrderDetail = oneOrderDetail?.getOrderData;
@@ -81,7 +85,7 @@ export function DeliveryOrders2({ route }) {
     longitude: singleOrderDetail?.coordinates?.[1],
   };
 
-  const [openShippingOrders, setOpenShippingOrders] = useState('0');
+  const [openShippingOrders, setOpenShippingOrders] = useState(ORDER_DATA?.status ?? '0');
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? []);
   const [isBack, setIsBack] = useState();
   const [selectedProductId, setSelectedProductId] = useState();
@@ -95,6 +99,15 @@ export function DeliveryOrders2({ route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
   const [changeViewToRecheck, setChangeViewToRecheck] = useState();
+
+  useEffect(() => {
+    if (ORDER_DATA) {
+      setOpenShippingOrders(ORDER_DATA?.status?.toString());
+      setOrderId(ORDER_DATA?.id);
+      dispatch(getReviewDefault(ORDER_DATA?.status, 1));
+      setTrackingView(false);
+    }
+  }, [ORDER_DATA]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -110,12 +123,14 @@ export function DeliveryOrders2({ route }) {
   );
 
   useEffect(() => {
-    setViewAllOrder(false);
-    setTrackingView(false);
-    setChangeViewToRecheck(false);
-    dispatch(getReviewDefault(0, 1));
-    dispatch(getOrderCount());
-    setOpenShippingOrders('0');
+    if (screen) {
+      setViewAllOrder(false);
+      setTrackingView(false);
+      setChangeViewToRecheck(false);
+      dispatch(getReviewDefault(0, 1));
+      dispatch(getOrderCount());
+      setOpenShippingOrders('0');
+    }
   }, [screen]);
 
   useEffect(() => {
