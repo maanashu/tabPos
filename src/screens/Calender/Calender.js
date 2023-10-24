@@ -324,9 +324,9 @@ export function Calender() {
         item={item}
         index={index}
         isChangeStatusLoading={isChangeStatusLoading}
-        onPressCheckin={() => {
+        onPressCheckin={async () => {
           setSelectedPosStaffCompleteData(item);
-          dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
+          await dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
           onSearchAppoinment(searchedText);
         }}
         onPressEdit={() => {
@@ -334,8 +334,8 @@ export function Calender() {
           setshowRescheduleTimeModal(true);
           onSearchAppoinment(searchedText);
         }}
-        onPressMarkComplete={() => {
-          dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
+        onPressMarkComplete={async () => {
+          await dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
           onSearchAppoinment(searchedText);
         }}
         onPressAccept={() => {
