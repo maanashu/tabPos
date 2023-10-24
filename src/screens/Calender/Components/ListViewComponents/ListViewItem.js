@@ -20,6 +20,8 @@ const ListViewItem = ({
   onPressMarkComplete,
   isChangeStatusLoading,
   isSendCheckinOTPLoading,
+  onPressAccept = () => {},
+  onPressReject = () => {},
 }) => {
   const userDetails = item?.user_details;
   const invitedUserDetails = item?.invitation_details;
@@ -39,6 +41,7 @@ const ListViewItem = ({
           textStyle={styles.listCheckinBtnText}
           style={[styles.listViewCheckinBtn, { paddingHorizontal: ms(5) }]}
           onPress={() => {
+            onPressReject && onPressReject();
             dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
           }}
         />
@@ -52,6 +55,7 @@ const ListViewItem = ({
             { paddingHorizontal: ms(5), backgroundColor: COLORS.primary },
           ]}
           onPress={() => {
+            onPressAccept && onPressAccept();
             dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.ACCEPTED_BY_SELLER));
           }}
         />
@@ -134,7 +138,7 @@ const ListViewItem = ({
 
   return (
     <>
-      <View style={[styles.LlistViewHeaderContainer, { marginVertical: ms(5) }]}>
+      <View key={index} style={[styles.LlistViewHeaderContainer, { marginVertical: ms(5) }]}>
         <View style={[styles.listViewSubContainers, { flex: 0.3, justifyContent: 'flex-start' }]}>
           {userDetails || invitedUserDetails ? (
             <>

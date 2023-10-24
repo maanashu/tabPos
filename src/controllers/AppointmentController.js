@@ -3,7 +3,7 @@ import { HttpClient } from './HttpClient';
 import { store } from '@/store';
 
 export class AppointmentController {
-  static async getAppointment(pageNumber = 1, posUserId, searchText = '') {
+  static async getAppointment(pageNumber = 1, posUserId, searchText) {
     return new Promise((resolve, reject) => {
       const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
       const defaultQueryParams = {
@@ -16,7 +16,7 @@ export class AppointmentController {
         page: pageNumber,
         limit: 10,
       };
-      if (searchText) {
+      if (searchText !== undefined && searchText?.length >= 0) {
         queryParams.search = searchText;
       }
 

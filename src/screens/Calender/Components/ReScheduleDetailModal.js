@@ -35,6 +35,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { memo } from 'react';
 import { TYPES } from '@/Types/Types';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { Modal as PaperModal } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -234,7 +235,7 @@ const ReScheduleDetailModal = ({
   };
 
   return (
-    <Modal transparent isVisible={showRecheduleModal}>
+    <PaperModal visible={showRecheduleModal}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.addCartCon}>
           <View style={styles.addCartConHeader}>
@@ -420,15 +421,7 @@ const ReScheduleDetailModal = ({
               )}
             </View>
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              marginTop: ms(10),
-              marginHorizontal: ms(26),
-              alignSelf: 'center',
-            }}
-          >
+          <View style={styles.cancelSavebtnReschedule}>
             <Button
               title="Cancel Booking"
               textStyle={[styles.detailBtnCon]}
@@ -445,7 +438,7 @@ const ReScheduleDetailModal = ({
           </View>
         </View>
       </ScrollView>
-    </Modal>
+    </PaperModal>
   );
 };
 
