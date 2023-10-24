@@ -283,6 +283,11 @@ export function Customers2() {
             setUserData(item);
             // dispatch(getOrderUser(item?.user_id, sellerID));
           }}
+          setSaveCustomerId={setSaveCustomerId}
+          setSaveCustomerType={setSaveCustomerType}
+          setAllUsers={setAllUsers}
+          setUserProfile={setUserProfile}
+          setUserData={setUserData}
         />
       );
     } else {
@@ -439,7 +444,7 @@ export function Customers2() {
             </View>
             <CustomerListView
               searchedAppointments={searchedAppointments}
-              profileClickHandler={(item, customerId, customerTypes) => {
+              profileHandler={(item, customerId, customerTypes) => {
                 setSaveCustomerId(customerId);
                 setSaveCustomerType(customerTypes);
                 setAllUsers(true);

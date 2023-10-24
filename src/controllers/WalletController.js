@@ -58,7 +58,6 @@ export class WalletController {
       const queryString = queryParams.join('&');
 
       const endpoint = `${baseEndpoint}&${queryString}`;
-      console.log('endPoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

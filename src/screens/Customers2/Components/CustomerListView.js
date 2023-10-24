@@ -22,7 +22,7 @@ import { getCustomers } from '@/selectors/CustomersSelector';
 
 const CustomerListView = ({
   searchedAppointments,
-  profileClickHandler,
+  profileHandler,
   saveCustomerId,
   saveCustomeType,
 }) => {
@@ -86,7 +86,7 @@ const CustomerListView = ({
                     key={index}
                     style={[styles.tableDataCon, { zIndex: -99 }]}
                     activeOpacity={0.7}
-                    onPress={() => profileClickHandler(item, selectedId, customerType)}
+                    onPress={() => profileHandler(item, selectedId, customerType)}
                     // onPress={profileClickHandler} //prev
                   >
                     <View style={styles.displayFlex}>
