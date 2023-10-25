@@ -40,9 +40,11 @@ const ListViewItem = ({
           title={'Decline'}
           textStyle={styles.listCheckinBtnText}
           style={[styles.listViewCheckinBtn, { paddingHorizontal: ms(5) }]}
-          onPress={() => {
+          onPress={async () => {
+            await dispatch(
+              changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER)
+            );
             onPressReject && onPressReject();
-            dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
           }}
         />
         <Spacer space={ms(4)} horizontal />
@@ -54,9 +56,11 @@ const ListViewItem = ({
             styles.listViewCheckinBtn,
             { paddingHorizontal: ms(5), backgroundColor: COLORS.primary },
           ]}
-          onPress={() => {
+          onPress={async () => {
+            await dispatch(
+              changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.ACCEPTED_BY_SELLER)
+            );
             onPressAccept && onPressAccept();
-            dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.ACCEPTED_BY_SELLER));
           }}
         />
       </View>
