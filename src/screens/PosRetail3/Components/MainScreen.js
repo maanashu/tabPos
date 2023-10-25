@@ -366,7 +366,6 @@ export function MainScreen({
         seller_id: sellerID,
         products: localCartArray,
       };
-      console.log('datsdatdsas', JSON.stringify(dataToSend));
 
       try {
         dispatch(createBulkcart(dataToSend));

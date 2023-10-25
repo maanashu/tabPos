@@ -950,7 +950,7 @@ export function Management() {
               <View>
                 <Text style={styles.usdText}>
                   {strings.management.usd}
-                  {SessionData?.cashBalance.toFixed(2)}
+                  {Number(SessionData?.cashBalance)?.toFixed(2)}
                 </Text>
               </View>
               <Text

@@ -470,7 +470,7 @@ export function DashBoard({ navigation }) {
             />
           </View>
           <Text style={styles.cashierName}>
-            {getPosUser?.user_profiles?.firstname ?? 'username'}
+            {`${getPosUser?.user_profiles?.firstname} ${getPosUser?.user_profiles?.lastname}`}
           </Text>
           <Text style={styles.posCashier}>
             {getPosUser?.user_roles?.length > 0

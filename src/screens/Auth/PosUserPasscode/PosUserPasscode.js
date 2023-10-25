@@ -120,6 +120,7 @@ export function PosUserPasscode({ route }) {
           />
 
           <VirtualKeyBoard
+            maxCharLength={4}
             enteredValue={value}
             setEnteredValue={setValue}
             isButtonLoading={isLoading}

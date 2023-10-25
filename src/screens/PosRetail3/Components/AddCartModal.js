@@ -149,7 +149,6 @@ export function AddCartModal({
           setAddToCartLoader(true);
 
           const res = await dispatch(addTocart(Data));
-          console.log('responssdds', JSON.stringify(res));
           if (res?.msg !== 'Wrong supply variant choosen.') {
             setAddToCartLoader(false);
             crossHandler();
@@ -339,7 +338,8 @@ export function AddCartModal({
                 renderItem={coloredRenderItem}
                 keyExtractor={(item) => item.id}
                 extraData={finalColorArray?.[0]?.values}
-                numColumns={4}
+                n
+                umColumns={4}
                 // horizontal
                 // contentContainerStyle={{
                 //   borderWidth: 1,
