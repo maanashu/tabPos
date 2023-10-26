@@ -158,11 +158,11 @@ export function Customers2() {
       cID: 4,
     },
     {
-      customertype: 'Walking Customers',
+      customertype: 'Walkin Customers',
       count: allCustomerObject?.walkingCustomers ?? 0,
       img: walkinCustomer,
       id: '4',
-      type: 'walking_customers',
+      type: 'walkin_customers',
       cID: 5,
     },
   ];

@@ -90,7 +90,6 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
                 {singleOrderDetail?.seller_details?.organization_name ?? ''}
               </Text>
               <Text style={styles._kAddress}>
-                {' '}
                 {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
               </Text>
               <Text style={styles._kAddress}>{userDetailData?.phone_number ?? '-'}</Text>
@@ -133,9 +132,12 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
                             </View>
                           </View>
                         </View>
-                        {singleOrderDetail?.is_returned_order
-                          ? item?.order_details?.price
-                          : item?.price ?? '0.00'}
+                        <Text style={styles.priceTitle}>
+                          $
+                          {singleOrderDetail?.is_returned_order
+                            ? item?.order_details?.price
+                            : item?.price ?? '0.00'}
+                        </Text>
                       </View>
                     );
                   }}
@@ -193,7 +195,7 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
                 <Text
                   style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
                 >
-                  ${Number(singleOrderDetail?.payable_amount)?.toFixed(2) ?? '0.00'}
+                  ${Number(singleOrderDetail?.payable_amount) ?? '0.00'}
                 </Text>
               </View>
               {/* <View style={styles._horizontalLine} /> */}
@@ -309,7 +311,6 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
                 {singleOrderDetail?.seller_details?.organization_name ?? ''}
               </Text>
               <Text style={styles._kAddress}>
-                {' '}
                 {`${userDetailData?.current_address?.city} ${userDetailData?.current_address?.country} ${userDetailData?.current_address?.zipcode}`}
               </Text>
               <Text style={styles._kAddress}>{userDetailData?.phone_number ?? '-'}</Text>
