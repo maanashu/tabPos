@@ -45,7 +45,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
   const [selectType, setSelectType] = useState('dollar');
   const [buttonText, setButtonText] = useState('Apply Refund');
   const [changeView, setChangeView] = useState('TotalItems');
-  const [refundAmount, setRefundAmount] = useState('');
+  const [isRefundDeliveryAmount, setIsRefundDeliveryAmount] = useState(false);
   const [orders, setOrders] = useState();
   const [selectedItem, setSelectedItem] = useState('');
   const [inventoryModal, setInventoryModal] = useState(false);
@@ -134,6 +134,9 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     } else {
       deliveryCharges = 0;
     }
+    if (!isRefundDeliveryAmount) {
+      deliveryCharges = 0;
+    }
     const total_payable_amount =
       parseFloat(deliveryCharges) + calculateRefundTax() + totalRefundAmount;
 
@@ -151,7 +154,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
       title = 'Shipping Charges';
     } else {
       title = '';
-      deliveryCharges = 0;
+      deliveryCharges = '0';
     }
     return { title, deliveryCharges };
   };
@@ -354,6 +357,25 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           >
             <View style={styles.leftMainViewStyle}>
               <View style={styles.rowStyle}>
+                {finalOrder?.order?.delivery_charge == '0' ||
+                  (finalOrder?.order?.shipping_charge == '0' && (
+                    <>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setIsRefundDeliveryAmount(!isRefundDeliveryAmount);
+                        }}
+                      >
+                        <Image
+                          source={isRefundDeliveryAmount ? checkedCheckboxSquare : blankCheckBox}
+                          style={styles.checkBoxIconStyle}
+                        />
+                      </TouchableOpacity>
+                      <Text style={styles.applicableTextStyle}>
+                        {'Refund ' + deliveryShippingCharges().title}
+                      </Text>
+                    </>
+                  ))}
+
                 {!applyEachItem ? (
                   <View style={styles.applicableViewStyle}>
                     {applicableIsCheck ? (
@@ -617,16 +639,14 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                 )}`}</Text>
               </View>
 
-              {finalOrder?.order?.status === 5 ? (
+              {finalOrder?.order?.status === 5 && isRefundDeliveryAmount ? (
                 <>
                   <Spacer space={SH(10)} />
                   <View style={styles.totalViewStyle}>
                     <Text style={styles.subTotalText}>{deliveryShippingCharges().title}</Text>
-                    <Text style={styles.subTotalPrice}>{`${
-                      applyEachItem || applicableIsCheck
-                        ? formattedReturnPrice(deliveryShippingCharges().deliveryCharges)
-                        : formattedReturnPrice(0)
-                    }`}</Text>
+                    <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
+                      deliveryShippingCharges().deliveryCharges
+                    )}`}</Text>
                   </View>
                   <Spacer space={SH(10)} />
                 </>
@@ -676,6 +696,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           orderData={finalOrder}
           applyEachItem={applyEachItem}
           applicableForAllItems={applicableIsCheck}
+          shouldRefundDeliveryAmount={isRefundDeliveryAmount}
           backHandler={() => setChangeView('TotalItems')}
           payableAmount={totalRefundableAmount()}
           subTotal={totalRefundAmount}
@@ -739,12 +760,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: ms(7),
-    paddingHorizontal: ms(10),
+    paddingHorizontal: ms(2),
   },
   applicableViewStyle: {
     flexDirection: 'row',
-    paddingLeft: ms(8),
-    paddingRight: ms(4),
+    paddingLeft: ms(5),
+    paddingRight: ms(2),
     alignItems: 'center',
   },
   checkBoxIconStyle: {
