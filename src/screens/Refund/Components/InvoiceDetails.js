@@ -24,6 +24,7 @@ const InvoiceDetails = ({
   total,
   applicableForAllItems,
   applyEachItem,
+  shouldRefundDeliveryAmount,
 }) => {
   const dispatch = useDispatch();
   const getOrder = useSelector(getAnalytics);
@@ -99,13 +100,14 @@ const InvoiceDetails = ({
       </View>
 
       <View style={styles._horizontalLine} />
-
-      <View style={styles._subTotalContainer}>
-        <Text style={styles._substotalTile}>{deliveryShippingTitle}</Text>
-        <Text style={styles._subTotalPrice}>{`${formattedReturnPrice(
-          deliveryShippingCharges
-        )}`}</Text>
-      </View>
+      {shouldRefundDeliveryAmount && (
+        <View style={styles._subTotalContainer}>
+          <Text style={styles._substotalTile}>{deliveryShippingTitle}</Text>
+          <Text style={styles._subTotalPrice}>{`${formattedReturnPrice(
+            deliveryShippingCharges
+          )}`}</Text>
+        </View>
+      )}
 
       <View style={styles._horizontalLine} />
 

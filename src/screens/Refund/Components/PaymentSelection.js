@@ -42,6 +42,7 @@ const PaymentSelection = ({
   orderData,
   order,
   applicableForAllItems,
+  shouldRefundDeliveryAmount,
   applyEachItem,
   payableAmount,
   subTotal,
@@ -225,6 +226,7 @@ const PaymentSelection = ({
           total={total}
           applicableForAllItems={applicableForAllItems}
           applyEachItem={applyEachItem}
+          shouldRefundDeliveryAmount={shouldRefundDeliveryAmount}
         />
       </View>
 

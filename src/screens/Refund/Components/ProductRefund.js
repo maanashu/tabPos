@@ -367,7 +367,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                       >
                         <Image
                           source={isRefundDeliveryAmount ? checkedCheckboxSquare : blankCheckBox}
-                          style={[styles.checkBoxIconStyle, { tintColor: 'gray' }]}
+                          style={styles.checkBoxIconStyle}
                         />
                       </TouchableOpacity>
                       <Text style={styles.applicableTextStyle}>
@@ -696,6 +696,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           orderData={finalOrder}
           applyEachItem={applyEachItem}
           applicableForAllItems={applicableIsCheck}
+          shouldRefundDeliveryAmount={isRefundDeliveryAmount}
           backHandler={() => setChangeView('TotalItems')}
           payableAmount={totalRefundableAmount()}
           subTotal={totalRefundAmount}
