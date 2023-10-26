@@ -301,7 +301,7 @@ export function WeeklyTransaction({
               </View>
               <View style={styles.tableHeaderRight}>
                 <Text numberOfLines={1} style={styles.tableTextHea}>
-                  Invoice Number
+                  Invoice ID
                 </Text>
 
                 <View style={styles.flexAlign}>

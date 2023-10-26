@@ -47,7 +47,8 @@ export class WalletController {
         if (data?.app_name !== undefined) {
           queryParams.push(`app_name=${data?.app_name}`);
         }
-      } else {
+      }
+      if (data?.status || data?.orderType) {
         if (data?.status !== 'none') {
           queryParams.push(`status=${data?.status}`);
         }

@@ -24,37 +24,37 @@ export function HomeGraph({
 }) {
   return (
     <View style={[styles.totalProductCon, style]}>
-      <Spacer space={SH(10)} />
-      <View style={styles.displayFlex}>
-        <View>
-          <Text style={styles.darkBlackText}>{header}</Text>
-          <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
-            {isLoading ? <ActivityIndicator color={COLORS.primary} size={'small'} /> : subHeader}
-          </Text>
-        </View>
-        {rightHeader && (
+      <TouchableOpacity onPress={onPress} disabled={disabled}>
+        <Spacer space={SH(10)} />
+        <View style={styles.displayFlex}>
           <View>
-            <View style={styles.flexAlign}>
-              <View style={styles.bullets} />
-              <Text style={styles.bulletText}>{bulletText ? bulletText : 'Delivered'}</Text>
-            </View>
-            <View style={styles.flexAlign}>
-              <View style={[styles.bullets, { backgroundColor: COLORS.violet }]} />
-              <Text style={styles.bulletText}>{'Returned'}</Text>
-            </View>
-            <View style={styles.flexAlign}>
-              <View style={[styles.bullets, { backgroundColor: COLORS.red }]} />
-              <Text style={styles.bulletText}>{'Cancelled'}</Text>
-            </View>
+            <Text style={styles.darkBlackText}>{header}</Text>
+            <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
+              {isLoading ? <ActivityIndicator color={COLORS.primary} size={'small'} /> : subHeader}
+            </Text>
           </View>
-        )}
-      </View>
-      {isLoading ? (
-        <View style={styles.loaderView}>
-          <ActivityIndicator color={COLORS.primary} size={'small'} />
+          {rightHeader && (
+            <View>
+              <View style={styles.flexAlign}>
+                <View style={styles.bullets} />
+                <Text style={styles.bulletText}>{bulletText ? bulletText : 'Delivered'}</Text>
+              </View>
+              <View style={styles.flexAlign}>
+                <View style={[styles.bullets, { backgroundColor: COLORS.violet }]} />
+                <Text style={styles.bulletText}>{'Returned'}</Text>
+              </View>
+              <View style={styles.flexAlign}>
+                <View style={[styles.bullets, { backgroundColor: COLORS.red }]} />
+                <Text style={styles.bulletText}>{'Cancelled'}</Text>
+              </View>
+            </View>
+          )}
         </View>
-      ) : (
-        <TouchableOpacity onPress={onPress} disabled={disabled}>
+        {isLoading ? (
+          <View style={styles.loaderView}>
+            <ActivityIndicator color={COLORS.primary} size={'small'} />
+          </View>
+        ) : (
           <NewChartKit
             data={data}
             arrayLength={arrayLength}
@@ -65,8 +65,8 @@ export function HomeGraph({
             startDated={startDated}
             endDated={endDated}
           />
-        </TouchableOpacity>
-      )}
+        )}
+      </TouchableOpacity>
     </View>
   );
 }
