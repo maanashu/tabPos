@@ -1,79 +1,83 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
   Image,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
+  FlatList,
   Platform,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
+
+import moment from 'moment';
+import { debounce } from 'lodash';
 import Modal from 'react-native-modal';
+import { ms } from 'react-native-size-matters';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 import {
   bell,
   crossButton,
   Fonts,
-  notifications,
   rightIcon,
   search_light,
   tray,
   backArrow,
-  dropdown2,
   Calculator,
   CalculatorColor,
   dropdown,
   down,
   up,
+  wallet,
+  scn,
 } from '@/assets';
-import { strings } from '@/localization';
-import { COLORS, SF, SW, SH } from '@/theme';
-import { Button, ScreenWrapper, Spacer } from '@/components';
-import { styles } from '@/screens/Management/Management.styles';
-
-import {
-  SessionHistoryTable,
-  SummaryHistory,
-  TransactionDropDown,
-} from '@/screens/Management/Components';
-import { useIsFocused } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAuthData } from '@/selectors/AuthSelector';
 import {
   endTrackingSession,
   getDrawerSession,
   getDrawerSessionById,
   getDrawerSessions,
   getPaymentDrawerSessions,
-  getSessionHistory,
   sendSessionHistory,
   trackSessionSave,
 } from '@/actions/CashTrackingAction';
-import { getCashTracking } from '@/selectors/CashTrackingSelector';
-import moment from 'moment';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/CashtrackingTypes';
-import { digits } from '@/utils/validators';
-import { FlatList } from 'react-native';
-import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import { strings } from '@/localization';
+import { digits } from '@/utils/validators';
+import { COLORS, SF, SW, SH } from '@/theme';
+import { TYPES } from '@/Types/CashtrackingTypes';
+import { navigate } from '@/navigation/NavigationRef';
 import { logoutUserFunction } from '@/actions/UserActions';
-import { ms } from 'react-native-size-matters';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Button, ScreenWrapper, Spacer } from '@/components';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { getCashTracking } from '@/selectors/CashTrackingSelector';
+import { getOrdersByInvoiceId, scanBarCode } from '@/actions/DashboardAction';
+import { SessionHistoryTable, SummaryHistory } from '@/screens/Management/Components';
+
+import { styles } from '@/screens/Management/Management.styles';
+import OrderWithInvoiceNumber from '../Refund/Components/OrderWithInvoiceNumber';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { Loader } from '@/components/Loader';
+import WalletInvoice from '../Wallet2/Components/WalletInvoice';
+import { getDashboard } from '@/selectors/DashboardSelector';
 
 moment.suppressDeprecationWarnings = true;
 
 export function Management() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
-  const getAuth = useSelector(getAuthData);
   const drawerData = useSelector(getCashTracking);
+  const getSearchOrders = useSelector(getDashboard);
+  const searchData = getSearchOrders?.invoiceSearchOrders;
+  const drawerActivity = drawerData?.getDrawerSession?.drawer_activites;
+  const historyById = drawerData?.getDrawerSessionById?.[0];
+
   const [sessionHistoryArray, setSessionHistoryArray] = useState(
     drawerData?.getSessionHistory ?? []
   );
-
-  const drawerActivity = drawerData?.getDrawerSession?.drawer_activites;
-  const historyById = drawerData?.getDrawerSessionById?.[0];
   const [addCash, setAddCash] = useState(false);
   const [cashSummary, setCashSummary] = useState('');
   const [saveSession, setSaveSession] = useState('');
@@ -81,7 +85,6 @@ export function Management() {
   const [endSession, setEndSession] = useState(false);
   const [viewSession, setViewSession] = useState(false);
   const [summaryHistory, setSummaryHistory] = useState(false);
-  const [selectAmount, setSelectAmount] = useState('0');
   const [trackingSession, setTrackingSession] = useState(false);
   const [newTrackingSession, setNewTrackingSession] = useState(false);
   const [sessionHistory, setSessionHistory] = useState(false);
@@ -92,19 +95,16 @@ export function Management() {
   const [trackNotes, setTrackNotes] = useState('');
   const [dropdownSelect, setDropdownSelect] = useState();
   const [addCashDropDown, setAddCashDropDown] = useState();
+  const [sku, setSku] = useState();
   const cashInArray = drawerActivity?.filter((item) => item.mode_of_cash === 'cash_in');
   const cashCount = cashInArray?.map((item) => item.amount);
   const cashSum = cashCount?.reduce((partialSum, a) => partialSum + a, 0);
   const cashOutArray = drawerActivity?.filter((item) => item.mode_of_cash === 'cash_out');
   const cashOutCount = cashOutArray?.map((item) => item.amount);
   const cashOutSum = cashOutCount?.reduce((partialSum, a) => partialSum + a, 0);
-  const onchangeValue = (value) => setDropdownSelect(value);
-  const addCashValue = (value) => setAddCashDropDown(value);
   const [differentState, setdifferentState] = useState(false);
   const [addCashInput, setAddCashInput] = useState('');
-  const [mergedDataa, setMergedData] = useState();
   const [userHistory, setUserHistory] = useState();
-  const [isCashIn, setIsCashIn] = useState(null);
   const SessionData = {
     id: drawerData?.getDrawerSession?.id,
     cashBalance: drawerData?.getDrawerSession?.cash_balance ?? '0',
@@ -115,7 +115,6 @@ export function Management() {
   const cashTotalNet =
     Number(drawerData?.drawerHistory?.cash_in?.total) +
     Number(drawerData?.drawerHistory?.cash_out?.total);
-  const cashOutNet = Number(drawerData?.drawerHistory?.cash_out?.total);
   // alert(cashOut?.total);
   const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
@@ -128,28 +127,15 @@ export function Management() {
 
   const [leaveDatas, setLeaveData] = useState('0');
   const [clickAmount, setClickAmount] = useState();
-
-  const [expandedItems, setExpandedItems] = useState([]);
+  const [showInvoice, setShowInvoice] = useState(false);
   const [viewCashInArray, setViewCashInArray] = useState(false);
   const [viewCashOutArray, setViewCashOutArray] = useState(false);
   const [salesExpandedView, setSalesExpandedView] = useState(false);
   const [salesOutExpandedView, setSalesOutExpandedView] = useState(false);
-
   const [manualInExpandedView, setManualInExpandedView] = useState(false);
   const [manualOutExpandedView, setManualOutExpandedView] = useState(false);
 
-  const [delieveryFeeInExpandedView, setDelieveryFeeInExpandedView] = useState(false);
-  const [delieveryFeeOutExpandedView, setDelieveryFeeOutExpandedView] = useState(false);
-  const [shippingFeeInExpandedView, setShippingFeeInExpandedView] = useState(false);
-  const [shippingFeeOutExpandedView, setShippingFeeOutExpandedView] = useState(false);
-
   // Function to toggle the expansion state of an item
-  const toggleExpansion = (index) => {
-    const newExpandedItems = [...expandedItems];
-    newExpandedItems[index] = !newExpandedItems[index];
-    setExpandedItems(newExpandedItems);
-  };
-
   const setLeavFun = (countThird) => {
     if (countThird) {
       setLeaveId(null);
@@ -192,19 +178,25 @@ export function Management() {
   const drawerSessLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_DRAWER_SESSION], state)
   );
+
   const createActivityLoad = useSelector((state) =>
     isLoadingSelector([TYPES.TRACK_SESSION_SAVE], state)
   );
+
   const sessionHistoryLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_SESSION_HISTORY], state)
   );
+
   const sendEmailLoad = useSelector((state) =>
     isLoadingSelector([TYPES.SEND_SESSION_HISTORY], state)
   );
+
   const oneHistoryLoad = useSelector((state) => isLoadingSelector([TYPES.GET_SESSION_BYID], state));
-  const addRemoveLoad = useSelector((state) =>
-    isLoadingSelector([TYPES.TRACK_SESSION_SAVE], state)
+
+  const onSeachLoad = useSelector((state) =>
+    isLoadingSelector([DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID], state)
   );
+
   useEffect(() => {
     if (isFocused) {
       dispatch(getDrawerSessions());
@@ -244,6 +236,7 @@ export function Management() {
       }
     }
   };
+
   const addCashHandler = async () => {
     if (!addCashInput) {
       alert('Please Enter Amount');
@@ -333,6 +326,7 @@ export function Management() {
     setSessionHistory(false), setSummaryHistory(true);
     dispatch(getPaymentDrawerSessions(item.id));
   };
+
   const emailButtonHandler = async () => {
     const data = await sendSessionHistory(SessionData?.id)(dispatch);
     if (data) {
@@ -342,14 +336,21 @@ export function Management() {
       setViewSession(false);
       setHistoryHeader(false);
     }
-
-    // navigate(NAVIGATION.dashBoard);
-    // setSummaryHistory(false),
-    //   setViewSession(false),
-    //   contentFunction(),
-    //   setNewTrackingSession(true);
-    // setHistoryHeader(false);
   };
+
+  const onSearchInvoiceHandler = (text) => {
+    if (text.includes('Invoice_') || text.includes('invoice_')) {
+      dispatch(scanBarCode(text));
+    } else {
+      dispatch(
+        getOrdersByInvoiceId(text, () => {
+          setShowInvoice(true);
+        })
+      );
+    }
+  };
+
+  const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
 
   const customHeader = () => {
     return (
@@ -386,6 +387,10 @@ export function Management() {
               placeholder={strings.deliveryOrders.search}
               style={styles.textInputStyle}
               placeholderTextColor={COLORS.darkGray}
+              onChangeText={(text) => {
+                setSku(text);
+                debouncedSearchInvoice(text);
+              }}
             />
           </View>
         </View>
@@ -841,7 +846,7 @@ export function Management() {
     );
   };
 
-  const contentFunction = (props) => {
+  const contentFunction = () => {
     if (sessionHistory) {
       return (
         <SessionHistoryTable
@@ -1682,13 +1687,70 @@ export function Management() {
 
   return (
     <ScreenWrapper>
-      <View style={styles.container}>
-        {summaryHistory ? null : customHeader()}
-        {contentFunction()}
-        {trackinSessionModal()}
-        {addCashModal()}
-        {endSessionModal()}
-      </View>
+      {showInvoice ? (
+        <>
+          <View style={styles.headerMainView}>
+            <View style={styles.deliveryView}>
+              <TouchableOpacity onPress={() => setShowInvoice(false)}>
+                <Image source={backArrow} style={[styles.truckStyle, { marginLeft: 10 }]} />
+              </TouchableOpacity>
+              <Image source={wallet} style={[styles.truckStyle, { marginLeft: 10 }]} />
+              <Text style={styles.deliveryText}>{strings.wallet.orderDetail}</Text>
+            </View>
+            <View style={styles.deliveryView}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigate(NAVIGATION.notificationsList, {
+                    screen: NAVIGATION.management,
+                  })
+                }
+              >
+                <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
+              </TouchableOpacity>
+              <View style={styles.searchView}>
+                <View style={styles.flexAlign}>
+                  <Image source={search_light} style={styles.searchImage} />
+                  <TextInput
+                    value={sku}
+                    placeholder={strings.wallet.searchHere}
+                    style={styles.textInputStyle}
+                    placeholderTextColor={COLORS.darkGray}
+                    onChangeText={(text) => {
+                      setSku(text);
+                      debouncedSearchInvoice(text);
+                    }}
+                  />
+                </View>
+                <Image source={scn} style={styles.scnStyle} />
+              </View>
+            </View>
+          </View>
+
+          {onSeachLoad ? (
+            <View style={{ marginTop: SH(50) }}>
+              <Loader />
+            </View>
+          ) : (
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+              <View style={{ flex: 0.8 }}>
+                <OrderWithInvoiceNumber orderData={searchData} />
+              </View>
+              <Spacer horizontal={SW(10)} />
+              <View style={styles.invoiceContainer}>
+                <WalletInvoice orderDetail={searchData} />
+              </View>
+            </View>
+          )}
+        </>
+      ) : (
+        <View style={styles.container}>
+          {summaryHistory ? null : customHeader()}
+          {contentFunction()}
+          {trackinSessionModal()}
+          {addCashModal()}
+          {endSessionModal()}
+        </View>
+      )}
       {drawerSessLoad || createActivityLoad || oneHistoryLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />

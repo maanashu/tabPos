@@ -175,7 +175,6 @@ export class SettingController {
   static async staffDetail(id) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.staffDetail + `?id=${id}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -375,7 +374,6 @@ export class SettingController {
   static async staffRequest(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.staffRequest;
-      console.log('--------------', data);
       HttpClient.post(endpoint, data)
         .then((response) => {
           Toast.show({

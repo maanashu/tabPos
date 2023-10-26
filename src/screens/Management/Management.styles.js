@@ -848,4 +848,16 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
     paddingHorizontal: moderateScale(12),
   },
+  scnStyle: {
+    width: SW(13),
+    height: SW(14),
+    resizeMode: 'contain',
+  },
+  invoiceContainer: {
+    flex: 0.48,
+    backgroundColor: COLORS.white,
+    marginBottom: ms(10),
+    right: SW(5),
+    height: SH(700),
+  },
 });
