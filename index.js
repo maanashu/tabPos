@@ -3,11 +3,15 @@
  */
 
 import { AppRegistry, Platform } from 'react-native';
-import { App } from '@/App';
-import { name as appName } from './app.json';
+
 import notifee, { EventType } from '@notifee/react-native';
-import { navigate } from '@/navigation/NavigationRef';
+
+import { App } from '@/App';
+import { store } from '@/store';
 import { NAVIGATION } from '@/constants';
+import { name as appName } from './app.json';
+import { navigate } from '@/navigation/NavigationRef';
+import { getPendingOrders } from '@/actions/DashboardAction';
 
 if (Platform.OS === 'android') {
   notifee.createChannel({
@@ -18,7 +22,7 @@ if (Platform.OS === 'android') {
 
 notifee.onBackgroundEvent(async ({ type, detail }) => {
   if (type === EventType.PRESS) {
-    // App was terminated, handle the notification and open the desired screen
+    store.dispatch(getPendingOrders());
     await handleNotification(detail.notification);
   }
 });
