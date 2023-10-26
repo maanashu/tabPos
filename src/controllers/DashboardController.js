@@ -171,6 +171,7 @@ export class DashboardController {
         PRODUCT_URL +
         ApiProductInventory.searchProductList +
         `?app_name=pos&delivery_options=3&search=${search}&seller_id=${sellerID}&need_invoice_search=true`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

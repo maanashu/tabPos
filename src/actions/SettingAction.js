@@ -498,10 +498,11 @@ export const getPosDetailWeekly = (weekNo) => async (dispatch) => {
   }
 };
 
-export const staffRequest = (data) => async (dispatch) => {
+export const staffRequest = (data, callback) => async (dispatch) => {
   dispatch(staffRequestRequest());
   try {
     const res = await SettingController.staffRequest(data);
+    callback && callback(res);
     dispatch(staffRequestSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {

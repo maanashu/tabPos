@@ -138,6 +138,16 @@ export function Staff() {
     posUsersRole = mappedArray;
   }
   const requestLoad = useSelector((state) => isLoadingSelector([TYPES.STAFF_REQUEST], state));
+  const [refreshing, setRefreshing] = useState(false);
+
+  const ScrollRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    dispatch(getStaffDetail(data?.id));
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000); // Adjust the delay as needed
+  }, []);
 
   useEffect(() => {
     if (isFocused) {
@@ -298,7 +308,10 @@ export function Staff() {
           </TouchableOpacity>
           <Spacer space={SH(20)} />
           <View style={styles.staffScrollableArea}>
-            <ScrollView>
+            <ScrollView
+              contentContainerStyle={{ flex: 1 }}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={ScrollRefresh} />}
+            >
               <View style={styles.profileMaincon}>
                 <View style={styles.profileBodycon}>
                   <View style={{ flexDirection: 'row' }}>
@@ -493,10 +506,7 @@ export function Staff() {
                                 styles.text,
                                 styles.hourRateLigh,
                                 {
-                                  color:
-                                    item.status == 0 || item.status == 1
-                                      ? COLORS.red
-                                      : COLORS.bluish_green,
+                                  color: item.status == 0 ? COLORS.red : COLORS.bluish_green,
                                 },
                               ]}
                               numberOfLines={1}
@@ -511,18 +521,35 @@ export function Staff() {
                             {item.status == 0 ? (
                               <TouchableOpacity
                                 style={styles.requestButtoncon}
-                                onPress={() => {
+                                onPress={async () => {
                                   const data = {
                                     start_date: item?.start_date,
                                     end_date: item?.end_date,
                                     staff_details_id: item?.pos_staff_detail?.id?.toString(),
                                   };
-                                  dispatch(staffRequest(data));
+                                  const res = await dispatch(
+                                    staffRequest(data, (res) => {
+                                      dispatch(getStaffDetail(data.id));
+                                    })
+                                  );
                                 }}
                               >
                                 <Text style={styles.requestText}>{strings.settings.request}</Text>
                               </TouchableOpacity>
                             ) : item.status == 1 ? (
+                              <View>
+                                <Text
+                                  style={[
+                                    styles.text,
+                                    styles.hourRateLigh,
+                                    { color: COLORS.bluish_green },
+                                  ]}
+                                  numberOfLines={1}
+                                >
+                                  Request Sent
+                                </Text>
+                              </View>
+                            ) : (
                               <TouchableOpacity onPress={() => setInvoiceModal(true)}>
                                 <Text
                                   style={[
@@ -535,25 +562,7 @@ export function Staff() {
                                   View Payment
                                 </Text>
                               </TouchableOpacity>
-                            ) : (
-                              <View>
-                                <Text
-                                  style={[
-                                    styles.text,
-                                    styles.hourRateLigh,
-                                    { color: COLORS.primary },
-                                  ]}
-                                  numberOfLines={1}
-                                >
-                                  View Payment
-                                </Text>
-                              </View>
                             )}
-                            {/* {item.status === true ? (
-                             
-                            ) : (
-                             
-                            )} */}
 
                             <View style={[styles.text, { alignItems: 'center' }]}>
                               <Image
