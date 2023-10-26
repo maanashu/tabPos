@@ -338,8 +338,7 @@ export function AddCartModal({
                 renderItem={coloredRenderItem}
                 keyExtractor={(item) => item.id}
                 extraData={finalColorArray?.[0]?.values}
-                n
-                umColumns={4}
+                numColumns={4}
                 // horizontal
                 // contentContainerStyle={{
                 //   borderWidth: 1,

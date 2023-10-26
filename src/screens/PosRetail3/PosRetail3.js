@@ -361,6 +361,7 @@ export function PosRetail3() {
         TYPES.ATTACH_SERVICE_CUSTOMER,
         TYPES.ATTACH_CUSTOMER,
         TYPES.CREATE_SERVICE_ORDER,
+        TYPES.UPDATE_CART_BY_TIP,
       ],
       state
     )

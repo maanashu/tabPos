@@ -492,26 +492,23 @@ export function Staff() {
                               style={[
                                 styles.text,
                                 styles.hourRateLigh,
-                                { color: item.status === true ? COLORS.bluish_green : COLORS.red },
+                                {
+                                  color:
+                                    item.status == 0 || item.status == 1
+                                      ? COLORS.red
+                                      : COLORS.bluish_green,
+                                },
                               ]}
                               numberOfLines={1}
                             >
-                              {item.status === true ? 'paid' : 'Unpaid'}
+                              {item.status == 0
+                                ? 'Unpaid'
+                                : item.status == 1
+                                ? 'Request Sent'
+                                : 'Paid'}
                             </Text>
-                            {item.status === true ? (
-                              <TouchableOpacity onPress={() => setInvoiceModal(true)}>
-                                <Text
-                                  style={[
-                                    styles.text,
-                                    styles.hourRateLigh,
-                                    { color: COLORS.primary },
-                                  ]}
-                                  numberOfLines={1}
-                                >
-                                  View Payment
-                                </Text>
-                              </TouchableOpacity>
-                            ) : (
+
+                            {item.status == 0 ? (
                               <TouchableOpacity
                                 style={styles.requestButtoncon}
                                 onPress={() => {
@@ -525,7 +522,38 @@ export function Staff() {
                               >
                                 <Text style={styles.requestText}>{strings.settings.request}</Text>
                               </TouchableOpacity>
+                            ) : item.status == 1 ? (
+                              <TouchableOpacity onPress={() => setInvoiceModal(true)}>
+                                <Text
+                                  style={[
+                                    styles.text,
+                                    styles.hourRateLigh,
+                                    { color: COLORS.primary },
+                                  ]}
+                                  numberOfLines={1}
+                                >
+                                  View Payment
+                                </Text>
+                              </TouchableOpacity>
+                            ) : (
+                              <View>
+                                <Text
+                                  style={[
+                                    styles.text,
+                                    styles.hourRateLigh,
+                                    { color: COLORS.primary },
+                                  ]}
+                                  numberOfLines={1}
+                                >
+                                  View Payment
+                                </Text>
+                              </View>
                             )}
+                            {/* {item.status === true ? (
+                             
+                            ) : (
+                             
+                            )} */}
 
                             <View style={[styles.text, { alignItems: 'center' }]}>
                               <Image
@@ -589,12 +617,18 @@ export function Staff() {
                                         styles.hourRateLigh,
                                         {
                                           color:
-                                            data.status === true ? COLORS.bluish_green : COLORS.red,
+                                            data.status == 0 || data.status == 1
+                                              ? COLORS.red
+                                              : COLORS.bluish_green,
                                         },
                                       ]}
                                       numberOfLines={1}
                                     >
-                                      {data.status === true ? 'paid' : 'Unpaid'}
+                                      {data.status == 0
+                                        ? 'Unpaid'
+                                        : data.status == 1
+                                        ? 'Request Sent'
+                                        : 'Paid'}
                                     </Text>
                                     <TouchableOpacity onPress={() => setInvoiceModal(true)}>
                                       <Text
