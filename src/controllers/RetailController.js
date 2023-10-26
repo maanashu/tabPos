@@ -452,10 +452,8 @@ export class RetailController {
             supply_id: data.supplyId.toString(),
             supply_price_id: data.supplyPriceID.toString(),
           };
-      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           // if (response?.msg === 'PosCart created successfully') {
           //   Toast.show({
           //     position: 'bottom',
@@ -467,7 +465,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -1181,7 +1178,6 @@ export class RetailController {
   static async createBulkCart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
-      console.log('createBulkcart', data);
       HttpClient.post(endpoint, data)
         .then((response) => {
           resolve(response);

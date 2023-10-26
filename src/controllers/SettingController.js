@@ -9,14 +9,11 @@ export class SettingController {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         USER_URL + ApiUserInventory.getSetting + `/?app_name=pos&seller_id=${sellerID}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           if (error.statusCode !== 204) {
             Toast.show({
               text2: error.msg,
@@ -176,10 +173,8 @@ export class SettingController {
   }
 
   static async staffDetail(id) {
-    console.log('----------------------------', id);
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.staffDetail + `?id=${id}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -258,8 +253,6 @@ export class SettingController {
   static async verifyGoogleCode(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.verifyGoogleCode;
-      console.log('endpoint', endpoint);
-      console.log('data', data);
       HttpClient.post(endpoint, data)
         .then((response) => {
           resolve(response);
@@ -381,7 +374,6 @@ export class SettingController {
   static async staffRequest(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.staffRequest;
-      console.log('--------------', data);
       HttpClient.post(endpoint, data)
         .then((response) => {
           Toast.show({

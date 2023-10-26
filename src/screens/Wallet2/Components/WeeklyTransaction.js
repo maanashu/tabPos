@@ -119,7 +119,6 @@ export function WeeklyTransaction({
   const currentEndDate = moment().endOf('month').format('MMM D, YYYY');
   const dateRange = `${currentStartDate} - ${currentEndDate}`;
   const formateDate = { start_date: startDated, end_date: endDated };
-  // console.log('fgkdhfgkd', startDated, endDated);
 
   const orderTypeArray = [
     {
