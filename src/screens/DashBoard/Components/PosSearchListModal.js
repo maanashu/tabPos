@@ -48,6 +48,7 @@ export function PosSearchListModal({
   viewDetailHandler,
   onMinusBtn,
   onPlusBtn,
+  searchFunction,
 }) {
   const isFocused = useIsFocused();
   const textInputref = useRef(null);
@@ -99,25 +100,6 @@ export function PosSearchListModal({
     });
   };
 
-  const renderBundleItem = ({ item }) => {
-    const backgroundColor = addRemoveSelectedId === item.id ? COLORS.white : COLORS.primary;
-    const color = addRemoveSelectedId === item.id ? COLORS.primary : COLORS.white;
-    const text = addRemoveSelectedId === item.id ? 'Remove' : 'Add';
-
-    return (
-      <AddRemoveItemSelect
-        item={item}
-        onPress={() => {
-          setAddRemoveSelectedId(addRemoveSelectedId === item.id ? null : item.id);
-          setBundleData(item);
-        }}
-        backgroundColor={{ backgroundColor }}
-        color={{ color }}
-        addRemove={text}
-      />
-    );
-  };
-
   const AddRemoveItemSelect = ({ item, onPress, backgroundColor, color, addRemove }) => (
     <View style={styles.bundleOfferCon}>
       <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(5) }]}>
@@ -167,23 +149,14 @@ export function PosSearchListModal({
   const isSearchProLoading = useSelector((state) =>
     isLoadingSelector([DASHBOARDTYPE.SEARCH_PRODUCT_LIST], state)
   );
-  const addToCartLoad = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+  const oneproductLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ONE_PRODUCT], state));
 
-  const searchFunction = (id) => {
-    setSelectionId(id);
-  };
+  // const searchFunction = (id) => {
+  //   setSelectionId(id);
+  // };
 
   const renderSearchItem = ({ item, index }) => {
-    return (
-      <SearchItemSelect
-        item={item}
-        index={index}
-        onPress={() => {
-          searchFunction(item.id);
-          setCount(1);
-        }}
-      />
-    );
+    return <SearchItemSelect item={item} index={index} onPress={() => searchFunction(item.id)} />;
   };
 
   const SearchItemSelect = ({ item, onPress, index }) => (
@@ -209,6 +182,7 @@ export function PosSearchListModal({
             ${item.supplies[0]?.supply_prices[0]?.selling_price}
           </Text>
           <Spacer space={SH(5)} />
+
           {/* <TouchableOpacity onPress={() => viewDetailHandler(item)} style={styles.viewDetailCon}>
             <Text style={[styles.stockStyle, { color: COLORS.primary }]}>
               {strings.posSale.viewDetail}
@@ -216,41 +190,11 @@ export function PosSearchListModal({
           </TouchableOpacity> */}
         </View>
       </TouchableOpacity>
-      {selectionId === item.id ? (
+      <View style={styles.hr} />
+      {/* {selectionId === item.id ? (
         <View style={styles.productDetailCon}>
           <Spacer space={SH(25)} />
-          {/* <Text style={styles.availablestockHeading}>
-            {strings.posSale.availableStock}
-            {item.supplies[0]?.rest_quantity}
-          </Text> */}
           <Spacer space={SH(15)} />
-          {/* <View style={styles.amountjfrContainer}>
-            <View style={styles.flexAlign}>
-              <Image source={{ uri: item.image }} style={styles.marboloRedPackStyle} />
-              <Text style={[styles.jfrmaduro, { width: SW(100) }]} numberOfLines={1}>
-                {item.name}
-              </Text>
-            </View>
-          </View> */}
-
-          {/* <View style={styles.priceContainer}>
-            <Text style={styles.price}>{strings.retail.price}</Text>
-            <Text style={[styles.price, { fontSize: SF(18) }]}>
-              ${item.supplies[0]?.supply_prices[0]?.selling_price}
-            </Text>
-          </View> */}
-
-          {/* <View style={[styles.priceContainer, { backgroundColor: COLORS.white }]}>
-            <TouchableOpacity onPress={() => handleQuantitySelection(item, 'subtract')}>
-              <Image source={minus} style={styles.plusBtn2} />
-            </TouchableOpacity>
-            <Text style={[styles.price, { fontSize: SF(24) }]}>
-              {selectedQuantities[item.id] || 0}
-            </Text>
-            <TouchableOpacity onPress={() => handleQuantitySelection(item, 'add')}>
-              <Image source={plus} style={styles.plusBtn2} />
-            </TouchableOpacity>
-          </View> */}
           <View style={[styles.priceContainer, { backgroundColor: COLORS.white }]}>
             <TouchableOpacity
               onPress={() => setCount(count - 1)}
@@ -282,10 +226,9 @@ export function PosSearchListModal({
           </View>
         </View>
       ) : (
-        // </View>
 
         <View style={styles.hr} />
-      )}
+      )} */}
     </View>
   );
 
@@ -301,109 +244,93 @@ export function PosSearchListModal({
 
   return (
     <View style={styles.searchproductCon}>
-      <Spacer space={SH(20)} />
-      <View style={styles.searchInputWraper}>
-        <View style={styles.displayFlex}>
+      <View>
+        <Spacer space={SH(20)} />
+        <View style={styles.searchInputWraper}>
+          <View style={styles.displayFlex}>
+            <TouchableOpacity onPress={listFalseHandler}>
+              <Image source={backArrow2} style={styles.backArrow2Style} />
+            </TouchableOpacity>
+            <TextInput
+              placeholder="Search product here"
+              style={styles.searchInput2}
+              value={search}
+              onChangeText={(search) => (setSearch(search), onChangeFun(search))}
+              ref={textInputref}
+            />
+          </View>
           <TouchableOpacity onPress={listFalseHandler}>
-            <Image source={backArrow2} style={styles.backArrow2Style} />
+            <Image
+              source={crossButton}
+              style={[styles.searchCrossButton, { tintColor: COLORS.darkGray }]}
+            />
           </TouchableOpacity>
-          <TextInput
-            placeholder="Search product here"
-            style={styles.searchInput2}
-            value={search}
-            onChangeText={(search) => (setSearch(search), onChangeFun(search))}
-            ref={textInputref}
-          />
         </View>
-        <TouchableOpacity onPress={listFalseHandler}>
-          <Image
-            source={crossButton}
-            style={[styles.searchCrossButton, { tintColor: COLORS.darkGray }]}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.searchingProductCon}>
-        {Object?.keys(getProductListArray?.invoiceData ?? {})?.length > 0 ? (
-          <TouchableOpacity
-            style={styles.orderRowStyle}
-            onPress={async () => {
-              listFalseHandler();
-              await dispatch(getDrawerSessions());
-              navigate('SearchScreen', {
-                invoiceNumber: getProductListArray?.invoiceData?.invoice_number,
-              });
-            }}
-          >
-            <Text style={styles.invoiceNumberTextStyle}>
-              {`#${getProductListArray?.invoiceData?.invoice_number}` ?? '-'}
-            </Text>
-
-            <View style={styles.orderDetailStyle}>
-              <Text style={styles.nameTextStyle}>
-                {getProductListArray?.invoiceData?.order?.user_details
-                  ? `${getProductListArray?.invoiceData?.order?.user_details?.user_profiles?.firstname} ${getProductListArray?.invoiceData?.order?.user_details?.user_profiles?.lastname}`
-                  : '-'}
+        <View style={styles.searchingProductCon}>
+          {Object?.keys(getProductListArray?.invoiceData ?? {})?.length > 0 ? (
+            <TouchableOpacity
+              style={styles.orderRowStyle}
+              onPress={async () => {
+                listFalseHandler();
+                await dispatch(getDrawerSessions());
+                navigate('SearchScreen', {
+                  invoiceNumber: getProductListArray?.invoiceData?.invoice_number,
+                });
+              }}
+            >
+              <Text style={styles.invoiceNumberTextStyle}>
+                {`#${getProductListArray?.invoiceData?.invoice_number}` ?? '-'}
               </Text>
 
-              {getProductListArray?.invoiceData?.order?.delivery_option !== '3' ? (
-                <View style={styles.locationViewStyle}>
-                  <Image source={pin} style={styles.pinImageStyle} />
+              <View style={styles.orderDetailStyle}>
+                <Text style={styles.nameTextStyle}>
+                  {getProductListArray?.invoiceData?.order?.user_details
+                    ? `${getProductListArray?.invoiceData?.order?.user_details?.user_profiles?.firstname} ${getProductListArray?.invoiceData?.order?.user_details?.user_profiles?.lastname}`
+                    : '-'}
+                </Text>
+
+                {getProductListArray?.invoiceData?.order?.delivery_option !== '3' ? (
+                  <View style={styles.locationViewStyle}>
+                    <Image source={pin} style={styles.pinImageStyle} />
+                    <Text style={styles.distanceTextStyle}>
+                      {getProductListArray?.invoiceData?.distance ?? '-'}
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
+                    <Text style={styles.nameTextStyle}>{'-'}</Text>
+                  </View>
+                )}
+              </View>
+
+              <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
+                <Text style={styles.nameTextStyle}>
+                  {getProductListArray?.invoiceData?.order?.total_items ?? '-'}
+                </Text>
+                <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
+                  <Image source={pay} style={styles.pinImageStyle} />
                   <Text style={styles.distanceTextStyle}>
-                    {getProductListArray?.invoiceData?.distance ?? '-'}
+                    {getProductListArray?.invoiceData?.order?.payable_amount ?? '-'}
                   </Text>
                 </View>
-              ) : (
-                <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
-                  <Text style={styles.nameTextStyle}>{'-'}</Text>
+              </View>
+
+              <View style={styles.orderDetailStyle}>
+                <Text style={styles.timeTextStyle}>{strings.returnOrder.customer}</Text>
+                <View style={styles.locationViewStyle}>
+                  <Image source={clock} style={styles.pinImageStyle} />
+                  <Text style={styles.distanceTextStyle}>
+                    {getDeliveryType(getProductListArray?.invoiceData?.order?.delivery_option)}
+                  </Text>
                 </View>
-              )}
-            </View>
-
-            <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
-              <Text style={styles.nameTextStyle}>
-                {getProductListArray?.invoiceData?.order?.total_items ?? '-'}
-              </Text>
-              <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
-                <Image source={pay} style={styles.pinImageStyle} />
-                <Text style={styles.distanceTextStyle}>
-                  {getProductListArray?.invoiceData?.order?.payable_amount ?? '-'}
-                </Text>
               </View>
-            </View>
 
-            <View style={styles.orderDetailStyle}>
-              <Text style={styles.timeTextStyle}>{strings.returnOrder.customer}</Text>
-              <View style={styles.locationViewStyle}>
-                <Image source={clock} style={styles.pinImageStyle} />
-                <Text style={styles.distanceTextStyle}>
-                  {getDeliveryType(getProductListArray?.invoiceData?.order?.delivery_option)}
-                </Text>
+              <View style={[styles.orderDetailStyle, { width: SH(24) }]}>
+                <Image source={rightIcon} style={styles.rightIconStyle} />
               </View>
-            </View>
-
-            <View style={[styles.orderDetailStyle, { width: SH(24) }]}>
-              <Image source={rightIcon} style={styles.rightIconStyle} />
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <FlatList
-            data={getProductListArray?.data}
-            extraData={getProductListArray?.data}
-            renderItem={renderSearchItem}
-            keyExtractor={(item, index) => String(index)}
-            style={styles.flatlistHeight}
-            ListEmptyComponent={renderEmptyProducts}
-          />
-        )}
-        {/* {isSearchProLoading ? (
-          <View style={{ marginTop: 100 }}>
-            <ActivityIndicator size="large" color={COLORS.indicator} />
-          </View>
-        ) : (
-          
-          
-
-              <FlatList
+            </TouchableOpacity>
+          ) : (
+            <FlatList
               data={getProductListArray?.data}
               extraData={getProductListArray?.data}
               renderItem={renderSearchItem}
@@ -411,12 +338,14 @@ export function PosSearchListModal({
               style={styles.flatlistHeight}
               ListEmptyComponent={renderEmptyProducts}
             />
-          
-
-      
-         
-        )} */}
+          )}
+        </View>
       </View>
+      {oneproductLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
+        </View>
+      ) : null}
     </View>
   );
 }

@@ -75,6 +75,7 @@ export function CartScreen({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
+  // console.log(JSON.stringify(cartData));
   const cartId = cartData?.id;
   let arr = [getRetailData?.getAllCart];
   const getAuth = useSelector(getAuthData);

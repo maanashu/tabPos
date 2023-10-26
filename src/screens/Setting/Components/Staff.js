@@ -142,8 +142,10 @@ export function Staff() {
 
   const ScrollRefresh = useCallback(() => {
     setRefreshing(true);
+    if (staffDetailData?.results?.results?.length > 0) {
+      dispatch(getStaffDetail(data?.id));
+    }
 
-    dispatch(getStaffDetail(data?.id));
     setTimeout(() => {
       setRefreshing(false);
     }, 2000); // Adjust the delay as needed
@@ -529,7 +531,7 @@ export function Staff() {
                                   };
                                   const res = await dispatch(
                                     staffRequest(data, (res) => {
-                                      dispatch(getStaffDetail(data.id));
+                                      dispatch(getStaffDetail(data.staff_details_id));
                                     })
                                   );
                                 }}

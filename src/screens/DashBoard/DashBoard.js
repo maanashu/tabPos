@@ -15,7 +15,7 @@ import {
 import moment from 'moment';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import {
   cashProfile,
@@ -67,10 +67,12 @@ import { endTrackingSession, getDrawerSessions } from '@/actions/CashTrackingAct
 import { PosSearchDetailModal } from './Components/PosSearchDetailModal';
 
 import { styles } from './DashBoard.styles';
-import { scanProductAdd } from '@/actions/RetailAction';
+import { getOneProduct, scanProductAdd } from '@/actions/RetailAction';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { log, useAnimatedRef } from 'react-native-reanimated';
 import { debounce } from 'lodash';
+import { AddCartDetailModal, AddCartModal } from '../PosRetail3/Components';
+import { Modal as PaperModal } from 'react-native-paper';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -110,6 +112,8 @@ export function DashBoard({ navigation }) {
   const [scan, setScan] = useState(false);
   const [scroll, setScroll] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [addCartModal, setAddCartModal] = useState(false);
+  const [addCartDetailModal, setAddCartDetailModal] = useState(false);
 
   //  order delivery pagination
   const paginationData = {
@@ -122,6 +126,12 @@ export function DashBoard({ navigation }) {
   useEffect(() => {
     dispatch(getOrderDeliveries(sellerID, 1));
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => setSearch();
+    }, [])
+  );
 
   const onLoadMoreProduct = useCallback(() => {
     if (paginationData?.currentPage < paginationData?.totalPages) {
@@ -758,19 +768,21 @@ export function DashBoard({ navigation }) {
       </Modal>
 
       {/* Search List modal start*/}
-      <Modal
+      {/* <Modal
         animationType="fade"
         transparent={true}
         isVisible={searchModal || searchModalDetail}
         avoidKeyboard={false}
-      >
+      > */}
+
+      <PaperModal visible={searchModal}>
         {searchModalDetail ? (
           <PosSearchDetailModal
             backArrowhandler={() => (setSearchModal(true), setSearchModalDetail(false))}
             productData={productDet}
           />
         ) : (
-          <KeyboardAvoidingView style={{ flex: 1 }}>
+          <KeyboardAvoidingView>
             <PosSearchListModal
               listFalseHandler={() => (setSearchModal(false), setSearch(''))}
               getProductListArray={getProductListArray}
@@ -783,12 +795,62 @@ export function DashBoard({ navigation }) {
               viewDetailHandler={(item) => (
                 setSearchModal(false), setSearchModalDetail(true), setproductDet(item)
               )}
-              // item={}
+              searchFunction={async (productId) => {
+                const res = await dispatch(getOneProduct(sellerID, productId));
+                if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+                  console.log('res', res);
+                  setSearchModal(false);
+                  setAddCartModal(true);
+                }
+              }}
             />
           </KeyboardAvoidingView>
         )}
-      </Modal>
+      </PaperModal>
       {/* Search List modal end*/}
+
+      <PaperModal visible={addCartModal || addCartDetailModal}>
+        {addCartDetailModal ? (
+          <AddCartDetailModal
+            crossHandler={() => {
+              setAddCartDetailModal(false);
+              setAddCartModal(true);
+              // setSearchModal(true);
+            }}
+            sellerID={sellerID}
+            // openFrom="main"
+            // cartQty={selectedItemQty}
+            // addToLocalCart={onClickAddCart}
+            // productIndex={productIndex}
+            doubleCrossHandler={() => {
+              setAddCartDetailModal(false);
+              setAddCartModal(false);
+              setSearchModal(true);
+            }}
+            // openFrom="main"
+          />
+        ) : (
+          <AddCartModal
+            crossHandler={() => {
+              setAddCartModal(false);
+              setSearchModal(true);
+            }}
+            detailHandler={() => {
+              setAddCartModal(false);
+              setAddCartDetailModal(true);
+            }}
+            cartQty={1}
+            sellerID={sellerID}
+            backToCartHandler={() => {
+              setAddCartModal(false);
+              setSearchModal(false);
+              navigate(NAVIGATION.posRetail3);
+            }}
+
+            // openFrom="main"
+          />
+        )}
+      </PaperModal>
     </ScreenWrapper>
   );
 }
