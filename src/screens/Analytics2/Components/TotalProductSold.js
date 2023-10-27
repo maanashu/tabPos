@@ -101,7 +101,7 @@ export function TotalProductSold({ sellerID, data }) {
         <Text style={styles.revenueDataText}>{item?.product_upc}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.total_price}</Text>
+        <Text style={styles.revenueDataText}>${item?.total_price?.toFixed(2)}</Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>

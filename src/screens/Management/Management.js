@@ -342,11 +342,15 @@ export function Management() {
     if (text.includes('Invoice_') || text.includes('invoice_')) {
       dispatch(scanBarCode(text));
     } else {
-      dispatch(
-        getOrdersByInvoiceId(text, () => {
-          setShowInvoice(true);
-        })
-      );
+      if (text?.length > 0) {
+        dispatch(
+          getOrdersByInvoiceId(text, (res) => {
+            setShowInvoice(true);
+          })
+        );
+      } else {
+        setShowInvoice(false);
+      }
     }
   };
 
@@ -1751,7 +1755,7 @@ export function Management() {
           {endSessionModal()}
         </View>
       )}
-      {drawerSessLoad || createActivityLoad || oneHistoryLoad ? (
+      {drawerSessLoad || createActivityLoad || oneHistoryLoad || onSeachLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>

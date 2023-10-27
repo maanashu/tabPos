@@ -384,7 +384,9 @@ export function WeeklyTransaction({
                           </Text>
                           <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
 
-                          <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
+                          <Text style={styles.tableTextData}>
+                            ${item?.payable_amount?.toFixed(2) ?? '0'}
+                          </Text>
                           {/* <View
                             style={{
                               marginLeft: ms(-15),

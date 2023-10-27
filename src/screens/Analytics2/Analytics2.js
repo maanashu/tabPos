@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Image, Text, Platform, Dimensions } from 'react-native';
-import { DaySelector, ScreenWrapper, Spacer } from '@/components';
+import React, { useRef, useState, useCallback } from 'react';
+import { View, TouchableOpacity, Image, Text, Platform } from 'react-native';
 
-import { styles } from './Analytics2.styles';
-import { MainScreen } from './Components/MainScreen';
-import { TotalProfit } from './Components/TotalProfit';
+import moment from 'moment';
+import Modal from 'react-native-modal';
+import { ms } from 'react-native-size-matters';
+import { useDispatch, useSelector } from 'react-redux';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
   profit,
   revenueTotal,
@@ -20,45 +24,36 @@ import {
   Fonts,
   backArrow2,
 } from '@/assets';
-import Modal from 'react-native-modal';
-import { COLORS, SH } from '@/theme';
-import { Revenue } from './Components/Revenue';
-import { TotalCost } from './Components/TotalCost';
-import { TotalDeliveryOrders } from './Components/TotalDeliveryOrders';
-import { TotalShippingOrders } from './Components/TotalShippingOrders';
-import { TotalOrders } from './Components/TotalOrders';
-import { TotalPosOrder } from './Components/TotalPosOrder';
-import { useDispatch, useSelector } from 'react-redux';
+import { MainScreen } from './Components/MainScreen';
+import { TotalProfit } from './Components/TotalProfit';
+import { DaySelector, ScreenWrapper, Spacer } from '@/components';
+
 import {
   getAnalyticOrderGraphs,
   getAnalyticStatistics,
-  getOrderData,
   getSoldProduct,
   getTotalInventory,
   getTotalOrder,
 } from '@/actions/AnalyticsAction';
+import { COLORS, SH } from '@/theme';
+import { Revenue } from './Components/Revenue';
+import { TotalCost } from './Components/TotalCost';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { TotalProductSold } from './Components/TotalProductSold';
+import { TotalOrders } from './Components/TotalOrders';
+import { TotalPosOrder } from './Components/TotalPosOrder';
 import { TotalInventory } from './Components/TotalInventory';
-import { getUser } from '@/selectors/UserSelectors';
-
-import DropDownPicker from 'react-native-dropdown-picker';
-import { ms } from 'react-native-size-matters';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { TotalProductSold } from './Components/TotalProductSold';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
-import moment from 'moment';
+import { TotalDeliveryOrders } from './Components/TotalDeliveryOrders';
+import { TotalShippingOrders } from './Components/TotalShippingOrders';
+import { getUser } from '@/selectors/UserSelectors';
 import { WeeklyTransaction } from './Components/WeeklyTransaction';
-import { useRef } from 'react';
 import { InvoiceDetail } from '@/screens/Analytics2/Components/InvoiceDetail';
-import { TYPES } from '@/Types/AnalyticsTypes';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { useFocusEffect } from '@react-navigation/native';
-import { useCallback } from 'react';
+
+import { styles } from './Analytics2.styles';
+
 export function Analytics2() {
   const mapRef = useRef(null);
-
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
   const [showCalendarModal, setShowCalendarModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -342,7 +337,7 @@ export function Analytics2() {
                 </TouchableOpacity>
                 {selectedScreen !== 'TotalInventory' ? (
                   <DropDownPicker
-                    ArrowDownIconComponent={({ style }) => (
+                    ArrowDownIconComponent={() => (
                       <Image source={dropdown} style={styles.dropDownIcon} />
                     )}
                     style={styles.dropdown}
@@ -484,6 +479,7 @@ export function Analytics2() {
                 </TouchableOpacity>
 
                 <Spacer space={SH(20)} />
+
                 <TouchableOpacity onPress={() => setselectedScreen('TotalShippingOrders')}>
                   <Image
                     source={productSelling}
@@ -498,6 +494,7 @@ export function Analytics2() {
                 </TouchableOpacity>
 
                 <Spacer space={SH(20)} />
+
                 <TouchableOpacity onPress={() => setselectedScreen('TotalOrders')}>
                   <Image
                     source={locationSales}
@@ -511,6 +508,7 @@ export function Analytics2() {
                 </TouchableOpacity>
 
                 <Spacer space={SH(20)} />
+
                 <TouchableOpacity onPress={() => setselectedScreen('TotalInventory')}>
                   <Image
                     source={totalOrders}
