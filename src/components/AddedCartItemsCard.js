@@ -5,6 +5,13 @@ import { Fonts } from '@/assets';
 import { COLORS } from '@/theme';
 
 const AddedCartItemsCard = ({ item, index }) => {
+  const productSize = item?.product_details?.supply?.attributes?.filter(
+    (item) => item?.name === 'Size'
+  );
+  const productColor = item?.product_details?.supply?.attributes?.filter(
+    (item) => item?.name === 'Color'
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -14,9 +21,19 @@ const AddedCartItemsCard = ({ item, index }) => {
             {item?.product_details?.name}
           </Text>
           <View style={styles.belowSubContainer}>
-            {/* <Text style={styles.colorsTitle}>Colors : Gray</Text>
-            <Text style={styles.sizeTitle}>Size : XXL</Text> */}
-            {/* <Text style={styles.colorsTitle}>QTY : {item?.qty}</Text> */}
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.colorsTitle}>Colors : </Text>
+              <View
+                style={{
+                  width: ms(8),
+                  height: ms(8),
+                  borderRadius: ms(2),
+                  backgroundColor: productColor?.[0]?.values?.name,
+                }}
+              ></View>
+            </View>
+
+            <Text style={styles.sizeTitle}>Size : {productSize?.[0]?.values?.name}</Text>
           </View>
         </View>
       </View>

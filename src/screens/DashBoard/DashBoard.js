@@ -798,7 +798,6 @@ export function DashBoard({ navigation }) {
               searchFunction={async (productId) => {
                 const res = await dispatch(getOneProduct(sellerID, productId));
                 if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-                  console.log('res', res);
                   setSearchModal(false);
                   setAddCartModal(true);
                 }

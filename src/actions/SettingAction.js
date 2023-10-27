@@ -292,6 +292,23 @@ const staffRequestReset = () => ({
   payload: null,
 });
 
+// staff transction get
+const getStaffTransactionRequest = () => ({
+  type: TYPES.GET_STAFF_TRANSACTION_REQUEST,
+  payload: null,
+});
+const getStaffTransactionSuccess = (staffTransaction) => ({
+  type: TYPES.GET_STAFF_TRANSACTION_SUCCESS,
+  payload: { staffTransaction },
+});
+const getStaffTransactionError = (error) => ({
+  type: TYPES.GET_STAFF_TRANSACTION_ERROR,
+  payload: { error },
+});
+const getStaffTransactionReset = () => ({
+  type: TYPES.GET_STAFF_TRANSACTION_RESET,
+  payload: null,
+});
 export const getSettings = () => async (dispatch) => {
   dispatch(getSettingRequest());
   try {
@@ -509,6 +526,20 @@ export const staffRequest = (data, callback) => async (dispatch) => {
       dispatch(staffRequestReset());
     }
     dispatch(staffRequestError(error.message));
+  }
+};
+
+export const getStaffTransaction = (data, callback) => async (dispatch) => {
+  dispatch(getStaffTransactionRequest());
+  try {
+    const res = await SettingController.getStaffTransaction(data);
+    callback && callback(res);
+    dispatch(getStaffTransactionSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getStaffTransactionReset());
+    }
+    dispatch(getStaffTransactionError(error.message));
   }
 };
 

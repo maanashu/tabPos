@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Spacer, TableDropdown } from '@/components';
+import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import {
@@ -20,7 +20,6 @@ import Modal from 'react-native-modal';
 import {
   addIcon,
   backArrow,
-  columbiaMen,
   crossButton,
   dropdown,
   email,
@@ -44,9 +43,13 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAllPosUsers } from '@/actions/AuthActions';
-import { getPosDetailWeekly, getStaffDetail, staffRequest } from '@/actions/SettingAction';
+import {
+  getPosDetailWeekly,
+  getStaffDetail,
+  getStaffTransaction,
+  staffRequest,
+} from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
-// import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import moment from 'moment';
 import { store } from '@/store';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -56,22 +59,12 @@ import { digits, emailReg } from '@/utils/validators';
 import { getAppointmentSelector, getPosUserRoles } from '@/selectors/AppointmentSelector';
 import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { Snackbar } from 'react-native-paper';
 import { useRef } from 'react';
 import { useCallback } from 'react';
 import { RefreshControl } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
-
-// const convertText = (text) => {
-//   return text
-//     .toLowerCase()
-//     .split('_')
-//     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-//     .join(' ');
-// };
-
 export function Staff() {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
@@ -80,11 +73,10 @@ export function Staff() {
   const getSettingData = useSelector(getSetting);
   const staffDetailData = getSettingData?.staffDetail;
   const weeklyData = getSettingData?.getPosDetailWeekly;
-
+  const staffTransactionData = getSettingData?.staffTransaction;
   const targetDate = moment(staffDetailData?.pos_staff_detail?.created_at);
   const currentDate = moment();
   const differenceInDays = targetDate?.diff(currentDate, 'days');
-  // const posUserArray = getAuth?.getAllPosUsers;
   const posUserArraydata = getAuth?.getAllPosUsersData;
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
   const [staffDetail, setStaffDetail] = useState(false);
@@ -107,12 +99,9 @@ export function Staff() {
   const [selectedColor, setSelectedColor] = useState(null);
   const [oldColor, setOldColor] = useState(null);
   const userRoles = useSelector(getAppointmentSelector);
-  const [visible, setVisible] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const onEndReachedCalledDuringMomentum = useRef(false);
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoadingBottom, setIsLoadingBottom] = useState(false);
@@ -123,13 +112,7 @@ export function Staff() {
   const words = originalemployementType?.split('_');
   const capitalizedWords = words?.map((word) => word?.charAt?.(0).toUpperCase() + word?.slice?.(1));
   const finalEmploymentType = capitalizedWords?.join(' ');
-  // const convertedText = convertText(staffDetailData?.employment_type);
 
-  // const onToggleSnackBar = (message) => {
-  //   setVisible(!visible);
-  //   setErrorMessage(message);
-  // };
-  // const onDismissSnackBar = () => setVisible(false);
   var posUsersRole = [];
   if (userRoles?.posUserRole?.roles?.length > 0 && userRoles?.posUserRole !== null) {
     const mappedArray = userRoles?.posUserRole?.roles?.map((item) => {
@@ -211,7 +194,6 @@ export function Staff() {
   const userRenderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.twoStepMemberCon}
-      // onPress={() => setStaffDetail(true)}
       onPress={() => {
         staffDetailhandler(item?.user?.id, item?.id);
         setData(item);
@@ -241,7 +223,6 @@ export function Staff() {
               {item?.user?.user_roles?.length > 0
                 ? item?.user?.user_roles?.map((item, index) => item.role?.name)
                 : 'Admin'}
-              {/* {item?.pos_role ?? 'Merchant'} */}
             </Text>
           </View>
         </View>
@@ -249,10 +230,6 @@ export function Staff() {
       </View>
     </TouchableOpacity>
   );
-  // const isLoadingBottom = useSelector((state) =>
-  //   isLoadingSelector([TYPE.GET_ALL_POS_USERS], state)
-  // );
-
   const renderStaffFooter = useCallback(
     () => (
       <View
@@ -552,7 +529,22 @@ export function Staff() {
                                 </Text>
                               </View>
                             ) : (
-                              <TouchableOpacity onPress={() => setInvoiceModal(true)}>
+                              <TouchableOpacity
+                                onPress={() => {
+                                  const data = {
+                                    weekNo: item?.weekNo,
+                                    transactionId:
+                                      item?.transaction_id == null
+                                        ? '310c6635-4fb6-4874-9698-5025988c51e2'
+                                        : item?.transaction_id,
+                                  };
+                                  dispatch(
+                                    getStaffTransaction(data, (res) => {
+                                      setInvoiceModal(true);
+                                    })
+                                  );
+                                }}
+                              >
                                 <Text
                                   style={[
                                     styles.text,
@@ -872,9 +864,13 @@ export function Staff() {
           <View style={styles.billToCon}>
             <Text style={styles.joinDateDark}>Bill To:</Text>
             <Spacer space={SH(10)} />
-            <Text style={styles.terryText}>Imani Olowe </Text>
-            <Text style={styles.terryText}>+123-456-7890</Text>
-            <Text style={styles.terryText}>63 Ivy Road, Hawkville, GA, USA 31036</Text>
+            <Text
+              style={styles.terryText}
+            >{`${staffTransactionData?.address?.first_name} ${staffTransactionData?.address?.last_name}`}</Text>
+            <Text style={styles.terryText}>{staffTransactionData?.address?.phone_number}</Text>
+            <Text style={styles.terryText}>
+              {`${staffTransactionData?.address?.address}, ${staffTransactionData?.address?.city}, ${staffTransactionData?.address?.state}, ${staffTransactionData?.address?.country}, ${staffTransactionData?.address?.zip}`}
+            </Text>
           </View>
           <Spacer space={SH(10)} />
           <View style={styles.invoiceTableHeader}>
@@ -891,50 +887,63 @@ export function Staff() {
             </View>
           </View>
           <View style={{ flex: 1 }}>
-            <ScrollView>
-              <View style={[styles.invoiceTableHeader, styles.invoiceTableData]}>
-                <View style={styles.headerBodyCon}>
-                  <Text style={[styles.terryText, { marginHorizontal: moderateScale(10) }]}>1</Text>
-                  <View style={{ flexDirection: 'column' }}>
-                    <Text style={styles.terryText}>May 29, 2023 - Jun 4, 2023</Text>
-                    <Text style={styles.notUpdated}>Overtime</Text>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {staffTransactionData?.payment_details?.length == 0 ? (
+                <View style={{ marginTop: ms(30) }}>
+                  <Text style={styles.noDataText}>no data</Text>
+                </View>
+              ) : (
+                staffTransactionData?.payment_details?.map((item, index) => (
+                  <View style={[styles.invoiceTableHeader, styles.invoiceTableData]}>
+                    <View style={styles.headerBodyCon}>
+                      <Text style={[styles.terryText, { marginHorizontal: moderateScale(10) }]}>
+                        {index + 1}
+                      </Text>
+                      <View style={{ flexDirection: 'column' }}>
+                        <Text style={styles.terryText}>{item?.dates}</Text>
+                        <Text style={[styles.notUpdated, { fontFamily: Fonts.Italic }]}>
+                          {index == 0 ? 'Regular' : 'Overtime'}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
+                      <Text style={styles.terryText}>{Number(item?.duration)?.toFixed(2)}h</Text>
+                      <Text style={styles.terryText}>
+                        JBR {Number(item?.hourly_rate)?.toFixed(2)}
+                      </Text>
+                      <Text style={styles.terryText}>JBR {Number(item?.amount)?.toFixed(2)}</Text>
+                    </View>
                   </View>
-                </View>
-                <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
-                  <Text style={styles.terryText}>40h</Text>
-                  <Text style={styles.terryText}>JBR 1,500</Text>
-                  <Text style={styles.terryText}>JBR 60,000</Text>
-                </View>
-              </View>
-              <View style={[styles.invoiceTableHeader, styles.invoiceTableData]}>
-                <View style={styles.headerBodyCon}>
-                  <Text style={[styles.terryText, { marginHorizontal: moderateScale(10) }]}>1</Text>
-                  <View style={{ flexDirection: 'column' }}>
-                    <Text style={styles.terryText}>May 29, 2023 - Jun 4, 2023</Text>
-                    <Text style={styles.notUpdated}>Overtime</Text>
-                  </View>
-                </View>
-                <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
-                  <Text style={styles.terryText}>40h</Text>
-                  <Text style={styles.terryText}>JBR 1,500</Text>
-                  <Text style={styles.terryText}>JBR 60,000</Text>
-                </View>
-              </View>
+                ))
+              )}
+
               <Spacer space={SH(10)} />
-              <View style={styles.subTotalCon}>
-                <View style={styles.subTotalBodyCon}>
-                  <Text style={styles.terryText}>Sub-Total</Text>
-                  <Text style={styles.terryText}>JBR 70,175</Text>
+              {staffTransactionData?.payment_details?.length > 0 ? (
+                <View style={styles.subTotalCon}>
+                  <View style={styles.subTotalBodyCon}>
+                    <Text style={styles.terryText}>Sub-Total</Text>
+                    <Text style={styles.terryText}>
+                      JBR{' '}
+                      {Number(staffTransactionData?.payment_details?.subTotal ?? 0.0)?.toFixed(2) ??
+                        '0.00'}
+                    </Text>
+                  </View>
+                  <View style={styles.subTotalBodyCon}>
+                    <Text style={styles.terryText}>Taxes</Text>
+                    <Text style={styles.terryText}>
+                      ({Number(staffTransactionData?.payment_details?.taxes ?? 0.0)?.toFixed(2)})
+                    </Text>
+                  </View>
+                  <View style={styles.subTotalBodyCon}>
+                    <Text style={[styles.terryText, { fontFamily: Fonts.SemiBold }]}>Total</Text>
+                    <Text style={[styles.terryText, { fontFamily: Fonts.SemiBold }]}>
+                      JBR{' '}
+                      {Number(staffTransactionData?.payment_details?.total ?? 0.0)?.toFixed(2) ??
+                        '0.00'}
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.subTotalBodyCon}>
-                  <Text style={styles.terryText}>Taxes</Text>
-                  <Text style={styles.terryText}>(0)</Text>
-                </View>
-                <View style={styles.subTotalBodyCon}>
-                  <Text style={[styles.terryText, { fontFamily: Fonts.SemiBold }]}>Total</Text>
-                  <Text style={[styles.terryText, { fontFamily: Fonts.SemiBold }]}>JBR 70,175</Text>
-                </View>
-              </View>
+              ) : null}
             </ScrollView>
           </View>
         </View>
@@ -1072,13 +1081,10 @@ export function Staff() {
                   <DropDownPicker
                     placeholder="Select Role"
                     containerStyle={{
-                      // width: SW(50),
                       height: SH(35),
                       borderWidth: 0,
                       justifyContent: 'center',
-                      // borderWidth: 1,
                       borderRadius: 7,
-                      // borderColor: COLORS.blue_shade,
                       marginTop: SW(2),
                       borderColor: COLORS.textInputBackground,
                       backgroundColor: COLORS.textInputBackground,
@@ -1130,39 +1136,10 @@ export function Staff() {
                       {selectedColor !== null && <Text>{fromHsv(selectedColor)}</Text>}
                     </TouchableOpacity>
                   </View>
-                  {/* <View>
-                    <Text>Select Role</Text>
-                    <DropDownPicker
-                      placeholder="Select Role"
-                      containerStyle={{
-                        width: SW(50),
-                        height: SH(35),
-                        justifyContent: 'center',
-                        // borderWidth: 1,
-                        borderRadius: 7,
-                        // borderColor: COLORS.blue_shade,
-                        marginTop: SW(2),
-                      }}
-                      open={open}
-                      value={value}
-                      items={posUsersRole}
-                      setOpen={setOpen}
-                      setValue={setValue}
-                      // setItems={setItems}
-                    />
-                  </View> */}
                 </View>
                 <Spacer space={SW(20)} />
               </View>
             </KeyboardAwareScrollView>
-            {/* <Snackbar
-              style={{ backgroundColor: COLORS.roseRed, position: 'absolute', top: 40 }}
-              visible={visible}
-              duration={1500}
-              onDismiss={onDismissSnackBar}
-            >
-              {errorMessage}
-            </Snackbar> */}
           </View>
         ) : (
           <View

@@ -66,7 +66,6 @@ const WalletInvoice = ({ orderDetail }) => {
       <Text style={styles.priceTitle}>{`${formattedReturnPrice(item?.price * item?.qty)}`}</Text>
     </View>
   );
-  // console.log('seller detail', orderDetail?.order?.seller_details);
   return (
     <View style={styles.invoiceMainViewStyle}>
       <Text style={styles.storeNameText}>

@@ -1474,4 +1474,10 @@ export const styles = StyleSheet.create({
     fontSize: ms(7),
     fontFamily: Fonts.Regular,
   },
+  noDataText: {
+    color: COLORS.red,
+    fontSize: ms(14),
+    fontFamily: Fonts.Regular,
+    alignSelf: 'center',
+  },
 });

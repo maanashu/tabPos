@@ -12,6 +12,7 @@ const INITIALSTATE = {
   getGoogleCode: {},
   notifications: [],
   getPosDetailWeekly: [],
+  staffTransaction: {},
 };
 
 export const settingReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -106,6 +107,17 @@ export const settingReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         getPosDetailWeekly: [],
+      };
+
+    case TYPES.GET_STAFF_TRANSACTION_SUCCESS:
+      return {
+        ...state,
+        staffTransaction: payload.staffTransaction,
+      };
+    case TYPES.GET_STAFF_TRANSACTION_RESET:
+      return {
+        ...state,
+        staffTransaction: {},
       };
 
     case TYPES.SETTING_CLEAR_STORE:

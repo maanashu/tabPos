@@ -395,4 +395,26 @@ export class SettingController {
         });
     });
   }
+
+  static async getStaffTransaction(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        USER_URL +
+        ApiUserInventory.getStaffTransaction +
+        `?transaction_id=${data?.transactionId}&week_no=${data?.weekNo}`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error?.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
 }

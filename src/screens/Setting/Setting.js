@@ -72,6 +72,7 @@ export function Setting() {
         TYPES.GET_TAX,
         TYPES.VERIFY_GOOGLE_CODE,
         // TYPES.STAFF_REQUEST,
+        TYPES.GET_STAFF_TRANSACTION,
       ],
       state
     )
