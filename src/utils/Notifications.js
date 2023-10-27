@@ -10,7 +10,7 @@ const requestPermission = async () => {
   const settings = await notifee.requestPermission();
 
   if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
-    // console.log('Permission settings:', settings);
+    getDeviceToken();
   } else {
     console.log('User declined permissions');
   }
@@ -19,11 +19,9 @@ const requestPermission = async () => {
 // Get the device token for sending push notifications
 const getDeviceToken = async () => {
   try {
-    // await messaging().registerDeviceForRemoteMessages();
     const token = await messaging().getToken();
     return token;
   } catch (error) {
-    // console.log('Error getting device token:', error);
     return null;
   }
 };

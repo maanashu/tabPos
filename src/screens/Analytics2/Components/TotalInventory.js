@@ -85,7 +85,7 @@ export function TotalInventory() {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
         <Text style={styles.revenueDataText}>
-          ${item?.supplies[0]?.cost_price * item?.supplies[0]?.rest_quantity}
+          ${(item?.supplies[0]?.cost_price * item?.supplies[0]?.rest_quantity).toFixed(2)}
         </Text>
       </DataTable.Cell>
 

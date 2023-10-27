@@ -25,7 +25,6 @@ client.interceptors.request.use(async function (config) {
   const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
   const fcmToken = await getDeviceToken();
   const posNumber = store.getState().user?.posLoginData?.pos_number;
-  console.log('user', user);
 
   /**
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
@@ -53,6 +52,7 @@ client.interceptors.request.use(async function (config) {
   if (posNumber) {
     config.headers['pos-no'] = posNumber;
   }
+
   return config;
 });
 
