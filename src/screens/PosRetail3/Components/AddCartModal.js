@@ -44,6 +44,7 @@ export function AddCartModal({
 
   const finalSizeArray = sizeArray?.filter((item) => item.name === 'Size');
   const finalColorArray = colorSizeArray?.filter((item) => item.name === 'Color');
+  console.log('finalColorArray?.[0]?.values', finalColorArray?.[0]?.values);
   const coloredArray = productDetail?.product_detail?.supplies?.[0]?.attributes?.[1]?.values;
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
@@ -166,9 +167,7 @@ export function AddCartModal({
   };
 
   const coloredRenderItem = ({ item, index }) => {
-    const backgroundColor = item.id === colorId ? COLORS.blue_shade : 'transparent';
-    const color = item.id === colorId ? COLORS.primary : COLORS.black;
-    const borderClr = item.id === colorId ? COLORS.primary : COLORS.silver_solid;
+    const borderClr = item.id === colorId ? COLORS.primary : 'transparent';
 
     return (
       <ColorItem
@@ -178,22 +177,27 @@ export function AddCartModal({
           setColorName(item.name);
           // setArrayId(...item.id);
         }}
-        backgroundColor={backgroundColor}
-        textColor={color}
         borderColor={borderClr}
       />
     );
   };
 
-  const ColorItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
+  const ColorItem = ({ item, onPress, borderColor }) => (
     <TouchableOpacity
-      style={[styles.selectColorItem, { backgroundColor, borderColor }]}
+      style={{
+        borderWidth: 2,
+        borderRadius: 5,
+        width: SH(155),
+        height: SH(70),
+        borderColor,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
       onPress={onPress}
     >
-      <Text style={[styles.colorSelectText, { color: textColor }]}>
-        {/* {getcolorName(item.name)} */}
-        {item.name}
-      </Text>
+      <View style={[styles.selectColorItem, { backgroundColor: item?.name }]}>
+        <Text style={styles.colorSelectText}>{item.name}</Text>
+      </View>
     </TouchableOpacity>
   );
   // color select list end
@@ -220,7 +224,7 @@ export function AddCartModal({
   };
   const SizeItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
     <TouchableOpacity
-      style={[styles.selectColorItem, { backgroundColor, borderColor }]}
+      style={[styles.selectSizeItem, { backgroundColor, borderColor }]}
       onPress={onPress}
     >
       <Text style={[styles.colorSelectText, { color: textColor }]}>{item.name}</Text>
@@ -346,6 +350,7 @@ export function AddCartModal({
                 //   height: windowHeight * 0.2,
                 // }}
                 scrollEnabled
+                contentContainerStyle={{ marginVertical: ms(10) }}
               />
               <Spacer space={SH(15)} />
               {finalSizeArray?.[0]?.values?.length >= 1 ? (
