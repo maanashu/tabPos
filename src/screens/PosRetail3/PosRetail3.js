@@ -29,7 +29,7 @@ import {
   getAllServiceCart,
   getServiceCart,
 } from '@/actions/RetailAction';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native';
 import { COLORS, SH } from '@/theme';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -78,6 +78,12 @@ export function PosRetail3() {
 
   const [cashPayDetail, setCashPayDetail] = useState();
   const [activeScreen, setActiveScreen] = useState();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => setselectedScreen('MainScreen');
+    }, [])
+  );
 
   // service Add discount start
 
