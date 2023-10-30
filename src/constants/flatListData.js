@@ -126,6 +126,12 @@ export const settingLabelData = [
     subhead: 'Defaults',
     image: policy,
   },
+  // {
+  //   id: 14,
+  //   name: 'Shop',
+  //   subhead: 'Defaults',
+  //   image: policy,
+  // },
   {
     id: 14,
     name: 'Device Details',

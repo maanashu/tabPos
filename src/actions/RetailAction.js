@@ -164,7 +164,7 @@ const getAllCartError = (error) => ({
   payload: { error },
 });
 
-const getAllCartReset = () => ({
+export const getAllCartReset = () => ({
   type: TYPES.GET_ALL_CART_RESET,
   payload: null,
 });

@@ -127,18 +127,19 @@ export function Setting() {
 
     return (
       <>
-        {item?.name == strings.legal.LegalText ||
+        {/* {item?.name == strings.legal.LegalText ||
         item?.name == strings.Policies.PoliciesText ||
-        item?.name == strings.deviceDetails.deviceDetailsText ? null : (
-          <Item
-            item={item}
-            onPress={() => (setSelectedId(item.id), onpressFun(item.id))}
-            backgroundColor={backgroundColor}
-            textColor={color}
-            tintAndColor={tintAndColor}
-            borderColor={borderColor}
-          />
-        )}
+        item?.name == strings.deviceDetails.deviceDetailsText 
+        ? null : ( */}
+        <Item
+          item={item}
+          onPress={() => (setSelectedId(item.id), onpressFun(item.id))}
+          backgroundColor={backgroundColor}
+          textColor={color}
+          tintAndColor={tintAndColor}
+          borderColor={borderColor}
+        />
+        {/* )} */}
       </>
     );
   };

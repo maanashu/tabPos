@@ -61,6 +61,7 @@ import {
   createBulkcart,
   getMainProductPagination,
   getAllCart,
+  getAllCartReset,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -194,7 +195,7 @@ export function MainScreen({
       };
       try {
         eraseClearCart();
-        const bulkData = await dispatch(createBulkcart(dataToSend));
+        const bulkData = await createBulkcart(dataToSend)(dispatch);
         // if (holdProductArray?.length == 0 || getRetailData?.getAllCart?.length == 0) {
         if (holdProductArray?.length == 0 || Object.keys(getRetailData?.getAllCart)?.length == 0) {
           const data =
@@ -207,7 +208,6 @@ export function MainScreen({
                   status: true,
                   cartId: bulkData?.id,
                 };
-
           dispatch(changeStatusProductCart(data));
         } else {
           const data =
@@ -235,7 +235,6 @@ export function MainScreen({
               status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
               cartId: getRetailData?.getAllCart?.id,
             };
-
       dispatch(changeStatusProductCart(data));
       //   if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
       //     const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
@@ -623,9 +622,9 @@ export function MainScreen({
     dispatch(getMainProduct());
     setLocalCartArray([]);
     setIsClear(true);
-
     if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
-      dispatch(clearAllCart());
+      // dispatch(clearAllCart());
+      dispatch(getAllCartReset());
     }
   };
 
