@@ -64,6 +64,8 @@ const PaymentSelection = ({
   const [isReturnConfirmation, setIsReturnConfirmation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const isCashOrder = orderData?.order?.mode_of_payment === strings.returnOrder.cash;
+
   const onCheckSelectedReceipt = (index) => {
     if (index === 0) {
       setIsPhoneVisible(true);
@@ -97,7 +99,13 @@ const PaymentSelection = ({
   };
 
   const onReturnHandler = () => {
-    if (!orderData || !order || !orderData.order || !orderData.order.mode_of_payment) {
+    if (
+      !orderData ||
+      !order ||
+      !orderData.order ||
+      !orderData.order.mode_of_payment ||
+      (isCashOrder && selectedRecipeIndex === null)
+    ) {
       alert('Please select e-recipe method');
       return;
     }
@@ -123,6 +131,16 @@ const PaymentSelection = ({
       }),
       ...(selectedRecipeIndex === 1 && { email }),
     };
+
+    if (shouldRefundDeliveryAmount) {
+      let deliveryShippingParamKey;
+      if (deliveryShippingTitle === 'Delivery Charges') {
+        deliveryShippingParamKey = 'delivery_charge';
+      } else {
+        deliveryShippingParamKey = 'shipping_charge';
+      }
+      data[deliveryShippingParamKey] = deliveryShippingCharges;
+    }
 
     const callback = (res) => {
       if (res) {
@@ -176,7 +194,7 @@ const PaymentSelection = ({
                 <Text style={styles._payByAmount}>{`${formattedReturnPrice(payableAmount)}`}</Text>
                 <Image
                   source={
-                    orderData?.order?.mode_of_payment === strings.returnOrder.cash
+                    isCashOrder
                       ? cash
                       : orderData?.order?.mode_of_payment === strings.returnOrder.jbr
                       ? qrCodeIcon
@@ -190,11 +208,11 @@ const PaymentSelection = ({
 
           <Spacer space={SH(30)} backgroundColor={COLORS.transparent} />
 
-          {orderData?.order?.mode_of_payment === strings.returnOrder.cash && (
+          {isCashOrder && (
             <Text style={styles.returnPaymentMethod}>{strings.returnOrder.eReceipt}</Text>
           )}
 
-          {orderData?.order?.mode_of_payment === strings.returnOrder.cash && (
+          {isCashOrder && (
             <View style={styles.eReceiptViewStyle}>
               <FlatList
                 horizontal
