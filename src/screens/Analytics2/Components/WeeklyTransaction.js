@@ -384,8 +384,10 @@ export function WeeklyTransaction({
                           </Text>
                           <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
 
+                          {console.log(item?.payable_amount)}
+
                           <Text style={styles.tableTextData}>
-                            ${item?.payable_amount?.toFixed(2) ?? '0'}
+                            ${item?.payable_amount ? Number(item?.payable_amount)?.toFixed(2) : '0'}
                           </Text>
                           {/* <View
                             style={{
