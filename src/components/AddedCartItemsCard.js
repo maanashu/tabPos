@@ -21,19 +21,23 @@ const AddedCartItemsCard = ({ item, index }) => {
             {item?.product_details?.name}
           </Text>
           <View style={styles.belowSubContainer}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.colorsTitle}>Colors : </Text>
-              <View
-                style={{
-                  width: ms(8),
-                  height: ms(8),
-                  borderRadius: ms(2),
-                  backgroundColor: productColor?.[0]?.values?.name,
-                }}
-              ></View>
-            </View>
+            {productColor?.length > 0 && (
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.colorsTitle}>Colors : </Text>
+                <View
+                  style={{
+                    width: ms(8),
+                    height: ms(8),
+                    borderRadius: ms(2),
+                    backgroundColor: productColor?.[0]?.values?.name,
+                  }}
+                ></View>
+              </View>
+            )}
 
-            <Text style={styles.sizeTitle}>Size : {productSize?.[0]?.values?.name}</Text>
+            {productSize?.length > 0 && (
+              <Text style={styles.sizeTitle}>Size : {productSize?.[0]?.values?.name}</Text>
+            )}
           </View>
         </View>
       </View>
@@ -78,6 +82,7 @@ const styles = StyleSheet.create({
   belowSubContainer: {
     flexDirection: 'row',
     marginTop: ms(2),
+    alignItems: 'center',
   },
   colorsTitle: {
     color: COLORS.dark_grey,
