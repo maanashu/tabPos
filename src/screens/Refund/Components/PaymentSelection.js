@@ -262,7 +262,7 @@ const PaymentSelection = ({
               <CountryPicker
                 onSelect={(code) => {
                   setFlag(code.cca2);
-                  if (code.callingCode !== []) {
+                  if (code.callingCode?.length > 0) {
                     setCountryCode('+' + code.callingCode.flat());
                   } else {
                     setCountryCode('');
