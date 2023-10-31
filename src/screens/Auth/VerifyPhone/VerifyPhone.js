@@ -87,7 +87,7 @@ export function VerifyPhone() {
             <CountryPicker
               onSelect={(code) => {
                 setFlag(code.cca2);
-                if (code.callingCode !== []) {
+                if (code.callingCode?.length > 0) {
                   setCountryCode('+' + code.callingCode.flat());
                 } else {
                   setCountryCode('');
@@ -103,7 +103,7 @@ export function VerifyPhone() {
             <Text style={styles.countryCodeText}>{countryCode}</Text>
 
             <TextInput
-              maxLength={15}
+              maxLength={10}
               returnKeyType={'done'}
               keyboardType={'number-pad'}
               value={phoneNumber.trim()}
