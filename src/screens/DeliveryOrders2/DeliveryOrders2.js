@@ -640,7 +640,7 @@ export function DeliveryOrders2({ route }) {
           </TouchableOpacity>
 
           <View style={styles.firstRowStyle}>
-            {openShippingOrders === '9' ? (
+            {/* {openShippingOrders === '9' ? (
               <ReturnInvoice
                 trackingView={() => {
                   setTrackingView(false);
@@ -650,17 +650,17 @@ export function DeliveryOrders2({ route }) {
                 orderList={orderDetail}
                 orderData={singleOrderDetail}
               />
-            ) : (
-              <InvoiceDetails
-                trackingView={() => {
-                  setTrackingView(false);
-                  dispatch(getReviewDefault(openShippingOrders, 1));
-                }}
-                mapRef={mapRef}
-                orderList={orderDetail}
-                orderData={singleOrderDetail}
-              />
-            )}
+            ) : ( */}
+            <InvoiceDetails
+              trackingView={() => {
+                setTrackingView(false);
+                dispatch(getReviewDefault(openShippingOrders, 1));
+              }}
+              mapRef={mapRef}
+              orderList={orderDetail}
+              orderData={singleOrderDetail}
+            />
+            {/* )} */}
             <RightSideBar
               {...{
                 renderDrawer,

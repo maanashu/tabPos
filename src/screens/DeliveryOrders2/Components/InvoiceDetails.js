@@ -34,6 +34,8 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
   const getUserData = useSelector(getUser);
   const orderDetail = getOrder?.getOrderData;
 
+  console.log(JSON.stringify(orderDetail));
+
   useEffect(() => {
     dispatch(getOrderData(orderData?.order_id));
   }, []);
@@ -79,7 +81,10 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
           </Text>
 
           <Text style={[style._commonPayTitle, style.boldInvoice]}>
-            Invoice No. # {orderDetail?.invoices?.invoice_number ?? '-'}
+            Invoice No. #
+            {orderDetail?.status === 9
+              ? orderDetail?.returns?.invoices?.invoice_number
+              : orderDetail?.invoices?.invoice_number ?? '-'}
           </Text>
 
           <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
@@ -100,49 +105,20 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
           <View style={style._subTotalContainer}>
             <Text style={style._substotalTile}>{strings.deliveryOrders.subTotal}</Text>
             <Text style={style._subTotalPrice}>
-              {`$${Number(orderDetail?.actual_amount)?.toFixed(2)}` ?? '-'}
+              {`$${
+                orderDetail?.status === 9
+                  ? Number(orderDetail?.returns?.products_refunded_amount)?.toFixed(2)
+                  : Number(orderDetail?.actual_amount)?.toFixed(2)
+              }` ?? '-'}
             </Text>
           </View>
           <View style={style._horizontalLine} />
 
-          <View style={style._subTotalContainer}>
-            <Text style={style._substotalTile}>{'Discount'}</Text>
-            <Text style={style._subTotalPrice}>{formattedReturnPrice(orderDetail?.discount)}</Text>
-          </View>
-
-          <View style={style._horizontalLine} />
-
-          <View style={style._subTotalContainer}>
-            <Text style={style._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
-            <Text style={style._subTotalPrice}>
-              {`$${Number(orderDetail?.tax)?.toFixed(2)}` ?? '-'}
-            </Text>
-          </View>
-
-          <View style={style._horizontalLine} />
-
-          <View style={style._subTotalContainer}>
-            <Text style={style._substotalTile}>{strings.deliveryOrders.tips}</Text>
-            <Text style={style._subTotalPrice}>
-              {`$${Number(orderDetail?.tips)?.toFixed(2)}` ?? '-'}
-            </Text>
-          </View>
-
-          <View style={style._horizontalLine} />
-
-          {(orderDetail?.delivery_charge !== '0' || orderDetail?.shipping_charge !== '0') && (
+          {orderDetail?.status === 9 && (
             <View style={style._subTotalContainer}>
-              <Text style={style._substotalTile}>
-                {orderDetail?.delivery_charge !== '0'
-                  ? strings.deliveryOrders.deliveryCharges
-                  : strings.deliveryOrders.shippingCharges}
-              </Text>
+              <Text style={style._substotalTile}>{'Delivery Charges'}</Text>
               <Text style={style._subTotalPrice}>
-                {`$${
-                  orderDetail?.delivery_charge !== '0'
-                    ? Number(orderDetail?.delivery_charge)?.toFixed(2)
-                    : Number(orderDetail?.shipping_charge)?.toFixed(2)
-                }` ?? '-'}
+                {`${formattedReturnPrice(orderDetail?.returns?.delivery_charge)}`}
               </Text>
             </View>
           )}
@@ -150,8 +126,27 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
           <View style={style._horizontalLine} />
 
           <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
+            <Text style={style._subTotalPrice}>
+              {`$${
+                orderDetail?.status === 9
+                  ? Number(orderDetail?.returns?.tax)?.toFixed(2)
+                  : Number(orderDetail?.tax)?.toFixed(2)
+              }` ?? '-'}
+            </Text>
+          </View>
+
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
             <Text style={style.totalPriceLabel}>{strings.deliveryOrders.total}</Text>
-            <Text style={style.totalPriceText}>{`$${orderDetail?.payable_amount}` ?? '-'}</Text>
+            <Text style={style.totalPriceText}>
+              {`$${
+                orderDetail?.status === 9
+                  ? orderDetail?.returns?.refunded_amount
+                  : orderDetail?.payable_amount
+              }` ?? '-'}
+            </Text>
           </View>
 
           <View style={[style._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
