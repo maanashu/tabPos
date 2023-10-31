@@ -85,7 +85,13 @@ export function TotalPosOrder({ onPressReview }) {
         <Text style={styles.revenueDataText}>{item?.count}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.averageValue?.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.averageValue
+            ? item?.averageValue < 0
+              ? '-$' + Math.abs(item?.averageValue)?.toFixed(2)
+              : '$' + item?.averageValue?.toFixed(2)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
@@ -94,7 +100,13 @@ export function TotalPosOrder({ onPressReview }) {
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.amount?.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText2}>
+          {item?.amount
+            ? item?.amount < 0
+              ? '-$' + Math.abs(item?.amount)?.toFixed(2)
+              : '$' + item?.amount?.toFixed(2)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
@@ -125,6 +137,16 @@ export function TotalPosOrder({ onPressReview }) {
     []
   );
 
+  const averageValue =
+    posGraph?.ordersOverView?.averageValue < 0
+      ? Math.abs(posGraph?.ordersOverView?.averageValue)
+      : posGraph?.ordersOverView?.averageValue;
+
+  const totalSalesValue =
+    posGraph?.ordersOverView?.total_sales_or_actual_amount < 0
+      ? Math.abs(posGraph?.ordersOverView?.total_sales_or_actual_amount)
+      : posGraph?.ordersOverView?.total_sales_or_actual_amount;
+
   return (
     <View style={styles.flex1}>
       <Text style={styles.graphTitle}> {'Total POS Orders'}</Text>
@@ -152,7 +174,9 @@ export function TotalPosOrder({ onPressReview }) {
           text={'Average Order Value'}
           count={
             posGraph?.ordersOverView?.averageValue
-              ? '$' + posGraph?.ordersOverView?.averageValue?.toFixed(2)
+              ? posGraph?.ordersOverView?.averageValue < 0
+                ? '-$' + averageValue?.toFixed(2)
+                : '$' + averageValue?.toFixed(2)
               : '$0'
           }
           isLoading={isAnalyticOrderGraphLoading}
@@ -162,7 +186,9 @@ export function TotalPosOrder({ onPressReview }) {
           text={'Total Sales'}
           count={
             posGraph?.ordersOverView?.total_sales_or_actual_amount
-              ? '$' + posGraph?.ordersOverView?.total_sales_or_actual_amount?.toFixed(2)
+              ? posGraph?.ordersOverView?.total_sales_or_actual_amount < 0
+                ? '-$' + totalSalesValue?.toFixed(2)
+                : '$' + totalSalesValue?.toFixed(2)
               : '$0'
           }
           isLoading={isAnalyticOrderGraphLoading}

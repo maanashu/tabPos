@@ -258,13 +258,12 @@ export function TotalInventory() {
                 <Text style={styles.revenueText}>Last sold date</Text>
               </DataTable.Title>
             </DataTable.Header>
-
             <View style={styles.mainListContainer}>
               {isInventoryLoading ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
-              ) : totalInventory?.inventory_list?.data?.length === 0 ? (
+              ) : totalInventory?.inventory_list?.data === undefined ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
