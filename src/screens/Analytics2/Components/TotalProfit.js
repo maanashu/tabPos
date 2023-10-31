@@ -85,22 +85,30 @@ export function TotalProfit() {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          ${item?.transaction ? item?.transaction.toFixed(2) : 0}
+          {item?.transaction < 0
+            ? '-$' + Math.abs(item?.transaction)?.toFixed(2)
+            : '$' + item?.transaction?.toFixed(2) ?? 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          ${item?.average_value ? item?.average_value.toFixed(2) : 0}
+          {item?.average_value < 0
+            ? '-$' + Math.abs(item?.average_value)?.toFixed(2)
+            : '$' + item?.average_value?.toFixed(2) ?? 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          ${item?.total_tax ? item?.total_tax.toFixed(2) : 0}
+          {item?.total_tax < 0
+            ? '-$' + Math.abs(item?.total_tax)?.toFixed(2)
+            : '$' + item?.total_tax?.toFixed(2) ?? 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          ${item?.cost_sum ? item?.cost_sum.toFixed(2) : 0}
+          {item?.cost_sum < 0
+            ? '-$' + Math.abs(item?.cost_sum)?.toFixed(2)
+            : '$' + item?.cost_sum?.toFixed(2) ?? 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -108,7 +116,9 @@ export function TotalProfit() {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText2}>
-          ${item?.profit_sum ? item?.profit_sum.toFixed(2) : 0}
+          {item?.profit_sum < 0
+            ? '-$' + Math.abs(item?.profit_sum)?.toFixed(2)
+            : '$' + item?.profit_sum?.toFixed(2) ?? 0}
         </Text>
       </DataTable.Cell>
     </DataTable.Row>
@@ -152,7 +162,9 @@ export function TotalProfit() {
           text={'Total Volume'}
           count={
             analyticStatistics?.overView?.transaction
-              ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
+              ? analyticStatistics?.overView?.transaction < 0
+                ? '-$' + Math.abs(analyticStatistics?.overView?.transaction)?.toFixed(2)
+                : '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
               : '$0'
           }
           isLoading={profitStatisticsLoader}
@@ -162,7 +174,9 @@ export function TotalProfit() {
           text={'Average order value'}
           count={
             analyticStatistics?.overView?.average_value
-              ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
+              ? analyticStatistics?.overView?.average_value < 0
+                ? '-$' + Math.abs(analyticStatistics?.overView?.average_value)?.toFixed(2)
+                : '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
               : '$0'
           }
           isLoading={profitStatisticsLoader}
@@ -172,7 +186,9 @@ export function TotalProfit() {
           text={'Gross Profit'}
           count={
             analyticStatistics?.overView?.profit_sum
-              ? '$' + analyticStatistics?.overView?.profit_sum?.toFixed(2)
+              ? analyticStatistics?.overView?.profit_sum < 0
+                ? '-$' + Math.abs(analyticStatistics?.overView?.profit_sum)?.toFixed(2)
+                : '$' + analyticStatistics?.overView?.profit_sum?.toFixed(2)
               : '$0'
           }
           isLoading={profitStatisticsLoader}

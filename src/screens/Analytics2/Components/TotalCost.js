@@ -151,7 +151,9 @@ export function TotalCost() {
           text={'Total Volume'}
           count={
             analyticStatistics?.overView?.transaction
-              ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
+              ? analyticStatistics?.overView?.transaction < 0
+                ? '-$' + Math.abs(analyticStatistics?.overView?.transaction)?.toFixed(2)
+                : '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
               : '$0'
           }
           isLoading={costStatisticsLoader}
@@ -161,7 +163,9 @@ export function TotalCost() {
           text={'Average order value'}
           count={
             analyticStatistics?.overView?.average_value
-              ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
+              ? analyticStatistics?.overView?.average_value < 0
+                ? '-$' + Math.abs(analyticStatistics?.overView?.average_value)?.toFixed(2)
+                : '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
               : '$0'
           }
           isLoading={costStatisticsLoader}
@@ -171,7 +175,9 @@ export function TotalCost() {
           text={'Total Cost'}
           count={
             analyticStatistics?.overView?.total_cost
-              ? '$' + analyticStatistics?.overView?.total_cost?.toFixed(2)
+              ? analyticStatistics?.overView?.total_cost < 0
+                ? '-$' + Math.abs(analyticStatistics?.overView?.total_cost)?.toFixed(2)
+                : '$' + analyticStatistics?.overView?.total_cost?.toFixed(2)
               : '$0'
           }
           isLoading={costStatisticsLoader}
