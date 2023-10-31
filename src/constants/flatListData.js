@@ -22,6 +22,8 @@ import {
   cardReader,
   tray,
   printer,
+  tax,
+  deviceLogo,
 } from '@/assets';
 
 export const newCustomerDataLoader = [
@@ -84,12 +86,12 @@ export const settingLabelData = [
     subhead: 'Defaults',
     image: invoiceSett,
   },
-  // {
-  //   id: 7,
-  //   name: 'Taxes',
-  //   subhead: 'Not updated ',
-  //   image: tax,
-  // },
+  {
+    id: 7,
+    name: 'Taxes',
+    subhead: 'Not updated ',
+    image: tax,
+  },
   {
     id: 8,
     name: 'Wallet',
@@ -136,7 +138,7 @@ export const settingLabelData = [
     id: 14,
     name: 'Device Details',
     subhead: 'Defaults',
-    image: policy,
+    image: device,
   },
 ];
 

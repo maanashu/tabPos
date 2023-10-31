@@ -175,6 +175,8 @@ export { default as rewardFlower } from '@/assets/icons/ic_reward/rewardFlower.p
 export { default as tableProfile } from '@/assets/icons/ic_reward/tableProfile.png';
 export { default as security } from '@/assets/icons/ic_setting/security.png';
 export { default as device } from '@/assets/icons/ic_setting/device.png';
+export { default as systemUpdate } from '@/assets/icons/ic_setting/SystemUpdate.png';
+
 export { default as cardReader } from '@/assets/icons/ic_setting/cardReader.png';
 export { default as bell } from '@/assets/icons/ic_setting/bell.png';
 export { default as pinLight } from '@/assets/icons/ic_setting/pinLight.png';

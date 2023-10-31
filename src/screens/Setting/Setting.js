@@ -32,6 +32,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { strings } from '@/localization';
 import { getAllPlans } from '@/actions/SubscriptionAction';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
+import { DeviceDetails } from './Components/DeviceDetails';
 
 export function Setting() {
   const dispatch = useDispatch();
@@ -92,11 +93,7 @@ export function Setting() {
     [11]: <Languages />,
     [12]: <Legal />,
     [13]: <Policies />,
-    [14]: (
-      <View>
-        <Text>Device Detail</Text>
-      </View>
-    ),
+    [14]: <DeviceDetails />,
   };
 
   const Item = ({ item, onPress, backgroundColor, textColor, borderColor, tintAndColor }) => (

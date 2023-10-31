@@ -920,7 +920,8 @@ export const styles = StyleSheet.create({
     width: SW(80),
     height: windowHeight * 0.4,
     marginTop: SW(4),
-    marginLeft: SW(4),
+    marginHorizontal: SW(1.9),
+    // marginLeft: SW(4),
   },
   legalView: {
     borderWidth: 1,
@@ -976,7 +977,7 @@ export const styles = StyleSheet.create({
   legalModalCon: {
     backgroundColor: 'white',
     borderRadius: 15,
-    width: windowWidth * 0.45,
+    width: windowWidth * 0.48,
     height: windowHeight * 0.8,
     alignSelf: 'center',
     position: 'absolute',

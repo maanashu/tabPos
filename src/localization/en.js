@@ -250,6 +250,7 @@ export const en = {
   settings: {
     security: 'Security',
     twoStepVerifiCon: '2-step verification',
+    softwareUpdate: 'Software updates',
     securitysubhead:
       'An extra layer to boost your team members account security. A verification code will be required in addition to password each time you sign in.',
     memeberEnable: 'Team members must enable their own verification methods.',
@@ -280,6 +281,7 @@ export const en = {
     foundOneDev: 'Found 1 device',
     location: 'Locations',
     businessLocation: 'Business locations',
+    lastUpdate: 'Last Update',
     locationsubhead:
       'An extra layer to boost your team members account security. A verification code will be required in addition to password each time you sign in.',
     plans: 'Plans',
