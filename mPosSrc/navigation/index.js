@@ -1,9 +1,7 @@
 import React from 'react';
-
 import { useSelector } from 'react-redux';
 import RNBootSplash from 'react-native-bootsplash';
 import { NavigationContainer } from '@react-navigation/native';
-
 import { UserNavigator } from './UserNavigator';
 import { getUser } from '@mPOS/selectors/UserSelectors';
 import { getAuthData } from '@mPOS/selectors/AuthSelector';

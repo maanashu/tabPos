@@ -14,6 +14,7 @@ import { name as appName } from './app.json';
 import { navigate } from '@/navigation/NavigationRef';
 import { getPendingOrders } from '@/actions/DashboardAction';
 import { isTablet } from 'react-native-device-info';
+import Orientation from 'react-native-orientation-locker';
 
 if (Platform.OS === 'android') {
   notifee.createChannel({
@@ -36,6 +37,7 @@ const handleNotification = (notification) => {
 };
 
 console.log('isTablet ===>', isTablet());
+isTablet() ? Orientation.lockToLandscapeLeft() : Orientation.lockToPortrait();
 const App = isTablet() ? tabPOSApp : mPOSApp;
 
 AppRegistry.registerComponent(appName, () => App);

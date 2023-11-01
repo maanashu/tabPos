@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Text,
   View,
@@ -7,7 +8,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 

@@ -5,12 +5,13 @@ import { Provider } from 'react-redux';
 import Toast, { BaseToast } from 'react-native-toast-message';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
+import { PersistGate } from 'redux-persist/integration/react';
 import { getDeviceToken, requestPermission, configureMessaging } from './utils/Notifications';
-import { store } from '@/store';
+import { persistor, store } from '@/store';
 import { Images } from '@mPOS/assets';
 import { RootNavigator } from '@mPOS/navigation';
 import { COLORS, Fonts, SF, SW } from '@/theme';
+import { hide } from 'react-native-bootsplash';
 
 const toastConfig = {
   success_toast: ({ text1, text2, ...rest }) => (
@@ -51,12 +52,14 @@ export const App = () => {
 
   return (
     <Provider store={store}>
-      <GestureHandlerRootView style={styles.container}>
-        <BottomSheetModalProvider>
-          <RootNavigator />
-        </BottomSheetModalProvider>
-      </GestureHandlerRootView>
-      <Toast config={toastConfig} />
+      <PersistGate onBeforeLift={hide} persistor={persistor}>
+        <GestureHandlerRootView style={styles.container}>
+          <BottomSheetModalProvider>
+            <RootNavigator />
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+        <Toast config={toastConfig} />
+      </PersistGate>
     </Provider>
   );
 };
