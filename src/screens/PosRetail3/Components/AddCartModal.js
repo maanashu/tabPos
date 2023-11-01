@@ -44,7 +44,6 @@ export function AddCartModal({
 
   const finalSizeArray = sizeArray?.filter((item) => item.name === 'Size');
   const finalColorArray = colorSizeArray?.filter((item) => item.name === 'Color');
-  console.log('finalColorArray?.[0]?.values', finalColorArray?.[0]?.values);
   const coloredArray = productDetail?.product_detail?.supplies?.[0]?.attributes?.[1]?.values;
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);

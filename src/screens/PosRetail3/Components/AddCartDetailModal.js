@@ -3,7 +3,7 @@ import { FlatList, Text, View } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import { Fonts, bell, cloth, crossButton, toggleSecBlue, vectorOff } from '@/assets';
+import { Fonts, bell, toggleSecBlue, vectorOff } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { ms } from 'react-native-size-matters';
 import { addTocart } from '@/actions/RetailAction';
-const dummyData = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
 export function AddCartDetailModal({
   crossHandler,
@@ -25,6 +24,7 @@ export function AddCartDetailModal({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
+  const stockHandArray = productDetail?.supplies?.[0]?.supply_variants;
 
   // Remove HTML tags
   const withoutHtmlTags = productDetail?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
@@ -43,9 +43,6 @@ export function AddCartDetailModal({
   let shippingImage = deliveryOption.find((item) => {
     return item === '4';
   });
-  const [clothColorId, setClothColorId] = useState();
-  const [clothSizeId, setClothSizeId] = useState();
-  const [remindId, setRemindId] = useState();
 
   const addToCartHandler = async () => {
     const data = {
@@ -60,80 +57,6 @@ export function AddCartDetailModal({
     dispatch(addTocart(data));
     doubleCrossHandler();
   };
-
-  // cloth color select section start
-  const clothColorrenderItem = ({ item }) => {
-    const backgroundColor = item.id === clothColorId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === clothColorId ? 'white' : 'black';
-    const borderClr = item.id === clothColorId ? COLORS.primary : 'transparent';
-    return (
-      <ClothColorItem
-        item={item}
-        onPress={() => setClothColorId(item.id)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-        borderColor={borderClr}
-      />
-    );
-  };
-  const ClothColorItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
-    <TouchableOpacity
-      style={[styles.imageView, { borderColor }]}
-      onPress={onPress}
-      activeOpacity={1}
-    >
-      <Image source={cloth} style={styles.scrollImage} />
-    </TouchableOpacity>
-  );
-  // cloth color select section end
-
-  // cloth Size select section start
-  const sizerenderItem = ({ item }) => {
-    const backgroundColor = item.id === clothSizeId ? '#6e3b6e' : '#f9c2ff';
-    const color = item.id === clothSizeId ? 'white' : 'black';
-    const borderClr = item.id === clothSizeId ? COLORS.primary : COLORS.solidGrey;
-    return (
-      <ClothSizeItem
-        item={item}
-        onPress={() => setClothSizeId(item.id)}
-        backgroundColor={backgroundColor}
-        textColor={color}
-        borderColor={borderClr}
-      />
-    );
-  };
-  const ClothSizeItem = ({ item, onPress, backgroundColor, textColor, borderColor }) => (
-    <TouchableOpacity
-      style={[styles.sizeSelectItemCon, { borderColor }]}
-      onPress={onPress}
-      activeOpacity={1}
-    >
-      <Text style={[styles.jacketName, { fontSize: SF(14), fontFamily: Fonts.Regular }]}>6</Text>
-      <Text style={[styles.jacketName, { fontSize: SF(14) }]}>6</Text>
-    </TouchableOpacity>
-  );
-  // cloth color select section end
-
-  // remind select section start
-  const remindrenderItem = ({ item }) => {
-    const color = item.id === remindId ? COLORS.dark_grey : COLORS.solidGrey;
-    return <RemindItem item={item} onPress={() => setRemindId(item.id)} color={color} />;
-  };
-  const RemindItem = ({ item, onPress, color }) => (
-    <TouchableOpacity
-      style={[styles.sizeSelectItemCon, styles.adminItemCon, { borderColor: color }]}
-      onPress={onPress}
-      activeOpacity={1}
-    >
-      <Image source={bell} style={[styles.bell, { tintColor: color }]} />
-      <Text
-        style={[styles.jacketName, { fontSize: SF(14), fontFamily: Fonts.Regular, color: color }]}
-      >
-        Remind Admin
-      </Text>
-    </TouchableOpacity>
-  );
-  // cloth color select section end
 
   return (
     <View style={styles.addCartDetailCon}>
@@ -200,77 +123,104 @@ export function AddCartDetailModal({
           </View>
           {/* Stock on hand section start */}
           <Spacer space={SH(20)} />
-          {/* <View style={styles.skuCon}>
-            <View style={styles.skuConBody}>
-              <Text style={[styles.jacketName, { fontSize: SF(15) }]}>Stock on Hand</Text>
-            </View>
-            <Spacer space={SH(20)} />
-            <View style={styles.ScrollableMainCon}>
-              <View style={styles.selectColorCon}>
+          {productDetail?.supplies?.[0]?.supply_variants?.length > 0 ? (
+            <View style={styles.skuCon}>
+              <View style={styles.skuConBody}>
+                <Text style={[styles.jacketName, { fontSize: SF(15) }]}>Stock on Hand</Text>
+              </View>
+              <Spacer space={SH(20)} />
+
+              <View style={styles.ScrollableMainCon}>
+                {/* <View style={styles.selectColorCon}>
                 <View style={styles.colorArea}></View>
                 <Text style={styles.sku}>Hyper Blue</Text>
+              </View> */}
+                <Spacer space={SH(15)} />
+
+                <FlatList
+                  data={stockHandArray}
+                  extraData={stockHandArray}
+                  renderItem={({ item, index }) => {
+                    const variant = JSON.parse(item?.attribute_variant?.variants);
+                    const productSize = variant?.filter((item) => item.attribute_name === 'Size');
+                    const productColor = variant?.filter((item) => item.attribute_name === 'Color');
+
+                    return (
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={[styles.imageView, { borderColor: COLORS.solidGrey }]}>
+                          <Image source={{ uri: item.image }} style={styles.scrollImage} />
+                        </View>
+                        <View style={[styles.sizeSelectItemCon]}>
+                          <View>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <Text style={styles.detailColorSize}>color :</Text>
+                              <View
+                                style={{
+                                  width: ms(8),
+                                  height: ms(8),
+                                  borderRadius: ms(2),
+                                  backgroundColor: productColor?.[0]?.attribute_value_name,
+                                  marginHorizontal: ms(3),
+                                }}
+                              ></View>
+                            </View>
+
+                            <Text style={styles.detailColorSize}>
+                              Size : {productSize?.[0]?.attribute_value_name}
+                            </Text>
+                          </View>
+
+                          <Text
+                            style={[
+                              styles.detailColorSize,
+                              {
+                                fontFamily: Fonts.SemiBold,
+                                color: item?.stock <= 10 ? COLORS.red : COLORS.solid_grey,
+                              },
+                            ]}
+                          >
+                            {item?.stock}
+                          </Text>
+                        </View>
+
+                        <TouchableOpacity
+                          onPress={() => alert('in progress')}
+                          style={[
+                            styles.sizeSelectItemCon,
+                            styles.adminItemCon,
+                            { opacity: item?.stock <= 10 ? 1 : 0.4 },
+                          ]}
+                          disabled={item?.stock <= 10 ? false : true}
+                        >
+                          <Image source={bell} style={[styles.bell]} />
+                          <Text style={styles.detailColorSize}>Remind Admin</Text>
+                        </TouchableOpacity>
+                      </View>
+                    );
+                  }}
+                  keyExtractor={(item, index) => index.toString()}
+                  showsVerticalScrollIndicator={false}
+                  ListHeaderComponent={() => (
+                    <View style={[styles.displayflex, { width: ms(190), marginLeft: ms(50) }]}>
+                      <Text style={[styles.jacketName, { fontSize: SF(14) }]}>Color/Size</Text>
+                      <Text style={[styles.jacketName, { fontSize: SF(14) }]}>Stock</Text>
+                    </View>
+                  )}
+                />
               </View>
-              <Spacer space={SH(15)} />
-              <View style={styles.scrollableBodyCon}>
-                <View style={styles.colorSelectArea}>
-                  <FlatList
-                    data={dummyData}
-                    extraData={dummyData}
-                    renderItem={clothColorrenderItem}
-                    keyExtractor={(item) => item.id}
-                    // contentContainerStyle={{ flexGrow: 1 }}
-                    // nestedScrollEnabled
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ width: ms(50) }}
-                  />
-                </View>
-                <View style={styles.quantitySelectArea}>
-                  <View style={styles.displayflex}>
-                    <Text style={[styles.jacketName, { fontSize: SF(14) }]}>
-                      Size: <Text style={{ fontFamily: Fonts.Regular }}>USA</Text>
-                    </Text>
-                    <Text style={[styles.jacketName, { fontSize: SF(14) }]}>
-                      Quantity:: <Text style={{ fontFamily: Fonts.Regular }}>USA</Text>
-                    </Text>
-                  </View>
 
-                  <Spacer space={SH(5)} />
-
-                  <FlatList
-                    data={dummyData}
-                    renderItem={sizerenderItem}
-                    keyExtractor={(item) => item.id}
-                    extraData={dummyData}
-                    // contentContainerStyle={{ flexGrow: 1 }}
-                    // nestedScrollEnabled
-                    showsVerticalScrollIndicator={false}
-                  />
-                </View>
-                <View style={styles.RemindSelectArea}>
-                  <Spacer space={SH(25)} />
-
-                  <FlatList
-                    data={dummyData}
-                    renderItem={remindrenderItem}
-                    keyExtractor={(item) => item.id}
-                    extraData={dummyData}
-                    // contentContainerStyle={{ flexGrow: 1 }}
-                    // nestedScrollEnabled
-                    showsVerticalScrollIndicator={false}
-                  />
-                </View>
+              <Spacer space={SH(20)} />
+              <View style={[styles.skuConBody, styles.reOrderBody]}>
+                <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>Reorder Point</Text>
+                <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>10</Text>
               </View>
             </View>
-            <Spacer space={SH(20)} />
-            <View style={[styles.skuConBody, styles.reOrderBody]}>
-              <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>Reorder Point</Text>
-              <Text style={[styles.sku, { fontFamily: Fonts.Italic }]}>10</Text>
-            </View>
-          </View> */}
-
-          {/* Stock on hand section end */}
-
-          {/* Available for selling section end */}
+          ) : null}
 
           {/* Available for selling section start */}
           <Spacer space={SH(20)} />

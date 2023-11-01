@@ -34,8 +34,6 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
   const getUserData = useSelector(getUser);
   const orderDetail = getOrder?.getOrderData;
 
-  console.log(JSON.stringify(orderDetail));
-
   useEffect(() => {
     dispatch(getOrderData(orderData?.order_id));
   }, []);

@@ -841,9 +841,6 @@ export const styles = StyleSheet.create({
   ScrollableMainCon: {
     width: windowWidth * 0.48,
     alignSelf: 'center',
-    // borderWidth: 1,
-
-    // height: windowHeight * 0.5,
   },
   selectColorCon: {
     flexDirection: 'row',
@@ -871,7 +868,7 @@ export const styles = StyleSheet.create({
   },
   quantitySelectArea: {
     // height: windowHeight * 0.45,
-    width: windowWidth * 0.25,
+    width: windowWidth * 0.5,
     paddingHorizontal: moderateScale(10),
   },
   RemindSelectArea: {
@@ -881,17 +878,18 @@ export const styles = StyleSheet.create({
   imageView: {
     borderWidth: 2,
     borderRadius: 5,
-    width: SW(20),
-    height: SW(20),
+    width: ms(30),
+    height: ms(30),
     marginVertical: verticalScale(3),
   },
   scrollImage: {
-    width: SW(18),
-    height: SW(18),
+    width: ms(25),
+    height: ms(25),
     resizeMode: 'contain',
   },
   sizeSelectItemCon: {
-    height: SW(11),
+    width: ms(200),
+    height: SW(14),
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     borderRadius: 5,
@@ -899,10 +897,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: moderateScale(10),
-
-    marginTop: 7,
+    marginHorizontal: ms(15),
   },
   adminItemCon: {
+    width: ms(140),
     height: SW(11),
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
@@ -910,9 +908,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: moderateScale(10),
-
-    marginTop: 7,
+    paddingHorizontal: moderateScale(3),
+    marginHorizontal: ms(5),
   },
   bell: {
     width: SW(7),
@@ -2493,5 +2490,10 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     paddingHorizontal: ms(10),
     fontSize: ms(8),
+  },
+  detailColorSize: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(8),
+    color: COLORS.solid_grey,
   },
 });
