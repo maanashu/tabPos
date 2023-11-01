@@ -1,0 +1,112 @@
+import React, { useState } from 'react';
+import { View, Text, Keyboard, SafeAreaView, ActivityIndicator } from 'react-native';
+
+import {
+  Cursor,
+  CodeField,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { COLORS, SH } from '@/theme';
+import { TYPES } from '@mPOS/Types/Types';
+import { strings } from '@mPOS/localization';
+import Header from './Components/Header';
+import { Button, Spacer } from '@mPOS/components';
+import { loginPosUser } from '@mPOS/actions/UserActions';
+import { CustomErrorToast } from '@mPOS/components/Toast';
+import { getAuthData } from '@mPOS/selectors/AuthSelector';
+import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
+
+import { styles } from '@mPOS/screens/Authentication/Login/styles';
+
+export function Login(props) {
+  const CELL_COUNT = 4;
+  const dispatch = useDispatch();
+  const { posUser } = props?.route?.params;
+  const getData = useSelector(getAuthData);
+
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
+
+  const onPressHandler = () => {
+    if (!value || value.length < 4) {
+      CustomErrorToast({ message: strings.validationMessages.emptyPinCode });
+    } else {
+      let data = {
+        merchant_id: getData?.merchantLoginData?.uniqe_id,
+        pos_user_id: posUser?.user_id.toString(),
+        pos_security_pin: value,
+      };
+      dispatch(loginPosUser(data));
+    }
+  };
+
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.LOGIN_POS], state));
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header />
+
+      <View style={styles.formContainer}>
+        <Text style={styles.enterPinTextStyle}>{strings.login.enterPasscode}</Text>
+
+        <Spacer space={SH(20)} />
+        <CodeField
+          ref={ref}
+          {...prop}
+          value={value}
+          autoFocus={true}
+          returnKeyType={'done'}
+          cellCount={CELL_COUNT}
+          onChangeText={setValue}
+          keyboardType={'number-pad'}
+          textContentType={'oneTimeCode'}
+          onSubmitEditing={Keyboard.dismiss}
+          renderCell={({ index, symbol, isFocused }) => (
+            <View
+              key={index}
+              style={[
+                styles.cellRoot,
+                {
+                  borderColor: isFocused ? COLORS.darkBlue : COLORS.light_border,
+                  borderWidth: isFocused ? 1.5 : 1,
+                },
+              ]}
+              onLayout={getCellOnLayoutHandler(index)}
+            >
+              <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
+            </View>
+          )}
+        />
+      </View>
+
+      <View style={styles.container} />
+
+      <Button
+        onPress={onPressHandler}
+        title={strings.phoneNumber.button}
+        textStyle={{ color: value ? COLORS.white : COLORS.text }}
+        style={[
+          styles.buttonStyle,
+          { backgroundColor: value ? COLORS.darkBlue : COLORS.inputBorder },
+        ]}
+      />
+
+      {isLoading ? (
+        <View style={styles.loaderViewStyle}>
+          <ActivityIndicator
+            color={COLORS.darkBlue}
+            size={'large'}
+            style={styles.loaderViewStyle}
+          />
+        </View>
+      ) : null}
+    </SafeAreaView>
+  );
+}

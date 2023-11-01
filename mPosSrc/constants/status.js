@@ -1,0 +1,6 @@
+export const STATUS = {
+  ERROR: 'ERROR',
+  LOADING: 'LOADING',
+  SUCCESS: 'SUCCESS',
+  NOT_STARTED: 'NOT_STARTED',
+};
