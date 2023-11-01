@@ -21,6 +21,21 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  checkoutText1: {
+    color: COLORS.dark_grey,
+    fontSize: SF(16),
+    fontFamily: Fonts.Regular,
+  },
+  displayRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  lockLight: {
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+    paddingHorizontal: moderateScale(10),
+  },
   headerMainView: {
     width: windowWidth - 10,
     paddingHorizontal: SW(16),
@@ -90,6 +105,38 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontSize: SF(14),
   },
+  loggedInAsText: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+  },
+  cashierName: {
+    color: COLORS.solid_grey,
+    fontSize: SF(16),
+    fontFamily: Fonts.SemiBold,
+  },
+  posCashier: {
+    color: COLORS.dark_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.SemiBold,
+  },
+  cashProfilecon: {
+    // borderWidth: 4,
+    // borderRadius: 100,
+    // borderColor: COLORS.solidGrey,
+    // alignItems: 'center',
+  },
+  cashLabel: {
+    color: COLORS.solid_grey,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  cashProfile: {
+    width: SW(30),
+    height: SW(30),
+    resizeMode: 'contain',
+    borderRadius: 100,
+  },
   trackingButtonView: {
     width: SW(70),
     height: SH(55),
@@ -121,9 +168,38 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.white,
   },
+  closeBatchButtonView: {
+    width: SW(50),
+    height: SH(60),
+    borderRadius: 5,
+    justifyContent: 'center',
+    // borderWidth: 1,
+    // borderColor: COLORS.primary,
+    alignItems: 'center',
+    backgroundColor: COLORS.solidGrey,
+  },
+  lockScreenButton: {
+    // flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.dark_grey,
+    width: windowWidth * 0.13,
+
+    height: SW(14),
+    alignSelf: 'center',
+    borderRadius: 5,
+    // paddingVertical: verticalScale(9),
+  },
   viewSessionButtonText: {
     fontFamily: Fonts.Bold,
     color: COLORS.primary,
+    fontSize: SF(12),
+  },
+  closeBatchButtonText: {
+    fontFamily: Fonts.Bold,
+    color: COLORS.roseRed,
     fontSize: SF(12),
   },
   sessionHistoryView: {
