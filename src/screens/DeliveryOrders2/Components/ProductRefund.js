@@ -50,6 +50,7 @@ export function ProductRefund(props) {
   const [selectType, setSelectType] = useState('dollar');
   const [buttonText, setButtonText] = useState('Apply Refund');
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
+  const [isRefundDeliveryAmount, setIsRefundDeliveryAmount] = useState(false);
 
   useEffect(() => {
     if (orderData) {
@@ -118,8 +119,32 @@ export function ProductRefund(props) {
   };
 
   const totalRefundableAmount = () => {
-    const total_payable_amount = calculateRefundTax() + totalRefundAmount;
+    let deliveryCharges;
+    if (finalOrder?.delivery_option === '1') {
+      deliveryCharges = finalOrder?.delivery_charge;
+    } else {
+      deliveryCharges = 0;
+    }
+    if (!isRefundDeliveryAmount) {
+      deliveryCharges = 0;
+    }
+    const total_payable_amount =
+      parseFloat(deliveryCharges) + calculateRefundTax() + totalRefundAmount;
+
     return total_payable_amount || 0;
+  };
+
+  const deliveryShippingCharges = () => {
+    let deliveryCharges;
+    let title;
+    if (finalOrder?.delivery_option === '1') {
+      deliveryCharges = finalOrder?.delivery_charge;
+      title = 'Delivery Charges';
+    } else {
+      title = '';
+      deliveryCharges = '0';
+    }
+    return { title, deliveryCharges };
   };
 
   const renderProductItem = ({ item, index }) => {
@@ -302,6 +327,7 @@ export function ProductRefund(props) {
         total: totalRefundableAmount().toFixed(2),
         deliveryShippingTitle: deliveryShippingCharges().title,
         deliveryShippingCharges: deliveryShippingCharges().deliveryCharges,
+        shouldRefundDeliveryAmount: isRefundDeliveryAmount,
       };
       navigate(NAVIGATION.paymentSelection, { screen: data });
     } else {
@@ -316,6 +342,7 @@ export function ProductRefund(props) {
         total: totalRefundableAmount().toFixed(2),
         deliveryShippingTitle: deliveryShippingCharges().title,
         deliveryShippingCharges: deliveryShippingCharges().deliveryCharges,
+        shouldRefundDeliveryAmount: isRefundDeliveryAmount,
       };
       navigate(NAVIGATION.paymentSelection, { screen: data });
     }
@@ -334,19 +361,6 @@ export function ProductRefund(props) {
     return `${sign}$${formattedPrice}`;
   };
 
-  const deliveryShippingCharges = () => {
-    let deliveryCharges;
-    let title;
-    if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '1') {
-      deliveryCharges = finalOrder?.order?.delivery_charge;
-      title = 'Delivery Charges';
-    } else {
-      title = '';
-      deliveryCharges = 0;
-    }
-    return { title, deliveryCharges };
-  };
-
   return (
     <View style={styles.container}>
       <>
@@ -361,6 +375,22 @@ export function ProductRefund(props) {
         >
           <View style={styles.leftMainViewStyle}>
             <View style={styles.rowStyle}>
+              {finalOrder?.delivery_charge !== '0' && (
+                <>
+                  <TouchableOpacity
+                    onPress={() => setIsRefundDeliveryAmount(!isRefundDeliveryAmount)}
+                  >
+                    <Image
+                      source={isRefundDeliveryAmount ? checkedCheckboxSquare : blankCheckBox}
+                      style={styles.checkBoxIconStyle}
+                    />
+                  </TouchableOpacity>
+                  <Text style={styles.applicableTextStyle}>
+                    {'Refund ' + deliveryShippingCharges().title}
+                  </Text>
+                </>
+              )}
+
               {!applyEachItem ? (
                 <View style={styles.applicableViewStyle}>
                   {applicableIsCheck ? (
@@ -621,24 +651,20 @@ export function ProductRefund(props) {
               )}`}</Text>
             </View>
 
-            <Spacer space={SH(10)} />
-
-            {/* {finalOrder?.order?.status === 5 ? (
+            {isRefundDeliveryAmount ? (
               <>
                 <Spacer space={SH(10)} />
                 <View style={styles.totalViewStyle}>
                   <Text style={styles.subTotalText}>{deliveryShippingCharges().title}</Text>
-                  <Text style={styles.subTotalPrice}>{`${
-                    applyEachItem || applicableIsCheck
-                      ? formattedReturnPrice(deliveryShippingCharges().deliveryCharges)
-                      : formattedReturnPrice(0)
-                  }`}</Text>
+                  <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
+                    deliveryShippingCharges().deliveryCharges
+                  )}`}</Text>
                 </View>
                 <Spacer space={SH(10)} />
               </>
-            ) : null} */}
+            ) : null}
 
-            {/* <Spacer space={SH(10)} /> */}
+            <Spacer space={SH(10)} />
 
             <View style={styles.totalViewStyle}>
               <Text style={[styles.subTotalText, { fontFamily: Fonts.MaisonBold }]}>

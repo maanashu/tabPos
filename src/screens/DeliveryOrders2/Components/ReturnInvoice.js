@@ -28,7 +28,18 @@ import { deliveryHomeIcon, scooter, crossButton, gps, logo_full, Fonts } from '@
 import styles from '../styles';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
-const ReturnInvoice = ({ trackingView, mapRef, orderData }) => {
+const ReturnInvoice = ({
+  orderList,
+  orderData,
+  subTotal,
+  totalTaxes,
+  total,
+  deliveryShippingTitle,
+  deliveryShippingCharges,
+  applicableForAllItems,
+  applyEachItem,
+  shouldRefundDeliveryAmount,
+}) => {
   const dispatch = useDispatch();
   const getOrder = useSelector(getAnalytics);
   const getUserData = useSelector(getUser);
@@ -99,61 +110,32 @@ const ReturnInvoice = ({ trackingView, mapRef, orderData }) => {
 
           <View style={style._subTotalContainer}>
             <Text style={style._substotalTile}>{strings.deliveryOrders.subTotal}</Text>
-            <Text style={style._subTotalPrice}>
-              {`${formattedReturnPrice(orderDetail?.actual_amount)}` ?? '-'}
-            </Text>
-          </View>
-          <View style={style._horizontalLine} />
-
-          <View style={style._subTotalContainer}>
-            <Text style={style._substotalTile}>{'Discount'}</Text>
-            <Text style={style._subTotalPrice}>
-              {`${formattedReturnPrice(orderDetail?.discount)}` ?? '-'}
-            </Text>
+            <Text style={style._subTotalPrice}>{`${formattedReturnPrice(subTotal)}` ?? '-'}</Text>
           </View>
 
           <View style={style._horizontalLine} />
 
-          <View style={style._subTotalContainer}>
-            <Text style={style._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
-            <Text style={style._subTotalPrice}>
-              {`${formattedReturnPrice(orderDetail?.tax)}` ?? '-'}
-            </Text>
-          </View>
-          <View style={style._horizontalLine} />
-
-          <View style={style._subTotalContainer}>
-            <Text style={style._substotalTile}>{strings.deliveryOrders.tips}</Text>
-            <Text style={style._subTotalPrice}>
-              {`${formattedReturnPrice(orderDetail?.tips)}` ?? '-'}
-            </Text>
-          </View>
-
-          <View style={style._horizontalLine} />
-          {(orderDetail?.delivery_charge !== '0' || orderDetail?.shipping_charge !== '0') && (
+          {shouldRefundDeliveryAmount && (
             <View style={style._subTotalContainer}>
-              <Text style={style._substotalTile}>
-                {orderDetail?.delivery_charge !== '0'
-                  ? strings.deliveryOrders.deliveryCharges
-                  : strings.deliveryOrders.shippingCharges}
-              </Text>
-              <Text style={style._subTotalPrice}>
-                {`${formattedReturnPrice(
-                  orderDetail?.delivery_charge !== '0'
-                    ? orderDetail?.delivery_charge
-                    : orderDetail?.shipping_charge
-                )}` ?? '-'}
-              </Text>
+              <Text style={style._substotalTile}>{deliveryShippingTitle}</Text>
+              <Text style={style._subTotalPrice}>{`${formattedReturnPrice(
+                deliveryShippingCharges
+              )}`}</Text>
             </View>
           )}
 
           <View style={style._horizontalLine} />
 
           <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{strings.deliveryOrders.totalTax}</Text>
+            <Text style={style._subTotalPrice}>{`${formattedReturnPrice(totalTaxes)}` ?? '-'}</Text>
+          </View>
+
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
             <Text style={style.totalPriceLabel}>{strings.deliveryOrders.total}</Text>
-            <Text style={style.totalPriceText}>
-              {`${formattedReturnPrice(orderDetail?.payable_amount)}` ?? '-'}
-            </Text>
+            <Text style={style.totalPriceText}>{`${formattedReturnPrice(total)}` ?? '-'}</Text>
           </View>
 
           <View style={[style._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
@@ -184,7 +166,7 @@ const ReturnInvoice = ({ trackingView, mapRef, orderData }) => {
           <Image source={logo_full} style={style.logoFull} />
         </View>
 
-        <View style={styles.mapMainView}>
+        {/* <View style={styles.mapMainView}>
           <MapView
             customMapStyle={mapCustomStyle}
             ref={mapRef}
@@ -275,9 +257,7 @@ const ReturnInvoice = ({ trackingView, mapRef, orderData }) => {
               {strings.deliveryOrders2.close}
             </Text>
           </TouchableOpacity>
-
-          {/* <ShipmentTracking orderData={orderDetail} onPressShop={onPressShop} /> */}
-        </View>
+        </View> */}
       </View>
     </ScrollView>
   );

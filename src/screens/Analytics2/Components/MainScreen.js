@@ -141,8 +141,10 @@ export function MainScreen({
             header="Total Revenue"
             subHeader={
               analyticStatistics?.revenue?.total_count
-                ? '$' + analyticStatistics?.revenue?.total_count?.toFixed(2)
-                : '0'
+                ? analyticStatistics?.revenue?.total_count < 0
+                  ? '-$' + Math.abs(analyticStatistics?.revenue?.total_count)?.toFixed(2)
+                  : '$' + analyticStatistics?.revenue?.total_count?.toFixed(2)
+                : '$0'
             }
             analyticGraphObject={analyticStatistics}
             arrayLength={analyticStatistics?.revenue?.graph_data?.datasets?.length}
@@ -169,8 +171,10 @@ export function MainScreen({
             header="Total Costs"
             subHeader={
               analyticStatistics?.cost?.total_count
-                ? '$' + analyticStatistics?.cost?.total_count?.toFixed(2)
-                : '0'
+                ? analyticStatistics?.cost?.total_count < 0
+                  ? '-$' + Math.abs(analyticStatistics?.cost?.total_count)?.toFixed(2)
+                  : '$' + analyticStatistics?.cost?.total_count?.toFixed(2)
+                : '$0'
             }
             analyticGraphObject={analyticStatistics}
             arrayLength={analyticStatistics?.cost?.graph_data?.datasets?.length}
@@ -198,8 +202,10 @@ export function MainScreen({
             header="Gross Profit"
             subHeader={
               analyticStatistics?.profit?.total_count
-                ? '$' + analyticStatistics?.profit?.total_count?.toFixed(2)
-                : '0'
+                ? analyticStatistics?.profit?.total_count < 0
+                  ? '-$' + Math.abs(analyticStatistics?.profit?.total_count)?.toFixed(2)
+                  : '$' + analyticStatistics?.profit?.total_count?.toFixed(2)
+                : '$0'
             }
             analyticGraphObject={analyticStatistics}
             arrayLength={analyticStatistics?.profit?.graph_data?.datasets?.length}

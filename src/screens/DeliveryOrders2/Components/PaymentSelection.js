@@ -118,6 +118,17 @@ export function PaymentSelection(props) {
       }),
       ...(selectedRecipeIndex === 1 && { email }),
     };
+
+    if (orderFinalData?.shouldRefundDeliveryAmount) {
+      let deliveryShippingParamKey;
+      if (orderFinalData?.deliveryShippingTitle === 'Delivery Charges') {
+        deliveryShippingParamKey = 'delivery_charge';
+      } else {
+        deliveryShippingParamKey = 'shipping_charge';
+      }
+      data[deliveryShippingParamKey] = orderFinalData?.deliveryShippingCharges;
+    }
+
     setIsLoading(true);
     dispatch(
       returnProduct(data, 'delivery', (res) => {
@@ -220,6 +231,11 @@ export function PaymentSelection(props) {
           subTotal={orderFinalData?.subTotal}
           totalTaxes={orderFinalData?.totalTaxes}
           total={orderFinalData?.total}
+          deliveryShippingTitle={orderFinalData?.deliveryShippingTitle}
+          deliveryShippingCharges={orderFinalData?.deliveryShippingCharges}
+          applicableForAllItems={orderFinalData?.applicableForAllItems}
+          applyEachItem={orderFinalData?.applyEachItem}
+          shouldRefundDeliveryAmount={orderFinalData?.shouldRefundDeliveryAmount}
         />
       </View>
 

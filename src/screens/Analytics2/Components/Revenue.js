@@ -86,12 +86,16 @@ export function Revenue() {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          ${item?.total_price ? item?.total_price.toFixed(2) : 0}
+          {item?.total_price < 0
+            ? '-$' + Math.abs(item?.total_price)?.toFixed(2)
+            : '$' + item?.total_price?.toFixed(2) ?? 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          ${item?.cost_sum ? item?.cost_sum.toFixed(2) : 0}
+          {item?.cost_sum < 0
+            ? '-$' + Math.abs(item?.cost_sum)?.toFixed(2)
+            : '$' + item?.cost_sum?.toFixed(2) ?? 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -99,7 +103,9 @@ export function Revenue() {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText2}>
-          ${item?.transaction ? item?.transaction.toFixed(2) : 0}
+          {item?.transaction < 0
+            ? '-$' + Math.abs(item?.transaction)?.toFixed(2)
+            : '$' + item?.transaction?.toFixed(2) ?? 0}
         </Text>
       </DataTable.Cell>
     </DataTable.Row>
@@ -143,7 +149,9 @@ export function Revenue() {
           text={'Total Revenue'}
           count={
             analyticStatistics?.overView?.total_revenue
-              ? '$' + analyticStatistics?.overView?.total_revenue?.toFixed(2)
+              ? analyticStatistics?.overView?.total_revenue < 0
+                ? '-$' + Math.abs(analyticStatistics?.overView?.total_revenue)?.toFixed(2)
+                : '$' + analyticStatistics?.overView?.total_revenue?.toFixed(2)
               : '$0'
           }
           isLoading={revenueStatisticsLoader}
@@ -153,7 +161,9 @@ export function Revenue() {
           text={'Average order value'}
           count={
             analyticStatistics?.overView?.average_value
-              ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
+              ? analyticStatistics?.overView?.average_value < 0
+                ? '-$' + Math.abs(analyticStatistics?.overView?.average_value)?.toFixed(2)
+                : '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
               : '$0'
           }
           isLoading={revenueStatisticsLoader}
@@ -163,7 +173,9 @@ export function Revenue() {
           text={'Total Volume'}
           count={
             analyticStatistics?.overView?.transaction
-              ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
+              ? analyticStatistics?.overView?.transaction < 0
+                ? '-$' + Math.abs(analyticStatistics?.overView?.transaction)?.toFixed(2)
+                : '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
               : '$0'
           }
           isLoading={revenueStatisticsLoader}

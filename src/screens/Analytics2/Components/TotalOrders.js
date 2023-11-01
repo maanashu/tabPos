@@ -54,7 +54,13 @@ export function TotalOrders({ onPressReview }) {
         <Text style={styles.revenueDataText}>{item?.consumer_returning}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.amount?.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText2}>
+          {item?.amount
+            ? item?.amount < 0
+              ? '-$' + Math.abs(item?.amount)?.toFixed(2)
+              : '$' + item?.amount?.toFixed(2)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
@@ -101,7 +107,9 @@ export function TotalOrders({ onPressReview }) {
           text={'Total Volume'}
           count={
             totalOrder?.ordersOverView?.total_volume
-              ? '$' + totalOrder?.ordersOverView?.total_volume?.toFixed(2)
+              ? totalOrder?.ordersOverView?.total_volume < 0
+                ? '-$' + Math.abs(totalOrder?.ordersOverView?.total_volume)?.toFixed(2)
+                : '$' + totalOrder?.ordersOverView?.total_volume?.toFixed(2)
               : '$0'
           }
           isLoading={isTotalOrderLoading}
@@ -111,7 +119,9 @@ export function TotalOrders({ onPressReview }) {
           text={'Average order value'}
           count={
             totalOrder?.ordersOverView?.averageValue
-              ? '$' + totalOrder?.ordersOverView?.averageValue?.toFixed(2)
+              ? totalOrder?.ordersOverView?.averageValue < 0
+                ? '-$' + Math.abs(totalOrder?.ordersOverView?.averageValue)?.toFixed(2)
+                : '$' + totalOrder?.ordersOverView?.averageValue?.toFixed(2)
               : '$0'
           }
           isLoading={isTotalOrderLoading}
@@ -121,7 +131,9 @@ export function TotalOrders({ onPressReview }) {
           text={'Gross Profit'}
           count={
             totalOrder?.ordersOverView?.total_profit
-              ? '$' + totalOrder?.ordersOverView?.total_profit?.toFixed(2)
+              ? totalOrder?.ordersOverView?.total_profit < 0
+                ? '-$' + Math.abs(totalOrder?.ordersOverView?.total_profit)?.toFixed(2)
+                : '$' + totalOrder?.ordersOverView?.total_profit?.toFixed(2)
               : '$0'
           }
           isLoading={isTotalOrderLoading}
