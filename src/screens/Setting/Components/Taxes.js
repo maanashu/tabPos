@@ -41,13 +41,7 @@ import { moderateScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
-import {
-  getCountries,
-  getState,
-  getTax,
-  getTaxTrue,
-  taxPayer,
-} from '@/actions/SettingAction';
+import { getCountries, getState, getTax, getTaxTrue, taxPayer } from '@/actions/SettingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SettingTypes';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -83,20 +77,12 @@ export function Taxes() {
 
   const [name, setName] = useState(merchantProfile?.organization_name);
   const [ssn, setSsn] = useState(merchantProfile?.ssn_number);
-  const [streetAdd, setStreetAdd] = useState(
-    merchantProfile?.current_address?.street_address
-  );
-  const [appartment, setAppartment] = useState(
-    merchantProfile?.current_address?.address_type
-  );
-  const [country, setCountry] = useState(
-    merchantProfile?.current_address?.country
-  );
+  const [streetAdd, setStreetAdd] = useState(merchantProfile?.current_address?.street_address);
+  const [appartment, setAppartment] = useState(merchantProfile?.current_address?.address_type);
+  const [country, setCountry] = useState(merchantProfile?.current_address?.country);
   const [state, setState] = useState(merchantProfile?.current_address?.state);
   const [city, setCity] = useState(merchantProfile?.current_address?.city);
-  const [zipCode, setZipCode] = useState(
-    merchantProfile?.current_address?.zipcode
-  );
+  const [zipCode, setZipCode] = useState(merchantProfile?.current_address?.zipcode);
   const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
 
   useEffect(() => {
@@ -119,16 +105,7 @@ export function Taxes() {
   };
 
   const taxPayerHandler = () => {
-    if (
-      !name ||
-      !ssn ||
-      !streetAdd ||
-      !appartment ||
-      !country ||
-      !state ||
-      !city ||
-      !zipCode
-    ) {
+    if (!name || !ssn || !streetAdd || !appartment || !country || !state || !city || !zipCode) {
       alert('Field not complete');
     } else {
       const data = {
@@ -167,7 +144,7 @@ export function Taxes() {
     }
   };
 
-  const isCountryLoading = useSelector(state =>
+  const isCountryLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_COUNTRIES, TYPES.GET_STATE], state)
   );
 
@@ -185,20 +162,11 @@ export function Taxes() {
   };
 
   const Item = ({ item, onPress, tintColor, imageSource }) => (
-    <TouchableOpacity
-      style={styles.countryNameCon}
-      onPress={onPress}
-      activeOpacity={1}
-    >
+    <TouchableOpacity style={styles.countryNameCon} onPress={onPress} activeOpacity={1}>
       <View style={styles.dispalyRow}>
-        <Image
-          source={imageSource}
-          style={[styles.blankCircle, { tintColor }]}
-        />
+        <Image source={imageSource} style={[styles.blankCircle, { tintColor }]} />
         <Image source={usaFlag} style={styles.usaFlag} />
-        <Text style={[styles.selectHead, { fontSize: SF(14) }]}>
-          {item.name}
-        </Text>
+        <Text style={[styles.selectHead, { fontSize: SF(14) }]}>{item.name}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -232,12 +200,7 @@ export function Taxes() {
     const image = item.id === stateId ? checkboxSecBlue : checkboxSec;
 
     return (
-      <STATEITEM
-        item={item}
-        onPress={() => setStateId(item.id)}
-        color={color}
-        image={image}
-      />
+      <STATEITEM item={item} onPress={() => setStateId(item.id)} color={color} image={image} />
     );
   };
 
@@ -247,9 +210,7 @@ export function Taxes() {
         <View style={styles.countryModCon}>
           <View style={styles.countryModHeader}>
             <View style={styles.flexRow}>
-              <Text style={styles.selectHead}>
-                {strings.settings.selectHead}
-              </Text>
+              <Text style={styles.selectHead}>{strings.settings.selectHead}</Text>
               <TouchableOpacity
                 style={styles.crossButtonCon}
                 onPress={() => setCountryModel(false)}
@@ -260,9 +221,7 @@ export function Taxes() {
           </View>
           <View style={styles.countryModBody}>
             <Spacer space={SH(20)} />
-            <Text style={styles.securitysubhead}>
-              {strings.settings.country}
-            </Text>
+            <Text style={styles.securitysubhead}>{strings.settings.country}</Text>
             <Spacer space={SH(15)} />
             <View style={{ flex: 1 }}>
               {isCountryLoading ? (
@@ -280,7 +239,7 @@ export function Taxes() {
                   data={countryArray}
                   extraData={countryArray}
                   renderItem={renderItem}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item) => item.id}
                 />
               )}
             </View>
@@ -298,9 +257,7 @@ export function Taxes() {
                 style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
                 onPress={countryNexthandler}
               >
-                <Text style={[styles.cancel, styles.next]}>
-                  {strings.settings.next}
-                </Text>
+                <Text style={[styles.cancel, styles.next]}>{strings.settings.next}</Text>
               </TouchableOpacity>
             </View>
 
@@ -313,9 +270,7 @@ export function Taxes() {
         <View style={styles.countryModCon}>
           <View style={styles.countryModHeader}>
             <View style={styles.flexRow}>
-              <Text style={styles.selectHead}>
-                {strings.settings.selectHeadState}
-              </Text>
+              <Text style={styles.selectHead}>{strings.settings.selectHeadState}</Text>
               <TouchableOpacity
                 style={styles.crossButtonCon}
                 onPress={() => (setCountryModel(true), setStateModel(false))}
@@ -337,9 +292,7 @@ export function Taxes() {
                   },
                 ]}
               />
-              <Text style={[styles.selectHead, { fontSize: SF(15) }]}>
-                {countryItemSel?.name}
-              </Text>
+              <Text style={[styles.selectHead, { fontSize: SF(15) }]}>{countryItemSel?.name}</Text>
             </View>
             <Spacer space={SH(20)} />
             <Text style={[styles.selectHead, { fontSize: SF(14) }]}>
@@ -362,7 +315,7 @@ export function Taxes() {
                   data={stateArray}
                   extraData={stateArray}
                   renderItem={stateItem}
-                  keyExtractor={item => item.id}
+                  keyExtractor={(item) => item.id}
                 />
               )}
             </View>
@@ -380,9 +333,7 @@ export function Taxes() {
                 style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
                 onPress={stateNextHandler}
               >
-                <Text style={[styles.cancel, styles.next]}>
-                  {strings.settings.next}
-                </Text>
+                <Text style={[styles.cancel, styles.next]}>{strings.settings.next}</Text>
               </TouchableOpacity>
             </View>
 
@@ -401,19 +352,12 @@ export function Taxes() {
             <View style={[styles.countryModCon, styles.taxPayerModCon]}>
               <View style={styles.countryModHeader}>
                 <View style={styles.flexRow}>
-                  <Text style={styles.selectHead}>
-                    {strings.settings.taxPayerHeadl}
-                  </Text>
+                  <Text style={styles.selectHead}>{strings.settings.taxPayerHeadl}</Text>
                   <TouchableOpacity
                     style={styles.crossButtonCon}
-                    onPress={() => (
-                      setTaxPayerModel(false), setStateModel(true)
-                    )}
+                    onPress={() => (setTaxPayerModel(false), setStateModel(true))}
                   >
-                    <Image
-                      source={crossButton}
-                      style={styles.cntryCrossButton}
-                    />
+                    <Image source={crossButton} style={styles.cntryCrossButton} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -508,9 +452,7 @@ export function Taxes() {
                 <View style={styles.flexRow}>
                   <TouchableOpacity
                     style={styles.cancelbuttonCon}
-                    onPress={() => (
-                      setTaxPayerModel(false), setStateModel(true)
-                    )}
+                    onPress={() => (setTaxPayerModel(false), setStateModel(true))}
                   >
                     <Text style={styles.cancel}>{strings.settings.cancel}</Text>
                   </TouchableOpacity>
@@ -518,9 +460,7 @@ export function Taxes() {
                     style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
                     onPress={taxPayerHandler}
                   >
-                    <Text style={[styles.cancel, styles.next]}>
-                      {strings.management.save}
-                    </Text>
+                    <Text style={[styles.cancel, styles.next]}>{strings.management.save}</Text>
                   </TouchableOpacity>
                 </View>
                 <Spacer space={SH(20)} />
@@ -534,22 +474,15 @@ export function Taxes() {
         <View style={styles.countryModCon}>
           <View style={styles.countryModHeader}>
             <View style={styles.flexRow}>
-              <Text style={styles.selectHead}>
-                {strings.settings.activateStateTax}
-              </Text>
-              <TouchableOpacity
-                style={styles.crossButtonCon}
-                onPress={() => setStateTax(false)}
-              >
+              <Text style={styles.selectHead}>{strings.settings.activateStateTax}</Text>
+              <TouchableOpacity style={styles.crossButtonCon} onPress={() => setStateTax(false)}>
                 <Image source={crossButton} style={styles.cntryCrossButton} />
               </TouchableOpacity>
             </View>
           </View>
           <View style={styles.countryModBody}>
             <Spacer space={SH(20)} />
-            <Text style={styles.financialReport}>
-              {strings.settings.financialReport}
-            </Text>
+            <Text style={styles.financialReport}>{strings.settings.financialReport}</Text>
             <Spacer space={SH(20)} />
             <View style={styles.financialReportCon}>
               <View style={styles.flexRow}>
@@ -560,9 +493,7 @@ export function Taxes() {
                       {strings.settings.operatingCountry}
                     </Text>
                     <Spacer space={SH(3)} />
-                    <Text
-                      style={[styles.securitysubhead, { fontSize: SF(12) }]}
-                    >
+                    <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
                       United States of America
                     </Text>
                   </View>
@@ -571,26 +502,18 @@ export function Taxes() {
               <Spacer space={SH(20)} />
               <View style={[styles.twoStepMemberConTax]}>
                 <View style={styles.flexRow}>
-                  <View
-                    style={[styles.dispalyRow, { alignItems: 'flex-start' }]}
-                  >
+                  <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
                     <Image source={taxmap} style={styles.teamMember} />
                     <View style={styles.marginLeft}>
-                      <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-                        Florida
-                      </Text>
+                      <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>Florida</Text>
                       <Spacer space={SH(3)} />
-                      <Text
-                        style={[styles.securitysubhead, { fontSize: SF(12) }]}
-                      >
+                      <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
                         Florida's general state sales tax rate is 6%
                       </Text>
                       <Spacer space={SH(10)} />
                       <View style={styles.dispalyRow}>
                         <Image source={changePlan} style={styles.changePlan2} />
-                        <Text style={styles.checkoutMore}>
-                          {strings.settings.checkoutMore}
-                        </Text>
+                        <Text style={styles.checkoutMore}>{strings.settings.checkoutMore}</Text>
                       </View>
                     </View>
                   </View>
@@ -606,9 +529,7 @@ export function Taxes() {
                 style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
                 onPress={() => (setStateTax(false), setCreateTaxBtn(true))}
               >
-                <Text style={[styles.cancel, styles.next]}>
-                  {strings.settings.activateBtn}
-                </Text>
+                <Text style={[styles.cancel, styles.next]}>{strings.settings.activateBtn}</Text>
               </TouchableOpacity>
             </View>
 
@@ -622,17 +543,10 @@ export function Taxes() {
   const createTaxFun = () => {
     if (createTaxModal) {
       return (
-        <View
-          style={[
-            styles.createTaxModCon,
-            addExmption ? styles.createTaxModHeight : null,
-          ]}
-        >
+        <View style={[styles.createTaxModCon, addExmption ? styles.createTaxModHeight : null]}>
           <View style={styles.createtaxModHeader}>
             <View style={styles.flexRow}>
-              <Text style={styles.selectHead}>
-                {strings.settings.craeteTax}
-              </Text>
+              <Text style={styles.selectHead}>{strings.settings.craeteTax}</Text>
               <TouchableOpacity
                 style={styles.crossButtonCon}
                 onPress={() => setCreateTaxModal(false)}
@@ -670,9 +584,7 @@ export function Taxes() {
               />
             </View>
             <Spacer space={SH(10)} />
-            <Text style={styles.details}>
-              {strings.settings.taxCalculation}
-            </Text>
+            <Text style={styles.details}>{strings.settings.taxCalculation}</Text>
             <Spacer space={SH(8)} />
             <View style={styles.twoStepMemberCon}>
               <View style={styles.flexRow}>
@@ -683,10 +595,7 @@ export function Taxes() {
                       {strings.settings.includeTax}
                     </Text>
                     <Spacer space={SH(3)} />
-                    <Text
-                      numberOfLines={1}
-                      style={[styles.securitysubhead, { fontSize: SF(11) }]}
-                    >
+                    <Text numberOfLines={1} style={[styles.securitysubhead, { fontSize: SF(11) }]}>
                       {strings.settings.includetaxSubhead}
                     </Text>
                   </View>
@@ -697,9 +606,7 @@ export function Taxes() {
             <View style={[styles.twoStepMemberCon]}>
               <View style={styles.flexRow}>
                 <View style={styles.dispalyRow}>
-                  <TouchableOpacity
-                    onPress={() => setAddExmption(!addExmption)}
-                  >
+                  <TouchableOpacity onPress={() => setAddExmption(!addExmption)}>
                     <Image
                       source={addExmption ? toggleSecBlue : toggleSecurity}
                       style={styles.toggleSecurity}
@@ -710,9 +617,7 @@ export function Taxes() {
                       {strings.settings.addRule}
                     </Text>
                     <Spacer space={SH(3)} />
-                    <Text
-                      style={[styles.securitysubhead, { fontSize: SF(11) }]}
-                    >
+                    <Text style={[styles.securitysubhead, { fontSize: SF(11) }]}>
                       {strings.settings.notApplied}
                     </Text>
                   </View>
@@ -722,9 +627,7 @@ export function Taxes() {
               {addExmption ? (
                 <View style={styles.taxFormCon}>
                   <View style={styles.taxExmptionCon}>
-                    <Text style={styles.taxEmption}>
-                      {strings.settings.taxexmption}
-                    </Text>
+                    <Text style={styles.taxEmption}>{strings.settings.taxexmption}</Text>
                     <TextInput
                       placeholder="Tax name"
                       style={styles.taxImptionInput}
@@ -732,9 +635,7 @@ export function Taxes() {
                     />
                   </View>
                   <View style={styles.taxExmptionCon}>
-                    <Text style={styles.taxEmption}>
-                      {strings.settings.location}
-                    </Text>
+                    <Text style={styles.taxEmption}>{strings.settings.location}</Text>
                     <TextInput
                       placeholder="Select location"
                       style={styles.taxImptionInput}
@@ -742,9 +643,7 @@ export function Taxes() {
                     />
                   </View>
                   <View style={styles.taxExmptionCon}>
-                    <Text style={styles.taxEmption}>
-                      {strings.settings.exempttax}
-                    </Text>
+                    <Text style={styles.taxEmption}>{strings.settings.exempttax}</Text>
                     <TextInput
                       placeholder="Select Exempt tax option"
                       style={styles.taxImptionInput}
@@ -752,9 +651,7 @@ export function Taxes() {
                     />
                   </View>
                   <View style={styles.taxExmptionCon}>
-                    <Text style={styles.taxEmption}>
-                      {strings.settings.amount}
-                    </Text>
+                    <Text style={styles.taxEmption}>{strings.settings.amount}</Text>
                     <TextInput
                       placeholder="$00.00"
                       style={styles.taxImptionInput}
@@ -787,14 +684,10 @@ export function Taxes() {
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={invoice2} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>
-                  {strings.settings.taxHead}
-                </Text>
+                <Text style={styles.twoStepText}>{strings.settings.taxHead}</Text>
                 <Spacer space={SH(10)} />
                 <View>
-                  <Text style={styles.securitysubhead}>
-                    {strings.settings.taxSubHead}
-                  </Text>
+                  <Text style={styles.securitysubhead}>{strings.settings.taxSubHead}</Text>
                   <Spacer space={SH(20)} />
                   <Button
                     onPress={activeBtnHandler}
@@ -1012,10 +905,7 @@ export function Taxes() {
                 <View style={styles.invoiceTableHeader}>
                   <View style={styles.headerBodyCon}>
                     <Text
-                      style={[
-                        styles.invoiveheaderText,
-                        { marginHorizontal: moderateScale(10) },
-                      ]}
+                      style={[styles.invoiveheaderText, { marginHorizontal: moderateScale(10) }]}
                     >
                       #
                     </Text>
@@ -1032,26 +922,16 @@ export function Taxes() {
                   <ScrollView>
                     {getTaxTable?.map((item, index) => (
                       <View
-                        style={[
-                          styles.invoiceTableHeader,
-                          styles.invoiceTableData,
-                        ]}
+                        style={[styles.invoiceTableHeader, styles.invoiceTableData]}
                         key={index}
                       >
                         <View style={styles.headerBodyCon}>
-                          <Text
-                            style={[
-                              styles.terryText,
-                              { marginHorizontal: moderateScale(10) },
-                            ]}
-                          >
+                          <Text style={[styles.terryText, { marginHorizontal: moderateScale(10) }]}>
                             {index + 1}
                           </Text>
                           <Text style={styles.terryText}>{item.tax_name}</Text>
                         </View>
-                        <View
-                          style={[styles.headerBodyCon, styles.headerBodyCon2]}
-                        >
+                        <View style={[styles.headerBodyCon, styles.headerBodyCon2]}>
                           <Text style={styles.terryText}>{item.location}</Text>
                           <Text style={styles.terryText}>{item.tax_rate}%</Text>
                           <Image
@@ -1088,11 +968,7 @@ export function Taxes() {
         {dataChangeFun()}
       </Modal>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        isVisible={createTaxModal}
-      >
+      <Modal animationType="slide" transparent={true} isVisible={createTaxModal}>
         {createTaxFun()}
       </Modal>
     </View>
