@@ -9,6 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 
 import moment from 'moment';
@@ -34,6 +35,10 @@ import {
   up,
   wallet,
   scn,
+  productReturn,
+  lockLight,
+  powerAuth,
+  userImage,
 } from '@/assets';
 import {
   endTrackingSession,
@@ -54,7 +59,11 @@ import { logoutUserFunction } from '@/actions/UserActions';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getCashTracking } from '@/selectors/CashTrackingSelector';
-import { getOrdersByInvoiceId, scanBarCode } from '@/actions/DashboardAction';
+import {
+  getDrawerSessionSuccess,
+  getOrdersByInvoiceId,
+  scanBarCode,
+} from '@/actions/DashboardAction';
 import { SessionHistoryTable, SummaryHistory } from '@/screens/Management/Components';
 
 import { styles } from '@/screens/Management/Management.styles';
@@ -63,6 +72,8 @@ import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { Loader } from '@/components/Loader';
 import WalletInvoice from '../Wallet2/Components/WalletInvoice';
 import { getDashboard } from '@/selectors/DashboardSelector';
+import { getUser } from '@/selectors/UserSelectors';
+import { logoutFunction } from '@/actions/AuthActions';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -75,6 +86,13 @@ export function Management() {
   const drawerActivity = drawerData?.getDrawerSession?.drawer_activites;
   const historyById = drawerData?.getDrawerSessionById?.[0];
 
+  const getUserData = useSelector(getUser);
+  const getPosUser = getUserData?.posLoginData;
+
+  const getDashboardData = useSelector(getDashboard);
+  const getSessionObj = getDashboardData?.drawerSession;
+  console.log('asdsad', getSessionObj);
+
   const [sessionHistoryArray, setSessionHistoryArray] = useState(
     drawerData?.getSessionHistory ?? []
   );
@@ -85,6 +103,7 @@ export function Management() {
   const [endSession, setEndSession] = useState(false);
   const [viewSession, setViewSession] = useState(false);
   const [summaryHistory, setSummaryHistory] = useState(false);
+  const [cardCoinSummary, setCardCoinSummary] = useState(false);
   const [trackingSession, setTrackingSession] = useState(false);
   const [newTrackingSession, setNewTrackingSession] = useState(false);
   const [sessionHistory, setSessionHistory] = useState(false);
@@ -112,6 +131,18 @@ export function Management() {
   };
   const cashIn = drawerData?.drawerHistory?.cash_in;
   const cashOut = drawerData?.drawerHistory?.cash_out;
+
+  const cardSum =
+    cashIn?.sales?.card +
+    cashIn?.manual?.card +
+    cashIn?.delivery_fees?.card +
+    cashIn?.shipping_fees?.card;
+  const jbrCoinSum =
+    cashIn?.sales?.jobr_coin +
+    cashIn?.manual?.jobr_coin +
+    cashIn?.delivery_fees?.jobr_coin +
+    cashIn?.shipping_fees?.jobr_coin;
+
   const cashTotalNet =
     Number(drawerData?.drawerHistory?.cash_in?.total) +
     Number(drawerData?.drawerHistory?.cash_out?.total);
@@ -134,7 +165,19 @@ export function Management() {
   const [salesOutExpandedView, setSalesOutExpandedView] = useState(false);
   const [manualInExpandedView, setManualInExpandedView] = useState(false);
   const [manualOutExpandedView, setManualOutExpandedView] = useState(false);
+  const [closeBatch, setCloseBatch] = useState(false);
+  const currentDateTime = moment();
 
+  // Format the date and time as per your requirements
+  const formattedDateTime = currentDateTime.format('M/D/YYYY h:mm a');
+
+  const profileObj = {
+    openingBalance: getSessionObj?.opening_balance,
+    closeBalance: getSessionObj?.cash_balance,
+    profile: getSessionObj?.seller_details?.user_profiles?.profile_photo,
+    name: getSessionObj?.seller_details?.user_profiles?.firstname,
+    id: getSessionObj?.id,
+  };
   // Function to toggle the expansion state of an item
   const setLeavFun = (countThird) => {
     if (countThird) {
@@ -355,7 +398,37 @@ export function Management() {
   };
 
   const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
+  const logoutHandler = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout ?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          confirmLogout();
+        },
+      },
+    ]);
+  };
 
+  const confirmLogout = () => {
+    // if (googleAuthenticator) {
+    //   setTwoFactorEnabled(true);
+    //   setSixDigit(true);
+    //   setIsLogout(true);
+    // } else {
+    dispatch(logoutFunction());
+    // setIsLogout(false);
+    // setValue('');
+    // setTwoFactorEnabled(false);
+    // setTwoStepModal(false);
+    // setGoogleAuthScan(false);
+    // setSixDigit(false);
+    // }
+  };
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -823,12 +896,89 @@ export function Management() {
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={'Confirm'}
               onPress={() => {
+                // dispatch(getDrawerSessionById(endBalance?.drawer_id));
+                setRemoveUsd(false);
+                // setEndSession(false);
+                // setCashSummary('');
+
+                // setSummaryHistory(true),
+                // setHistoryHeader(true);
+                setCardCoinSummary(true);
+              }}
+            />
+          </View>
+        </View>
+      );
+    } else if (cardCoinSummary) {
+      return (
+        <View style={styles.absoluteZero}>
+          <View style={styles.headerView}>
+            <View style={styles.centerSw}>
+              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
+                {strings.management.endCashTrackingSession}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                setCardCoinSummary(false);
+                setRemoveUsd(true);
+              }}
+              style={{ width: SW(10) }}
+            >
+              <Image source={crossButton} style={styles.crossIconStyle} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.calculatorView}>
+            <Image source={CalculatorColor} style={styles.calculatorStyle} />
+          </View>
+          <View style={styles.trackingBodyCon}>
+            <Spacer space={SH(40)} />
+            <View>
+              <Text style={[styles.countCashText]}>{strings.management.cardSummary}</Text>
+              <Spacer space={SH(15)} />
+              <Spacer
+                space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
+                backgroundColor={COLORS.gerySkies}
+              />
+              <Spacer space={SH(15)} />
+              <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
+                <Text style={styles.amountExpect}>{strings.management.amountText}</Text>
+                <Text style={styles.amountExpect}>
+                  {'$'}
+                  {cardSum}
+                </Text>
+              </View>
+              <Spacer space={SH(12.5)} />
+            </View>
+            <Spacer space={SH(45)} />
+            <View>
+              <Text style={[styles.countCashText]}>{strings.management.jbrCoinSummary}</Text>
+              <Spacer space={SH(15)} />
+              <Spacer
+                space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
+                backgroundColor={COLORS.gerySkies}
+              />
+              <Spacer space={SH(15)} />
+              <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
+                <Text style={styles.amountExpect}>{strings.management.amountText}</Text>
+                <Text style={styles.amountExpect}>
+                  {'$'}
+                  {jbrCoinSum}
+                </Text>
+              </View>
+              <Spacer space={SH(12.5)} />
+            </View>
+            <Spacer space={SH(60)} />
+            <Button
+              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+              textStyle={[styles.buttonText, { color: COLORS.white }]}
+              title={strings.management.confirm}
+              onPress={() => {
                 dispatch(getDrawerSessionById(endBalance?.drawer_id));
-                setRemoveUsd(false),
-                  setEndSession(false),
-                  setCashSummary(''),
-                  setSummaryHistory(true),
-                  setHistoryHeader(true);
+                setCardCoinSummary(false);
+                setEndSession(false);
+                setCashSummary('');
+                setSummaryHistory(true), setHistoryHeader(true);
               }}
             />
           </View>
@@ -839,7 +989,10 @@ export function Management() {
 
   const endSessionModal = () => {
     return (
-      <Modal transparent isVisible={endSession || cashSummary || endSelectAmount || removeUsd}>
+      <Modal
+        transparent
+        isVisible={endSession || cashSummary || endSelectAmount || removeUsd || cardCoinSummary}
+      >
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="always"
           contentContainerStyle={styles.modalMainView}
@@ -944,6 +1097,7 @@ export function Management() {
             <View style={styles.sessionView}>
               <View>
                 <Text style={styles.cashDrawerText}>{strings.management.cashDrawer}</Text>
+
                 <Text style={styles.drawerIdText}>
                   {strings.management.drawerID} {SessionData?.id}
                 </Text>
@@ -1018,7 +1172,7 @@ export function Management() {
                   </View>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashSum.toFixed(2) ?? '0'}
+                    {cashSum?.toFixed(2) ?? '0'}
                   </Text>
                 </TouchableOpacity>
                 {viewCashInArray && (
@@ -1346,7 +1500,7 @@ export function Management() {
                   </View>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashOutSum.toFixed(2) ?? '0'}
+                    {cashOutSum?.toFixed(2) ?? '0'}
                   </Text>
                 </TouchableOpacity>
                 {viewCashOutArray && (
@@ -1598,13 +1752,146 @@ export function Management() {
           <View style={{ flex: 1 }} />
           <Button
             onPress={() => {
-              setEndSession(true), setCountFirst('');
+              //  setEndSession(true),
+              //  setCountFirst('');
+              setViewSession(false);
+              setCloseBatch(true);
             }}
             style={styles.buttonStyle}
             textStyle={[styles.cashDrawerText, { color: COLORS.red }]}
             title={strings.management.endSession}
           />
           <Spacer space={SH(40)} />
+        </View>
+      );
+    } else if (closeBatch) {
+      return (
+        <View style={{ flex: 1, padding: ms(10) }}>
+          <TouchableOpacity
+            style={styles.backButtonCon}
+            onPress={() => {
+              setCloseBatch(false);
+              setViewSession(true);
+            }}
+          >
+            <Image source={backArrow} style={styles.backButtonArrow} />
+            <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
+          </TouchableOpacity>
+          <Spacer space={SH(50)} />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              minHeight: ms(40),
+              paddingHorizontal: ms(5),
+            }}
+          >
+            <View>
+              <Text
+                style={[styles.trackingButtonText, { fontSize: SF(18), fontFamily: Fonts.Bold }]}
+              >
+                {strings.management.endCashTrackingSession}
+              </Text>
+              <Spacer space={SH(5)} />
+              <Text style={[styles.trackingButtonText, { fontSize: SF(14), marginLeft: -2 }]}>
+                {' '}
+                {strings.management.drawerID} {SessionData?.id}
+              </Text>
+            </View>
+            <Text style={[styles.trackingButtonText, { fontSize: SF(14), marginLeft: -2 }]}>
+              {'Today ' + formattedDateTime}
+            </Text>
+          </View>
+          <View
+            style={[
+              styles.cashDrawerView,
+              {
+                padding: ms(30),
+                width: '100%',
+                backgroundColor: COLORS.white,
+                borderWidth: 0.5,
+                borderColor: COLORS.gerySkies,
+              },
+            ]}
+          >
+            <View>
+              <Text style={styles.cashDrawerText}>{strings.management.batch}</Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                setEndSession(true), setCountFirst('');
+              }}
+              style={styles.closeBatchButtonView}
+            >
+              <Text style={styles.closeBatchButtonText}>{strings.management.closeBatch}</Text>
+            </TouchableOpacity>
+          </View>
+          <Spacer space={SH(30)} />
+          <View style={[styles.cashDrawerView, { padding: ms(30), width: '100%' }]}>
+            <View>
+              <Text style={styles.loggedInAsText}>{strings.management.loggedInAs}</Text>
+              <Spacer space={SH(30)} />
+              <View style={{ flexDirection: 'row' }}>
+                <View style={styles.cashProfilecon}>
+                  <Image
+                    source={
+                      getPosUser?.user_profiles?.profile_photo
+                        ? { uri: getPosUser?.user_profiles?.profile_photo }
+                        : userImage
+                    }
+                    style={styles.cashProfile}
+                  />
+                </View>
+                <View style={{ marginHorizontal: ms(10), marginTop: ms(5) }}>
+                  <Text style={styles.cashierName}>
+                    {`${getPosUser?.user_profiles?.firstname} ${getPosUser?.user_profiles?.lastname}`}
+                  </Text>
+                  <Text style={styles.posCashier}>
+                    {getPosUser?.user_roles?.length > 0
+                      ? getPosUser?.user_roles?.map((item) => item.role?.name)
+                      : 'admin'}
+                  </Text>
+                  <Text style={styles.cashLabel}>
+                    ID : {getPosUser?.user_profiles?.user_id ?? '0'}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View>
+              <Spacer space={SH(30)} />
+              <TouchableOpacity
+                style={styles.lockScreenButton}
+                onPress={async () => {
+                  const data = {
+                    amount: parseInt(getSessionObj?.opening_balance),
+                    drawerId: getSessionObj?.id,
+                    transactionType: 'end_tracking_session',
+                    modeOfcash: 'cash_out',
+                  };
+
+                  const res = await dispatch(endTrackingSession(data));
+                  if (res?.type === 'END_TRACKING_SUCCESS') {
+                    dispatch(getDrawerSessionSuccess(null));
+                    dispatch(logoutUserFunction());
+                  } else {
+                    alert('something went wrong');
+                  }
+                }}
+              >
+                <View style={styles.displayRow}>
+                  <Image source={lockLight} style={styles.lockLight} />
+                  <Text style={styles.checkoutText1}>{strings.dashboard.lockScreen}</Text>
+                </View>
+              </TouchableOpacity>
+              <Spacer space={SH(15)} />
+              <TouchableOpacity style={styles.lockScreenButton} onPress={() => logoutHandler()}>
+                <View style={styles.displayRow}>
+                  <Image source={powerAuth} style={styles.lockLight} />
+                  <Text style={styles.checkoutText1}>{strings.posUsersList.logOut}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       );
     } else {
@@ -1748,7 +2035,7 @@ export function Management() {
         </>
       ) : (
         <View style={styles.container}>
-          {summaryHistory ? null : customHeader()}
+          {summaryHistory || closeBatch ? null : customHeader()}
           {contentFunction()}
           {trackinSessionModal()}
           {addCashModal()}
