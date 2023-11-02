@@ -3,13 +3,13 @@ import { View, Text, Image, ScrollView, FlatList, ActivityIndicator } from 'reac
 import { Spacer } from '@mPOS/components';
 import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import { getAnalytics } from '@mPOS/selectors/AnalyticsSelector';
 import { ms } from 'react-native-size-matters';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { TYPES } from '@mPOS/Types/AnalyticsTypes';
 import { COLORS } from '@/theme';
 import { styles } from '../styles';
 import { Images } from '@mPOS/assets';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function TotalCost() {
   const getAnalyticsData = useSelector(getAnalytics);
@@ -61,7 +61,7 @@ export function TotalCost() {
           <Spacer space={ms(4)} />
           {isLoading ? (
             <ActivityIndicator
-              color={COLORS.darkBlue}
+              color={COLORS.primary}
               size={'small'}
               style={{ alignSelf: 'flex-start' }}
             />
@@ -156,7 +156,7 @@ export function TotalCost() {
             <View style={styles.mainListContainer}>
               {costStatisticsLoader ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
               ) : analyticStatistics?.orderData?.length === 0 ? (
                 <View style={styles.listLoader}>

@@ -11,16 +11,16 @@ import {
 import { Spacer } from '@mPOS/components';
 import { DataTable } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAnalytics } from '@mPOS/selectors/AnalyticsSelector';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { TYPES } from '@mPOS/Types/AnalyticsTypes';
 import { COLORS } from '@/theme';
-import { getSoldProduct } from '@mPOS/actions/AnalyticsAction';
 import { useDebouncedCallback } from 'use-lodash-debounce';
 import { styles } from '../styles';
 import { Images } from '@mPOS/assets';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { getSoldProduct } from '@/actions/AnalyticsAction';
 
 export function TotalProductSold({ sellerID, data }) {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ export function TotalProductSold({ sellerID, data }) {
   const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
 
   const renderFooter = () => {
-    return isSoldProductLoading ? <ActivityIndicator size="large" color={COLORS.darkBlue} /> : null;
+    return isSoldProductLoading ? <ActivityIndicator size="large" color={COLORS.primary} /> : null;
   };
 
   const getSoldProductList = ({ item, index }) => (
@@ -90,7 +90,7 @@ export function TotalProductSold({ sellerID, data }) {
           <Spacer space={ms(4)} />
           {isLoading ? (
             <ActivityIndicator
-              color={COLORS.darkBlue}
+              color={COLORS.primary}
               size={'small'}
               style={{ alignSelf: 'flex-start' }}
             />
@@ -182,7 +182,7 @@ export function TotalProductSold({ sellerID, data }) {
             <View style={[styles.mainListContainer]}>
               {/* {isSoldProductLoading ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
               ) :  */}
 

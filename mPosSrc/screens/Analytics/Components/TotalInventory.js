@@ -10,15 +10,15 @@ import {
 } from 'react-native';
 import { Spacer } from '@mPOS/components';
 import { DataTable } from 'react-native-paper';
-import { getAnalytics } from '@mPOS/selectors/AnalyticsSelector';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
-import { TYPES } from '@mPOS/Types/AnalyticsTypes';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import { COLORS } from '@/theme';
 import { styles } from '../styles';
 import { Images } from '@mPOS/assets';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function TotalInventory() {
   const getAnalyticsData = useSelector(getAnalytics);
@@ -68,7 +68,7 @@ export function TotalInventory() {
           <Spacer space={ms(4)} />
           {isLoading ? (
             <ActivityIndicator
-              color={COLORS.darkBlue}
+              color={COLORS.primary}
               size={'small'}
               style={{ alignSelf: 'flex-start' }}
             />
@@ -162,7 +162,7 @@ export function TotalInventory() {
             <View style={styles.mainListContainer}>
               {isInventoryLoading ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
               ) : totalInventory?.inventory_list?.data?.length === 0 ? (
                 <View style={styles.listLoader}>

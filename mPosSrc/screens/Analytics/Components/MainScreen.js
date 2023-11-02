@@ -1,26 +1,13 @@
 import React from 'react';
-import {
-  Platform,
-  View,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-  ActivityIndicator,
-  ScrollView,
-} from 'react-native';
-import { Spacer } from '@mPOS/components';
+import { View, Dimensions, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
-import { COLORS, SF, SH, SW } from '@/theme';
-import { getUser } from '@mPOS/selectors/UserSelectors';
-import { TYPES } from '@mPOS/Types/AnalyticsTypes';
-import { getAnalytics } from '@mPOS/selectors/AnalyticsSelector';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { styles } from '../styles';
+import { COLORS } from '@/theme';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { HomeGraph } from '.';
 import { ms } from 'react-native-size-matters';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+import { getUser } from '@/selectors/UserSelectors';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   // const labelInterval = Math.ceil(dataLabels?.length / daysLength);

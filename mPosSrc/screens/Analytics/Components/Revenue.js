@@ -5,11 +5,11 @@ import { Images } from '@mPOS/assets';
 import { DataTable } from 'react-native-paper';
 import { ms } from 'react-native-size-matters';
 import { useSelector } from 'react-redux';
-import { getAnalytics } from '@mPOS/selectors/AnalyticsSelector';
-import { TYPES } from '@mPOS/Types/AnalyticsTypes';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import { styles } from '../styles';
 import { COLORS } from '@/theme';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function Revenue() {
   const getAnalyticsData = useSelector(getAnalytics);
@@ -60,7 +60,7 @@ export function Revenue() {
           <Spacer space={ms(4)} />
           {isLoading ? (
             <ActivityIndicator
-              color={COLORS.darkBlue}
+              color={COLORS.primary}
               size={'small'}
               style={{ alignSelf: 'flex-start' }}
             />
@@ -155,7 +155,7 @@ export function Revenue() {
             <View style={styles.mainListContainer}>
               {revenueStatisticsLoader ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
               ) : analyticStatistics?.orderData?.length === 0 ? (
                 <View style={styles.listLoader}>
