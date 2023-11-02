@@ -407,7 +407,6 @@ export const scanBarCode = (data) => async (dispatch) => {
       dispatch(getOrdersByInvoiceIdSuccess(res?.payload));
     }
   } catch (error) {
-    console.log(error);
     if (error?.msg === 'Invalid code!') {
       dispatch(getOrdersByInvoiceIdReset());
     }

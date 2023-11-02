@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
   enterPhoneTextStyle: {
     fontFamily: Fonts.MaisonRegular,
     fontSize: SF(22),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     paddingHorizontal: SW(20),
   },
   sendotpTextStyle: {
     paddingTop: 5,
     fontFamily: Fonts.Regular,
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     paddingHorizontal: SW(20),
   },
   textInputView: {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: Fonts.MaisonRegular,
     fontSize: SF(30),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     paddingHorizontal: SW(20),
   },
   enterOtpTextStyle: {
@@ -72,14 +72,14 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     fontFamily: Fonts.Regular,
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     paddingHorizontal: SW(20),
   },
   phoneNumberTextStyle: {
     textAlign: 'center',
     fontFamily: Fonts.MaisonMonoBold,
     fontSize: SF(30),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     paddingHorizontal: SW(20),
   },
   cellRoot: {

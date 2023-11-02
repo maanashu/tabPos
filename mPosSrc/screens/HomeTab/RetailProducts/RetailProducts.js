@@ -15,7 +15,7 @@ import { ms } from 'react-native-size-matters';
 import Search from './Components/Search';
 import { Images } from '@mPOS/assets';
 import AddProductCart from './Components/AddProductCart';
-import { getOneProduct, getProduct } from '@mPOS/actions/RetailActions';
+import { getProduct } from '@mPOS/actions/RetailActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
@@ -24,20 +24,22 @@ import { strings } from '@mPOS/localization';
 import ProductDetails from './Components/ProductDetails';
 import { FullScreenLoader, Header, ScreenWrapper } from '@mPOS/components';
 import { debounce } from 'lodash';
-import { getMainProduct } from '@/actions/RetailAction';
+import { getMainProduct, getOneProduct } from '@/actions/RetailAction';
 import { TYPES } from '@/Types/Types';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 export function RetailProducts(props) {
   const onEndReachedCalledDuringMomentum = useRef(false);
+  const getAuth = useSelector(getAuthData);
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
-  console.log('retailData', JSON.stringify(retailData));
   const productData = retailData?.getMainProduct;
   const addProductCartRef = useRef(null);
   const productDetailRef = useRef(null);
   const [selectedProduct, setSelectedProduct] = useState('');
   const data = props?.route?.params?.item;
   const [isSelected, setSelected] = useState(false);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const productDetailHanlder = () => {
     productDetailRef.current.present();
   };
@@ -126,14 +128,20 @@ export function RetailProducts(props) {
 
   const renderProductItem = ({ item, index }) => (
     <TouchableOpacity
+      // onPress={async () => {
+      //   const res = await dispatch(
+      //     getOneProduct(item.id, (res) => {
+      //       if (res === 'success') {
+      //         addProductCartRef.current.present();
+      //       }
+      //     })
+      //   );
+      // }}
       onPress={async () => {
-        const res = await dispatch(
-          getOneProduct(item.id, (res) => {
-            if (res === 'success') {
-              addProductCartRef.current.present();
-            }
-          })
-        );
+        const res = await dispatch(getOneProduct(sellerID, item.id));
+        if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+          addProductCartRef.current.present();
+        }
       }}
       style={[styles.productDetailMainView, { marginTop: index === 0 ? ms(0) : ms(5) }]}
     >

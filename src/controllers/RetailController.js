@@ -913,11 +913,6 @@ export class RetailController {
   static async getOneProduct(sellerID, productId) {
     return new Promise((resolve, reject) => {
       const endpoint =
-        //  offerId
-        //   ? PRODUCT_URL +
-        //     ApiProductInventory.getProduct +
-        //     `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true&offer_id=${offerId}`
-        //   :
         PRODUCT_URL +
         ApiProductInventory.getProduct +
         `/${productId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
@@ -1035,14 +1030,11 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           // Toast.show({
           //   position: 'bottom',
           //   type: 'error_toast',

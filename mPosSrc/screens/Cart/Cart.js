@@ -31,19 +31,23 @@ import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductCart } from '@mPOS/actions/RetailActions';
-import { getRetail } from '@mPOS/selectors/RetailSelector';
+import { getRetail } from '@/selectors/RetailSelectors';
 import { formattedReturnPrice } from '@mPOS/utils/GlobalMethods';
 import { number } from 'prop-types';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import { RETAIL_TYPES } from '@mPOS/Types/RetailTypes';
+import { getAllCart } from '@/actions/RetailAction';
+import CartAmountByPay from './Components/CartAmountByPay';
+import PayByCash from './Components/PayByCash';
 
 export function Cart() {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
 
-  const productCartData = retailData?.productCart;
+  const productCartData = retailData?.getAllCart;
   const paymentSelection = useRef();
-  const addProductCartRef = useRef(null);
+  const payByCashRef = useRef(null);
+  const cartAmountByPayRef = useRef(null);
 
   const [addNotes, setAddNotes] = useState(false);
   const [addDiscount, setAddDiscount] = useState(false);
@@ -54,14 +58,19 @@ export function Cart() {
     isLoadingSelector([RETAIL_TYPES.GET_PRODUCT_CART], state)
   );
   useEffect(() => {
-    dispatch(getProductCart());
+    dispatch(getAllCart());
   }, []);
 
   const bottomSheetModalRef = useRef();
 
   // variables
   const snapPoints = useMemo(() => ['50%', '75%'], []);
-
+  const payNowHandler = useCallback(() => {
+    cartAmountByPayRef.current?.present();
+  }, []);
+  const cashPayNowHandler = useCallback(() => {
+    payByCashRef.current?.present();
+  }, []);
   // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -339,7 +348,7 @@ export function Cart() {
               opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.7,
             },
           ]}
-          onPress={handlePresentModalPress}
+          onPress={payNowHandler}
           disabled={productCartData?.poscart_products?.length > 0 ? false : true}
         >
           <Text style={styles.payNowText}>{strings.cart.payNow}</Text>
@@ -365,6 +374,10 @@ export function Cart() {
         <PriceChange priceChangeClose={() => setPriceChange(false)} />
       </Modal>
 
+      <CartAmountByPay {...{ cartAmountByPayRef, cashPayNowHandler }} />
+
+      <PayByCash {...{ payByCashRef }} />
+
       {/* <RBSheet
         ref={paymentSelection}
         height={ms(700)}
@@ -381,108 +394,6 @@ export function Cart() {
         <View></View>
       </RBSheet> */}
 
-      <BottomSheetModal
-        ref={bottomSheetModalRef}
-        index={1}
-        snapPoints={snapPoints}
-        handleComponent={() => <View />}
-        onChange={handleSheetChanges}
-        backdropComponent={CustomBackdrop}
-        style={styles.sheetStyle}
-        detached
-      >
-        <View style={{ paddingHorizontal: ms(20), paddingVertical: ms(10) }}>
-          <TouchableOpacity style={{ position: 'absolute', top: ms(5), right: ms(10) }}>
-            <Image
-              source={Images.cross}
-              resizeMode="contain"
-              style={{ height: ms(40), width: ms(40) }}
-            />
-          </TouchableOpacity>
-          <Spacer space={ms(45)} />
-          <Text
-            style={{
-              fontSize: ms(16),
-              fontFamily: Fonts.Regular,
-              color: COLORS.placeholderText,
-              textAlign: 'center',
-            }}
-          >
-            {'Total Payable Amount:'}
-          </Text>
-          <Text
-            style={{
-              fontSize: ms(18),
-              fontFamily: Fonts.SemiBold,
-              color: COLORS.darkBlue,
-              textAlign: 'center',
-              marginTop: ms(10),
-            }}
-          >
-            {'$34.05'}
-          </Text>
-          <Spacer space={ms(10)} />
-
-          <View
-            style={{
-              borderRadius: ms(5),
-              borderColor: COLORS.light_border,
-              borderWidth: 1,
-              overflow: 'hidden',
-            }}
-          >
-            <Text
-              style={{
-                fontSize: ms(16),
-                fontFamily: Fonts.SemiBold,
-                color: COLORS.black,
-                padding: ms(10),
-                backgroundColor: COLORS.lightgray,
-              }}
-            >
-              {'Select Tips'}
-            </Text>
-            <Text
-              style={{
-                fontSize: ms(16),
-                fontFamily: Fonts.SemiBold,
-                color: COLORS.black,
-                paddingHorizontal: ms(10),
-                paddingTop: ms(5),
-              }}
-            >
-              {'$5.19'}
-            </Text>
-            <FlatList
-              data={tipData}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              scrollEnabled={false}
-              contentContainerStyle={{ marginHorizontal: ms(6) }}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: COLORS.lightgray,
-                    marginHorizontal: ms(4),
-                    borderRadius: ms(5),
-                    marginVertical: ms(10),
-                    padding: ms(18),
-                    paddingVertical: ms(10),
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: ms(16),
-                    }}
-                  >
-                    {item?.percentage}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </View>
-      </BottomSheetModal>
       {/* {isLoading ? <FullScreenLoader /> : null} */}
     </SafeAreaView>
   );

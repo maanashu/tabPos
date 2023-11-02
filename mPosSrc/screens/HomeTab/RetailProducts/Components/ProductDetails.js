@@ -7,16 +7,20 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { strings } from '@mPOS/localization';
-import { getRetail } from '@mPOS/selectors/RetailSelector';
+import { getRetail } from '@/selectors/RetailSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductCart } from '@mPOS/actions/RetailActions';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { addTocart } from '@/actions/RetailAction';
 
 const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+  const getAuth = useSelector(getAuthData);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
   const snapPoints = useMemo(() => ['100%'], []);
   const [count, setCount] = useState(1);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const withoutHtmlTags = productDetail?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
 
@@ -35,6 +39,7 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
   });
   const productAddCartHandler = () => {
     const data = {
+      seller_id: sellerID,
       service_id: getRetailData?.getOneProduct?.product_detail?.service_id,
       product_id: getRetailData?.getOneProduct?.product_detail?.id,
       qty: count,
@@ -42,7 +47,7 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
       supplyPriceID:
         getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
     };
-    dispatch(addProductCart(data));
+    dispatch(addTocart(data));
     bothSheetClose();
   };
 

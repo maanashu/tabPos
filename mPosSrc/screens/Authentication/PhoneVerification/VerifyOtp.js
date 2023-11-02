@@ -13,23 +13,23 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
-import { TYPES } from '@mPOS/Types/Types';
 import { strings } from '@mPOS/localization';
 import { Button, Spacer } from '@mPOS/components';
 import { goBack } from '@mPOS/navigation/NavigationRef';
 import { VerificationComponent } from './Components';
 import { CustomErrorToast } from '@mPOS/components/Toast';
-import { merchantLogin } from '@mPOS/actions/AuthActions';
-import { getAuthData } from '@mPOS/selectors/AuthSelector';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 
 import styles from './styles';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { merchantLogin } from '@/actions/AuthActions';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 export function VerifyOtp() {
   const dispatch = useDispatch();
   const getData = useSelector(getAuthData);
-  const phone_no = getData?.phoneData?.data?.phone_no;
-  const phone_code = getData?.phoneData?.data?.phone_code;
+  const phone_no = getData?.phoneData?.phoneNumber;
+  const phone_code = getData?.phoneData?.countryCode;
 
   const CELL_COUNT = 4;
   const [value, setValue] = useState('');
@@ -48,9 +48,9 @@ export function VerifyOtp() {
     } else {
       const data = {
         type: 'phone',
-        phone_code: phone_code,
-        phone_number: phone_no,
-        security_pin: value,
+        country_code: phone_code,
+        phone_no: phone_no,
+        pin: value,
       };
       dispatch(merchantLogin(data));
     }

@@ -12,8 +12,8 @@ const persistConfig = {
   blacklist: ['error', 'status'],
 };
 
-const rootReducer = isTablet() ? tabPosRootReducer : mPOSRootReducer;
-// const rootReducer = tabPosRootReducer;
+// const rootReducer = isTablet() ? tabPosRootReducer : mPOSRootReducer;
+const rootReducer = tabPosRootReducer;
 
 export const store = createStore(
   persistReducer(persistConfig, rootReducer),

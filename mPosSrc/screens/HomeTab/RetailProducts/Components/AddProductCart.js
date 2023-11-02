@@ -23,13 +23,17 @@ import { navigate } from '@mPOS/navigation/NavigationRef';
 import { NAVIGATION } from '@mPOS/constants';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRetail } from '@mPOS/selectors/RetailSelector';
-import { addProductCart, checkSuppliedVariant } from '@mPOS/actions/RetailActions';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { addProductCart } from '@mPOS/actions/RetailActions';
 import { CustomErrorToast } from '@mPOS/components/Toast';
+import CustomBackdrop from '@mPOS/components/CustomBackdrop';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
 
 const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
+  const getAuth = useSelector(getAuthData);
   const productDetail = retailData?.getOneProduct;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
 
@@ -43,21 +47,23 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
   const snapPoints = useMemo(() => ['90%'], []);
   const [colorName, setColorName] = useState();
   const [sizeName, setSizeName] = useState();
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   useEffect(() => {
     setColorSelectId(null);
     setSizeSelectId(null);
   }, []);
 
-  const addToCartHandler = () => {
+  const addToCartHandler = async () => {
     if (attributeArray?.length === 0) {
       const data = {
+        seller_id: sellerID,
         service_id: productDetail?.product_detail?.service_id,
         product_id: productDetail?.product_detail?.id,
         qty: count,
         supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
         supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
       };
-      dispatch(addProductCart(data));
+      dispatch(addTocart(data));
       addProductCartRef.current.dismiss();
     } else {
       if (colorArray?.length >= 1 && colorSelectId === null) {
@@ -84,20 +90,20 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
             .join(),
           supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
         };
-        dispatch(
-          checkSuppliedVariant(data, (res) => {
-            const data = {
-              service_id: productDetail?.product_detail?.service_id,
-              product_id: productDetail?.product_detail?.id,
-              qty: count,
-              supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-              supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-              supplyVariantId: res?.id,
-            };
-            dispatch(addProductCart(data));
-            addProductCartRef.current.dismiss();
-          })
-        );
+        const res = await dispatch(checkSuppliedVariant(data));
+        if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
+          const data = {
+            seller_id: sellerID,
+            service_id: productDetail?.product_detail?.service_id,
+            product_id: productDetail?.product_detail?.id,
+            qty: count,
+            supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+            supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+            supplyVariantId: res?.payload?.id,
+          };
+          dispatch(addTocart(data));
+          addProductCartRef.current.dismiss();
+        }
       }
     }
   };
@@ -146,13 +152,9 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
     </TouchableOpacity>
   );
 
-  const PanelBackground = () => {
-    return <View backdropOpacity={0.9} style={{ backgroundColor: COLORS.black }} />;
-  };
-
   return (
     <BottomSheetModal
-      backdropComponent={PanelBackground}
+      backdropComponent={CustomBackdrop}
       detached
       bottomInset={0}
       onDismiss={() => {
