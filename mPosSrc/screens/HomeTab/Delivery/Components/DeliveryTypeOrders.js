@@ -7,7 +7,7 @@ import { ms } from 'react-native-size-matters';
 import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { getDelivery } from '@mPOS/selectors/DeliverySelector';
+import { getDelivery } from '@/selectors/DeliverySelector';
 
 const DeliveryTypeOrders = ({ isDeliveryOrder }) => {
   const deliveryData = useSelector(getDelivery);
@@ -17,7 +17,7 @@ const DeliveryTypeOrders = ({ isDeliveryOrder }) => {
     <View style={styles.deliveryItemViewStyle}>
       {isDeliveryOrder ? (
         <View style={styles.loaderView}>
-          <ActivityIndicator size={'small'} color={COLORS.darkBlue} />
+          <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
         <>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   deliveryTypeCountTextStyle: {
     fontSize: SF(14),
     paddingTop: ms(5),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
 });

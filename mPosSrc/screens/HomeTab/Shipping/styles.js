@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
   },
   todayStatusTextStyle: {
     fontSize: SF(16),
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
   },
   shippingOrderViewStyle: {

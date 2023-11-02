@@ -9,9 +9,9 @@ import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { DELIVERY_TYPES } from '@mPOS/Types/DeliveryTypes';
-import { getDelivery } from '@mPOS/selectors/DeliverySelector';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
+import { getDelivery } from '@/selectors/DeliverySelector';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
 
 const Graph = () => {
   const getDeliveryData = useSelector(getDelivery);
@@ -26,9 +26,7 @@ const Graph = () => {
     convertData();
   }, [getDeliveryData?.graphOrders]);
 
-  const isGraphOrder = useSelector((state) =>
-    isLoadingSelector([DELIVERY_TYPES.GET_GRAPH_ORDERS], state)
-  );
+  const isGraphOrder = useSelector((state) => isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state));
 
   const convertData = () => {
     const DATA = getDeliveryData?.graphOrders;
@@ -41,12 +39,12 @@ const Graph = () => {
         label: day,
         labelWidth: 30,
         labelTextStyle: {
-          color: COLORS.grayShade,
+          color: COLORS.darkGray,
           fontSize: 9,
           marginLeft: ms(0),
           fontFamily: Fonts.Regular,
         },
-        frontColor: COLORS.lightBlue,
+        frontColor: COLORS.bluish_green,
         initialSpace: 0,
         Incoming: true,
       });
@@ -56,7 +54,7 @@ const Graph = () => {
         frontColor: COLORS.pink,
         OrderProcessing: true,
         labelTextStyle: {
-          color: COLORS.grayShade,
+          color: COLORS.darkGray,
           fontSize: 9,
           marginLeft: ms(10),
           fontFamily: Fonts.Regular,
@@ -65,10 +63,10 @@ const Graph = () => {
       setOfThree.push({
         value: values[2] || 0,
         spacing: 10,
-        frontColor: COLORS.yellow,
+        frontColor: COLORS.yellowTweet,
         ReadyForPickup: true,
         labelTextStyle: {
-          color: COLORS.grayShade,
+          color: COLORS.darkGray,
           fontSize: 9,
           marginLeft: ms(10),
           fontFamily: Fonts.Regular,
@@ -77,10 +75,10 @@ const Graph = () => {
       setOfThree.push({
         value: values[3] || 0,
         spacing: 10,
-        frontColor: COLORS.darkBlue,
+        frontColor: COLORS.primary,
         Completed: true,
         labelTextStyle: {
-          color: COLORS.grayShade,
+          color: COLORS.darkGray,
           fontSize: 9,
           marginLeft: ms(10),
           fontFamily: Fonts.Regular,
@@ -104,12 +102,12 @@ const Graph = () => {
           label: day,
           labelWidth: 30,
           labelTextStyle: {
-            color: COLORS.grayShade,
+            color: COLORS.darkGray,
             fontSize: 9,
             marginLeft: ms(0),
             fontFamily: Fonts.Regular,
           },
-          frontColor: value ? COLORS.lightBlue : COLORS.white,
+          frontColor: value ? COLORS.bluish_green : COLORS.white,
           initialSpace: 0,
           Incoming: true,
         });
@@ -120,12 +118,12 @@ const Graph = () => {
           label: day,
           labelWidth: 30,
           labelTextStyle: {
-            color: COLORS.grayShade,
+            color: COLORS.darkGray,
             fontSize: 9,
             marginLeft: ms(0),
             fontFamily: Fonts.Regular,
           },
-          frontColor: showIncoming ? COLORS.lightBlue : COLORS.white,
+          frontColor: showIncoming ? COLORS.bluish_green : COLORS.white,
           initialSpace: 0,
           Incoming: true,
         });
@@ -137,7 +135,7 @@ const Graph = () => {
           frontColor: value ? COLORS.pink : COLORS.white,
           OrderProcessing: true,
           labelTextStyle: {
-            color: COLORS.grayShade,
+            color: COLORS.darkGray,
             fontSize: 9,
             marginLeft: ms(0),
             fontFamily: Fonts.Regular,
@@ -150,7 +148,7 @@ const Graph = () => {
           frontColor: showProcessing ? COLORS.pink : COLORS.white,
           OrderProcessing: true,
           labelTextStyle: {
-            color: COLORS.grayShade,
+            color: COLORS.darkGray,
             fontSize: 9,
             marginLeft: ms(0),
             fontFamily: Fonts.Regular,
@@ -161,10 +159,10 @@ const Graph = () => {
         setOfThree.push({
           value: values[2] || 0,
           spacing: 10,
-          frontColor: value ? COLORS.yellow : COLORS.white,
+          frontColor: value ? COLORS.yellowTweet : COLORS.white,
           ReadyForPickup: true,
           labelTextStyle: {
-            color: COLORS.grayShade,
+            color: COLORS.darkGray,
             fontSize: 9,
             marginLeft: ms(10),
             fontFamily: Fonts.Regular,
@@ -174,10 +172,10 @@ const Graph = () => {
         setOfThree.push({
           value: values[2] || 0,
           spacing: 10,
-          frontColor: showReadyToPickup ? COLORS.yellow : COLORS.white,
+          frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
           ReadyForPickup: true,
           labelTextStyle: {
-            color: COLORS.grayShade,
+            color: COLORS.darkGray,
             fontSize: 9,
             marginLeft: ms(10),
             fontFamily: Fonts.Regular,
@@ -188,10 +186,10 @@ const Graph = () => {
         setOfThree.push({
           value: values[3] || 0,
           spacing: 10,
-          frontColor: value ? COLORS.darkBlue : COLORS.white,
+          frontColor: value ? COLORS.primary : COLORS.white,
           Completed: true,
           labelTextStyle: {
-            color: COLORS.grayShade,
+            color: COLORS.darkGray,
             fontSize: 9,
             marginLeft: ms(10),
             fontFamily: Fonts.Regular,
@@ -201,10 +199,10 @@ const Graph = () => {
         setOfThree.push({
           value: values[3] || 0,
           spacing: 10,
-          frontColor: showCompleted ? COLORS.darkBlue : COLORS.white,
+          frontColor: showCompleted ? COLORS.primary : COLORS.white,
           Completed: true,
           labelTextStyle: {
-            color: COLORS.grayShade,
+            color: COLORS.darkGray,
             fontSize: 9,
             marginLeft: ms(10),
             fontFamily: Fonts.Regular,
@@ -234,7 +232,7 @@ const Graph = () => {
           >
             <Image
               source={showIncoming ? Images.mark : Images.blankCheckBox}
-              style={[styles.checkboxIconStyle, showIncoming && { tintColor: COLORS.lightBlue }]}
+              style={[styles.checkboxIconStyle, showIncoming && { tintColor: COLORS.bluish_green }]}
             />
             <Text style={styles.varientTextStyle}>{strings.delivery.incomingOrders}</Text>
           </TouchableOpacity>
@@ -270,7 +268,10 @@ const Graph = () => {
           >
             <Image
               source={showReadyToPickup ? Images.mark : Images.blankCheckBox}
-              style={[styles.checkboxIconStyle, showReadyToPickup && { tintColor: COLORS.yellow }]}
+              style={[
+                styles.checkboxIconStyle,
+                showReadyToPickup && { tintColor: COLORS.yellowTweet },
+              ]}
             />
             <Text style={styles.varientTextStyle}>{strings.delivery.readyPickupOrders}</Text>
           </TouchableOpacity>
@@ -287,7 +288,7 @@ const Graph = () => {
           >
             <Image
               source={showCompleted ? Images.mark : Images.blankCheckBox}
-              style={[styles.checkboxIconStyle, showCompleted && { tintColor: COLORS.darkBlue }]}
+              style={[styles.checkboxIconStyle, showCompleted && { tintColor: COLORS.primary }]}
             />
             <Text style={styles.varientTextStyle}>{strings.delivery.completed}</Text>
           </TouchableOpacity>
@@ -298,7 +299,7 @@ const Graph = () => {
 
       {isGraphOrder ? (
         <View style={styles.loaderView}>
-          <ActivityIndicator size={'small'} color={COLORS.darkBlue} />
+          <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
         <View style={{ paddingHorizontal: ms(10), zIndex: -999 }}>
@@ -335,7 +336,7 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     paddingTop: ms(10),
     paddingHorizontal: ms(20),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   flexRow: {
@@ -353,11 +354,11 @@ const styles = StyleSheet.create({
   },
   yAxistext: {
     fontSize: 11,
-    color: COLORS.grayShade,
+    color: COLORS.darkGray,
   },
   varientTextStyle: {
     fontSize: SF(9),
-    color: COLORS.grayShade,
+    color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
     paddingLeft: 5,
   },

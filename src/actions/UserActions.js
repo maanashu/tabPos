@@ -36,7 +36,6 @@ export const loginPosUser = (data) => async (dispatch) => {
   dispatch(loginPosUserRequest());
   try {
     const res = await UserController.loginPosUser(data);
-    console.log('res=============', res);
     dispatch(loginPosUserSuccess(res?.payload));
   } catch (error) {
     return dispatch(loginPosUserError(error));

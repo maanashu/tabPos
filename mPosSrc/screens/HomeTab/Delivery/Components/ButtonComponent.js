@@ -1,15 +1,12 @@
 import React, { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-import { useDispatch } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF } from '@/theme';
 
-const ButtonComponent = ({ status, orderId, onPressHandler }) => {
-  const dispatch = useDispatch();
-
+const ButtonComponent = ({ status, onPressHandler }) => {
   return (
     <>
       {status === 0 ? (
@@ -49,7 +46,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   acceptButtonStyle: {
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     flex: 0.45,
     borderRadius: 5,
     paddingHorizontal: ms(20),
@@ -79,7 +76,7 @@ const styles = StyleSheet.create({
     color: COLORS.grayShade,
   },
   preparedButtonStyle: {
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     flex: 1,
     borderRadius: 5,
     paddingHorizontal: ms(20),

@@ -31,7 +31,7 @@ export function Button({
   const { colors } = useTheme();
   return pending ? (
     <TouchableOpacity style={[styles.button, { borderColor: colors.border }, style]} {...rest}>
-      <ActivityIndicator animating={true} color={COLORS.darkBlue} size={'large'} />
+      <ActivityIndicator animating={true} color={COLORS.primary} size={'large'} />
       <Text style={[styles.buttonTextStyle, textStyle]}>{title}</Text>
     </TouchableOpacity>
   ) : (
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: SW(16),
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     alignSelf: 'center',
     width: Dimensions.get('window').width - 20,
   },

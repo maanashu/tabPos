@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   totalItemsStyles: {
     fontSize: SF(16),
     paddingBottom: ms(10),
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
   },
   amountViewStyle: {
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   },
   driverStatusTextStyle: {
     fontFamily: Fonts.SemiBold,
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontSize: SF(14),
   },
   driverArrivalTimeText: {
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(5),
   },
   trackButtonStyle: {
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     paddingHorizontal: ms(9),
     paddingVertical: ms(8),
     borderRadius: 3,
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
   },
   todayStatusTextStyle: {
     fontSize: SF(16),
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
   },
   cancelButtonStyle: {

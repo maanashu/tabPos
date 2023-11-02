@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
   confirmLoginTextStyle: {
     fontSize: SF(24),
     textAlign: 'center',
-    color: COLORS.dark_gray,
-    fontFamily: Fonts.MaisonMonoBold,
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonBold,
   },
   profileImageStyle: {
     width: SW(80),
@@ -100,21 +100,21 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     paddingTop: SH(8),
     textAlign: 'center',
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   roleTextStyle: {
     fontSize: SF(14),
     paddingTop: SH(6),
     textAlign: 'center',
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
   },
   datetimeTextStyle: {
     fontSize: SF(9),
     paddingTop: SH(6),
     textAlign: 'center',
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
   buttonStyle: {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: ms(20),
     justifyContent: 'center',
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
   },
   buttonTextStyle: {
     fontSize: SF(12),

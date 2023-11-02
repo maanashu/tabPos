@@ -2,8 +2,9 @@ import { Images } from '@mPOS/assets';
 import { SH } from '@/theme';
 import React, { memo } from 'react';
 import { View, Text, FlatList, Image } from 'react-native';
-import styles from '../Orders/styles';
 import { ms } from 'react-native-size-matters';
+
+import styles from '../Orders/styles';
 
 const ProductList = ({ orderData }) => {
   const renderProductItem = ({ item, index }) => (

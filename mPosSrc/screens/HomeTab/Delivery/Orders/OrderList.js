@@ -75,7 +75,7 @@ export function OrderList(props) {
           <View style={styles.itemAndPaymentView}>
             <Image
               source={Images.clockIcon}
-              style={[styles.payIconStyle, { tintColor: COLORS.darkBlue }]}
+              style={[styles.payIconStyle, { tintColor: COLORS.primary }]}
             />
             <Text
               style={styles.priceTextStyle}

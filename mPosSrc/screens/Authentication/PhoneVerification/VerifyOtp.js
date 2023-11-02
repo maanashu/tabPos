@@ -11,19 +11,19 @@ import ReactNativeModal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
+import { Images } from '@mPOS/assets';
+import { TYPES } from '@/Types/Types';
 import { strings } from '@mPOS/localization';
 import { Button, Spacer } from '@mPOS/components';
-import { goBack } from '@mPOS/navigation/NavigationRef';
 import { VerificationComponent } from './Components';
+import { merchantLogin } from '@/actions/AuthActions';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { goBack } from '@mPOS/navigation/NavigationRef';
 import { CustomErrorToast } from '@mPOS/components/Toast';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import styles from './styles';
-import { getAuthData } from '@/selectors/AuthSelector';
-import { merchantLogin } from '@/actions/AuthActions';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/Types';
 
 export function VerifyOtp() {
   const dispatch = useDispatch();
@@ -96,7 +96,7 @@ export function VerifyOtp() {
               style={[
                 styles.cellRoot,
                 {
-                  borderColor: isFocused ? COLORS.darkBlue : COLORS.light_border,
+                  borderColor: isFocused ? COLORS.primary : COLORS.solidGrey,
                   borderWidth: isFocused ? 1.5 : 1,
                 },
               ]}
@@ -114,9 +114,9 @@ export function VerifyOtp() {
         <Button
           onPress={submit}
           title={strings.phoneNumber.verifyButton}
-          textStyle={{ color: value ? COLORS.white : COLORS.text }}
+          textStyle={{ color: value ? COLORS.white : COLORS.dark_grey }}
           style={{
-            backgroundColor: value ? COLORS.darkBlue : COLORS.inputBorder,
+            backgroundColor: value ? COLORS.primary : COLORS.textInputBackground,
           }}
         />
 
@@ -125,8 +125,8 @@ export function VerifyOtp() {
         <Button
           onPress={() => goBack()}
           title={strings.profile.header}
-          textStyle={{ color: COLORS.text }}
-          style={{ backgroundColor: COLORS.inputBorder }}
+          textStyle={{ color: COLORS.dark_grey }}
+          style={{ backgroundColor: COLORS.textInputBackground }}
         />
       </KeyboardAwareScrollView>
 
@@ -140,11 +140,7 @@ export function VerifyOtp() {
 
       {isLoading ? (
         <View style={styles.loaderViewStyle}>
-          <ActivityIndicator
-            color={COLORS.darkBlue}
-            size={'large'}
-            style={styles.loaderViewStyle}
-          />
+          <ActivityIndicator color={COLORS.primary} size={'large'} style={styles.loaderViewStyle} />
         </View>
       ) : null}
     </SafeAreaView>

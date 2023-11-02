@@ -103,7 +103,7 @@ export function PosUsers() {
 
       {getPosUserLoading ? (
         <View style={styles.activityIndicatorView}>
-          <ActivityIndicator size="large" color={COLORS.darkBlue} />
+          <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
       ) : (
         <FlatList

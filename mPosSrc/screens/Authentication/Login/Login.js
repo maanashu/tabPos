@@ -74,7 +74,7 @@ export function Login(props) {
               style={[
                 styles.cellRoot,
                 {
-                  borderColor: isFocused ? COLORS.darkBlue : COLORS.light_border,
+                  borderColor: isFocused ? COLORS.primary : COLORS.solidGrey,
                   borderWidth: isFocused ? 1.5 : 1,
                 },
               ]}
@@ -91,20 +91,16 @@ export function Login(props) {
       <Button
         onPress={onPressHandler}
         title={strings.phoneNumber.button}
-        textStyle={{ color: value ? COLORS.white : COLORS.text }}
+        textStyle={{ color: value ? COLORS.white : COLORS.dark_grey }}
         style={[
           styles.buttonStyle,
-          { backgroundColor: value ? COLORS.darkBlue : COLORS.inputBorder },
+          { backgroundColor: value ? COLORS.primary : COLORS.textInputBackground },
         ]}
       />
 
       {isLoading ? (
         <View style={styles.loaderViewStyle}>
-          <ActivityIndicator
-            color={COLORS.darkBlue}
-            size={'large'}
-            style={styles.loaderViewStyle}
-          />
+          <ActivityIndicator color={COLORS.primary} size={'large'} style={styles.loaderViewStyle} />
         </View>
       ) : null}
     </SafeAreaView>

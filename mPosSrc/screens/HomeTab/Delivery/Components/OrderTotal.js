@@ -7,6 +7,7 @@ import { SF, SH } from '@/theme';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import ButtonComponent from './ButtonComponent';
+
 import styles from '../Orders/styles';
 
 const OrderTotal = ({ orderData, onPressAcceptHandler }) => {

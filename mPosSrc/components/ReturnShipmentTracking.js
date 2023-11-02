@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
   },
   sellerOtpTextStyle: {
     fontSize: SF(13),
