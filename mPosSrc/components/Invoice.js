@@ -116,7 +116,6 @@ export function Invoice(props) {
           <Text style={styles.paymentOptionsText}>{formattedDate}</Text>
 
           <Text style={[styles.paymentOptionsText, { fontFamily: Fonts.SemiBold }]}>
-            {' '}
             {DELIVERY_MODE[data?.order?.delivery_option]}
           </Text>
 

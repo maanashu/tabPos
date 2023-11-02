@@ -5,9 +5,9 @@ import { COLORS, Fonts } from '@/theme';
 import { Images } from '@mPOS/assets';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native';
-import { getOrdersByInvoiceId, getOrdersByInvoiceIdReset } from '@mPOS/actions/WalletActions';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
+import { getOrdersByInvoiceId, getOrdersByInvoiceIdReset } from '@/actions/DashboardAction';
 
 export function Search({ style, onScanPress, onChange = () => {}, ...rest }) {
   const dispatch = useDispatch();

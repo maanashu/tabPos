@@ -3,24 +3,23 @@ import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } fr
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts, SH, SW } from '@/theme';
 import { useSelector } from 'react-redux';
-import { getWalletData } from '@mPOS/selectors/WalletSelector';
 import { Spacer } from './Spacer';
 import { Search } from './Search';
-import { WALLET_TYPES } from '@mPOS/Types/WalletTypes';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
-import { navigate } from '@mPOS/navigation/NavigationRef';
-import { NAVIGATION } from '@mPOS/constants';
+import { getDashboard } from '@/selectors/DashboardSelector';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function SearchedOrders({ style }) {
-  const getWallet = useSelector(getWalletData)?.invoiceSearchOrders;
+  const getWallet = useSelector(getDashboard)?.invoiceSearchOrders;
 
   const userFirstName = getWallet?.order?.user_details?.user_profiles?.firstname;
   const userLastName = getWallet?.order?.user_details?.user_profiles?.lastname;
 
   const isLoading = useSelector((state) =>
-    isLoadingSelector([WALLET_TYPES.GET_ORDERS_BY_INVOICE_ID], state)
+    isLoadingSelector([DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID], state)
   );
   const getDeliveryType = (type) => {
     switch (type) {
@@ -46,7 +45,7 @@ export function SearchedOrders({ style }) {
       {getWallet?.order ? (
         <TouchableOpacity
           style={styles.itemContainer}
-          onPress={() => navigate(NAVIGATION.invoice, { data: getWallet })}
+          onPress={() => commonNavigate(MPOS_NAVIGATION.invoice, { data: getWallet })}
         >
           <View style={{ flex: 1 }}>
             <Text style={styles.orderIdText}>#{getWallet?.id}</Text>
@@ -93,7 +92,7 @@ export function SearchedOrders({ style }) {
         </TouchableOpacity>
       ) : (
         <View style={{ alignItems: 'center' }}>
-          <Text style={styles.emptyText}>No Order found</Text>
+          {!isLoading && <Text style={styles.emptyText}>No Order found</Text>}
         </View>
       )}
     </View>
