@@ -13,6 +13,7 @@ const persistConfig = {
 };
 
 const rootReducer = isTablet() ? tabPosRootReducer : mPOSRootReducer;
+// const rootReducer = tabPosRootReducer;
 
 export const store = createStore(
   persistReducer(persistConfig, rootReducer),

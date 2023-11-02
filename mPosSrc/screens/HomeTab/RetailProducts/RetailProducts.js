@@ -17,19 +17,22 @@ import { Images } from '@mPOS/assets';
 import AddProductCart from './Components/AddProductCart';
 import { getOneProduct, getProduct } from '@mPOS/actions/RetailActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRetail } from '@mPOS/selectors/RetailSelector';
+import { getRetail } from '@/selectors/RetailSelectors';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import { RETAIL_TYPES } from '@mPOS/Types/RetailTypes';
 import { strings } from '@mPOS/localization';
 import ProductDetails from './Components/ProductDetails';
-import { FullScreenLoader } from '@mPOS/components';
+import { FullScreenLoader, Header, ScreenWrapper } from '@mPOS/components';
 import { debounce } from 'lodash';
+import { getMainProduct } from '@/actions/RetailAction';
+import { TYPES } from '@/Types/Types';
 
 export function RetailProducts(props) {
   const onEndReachedCalledDuringMomentum = useRef(false);
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
-  const productData = retailData?.getProduct;
+  console.log('retailData', JSON.stringify(retailData));
+  const productData = retailData?.getMainProduct;
   const addProductCartRef = useRef(null);
   const productDetailRef = useRef(null);
   const [selectedProduct, setSelectedProduct] = useState('');
@@ -44,9 +47,10 @@ export function RetailProducts(props) {
   };
   const [productSearch, setProductSearch] = useState('');
   useEffect(() => {
-    dispatch(getProduct({}, 1));
+    // dispatch(getProduct({}, 1));
+    dispatch(getMainProduct());
   }, []);
-  const productLoad = useSelector((state) => isLoadingSelector([RETAIL_TYPES.GET_PRODUCT], state));
+  const productLoad = useSelector((state) => isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state));
 
   const productSearchFun = async (search) => {
     if (search?.length > 2) {
@@ -179,73 +183,53 @@ export function RetailProducts(props) {
     isLoadingSelector([RETAIL_TYPES.GET_ONE_PRODUCT, RETAIL_TYPES.ADD_PRODUCT_CART], state)
   );
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={{ backgroundColor: COLORS.white }}>
-        <FlatList
-          horizontal
-          data={ProductData}
-          renderItem={renderCategoryItem}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => item.key}
-          contentContainerStyle={styles.contentContainerStyle}
+    <ScreenWrapper>
+      <View style={styles.container}>
+        <Header backRequired title={`Back`} />
+        <Search
+          value={productSearch}
+          onChangeText={(productSearch) => {
+            setProductSearch(productSearch);
+            debounceProduct(productSearch);
+          }}
         />
-      </View>
-      <View style={styles.lineSeprator} />
 
-      <View style={{ backgroundColor: COLORS.white }}>
+        {/* <Spacer space={SH(15)} /> */}
+
         <FlatList
-          horizontal
-          data={ClothCollection}
-          renderItem={renderCollectionItem}
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => item.key}
-          contentContainerStyle={styles.contentContainerStyle}
+          data={productData?.data ?? []}
+          extraData={productData?.data ?? []}
+          renderItem={renderProductItem}
+          keyExtractor={(item, index) => item.id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: 10,
+          }}
+          ListEmptyComponent={() => (
+            <View style={styles.noProductCon}>
+              <Text style={styles.noProduct}>{strings.retail.noProduct}</Text>
+            </View>
+          )}
+          onEndReachedThreshold={0.1}
+          onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+          onMomentumScrollBegin={() => {}}
+          onMomentumScrollEnd={() => {
+            if (onEndReachedCalledDuringMomentum.current) {
+              onLoadMoreProduct();
+              onEndReachedCalledDuringMomentum.current = false;
+            }
+          }}
+          removeClippedSubviews={true}
+          ListFooterComponent={() => (
+            <View>{productLoad && <ActivityIndicator size="large" color={COLORS.darkBlue} />}</View>
+          )}
         />
+
+        <AddProductCart {...{ addProductCartRef, productDetailHanlder }} />
+        <ProductDetails {...{ productDetailRef, bothSheetClose }} />
+
+        {isLoading ? <FullScreenLoader /> : null}
       </View>
-
-      <Search
-        value={productSearch}
-        onChangeText={(productSearch) => {
-          setProductSearch(productSearch);
-          debounceProduct(productSearch);
-        }}
-      />
-
-      {/* <Spacer space={SH(15)} /> */}
-
-      <FlatList
-        data={productData?.data ?? []}
-        extraData={productData?.data ?? []}
-        renderItem={renderProductItem}
-        keyExtractor={(item, index) => item.id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: 10,
-        }}
-        ListEmptyComponent={() => (
-          <View style={styles.noProductCon}>
-            <Text style={styles.noProduct}>{strings.retail.noProduct}</Text>
-          </View>
-        )}
-        onEndReachedThreshold={0.1}
-        onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
-        onMomentumScrollBegin={() => {}}
-        onMomentumScrollEnd={() => {
-          if (onEndReachedCalledDuringMomentum.current) {
-            onLoadMoreProduct();
-            onEndReachedCalledDuringMomentum.current = false;
-          }
-        }}
-        removeClippedSubviews={true}
-        ListFooterComponent={() => (
-          <View>{productLoad && <ActivityIndicator size="large" color={COLORS.darkBlue} />}</View>
-        )}
-      />
-
-      <AddProductCart {...{ addProductCartRef, productDetailHanlder }} />
-      <ProductDetails {...{ productDetailRef, bothSheetClose }} />
-
-      {isLoading ? <FullScreenLoader /> : null}
-    </SafeAreaView>
+    </ScreenWrapper>
   );
 }

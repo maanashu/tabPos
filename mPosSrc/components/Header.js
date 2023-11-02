@@ -199,7 +199,7 @@ Header.defaultProps = {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
-    height: ms(70),
+    height: ms(60),
     width: '100%',
     paddingLeft: ms(16),
     paddingRight: ms(11),
