@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@mPOS/*": ["mPosSrc/*"]
+      "@mPOS/*": ["mPosSrc/*"],
+      "@common/*": ["common/*"]
     }
   }
 }

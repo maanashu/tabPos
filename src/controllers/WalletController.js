@@ -1,12 +1,13 @@
 import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
 import { HttpClient } from './HttpClient';
+import { isTablet } from 'react-native-device-info';
 
 export class WalletController {
   static async getTotalTra(time, sellerID, date) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(time).toString();
       const BASE_URL = ORDER_URL + ApiOrderInventory.getTotalTra;
       const sellerParam = `seller_id=${sellerID}`;
-
       let endpoint = '';
 
       if (time === undefined) {
@@ -14,7 +15,9 @@ export class WalletController {
       } else {
         endpoint = `${BASE_URL}?${sellerParam}&filter=${time}`;
       }
-      HttpClient.get(endpoint)
+      let mPosEndpoint = `${BASE_URL}?${params}`;
+      const finalEndpoint = isTablet() ? endpoint : mPosEndpoint;
+      HttpClient.get(finalEndpoint)
         .then((response) => {
           resolve(response);
         })

@@ -9,7 +9,7 @@ export class WalletController {
       const params = new URLSearchParams(filter).toString();
 
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
-      const endpoint = ApiOrderInventory.walletAnalytics + `?seller_id=${sellerID}&${params}`;
+      const endpoint = ApiOrderInventory.walletAnalytics + `?${params}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

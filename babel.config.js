@@ -7,6 +7,7 @@ module.exports = {
         alias: {
           '^@/(.+)': './src/\\1',
           '^@mPOS/(.+)': './mPosSrc/\\1',
+          '^@common/(.+)': './common/\\1',
         },
         extensions: ['.android.js', '.ios.js', '.js', '.json', '.native'],
       },
