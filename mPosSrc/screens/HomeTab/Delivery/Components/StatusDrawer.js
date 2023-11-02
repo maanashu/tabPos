@@ -98,16 +98,16 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
     const selectedDelivered =
       item?.title === strings.orderStatus.delivered && selectedStatus === item?.key
         ? COLORS.primary
-        : COLORS.dark_gray;
+        : COLORS.dark_grey;
     const selectedcancelled =
       item?.title === strings.orderStatus.rejected && selectedStatus === item?.key
         ? COLORS.pink
-        : COLORS.dark_gray;
+        : COLORS.dark_grey;
     const selectedReturned =
       item?.title === strings.orderStatus.returned && selectedStatus === item?.key
-        ? COLORS.yellow
-        : COLORS.dark_gray;
-    const otherSelection = selectedStatus === item?.key ? COLORS.primary : COLORS.dark_gray;
+        ? COLORS.yellowTweet
+        : COLORS.dark_grey;
+    const otherSelection = selectedStatus === item?.key ? COLORS.primary : COLORS.dark_grey;
     if (item?.title === strings.orderStatus.delivered) {
       return (
         <>
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderCount: {
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontSize: ms(14),
     fontFamily: Fonts.SemiBold,
   },

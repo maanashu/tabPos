@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
   deliveryOrderTextStyle: {
     fontSize: SF(10),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
   deliveryItemViewStyle: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   deliveryTypeCountTextStyle: {
     fontSize: SF(14),
     paddingTop: ms(5),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   deliveryTypeIconStyle: {
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   orderTextStyle: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   orderItemViewStyle: {
@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
   priceTextStyle: {
     paddingLeft: 3,
     fontSize: SF(10),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
   },
   deliveryDateTextStyle: {
     fontSize: SF(10),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
   },
   itemAndPaymentView: {
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   numberOrdersText: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   userDetailView: {
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   nameTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
   },
   addressTextStyle: {
     fontFamily: Fonts.Regular,
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   productnameTextStyle: {
     fontFamily: Fonts.Medium,
     fontSize: SF(12),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
   },
   productDetailView: {
     paddingLeft: ms(10),
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
   productQtyPriceText: {
     fontSize: SF(12),
     paddingTop: ms(5),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
   totalItemsStyles: {
@@ -217,8 +217,8 @@ const styles = StyleSheet.create({
   },
   totalValueText: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
-    fontFamily: Fonts.MaisonMonoBold,
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonBold,
   },
   priceValueText: {
     fontSize: SF(12),

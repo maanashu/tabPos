@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   deliveryOrderTextStyle: {
-    fontSize: SF(12),
+    fontSize: SF(14),
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   ordersHeaderStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: ms(15),
+    marginHorizontal: ms(20),
     justifyContent: 'space-between',
   },
   viewAllButtonStyle: {
@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
   priceTextStyle: {
     paddingLeft: 3,
     fontSize: SF(10),
-    color: COLORS.text,
+    color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },
   deliveryDateTextStyle: {
     fontSize: SF(10),
-    color: COLORS.text,
+    color: COLORS.darkGray,
     fontFamily: Fonts.SemiBold,
   },
   itemAndPaymentView: {
