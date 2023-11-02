@@ -1,12 +1,13 @@
 import { ORDER_URL, ApiOrderInventory } from '@/utils/APIinventory';
 import { HttpClient } from './HttpClient';
+import { isTablet } from 'react-native-device-info';
 
 export class WalletController {
   static async getTotalTra(time, sellerID, date) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(time).toString();
       const BASE_URL = ORDER_URL + ApiOrderInventory.getTotalTra;
       const sellerParam = `seller_id=${sellerID}`;
-
       let endpoint = '';
 
       if (time === undefined) {
@@ -14,7 +15,9 @@ export class WalletController {
       } else {
         endpoint = `${BASE_URL}?${sellerParam}&filter=${time}`;
       }
-      HttpClient.get(endpoint)
+      let mPosEndpoint = `${BASE_URL}?${params}`;
+      const finalEndpoint = isTablet() ? endpoint : mPosEndpoint;
+      HttpClient.get(finalEndpoint)
         .then((response) => {
           resolve(response);
         })
@@ -26,6 +29,8 @@ export class WalletController {
 
   static async getTotakTraDetail(data) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
+
       const baseEndpoint = `${ORDER_URL}${ApiOrderInventory.getTotakTraDetail}?seller_id=${data?.sellerId}&transaction_type=${data?.transactionType}&page=${data?.page}&limit=${data?.limit}`;
 
       let queryParams = [];
@@ -59,7 +64,9 @@ export class WalletController {
       const queryString = queryParams.join('&');
 
       const endpoint = `${baseEndpoint}&${queryString}`;
-      HttpClient.get(endpoint)
+      const mPosEndpoint = `${ORDER_URL}${ApiOrderInventory.getTotakTraDetail}?${params}`;
+      const finalEndPoint = isTablet() ? endpoint : mPosEndpoint;
+      HttpClient.get(finalEndPoint)
         .then((response) => {
           resolve(response);
         })
@@ -71,6 +78,8 @@ export class WalletController {
 
   static async getTotalTraType(data) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
+
       const endpoint =
         data?.calendarDate == undefined || data?.calendarDate == ''
           ? ORDER_URL +
@@ -79,7 +88,9 @@ export class WalletController {
           : ORDER_URL +
             ApiOrderInventory.getTotalTraType +
             `?seller_id=${data?.sellerID}&date=${data?.calendarDate}`;
-      HttpClient.get(endpoint)
+      const mPosEndpoint = `${ORDER_URL}${ApiOrderInventory.getTotalTraType}?${params}`;
+      const finalEndPoint = isTablet() ? endpoint : mPosEndpoint;
+      HttpClient.get(finalEndPoint)
         .then((response) => {
           resolve(response);
         })

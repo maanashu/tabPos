@@ -17,18 +17,19 @@ import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { getWalletData } from '@mPOS/selectors/WalletSelector';
-import { walletAnalytics } from '@mPOS/actions/WalletActions';
-import { WALLET_TYPES } from '@mPOS/Types/WalletTypes';
 import { BarChart } from 'react-native-gifted-charts';
-import { navigate } from '@mPOS/navigation/NavigationRef';
-import { NAVIGATION } from '@mPOS/constants';
+import { getAuthData } from '@mPOS/selectors/AuthSelector';
+import { getTotalTra } from '@/actions/WalletAction';
+import { TYPES } from '@/Types/WalletTypes';
+import { getWallet } from '@/selectors/WalletSelector';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function Transactions() {
   const dispatch = useDispatch();
-  const getWallet = useSelector(getWalletData);
-  const walletData = getWallet?.walletAnalytics;
+  const getWalletData = useSelector(getWallet);
+  const getAuth = useSelector(getAuthData);
+  const walletData = getWalletData?.getTotalTra;
   const [isJobrCoin, setJobrCoin] = useState(true);
   const [isCash, setCash] = useState(true);
   const [isCard, setCard] = useState(true);
@@ -36,6 +37,7 @@ export function Transactions() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [filterVal, setFilterVal] = useState('week');
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const paymentOptions = [
     {
@@ -68,24 +70,25 @@ export function Transactions() {
   ];
 
   const body = () => {
-    if (startDate && startDate == endDate) {
-      return { date: startDate };
+    const data = { seller_id: sellerID };
+    if (startDate && startDate === endDate) {
+      data.date = startDate;
     } else if (startDate && endDate) {
-      return { start_date: startDate, end_date: endDate };
+      data.start_date = startDate;
+      data.end_date = endDate;
     } else {
-      return { filter: filterVal };
+      data.filter = filterVal;
     }
+    return data;
   };
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(walletAnalytics(body()));
+      dispatch(getTotalTra(body()));
     }, [filterVal, startDate, endDate])
   );
 
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([WALLET_TYPES.WALLET_ANALYTICS], state)
-  );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA], state));
   const dayAbbreviations = {
     Monday: 'Mon',
     Tuesday: 'Tue',
@@ -96,7 +99,7 @@ export function Transactions() {
     Sunday: 'Sun',
   };
   const convertData = () => {
-    const DATA = getWallet?.walletAnalytics?.graphData;
+    const DATA = getWalletData?.getTotalTra?.graphData;
     const barData = DATA?.labels?.flatMap((day, index) => {
       const values = DATA?.datasets?.map((dataset) => dataset[index]);
       const setOfThree = [];
@@ -139,7 +142,7 @@ export function Transactions() {
   };
 
   const onClickCheckBox = (type, value) => {
-    const DATA = getWallet?.walletAnalytics?.graphData;
+    const DATA = getWalletData?.getTotalTra?.graphData;
     const barData = DATA?.labels?.flatMap((day, index) => {
       const values = DATA?.datasets?.map((dataset) => dataset[index]);
       const setOfThree = [];
@@ -215,17 +218,17 @@ export function Transactions() {
 
   useEffect(() => {
     convertData();
-  }, [getWallet?.walletAnalytics]);
+  }, [getWalletData?.getTotalTra]);
 
   const showTransDetail = (val) => {
     if (startDate && endDate) {
-      navigate(NAVIGATION.transactionList, {
+      commonNavigate(MPOS_NAVIGATION.transactionList, {
         start_date: startDate,
         end_date: endDate,
         transactionType: val,
       });
     } else {
-      navigate(NAVIGATION.transactionList, {
+      commonNavigate(MPOS_NAVIGATION.transactionList, {
         filter_by: filterVal,
         transactionType: val,
       });

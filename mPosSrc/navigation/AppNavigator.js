@@ -27,6 +27,7 @@ import {
 import { NAVIGATION } from '@mPOS/constants';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
 import { TrackOrder } from '@mPOS/screens/HomeTab/Shipping/TrackOrder/TrackOrder';
+import { Invoice } from '@mPOS/components';
 
 const Stack = createNativeStackNavigator();
 
@@ -141,6 +142,11 @@ export function AppNavigator() {
         name={NAVIGATION.searchScreen}
         options={{ headerShown: false }}
         component={SearchScreen}
+      />
+      <Stack.Screen
+        name={NAVIGATION.invoice}
+        options={{ headerShown: false }}
+        component={Invoice}
       />
       {/* <Stack.Screen
         name={NAVIGATION.returnOrderDetail}

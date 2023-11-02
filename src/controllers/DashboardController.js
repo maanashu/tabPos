@@ -225,8 +225,10 @@ export class DashboardController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
+          console.log('success in invoice', response);
         })
         .catch((error) => {
+          console.log('error in invoice', error);
           reject(error);
         });
     });

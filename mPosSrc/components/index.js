@@ -9,3 +9,5 @@ export { NewChartKit } from '@mPOS/components/NewChartKit';
 export { CalendarPickerModal } from '@mPOS/components/CalendarPickerModal';
 export { DaySelector } from '@mPOS/components/DaySelector';
 export { HorizontalLine } from '@mPOS/components/HorizontalLine';
+export { SearchedOrders } from '@mPOS/components/SearchedOrders';
+export { Invoice } from '@mPOS/components/Invoice';

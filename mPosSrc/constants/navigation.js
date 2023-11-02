@@ -32,4 +32,5 @@ export const NAVIGATION = {
   trackOrder: 'TrackOrder',
   searchScreen: 'SearchScreen',
   returnOrderDetail: 'ReturnOrderDetail',
+  invoice: 'Invoice',
 };
