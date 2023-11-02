@@ -96,8 +96,13 @@ const styles = StyleSheet.create({
     height: height * 0.8,
     width: '100%',
     backgroundColor: COLORS.inputBorder,
-    paddingHorizontal: ms(15),
-    paddingVertical: ms(15),
+    paddingVertical: ms(5),
+    borderRadius: ms(5),
+  },
+  emptyText: {
+    fontSize: ms(15),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.black,
   },
 });
 

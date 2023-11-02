@@ -61,7 +61,7 @@ const getOrdersByInvoiceIdError = (error) => ({
   type: WALLET_TYPES.GET_ORDERS_BY_INVOICE_ID_ERROR,
   payload: { error },
 });
-const getOrdersByInvoiceIdReset = () => ({
+export const getOrdersByInvoiceIdReset = () => ({
   type: WALLET_TYPES.GET_ORDERS_BY_INVOICE_ID_RESET,
   payload: null,
 });

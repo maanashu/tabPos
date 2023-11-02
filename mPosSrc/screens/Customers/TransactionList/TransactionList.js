@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -8,7 +9,14 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import styles from './styles';
-import { Header, HorizontalLine, ScreenWrapper, Search, Spacer } from '@mPOS/components';
+import {
+  Header,
+  HorizontalLine,
+  ScreenWrapper,
+  Search,
+  SearchedOrders,
+  Spacer,
+} from '@mPOS/components';
 import { SH, SW } from '@/theme';
 import { ms } from 'react-native-size-matters';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -20,6 +28,7 @@ import {
   TransactionDetails,
   TransactionTypes,
   getOrdersByInvoiceId,
+  getOrdersByInvoiceIdReset,
 } from '@mPOS/actions/WalletActions';
 import { WALLET_TYPES } from '@mPOS/Types/WalletTypes';
 import { FlatList } from 'react-native';
@@ -39,6 +48,7 @@ export function TransactionList(props) {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [sku, setSku] = useState();
+  const [isFocused, setIsFocused] = useState(false);
 
   const [startDate, setStartDate] = useState(props?.route?.params?.start_date || '');
   const [endDate, setEndDate] = useState(props?.route?.params?.end_date || '');
@@ -51,16 +61,6 @@ export function TransactionList(props) {
     isLoadingSelector([WALLET_TYPES.GET_TRANSACTION_LIST], state)
   );
 
-  const onSearchInvoiceHandler = (text) => {
-    if (text?.length > 1) {
-      if (text.includes('Invoice_') || text.includes('invoice_')) {
-        // dispatch(scanBarCode(text));
-      } else {
-        dispatch(getOrdersByInvoiceId(text, (res) => {}));
-      }
-    }
-  };
-  const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
   const body = {
     // page: 1,
     // limit: 10,
@@ -80,10 +80,11 @@ export function TransactionList(props) {
       ? { start_date: startDate, end_date: endDate }
       : { filter: filterVal }),
   };
-  // useEffect(() => {
-  //   dispatch(TransactionDetails(body));
-  //   dispatch(TransactionTypes(object));
-  // }, [filterVal, startDate, endDate, transactionType]);
+
+  useEffect(() => {
+    dispatch(TransactionDetails(body));
+    dispatch(TransactionTypes(object));
+  }, [filterVal, startDate, endDate, transactionType]);
 
   const paymentOptions = [
     {
@@ -182,8 +183,13 @@ export function TransactionList(props) {
       </>
     );
   };
-  const [isFocused, setIsFocused] = useState(false);
-
+  const renderEmpty = () => {
+    return (
+      <View style={{ alignItems: 'center', marginTop: ms(100) }}>
+        <Text style={styles.emptyText}>No transaction found</Text>
+      </View>
+    );
+  };
   return (
     <ScreenWrapper>
       <Header
@@ -239,24 +245,30 @@ export function TransactionList(props) {
             contentContainerStyle={{
               flexGrow: 1,
             }}
+            ListEmptyComponent={renderEmpty}
           />
         )}
       </View>
+
       <Modal
         isVisible={isFocused}
         animationIn={'fadeIn'}
         animationInTiming={600}
         animationOut={'fadeOut'}
         animationOutTiming={600}
-        onBackdropPress={() => setIsFocused(false)}
         backdropOpacity={0.3}
-        onBackButtonPress={() => setIsFocused(false)}
+        onBackdropPress={() => {
+          setIsFocused(false);
+          dispatch(getOrdersByInvoiceIdReset());
+        }}
+        onBackButtonPress={() => {
+          setIsFocused(false);
+          dispatch(getOrdersByInvoiceIdReset());
+        }}
         style={{ marginTop: height * 0.15 }}
       >
         <KeyboardAwareScrollView contentContainerStyle={styles.modalContainer}>
-          <Search />
-
-          {/* <FlatList data={[]} /> */}
+          <SearchedOrders />
         </KeyboardAwareScrollView>
       </Modal>
     </ScreenWrapper>
