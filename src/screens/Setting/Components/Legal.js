@@ -122,7 +122,7 @@ export function Legal() {
             <Spacer space={SH(5)} /> */}
             <ScrollView>
               <Text style={[styles.refundPolicyRegular, { fontSize: SF(13) }]}>
-                {data?.content}
+                {removeHtmlTag(data?.content)}
               </Text>
             </ScrollView>
           </View>
