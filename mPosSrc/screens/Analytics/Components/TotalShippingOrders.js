@@ -12,12 +12,12 @@ import { Spacer } from '@mPOS/components';
 import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import { getAnalytics } from '@mPOS/selectors/AnalyticsSelector';
 import { ms } from 'react-native-size-matters';
-import { TYPES } from '@mPOS/Types/AnalyticsTypes';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import { styles } from '../styles';
 import { Images } from '@mPOS/assets';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function TotalShippingOrders({ onPressReview }) {
   const getAnalyticsData = useSelector(getAnalytics);
@@ -53,7 +53,7 @@ export function TotalShippingOrders({ onPressReview }) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
-          <Text style={[styles.revenueDataText, { color: COLORS.darkBlue, fontSize: ms(10) }]}>
+          <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(10) }]}>
             {'Review'}
           </Text>
         </TouchableOpacity>
@@ -70,7 +70,7 @@ export function TotalShippingOrders({ onPressReview }) {
           <Spacer space={ms(4)} />
           {isLoading ? (
             <ActivityIndicator
-              color={COLORS.darkBlue}
+              color={COLORS.primary}
               size={'small'}
               style={{ alignSelf: 'flex-start' }}
             />
@@ -161,7 +161,7 @@ export function TotalShippingOrders({ onPressReview }) {
             <View style={[styles.mainListContainer]}>
               {isAnalyticOrderGraphLoading ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
               ) : shippingGraph?.ordersListData?.length === 0 ? (
                 <View style={styles.listLoader}>

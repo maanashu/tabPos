@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { View, TouchableOpacity, Image, Text, Platform, Dimensions } from 'react-native';
-import { DaySelector, ScreenWrapper, Spacer } from '@mPOS/components';
+import { ScreenWrapper, Spacer } from '@mPOS/components';
 
 import {
   profit,
@@ -19,27 +19,17 @@ import {
 } from '@mPOS/assets';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getAnalyticOrderGraphs,
-  getAnalyticStatistics,
-  getSoldProduct,
-  getTotalInventory,
-  getTotalOrder,
-} from '@mPOS/actions/AnalyticsAction';
 import CalendarPickerModal from '@mPOS/components/CalendarPickerModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getAuthData } from '@mPOS/selectors/AuthSelector';
-import { getUser } from '@mPOS/selectors/UserSelectors';
 import { useFocusEffect } from '@react-navigation/native';
-import { COLORS, SH, Fonts } from '@/theme';
+import { COLORS, Fonts } from '@/theme';
 import { styles } from './styles';
 import { MainScreen } from './Components/MainScreen';
 import { ms } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import dayjs from 'dayjs';
 import { Revenue } from './Components/Revenue';
-import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
-import { NAVIGATION } from '@mPOS/constants';
+import { goBack } from '@mPOS/navigation/NavigationRef';
 import { TotalProfit } from './Components/TotalProfit';
 import { TotalCost } from './Components/TotalCost';
 import { TotalPosOrder } from './Components/TotalPosOrder';
@@ -47,6 +37,16 @@ import { TotalDeliveryOrders } from './Components/TotalDeliveryOrders';
 import { TotalShippingOrders } from './Components/TotalShippingOrders';
 import { TotalProductSold } from './Components/TotalProductSold';
 import { TotalInventory } from './Components/TotalInventory';
+import { TotalOrders } from './Components/TotalOrders';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getUser } from '@/selectors/UserSelectors';
+import {
+  getAnalyticOrderGraphs,
+  getAnalyticStatistics,
+  getSoldProduct,
+  getTotalInventory,
+  getTotalOrder,
+} from '@/actions/AnalyticsAction';
 
 export function Analytics() {
   const mapRef = useRef(null);
@@ -266,16 +266,16 @@ export function Analytics() {
       />
     ),
     ['TotalProductSold']: <TotalProductSold sellerID={sellerID} data={data} />,
-    // ["TotalOrders"]: (
-    //   <TotalOrders
-    //     onPressReview={(item) => {
-    //       setWeeklyTrasaction(true);
-    //       setDate(item);
-    //       setAppName();
-    //       setDeliveryOption();
-    //     }}
-    //   />
-    // ),
+    ['TotalOrders']: (
+      <TotalOrders
+        onPressReview={(item) => {
+          setWeeklyTrasaction(true);
+          setDate(item);
+          setAppName();
+          setDeliveryOption();
+        }}
+      />
+    ),
     ['TotalPosOrder']: (
       <TotalPosOrder
         onPressReview={(item) => {
@@ -346,7 +346,7 @@ export function Analytics() {
                   style={[
                     styles.headerView,
                     {
-                      borderColor: selectedStartDate ? COLORS.darkBlue : COLORS.placeholderText,
+                      borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
                     },
                   ]}
                 >

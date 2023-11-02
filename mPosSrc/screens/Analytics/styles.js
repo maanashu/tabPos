@@ -8,7 +8,7 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.textInputBackground,
   },
   displayFlex: {
     flexDirection: 'row',
@@ -54,7 +54,7 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
   },
   tableheader: {
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.textInputBackground,
     borderTopEndRadius: 10,
     borderTopLeftRadius: 10,
     borderColor: 'transparent',
@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
     width: SW(12),
     height: SW(12),
     borderRadius: 5,
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -93,7 +93,7 @@ export const styles = StyleSheet.create({
     width: SW(12),
     height: SW(12),
     borderRadius: 5,
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -103,7 +103,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     marginRight: SW(4),
     fontSize: SF(16),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontWeight: '600',
   },
   subImages: {
@@ -114,13 +114,13 @@ export const styles = StyleSheet.create({
   costText: {
     marginRight: SW(4),
     fontSize: SF(16),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontWeight: '600',
   },
   subTitle: {
     marginRight: SW(4),
     fontSize: SF(12),
-    color: COLORS.placeholderText,
+    color: COLORS.gerySkies,
   },
   flexDirectionRow: {
     flexDirection: 'row',
@@ -136,7 +136,7 @@ export const styles = StyleSheet.create({
     borderRadius: SW(5),
   },
   headerImage: {
-    tintColor: COLORS.darkBlue,
+    tintColor: COLORS.primary,
     height: SH(18),
     width: SW(7),
     resizeMode: 'contain',
@@ -145,7 +145,7 @@ export const styles = StyleSheet.create({
     marginLeft: SW(4),
   },
   imageView: {
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.textInputBackground,
     padding: SW(4),
   },
   dropdown: {
@@ -169,7 +169,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     width: ms(120),
     borderRadius: ms(4),
-    borderColor: COLORS.placeholderText,
+    borderColor: COLORS.gerySkies,
     borderWidth: 1,
     padding: 0,
     marginTop: ms(5),
@@ -181,7 +181,7 @@ export const styles = StyleSheet.create({
   },
   revenueText: {
     fontFamily: Fonts.MaisonBold,
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontSize: SF(14),
     textAlign: 'center',
     letterSpacing: -1,
@@ -230,7 +230,7 @@ export const styles = StyleSheet.create({
   },
   revenueDataText: {
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontSize: SF(12),
   },
   revenueDataText2: {
@@ -302,7 +302,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     marginHorizontal: SW(5),
     borderRadius: ms(4),
-    borderColor: COLORS.placeholderText,
+    borderColor: COLORS.gerySkies,
     borderWidth: 1,
     paddingVertical: ms(4),
   },
@@ -318,11 +318,11 @@ export const styles = StyleSheet.create({
     height: SH(7),
     width: SH(7),
     borderRadius: SW(7),
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     marginRight: SW(3),
   },
   bulletText: {
-    color: COLORS.grayShade,
+    color: COLORS.darkGray,
     fontSize: SF(11),
     marginRight: SW(5),
   },
@@ -362,7 +362,7 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
   },
   subContainer: {
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.textInputBackground,
     borderRadius: ms(10),
     paddingHorizontal: ms(12),
     paddingVertical: ms(10),
@@ -378,7 +378,7 @@ export const styles = StyleSheet.create({
   },
   text: {
     fontSize: ms(13),
-    color: COLORS.grayShade,
+    color: COLORS.darkGray,
   },
   text2: {
     fontSize: ms(15),
@@ -411,7 +411,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   reviewView: {
-    borderColor: COLORS.darkBlue,
+    borderColor: COLORS.primary,
     // top: 12,
     paddingHorizontal: ms(10),
     paddingVertical: ms(2),
@@ -436,10 +436,5 @@ export const styles = StyleSheet.create({
     width: ms(24),
     height: ms(24),
     resizeMode: 'contain',
-  },
-  headerBackText: {
-    fontFamily: Fonts.Medium,
-    fontSize: SF(14),
-    color: COLORS.dark_gray,
   },
 });
