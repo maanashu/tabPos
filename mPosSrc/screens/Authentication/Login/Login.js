@@ -10,16 +10,16 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { COLORS, SH } from '@/theme';
-import { TYPES } from '@mPOS/Types/Types';
 import { strings } from '@mPOS/localization';
 import Header from './Components/Header';
 import { Button, Spacer } from '@mPOS/components';
-import { loginPosUser } from '@mPOS/actions/UserActions';
 import { CustomErrorToast } from '@mPOS/components/Toast';
-import { getAuthData } from '@mPOS/selectors/AuthSelector';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 
 import { styles } from '@mPOS/screens/Authentication/Login/styles';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { loginPosUser } from '@/actions/UserActions';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 export function Login(props) {
   const CELL_COUNT = 4;
@@ -47,7 +47,7 @@ export function Login(props) {
     }
   };
 
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.LOGIN_POS], state));
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.LOGIN_POS_USER], state));
 
   return (
     <SafeAreaView style={styles.container}>

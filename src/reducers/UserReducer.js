@@ -6,6 +6,7 @@ const INITIALSTATE = {
 };
 
 export const userReducer = (state = INITIALSTATE, { payload, type }) => {
+  console.log('payload============', JSON.stringify(payload));
   switch (type) {
     case TYPES.LOGIN_POS_USER_SUCCESS:
       return {

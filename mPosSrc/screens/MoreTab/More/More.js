@@ -21,12 +21,12 @@ import { styles } from './styles';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { NAVIGATION } from '@mPOS/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutFunction } from '@mPOS/actions/UserActions';
 import { ms } from 'react-native-size-matters';
 import { useScrollableSetter } from '@gorhom/bottom-sheet';
 import { getUser } from '@mPOS/selectors/UserSelectors';
 import { getAuthData } from '@mPOS/selectors/AuthSelector';
 import { acccessAndConfirmation, essential, moreApp, tagLine } from '@mPOS/constants/enums';
+import { logoutFunction } from '@/actions/AuthActions';
 
 export function More() {
   const dispatch = useDispatch();

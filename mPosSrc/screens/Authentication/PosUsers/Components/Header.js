@@ -5,8 +5,8 @@ import { useDispatch } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import { strings } from '@mPOS/localization';
-import { logoutFunction } from '@mPOS/actions/AuthActions';
 import { COLORS, Fonts, SF, ShadowStyles } from '@/theme';
+import { logoutFunction } from '@/actions/AuthActions';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-end',
     justifyContent: 'center',
-    backgroundColor: COLORS.grayShade,
+    backgroundColor: COLORS.darkGray,
   },
   buttonTextStyle: {
     fontSize: SF(12),
