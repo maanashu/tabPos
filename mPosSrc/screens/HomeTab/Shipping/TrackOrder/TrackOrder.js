@@ -32,7 +32,7 @@ export function TrackOrder(props) {
         startInLoadingState
         renderLoading={() => (
           <View style={styles.loader}>
-            <ActivityIndicator size={'large'} color={COLORS.darkBlue} style={styles.loader} />
+            <ActivityIndicator size={'large'} color={COLORS.primary} style={styles.loader} />
           </View>
         )}
       />

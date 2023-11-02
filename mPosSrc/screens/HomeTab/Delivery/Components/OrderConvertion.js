@@ -8,9 +8,9 @@ import { ms } from 'react-native-size-matters';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH } from '@/theme';
-import { DELIVERY_TYPES } from '@mPOS/Types/DeliveryTypes';
-import { getDelivery } from '@mPOS/selectors/DeliverySelector';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { getDelivery } from '@/selectors/DeliverySelector';
 
 const OrderConvertion = () => {
   const getData = useSelector(getDelivery);
@@ -26,10 +26,10 @@ const OrderConvertion = () => {
   let sum = 0;
   series?.forEach((num) => (sum += num));
 
-  const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellow, COLORS.darkBlue];
+  const sliceColor = [COLORS.bluish_green, COLORS.pink, COLORS.yellowTweet, COLORS.primary];
 
   const orderConversionLoading = useSelector((state) =>
-    isLoadingSelector([DELIVERY_TYPES.GET_ORDER_STATISTICS], state)
+    isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
   );
 
   return (
@@ -56,7 +56,7 @@ const OrderConvertion = () => {
 
         {orderConversionLoading ? (
           <View style={styles.loaderViewStyle}>
-            <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+            <ActivityIndicator color={COLORS.primary} size={'small'} />
           </View>
         ) : (
           <View style={{ flex: 1 }}>

@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     width: SW(350),
     alignSelf: 'center',
     paddingHorizontal: SW(12),
-    backgroundColor: COLORS.textinput_bg,
+    backgroundColor: COLORS.textInputBackground,
   },
   codeText: {
     fontSize: SF(18),
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     fontFamily: Fonts.Italic,
     paddingHorizontal: SW(10),
-    backgroundColor: COLORS.textinput_bg,
+    backgroundColor: COLORS.textInputBackground,
   },
   verifyNumberText: {
     textAlign: 'center',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   phoneNumberTextStyle: {
     textAlign: 'center',
-    fontFamily: Fonts.MaisonMonoBold,
+    fontFamily: Fonts.MaisonBold,
     fontSize: SF(30),
     color: COLORS.solid_grey,
     paddingHorizontal: SW(20),

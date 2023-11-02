@@ -29,7 +29,7 @@ const BottomTabNavigator = () => {
               styles.iconStyle,
               {
                 tintColor:
-                  selectedTab === NAVIGATION.home ? COLORS.darkBlue : COLORS.placeholderText,
+                  selectedTab === NAVIGATION.home ? COLORS.primary : COLORS.placeholderText,
               },
             ]}
           />
@@ -37,7 +37,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.darkBlue : COLORS.text,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.text,
               },
             ]}
           >
@@ -53,7 +53,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.darkBlue : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
               },
             ]}
           >
@@ -69,7 +69,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.darkBlue : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
               },
             ]}
           >
@@ -87,7 +87,7 @@ const BottomTabNavigator = () => {
               styles.iconStyle,
               {
                 tintColor:
-                  selectedTab === NAVIGATION.cart ? COLORS.darkBlue : COLORS.placeholderText,
+                  selectedTab === NAVIGATION.cart ? COLORS.primary : COLORS.placeholderText,
               },
             ]}
           />
@@ -95,7 +95,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.darkBlue : COLORS.text,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.text,
               },
             ]}
           >
@@ -113,9 +113,7 @@ const BottomTabNavigator = () => {
               styles.iconStyle,
               {
                 tintColor:
-                  selectedTab === NAVIGATION.transactions
-                    ? COLORS.darkBlue
-                    : COLORS.placeholderText,
+                  selectedTab === NAVIGATION.transactions ? COLORS.primary : COLORS.placeholderText,
               },
             ]}
           />
@@ -123,7 +121,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.darkBlue : COLORS.text,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.text,
               },
             ]}
           >
@@ -143,7 +141,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.darkBlue : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
               },
             ]}
           >
@@ -163,7 +161,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.darkBlue : COLORS.text,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.text,
               },
             ]}
           >
@@ -183,7 +181,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.darkBlue : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
               },
             ]}
           >

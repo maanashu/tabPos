@@ -84,7 +84,7 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
   const showBadge = (item) => {
     const selectedDelivered =
       item?.title === strings.orderStatus.delivered && selectedStatus === item?.key
-        ? COLORS.darkBlue
+        ? COLORS.primary
         : COLORS.dark_gray;
     const selectedcancelled =
       item?.title === strings.orderStatus.rejected && selectedStatus === item?.key
@@ -94,7 +94,7 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
       item?.title === strings.orderStatus.returned && selectedStatus === item?.key
         ? COLORS.yellow
         : COLORS.dark_gray;
-    const otherSelection = selectedStatus === item?.key ? COLORS.darkBlue : COLORS.dark_gray;
+    const otherSelection = selectedStatus === item?.key ? COLORS.primary : COLORS.dark_gray;
     if (item?.title === strings.orderStatus.delivered) {
       return (
         <>

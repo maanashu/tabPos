@@ -48,7 +48,6 @@ export class WalletController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           if (error?.statusCode != 204) {
             CustomErrorToast({ message: error?.msg });
           }
@@ -59,15 +58,12 @@ export class WalletController {
 
   static async getOrdersByInvoiceId(invoice) {
     return new Promise((resolve, reject) => {
-      console.log('invoices', invoice);
       const endpoint = ApiOrderInventory.invoiceIdSearch + `${invoice}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
-          console.log('success invoice', response);
         })
         .catch((error) => {
-          console.log('error invoice', error);
           reject(error);
         });
     });

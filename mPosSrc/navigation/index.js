@@ -15,8 +15,6 @@ export function RootNavigator() {
   const merchantToken = auth?.merchantLoginData?.token;
   const posUserToken = posUser?.posLoginData?.token;
 
-  console.log('posUserToken-------------', JSON.stringify(posUser));
-
   return (
     <NavigationContainer ref={navigationRef} onReady={() => RNBootSplash.hide()}>
       {merchantToken && !posUserToken ? (

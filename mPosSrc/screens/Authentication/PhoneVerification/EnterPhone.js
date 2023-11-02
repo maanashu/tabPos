@@ -83,7 +83,7 @@ export function EnterPhoneNumber() {
             keyboardType={'number-pad'}
             style={styles.textInputContainer}
             onChangeText={onChangePhoneNumber}
-            placeholderTextColor={COLORS.placeholderText}
+            placeholderTextColor={COLORS.gerySkies}
             placeholder={strings.phoneNumber.numberText}
           />
         </View>
@@ -94,20 +94,16 @@ export function EnterPhoneNumber() {
         <Button
           onPress={submit}
           title={strings.phoneNumber.button}
-          textStyle={{ color: phoneNumber ? COLORS.white : COLORS.text }}
+          textStyle={{ color: phoneNumber ? COLORS.white : COLORS.dark_grey }}
           style={{
-            backgroundColor: phoneNumber ? COLORS.darkBlue : COLORS.inputBorder,
+            backgroundColor: phoneNumber ? COLORS.primary : COLORS.textInputBackground,
           }}
         />
       </KeyboardAwareScrollView>
 
       {isLoading ? (
         <View style={styles.loaderViewStyle}>
-          <ActivityIndicator
-            color={COLORS.darkBlue}
-            size={'large'}
-            style={styles.loaderViewStyle}
-          />
+          <ActivityIndicator color={COLORS.primary} size={'large'} style={styles.loaderViewStyle} />
         </View>
       ) : null}
     </SafeAreaView>

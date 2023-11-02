@@ -73,7 +73,7 @@ export function Shipping() {
     <View style={styles.deliveryItemViewStyle}>
       {isShippingOrder ? (
         <View style={[styles.deliveryItemViewStyle, { borderWidth: 0, paddingVertical: 0 }]}>
-          <ActivityIndicator size={'small'} color={COLORS.darkBlue} />
+          <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
         <>
@@ -124,7 +124,7 @@ export function Shipping() {
           <View style={styles.itemAndPaymentView}>
             <Image
               source={Images.clockIcon}
-              style={[styles.payIconStyle, { tintColor: COLORS.darkBlue }]}
+              style={[styles.payIconStyle, { tintColor: COLORS.primary }]}
             />
             <Text style={styles.priceTextStyle}>{`${
               item?.preffered_delivery_start_time ?? '00 -'
@@ -180,7 +180,7 @@ export function Shipping() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={[COLORS.darkBlue, COLORS.darkBlue]}
+            colors={[COLORS.primary, COLORS.primary]}
           />
         }
         showsVerticalScrollIndicator={false}
@@ -192,7 +192,7 @@ export function Shipping() {
             <Text style={styles.shippingOrderTextStyle}>{strings.shipping.shippingOrders}</Text>
             {isShippingOrder ? (
               <View style={styles.loaderView}>
-                <ActivityIndicator size={'small'} color={COLORS.darkBlue} />
+                <ActivityIndicator size={'small'} color={COLORS.primary} />
               </View>
             ) : (
               <Text style={styles.shippingOrderTextStyle}>{shippingOrders ?? '0'}</Text>
@@ -203,7 +203,7 @@ export function Shipping() {
             <Text style={styles.shippingOrderTextStyle}>{strings.shipping.shippedOrders}</Text>
             {isShippingOrder ? (
               <View style={styles.loaderView}>
-                <ActivityIndicator size={'small'} color={COLORS.darkBlue} />
+                <ActivityIndicator size={'small'} color={COLORS.primary} />
               </View>
             ) : (
               <Text style={styles.shippingOrderTextStyle}>{shippedOrders ?? '0'}</Text>

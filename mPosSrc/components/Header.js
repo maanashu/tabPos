@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     minHeight: ms(28),
     borderWidth: 0,
     borderRadius: ms(5),
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     width: ms(88),
     zIndex: 999,
   },
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     height: ms(23),
     width: ms(23),
     padding: ms(5),
-    tintColor: COLORS.darkBlue,
+    tintColor: COLORS.primary,
   },
   calendarModalView: {
     backgroundColor: COLORS.white,

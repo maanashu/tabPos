@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
   verifiedTextStyle: {
     fontSize: SF(24),
     textAlign: 'center',
-    color: COLORS.darkBlue,
-    fontFamily: Fonts.MaisonMonoBold,
+    color: COLORS.primary,
+    fontFamily: Fonts.MaisonBold,
   },
   loginbackTextStyle: {
     paddingTop: 10,

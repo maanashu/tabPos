@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
   },
   buttonStyle: {
     alignSelf: 'center',
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
   },
   enterPinTextStyle: {
     fontSize: SF(16),

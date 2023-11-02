@@ -46,7 +46,7 @@ const CalendarPickerModal = ({
         maxDate={maxDate}
         todayBackgroundColor="white"
         todayTextStyle={'black'}
-        selectedDayColor={COLORS.darkBlue}
+        selectedDayColor={COLORS.primary}
         selectedDayTextColor="#FFFFFF"
         onDateChange={(date, type) => {
           onDateChange(date, type);

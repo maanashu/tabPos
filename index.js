@@ -36,7 +36,6 @@ const handleNotification = (notification) => {
   }
 };
 
-console.log('isTablet ===>', isTablet());
 isTablet() ? Orientation.lockToLandscapeLeft() : Orientation.lockToPortrait();
 const App = isTablet() ? tabPOSApp : mPOSApp;
 

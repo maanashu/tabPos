@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   cancelTextStyle: {
     fontSize: SF(12),
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.Regular,
     paddingRight: SW(15),
   },

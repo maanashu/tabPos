@@ -24,7 +24,7 @@ export function Policies() {
   const [countryId, setCountryId] = useState(null);
   const [legalModal, setLegalModal] = useState(false);
   const [data, setData] = useState();
-  console.log('datatttatt', JSON.stringify(getSettingData?.getSetting));
+
   useEffect(() => {
     if (isFocused) {
       dispatch(getSettings());

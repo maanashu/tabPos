@@ -62,7 +62,7 @@ export function SetNewPin() {
               style={[
                 styles.cellRoot,
                 {
-                  borderColor: isFocused ? COLORS.darkBlue : COLORS.light_border,
+                  borderColor: isFocused ? COLORS.primary : COLORS.light_border,
                   borderWidth: isFocused ? 1.5 : 1,
                 },
               ]}
@@ -82,7 +82,7 @@ export function SetNewPin() {
         textStyle={{ color: value ? COLORS.white : COLORS.text }}
         style={[
           styles.buttonStyle,
-          { backgroundColor: value ? COLORS.darkBlue : COLORS.inputBorder },
+          { backgroundColor: value ? COLORS.primary : COLORS.inputBorder },
         ]}
       />
     </SafeAreaView>

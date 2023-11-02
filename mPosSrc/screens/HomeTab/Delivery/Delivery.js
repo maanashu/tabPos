@@ -14,36 +14,36 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 
 import {
-  getOrders,
-  todayOrders,
+  deliOrder,
   getGraphOrders,
-  getDeliveryTypesOrders,
-  getOrderstatistics,
   getOrderCount,
-} from '@mPOS/actions/DeliveryActions';
+  getOrderstatistics,
+  getReviewDefault,
+  todayOrders,
+} from '@/actions/DeliveryAction';
 import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
 import Graph from './Components/Graph';
 import { strings } from '@mPOS/localization';
 import { NAVIGATION } from '@mPOS/constants';
 import { navigate } from '@mPOS/navigation/NavigationRef';
-import { DELIVERY_TYPES } from '@mPOS/Types/DeliveryTypes';
 import OrderConvertion from './Components/OrderConvertion';
-import { getDelivery } from '@mPOS/selectors/DeliverySelector';
 import { Header, ScreenWrapper, Spacer } from '@mPOS/components';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import DeliveryTypeOrders from './Components/DeliveryTypeOrders';
 
 import styles from './styles';
 import { RefreshControl } from 'react-native';
 import ReactNativeModal from 'react-native-modal';
 import StatusDrawer from './Components/StatusDrawer';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { getDelivery } from '@/selectors/DeliverySelector';
 
 export function Delivery() {
   const dispatch = useDispatch();
   const deliveryData = useSelector(getDelivery);
   const todayDeliveryOrders = deliveryData?.todayOrderStatus?.[0]?.count ?? '0';
-  const orders = deliveryData?.orders?.data ?? [];
+  const orders = deliveryData?.getReviewDef ?? [];
 
   const [refreshing, setRefreshing] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('0');
@@ -52,10 +52,10 @@ export function Delivery() {
   useFocusEffect(
     React.useCallback(() => {
       dispatch(todayOrders());
-      dispatch(getDeliveryTypesOrders());
-      dispatch(getOrders(0));
+      dispatch(deliOrder());
+      dispatch(getReviewDefault(0, 1));
       dispatch(getGraphOrders());
-      dispatch(getOrderstatistics());
+      dispatch(getOrderstatistics(1));
       dispatch(getOrderCount());
     }, [])
   );
@@ -97,7 +97,7 @@ export function Delivery() {
           <View style={styles.itemAndPaymentView}>
             <Image
               source={Images.clockIcon}
-              style={[styles.payIconStyle, { tintColor: COLORS.darkBlue }]}
+              style={[styles.payIconStyle, { tintColor: COLORS.primary }]}
             />
             <Text style={styles.priceTextStyle}>{`$${item?.payable_amount}`}</Text>
           </View>
@@ -111,17 +111,14 @@ export function Delivery() {
   };
 
   const isDeliveryOrder = useSelector((state) =>
-    isLoadingSelector(
-      [DELIVERY_TYPES.TODAY_ORDER_STATUS, DELIVERY_TYPES.GET_DELIVERY_TYPES_ORDERS],
-      state
-    )
+    isLoadingSelector([TYPES.TODAY_ORDER_STATUS, TYPES.GET_DELIVERY_TYPES_ORDERS], state)
   );
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     dispatch(todayOrders());
-    dispatch(getDeliveryTypesOrders());
-    dispatch(getOrders(0));
+    dispatch(deliOrder());
+    dispatch(getReviewDefault(0, 1));
     dispatch(getGraphOrders());
     dispatch(getOrderstatistics());
     dispatch(getOrderCount());
@@ -163,7 +160,7 @@ export function Delivery() {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={[COLORS.darkBlue, COLORS.darkBlue]}
+            colors={[COLORS.primary, COLORS.primary]}
           />
         }
         showsVerticalScrollIndicator={false}
@@ -175,7 +172,7 @@ export function Delivery() {
             <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.deliveryOrder}</Text>
             {isDeliveryOrder ? (
               <View style={styles.loaderView}>
-                <ActivityIndicator size={'small'} color={COLORS.darkBlue} />
+                <ActivityIndicator size={'small'} color={COLORS.primary} />
               </View>
             ) : (
               <Text style={styles.deliveryOrderTextStyle}>{todayDeliveryOrders ?? '0'}</Text>
