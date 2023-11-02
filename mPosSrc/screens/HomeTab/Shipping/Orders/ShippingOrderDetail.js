@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { SH } from '@/theme';
 import { FullScreenLoader, Header, Spacer } from '@mPOS/components';
 
@@ -140,7 +140,7 @@ export function ShippingOrderDetail(props) {
 
             <TouchableOpacity
               style={styles.trackButtonStyle}
-              onPress={() => navigate(NAVIGATION.trackOrder, { id: orderData?.id })}
+              onPress={() => navigate(MPOS_NAVIGATION.trackOrder, { id: orderData?.id })}
             >
               <Text style={styles.trackTextStyle}>{strings.delivery.track}</Text>
               <Image source={Images.track} style={styles.trackImageStyle} />

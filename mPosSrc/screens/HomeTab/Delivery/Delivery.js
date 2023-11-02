@@ -25,7 +25,7 @@ import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
 import Graph from './Components/Graph';
 import { strings } from '@mPOS/localization';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import OrderConvertion from './Components/OrderConvertion';
 import { Header, ScreenWrapper, Spacer } from '@mPOS/components';
@@ -65,7 +65,7 @@ export function Delivery() {
     return (
       <TouchableOpacity
         style={styles.orderItemViewStyle}
-        onPress={() => navigate(NAVIGATION.orderDetail, { data: item })}
+        onPress={() => navigate(MPOS_NAVIGATION.orderDetail, { data: item })}
       >
         <View style={{ flex: 0.4 }}>
           <Text style={styles.deliveryOrderTextStyle}>{`${item?.user_details?.firstname}`}</Text>
@@ -192,7 +192,7 @@ export function Delivery() {
           {orders?.length > 0 ? (
             <TouchableOpacity
               style={styles.viewAllButtonStyle}
-              onPress={() => navigate(NAVIGATION.orderList, { selected: selectedStatus })}
+              onPress={() => navigate(MPOS_NAVIGATION.orderList, { selected: selectedStatus })}
             >
               <Text style={styles.viewAllTextStyle}>{strings.delivery.viewAll}</Text>
             </TouchableOpacity>

@@ -27,7 +27,7 @@ import {
 import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
 import Graph from './Components/Graph';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { strings } from '@mPOS/localization';
 import StatusDrawer from './Components/StatusDrawer';
 import { navigate } from '@mPOS/navigation/NavigationRef';
@@ -230,7 +230,7 @@ export function Shipping() {
             <TouchableOpacity
               style={styles.viewAllButtonStyle}
               onPress={() =>
-                navigate(NAVIGATION.shippingOrderList, {
+                navigate(MPOS_NAVIGATION.shippingOrderList, {
                   selected: selectedStatus,
                 })
               }

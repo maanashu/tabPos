@@ -21,7 +21,7 @@ import { ms } from 'react-native-size-matters';
 import { Colors } from '@/constants/enums';
 import ProductDetails from './ProductDetails';
 import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
+import { MPOS_NAVIGATION } from '@/constants';
 import {
   BottomSheetBackdrop,
   BottomSheetModal,

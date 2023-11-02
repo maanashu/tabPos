@@ -268,7 +268,7 @@ export class DashboardController {
   //           ) {
   //             alert("Product already returned!");
   //             if (screen === "delivery") {
-  //               navigate(NAVIGATION.deliveryOrders2, { screen: "delivery" });
+  //               navigate(MPOS_NAVIGATION.deliveryOrders2, { screen: "delivery" });
   //             } else {
   //               navigate("SearchScreen", { screen: "return" });
   //             }

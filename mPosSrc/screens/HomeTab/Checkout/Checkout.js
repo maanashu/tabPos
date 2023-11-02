@@ -3,7 +3,7 @@ import { Text, Image, FlatList, SafeAreaView, TouchableOpacity } from 'react-nat
 
 import { SH } from '@/theme';
 import { Spacer } from '@mPOS/components';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import Header from './Components/Header';
 import Search from './Components/Search';
 import { ItemsData } from '@mPOS/constants/enums';
@@ -15,7 +15,7 @@ export function Checkout() {
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
       style={styles.itemViewStyle}
-      onPress={() => navigate(NAVIGATION.subCategory, { item })}
+      onPress={() => navigate(MPOS_NAVIGATION.subCategory, { item })}
     >
       <Image source={item?.image} style={styles.itemImageStyle} />
       <Text style={styles.titleText}>{item?.title}</Text>
