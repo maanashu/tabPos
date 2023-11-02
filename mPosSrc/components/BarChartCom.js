@@ -14,9 +14,9 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
       value: totalValue,
       spacing: spacing,
       label: dynamicLabels[i],
-      labelWidth: SW(70), // You can adjust this value as needed
-      labelTextStyle: { color: COLORS.dark_gray, fontSize: 11 }, // You can define your labelTextStyle here
-      frontColor: i === 0 ? COLORS.darkBlue : i === 1 ? COLORS.medium_blue : COLORS.navy_blue,
+      labelWidth: SW(70),
+      labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+      frontColor: i === 0 ? COLORS.primary : i === 1 ? COLORS.violet : COLORS.darkBlue,
       intialSpace: 0,
     };
     transformedData.push(dataPoint);
@@ -32,24 +32,19 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     const firstObject = {
       value: values[0] || 0,
       frontColor: '#102773',
-      label: label?.split(' ')[0], // Extracting only the day part
+      label: label?.split(' ')[0],
       labelTextStyle: { color: '#626262', fontSize: 11, marginLeft: ms(6) },
-      // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
-      frontColor: COLORS.darkBlue,
-      labelWidth: SW(70),
-      spacing: 3,
+      frontColor: COLORS.primary,
+      labelWidth: SW(30),
+      spacing: 5,
       intialSpace: 0,
     };
     return [
       firstObject,
       ...Array.from({ length: 2 }, (_, i) => ({
         value: values[i + 1] || 0,
-        spacing: i === 0 ? 3 : 10,
-        // label: '', // Empty label for the other two objects
-        // labelWidth: 70,
-        // labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
+        spacing: i === 0 ? 5 : 15,
         frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
-        // initialSpace: 0,
       })),
     ];
   });
@@ -60,24 +55,19 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     const firstObject = {
       value: values[0] || 0,
       frontColor: '#102773',
-      label: label?.split(' ')[0], // Extracting only the day part
+      label: label?.split(' ')[0],
       labelTextStyle: { color: '#626262', fontSize: 11 },
-      // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
-      frontColor: COLORS.darkBlue,
-      labelWidth: SW(70),
-      spacing: 4,
+      frontColor: COLORS.primary,
+      labelWidth: SW(30),
+      spacing: 5,
       intialSpace: 0,
     };
     return [
       firstObject,
       ...Array.from({ length: 2 }, (_, i) => ({
         value: values[i + 1] || 0,
-        spacing: i === 0 ? 4 : 10,
-        // label: '', // Empty label for the other two objects
-        // labelWidth: 70,
-        // labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-        frontColor: i === 0 ? COLORS.medium_blue : COLORS.navy_blue,
-        // initialSpace: 0,
+        spacing: i === 0 ? 5 : 14,
+        frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
       })),
     ];
   });
@@ -106,20 +96,20 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     const firstObject = {
       value: values[0] || 0,
       frontColor: '#102773',
-      label: convertedLabels[index]?.split(' ')[0], // Extracting only the day part
+      label: convertedLabels[index]?.split(' ')[0],
       labelTextStyle: { color: '#626262', fontSize: 11, marginLeft: ms(4) },
       // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
-      frontColor: COLORS.darkBlue,
-      labelWidth: SW(70),
-      spacing: 6,
+      frontColor: COLORS.primary,
+      labelWidth: SW(30),
+      spacing: 5,
       intialSpace: 0,
     };
     return [
       firstObject,
       ...Array.from({ length: 2 }, (_, i) => ({
         value: values[i + 1] || 0,
-        spacing: i === 0 ? 6 : 14,
-        frontColor: i === 0 ? COLORS.medium_blue : COLORS.navy_blue,
+        spacing: i === 0 ? 5 : 14,
+        frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
       })),
     ];
   });
@@ -140,7 +130,6 @@ export function BarChartCom({
   barHei,
   barSpacing,
   barW,
-  labelTextSty,
   data,
   initialSpacing,
   spacing,
@@ -150,235 +139,11 @@ export function BarChartCom({
   isLoading,
 }) {
   const formattedData = transformData(data, spacing, interval, dateInterval, dateTodayInterval);
-  const barData =
-    data === undefined
-      ? [
-          {
-            value: 44,
-            spacing: 2,
-            label: 'Mon',
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.darkBlue,
-            intialSapce: 0,
-          },
-          {
-            value: 56,
-            spacing: 2,
-            frontColor: COLORS.medium_blue,
-          },
-          { value: 66, frontColor: COLORS.navy_blue },
-          {
-            value: 22,
-            spacing: 2,
-            label: 'Tue',
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: 55,
-            spacing: 2,
-            frontColor: COLORS.medium_blue,
-          },
-          { value: 88, frontColor: COLORS.navy_blue },
-          {
-            value: 99,
-            spacing: 2,
-            label: 'Wed',
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: 22,
-            spacing: 2,
-            frontColor: COLORS.medium_blue,
-          },
-          { value: 55, frontColor: COLORS.navy_blue },
-          {
-            value: 44,
-            spacing: 2,
-            label: 'Thu',
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: 44,
-            spacing: 2,
-            frontColor: COLORS.medium_blue,
-          },
-          { value: 22, frontColor: COLORS.navy_blue },
-          {
-            value: 10,
-            spacing: 2,
-            label: 'Fri',
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: 10,
-            spacing: 2,
-            frontColor: COLORS.medium_blue,
-          },
-          { value: 20, frontColor: COLORS.navy_blue },
-          {
-            value: 30,
-            spacing: 2,
-            label: 'Sat',
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: 11,
-            spacing: 2,
-            frontColor: COLORS.medium_blue,
-          },
-          { value: 67, frontColor: COLORS.navy_blue },
-          {
-            value: 10,
-            spacing: 2,
-            label: 'Sun',
-            labelWidth: 60,
-            labelTextStyle: labelTextSty,
-            frontColor: COLORS.darkBlue,
-          },
-          {
-            value: 40,
-            spacing: 2,
-            frontColor: COLORS.medium_blue,
-          },
-          { value: 20, frontColor: COLORS.navy_blue },
-        ]
-      : [
-          {
-            // value: value,
-            // frontColor: COLORS.darkBlue,
-            // label: label,
-          },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[0],
-          //   spacing: 2,
-          //   label: data?.labels?.[0],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[0],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[1],
-          //   spacing: 2,
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[1],
-          //   spacing: 2,
-          //   label: data?.labels?.[1],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[1],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[2],
-          //   spacing: 2,
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[2],
-          //   spacing: 2,
-          //   label: data?.labels?.[2],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[2],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[3],
-          //   spacing: 2,
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[3],
-          //   spacing: 2,
-          //   label: data?.labels?.[3],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[3],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[4],
-          //   spacing: 2,
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[4],
-          //   spacing: 2,
-          //   label: data?.labels?.[4],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[4],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[5],
-          //   spacing: 2,
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[5],
-          //   spacing: 2,
-          //   label: data?.labels?.[5],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[5],
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[0]?.data?.[6],
-          //   spacing: 2,
-          //   frontColor: COLORS.darkBlue,
-          // },
-          // {
-          //   value: data?.datasets?.[1]?.data?.[6],
-          //   spacing: 2,
-          //   label: data?.labels?.[6],
-          //   labelWidth: 60,
-          //   labelTextStyle: labelTextSty,
-          //   frontColor: COLORS.violet,
-          // },
-          // {
-          //   value: data?.datasets?.[2].data?.[6],
-          //   frontColor: COLORS.darkBlue,
-          // },
-        ];
   return (
     <View>
       {isLoading ? (
         <View style={styles.loaderView}>
-          <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+          <ActivityIndicator color={COLORS.primary} size={'small'} />
         </View>
       ) : (
         <BarChart

@@ -37,6 +37,7 @@ import { TotalDeliveryOrders } from './Components/TotalDeliveryOrders';
 import { TotalShippingOrders } from './Components/TotalShippingOrders';
 import { TotalProductSold } from './Components/TotalProductSold';
 import { TotalInventory } from './Components/TotalInventory';
+import { TotalOrders } from './Components/TotalOrders';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
 import {
@@ -265,16 +266,16 @@ export function Analytics() {
       />
     ),
     ['TotalProductSold']: <TotalProductSold sellerID={sellerID} data={data} />,
-    // ["TotalOrders"]: (
-    //   <TotalOrders
-    //     onPressReview={(item) => {
-    //       setWeeklyTrasaction(true);
-    //       setDate(item);
-    //       setAppName();
-    //       setDeliveryOption();
-    //     }}
-    //   />
-    // ),
+    ['TotalOrders']: (
+      <TotalOrders
+        onPressReview={(item) => {
+          setWeeklyTrasaction(true);
+          setDate(item);
+          setAppName();
+          setDeliveryOption();
+        }}
+      />
+    ),
     ['TotalPosOrder']: (
       <TotalPosOrder
         onPressReview={(item) => {
