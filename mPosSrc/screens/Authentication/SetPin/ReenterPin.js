@@ -10,7 +10,7 @@ import {
 
 import { SH, COLORS } from '@/theme';
 import { strings } from '@mPOS/localization';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { Button, Spacer } from '@mPOS/components';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { CustomErrorToast } from '@mPOS/components/Toast';
@@ -45,7 +45,7 @@ export function ReenterPin(props) {
 
   const loginHandlerFunction = () => {
     setEnableModal(false);
-    navigate(NAVIGATION.login);
+    navigate(MPOS_NAVIGATION.login);
   };
 
   return (

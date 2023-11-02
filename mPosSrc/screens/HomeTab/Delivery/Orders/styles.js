@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     paddingVertical: SH(15),
     paddingHorizontal: SW(15),
     backgroundColor: COLORS.white,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   payIconStyle: {
     width: SW(11),
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   deliveryDetailsView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.text,
+    backgroundColor: COLORS.dark_grey,
     borderRadius: 5,
     paddingHorizontal: ms(8),
     paddingVertical: ms(12),

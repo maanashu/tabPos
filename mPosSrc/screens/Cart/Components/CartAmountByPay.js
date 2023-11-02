@@ -20,7 +20,7 @@ import { ms } from 'react-native-size-matters';
 import { Colors } from '@/constants/enums';
 import ProductDetails from './ProductDetails';
 import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
+import { MPOS_NAVIGATION } from '@/constants';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';

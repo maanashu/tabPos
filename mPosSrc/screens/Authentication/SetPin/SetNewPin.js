@@ -10,7 +10,7 @@ import {
 
 import { COLORS, SH } from '@/theme';
 import { strings } from '@mPOS/localization';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { Button, Spacer } from '@mPOS/components';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { CustomErrorToast } from '@mPOS/components/Toast';
@@ -31,7 +31,7 @@ export function SetNewPin() {
     if (!value || value.length < 4) {
       CustomErrorToast({ message: strings.validationMessages.emptyPinCode });
     } else {
-      navigate(NAVIGATION.reenterPin, { pinCode: value });
+      navigate(MPOS_NAVIGATION.reenterPin, { pinCode: value });
     }
   };
 

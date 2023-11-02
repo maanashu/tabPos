@@ -110,7 +110,7 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
             </TouchableOpacity>
             <TouchableOpacity
               // onPress={() =>
-              //   navigate(NAVIGATION.bottomTab, { screen: NAVIGATION.cart })
+              //   navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart })
               // }
               onPress={productAddCartHandler}
               style={[styles.detailView, styles.cartView]}

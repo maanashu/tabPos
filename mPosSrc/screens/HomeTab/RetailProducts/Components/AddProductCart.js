@@ -20,7 +20,7 @@ import { ms } from 'react-native-size-matters';
 import { Colors } from '@mPOS/constants/enums';
 import ProductDetails from './ProductDetails';
 import { navigate } from '@mPOS/navigation/NavigationRef';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -181,7 +181,7 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
             </TouchableOpacity>
             <TouchableOpacity
               // onPress={() =>
-              //   navigate(NAVIGATION.bottomTab, { screen: NAVIGATION.cart })
+              //   navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart })
               // }
               onPress={addToCartHandler}
               style={[styles.detailView, styles.cartView]}

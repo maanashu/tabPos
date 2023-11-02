@@ -24,7 +24,7 @@ import {
   SearchScreen,
   DeliveryReturnOrderDetail,
 } from '@mPOS/screens';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
 import { TrackOrder } from '@mPOS/screens/HomeTab/Shipping/TrackOrder/TrackOrder';
 import { Invoice } from '@mPOS/components';
@@ -35,121 +35,121 @@ export function AppNavigator() {
   return (
     <Stack.Navigator
       screenOptions={{ gestureEnabled: false }}
-      initialRouteName={NAVIGATION.bottomTab}
+      initialRouteName={MPOS_NAVIGATION.bottomTab}
     >
       <Stack.Screen
-        name={NAVIGATION.bottomTab}
+        name={MPOS_NAVIGATION.bottomTab}
         component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.checkout}
+        name={MPOS_NAVIGATION.checkout}
         component={Checkout}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.subCategory}
+        name={MPOS_NAVIGATION.subCategory}
         component={SubCategory}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.products}
+        name={MPOS_NAVIGATION.products}
         component={Products}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.profile}
+        name={MPOS_NAVIGATION.profile}
         component={Profile}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.profileQRCode}
+        name={MPOS_NAVIGATION.profileQRCode}
         component={ProfileQRCode}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name={NAVIGATION.cart} component={Cart} options={{ headerShown: false }} />
+      <Stack.Screen name={MPOS_NAVIGATION.cart} component={Cart} options={{ headerShown: false }} />
       <Stack.Screen
-        name={NAVIGATION.retailProducts}
+        name={MPOS_NAVIGATION.retailProducts}
         component={RetailProducts}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.services}
+        name={MPOS_NAVIGATION.services}
         component={Services}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.transactionList}
+        name={MPOS_NAVIGATION.transactionList}
         component={TransactionList}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.delivery}
+        name={MPOS_NAVIGATION.delivery}
         component={Delivery}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.orderList}
+        name={MPOS_NAVIGATION.orderList}
         component={OrderList}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.orderDetail}
+        name={MPOS_NAVIGATION.orderDetail}
         component={OrderDetail}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.deliveryStatus}
+        name={MPOS_NAVIGATION.deliveryStatus}
         component={DeliveryStatus}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.deliveryReturnOrderDetail}
+        name={MPOS_NAVIGATION.deliveryReturnOrderDetail}
         component={DeliveryReturnOrderDetail}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.posUserProfile}
+        name={MPOS_NAVIGATION.posUserProfile}
         component={PosUserProfile}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.shipping}
+        name={MPOS_NAVIGATION.shipping}
         component={Shipping}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.shippingOrderList}
+        name={MPOS_NAVIGATION.shippingOrderList}
         component={ShippingOrderList}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.shippingOrderDetail}
+        name={MPOS_NAVIGATION.shippingOrderDetail}
         component={ShippingOrderDetail}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.analytics}
+        name={MPOS_NAVIGATION.analytics}
         component={Analytics}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name={NAVIGATION.trackOrder}
+        name={MPOS_NAVIGATION.trackOrder}
         options={{ headerShown: false }}
         component={TrackOrder}
       />
       <Stack.Screen
-        name={NAVIGATION.searchScreen}
+        name={MPOS_NAVIGATION.searchScreen}
         options={{ headerShown: false }}
         component={SearchScreen}
       />
       <Stack.Screen
-        name={NAVIGATION.invoice}
+        name={MPOS_NAVIGATION.invoice}
         options={{ headerShown: false }}
         component={Invoice}
       />
       {/* <Stack.Screen
-        name={NAVIGATION.returnOrderDetail}
+        name={MPOS_NAVIGATION.returnOrderDetail}
         options={{ headerShown: false }}
         component={ReturnOrderDetail}
       /> */}

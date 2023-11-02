@@ -6,7 +6,7 @@ import { ms } from 'react-native-size-matters';
 
 import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { navigate } from '@mPOS/navigation/NavigationRef';
@@ -58,7 +58,7 @@ export function LoginPosUser({ setPosUserModal, selectedUser }) {
       <TouchableOpacity
         onPress={() => {
           setPosUserModal(false);
-          navigate(NAVIGATION.login, { posUser: selectedUser });
+          navigate(MPOS_NAVIGATION.login, { posUser: selectedUser });
         }}
         style={styles.buttonStyle}
       >

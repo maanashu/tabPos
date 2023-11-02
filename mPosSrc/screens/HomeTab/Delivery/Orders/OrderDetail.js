@@ -9,18 +9,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, SH } from '@/theme';
 import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import OrderTotal from '../Components/OrderTotal';
 import ProductList from '../Components/ProductList';
 import { DELIVERY_TYPES } from '@mPOS/Types/DeliveryTypes';
-import { getAuthData } from '@mPOS/selectors/AuthSelector';
-import { acceptOrder } from '@mPOS/actions/DeliveryActions';
 import mapCustomStyle from '@mPOS/components/MapCustomStyles';
 import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import { FullScreenLoader, Header, Spacer } from '@mPOS/components';
 
 import styles from './styles';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { acceptOrder } from '@/actions/DeliveryAction';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function OrderDetail(props) {
   const mapRef = useRef();
@@ -47,7 +48,7 @@ export function OrderDetail(props) {
     );
   };
 
-  const isLoading = useSelector((state) => isLoadingSelector([DELIVERY_TYPES.ACCEPT_ORDER], state));
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
 
   return (
     <SafeAreaView style={styles.container}>
@@ -154,7 +155,7 @@ export function OrderDetail(props) {
 
             <TouchableOpacity
               style={styles.trackButtonStyle}
-              onPress={() => navigate(NAVIGATION.deliveryStatus, { data: orderData })}
+              onPress={() => navigate(MPOS_NAVIGATION.deliveryStatus, { data: orderData })}
             >
               <Text style={styles.trackTextStyle}>{strings.delivery.track}</Text>
               <Image source={Images.track} style={styles.trackImageStyle} />

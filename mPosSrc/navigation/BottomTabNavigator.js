@@ -13,13 +13,13 @@ import {
 import { CurvedBottomBar } from 'react-native-curved-bottom-bar';
 
 import { Images } from '@mPOS/assets';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { COLORS, Fonts, SF, SW } from '@/theme';
 import { Cart, Home, More, Transactions } from '@mPOS/screens';
 
 const BottomTabNavigator = () => {
   const _renderIcon = (routeName, selectedTab) => {
-    if (routeName === NAVIGATION.home && selectedTab === NAVIGATION.home) {
+    if (routeName === MPOS_NAVIGATION.home && selectedTab === MPOS_NAVIGATION.home) {
       return (
         <View style={styles.renderIconView}>
           <Image
@@ -29,7 +29,7 @@ const BottomTabNavigator = () => {
               styles.iconStyle,
               {
                 tintColor:
-                  selectedTab === NAVIGATION.home ? COLORS.primary : COLORS.placeholderText,
+                  selectedTab === MPOS_NAVIGATION.home ? COLORS.primary : COLORS.placeholderText,
               },
             ]}
           />
@@ -45,7 +45,7 @@ const BottomTabNavigator = () => {
           </Text>
         </View>
       );
-    } else if (routeName === NAVIGATION.home && selectedTab !== NAVIGATION.home) {
+    } else if (routeName === MPOS_NAVIGATION.home && selectedTab !== MPOS_NAVIGATION.home) {
       return (
         <View style={styles.renderIconView}>
           <Image accessibilityIgnoresInvertColors source={Images.home} style={styles.iconStyle} />
@@ -61,7 +61,7 @@ const BottomTabNavigator = () => {
           </Text>
         </View>
       );
-    } else if (routeName === NAVIGATION.cart && selectedTab !== NAVIGATION.cart) {
+    } else if (routeName === MPOS_NAVIGATION.cart && selectedTab !== MPOS_NAVIGATION.cart) {
       return (
         <View style={styles.renderIconView}>
           <Image accessibilityIgnoresInvertColors source={Images.cart} style={[styles.iconStyle]} />
@@ -77,7 +77,7 @@ const BottomTabNavigator = () => {
           </Text>
         </View>
       );
-    } else if (routeName === NAVIGATION.cart && selectedTab === NAVIGATION.cart) {
+    } else if (routeName === MPOS_NAVIGATION.cart && selectedTab === MPOS_NAVIGATION.cart) {
       return (
         <View style={styles.renderIconView}>
           <Image
@@ -87,7 +87,7 @@ const BottomTabNavigator = () => {
               styles.iconStyle,
               {
                 tintColor:
-                  selectedTab === NAVIGATION.cart ? COLORS.primary : COLORS.placeholderText,
+                  selectedTab === MPOS_NAVIGATION.cart ? COLORS.primary : COLORS.placeholderText,
               },
             ]}
           />
@@ -103,7 +103,10 @@ const BottomTabNavigator = () => {
           </Text>
         </View>
       );
-    } else if (routeName === NAVIGATION.transactions && selectedTab === NAVIGATION.transactions) {
+    } else if (
+      routeName === MPOS_NAVIGATION.transactions &&
+      selectedTab === MPOS_NAVIGATION.transactions
+    ) {
       return (
         <View style={styles.renderIconView}>
           <Image
@@ -113,7 +116,9 @@ const BottomTabNavigator = () => {
               styles.iconStyle,
               {
                 tintColor:
-                  selectedTab === NAVIGATION.transactions ? COLORS.primary : COLORS.placeholderText,
+                  selectedTab === MPOS_NAVIGATION.transactions
+                    ? COLORS.primary
+                    : COLORS.placeholderText,
               },
             ]}
           />
@@ -129,7 +134,10 @@ const BottomTabNavigator = () => {
           </Text>
         </View>
       );
-    } else if (routeName === NAVIGATION.transactions && selectedTab !== NAVIGATION.transactions) {
+    } else if (
+      routeName === MPOS_NAVIGATION.transactions &&
+      selectedTab !== MPOS_NAVIGATION.transactions
+    ) {
       return (
         <View style={styles.renderIconView}>
           <Image
@@ -149,7 +157,7 @@ const BottomTabNavigator = () => {
           </Text>
         </View>
       );
-    } else if (routeName === NAVIGATION.more && selectedTab === NAVIGATION.more) {
+    } else if (routeName === MPOS_NAVIGATION.more && selectedTab === MPOS_NAVIGATION.more) {
       return (
         <View style={styles.renderIconView}>
           <Image
@@ -169,7 +177,7 @@ const BottomTabNavigator = () => {
           </Text>
         </View>
       );
-    } else if (routeName === NAVIGATION.more && selectedTab !== NAVIGATION.more) {
+    } else if (routeName === MPOS_NAVIGATION.more && selectedTab !== MPOS_NAVIGATION.more) {
       return (
         <View style={styles.renderIconView}>
           <Image
@@ -224,14 +232,14 @@ const BottomTabNavigator = () => {
           </Animated.View>
         )}
       >
-        <CurvedBottomBar.Screen component={Home} position={'LEFT'} name={NAVIGATION.home} />
-        <CurvedBottomBar.Screen position={'LEFT'} component={Cart} name={NAVIGATION.cart} />
+        <CurvedBottomBar.Screen component={Home} position={'LEFT'} name={MPOS_NAVIGATION.home} />
+        <CurvedBottomBar.Screen position={'LEFT'} component={Cart} name={MPOS_NAVIGATION.cart} />
         <CurvedBottomBar.Screen
           position={'RIGHT'}
           component={Transactions}
-          name={NAVIGATION.transactions}
+          name={MPOS_NAVIGATION.transactions}
         />
-        <CurvedBottomBar.Screen position={'RIGHT'} component={More} name={NAVIGATION.more} />
+        <CurvedBottomBar.Screen position={'RIGHT'} component={More} name={MPOS_NAVIGATION.more} />
       </CurvedBottomBar.Navigator>
       {/* </NavigationContainer> */}
     </SafeAreaView>

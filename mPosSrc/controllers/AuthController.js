@@ -1,7 +1,7 @@
 import { ApiUserInventory, USER_URL } from '@mPOS/utils/APIinventory';
 import { HttpClient } from './HttpClient';
 import { navigate } from '@mPOS/navigation/NavigationRef';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { strings } from '@mPOS/localization';
 import { store } from '@/store';
 import { CustomErrorToast, CustomSuccessToast } from '@mPOS/components/Toast';
@@ -14,7 +14,7 @@ export class AuthController {
       .then((response) => {
         if (response.status_code === 200) {
           if (response?.payload?.is_phone_exits) {
-            navigate(NAVIGATION.verifyOtp);
+            navigate(MPOS_NAVIGATION.verifyOtp);
           } else {
             CustomErrorToast({
               message: strings.validationMessages.phoneNotExist,
@@ -37,7 +37,7 @@ export class AuthController {
         .then((response) => {
           if (response.status_code === 200) {
             CustomSuccessToast({ message: strings.successMessages.loginSuccess });
-            navigate(NAVIGATION.posUsers);
+            navigate(MPOS_NAVIGATION.posUsers);
             resolve(response);
           } else {
             CustomSuccessToast({ message: response.msg });

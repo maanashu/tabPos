@@ -15,7 +15,7 @@
 // import { COLORS, SH } from "@mPOS/theme";
 // import { Images } from "@mPOS/assets";
 // import { strings } from "@mPOS/localization";
-// import { NAVIGATION } from "@mPOS/constants";
+// import { MPOS_NAVIGATION } from "@mPOS/constants";
 // import OrderTotal from "../Components/OrderTotal";
 // import ProductList from "../Components/ProductList";
 // import { DELIVERY_TYPES } from "@mPOS/Types/DeliveryTypes";
@@ -174,7 +174,7 @@
 //             <TouchableOpacity
 //               style={styles.trackButtonStyle}
 //               onPress={() =>
-//                 navigate(NAVIGATION.deliveryStatus, { data: orderData })
+//                 navigate(MPOS_NAVIGATION.deliveryStatus, { data: orderData })
 //               }
 //             >
 //               <Text style={styles.trackTextStyle}>
