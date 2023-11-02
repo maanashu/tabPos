@@ -210,9 +210,9 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   regularTextStyle: {
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.Medium,
     fontSize: ms(14),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
   },
   backIcon: {
     height: ms(24),

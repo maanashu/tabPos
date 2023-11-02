@@ -17,7 +17,7 @@ import { NAVIGATION } from '@mPOS/constants';
 import { strings } from '@mPOS/localization';
 import { homePageData } from '@mPOS/constants/enums';
 import { navigate } from '@mPOS/navigation/NavigationRef';
-import { getAuthData } from '@mPOS/selectors/AuthSelector';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 import styles from '@mPOS/screens/HomeTab/Home/styles';
 

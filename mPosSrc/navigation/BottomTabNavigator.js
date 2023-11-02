@@ -28,8 +28,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.iconStyle,
               {
-                tintColor:
-                  selectedTab === NAVIGATION.home ? COLORS.primary : COLORS.placeholderText,
+                tintColor: selectedTab === NAVIGATION.home ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           />
@@ -69,7 +68,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           >
@@ -86,8 +85,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.iconStyle,
               {
-                tintColor:
-                  selectedTab === NAVIGATION.cart ? COLORS.primary : COLORS.placeholderText,
+                tintColor: selectedTab === NAVIGATION.cart ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           />
@@ -113,7 +111,7 @@ const BottomTabNavigator = () => {
               styles.iconStyle,
               {
                 tintColor:
-                  selectedTab === NAVIGATION.transactions ? COLORS.primary : COLORS.placeholderText,
+                  selectedTab === NAVIGATION.transactions ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           />
@@ -141,7 +139,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           >
@@ -181,7 +179,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           >
@@ -268,6 +266,6 @@ const styles = StyleSheet.create({
     top: 5,
     fontSize: SF(9.5),
     textAlign: 'center',
-    fontFamily: Fonts.MaisonMonoBold,
+    fontFamily: Fonts.MaisonBold,
   },
 });
