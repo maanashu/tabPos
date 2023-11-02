@@ -17,10 +17,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) requires to access camera for uploading photos to your profile or posts</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to upload photos from your photo gallery</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>MaisonMonoTRIAL-Bold.otf</string>

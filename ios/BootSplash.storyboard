@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="ipad12_9" orientation="portrait" layout="fullscreen" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_72" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,29 +13,27 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BootSplashLogo" translatesAutoresizingMaskIntoConstraints="NO" id="y5z-ha-sCo">
-                                <rect key="frame" x="0.0" y="20" width="1024" height="1346"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BootSplashLogo" translatesAutoresizingMaskIntoConstraints="NO" id="6Oa-YF-4mG">
+                                <rect key="frame" x="88.333333333333314" y="430.33333333333331" width="253.33333333333337" height="71.333333333333314"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.10196078431372549" green="0.97647058823529409" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="y5z-ha-sCo" secondAttribute="bottom" id="74B-m8-0ML"/>
-                            <constraint firstItem="y5z-ha-sCo" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="PJG-IS-ums"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="y5z-ha-sCo" secondAttribute="trailing" id="eEs-a1-dyd"/>
-                            <constraint firstItem="y5z-ha-sCo" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" id="xoZ-3E-dl2"/>
+                            <constraint firstItem="6Oa-YF-4mG" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="AI3-OE-3kV"/>
+                            <constraint firstItem="6Oa-YF-4mG" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="WzZ-D2-o3N"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="51.390922401171302" y="374.4140625"/>
         </scene>
     </scenes>
     <resources>
-        <image name="BootSplashLogo" width="1440" height="1024"/>
+        <image name="BootSplashLogo" width="253.33332824707031" height="71.333335876464844"/>
     </resources>
 </document>

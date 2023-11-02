@@ -525,13 +525,14 @@
 				INFOPLIST_FILE = tabposapp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "JOBR POS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) requires camera usage permission to upload images";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) requires location access to get current location of the POS ";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) requires to access camera for uploading photos to your profile or posts";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "tabposapp requires location access to get current location of the POS ";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PRODUCT_NAME) would like to upload photos from your photo gallery";
 				INFOPLIST_KEY_UILaunchStoryboardName = BootSplash.storyboard;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeLeft;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -568,13 +569,14 @@
 				INFOPLIST_FILE = tabposapp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "JOBR POS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) requires camera usage permission to upload images";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) requires location access to get current location of the POS ";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) requires to access camera for uploading photos to your profile or posts";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "tabposapp requires location access to get current location of the POS ";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PRODUCT_NAME) would like to upload photos from your photo gallery";
 				INFOPLIST_KEY_UILaunchStoryboardName = BootSplash.storyboard;
 				INFOPLIST_KEY_UIRequiredDeviceCapabilities = armv7;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeLeft;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
