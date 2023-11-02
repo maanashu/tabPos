@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  Dimensions,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import { ActivityIndicator, Dimensions, Image, Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
 import {
   Header,
@@ -19,32 +11,26 @@ import {
 } from '@mPOS/components';
 import { SH, SW } from '@/theme';
 import { ms } from 'react-native-size-matters';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Images } from '@mPOS/assets';
 import { useDispatch, useSelector } from 'react-redux';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { getWalletData } from '@mPOS/selectors/WalletSelector';
-import {
-  TransactionDetails,
-  TransactionTypes,
-  getOrdersByInvoiceId,
-  getOrdersByInvoiceIdReset,
-} from '@mPOS/actions/WalletActions';
-import { WALLET_TYPES } from '@mPOS/Types/WalletTypes';
+import { getOrdersByInvoiceIdReset } from '@mPOS/actions/WalletActions';
 import { FlatList } from 'react-native';
 import dayjs from 'dayjs';
 import { getAuthData } from '@mPOS/selectors/AuthSelector';
-import { navigate } from '@mPOS/navigation/NavigationRef';
-import { NAVIGATION } from '@mPOS/constants';
-import { debounce } from 'lodash';
 import Modal from 'react-native-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { getTotakTraDetail, getTotalTraType } from '@/actions/WalletAction';
+import { getWallet } from '@/selectors/WalletSelector';
+import { TYPES } from '@/Types/WalletTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 
 export function TransactionList(props) {
   const height = Dimensions.get('window').height;
   const width = Dimensions.get('window').width;
   const dispatch = useDispatch();
-  const getWallet = useSelector(getWalletData);
+  const getWalletData = useSelector(getWallet);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [sku, setSku] = useState();
@@ -57,9 +43,7 @@ export function TransactionList(props) {
     props?.route?.params?.transactionType || ''
   );
   const [filterVal, setFilterVal] = useState(props?.route?.params?.filter_by || '');
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([WALLET_TYPES.GET_TRANSACTION_LIST], state)
-  );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state));
 
   const body = {
     // page: 1,
@@ -82,33 +66,33 @@ export function TransactionList(props) {
   };
 
   useEffect(() => {
-    dispatch(TransactionDetails(body));
-    dispatch(TransactionTypes(object));
+    dispatch(getTotakTraDetail(body));
+    dispatch(getTotalTraType(object));
   }, [filterVal, startDate, endDate, transactionType]);
 
   const paymentOptions = [
     {
       id: 1,
       title: 'All',
-      count: getWallet?.transactionType?.[0]?.count || 0,
+      count: getWalletData?.getTotalTraType?.[0]?.count || 0,
       value: 'all',
     },
     {
       id: 2,
       title: 'JOBR',
-      count: getWallet?.transactionType?.[1]?.count || 0,
+      count: getWalletData?.getTotalTraType?.[1]?.count || 0,
       value: 'jbr',
     },
     {
       id: 3,
       title: 'Cash',
-      count: getWallet?.transactionType?.[2]?.count || 0,
+      count: getWalletData?.getTotalTraType?.[2]?.count || 0,
       value: 'cash',
     },
     {
       id: 4,
       title: 'Card',
-      count: getWallet?.transactionType?.[3]?.count || 0,
+      count: getWalletData?.getTotalTraType?.[3]?.count || 0,
       value: 'card',
     },
   ];
@@ -131,11 +115,11 @@ export function TransactionList(props) {
 
   const handleOrderDetail = (item) => {
     if (item?.delivery_option == '1') {
-      navigate(NAVIGATION.orderDetail, { data: item });
+      commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
     } else if (item?.delivery_option == '4') {
-      navigate(NAVIGATION.shippingOrderDetail, { data: item });
+      commonNavigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item });
     } else if (item?.delivery_option == '3') {
-      navigate(NAVIGATION.orderDetail, { data: item });
+      commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
     }
   };
 
@@ -240,7 +224,7 @@ export function TransactionList(props) {
           // <FullScreenLoader />
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={getWallet?.transactionList?.data || []}
+            data={getWalletData?.getTotakTraDetail?.data || []}
             renderItem={renderTransList}
             contentContainerStyle={{
               flexGrow: 1,
