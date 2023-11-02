@@ -3,7 +3,6 @@ import React from 'react';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts, SH } from '@/theme';
 import { useSelector } from 'react-redux';
-import { getWalletData } from '@mPOS/selectors/WalletSelector';
 import { Spacer } from './Spacer';
 import { ScreenWrapper } from './ScreenWrapper';
 import { Header } from './Header';
@@ -15,7 +14,6 @@ import { Images } from '@mPOS/assets';
 
 export function Invoice(props) {
   const data = props?.route?.params?.data;
-  const getWallet = useSelector(getWalletData)?.invoiceSearchOrders;
   const getUserData = useSelector(getUser);
 
   const sellerDetail = data?.order?.seller_details;

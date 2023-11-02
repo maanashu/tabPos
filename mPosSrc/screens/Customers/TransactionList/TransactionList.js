@@ -14,7 +14,6 @@ import { ms } from 'react-native-size-matters';
 import { useEffect, useState } from 'react';
 import { Images } from '@mPOS/assets';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrdersByInvoiceIdReset } from '@mPOS/actions/WalletActions';
 import { FlatList } from 'react-native';
 import dayjs from 'dayjs';
 import { getAuthData } from '@mPOS/selectors/AuthSelector';
@@ -25,6 +24,7 @@ import { getWallet } from '@/selectors/WalletSelector';
 import { TYPES } from '@/Types/WalletTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { getOrdersByInvoiceIdReset } from '@/actions/DashboardAction';
 
 export function TransactionList(props) {
   const height = Dimensions.get('window').height;
