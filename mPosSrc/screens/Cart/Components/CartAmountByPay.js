@@ -39,6 +39,17 @@ const CartAmountByPay = ({
   const retailData = useSelector(getRetail);
   const productDetail = retailData?.getOneProduct;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
+  const cartData = retailData?.getAllCart;
+  const getTips = retailData?.getTips;
+
+  const [selectedTipIndex, setSelectedTipIndex] = useState(null);
+  const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
+  const [tipData, setTipData] = useState('0.00');
+
+  const [selectedPaymentIndex, setSelectedPaymentIndex] = useState(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [selectedRecipeIndex, setSelectedRecipeIndex] = useState(null);
 
   const sizeArray = attributeArray?.filter((item) => item.name === 'Size');
   const colorArray = attributeArray?.filter((item) => item.name === 'Color');
@@ -56,14 +67,39 @@ const CartAmountByPay = ({
   }, []);
 
   const TIPS_DATA = [
-    { title: 18, percent: '18' },
+    { title: getTips?.first_tips ?? 18, percent: getTips?.first_tips ?? '18' },
     {
-      title: 20,
-      percent: '20',
+      title: getTips?.second_tips ?? 20,
+      percent: getTips?.second_tips ?? '20',
     },
-    { title: 22, percent: '22' },
+    { title: getTips?.third_tips ?? 22, percent: getTips?.third_tips ?? '22' },
     { title: '', percent: 'No Tips' },
   ];
+
+  function calculatePercentageValue(value, percentage) {
+    if (percentage == '') {
+      return '';
+    }
+    const percentageValue = (percentage / 100) * parseFloat(value);
+    return percentageValue.toFixed(2) ?? 0.0;
+  }
+
+  const totalPayAmount = () => {
+    const cartAmount = cartData?.amount?.total_amount ?? '0.00';
+    const totalPayment =
+      parseFloat(cartAmount) + parseFloat(selectedTipAmount === '' ? '0.0' : selectedTipAmount);
+
+    return totalPayment.toFixed(2);
+  };
+  const totalAmountByPaymentMethod = (index) => {
+    if (index === 0) {
+      return `$${totalPayAmount()}`;
+    } else if (index === 1) {
+      return `JBR ${(totalPayAmount() * 100).toFixed(0)}`;
+    } else {
+      return `$${totalPayAmount()}`;
+    }
+  };
 
   const ERECIPE_DATA = [
     {
@@ -80,16 +116,34 @@ const CartAmountByPay = ({
     },
   ];
 
-  const PanelBackground = () => {
-    return <View style={{ backgroundColor: COLORS.black }} />;
-  };
+  const PAYMENT_SELECT_DATA = [
+    {
+      title: 'Cash',
+      // icon: moneyIcon,
+      id: 1,
+    },
+    {
+      title: 'JBR Coin',
+      // icon: qrCodeIcon,
+      // status: true,
+      id: 2,
+    },
+    {
+      title: 'Card',
+      // icon: moneyIcon,
+      id: 3,
+    },
+  ];
 
   return (
     <BottomSheetModal
       backdropComponent={CustomBackdrop}
       detached
       bottomInset={0}
-      onDismiss={() => {}}
+      onDismiss={() => {
+        setSelectedTipAmount('0.00');
+        setSelectedTipIndex(null);
+      }}
       backdropOpacity={0.5}
       ref={cartAmountByPayRef}
       style={[styles.bottomSheetBox]}
@@ -108,19 +162,49 @@ const CartAmountByPay = ({
           </View>
           <View style={styles.payableAmountCon}>
             <Text style={styles.payableAmount}>Total Payable Amount:</Text>
-            <Text style={styles.darkPaybleAmount}>$34.05</Text>
+            <Text style={styles.darkPaybleAmount}>
+              ${Number(cartData?.amount?.total_amount ?? '0.00')?.toFixed(2)}
+            </Text>
           </View>
           <View style={styles.selectTipsCon}>
             <View style={styles.selectTipsHeader}>
               <Text style={styles.selectTips}>{'Select Tips'}</Text>
             </View>
             <View style={{ flex: 1, paddingHorizontal: ms(10) }}>
-              <Text style={styles.payableAmount}>$5.19</Text>
+              <Text style={styles.payableAmount}>
+                ${calculatePercentageValue(cartData?.amount?.products_price, tipData?.title)}
+              </Text>
               <View style={styles.erecipeCon}>
                 {TIPS_DATA?.map((item, index) => (
-                  <TouchableOpacity style={styles.selectTipBodySelect}>
-                    {/* selectTipBodyCon   */}
-                    <Text style={styles._payByMethodTip}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setTipData(item);
+                      const tipAmount = calculatePercentageValue(
+                        cartData?.amount?.products_price,
+                        item.title
+                      );
+                      {
+                        item.percent === 'No Tips'
+                          ? setSelectedTipAmount('0.00')
+                          : setSelectedTipAmount(tipAmount);
+                      }
+                      setSelectedTipIndex(index);
+                    }}
+                    key={index}
+                    style={
+                      selectedTipIndex === index
+                        ? styles.selectTipBodySelect
+                        : styles.selectTipBodyCon
+                    }
+                  >
+                    <Text
+                      style={[
+                        styles._payByMethodTip,
+                        {
+                          color: selectedTipIndex === index ? COLORS.primary : COLORS.solid_grey,
+                        },
+                      ]}
+                    >
                       {item.percent}
                       {item.percent === 'No Tips' ? '' : '%'}
                     </Text>
@@ -129,18 +213,56 @@ const CartAmountByPay = ({
               </View>
             </View>
           </View>
-          <Spacer space={SH(10)} />
-          <Text style={styles.selectTips}>{'Select Payment Method'}</Text>
-          <View>
-            {[1, 2, 3]?.map((item, index) => (
-              <View style={styles.selectPaymentBody}>
-                <View>
-                  <Text style={styles.cashCardCoin}>Cash</Text>
-                </View>
-                <Text style={styles.payableAmount}>$34.05</Text>
+          {selectedTipIndex !== null ? (
+            <View>
+              <Spacer space={SH(10)} />
+              <Text style={styles.selectTips}>{'Select Payment Method'}</Text>
+              <View>
+                {PAYMENT_SELECT_DATA?.map((item, index) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedPaymentId(item.id);
+                      setSelectedPaymentIndex(index);
+                      setSelectedRecipeIndex(null);
+                      setSelectedPaymentMethod(item.title);
+                    }}
+                    style={[
+                      styles.selectPaymentBody,
+                      {
+                        borderColor:
+                          selectedPaymentIndex === index ? COLORS.primary : COLORS.solidGrey,
+                      },
+                    ]}
+                    key={index}
+                  >
+                    <View>
+                      <Text
+                        style={[
+                          styles.cashCardCoin,
+                          {
+                            color:
+                              selectedPaymentIndex === index ? COLORS.primary : COLORS.dark_grey,
+                          },
+                        ]}
+                      >
+                        {item?.title}
+                      </Text>
+                    </View>
+                    <Text
+                      style={[
+                        styles.payableAmount,
+                        {
+                          color: selectedPaymentIndex === index ? COLORS.primary : COLORS.dark_grey,
+                        },
+                      ]}
+                    >
+                      {totalAmountByPaymentMethod(index)}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
               </View>
-            ))}
-          </View>
+            </View>
+          ) : null}
 
           <Spacer space={SH(20)} />
           <Text style={styles.selectTips}>{'E-Recipe '}</Text>
@@ -187,7 +309,7 @@ const styles = StyleSheet.create({
   },
   payableAmount: {
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontSize: ms(15),
   },
   darkPaybleAmount: {
@@ -200,12 +322,12 @@ const styles = StyleSheet.create({
     marginTop: ms(20),
     height: ms(130),
     borderWidth: 1,
-    borderColor: COLORS.inputBorder,
+    borderColor: COLORS.textInputBackground,
     borderRadius: ms(5),
   },
   selectTipsHeader: {
     height: ms(40),
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.textInputBackground,
     borderTopEndRadius: ms(5),
     borderTopLeftRadius: ms(5),
     justifyContent: 'center',
@@ -214,7 +336,7 @@ const styles = StyleSheet.create({
   },
   selectTips: {
     fontFamily: Fonts.SemiBold,
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontSize: ms(14),
   },
   selectTipBodyCon: {
@@ -224,7 +346,7 @@ const styles = StyleSheet.create({
     marginHorizontal: ms(3),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.textInputBackground,
   },
   selectTipBodySelect: {
     flex: 0.5,
@@ -234,7 +356,7 @@ const styles = StyleSheet.create({
     marginHorizontal: ms(3),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.blueShade,
+    backgroundColor: COLORS.blue_shade,
     borderColor: COLORS.primary,
   },
   _payByMethodTip: {
@@ -247,7 +369,7 @@ const styles = StyleSheet.create({
     marginTop: ms(10),
     height: ms(50),
     borderWidth: 1,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     borderRadius: ms(5),
     paddingHorizontal: ms(12),
     flexDirection: 'row',
@@ -264,7 +386,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: ms(60),
     borderRadius: ms(5),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -275,7 +397,7 @@ const styles = StyleSheet.create({
   },
   payNowCon: {
     height: ms(50),
-    backgroundColor: COLORS.darkGreen,
+    backgroundColor: COLORS.primary,
     marginTop: ms(20),
     borderRadius: ms(5),
     justifyContent: 'center',
@@ -293,9 +415,9 @@ const styles = StyleSheet.create({
     marginLeft: ms(5),
   },
   borderBlue: {
-    borderColor: COLORS.darkBlue,
+    borderColor: COLORS.primary,
   },
   blueText: {
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
   },
 });

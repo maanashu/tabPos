@@ -44,7 +44,6 @@ const CustomProductAdd = ({ customProductClose }) => {
         qty: count,
         notes: notes,
       };
-      console.log(data);
       dispatch(customProductAdd(data));
       customProductClose();
     }

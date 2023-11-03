@@ -896,8 +896,9 @@ export class RetailController {
     });
   }
 
-  static async getTips(sellerID) {
+  static async getTips() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
@@ -1565,15 +1566,11 @@ export class RetailController {
         upc: data?.upc,
         ...(data?.notes && { description: data?.notes }),
       };
-      console.log('endpoint', endpoint);
-      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',

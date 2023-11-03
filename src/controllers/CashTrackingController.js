@@ -192,7 +192,6 @@ export class CashTrackingController {
         transaction_type: data.transactionType,
         mode_of_cash: data.modeOfcash,
       };
-      console.log('dataaa', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);

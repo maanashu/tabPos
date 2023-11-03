@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { formattedReturnPrice } from '@mPOS/utils/GlobalMethods';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { getAllCart } from '@/actions/RetailAction';
+import { getAllCart, getTip } from '@/actions/RetailAction';
 import CartAmountByPay from './Components/CartAmountByPay';
 import PayByCash from './Components/PayByCash';
 import { TYPES } from '@/Types/Types';
@@ -54,6 +54,7 @@ export function Cart() {
   }, []);
 
   const payNowHandler = useCallback(() => {
+    dispatch(getTip());
     cartAmountByPayRef.current?.present();
   }, []);
   const cashPayNowHandler = useCallback(() => {
