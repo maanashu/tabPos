@@ -1,6 +1,7 @@
-import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { StyleSheet } from 'react-native';
 import { ms } from 'react-native-size-matters';
+
+import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   },
   shippingOrderTextStyle: {
     fontSize: SF(12),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
   loaderView: {
@@ -39,17 +40,17 @@ const styles = StyleSheet.create({
     marginVertical: ms(6),
     paddingVertical: ms(5),
     paddingHorizontal: ms(10),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   deliveryTypeTextStyle: {
     fontSize: SF(11),
-    color: COLORS.grayShade,
+    color: COLORS.darkGray,
     fontFamily: Fonts.SemiBold,
   },
   deliveryTypeCountTextStyle: {
     fontSize: SF(14),
     paddingTop: ms(5),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   deliveryTypeIconStyle: {
@@ -60,14 +61,14 @@ const styles = StyleSheet.create({
   ordersHeaderStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: ms(15),
+    marginHorizontal: ms(20),
     justifyContent: 'space-between',
   },
   viewAllButtonStyle: {
     borderRadius: 3,
     paddingVertical: SH(4),
     paddingHorizontal: SW(10),
-    backgroundColor: COLORS.grayShade,
+    backgroundColor: COLORS.darkGray,
   },
   viewAllTextStyle: {
     fontSize: SF(12),
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
   },
   orderTextStyle: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   orderItemViewStyle: {
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SW(10),
     marginHorizontal: ms(2),
     backgroundColor: COLORS.white,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   payIconStyle: {
     width: SW(11),
@@ -100,12 +101,12 @@ const styles = StyleSheet.create({
   priceTextStyle: {
     paddingLeft: 3,
     fontSize: SF(10),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
   },
   deliveryDateTextStyle: {
     fontSize: SF(10),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
   },
   itemAndPaymentView: {

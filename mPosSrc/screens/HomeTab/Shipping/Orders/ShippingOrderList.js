@@ -10,15 +10,12 @@ import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
 import { strings } from '@mPOS/localization';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
-import { getOrders } from '@mPOS/actions/ShippingActions';
-import { navigate } from '@mPOS/navigation/NavigationRef';
 import { FullScreenLoader, Header } from '@mPOS/components';
-import { getShipping } from '@mPOS/selectors/ShippingSelector';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 
 import styles from './styles';
-import { SHIPPING_TYPES } from '@mPOS/Types/ShippingTypes';
 import StatusDrawer from '../Components/StatusDrawer';
+import { getShipping } from '@/selectors/ShippingSelector';
+import { getOrders, getReviewDefault } from '@/actions/ShippingAction';
 
 export function ShippingOrderList(props) {
   const dispatch = useDispatch();
@@ -32,10 +29,10 @@ export function ShippingOrderList(props) {
 
   useEffect(() => {
     if (selected) {
-      dispatch(getOrders(parseInt(selected)));
+      dispatch(getReviewDefault(parseInt(selected)));
       setSelectedStatus(selected?.toString());
     } else {
-      dispatch(getOrders(0));
+      dispatch(getReviewDefault(0));
       setSelectedStatus('0');
     }
   }, []);
@@ -44,14 +41,17 @@ export function ShippingOrderList(props) {
     const shippingDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     return (
       <TouchableOpacity
-        onPress={() => navigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item })}
+        onPress={() => commonNavigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item })}
         style={[styles.orderItemViewStyle, { marginHorizontal: ms(15) }]}
       >
         <View style={{ flex: 0.4 }}>
           <Text style={styles.deliveryOrderTextStyle}>{`${item?.user_details?.firstname}`}</Text>
 
           <View style={styles.itemAndPaymentView}>
-            <Image source={Images.pin} style={[styles.payIconStyle, { tintColor: COLORS.text }]} />
+            <Image
+              source={Images.pin}
+              style={[styles.payIconStyle, { tintColor: COLORS.dark_grey }]}
+            />
             <Text style={styles.priceTextStyle}>{`$${
               item?.distance ? `${item.distance} miles` : '0'
             }`}</Text>

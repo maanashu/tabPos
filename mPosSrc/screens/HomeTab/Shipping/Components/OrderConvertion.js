@@ -8,9 +8,9 @@ import { ms } from 'react-native-size-matters';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH } from '@/theme';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { getShipping } from '@mPOS/selectors/ShippingSelector';
-import { SHIPPING_TYPES } from '@mPOS/Types/ShippingTypes';
+import { getShipping } from '@/selectors/ShippingSelector';
+import { TYPES } from '@/Types/ShippingOrderTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const OrderConvertion = () => {
   const getData = useSelector(getShipping);
@@ -26,10 +26,10 @@ const OrderConvertion = () => {
   let sum = 0;
   series?.forEach((num) => (sum += num));
 
-  const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellow, COLORS.primary];
+  const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellowTweet, COLORS.primary];
 
   const orderConversionLoading = useSelector((state) =>
-    isLoadingSelector([SHIPPING_TYPES.GET_ORDER_STATISTICS], state)
+    isLoadingSelector([TYPES.GET_SHIPPING_ORDERS], state)
   );
 
   return (
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   orderTextStyle: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   pieChartMainView: {
@@ -166,12 +166,12 @@ const styles = StyleSheet.create({
   },
   orderTypeTextStyle: {
     fontSize: SF(12),
-    color: COLORS.dark_gray,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.Medium,
   },
   countTextStyle: {
     fontSize: SF(12),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     paddingLeft: 10,
     fontFamily: Fonts.SemiBold,
   },

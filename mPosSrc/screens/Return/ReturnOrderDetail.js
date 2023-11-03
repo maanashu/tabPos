@@ -1,200 +1,218 @@
-// import React, { useRef } from "react";
-// import {
-//   View,
-//   Text,
-//   Image,
-//   SafeAreaView,
-//   TouchableOpacity,
-// } from "react-native";
+import React, { useEffect, useState } from 'react';
+import {
+  Image,
+  SafeAreaView,
+  TouchableOpacity,
+  Text,
+  TextInput,
+  View,
+  FlatList,
+} from 'react-native';
 
-// import dayjs from "dayjs";
-// import { ms } from "react-native-size-matters";
-// import MapView, { Marker } from "react-native-maps";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { ms } from 'react-native-size-matters';
+import ReactNativeModal from 'react-native-modal';
 
-// import { COLORS, SH } from "@mPOS/theme";
-// import { Images } from "@mPOS/assets";
-// import { strings } from "@mPOS/localization";
-// import { MPOS_NAVIGATION } from "@mPOS/constants";
-// import OrderTotal from "../Components/OrderTotal";
-// import ProductList from "../Components/ProductList";
-// import { DELIVERY_TYPES } from "@mPOS/Types/DeliveryTypes";
-// import { getAuthData } from "@mPOS/selectors/AuthSelector";
-// import { acceptOrder } from "@mPOS/actions/DeliveryActions";
-// import mapCustomStyle from "@mPOS/components/MapCustomStyles";
-// import { goBack, navigate } from "@mPOS/navigation/NavigationRef";
-// import { isLoadingSelector } from "@mPOS/selectors/StatusSelectors";
-// import { FullScreenLoader, Header, Spacer } from "@mPOS/components";
+import { Images } from '@mPOS/assets';
+import { COLORS, SH } from '@/theme';
+import { strings } from '@mPOS/localization';
+import { Header, Spacer } from '@mPOS/components';
+import ManualEntry from './Components/ManualEntry';
+import { getProductByUpc } from '@/actions/DeliveryAction';
 
-// import styles from "./styles";
+import styles from './styles';
+import OrderTotal from './Components/OrderTotal';
 
-// export function ReturnOrderDetail(props) {
-//   const mapRef = useRef();
-//   const dispatch = useDispatch();
-//   const orderData = props?.route?.params?.data;
-//   const customerDetail = orderData?.user_details;
-//   const deliveryDate =
-//     dayjs(orderData?.invoices?.delivery_date).format("DD MMM YYYY") || "";
-//   const getAuth = useSelector(getAuthData);
-//   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+export function ReturnOrderDetail(props) {
+  const dispatch = useDispatch();
+  const orderData = props?.route?.params?.data;
+  const customerDetail = orderData?.order?.user_details?.user_profiles;
+  const [productUpc, setProductUpc] = useState('');
+  const [orderDetails, setOrderDetails] = useState([]);
+  const [isVisible, setIsVisible] = useState(false);
 
-//   const onPressAcceptHandler = () => {
-//     const data = {
-//       orderId: orderData?.id,
-//       status: parseInt(orderData?.status) + 1,
-//       sellerID: sellerID,
-//     };
-//     dispatch(
-//       acceptOrder(data, orderData?.status, (res) => {
-//         if (res?.msg) {
-//           goBack();
-//         }
-//       })
-//     );
-//   };
+  useEffect(() => {
+    setOrderDetails(orderData?.order?.order_details);
+  }, [orderData]);
 
-//   const isLoading = useSelector((state) =>
-//     isLoadingSelector([DELIVERY_TYPES.ACCEPT_ORDER], state)
-//   );
+  const getDeliveryType = (type) => {
+    switch (type) {
+      case '1':
+        return strings.return.delivery;
+      case '3':
+        return strings.return.inStore;
+      case '4':
+        return strings.return.shipping;
+      default:
+        return strings.return.reservation;
+    }
+  };
 
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <Header backRequired title={strings.profile.header} />
+  const onChangeHandler = (text) => {
+    setProductUpc(text);
+    if (text?.length >= 12) {
+      dispatch(getProductByUpc(text, getProduct));
+    }
+  };
 
-//       <View style={styles.userDetailView}>
-//         <View style={{ flexDirection: "row" }}>
-//           <Image
-//             source={
-//               customerDetail?.profile_photo
-//                 ? { uri: customerDetail?.profile_photo }
-//                 : Images.user
-//             }
-//             style={styles.profileImageStyle}
-//           />
+  const getProduct = (value) => {
+    const getArray = orderData?.order?.order_details?.findIndex(
+      (attr) => attr?.product_id === value
+    );
+    if (getArray !== -1) {
+      const newProdArray = [...orderData?.order?.order_details];
+      newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
+      setOrderDetails(newProdArray);
+      setProductUpc('');
+    } else {
+      alert('Product not found in the order');
+    }
+  };
 
-//           <View style={{ paddingLeft: 10 }}>
-//             <Text
-//               style={styles.nameTextStyle}
-//             >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
-//             <Text
-//               style={styles.addressTextStyle}
-//             >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
-//           </View>
-//         </View>
+  const checkboxHandler = (id, count) => {
+    const getArray = orderDetails?.findIndex((attr) => attr?.id === id);
+    if (getArray !== -1) {
+      const newProdArray = [...orderDetails];
+      if (newProdArray[0]?.attributes?.length > 0) {
+        newProdArray[getArray].qty = count;
+        newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
+        setOrderDetails(newProdArray);
+        setIsShowAttributeModal(false);
+      } else {
+        newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
+        setOrderDetails(newProdArray);
+      }
+    } else {
+      alert('Product not found in the order');
+    }
+  };
 
-//         <Spacer space={SH(20)} />
+  const renderOrderProducts = ({ item }) => {
+    return (
+      <View style={styles.orderproductView}>
+        <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
+          <Image
+            source={item?.product_image ? { uri: item?.product_image } : Images.userImage}
+            style={styles.userImageStyle}
+          />
+          <View style={{ paddingLeft: 10, width: ms(100) }}>
+            <Text numberOfLines={1} style={[styles.nameTextStyle, { textAlign: 'left' }]}>
+              {item?.product_name ?? '-'}
+            </Text>
+          </View>
+        </View>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+          {`$${item?.price}` ?? '-'}
+        </Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty ?? '-'}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+          {`$${item?.price * item?.qty}` ?? '-'}
+        </Text>
+        {item?.isChecked ? (
+          <TouchableOpacity
+            style={{
+              width: SH(25),
+              height: SH(25),
+              resizeMode: 'contain',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => checkboxHandler(item?.id, item?.qty)}
+          >
+            <Image
+              source={Images.mark}
+              style={[styles.checkboxIconStyle, { tintColor: COLORS.primary }]}
+            />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={{
+              width: SH(25),
+              height: SH(25),
+              resizeMode: 'contain',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => checkboxHandler(item?.id, item?.qty)}
+          >
+            <Image source={Images.blankCheckBox} style={styles.checkboxIconStyle} />
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  };
 
-//         {orderData?.status === 7 ? (
-//           <View style={styles.cancelButtonStyle}>
-//             <Text style={styles.cancelButtonText}>
-//               {strings.buttonStatus.cancelledByuser}
-//             </Text>
-//           </View>
-//         ) : orderData?.status === 8 ? (
-//           <View style={styles.cancelButtonStyle}>
-//             <Text style={styles.cancelButtonText}>
-//               {strings.buttonStatus.cancelledBySeller}
-//             </Text>
-//           </View>
-//         ) : (
-//           <View style={styles.deliveryDetailsView}>
-//             <View style={{ flex: 0.35 }}>
-//               <Text style={styles.deliveryTypeText}>{deliveryDate}</Text>
-//             </View>
+  return (
+    <SafeAreaView style={styles.container}>
+      <Header backRequired title={strings.profile.header} />
 
-//             <View style={styles.deliveryTimeViewStyle}>
-//               <Image source={Images.clockIcon} style={styles.clockImageStyle} />
-//               <Text
-//                 style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
-//               >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
-//             </View>
-//           </View>
-//         )}
-//       </View>
+      <View style={styles.userDetailView}>
+        <View style={{ flexDirection: 'row' }}>
+          <Image
+            source={
+              customerDetail?.profile_photo ? { uri: customerDetail?.profile_photo } : Images.user
+            }
+            style={styles.profileImageStyle}
+          />
+          <View style={{ paddingLeft: 10 }}>
+            <Text
+              style={styles.nameTextStyle}
+            >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
+            <Text
+              style={styles.addressTextStyle}
+            >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+          </View>
+        </View>
+        <Spacer space={SH(20)} />
+        <View style={styles.cancelButtonStyle}>
+          <Text style={styles.cancelButtonText}>
+            {getDeliveryType(orderData?.order?.delivery_option)}
+          </Text>
+        </View>
+      </View>
 
-//       <Spacer space={SH(15)} />
+      <Spacer space={SH(15)} />
 
-//       {orderData?.status === 3 ||
-//       orderData?.status === 4 ||
-//       orderData?.status === 5 ? (
-//         <View style={styles.mapViewStyle}>
-//           <MapView
-//             ref={mapRef}
-//             style={styles.detailMap}
-//             customMapStyle={mapCustomStyle}
-//             showCompass
-//             initialRegion={{
-//               latitude: orderData?.coordinates?.[0] ?? 0.0,
-//               longitude: orderData?.coordinates?.[1] ?? 0.0,
-//               latitudeDelta: 0.0992,
-//               longitudeDelta: 0.0421,
-//             }}
-//             region={{
-//               latitude: orderData?.coordinates?.[0] ?? 0.0,
-//               longitude: orderData?.coordinates?.[1] ?? 0.0,
-//               latitudeDelta: 0.0992,
-//               longitudeDelta: 0.0421,
-//             }}
-//           >
-//             <Marker
-//               coordinate={{
-//                 latitude: orderData?.coordinates?.[0] ?? 0.0,
-//                 longitude: orderData?.coordinates?.[1] ?? 0.0,
-//               }}
-//             >
-//               <View>
-//                 <Image
-//                   source={Images.deliveryHomeIcon}
-//                   style={styles.mapMarkerStyle}
-//                 />
-//               </View>
-//             </Marker>
-//           </MapView>
+      <View style={styles.getProductDetailView}>
+        <View style={styles.scanProductView}>
+          <TextInput
+            value={productUpc}
+            maxLength={12}
+            placeholder={'Scan barcode of each item returned'}
+            style={styles.scanTextInputStyle}
+            onChangeText={onChangeHandler}
+          />
+        </View>
+        <TouchableOpacity
+          // onPress={() => setIsVisible(true)}
+          style={styles.manualView}
+        >
+          <Text style={styles.orderDateText}>{'Manual Entry'}</Text>
+        </TouchableOpacity>
+      </View>
 
-//           <Spacer space={SH(10)} />
+      <Spacer space={SH(15)} />
 
-//           <View style={styles.driverViewStyle}>
-//             <View>
-//               <Text style={styles.driverStatusTextStyle}>
-//                 {orderData?.status === 3
-//                   ? strings.orderStatus.driverAssigned
-//                   : orderData?.status === 4
-//                   ? strings.orderStatus.driverOnTheWay
-//                   : strings.orderStatus.delivered}
-//               </Text>
-//               <Text style={styles.driverArrivalTimeText}>
-//                 {orderData?.status === 5
-//                   ? dayjs(orderData?.status_desc?.status_5_updated_at).format(
-//                       "DD MMM, YYYY  |  hh:mm a"
-//                     )
-//                   : null}
-//               </Text>
-//             </View>
+      <View style={{ height: SH(400) }}>
+        <FlatList
+          scrollEnabled
+          data={orderDetails}
+          renderItem={renderOrderProducts}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 130 }}
+        />
+      </View>
 
-//             <TouchableOpacity
-//               style={styles.trackButtonStyle}
-//               onPress={() =>
-//                 navigate(MPOS_NAVIGATION.deliveryStatus, { data: orderData })
-//               }
-//             >
-//               <Text style={styles.trackTextStyle}>
-//                 {strings.delivery.track}
-//               </Text>
-//               <Image source={Images.track} style={styles.trackImageStyle} />
-//             </TouchableOpacity>
-//           </View>
-//         </View>
-//       ) : null}
+      <OrderTotal {...{ orderData, orderDetails }} />
 
-//       <Spacer space={SH(10)} />
-
-//       <ProductList {...{ orderData }} />
-
-//       <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
-
-//       <OrderTotal {...{ orderData, onPressAcceptHandler }} />
-
-//       {isLoading ? <FullScreenLoader /> : null}
-//     </SafeAreaView>
-//   );
-// }
+      <ReactNativeModal
+        isVisible={isVisible}
+        style={styles.modalStyle}
+        animationIn={'slideInRight'}
+        animationOut={'slideOutRight'}
+      >
+        <ManualEntry {...{ setIsVisible }} />
+      </ReactNativeModal>
+    </SafeAreaView>
+  );
+}

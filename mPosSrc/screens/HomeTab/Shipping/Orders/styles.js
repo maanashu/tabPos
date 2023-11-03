@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
   deliveryOrderTextStyle: {
     fontSize: SF(10),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
   deliveryItemViewStyle: {
@@ -20,17 +20,17 @@ const styles = StyleSheet.create({
     marginVertical: ms(6),
     paddingVertical: ms(5),
     paddingHorizontal: ms(10),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   deliveryTypeTextStyle: {
     fontSize: SF(11),
-    color: COLORS.grayShade,
+    color: COLORS.darkGray,
     fontFamily: Fonts.SemiBold,
   },
   deliveryTypeCountTextStyle: {
     fontSize: SF(14),
     paddingTop: ms(5),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   deliveryTypeIconStyle: {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     paddingVertical: SH(4),
     paddingHorizontal: SW(10),
-    backgroundColor: COLORS.grayShade,
+    backgroundColor: COLORS.darkGray,
   },
   viewAllTextStyle: {
     fontSize: SF(12),
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   orderTextStyle: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   orderItemViewStyle: {
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     paddingVertical: SH(15),
     paddingHorizontal: SW(15),
     backgroundColor: COLORS.white,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   payIconStyle: {
     width: SW(11),
@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
   priceTextStyle: {
     paddingLeft: 3,
     fontSize: SF(10),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
   },
   deliveryDateTextStyle: {
     fontSize: SF(10),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
   },
   itemAndPaymentView: {
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   numberOrdersText: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   userDetailView: {
@@ -131,12 +131,12 @@ const styles = StyleSheet.create({
   nameTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
   },
   addressTextStyle: {
     fontFamily: Fonts.Regular,
     fontSize: SF(11),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     paddingTop: 2,
   },
   deliveryTypeText: {
@@ -144,7 +144,6 @@ const styles = StyleSheet.create({
     fontSize: SF(11),
     color: COLORS.white,
     marginLeft: 5,
-    // textAlign: "center",
   },
   clockImageStyle: {
     width: SW(12),
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
   deliveryDetailsView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.text,
+    backgroundColor: COLORS.dark_grey,
     borderRadius: 5,
     paddingHorizontal: ms(8),
     paddingVertical: ms(12),
@@ -181,7 +180,7 @@ const styles = StyleSheet.create({
   productnameTextStyle: {
     fontFamily: Fonts.Medium,
     fontSize: SF(12),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
   },
   productDetailView: {
     paddingLeft: ms(10),
@@ -196,7 +195,7 @@ const styles = StyleSheet.create({
   productQtyPriceText: {
     fontSize: SF(12),
     paddingTop: ms(5),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
   totalItemsStyles: {
@@ -212,13 +211,13 @@ const styles = StyleSheet.create({
   },
   labelTextStyle: {
     fontSize: SF(12),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.MaisonRegular,
   },
   totalValueText: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
-    fontFamily: Fonts.MaisonMonoBold,
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonBold,
   },
   priceValueText: {
     fontSize: SF(12),
@@ -278,7 +277,7 @@ const styles = StyleSheet.create({
   },
   driverArrivalTimeText: {
     fontFamily: Fonts.Regular,
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontSize: SF(14),
   },
   trackTextStyle: {
@@ -310,6 +309,11 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
+  },
+  shippingTypeView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 0.45,
   },
   shippingType: {
     width: SW(16),

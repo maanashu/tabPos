@@ -15,8 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SW } from '@/theme';
-import { getShipping } from '@mPOS/selectors/ShippingSelector';
-import { getOrderCount, getOrders, todayShippingStatus } from '@mPOS/actions/ShippingActions';
+import { getShipping } from '@/selectors/ShippingSelector';
+import { getOrderCount, getOrders, todayShippingStatus } from '@/actions/ShippingAction';
 
 const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
   const dispatch = useDispatch();
@@ -85,16 +85,16 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
     const selectedDelivered =
       item?.title === strings.orderStatus.delivered && selectedStatus === item?.key
         ? COLORS.primary
-        : COLORS.dark_gray;
+        : COLORS.solid_grey;
     const selectedcancelled =
       item?.title === strings.orderStatus.rejected && selectedStatus === item?.key
         ? COLORS.pink
-        : COLORS.dark_gray;
+        : COLORS.solid_grey;
     const selectedReturned =
       item?.title === strings.orderStatus.returned && selectedStatus === item?.key
-        ? COLORS.yellow
-        : COLORS.dark_gray;
-    const otherSelection = selectedStatus === item?.key ? COLORS.primary : COLORS.dark_gray;
+        ? COLORS.yellowTweet
+        : COLORS.solid_grey;
+    const otherSelection = selectedStatus === item?.key ? COLORS.primary : COLORS.solid_grey;
     if (item?.title === strings.orderStatus.delivered) {
       return (
         <>
@@ -161,16 +161,7 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
         keyExtractor={(item) => item.key.toString()}
         contentContainerStyle={{ height: height, paddingHorizontal: ms(10) }}
         ListHeaderComponent={() => (
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingHorizontal: ms(10),
-              paddingVertical: ms(20),
-              justifyContent: 'space-between',
-            }}
-            onPress={closeModal}
-          >
+          <TouchableOpacity style={styles.headerViewStyle} onPress={closeModal}>
             <Text style={styles.orderCount}>{strings.shipping.shippingOrders}</Text>
             <Image source={Images.deliveryOrders} style={[styles.sideBarImage, { left: ms(5) }]} />
           </TouchableOpacity>
@@ -184,10 +175,10 @@ export default memo(StatusDrawer);
 
 const styles = StyleSheet.create({
   container: {
-    height: Dimensions.get('window').height - 150,
     borderRadius: 10,
     alignSelf: 'flex-end',
     backgroundColor: COLORS.white,
+    height: Dimensions.get('window').height - 150,
   },
   firstIconStyle: {
     alignSelf: 'center',
@@ -214,8 +205,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   badgetext: {
-    color: COLORS.dark_gray,
     fontSize: ms(5.5),
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   sideBarImage: {
@@ -224,13 +215,20 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderCount: {
-    color: COLORS.dark_gray,
     fontSize: ms(14),
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   statusTitle: {
-    color: COLORS.text,
     fontSize: ms(12),
+    color: COLORS.text,
     fontFamily: Fonts.Regular,
+  },
+  headerViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: ms(10),
+    paddingVertical: ms(20),
+    justifyContent: 'space-between',
   },
 });
