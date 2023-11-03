@@ -10,16 +10,16 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { COLORS, SH } from '@/theme';
-import { TYPES } from '@mPOS/Types/Types';
 import { strings } from '@mPOS/localization';
 import Header from './Components/Header';
 import { Button, Spacer } from '@mPOS/components';
-import { loginPosUser } from '@mPOS/actions/UserActions';
 import { CustomErrorToast } from '@mPOS/components/Toast';
-import { getAuthData } from '@mPOS/selectors/AuthSelector';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 
 import { styles } from '@mPOS/screens/Authentication/Login/styles';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { loginPosUser } from '@/actions/UserActions';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 export function Login(props) {
   const CELL_COUNT = 4;
@@ -47,7 +47,7 @@ export function Login(props) {
     }
   };
 
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.LOGIN_POS], state));
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.LOGIN_POS_USER], state));
 
   return (
     <SafeAreaView style={styles.container}>
@@ -74,7 +74,7 @@ export function Login(props) {
               style={[
                 styles.cellRoot,
                 {
-                  borderColor: isFocused ? COLORS.darkBlue : COLORS.light_border,
+                  borderColor: isFocused ? COLORS.primary : COLORS.solidGrey,
                   borderWidth: isFocused ? 1.5 : 1,
                 },
               ]}
@@ -91,20 +91,16 @@ export function Login(props) {
       <Button
         onPress={onPressHandler}
         title={strings.phoneNumber.button}
-        textStyle={{ color: value ? COLORS.white : COLORS.text }}
+        textStyle={{ color: value ? COLORS.white : COLORS.dark_grey }}
         style={[
           styles.buttonStyle,
-          { backgroundColor: value ? COLORS.darkBlue : COLORS.inputBorder },
+          { backgroundColor: value ? COLORS.primary : COLORS.textInputBackground },
         ]}
       />
 
       {isLoading ? (
         <View style={styles.loaderViewStyle}>
-          <ActivityIndicator
-            color={COLORS.darkBlue}
-            size={'large'}
-            style={styles.loaderViewStyle}
-          />
+          <ActivityIndicator color={COLORS.primary} size={'large'} style={styles.loaderViewStyle} />
         </View>
       ) : null}
     </SafeAreaView>

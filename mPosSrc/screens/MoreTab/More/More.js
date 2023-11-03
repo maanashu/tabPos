@@ -19,14 +19,14 @@ import { AccountsData, AccessConfirmation } from '@mPOS/constants/enums';
 
 import { styles } from './styles';
 import { navigate } from '@mPOS/navigation/NavigationRef';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutFunction } from '@mPOS/actions/UserActions';
 import { ms } from 'react-native-size-matters';
 import { useScrollableSetter } from '@gorhom/bottom-sheet';
 import { getUser } from '@mPOS/selectors/UserSelectors';
 import { getAuthData } from '@mPOS/selectors/AuthSelector';
 import { acccessAndConfirmation, essential, moreApp, tagLine } from '@mPOS/constants/enums';
+import { logoutFunction } from '@/actions/AuthActions';
 
 export function More() {
   const dispatch = useDispatch();
@@ -68,7 +68,7 @@ export function More() {
     } else if (index === 2) {
       return alert('In progress');
     } else if (index === 3) {
-      return navigate(NAVIGATION.analytics);
+      return navigate(MPOS_NAVIGATION.analytics);
     }
   };
   return (
@@ -86,7 +86,7 @@ export function More() {
         >
           {/* profile section */}
           <View style={styles.moreProfileSection}>
-            <TouchableOpacity onPress={() => navigate(NAVIGATION.posUserProfile)}>
+            <TouchableOpacity onPress={() => navigate(MPOS_NAVIGATION.posUserProfile)}>
               <Image
                 source={
                   loginPosUser?.user_profiles?.profile_photo

@@ -9,29 +9,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
 import { strings } from '@mPOS/localization';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import StatusDrawer from '../Components/StatusDrawer';
-import { getOrders } from '@mPOS/actions/DeliveryActions';
 import { navigate } from '@mPOS/navigation/NavigationRef';
-import { DELIVERY_TYPES } from '@mPOS/Types/DeliveryTypes';
 import { FullScreenLoader, Header } from '@mPOS/components';
-import { getDelivery } from '@mPOS/selectors/DeliverySelector';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 
 import styles from './styles';
+import { getDelivery } from '@/selectors/DeliverySelector';
+import { getOrders, getReviewDefault } from '@/actions/DeliveryAction';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
 
 export function OrderList(props) {
   const dispatch = useDispatch();
   const onEndReachedCalledDuringMomentum = useRef(false);
   const getDeliveryData = useSelector(getDelivery);
-  const orders = getDeliveryData?.orders?.data ?? [];
+  const orders = getDeliveryData?.getReviewDef ?? [];
   const params = props?.route?.params?.selected;
 
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(params ?? '0');
 
   useEffect(() => {
-    dispatch(getOrders(params ? params : 0));
+    dispatch(getReviewDefault(params ? params : 0, 1));
   }, []);
 
   const renderOrderItem = ({ item, index }) => {
@@ -39,9 +39,14 @@ export function OrderList(props) {
     return (
       <TouchableOpacity
         onPress={() =>
-          navigate(selectedStatus === '9' ? NAVIGATION.returnOrderDetail : NAVIGATION.orderDetail, {
-            data: item,
-          })
+          navigate(
+            selectedStatus === '9'
+              ? MPOS_NAVIGATION.returnOrderDetail
+              : MPOS_NAVIGATION.orderDetail,
+            {
+              data: item,
+            }
+          )
         }
         style={[styles.orderItemViewStyle, { marginHorizontal: ms(15) }]}
       >
@@ -75,7 +80,7 @@ export function OrderList(props) {
           <View style={styles.itemAndPaymentView}>
             <Image
               source={Images.clockIcon}
-              style={[styles.payIconStyle, { tintColor: COLORS.darkBlue }]}
+              style={[styles.payIconStyle, { tintColor: COLORS.primary }]}
             />
             <Text
               style={styles.priceTextStyle}
@@ -91,10 +96,10 @@ export function OrderList(props) {
   };
 
   const paginationData = {
-    total: getDeliveryData?.orders?.total ?? '0',
-    totalPages: getDeliveryData?.orders?.total_pages ?? '0',
-    perPage: getDeliveryData?.orders?.per_page ?? '0',
-    currentPage: getDeliveryData?.orders?.current_page ?? '0',
+    total: orders?.total ?? '0',
+    totalPages: orders?.total_pages ?? '0',
+    perPage: orders?.per_page ?? '0',
+    currentPage: orders?.current_page ?? '0',
   };
 
   const onLoadMoreProduct = useCallback(() => {
@@ -124,7 +129,7 @@ export function OrderList(props) {
     }
   };
 
-  const isLoading = useSelector((state) => isLoadingSelector([DELIVERY_TYPES.GET_ORDERS], state));
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_REVIEW_DEF], state));
 
   return (
     <SafeAreaView style={styles.container}>

@@ -10,7 +10,7 @@ import {
 
 import { COLORS, SH } from '@/theme';
 import { strings } from '@mPOS/localization';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { Button, Spacer } from '@mPOS/components';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { CustomErrorToast } from '@mPOS/components/Toast';
@@ -31,7 +31,7 @@ export function SetNewPin() {
     if (!value || value.length < 4) {
       CustomErrorToast({ message: strings.validationMessages.emptyPinCode });
     } else {
-      navigate(NAVIGATION.reenterPin, { pinCode: value });
+      navigate(MPOS_NAVIGATION.reenterPin, { pinCode: value });
     }
   };
 
@@ -62,7 +62,7 @@ export function SetNewPin() {
               style={[
                 styles.cellRoot,
                 {
-                  borderColor: isFocused ? COLORS.darkBlue : COLORS.light_border,
+                  borderColor: isFocused ? COLORS.primary : COLORS.light_border,
                   borderWidth: isFocused ? 1.5 : 1,
                 },
               ]}
@@ -82,7 +82,7 @@ export function SetNewPin() {
         textStyle={{ color: value ? COLORS.white : COLORS.text }}
         style={[
           styles.buttonStyle,
-          { backgroundColor: value ? COLORS.darkBlue : COLORS.inputBorder },
+          { backgroundColor: value ? COLORS.primary : COLORS.inputBorder },
         ]}
       />
     </SafeAreaView>

@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   todayStatusTextStyle: {
     fontSize: SF(16),
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
   },
   deliveryOrderViewStyle: {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   deliveryOrderTextStyle: {
     fontSize: SF(12),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
   deliveryItemViewStyle: {
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     paddingVertical: SH(4),
     paddingHorizontal: SW(10),
-    backgroundColor: COLORS.grayShade,
+    backgroundColor: COLORS.darkGray,
   },
   viewAllTextStyle: {
     fontSize: SF(12),
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   orderTextStyle: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   orderItemViewStyle: {
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SW(15),
     marginHorizontal: ms(5),
     backgroundColor: COLORS.white,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   payIconStyle: {
     width: SW(11),
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   numberOrdersText: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   emptyViewStyle: {

@@ -26,7 +26,7 @@ const OrderConvertion = () => {
   let sum = 0;
   series?.forEach((num) => (sum += num));
 
-  const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellow, COLORS.darkBlue];
+  const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellow, COLORS.primary];
 
   const orderConversionLoading = useSelector((state) =>
     isLoadingSelector([SHIPPING_TYPES.GET_ORDER_STATISTICS], state)
@@ -56,7 +56,7 @@ const OrderConvertion = () => {
 
         {orderConversionLoading ? (
           <View style={styles.loaderViewStyle}>
-            <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+            <ActivityIndicator color={COLORS.primary} size={'small'} />
           </View>
         ) : (
           <View style={{ flex: 1 }}>

@@ -20,7 +20,7 @@ import { AccountsData, AccessConfirmation } from '@mPOS/constants/enums';
 
 import { styles } from './styles';
 import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutFunction } from '@mPOS/actions/UserActions';
 import { ms } from 'react-native-size-matters';
@@ -53,7 +53,7 @@ export function PosUserProfile() {
                 index: 0,
                 routes: [
                   {
-                    name: NAVIGATION.bottomTab,
+                    name: MPOS_NAVIGATION.bottomTab,
                   },
                 ],
               });

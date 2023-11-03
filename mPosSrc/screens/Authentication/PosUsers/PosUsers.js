@@ -15,14 +15,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
-import { Spacer } from '@mPOS/components';
-import { TYPES } from '@mPOS/Types/Types';
-import { strings } from '@mPOS/localization';
+import { TYPES } from '@/Types/Types';
 import Header from './Components/Header';
-import { getAllPosUsers } from '@mPOS/actions/AuthActions';
-import { getAuthData } from '@mPOS/selectors/AuthSelector';
+import { Spacer } from '@mPOS/components';
+import { strings } from '@mPOS/localization';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getAllPosUsers } from '@/actions/AuthActions';
 import { LoginPosUser } from './Components/LoginPosUser';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import styles from './styles';
 
@@ -30,6 +30,7 @@ export function PosUsers() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const posUserArray = getAuth?.getAllPosUsers;
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const [selectedUser, setSelectedUser] = useState('');
   const [posUserModal, setPosUserModal] = useState(false);
@@ -38,6 +39,7 @@ export function PosUsers() {
     const data = {
       page: 1,
       limit: 10,
+      seller_id: sellerID,
     };
     dispatch(getAllPosUsers(data));
   }, []);
@@ -101,7 +103,7 @@ export function PosUsers() {
 
       {getPosUserLoading ? (
         <View style={styles.activityIndicatorView}>
-          <ActivityIndicator size="large" color={COLORS.darkBlue} />
+          <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
       ) : (
         <FlatList

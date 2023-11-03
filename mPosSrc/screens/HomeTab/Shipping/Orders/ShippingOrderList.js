@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
 import { strings } from '@mPOS/localization';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { getOrders } from '@mPOS/actions/ShippingActions';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { FullScreenLoader, Header } from '@mPOS/components';
@@ -44,7 +44,7 @@ export function ShippingOrderList(props) {
     const shippingDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     return (
       <TouchableOpacity
-        onPress={() => navigate(NAVIGATION.shippingOrderDetail, { data: item })}
+        onPress={() => navigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item })}
         style={[styles.orderItemViewStyle, { marginHorizontal: ms(15) }]}
       >
         <View style={{ flex: 0.4 }}>
@@ -77,7 +77,7 @@ export function ShippingOrderList(props) {
           <View style={styles.itemAndPaymentView}>
             <Image
               source={Images.clockIcon}
-              style={[styles.payIconStyle, { tintColor: COLORS.darkBlue }]}
+              style={[styles.payIconStyle, { tintColor: COLORS.primary }]}
             />
             <Text style={styles.priceTextStyle}>{`${
               item?.preffered_delivery_start_time ?? '00 -'

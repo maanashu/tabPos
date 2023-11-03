@@ -199,7 +199,7 @@ Header.defaultProps = {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
-    height: ms(70),
+    height: ms(60),
     width: '100%',
     paddingLeft: ms(16),
     paddingRight: ms(11),
@@ -210,9 +210,9 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   regularTextStyle: {
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.Medium,
     fontSize: ms(14),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
   },
   backIcon: {
     height: ms(24),
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     minHeight: ms(28),
     borderWidth: 0,
     borderRadius: ms(5),
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     width: ms(88),
     zIndex: 999,
   },
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     height: ms(23),
     width: ms(23),
     padding: ms(5),
-    tintColor: COLORS.darkBlue,
+    tintColor: COLORS.primary,
   },
   calendarModalView: {
     backgroundColor: COLORS.white,

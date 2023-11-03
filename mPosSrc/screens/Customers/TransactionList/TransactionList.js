@@ -1,44 +1,40 @@
-import {
-  ActivityIndicator,
-  Dimensions,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import React from 'react';
+import { ActivityIndicator, Dimensions, Image, Text, TouchableOpacity, View } from 'react-native';
 import styles from './styles';
-import { Header, HorizontalLine, ScreenWrapper, Search, Spacer } from '@mPOS/components';
+import {
+  Header,
+  HorizontalLine,
+  ScreenWrapper,
+  Search,
+  SearchedOrders,
+  Spacer,
+} from '@mPOS/components';
 import { SH, SW } from '@/theme';
 import { ms } from 'react-native-size-matters';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Images } from '@mPOS/assets';
 import { useDispatch, useSelector } from 'react-redux';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { getWalletData } from '@mPOS/selectors/WalletSelector';
-import {
-  TransactionDetails,
-  TransactionTypes,
-  getOrdersByInvoiceId,
-} from '@mPOS/actions/WalletActions';
-import { WALLET_TYPES } from '@mPOS/Types/WalletTypes';
 import { FlatList } from 'react-native';
 import dayjs from 'dayjs';
 import { getAuthData } from '@mPOS/selectors/AuthSelector';
-import { navigate } from '@mPOS/navigation/NavigationRef';
-import { NAVIGATION } from '@mPOS/constants';
-import { debounce } from 'lodash';
 import Modal from 'react-native-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { getTotakTraDetail, getTotalTraType } from '@/actions/WalletAction';
+import { getWallet } from '@/selectors/WalletSelector';
+import { TYPES } from '@/Types/WalletTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { getOrdersByInvoiceIdReset } from '@/actions/DashboardAction';
 
 export function TransactionList(props) {
   const height = Dimensions.get('window').height;
   const width = Dimensions.get('window').width;
   const dispatch = useDispatch();
-  const getWallet = useSelector(getWalletData);
+  const getWalletData = useSelector(getWallet);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [sku, setSku] = useState();
+  const [isFocused, setIsFocused] = useState(false);
 
   const [startDate, setStartDate] = useState(props?.route?.params?.start_date || '');
   const [endDate, setEndDate] = useState(props?.route?.params?.end_date || '');
@@ -47,20 +43,8 @@ export function TransactionList(props) {
     props?.route?.params?.transactionType || ''
   );
   const [filterVal, setFilterVal] = useState(props?.route?.params?.filter_by || '');
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([WALLET_TYPES.GET_TRANSACTION_LIST], state)
-  );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state));
 
-  const onSearchInvoiceHandler = (text) => {
-    if (text?.length > 1) {
-      if (text.includes('Invoice_') || text.includes('invoice_')) {
-        // dispatch(scanBarCode(text));
-      } else {
-        dispatch(getOrdersByInvoiceId(text, (res) => {}));
-      }
-    }
-  };
-  const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
   const body = {
     // page: 1,
     // limit: 10,
@@ -80,34 +64,35 @@ export function TransactionList(props) {
       ? { start_date: startDate, end_date: endDate }
       : { filter: filterVal }),
   };
-  // useEffect(() => {
-  //   dispatch(TransactionDetails(body));
-  //   dispatch(TransactionTypes(object));
-  // }, [filterVal, startDate, endDate, transactionType]);
+
+  useEffect(() => {
+    dispatch(getTotakTraDetail(body));
+    dispatch(getTotalTraType(object));
+  }, [filterVal, startDate, endDate, transactionType]);
 
   const paymentOptions = [
     {
       id: 1,
       title: 'All',
-      count: getWallet?.transactionType?.[0]?.count || 0,
+      count: getWalletData?.getTotalTraType?.[0]?.count || 0,
       value: 'all',
     },
     {
       id: 2,
       title: 'JOBR',
-      count: getWallet?.transactionType?.[1]?.count || 0,
+      count: getWalletData?.getTotalTraType?.[1]?.count || 0,
       value: 'jbr',
     },
     {
       id: 3,
       title: 'Cash',
-      count: getWallet?.transactionType?.[2]?.count || 0,
+      count: getWalletData?.getTotalTraType?.[2]?.count || 0,
       value: 'cash',
     },
     {
       id: 4,
       title: 'Card',
-      count: getWallet?.transactionType?.[3]?.count || 0,
+      count: getWalletData?.getTotalTraType?.[3]?.count || 0,
       value: 'card',
     },
   ];
@@ -130,11 +115,11 @@ export function TransactionList(props) {
 
   const handleOrderDetail = (item) => {
     if (item?.delivery_option == '1') {
-      navigate(NAVIGATION.orderDetail, { data: item });
+      commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
     } else if (item?.delivery_option == '4') {
-      navigate(NAVIGATION.shippingOrderDetail, { data: item });
+      commonNavigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item });
     } else if (item?.delivery_option == '3') {
-      navigate(NAVIGATION.orderDetail, { data: item });
+      commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
     }
   };
 
@@ -182,8 +167,13 @@ export function TransactionList(props) {
       </>
     );
   };
-  const [isFocused, setIsFocused] = useState(false);
-
+  const renderEmpty = () => {
+    return (
+      <View style={{ alignItems: 'center', marginTop: ms(100) }}>
+        <Text style={styles.emptyText}>No transaction found</Text>
+      </View>
+    );
+  };
   return (
     <ScreenWrapper>
       <Header
@@ -234,29 +224,35 @@ export function TransactionList(props) {
           // <FullScreenLoader />
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={getWallet?.transactionList?.data || []}
+            data={getWalletData?.getTotakTraDetail?.data || []}
             renderItem={renderTransList}
             contentContainerStyle={{
               flexGrow: 1,
             }}
+            ListEmptyComponent={renderEmpty}
           />
         )}
       </View>
+
       <Modal
         isVisible={isFocused}
         animationIn={'fadeIn'}
         animationInTiming={600}
         animationOut={'fadeOut'}
         animationOutTiming={600}
-        onBackdropPress={() => setIsFocused(false)}
         backdropOpacity={0.3}
-        onBackButtonPress={() => setIsFocused(false)}
+        onBackdropPress={() => {
+          setIsFocused(false);
+          dispatch(getOrdersByInvoiceIdReset());
+        }}
+        onBackButtonPress={() => {
+          setIsFocused(false);
+          dispatch(getOrdersByInvoiceIdReset());
+        }}
         style={{ marginTop: height * 0.15 }}
       >
         <KeyboardAwareScrollView contentContainerStyle={styles.modalContainer}>
-          <Search />
-
-          {/* <FlatList data={[]} /> */}
+          <SearchedOrders />
         </KeyboardAwareScrollView>
       </Modal>
     </ScreenWrapper>

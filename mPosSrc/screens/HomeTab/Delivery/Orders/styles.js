@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     paddingVertical: SH(15),
     paddingHorizontal: SW(15),
     backgroundColor: COLORS.white,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   payIconStyle: {
     width: SW(11),
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   deliveryDetailsView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.text,
+    backgroundColor: COLORS.dark_grey,
     borderRadius: 5,
     paddingHorizontal: ms(8),
     paddingVertical: ms(12),
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   totalItemsStyles: {
     fontSize: SF(16),
     paddingBottom: ms(10),
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
   },
   amountViewStyle: {
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   },
   driverStatusTextStyle: {
     fontFamily: Fonts.SemiBold,
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontSize: SF(14),
   },
   driverArrivalTimeText: {
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(5),
   },
   trackButtonStyle: {
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     paddingHorizontal: ms(9),
     paddingVertical: ms(8),
     borderRadius: 3,
@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
   },
   todayStatusTextStyle: {
     fontSize: SF(16),
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
   },
   cancelButtonStyle: {

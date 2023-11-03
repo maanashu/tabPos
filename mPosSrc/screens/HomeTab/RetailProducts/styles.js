@@ -35,20 +35,20 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   productNameText: {
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.Medium,
     fontSize: ms(14),
     color: COLORS.black,
   },
   genderTextStyle: {
     fontFamily: Fonts.Regular,
     fontSize: ms(11),
-    color: COLORS.grayShade,
+    color: COLORS.dark_grey,
     paddingTop: 2,
   },
   priceTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(14),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
   },
   stockTextStyle: {
     fontFamily: Fonts.Regular,
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: ms(20),
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     paddingVertical: ms(1),
     paddingHorizontal: ms(5),
     borderRadius: ms(10),

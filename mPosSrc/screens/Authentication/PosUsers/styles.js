@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     fontSize: SF(14),
     paddingTop: SH(6),
     textAlign: 'center',
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
   },
   datetimeTextStyle: {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
   },
   buttonTextStyle: {
     fontSize: SF(12),

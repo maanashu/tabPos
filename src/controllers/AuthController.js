@@ -4,6 +4,8 @@ import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import Toast from 'react-native-toast-message';
 import { strings } from '@/localization';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { isTablet } from 'react-native-device-info';
 
 export class AuthController {
   static async verifyPhone(phoneNumber, countryCode) {
@@ -17,10 +19,7 @@ export class AuthController {
       .then((response) => {
         if (response.status_code === 200) {
           if (response?.payload?.is_phone_exits) {
-            navigate(NAVIGATION.merchantPasscode, {
-              posuser: '',
-              from: 'verifyphone',
-            });
+            commonNavigate(isTablet() ? NAVIGATION.merchantPasscode : MPOS_NAVIGATION.verifyOtp);
           } else {
             Toast.show({
               text2: strings.valiadtion.phoneNotExist,
@@ -218,27 +217,7 @@ export class AuthController {
   }
 
   static async getAllPosUsers(data, search) {
-    // const getUrl = (sellerID, search) => {
-    //   if (data && search) {
-    //     return (
-    //       USER_URL +
-    //       ApiUserInventory.getPosUsers +
-    //       `?page=${data.page}&limit=${data.limit}&seller_id=${data.seller_id}&search=${search}`
-    //     );
-    //   } else {
-    //     return (
-    //       USER_URL +
-    //       ApiUserInventory.getPosUsers +
-    //       `?page=${data.page}&limit=${data.limit}&seller_id=${data.seller_id}`
-    //     );
-
-    //     // USER_URL + ApiUserInventory.abc(sellerID);
-    //   }
-    // };
-
     return new Promise(async (resolve, reject) => {
-      // const endpoint =  `${USER_URL}${ApiUserInventory.getPosUsers}?page=1&limit=10&seller_id=${sellerID}`;
-      // const endpoint = getUrl(data.seller_id, search);
       const endpoint =
         USER_URL +
         ApiUserInventory.getPosUsers +

@@ -5,7 +5,6 @@ import { userReducer } from './UserReducer';
 import { authReducer } from './AuthReducer';
 import { deliveryReducer } from './DeliveryReducer';
 import { retailReducer } from './RetailReducer';
-import { walletReducer } from './WalletReducer';
 import { shippingReducer } from './ShippingReducer';
 import { TYPES } from '@mPOS/Types/Types';
 import { analyticsReducer } from './AnalyticsReducer';
@@ -18,7 +17,6 @@ export const appReducer = combineReducers({
   auth: authReducer,
   delivery: deliveryReducer,
   analytics: analyticsReducer,
-  wallet: walletReducer,
   retail: retailReducer,
   shipping: shippingReducer,
   dashboard: dashboardReducer,

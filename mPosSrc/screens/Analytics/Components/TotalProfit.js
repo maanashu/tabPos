@@ -12,12 +12,12 @@ import { Spacer } from '@mPOS/components';
 import { DataTable } from 'react-native-paper';
 import { ms } from 'react-native-size-matters';
 import { useSelector } from 'react-redux';
-import { getAnalytics } from '@mPOS/selectors/AnalyticsSelector';
-import { TYPES } from '@mPOS/Types/AnalyticsTypes';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import { styles } from '../styles';
 import { COLORS } from '@/theme';
 import { Images } from '@mPOS/assets';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function TotalProfit() {
   const getAnalyticsData = useSelector(getAnalytics);
@@ -31,7 +31,7 @@ export function TotalProfit() {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '.     '}</Text>
+          <Text>{index + 1 + '. '}</Text>
           <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
@@ -78,7 +78,7 @@ export function TotalProfit() {
           <Spacer space={ms(4)} />
           {isLoading ? (
             <ActivityIndicator
-              color={COLORS.darkBlue}
+              color={COLORS.primary}
               size={'small'}
               style={{ alignSelf: 'flex-start' }}
             />
@@ -151,7 +151,7 @@ export function TotalProfit() {
               <DataTable.Title style={styles.tableHeaderView}>
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
-              <DataTable.Title style={styles.tableHeaderView}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Total Orders</Text>
               </DataTable.Title>
 
@@ -174,7 +174,7 @@ export function TotalProfit() {
                 <Text style={styles.revenueText}>Margin</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.tableHeaderView}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Gross Profit</Text>
               </DataTable.Title>
             </DataTable.Header>
@@ -182,7 +182,7 @@ export function TotalProfit() {
             <View style={[styles.mainListContainer]}>
               {profitStatisticsLoader ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
               ) : analyticStatistics?.orderData?.length === 0 ? (
                 <View style={styles.listLoader}>

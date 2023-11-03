@@ -77,7 +77,7 @@ const Graph = () => {
       setOfThree.push({
         value: values[3] || 0,
         spacing: 10,
-        frontColor: COLORS.darkBlue,
+        frontColor: COLORS.primary,
         Completed: true,
         labelTextStyle: {
           color: COLORS.grayShade,
@@ -188,7 +188,7 @@ const Graph = () => {
         setOfThree.push({
           value: values[3] || 0,
           spacing: 10,
-          frontColor: value ? COLORS.darkBlue : COLORS.white,
+          frontColor: value ? COLORS.primary : COLORS.white,
           Completed: true,
           labelTextStyle: {
             color: COLORS.grayShade,
@@ -201,7 +201,7 @@ const Graph = () => {
         setOfThree.push({
           value: values[3] || 0,
           spacing: 10,
-          frontColor: showCompleted ? COLORS.darkBlue : COLORS.white,
+          frontColor: showCompleted ? COLORS.primary : COLORS.white,
           Completed: true,
           labelTextStyle: {
             color: COLORS.grayShade,
@@ -287,7 +287,7 @@ const Graph = () => {
           >
             <Image
               source={showCompleted ? Images.mark : Images.blankCheckBox}
-              style={[styles.checkboxIconStyle, showCompleted && { tintColor: COLORS.darkBlue }]}
+              style={[styles.checkboxIconStyle, showCompleted && { tintColor: COLORS.primary }]}
             />
             <Text style={styles.varientTextStyle}>{strings.delivery.completed}</Text>
           </TouchableOpacity>
@@ -298,7 +298,7 @@ const Graph = () => {
 
       {isGraphOrder ? (
         <View style={styles.loaderView}>
-          <ActivityIndicator size={'small'} color={COLORS.darkBlue} />
+          <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
         <View style={{ paddingHorizontal: ms(10), zIndex: -999 }}>

@@ -1,27 +1,26 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts } from '@/theme';
 import { Images } from '@mPOS/assets';
 import { Image } from 'react-native';
 import { TextInput } from 'react-native';
-import { getOrdersByInvoiceId } from '@mPOS/actions/WalletActions';
 import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
+import { getOrdersByInvoiceId, getOrdersByInvoiceIdReset } from '@/actions/DashboardAction';
 
-export function Search({ style, onChange = {}, ...rest }) {
+export function Search({ style, onScanPress, onChange = () => {}, ...rest }) {
   const dispatch = useDispatch();
   const [sku, setSku] = useState();
 
   const onSearchInvoiceHandler = (text) => {
-    // console.log("fdlsgdg", text);
-    onChange(text);
-    if (text?.length > 1) {
-      if (text.includes('Invoice_') || text.includes('invoice_')) {
-        // dispatch(scanBarCode(text));
-      } else {
-        dispatch(getOrdersByInvoiceId(text, (res) => {}));
-      }
+    if (text?.length < 1) {
+      dispatch(getOrdersByInvoiceIdReset());
+    }
+    if (text.includes('Invoice_') || text.includes('invoice_')) {
+      // dispatch(scanBarCode(text));
+    } else {
+      dispatch(getOrdersByInvoiceId(text, (res) => {}));
     }
   };
 
@@ -34,10 +33,14 @@ export function Search({ style, onChange = {}, ...rest }) {
         placeholder="Search here"
         onChangeText={(text) => {
           setSku(text);
+          onChange(text);
           debouncedSearchInvoice(text);
         }}
         {...rest}
       />
+      <TouchableOpacity onPress={onScanPress}>
+        <Image source={Images.scanner} style={styles.scanIcon} resizeMode="contain" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -59,6 +62,12 @@ const styles = StyleSheet.create({
     tintColor: COLORS.placeholderText,
     marginRight: ms(10),
     marginLeft: ms(15),
+  },
+  scanIcon: {
+    height: ms(24),
+    width: ms(24),
+    marginRight: ms(10),
+    marginLeft: ms(10),
   },
   inputStyle: {
     flex: 1,

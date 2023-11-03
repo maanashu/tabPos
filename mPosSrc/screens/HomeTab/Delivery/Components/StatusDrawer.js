@@ -13,11 +13,11 @@ import {
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getOrders, todayOrders, getOrderCount } from '@mPOS/actions/DeliveryActions';
 import { Images } from '@mPOS/assets';
-import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SW } from '@/theme';
-import { getDelivery } from '@mPOS/selectors/DeliverySelector';
+import { strings } from '@mPOS/localization';
+import { getDelivery } from '@/selectors/DeliverySelector';
+import { getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
 
 const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
   const dispatch = useDispatch();
@@ -81,7 +81,7 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
     <TouchableOpacity
       disabled={item?.count > 0 ? false : true}
       onPress={() => {
-        dispatch(getOrders(item?.key));
+        dispatch(getReviewDefault(item?.key, 1));
         dispatch(getOrderCount());
         dispatch(todayOrders());
         setSelectedStatus(item?.key);
@@ -97,7 +97,7 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
   const showBadge = (item) => {
     const selectedDelivered =
       item?.title === strings.orderStatus.delivered && selectedStatus === item?.key
-        ? COLORS.darkBlue
+        ? COLORS.primary
         : COLORS.dark_gray;
     const selectedcancelled =
       item?.title === strings.orderStatus.rejected && selectedStatus === item?.key
@@ -107,7 +107,7 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
       item?.title === strings.orderStatus.returned && selectedStatus === item?.key
         ? COLORS.yellow
         : COLORS.dark_gray;
-    const otherSelection = selectedStatus === item?.key ? COLORS.darkBlue : COLORS.dark_gray;
+    const otherSelection = selectedStatus === item?.key ? COLORS.primary : COLORS.dark_gray;
     if (item?.title === strings.orderStatus.delivered) {
       return (
         <>

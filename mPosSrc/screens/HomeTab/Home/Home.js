@@ -13,11 +13,11 @@ import { ms } from 'react-native-size-matters';
 
 import { COLORS } from '@/theme';
 import { Images } from '@mPOS/assets';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { strings } from '@mPOS/localization';
 import { homePageData } from '@mPOS/constants/enums';
 import { navigate } from '@mPOS/navigation/NavigationRef';
-import { getAuthData } from '@mPOS/selectors/AuthSelector';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 import styles from '@mPOS/screens/HomeTab/Home/styles';
 
@@ -26,17 +26,17 @@ export function Home() {
   const merchantData = authData?.merchantLoginData;
   const onPressHandler = (item) => {
     if (item?.title === 'Checkout') {
-      navigate(NAVIGATION.checkout);
+      navigate(MPOS_NAVIGATION.checkout);
     } else if (item?.title === 'Products') {
-      navigate(NAVIGATION.retailProducts);
+      navigate(MPOS_NAVIGATION.retailProducts);
     } else if (item?.title === 'Services') {
-      navigate(NAVIGATION.services);
+      navigate(MPOS_NAVIGATION.services);
     } else if (item?.title === 'Delivery') {
-      navigate(NAVIGATION.delivery);
+      navigate(MPOS_NAVIGATION.delivery);
     } else if (item?.title === 'Shipping') {
-      navigate(NAVIGATION.shipping);
+      navigate(MPOS_NAVIGATION.shipping);
     } else if (item?.title === 'Return') {
-      navigate(NAVIGATION.searchScreen);
+      navigate(MPOS_NAVIGATION.searchScreen);
     }
   };
 

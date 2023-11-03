@@ -1,23 +1,23 @@
 import React from 'react';
 import {
-  Platform,
   View,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-  ActivityIndicator,
   ScrollView,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+  Dimensions,
 } from 'react-native';
-import { Spacer } from '@mPOS/components';
 import { useSelector } from 'react-redux';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { getUser } from '@mPOS/selectors/UserSelectors';
-import { TYPES } from '@mPOS/Types/AnalyticsTypes';
-import { getAnalytics } from '@mPOS/selectors/AnalyticsSelector';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { styles } from '../styles';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
+import { TYPES } from '@/Types/AnalyticsTypes';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { HomeGraph } from '.';
 import { ms } from 'react-native-size-matters';
+import { getUser } from '@/selectors/UserSelectors';
+import { styles } from '../styles';
+import { Spacer } from '@/components';
+import { BarChartCom } from '@mPOS/components/BarChartCom';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -272,14 +272,23 @@ export function MainScreen({
           startDated={startDated}
           endDated={endDated}
         />
-        {/* <View style={styles.totalProductCon}>
+        <TouchableOpacity
+          style={[
+            styles.totalProductCon,
+            { overflow: 'hidden', paddingBottom: ms(10) },
+            isTotalOrderLoading && {
+              height: Platform.OS === 'android' ? windowHeight * 0.35 : windowHeight * 0.28,
+            },
+          ]}
+          onPress={onPressOrders}
+        >
           <Spacer space={SH(20)} />
-          <View style={[styles.displayFlex, { alignItems: 'baseline' }]}>
+          <View style={[styles.displayFlex, { alignItems: 'baseline', paddingBottom: ms(10) }]}>
             <View>
               <Text style={styles.darkBlackText}>Total Orders</Text>
               <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
                 {isTotalOrderLoading ? (
-                  <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+                  <ActivityIndicator color={COLORS.primary} size={'small'} />
                 ) : totalOrder?.total_orders ? (
                   totalOrder?.total_orders
                 ) : (
@@ -287,39 +296,37 @@ export function MainScreen({
                 )}
               </Text>
             </View>
-            <View>
-              <View style={styles.flexAlign}>
-                <View style={styles.bullets} />
-                <Text style={styles.bulletText}>{'POS Orders'}</Text>
-              </View>
-              <View style={styles.flexAlign}>
-                <View style={[styles.bullets, { backgroundColor: COLORS.violet }]} />
-                <Text style={styles.bulletText}>{'B2C Orders'}</Text>
-              </View>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.flexAlign}>
+              <View style={styles.bullets} />
+              <Text style={styles.bulletText}>{'POS Orders'}</Text>
+            </View>
+            <View style={styles.flexAlign}>
+              <View style={[styles.bullets, { backgroundColor: COLORS.violet }]} />
+              <Text style={styles.bulletText}>{'B2C Orders'}</Text>
             </View>
           </View>
           <Spacer space={SH(5)} />
 
-          <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressOrders}>
-            <BarChartCom
-              barWid={Dimensions.get('window').width * 0.22}
-              barHei={Platform.OS === 'android' ? SH(110) : SH(110)}
-              barSpacing={SW(4.2)}
-              barW={SW(1.5)}
-              labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
-              initialSpacing={SH(5)}
-              data={totalOrder?.graphData}
-              spacing={SW(10)}
-              interval={2}
-              dateInterval={5}
-              dateTodayInterval={4}
-              isLoading={isTotalOrderLoading}
-              filter={filter}
-              startDated={startDated}
-              endDated={endDated}
-            />
-          </TouchableOpacity>
-        </View> */}
+          <BarChartCom
+            barWid={windowWidth * 0.9}
+            barHei={Platform.OS === 'android' ? ms(130) : SH(110)}
+            barSpacing={SW(4.2)}
+            barW={ms(5)}
+            labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
+            initialSpacing={SH(5)}
+            data={totalOrder?.graphData}
+            spacing={ms(10)}
+            interval={2}
+            dateInterval={5}
+            dateTodayInterval={4}
+            isLoading={isTotalOrderLoading}
+            filter={filter}
+            startDated={startDated}
+            endDated={endDated}
+          />
+        </TouchableOpacity>
 
         <HomeGraph
           header="Total Inventory"

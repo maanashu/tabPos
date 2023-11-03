@@ -169,7 +169,7 @@ const getOrdersByInvoiceIdError = (error) => ({
   type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_ERROR,
   payload: { error },
 });
-const getOrdersByInvoiceIdReset = () => ({
+export const getOrdersByInvoiceIdReset = () => ({
   type: DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID_RESET,
   payload: null,
 });
@@ -355,6 +355,8 @@ export const getOrdersByInvoiceId = (invoice, callback) => async (dispatch) => {
     callback && callback(res);
   } catch (error) {
     if (error?.msg === 'Invalid invoice number!') {
+      dispatch(getOrdersByInvoiceIdReset());
+    } else if (error?.statusCode == 204) {
       dispatch(getOrdersByInvoiceIdReset());
     }
     dispatch(getOrdersByInvoiceIdError(error.message));

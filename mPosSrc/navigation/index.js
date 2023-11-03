@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import RNBootSplash from 'react-native-bootsplash';
 import { NavigationContainer } from '@react-navigation/native';
 import { UserNavigator } from './UserNavigator';
-import { getUser } from '@mPOS/selectors/UserSelectors';
-import { getAuthData } from '@mPOS/selectors/AuthSelector';
 import { AppNavigator } from '@mPOS/navigation/AppNavigator';
 import { navigationRef } from '@mPOS/navigation/NavigationRef';
 import { AuthNavigator } from '@mPOS/navigation/AuthNavigator';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getUser } from '@/selectors/UserSelectors';
 
 export function RootNavigator() {
   const auth = useSelector(getAuthData);

@@ -7,16 +7,20 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { strings } from '@mPOS/localization';
-import { getRetail } from '@mPOS/selectors/RetailSelector';
+import { getRetail } from '@/selectors/RetailSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductCart } from '@mPOS/actions/RetailActions';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { addTocart } from '@/actions/RetailAction';
 
 const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
+  const getAuth = useSelector(getAuthData);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
   const snapPoints = useMemo(() => ['100%'], []);
   const [count, setCount] = useState(1);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const withoutHtmlTags = productDetail?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
 
@@ -35,6 +39,7 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
   });
   const productAddCartHandler = () => {
     const data = {
+      seller_id: sellerID,
       service_id: getRetailData?.getOneProduct?.product_detail?.service_id,
       product_id: getRetailData?.getOneProduct?.product_detail?.id,
       qty: count,
@@ -42,7 +47,7 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
       supplyPriceID:
         getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
     };
-    dispatch(addProductCart(data));
+    dispatch(addTocart(data));
     bothSheetClose();
   };
 
@@ -105,7 +110,7 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
             </TouchableOpacity>
             <TouchableOpacity
               // onPress={() =>
-              //   navigate(NAVIGATION.bottomTab, { screen: NAVIGATION.cart })
+              //   navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart })
               // }
               onPress={productAddCartHandler}
               style={[styles.detailView, styles.cartView]}
@@ -240,7 +245,7 @@ const styles = StyleSheet.create({
   productHeaderCon: {
     borderBottomWidth: 1,
     height: ms(60),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     paddingHorizontal: ms(10),
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -266,7 +271,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.darkBlue,
   },
   cartView: {
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     marginLeft: ms(10),
     borderWidth: 0,
   },
@@ -289,7 +294,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   backText: {
-    color: COLORS.text,
+    color: COLORS.dark_grey,
   },
   productCartBody: {
     flex: 1,
@@ -297,7 +302,7 @@ const styles = StyleSheet.create({
     paddingVertical: ms(10),
   },
   priceView: {
-    backgroundColor: COLORS.textinput_bg,
+    backgroundColor: COLORS.washGrey,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: ms(10),
@@ -305,8 +310,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(10),
   },
   priceText: {
-    color: COLORS.black,
+    color: COLORS.solid_grey,
     fontSize: ms(13),
+    fontFamily: Fonts.Medium,
   },
   amountText: {
     color: COLORS.black,
@@ -316,7 +322,7 @@ const styles = StyleSheet.create({
   tableContainer: {
     borderWidth: 1,
     borderRadius: ms(5),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     paddingVertical: ms(5),
     paddingHorizontal: ms(10),
   },
@@ -326,24 +332,24 @@ const styles = StyleSheet.create({
   },
   tableSectionText: {
     flex: 1,
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontSize: ms(11),
     fontFamily: Fonts.Regular,
   },
   tableSectionData: {
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontSize: ms(11),
     fontFamily: Fonts.Regular,
   },
   lineSeprator: {
     height: ms(1),
-    backgroundColor: COLORS.light_border,
+    backgroundColor: COLORS.solidGrey,
   },
   counterCon: {
     borderWidth: 1,
     height: ms(45),
     borderRadius: ms(3),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -366,7 +372,7 @@ const styles = StyleSheet.create({
     height: ms(45),
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   countText: {
     color: COLORS.black,
@@ -390,7 +396,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     paddingHorizontal: ms(12),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     borderRadius: ms(5),
     height: ms(35),
     marginVertical: ms(6),
@@ -402,12 +408,12 @@ const styles = StyleSheet.create({
   },
   inStoreText: {
     fontSize: ms(13),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.MaisonRegular,
   },
   availableForSell: {
     fontSize: ms(13),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
   ImageView: {
@@ -427,12 +433,12 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: ms(12),
-    color: COLORS.dark_gray,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
   },
   detailDescription: {
     fontSize: ms(11),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     marginTop: ms(2),
     fontFamily: Fonts.Regular,
   },

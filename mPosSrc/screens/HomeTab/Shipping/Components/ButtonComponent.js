@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   acceptButtonStyle: {
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     flex: 0.45,
     borderRadius: 5,
     paddingHorizontal: ms(20),
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     color: COLORS.grayShade,
   },
   preparedButtonStyle: {
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     flex: 1,
     borderRadius: 5,
     paddingHorizontal: ms(20),

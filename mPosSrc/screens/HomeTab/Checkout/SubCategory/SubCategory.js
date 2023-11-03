@@ -4,7 +4,7 @@ import { View, Text, Image, FlatList, SafeAreaView, TouchableOpacity } from 'rea
 import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
 import { Spacer } from '@mPOS/components';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { strings } from '@mPOS/localization';
 import Header from '../Components/Header';
 import Search from '../Components/Search';
@@ -60,7 +60,7 @@ export function SubCategory(props) {
         })}
         {item?.Products?.length > 0 ? (
           <TouchableOpacity
-            onPress={() => navigate(NAVIGATION.products)}
+            onPress={() => navigate(MPOS_NAVIGATION.products)}
             style={styles.viewAllViewStyle}
           >
             <Text style={styles.viewAllTextStyle}>{strings.checkout.viewAll}</Text>

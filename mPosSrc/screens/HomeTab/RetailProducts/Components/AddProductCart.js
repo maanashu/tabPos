@@ -20,16 +20,20 @@ import { ms } from 'react-native-size-matters';
 import { Colors } from '@mPOS/constants/enums';
 import ProductDetails from './ProductDetails';
 import { navigate } from '@mPOS/navigation/NavigationRef';
-import { NAVIGATION } from '@mPOS/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRetail } from '@mPOS/selectors/RetailSelector';
-import { addProductCart, checkSuppliedVariant } from '@mPOS/actions/RetailActions';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { addProductCart } from '@mPOS/actions/RetailActions';
 import { CustomErrorToast } from '@mPOS/components/Toast';
+import CustomBackdrop from '@mPOS/components/CustomBackdrop';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
 
 const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
+  const getAuth = useSelector(getAuthData);
   const productDetail = retailData?.getOneProduct;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
 
@@ -43,21 +47,23 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
   const snapPoints = useMemo(() => ['90%'], []);
   const [colorName, setColorName] = useState();
   const [sizeName, setSizeName] = useState();
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   useEffect(() => {
     setColorSelectId(null);
     setSizeSelectId(null);
   }, []);
 
-  const addToCartHandler = () => {
+  const addToCartHandler = async () => {
     if (attributeArray?.length === 0) {
       const data = {
+        seller_id: sellerID,
         service_id: productDetail?.product_detail?.service_id,
         product_id: productDetail?.product_detail?.id,
         qty: count,
         supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
         supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
       };
-      dispatch(addProductCart(data));
+      dispatch(addTocart(data));
       addProductCartRef.current.dismiss();
     } else {
       if (colorArray?.length >= 1 && colorSelectId === null) {
@@ -84,28 +90,28 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
             .join(),
           supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
         };
-        dispatch(
-          checkSuppliedVariant(data, (res) => {
-            const data = {
-              service_id: productDetail?.product_detail?.service_id,
-              product_id: productDetail?.product_detail?.id,
-              qty: count,
-              supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
-              supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
-              supplyVariantId: res?.id,
-            };
-            dispatch(addProductCart(data));
-            addProductCartRef.current.dismiss();
-          })
-        );
+        const res = await dispatch(checkSuppliedVariant(data));
+        if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
+          const data = {
+            seller_id: sellerID,
+            service_id: productDetail?.product_detail?.service_id,
+            product_id: productDetail?.product_detail?.id,
+            qty: count,
+            supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
+            supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
+            supplyVariantId: res?.payload?.id,
+          };
+          dispatch(addTocart(data));
+          addProductCartRef.current.dismiss();
+        }
       }
     }
   };
 
   // Color Select section
   const renderColorItem = ({ item }) => {
-    const borderColor = item.id === colorSelectId ? COLORS.darkBlue : COLORS.light_silver;
-    const color = item.id === colorSelectId ? COLORS.darkBlue : COLORS.black;
+    const borderColor = item.id === colorSelectId ? COLORS.primary : COLORS.silver_solid;
+    const color = item.id === colorSelectId ? COLORS.primary : COLORS.black;
     return (
       <ColorItem
         item={item}
@@ -126,8 +132,8 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
 
   //Size Select section
   const renderSizeItem = ({ item }) => {
-    const borderColor = item.id === sizeSelectId ? COLORS.darkBlue : COLORS.light_silver;
-    const color = item.id === sizeSelectId ? COLORS.darkBlue : COLORS.black;
+    const borderColor = item.id === sizeSelectId ? COLORS.primary : COLORS.silver_solid;
+    const color = item.id === sizeSelectId ? COLORS.primary : COLORS.black;
     return (
       <SizeItem
         item={item}
@@ -146,13 +152,9 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
     </TouchableOpacity>
   );
 
-  const PanelBackground = () => {
-    return <View backdropOpacity={0.9} style={{ backgroundColor: COLORS.black }} />;
-  };
-
   return (
     <BottomSheetModal
-      backdropComponent={PanelBackground}
+      backdropComponent={CustomBackdrop}
       detached
       bottomInset={0}
       onDismiss={() => {
@@ -179,7 +181,7 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
             </TouchableOpacity>
             <TouchableOpacity
               // onPress={() =>
-              //   navigate(NAVIGATION.bottomTab, { screen: NAVIGATION.cart })
+              //   navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart })
               // }
               onPress={addToCartHandler}
               style={[styles.detailView, styles.cartView]}
@@ -200,10 +202,18 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
               </Text>
             </View>
             <Spacer space={ms(2)} />
-            {colorSelectId === null ? <Text>{null}</Text> : <Text>{`Color: ${colorName}`}</Text>}
+            {colorSelectId === null ? (
+              <Text>{null}</Text>
+            ) : (
+              <Text style={styles.selectColorSize}>{`Color: ${colorName}`}</Text>
+            )}
 
             <Spacer space={ms(2)} />
-            {sizeSelectId === null ? <Text>{null}</Text> : <Text>{`Size: ${sizeName}`}</Text>}
+            {sizeSelectId === null ? (
+              <Text>{null}</Text>
+            ) : (
+              <Text style={styles.selectColorSize}>{`Size: ${sizeName}`}</Text>
+            )}
 
             {colorArray?.[0]?.values?.length >= 1 ? (
               <>
@@ -326,7 +336,7 @@ const styles = StyleSheet.create({
   productHeaderCon: {
     borderBottomWidth: 1,
     height: ms(60),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     paddingHorizontal: ms(10),
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -360,7 +370,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: ms(45),
     borderRadius: ms(3),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -378,10 +388,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: ms(3),
-    borderColor: COLORS.darkBlue,
+    borderColor: COLORS.primary,
   },
   cartView: {
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     marginLeft: ms(10),
     borderWidth: 0,
   },
@@ -391,7 +401,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   detailText: {
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontSize: ms(11),
     fontFamily: Fonts.SemiBold,
   },
@@ -416,13 +426,13 @@ const styles = StyleSheet.create({
   },
   sepratorText: {
     marginHorizontal: ms(10),
-    color: COLORS.light_border,
+    color: COLORS.solidGrey,
     fontSize: ms(14),
     fontFamily: Fonts.Regular,
   },
   lineSeprator: {
     height: ms(1),
-    backgroundColor: COLORS.light_border,
+    backgroundColor: COLORS.solidGrey,
     flex: 1,
   },
   minusImage: {
@@ -443,7 +453,7 @@ const styles = StyleSheet.create({
     height: ms(45),
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   plusSignCon: {
     height: ms(45),
@@ -455,7 +465,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     minHeight: ms(38),
     borderRadius: ms(3),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     paddingVertical: ms(5),
   },
   productDetailBody: {
@@ -465,7 +475,7 @@ const styles = StyleSheet.create({
     marginHorizontal: ms(10),
   },
   productDetails: {
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontSize: ms(14),
     fontFamily: Fonts.SemiBold,
   },
@@ -479,17 +489,17 @@ const styles = StyleSheet.create({
     height: ms(20),
     resizeMode: 'contain',
     transform: [{ rotate: '180deg' }],
-    tintColor: COLORS.darkBlue,
+    tintColor: COLORS.primary,
   },
   detailKey: {
-    color: COLORS.grayShade,
+    color: COLORS.darkGray,
     fontSize: ms(12),
     fontFamily: Fonts.Regular,
   },
   detailName: {
     color: COLORS.black,
     fontSize: ms(12),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
   },
   productDetailChild: {
     flexDirection: 'row',
@@ -509,5 +519,10 @@ const styles = StyleSheet.create({
   },
   bottomSheetBox: {
     overflow: 'hidden',
+  },
+  selectColorSize: {
+    color: COLORS.dark_grey,
+    fontSize: ms(12),
+    fontFamily: Fonts.Medium,
   },
 });

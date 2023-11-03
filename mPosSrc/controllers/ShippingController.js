@@ -133,13 +133,11 @@ export class ShippingController {
   static async getOrderDetail(id) {
     return new Promise((resolve, reject) => {
       const endpoint = ApiOrderInventory.getOrderDetail + `/${id}`;
-      console.log(endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          console.log(error);
           reject(error?.msg);
           CustomErrorToast({ message: error?.msg });
         });

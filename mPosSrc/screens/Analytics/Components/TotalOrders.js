@@ -1,53 +1,63 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, Image, ScrollView, FlatList, ActivityIndicator } from 'react-native';
-import { Spacer } from '@mPOS/components';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
+import { Spacer } from '@/components';
+import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
+import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { ms } from 'react-native-size-matters';
-import { COLORS } from '@/theme';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/AnalyticsTypes';
 import { styles } from '../styles';
 import { Images } from '@mPOS/assets';
-import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import { TYPES } from '@/Types/AnalyticsTypes';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
-export function TotalCost() {
+export function TotalOrders({ onPressReview }) {
   const getAnalyticsData = useSelector(getAnalytics);
-  const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
-
-  const costStatisticsLoader = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
+  const totalOrder = getAnalyticsData?.getTotalOrder;
+  const isTotalOrderLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_TOTAL_ORDER], state)
   );
 
-  const getCostList = ({ item, index }) => (
+  const getTotalOrderList = ({ item, index }) => (
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '.        '}</Text>
+          <Text>{index + 1 + '.       '}</Text>
           <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
-
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>
-          ${item?.transaction ? item?.transaction.toFixed(2) : 0}
-        </Text>
+        <Text style={styles.revenueDataText}>{item?.total_orders}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.total_items ? item?.total_items : 0}</Text>
+        <Text style={styles.revenueDataText}>{item?.new_consumer}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>
-          ${item?.total_price ? item?.total_price.toFixed(2) : 0}
-        </Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.margin ? item?.margin.toFixed(2) : 0}%</Text>
+        <Text style={styles.revenueDataText}>{item?.consumer_returning}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText2}>
-          ${item?.cost_sum ? item?.cost_sum.toFixed(2) : 0}
+          {item?.amount
+            ? item?.amount < 0
+              ? '-$' + Math.abs(item?.amount)?.toFixed(2)
+              : '$' + item?.amount?.toFixed(2)
+            : '$0'}
         </Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
+          <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(10) }]}>
+            {'Review'}
+          </Text>
+        </TouchableOpacity>
       </DataTable.Cell>
     </DataTable.Row>
   );
@@ -80,43 +90,45 @@ export function TotalCost() {
         <HeaderView
           image={Images.locationSales}
           text={'Total Orders'}
-          count={
-            analyticStatistics?.overView?.total_orders
-              ? analyticStatistics?.overView?.total_orders
-              : 0
-          }
+          count={totalOrder?.ordersOverView?.total_orders}
           style={{ marginHorizontal: ms(5) }}
-          isLoading={costStatisticsLoader}
+          isLoading={isTotalOrderLoading}
         />
         <HeaderView
           image={Images.revenueTotal}
           text={'Total Volume'}
           count={
-            analyticStatistics?.overView?.transaction
-              ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
+            totalOrder?.ordersOverView?.total_volume
+              ? totalOrder?.ordersOverView?.total_volume < 0
+                ? '-$' + Math.abs(totalOrder?.ordersOverView?.total_volume)?.toFixed(2)
+                : '$' + totalOrder?.ordersOverView?.total_volume?.toFixed(2)
               : '$0'
           }
-          isLoading={costStatisticsLoader}
+          isLoading={isTotalOrderLoading}
         />
         <HeaderView
           image={Images.totalOrders}
           text={'Average order value'}
           count={
-            analyticStatistics?.overView?.average_value
-              ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
+            totalOrder?.ordersOverView?.averageValue
+              ? totalOrder?.ordersOverView?.averageValue < 0
+                ? '-$' + Math.abs(totalOrder?.ordersOverView?.averageValue)?.toFixed(2)
+                : '$' + totalOrder?.ordersOverView?.averageValue?.toFixed(2)
               : '$0'
           }
-          isLoading={costStatisticsLoader}
+          isLoading={isTotalOrderLoading}
         />
         <HeaderView
-          image={Images.totalCost}
-          text={'Total Cost'}
+          image={Images.profit}
+          text={'Gross Profit'}
           count={
-            analyticStatistics?.overView?.total_cost
-              ? '$' + analyticStatistics?.overView?.total_cost?.toFixed(2)
+            totalOrder?.ordersOverView?.total_profit
+              ? totalOrder?.ordersOverView?.total_profit < 0
+                ? '-$' + Math.abs(totalOrder?.ordersOverView?.total_profit)?.toFixed(2)
+                : '$' + totalOrder?.ordersOverView?.total_profit?.toFixed(2)
               : '$0'
           }
-          isLoading={costStatisticsLoader}
+          isLoading={isTotalOrderLoading}
         />
       </View>
 
@@ -127,38 +139,39 @@ export function TotalCost() {
           horizontal
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
+          // scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
             <DataTable.Header style={[styles.tableListHeader]}>
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
-
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Volume</Text>
+                <Text style={styles.revenueText}>Total Orders</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Product</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Price</Text>
-              </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Margin</Text>
+                <Text style={styles.revenueText}>Customer-New</Text>
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Cost</Text>
+                <Text style={styles.revenueText}>Customer-Returning</Text>
+              </DataTable.Title>
+
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Total Sales</Text>
+              </DataTable.Title>
+              <DataTable.Title style={styles.dateTableSetting}>
+                <Text style={styles.revenueText}>Action</Text>
               </DataTable.Title>
             </DataTable.Header>
 
             <View style={styles.mainListContainer}>
-              {costStatisticsLoader ? (
+              {isTotalOrderLoading ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
-              ) : analyticStatistics?.orderData?.length === 0 ? (
+              ) : totalOrder?.order_listing?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
@@ -166,9 +179,9 @@ export function TotalCost() {
                 <View style={styles.listView}>
                   <FlatList
                     style={styles.listStyle}
-                    data={analyticStatistics?.orderData}
-                    renderItem={getCostList}
-                    // keyExtractor={(_, index) => index.toString()}
+                    data={totalOrder?.order_listing}
+                    renderItem={getTotalOrderList}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     bounces={false}

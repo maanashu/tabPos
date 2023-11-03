@@ -6,7 +6,7 @@ import { COLORS } from '@/theme';
 export function FullScreenLoader() {
   return (
     <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-      <ActivityIndicator color={COLORS.darkBlue} size="large" style={styles.loader} />
+      <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
     </View>
   );
 }

@@ -46,7 +46,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
             <View style={styles.locationViewStyle}>
               <Image
                 source={Images.clockIcon}
-                style={[styles.pinImageStyle, { tintColor: COLORS.darkBlue }]}
+                style={[styles.pinImageStyle, { tintColor: COLORS.primary }]}
               />
               <Text style={styles.distanceTextStyle}>
                 {getDeliveryType(orderData?.order?.delivery_option)}
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    borderColor: COLORS.darkBlue,
+    borderColor: COLORS.primary,
     justifyContent: 'space-between',
     backgroundColor: COLORS.inputBorder,
   },
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   timeTextStyle: {
     fontSize: SF(14),
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
   },
   distanceTextStyle: {
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   emptyTextStyle: {
     fontSize: SF(20),
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
   },
 });

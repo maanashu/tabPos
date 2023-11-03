@@ -7,12 +7,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
-import { TYPES } from '@mPOS/Types/Types';
+import { TYPES } from '@/Types/Types';
 import { strings } from '@mPOS/localization';
 import { Button, Spacer } from '@mPOS/components';
-import { verifyPhone } from '@mPOS/actions/AuthActions';
+import { verifyPhone } from '@/actions/AuthActions';
 import { CustomErrorToast } from '@mPOS/components/Toast';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import styles from './styles';
 
@@ -30,11 +30,7 @@ export function EnterPhoneNumber() {
         message: strings.validationMessages.emptyPhoneNumber,
       });
     } else {
-      const data = {
-        phone_code: countryCode,
-        phone_no: phoneNumber,
-      };
-      dispatch(verifyPhone(data));
+      dispatch(verifyPhone(phoneNumber, countryCode));
     }
   };
 
@@ -53,9 +49,11 @@ export function EnterPhoneNumber() {
         <Image source={Images.jobrLogo} style={styles.JobrLogoImageStyle} />
 
         <Spacer space={SH(54)} />
+
         <Image source={Images.phoneImage} style={styles.phoneImageStyle} />
 
         <Spacer space={SH(44)} />
+
         <Text style={styles.enterPhoneTextStyle}>{strings.phoneNumber.enterPhone}</Text>
 
         <Text style={styles.sendotpTextStyle}>{strings.phoneNumber.sendOtp}</Text>
@@ -85,7 +83,7 @@ export function EnterPhoneNumber() {
             keyboardType={'number-pad'}
             style={styles.textInputContainer}
             onChangeText={onChangePhoneNumber}
-            placeholderTextColor={COLORS.placeholderText}
+            placeholderTextColor={COLORS.gerySkies}
             placeholder={strings.phoneNumber.numberText}
           />
         </View>
@@ -96,20 +94,16 @@ export function EnterPhoneNumber() {
         <Button
           onPress={submit}
           title={strings.phoneNumber.button}
-          textStyle={{ color: phoneNumber ? COLORS.white : COLORS.text }}
+          textStyle={{ color: phoneNumber ? COLORS.white : COLORS.dark_grey }}
           style={{
-            backgroundColor: phoneNumber ? COLORS.darkBlue : COLORS.inputBorder,
+            backgroundColor: phoneNumber ? COLORS.primary : COLORS.textInputBackground,
           }}
         />
       </KeyboardAwareScrollView>
 
       {isLoading ? (
         <View style={styles.loaderViewStyle}>
-          <ActivityIndicator
-            color={COLORS.darkBlue}
-            size={'large'}
-            style={styles.loaderViewStyle}
-          />
+          <ActivityIndicator color={COLORS.primary} size={'large'} style={styles.loaderViewStyle} />
         </View>
       ) : null}
     </SafeAreaView>
