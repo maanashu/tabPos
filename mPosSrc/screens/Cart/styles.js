@@ -1,16 +1,13 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { COLORS, Fonts } from '@/theme';
 import { ms } from 'react-native-size-matters';
-import { verticalScale } from 'react-native-size-matters';
-
-const windowWidth = Dimensions.get('window').width;
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.inputBorder,
-    // paddingBottom: ms(80),
-    marginBottom: ms(100),
+    paddingBottom: ms(80),
+    // marginBottom: ms(100),
   },
   contentContainerStyle: {
     marginVertical: ms(15),

@@ -8,14 +8,15 @@ import {
   FlatList,
   ScrollView,
   StyleSheet,
+  SafeAreaView,
 } from 'react-native';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
-
+import { cardPayment, moneyIcon, qrCodeIcon } from '@/assets';
 import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { strings } from '@/localization';
+import { strings } from '@mPOS/localization';
 import { ms } from 'react-native-size-matters';
 import { Colors } from '@/constants/enums';
 import ProductDetails from './ProductDetails';
@@ -27,6 +28,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 // import { addProductCart, checkSuppliedVariant } from '@/actions/RetailActions';
 // import { CustomErrorToast } from '@/components/Toast';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
+import { height } from '@/theme/ScalerDimensions';
 
 const CartAmountByPay = ({
   addProductCartRef,
@@ -119,18 +121,18 @@ const CartAmountByPay = ({
   const PAYMENT_SELECT_DATA = [
     {
       title: 'Cash',
-      // icon: moneyIcon,
+      icon: moneyIcon,
       id: 1,
     },
     {
       title: 'JBR Coin',
-      // icon: qrCodeIcon,
+      icon: qrCodeIcon,
       // status: true,
       id: 2,
     },
     {
       title: 'Card',
-      // icon: moneyIcon,
+      icon: cardPayment,
       id: 3,
     },
   ];
@@ -143,6 +145,7 @@ const CartAmountByPay = ({
       onDismiss={() => {
         setSelectedTipAmount('0.00');
         setSelectedTipIndex(null);
+        setSelectedPaymentIndex(null);
       }}
       backdropOpacity={0.5}
       ref={cartAmountByPayRef}
@@ -155,6 +158,7 @@ const CartAmountByPay = ({
     >
       <BottomSheetScrollView>
         <View style={{ flex: 1, paddingHorizontal: ms(10) }}>
+          {Platform.OS === 'ios' && <SafeAreaView />}
           <View style={styles.productHeaderCon}>
             <TouchableOpacity onPress={() => cartAmountByPayRef.current.dismiss()}>
               <Image source={Images.cross} style={styles.crossImageStyle} />
@@ -166,6 +170,13 @@ const CartAmountByPay = ({
               ${Number(cartData?.amount?.total_amount ?? '0.00')?.toFixed(2)}
             </Text>
           </View>
+          {selectedPaymentIndex !== null && selectedPaymentIndex === 1 && (
+            <View style={styles.jbrSaveCon}>
+              <Text style={styles.youSave}>You Save</Text>
+              <Text style={styles.saveJbr}>JBR 29</Text>
+            </View>
+          )}
+
           <View style={styles.selectTipsCon}>
             <View style={styles.selectTipsHeader}>
               <Text style={styles.selectTips}>{'Select Tips'}</Text>
@@ -231,58 +242,82 @@ const CartAmountByPay = ({
                       {
                         borderColor:
                           selectedPaymentIndex === index ? COLORS.primary : COLORS.solidGrey,
+                        ...(index === 1 && { height: ms(90) }),
                       },
                     ]}
                     key={index}
                   >
-                    <View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Image
+                          source={item.icon}
+                          style={[
+                            styles._payByIcon,
+                            {
+                              tintColor:
+                                selectedPaymentIndex === index ? COLORS.primary : COLORS.darkGray,
+                            },
+                          ]}
+                        />
+                        <Text
+                          style={[
+                            styles.cashCardCoin,
+                            {
+                              color:
+                                selectedPaymentIndex === index ? COLORS.primary : COLORS.dark_grey,
+                              marginLeft: ms(5),
+                            },
+                          ]}
+                        >
+                          {item?.title}
+                        </Text>
+                      </View>
                       <Text
                         style={[
-                          styles.cashCardCoin,
+                          styles.payableAmount,
                           {
                             color:
                               selectedPaymentIndex === index ? COLORS.primary : COLORS.dark_grey,
                           },
                         ]}
                       >
-                        {item?.title}
+                        {totalAmountByPaymentMethod(index)}
                       </Text>
                     </View>
-                    <Text
-                      style={[
-                        styles.payableAmount,
-                        {
-                          color: selectedPaymentIndex === index ? COLORS.primary : COLORS.dark_grey,
-                        },
-                      ]}
-                    >
-                      {totalAmountByPaymentMethod(index)}
-                    </Text>
+                    {index === 1 && (
+                      <View style={styles.saveViewCon}>
+                        <Text style={styles.saveViewText}>{'Save 1%'}</Text>
+                      </View>
+                    )}
                   </TouchableOpacity>
                 ))}
               </View>
             </View>
           ) : null}
-
-          <Spacer space={SH(20)} />
-          <Text style={styles.selectTips}>{'E-Recipe '}</Text>
-          <View style={styles.erecipeCon}>
-            {ERECIPE_DATA?.map((item, index) => (
-              <TouchableOpacity
-                style={[styles.smsCon, { flex: index === 2 ? 0.4 : 0.27 }, styles.borderBlue]}
-                key={index}
-              >
-                <Text style={[styles.cashCardCoin, styles.blueText]}>{item.title}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          <TouchableOpacity style={styles.payNowCon} onPress={cashPayNowHandler}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.payNowText}>{'Pay Now'}</Text>
-              <Image source={Images.buttonArrow} style={styles.buttonArrow} />
+          {selectedPaymentIndex !== null && selectedPaymentIndex === 0 && (
+            <View>
+              <Spacer space={SH(20)} />
+              <Text style={styles.selectTips}>{'E-Recipe '}</Text>
+              <View style={styles.erecipeCon}>
+                {ERECIPE_DATA?.map((item, index) => (
+                  <TouchableOpacity
+                    style={[styles.smsCon, { flex: index === 2 ? 0.4 : 0.27 }, styles.borderBlue]}
+                    key={index}
+                  >
+                    <Text style={[styles.cashCardCoin, styles.blueText]}>{item.title}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
-          </TouchableOpacity>
+          )}
+          {selectedPaymentIndex !== null && selectedPaymentIndex === 0 && (
+            <TouchableOpacity style={styles.payNowCon} onPress={cashPayNowHandler}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.payNowText}>{'Pay Now'}</Text>
+                <Image source={Images.buttonArrow} style={styles.buttonArrow} />
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       </BottomSheetScrollView>
     </BottomSheetModal>
@@ -372,9 +407,10 @@ const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     borderRadius: ms(5),
     paddingHorizontal: ms(12),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
+    justifyContent: 'center',
   },
 
   cashCardCoin: {
@@ -419,5 +455,42 @@ const styles = StyleSheet.create({
   },
   blueText: {
     color: COLORS.primary,
+  },
+  _payByIcon: {
+    height: ms(25),
+    width: ms(25),
+    resizeMode: 'contain',
+  },
+  saveViewCon: {
+    height: ms(30),
+    borderRadius: ms(5),
+    backgroundColor: COLORS.textInputBackground,
+    marginVertical: ms(5),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  saveViewText: {
+    fontFamily: Fonts.Medium,
+    color: COLORS.dark_grey,
+    fontSize: ms(13),
+  },
+  jbrSaveCon: {
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    height: ms(70),
+    borderRadius: ms(5),
+    marginTop: ms(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  youSave: {
+    fontFamily: Fonts.MaisonRegular,
+    color: COLORS.primary,
+    fontSize: ms(15),
+  },
+  saveJbr: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+    fontSize: ms(20),
   },
 });
