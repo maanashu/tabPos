@@ -1,17 +1,14 @@
-import React, { memo, useEffect, useRef } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-
+import React, { memo } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { moderateScale, ms } from 'react-native-size-matters';
-import RBSheet from 'react-native-raw-bottom-sheet';
-
 import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { useDispatch } from 'react-redux';
-import { clearProductCart } from '@mPOS/actions/RetailActions';
+import { clearAllCart } from '@/actions/RetailAction';
 
-const ClearCart = ({ cartClose }) => {
+function ClearCart({ cartClose }) {
   const dispatch = useDispatch();
 
   return (
@@ -31,7 +28,7 @@ const ClearCart = ({ cartClose }) => {
 
         <View style={styles.buttonMainContainer}>
           <TouchableOpacity style={styles.keepButtonStyle} onPress={() => cartClose()}>
-            <Text style={[styles.counterText, { color: COLORS.darkBlue }]}>
+            <Text style={[styles.counterText, { color: COLORS.primary }]}>
               {strings.cart.keepIt}
             </Text>
           </TouchableOpacity>
@@ -39,7 +36,7 @@ const ClearCart = ({ cartClose }) => {
           <TouchableOpacity
             style={styles.clearButtonStyle}
             onPress={() => {
-              dispatch(clearProductCart());
+              dispatch(clearAllCart());
               cartClose();
             }}
           >
@@ -49,7 +46,7 @@ const ClearCart = ({ cartClose }) => {
       </View>
     </View>
   );
-};
+}
 
 export default memo(ClearCart);
 
@@ -80,7 +77,7 @@ const styles = StyleSheet.create({
   },
   clearCartTextStyle: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   contentViewStyle: {
@@ -89,8 +86,9 @@ const styles = StyleSheet.create({
   titleTextStyle: {
     fontSize: SF(14),
     paddingTop: SH(20),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.Medium,
+    alignSelf: 'center',
   },
   buttonMainContainer: {
     flexDirection: 'row',
@@ -104,7 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: COLORS.darkBlue,
+    borderColor: COLORS.primary,
   },
   clearButtonStyle: {
     borderWidth: 1,

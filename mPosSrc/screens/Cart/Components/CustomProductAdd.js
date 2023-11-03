@@ -9,98 +9,128 @@ import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
+import { digitWithDot } from '@/utils/validators';
+import { useDispatch, useSelector } from 'react-redux';
+import { customProductAdd } from '@/actions/RetailAction';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 const CustomProductAdd = ({ customProductClose }) => {
+  const dispatch = useDispatch();
   const cartRef = useRef();
-
+  const getAuth = useSelector(getAuthData);
   const [count, setCount] = useState(1);
   const [notes, setNotes] = useState('');
   const [amount, setAmount] = useState('');
   const [productName, setProductName] = useState('');
+  const [upcCode, setUpcCode] = useState();
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
-  // useEffect(() => {
-  //   cartRef?.current?.open();
-  // }, []);
+  const addToCartHandler = () => {
+    if (!amount) {
+      alert('Please enter amount');
+    } else if (amount && digitWithDot.test(amount) === false) {
+      alert('Please enter valid amount');
+    } else if (!productName) {
+      alert('Please enter product name');
+    } else if (!upcCode) {
+      alert('Please enter upc code');
+    } else if (upcCode && digitWithDot.test(upcCode) === false) {
+      alert('Please enter valid upc code');
+    } else {
+      const data = {
+        price: amount,
+        productName: productName,
+        upc: upcCode,
+        qty: count,
+        notes: notes,
+      };
+      console.log(data);
+      dispatch(customProductAdd(data));
+      customProductClose();
+    }
+  };
 
   return (
-    // <RBSheet
-    //   ref={cartRef}
-    //   height={ms(500)}
-    //   animationType={'fade'}
-    //   closeOnDragDown={false}
-    //   closeOnPressMask={false}
-    //   customStyles={{
-    //     container: {...styles.nameBottomSheetContainerStyle},
-    //   }}>
+    <KeyboardAwareScrollView style={[styles.addDiscountcon]} showsVerticalScrollIndicator={false}>
+      <View style={styles.headerViewStyle}>
+        <TouchableOpacity onPress={() => customProductClose()}>
+          <Image source={Images.cross} style={styles.crossIconStyle} />
+        </TouchableOpacity>
 
-    <View style={styles.addDiscountcon}>
-      <KeyboardAwareScrollView>
-        <View style={styles.headerViewStyle}>
-          <TouchableOpacity onPress={() => customProductClose()}>
-            <Image source={Images.cross} style={styles.crossIconStyle} />
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.addToCartButtonStyle} onPress={addToCartHandler}>
+          <Text style={styles.addToCartTextStyle}>{strings.cart.addToCart}</Text>
+        </TouchableOpacity>
+      </View>
 
-          <TouchableOpacity style={styles.addToCartButtonStyle}>
-            <Text style={styles.addToCartTextStyle}>{strings.cart.addToCart}</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.contentViewStyle}>
+        <Text style={styles.titleTextStyle}>{strings.cart.title}</Text>
 
-        <View style={styles.contentViewStyle}>
-          <Text style={styles.titleTextStyle}>{strings.cart.title}</Text>
-
-          <Spacer space={SH(10)} />
-
+        <Spacer space={SH(10)} />
+        <View style={styles.amountTextStyle}>
+          <Text style={styles.dollarSign}>{'$'}</Text>
           <TextInput
-            value={amount}
+            value={amount.toString()}
             onChangeText={setAmount}
             keyboardType={'number-pad'}
-            style={styles.amountTextStyle}
+            style={styles.amountInput}
             placeholder={strings.cart.amountValue}
+            placeholderTextColor={COLORS.row_grey}
           />
-
-          <Spacer space={SH(20)} />
-
-          <TextInput
-            value={productName}
-            onChangeText={setProductName}
-            style={styles.productInputStyle}
-            placeholder={strings.cart.productName}
-          />
-
-          <Spacer space={SH(20)} />
-
-          <TextInput
-            multiline
-            value={notes}
-            numberOfLines={6}
-            onChangeText={setNotes}
-            style={styles.notesInputStyle}
-            placeholder={strings.cart.addNotes}
-          />
-
-          {/* <Spacer space={SH(20)} /> */}
-
-          <View style={styles.quantityContainer}>
-            <TouchableOpacity
-              style={styles.minusButtonStyle}
-              onPress={() => (count > 0 ? setCount(count - 1) : null)}
-            >
-              <Text style={styles.counterText}>-</Text>
-            </TouchableOpacity>
-
-            <View style={styles.minusButtonStyle}>
-              <Text style={styles.counterText}>{count}</Text>
-            </View>
-
-            <TouchableOpacity style={styles.minusButtonStyle} onPress={() => setCount(count + 1)}>
-              <Text style={styles.counterText}>+</Text>
-            </TouchableOpacity>
-          </View>
         </View>
-      </KeyboardAwareScrollView>
-    </View>
 
-    // </RBSheet>
+        <Spacer space={SH(20)} />
+
+        <TextInput
+          value={productName}
+          onChangeText={setProductName}
+          style={styles.productInputStyle}
+          placeholder={strings.cart.productName}
+          placeholderTextColor={COLORS.gerySkies}
+        />
+
+        <Spacer space={SH(20)} />
+
+        <TextInput
+          value={upcCode}
+          onChangeText={setUpcCode}
+          keyboardType={'number-pad'}
+          style={styles.productInputStyle}
+          placeholder={strings.cart.upcCode}
+          placeholderTextColor={COLORS.gerySkies}
+        />
+
+        <Spacer space={SH(20)} />
+
+        <TextInput
+          multiline
+          value={notes}
+          numberOfLines={6}
+          onChangeText={setNotes}
+          style={styles.notesInputStyle}
+          placeholder={strings.cart.addNotes}
+        />
+
+        {/* <Spacer space={SH(20)} /> */}
+
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity
+            style={styles.minusButtonStyle}
+            onPress={() => setCount(count - 1)}
+            disabled={count == 1 ? true : false}
+          >
+            <Text style={styles.counterText}>-</Text>
+          </TouchableOpacity>
+
+          <View style={styles.minusButtonStyle}>
+            <Text style={[styles.counterText, styles.counterTextDark]}>{count}</Text>
+          </View>
+
+          <TouchableOpacity style={styles.minusButtonStyle} onPress={() => setCount(count + 1)}>
+            <Text style={styles.counterText}>+</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -111,11 +141,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 30,
     width: ms(350),
-    height: ms(500),
+    height: ms(300),
     alignSelf: 'center',
     paddingHorizontal: moderateScale(15),
     paddingVertical: ms(30),
-    // borderWidth: 1,
   },
   nameBottomSheetContainerStyle: {
     borderTopLeftRadius: ms(30),
@@ -135,7 +164,7 @@ const styles = StyleSheet.create({
   addToCartButtonStyle: {
     borderRadius: 3,
     paddingVertical: SH(10),
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     paddingHorizontal: SW(10),
   },
   addToCartTextStyle: {
@@ -149,7 +178,7 @@ const styles = StyleSheet.create({
   titleTextStyle: {
     fontSize: SF(16),
     paddingTop: SH(10),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   amountTextStyle: {
@@ -164,13 +193,13 @@ const styles = StyleSheet.create({
   productInputStyle: {
     height: SH(55),
     borderRadius: 5,
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontSize: SF(14),
     paddingLeft: SW(10),
     borderWidth: 1,
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.SemiBold,
     backgroundColor: COLORS.white,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   notesInputStyle: {
     borderRadius: 5,
@@ -181,23 +210,51 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textAlignVertical: 'top',
     backgroundColor: COLORS.white,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   quantityContainer: {
+    borderRadius: 5,
     flexDirection: 'row',
     marginTop: ms(20),
   },
   minusButtonStyle: {
     borderWidth: 1,
-    width: SW(105),
+    flex: 1,
+    // width: SW(105),
     height: SH(60),
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   counterText: {
     fontSize: SH(28),
-    color: COLORS.black,
+    color: COLORS.light_border,
     fontFamily: Fonts.Bold,
+  },
+  counterTextDark: {
+    fontSize: ms(20),
+    color: COLORS.black,
+    fontFamily: Fonts.SemiBold,
+  },
+  amountTextStyle: {
+    height: SH(55),
+    borderRadius: 5,
+    paddingLeft: SW(10),
+    backgroundColor: COLORS.inputBorder,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  amountInput: {
+    height: SH(55),
+    fontSize: SF(16),
+    color: COLORS.text,
+    fontFamily: Fonts.SemiBold,
+    flex: 1,
+  },
+  dollarSign: {
+    fontSize: SF(16),
+    color: COLORS.gerySkies,
+    fontFamily: Fonts.SemiBold,
+    marginBottom: ms(1),
   },
 });

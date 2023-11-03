@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.inputBorder,
+    paddingBottom: ms(80),
   },
   contentContainerStyle: {
     marginVertical: ms(15),
@@ -145,18 +146,18 @@ export const styles = StyleSheet.create({
   cartPrice: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(10),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
   },
   cartProductName: {
     fontFamily: Fonts.Medium,
     fontSize: ms(12),
-    color: COLORS.dark_gray,
+    color: COLORS.dark_grey,
     width: ms(250),
   },
   colorName: {
     fontFamily: Fonts.Regular,
     fontSize: ms(9),
-    color: COLORS.grayShade,
+    color: COLORS.darkGray,
   },
   counterCon: {
     marginLeft: ms(10),
@@ -164,7 +165,7 @@ export const styles = StyleSheet.create({
     width: ms(100),
     borderWidth: 1,
     borderRadius: ms(3),
-    borderColor: COLORS.dusty,
+    borderColor: COLORS.row_grey,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -175,38 +176,40 @@ export const styles = StyleSheet.create({
     color: COLORS.text,
   },
   _flatListContainer: {
-    height: ms(280),
+    // height: ms(280),
     width: '100%',
+    flex: 0.53,
   },
   availablOffercon: {
     marginTop: ms(10),
     borderWidth: 1,
-    borderColor: COLORS.text,
+    borderColor: COLORS.dark_grey,
     borderRadius: ms(5),
     height: ms(47),
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: COLORS.white,
   },
   avaliableofferText: {
     fontFamily: Fonts.Regular,
     fontSize: ms(13),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
   },
   totalItemCon: {
     marginTop: ms(5),
     borderBottomWidth: 1,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     paddingVertical: ms(3),
   },
   totalItem: {
     fontSize: ms(13),
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
     fontFamily: Fonts.MaisonBold,
     paddingVertical: ms(4),
   },
   subTotal: {
     fontSize: ms(13),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.MaisonRegular,
   },
   subTotalBold: {
@@ -216,11 +219,11 @@ export const styles = StyleSheet.create({
   },
   itemValue: {
     fontSize: ms(14),
-    color: COLORS.dark_gray,
-    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonBold,
   },
   payNowcon: {
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     borderRadius: ms(5),
     height: ms(47),
     justifyContent: 'center',
@@ -314,5 +317,11 @@ export const styles = StyleSheet.create({
     fontSize: ms(14),
     color: COLORS.red,
     fontFamily: Fonts.MaisonRegular,
+  },
+  cartColorCon: {
+    width: ms(8),
+    height: ms(8),
+    borderRadius: ms(2),
+    marginHorizontal: ms(5),
   },
 });

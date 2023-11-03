@@ -1,22 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  SafeAreaView,
-  TouchableOpacity,
-  TouchableHighlight,
-  TextInput,
-  Dimensions,
-  ActivityIndicator,
-} from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { View, Text, Image, SafeAreaView, TouchableOpacity, TextInput } from 'react-native';
 import { styles } from './styles';
 import { COLORS, Fonts, SH } from '@/theme';
 import { ms } from 'react-native-size-matters';
-import Search from './Components/Search';
 import { Images } from '@mPOS/assets';
-// import {AddNotes} from '@mPOS/screens/Cart/Components';
 import AddNotes from '@mPOS/screens/Cart/Components/AddNotes';
 import AddDiscount from '@mPOS/screens/Cart/Components/AddDiscount';
 import ClearCart from '@mPOS/screens/Cart/Components/ClearCart';
@@ -26,124 +13,55 @@ import Modal from 'react-native-modal';
 import { strings } from '@mPOS/localization';
 import { FullScreenLoader, Spacer } from '@mPOS/components';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductCart } from '@mPOS/actions/RetailActions';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { formattedReturnPrice } from '@mPOS/utils/GlobalMethods';
-import { number } from 'prop-types';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { RETAIL_TYPES } from '@mPOS/Types/RetailTypes';
 import { getAllCart } from '@/actions/RetailAction';
 import CartAmountByPay from './Components/CartAmountByPay';
 import PayByCash from './Components/PayByCash';
+import { TYPES } from '@/Types/Types';
 
 export function Cart() {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
-
   const productCartData = retailData?.getAllCart;
   const paymentSelection = useRef();
   const payByCashRef = useRef(null);
   const cartAmountByPayRef = useRef(null);
-
+  const [cartProduct, setCartProduct] = useState();
   const [addNotes, setAddNotes] = useState(false);
   const [addDiscount, setAddDiscount] = useState(false);
   const [clearCart, setClearCart] = useState(false);
   const [customProductAdd, setCustomProductAdd] = useState(false);
   const [priceChange, setPriceChange] = useState(false);
   const isLoading = useSelector((state) =>
-    isLoadingSelector([RETAIL_TYPES.GET_PRODUCT_CART], state)
+    isLoadingSelector(
+      [
+        TYPES.ADDNOTES,
+        TYPES.ADD_DISCOUNT,
+        TYPES.GET_ALL_CART,
+        TYPES.PRODUCT_UPDATE_PRICE,
+        TYPES.CUSTOM_PRODUCT_ADD,
+        TYPES.GET_CLEAR_ALL_CART,
+      ],
+      state
+    )
   );
+  const onlyCartLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
   useEffect(() => {
     dispatch(getAllCart());
   }, []);
 
-  const bottomSheetModalRef = useRef();
-
-  // variables
-  const snapPoints = useMemo(() => ['50%', '75%'], []);
   const payNowHandler = useCallback(() => {
     cartAmountByPayRef.current?.present();
   }, []);
   const cashPayNowHandler = useCallback(() => {
     payByCashRef.current?.present();
   }, []);
-  // callbacks
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-  const handleSheetChanges = useCallback((index) => {
-    console.log('handleSheetChanges', index);
-  }, []);
-
-  const [listData, setListData] = useState(
-    Array(20)
-      .fill('')
-      .map((_, i) => ({ key: `${i}`, text: `item #${i}` }))
-  );
-
-  const closeRow = (rowMap, rowKey) => {
-    if (rowMap[rowKey]) {
-      rowMap[rowKey].closeRow();
-    }
-  };
-
-  const deleteRow = (rowMap, rowKey) => {
-    closeRow(rowMap, rowKey);
-    const newData = [...listData];
-    const prevIndex = listData.findIndex((item) => item.key === rowKey);
-    newData.splice(prevIndex, 1);
-    setListData(newData);
-  };
-
   const onRowDidOpen = (rowKey) => {
     console.log('This row opened', rowKey);
   };
-
-  const tipData = [
-    {
-      id: 1,
-      percentage: '18%',
-      title: '18',
-    },
-    {
-      id: 2,
-      percentage: '20%',
-      title: '20',
-    },
-    {
-      id: 3,
-      percentage: '22%',
-      title: '22',
-    },
-    {
-      id: 4,
-      percentage: 'No Tips',
-      percentage: 'No Tips',
-    },
-  ];
-
-  const paymentSelectionData = [
-    {
-      id: 1,
-      paymentType: 'Cost',
-    },
-    {
-      id: 2,
-      paymentType: 'Card',
-    },
-    {
-      id: 3,
-      paymentType: 'JBR coin',
-    },
-    {
-      id: 4,
-      paymentType: 'Gift Card',
-    },
-  ];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -200,16 +118,19 @@ export function Cart() {
         </View>
 
         <View style={styles._flatListContainer}>
-          {isLoading ? (
-            <View style={styles.noDataCon}>
-              <ActivityIndicator size="small" color={COLORS.darkBlue} />
-            </View>
-          ) : (
-            <SwipeListView
-              showsVerticalScrollIndicator={false}
-              data={productCartData?.poscart_products}
-              extraData={productCartData?.poscart_products}
-              renderItem={(data) => (
+          <SwipeListView
+            showsVerticalScrollIndicator={false}
+            data={productCartData?.poscart_products}
+            extraData={productCartData?.poscart_products}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={(data) => {
+              const productSize = data?.item?.product_details?.supply?.attributes?.filter(
+                (item) => item?.name === 'Size'
+              );
+              const productColor = data?.item?.product_details?.supply?.attributes?.filter(
+                (item) => item?.name === 'Color'
+              );
+              return (
                 <View style={styles.cartProductCon}>
                   <View style={[styles.disPlayFlex]}>
                     <View style={{ flexDirection: 'row' }}>
@@ -222,8 +143,30 @@ export function Cart() {
                           {data?.item?.product_details?.name}
                         </Text>
                         <View style={{ flexDirection: 'row' }}>
-                          <Text style={styles.colorName}>Color: Grey</Text>
-                          <Text style={[styles.colorName, { marginLeft: ms(10) }]}>Size: xxl</Text>
+                          {productColor?.length > 0 && (
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <Text style={styles.colorName}>Color:</Text>
+                              <View
+                                style={[
+                                  styles.cartColorCon,
+                                  {
+                                    backgroundColor: productColor?.[0]?.values?.name,
+                                  },
+                                ]}
+                              ></View>
+                            </View>
+                          )}
+
+                          {productSize?.length > 0 && (
+                            <Text style={[styles.colorName, { marginLeft: ms(10) }]}>
+                              Size: {productSize?.[0]?.values?.name}
+                            </Text>
+                          )}
                         </View>
                         <View
                           style={{
@@ -254,7 +197,12 @@ export function Cart() {
                         justifyContent: 'space-between',
                       }}
                     >
-                      <TouchableOpacity onPress={() => setPriceChange((prev) => !prev)}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setPriceChange((prev) => !prev);
+                          setCartProduct(data?.item);
+                        }}
+                      >
                         <Image source={Images.pencil} style={styles.pencil} />
                       </TouchableOpacity>
                       <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
@@ -265,99 +213,108 @@ export function Cart() {
                     </View>
                   </View>
                 </View>
-              )}
-              renderHiddenItem={() => (
-                <TouchableOpacity
-                  style={[styles.backRightBtn, styles.backRightBtnRight]}
-                  // onPress={() => deleteRow(rowMap, data.item.key)}
-                  onPress={() => alert('in Progress')}
-                >
-                  <Image
-                    source={Images.cross}
-                    style={[styles.crossImageStyle, { tintColor: COLORS.white }]}
-                  />
-                </TouchableOpacity>
-              )}
-              // leftOpenValue={75}
-              rightOpenValue={-75}
-              previewRowKey={'0'}
-              // previewOpenValue={-40}
-              previewOpenDelay={3000}
-              onRowDidOpen={onRowDidOpen}
-              ListEmptyComponent={() => (
-                <View style={styles.noDataCon}>
-                  <Text style={styles.noDataFound}>{strings.cart.noDataFound}</Text>
-                </View>
-              )}
-            />
-          )}
+              );
+            }}
+            renderHiddenItem={() => (
+              <TouchableOpacity
+                style={[styles.backRightBtn, styles.backRightBtnRight]}
+                // onPress={() => deleteRow(rowMap, data.item.key)}
+                onPress={() => alert('in Progress')}
+              >
+                <Image
+                  source={Images.cross}
+                  style={[styles.crossImageStyle, { tintColor: COLORS.white }]}
+                />
+              </TouchableOpacity>
+            )}
+            // leftOpenValue={75}
+            rightOpenValue={-75}
+            previewRowKey={'0'}
+            // previewOpenValue={-40}
+            previewOpenDelay={3000}
+            onRowDidOpen={onRowDidOpen}
+            ListEmptyComponent={() => (
+              <View style={styles.noDataCon}>
+                <Text style={styles.noDataFound}>{strings.cart.noDataFound}</Text>
+              </View>
+            )}
+          />
+          {/* )} */}
         </View>
 
-        <TouchableOpacity style={styles.availablOffercon}>
-          <Text style={styles.avaliableofferText}>{strings.cart.availablOffer}</Text>
-        </TouchableOpacity>
-        <Spacer space={SH(10)} />
-        <View style={styles.totalItemCon}>
-          <Text style={styles.totalItem}>
-            {strings.cart.totalItem} {productCartData?.poscart_products?.length}
-          </Text>
-        </View>
-        <Spacer space={SH(8)} />
-        <View style={styles.disPlayFlex}>
-          <Text style={styles.subTotal}>Sub Total</Text>
-          <Text style={styles.subTotalBold}>
-            ${Number(productCartData?.amount?.products_price ?? '0.00')?.toFixed(2)}
-          </Text>
-        </View>
-        <Spacer space={SH(8)} />
-        <View style={styles.disPlayFlex}>
-          <Text style={styles.subTotal}>Total Taxes</Text>
-          <Text style={styles.subTotalBold}>
-            ${Number(productCartData?.amount?.tax ?? '0.00')?.toFixed(2)}
-          </Text>
-        </View>
-        <Spacer space={SH(8)} />
-        <View style={styles.disPlayFlex}>
-          <Text style={styles.subTotal}>{`Discount ${
-            productCartData?.discount_flag === 'percentage' ? '(%)' : ''
-          } `}</Text>
-          <Text style={[styles.subTotalBold, { color: COLORS.red }]}>
-            {formattedReturnPrice(productCartData?.amount?.discount)}
-          </Text>
-        </View>
-        <Spacer space={SH(8)} />
         <View
           style={{
-            borderWidth: 1,
-            borderStyle: 'dashed',
-            borderColor: COLORS.light_border,
+            position: 'absolute',
+            bottom: 0,
+            width: '100%',
+            alignSelf: 'center',
           }}
-        />
-        <Spacer space={SH(8)} />
-        <View style={styles.disPlayFlex}>
-          <Text style={styles.itemValue}>Item value</Text>
-          <Text style={styles.itemValue}>
-            ${Number(productCartData?.amount?.total_amount ?? '0.00')?.toFixed(2)}
-          </Text>
-        </View>
-        <Spacer space={SH(15)} />
-        <TouchableOpacity
-          style={[
-            styles.payNowcon,
-            {
-              opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.7,
-            },
-          ]}
-          onPress={payNowHandler}
-          disabled={productCartData?.poscart_products?.length > 0 ? false : true}
         >
-          <Text style={styles.payNowText}>{strings.cart.payNow}</Text>
-          <Image source={Images.buttonArrow} style={styles.buttonArrow} />
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.availablOffercon}>
+            <Text style={styles.avaliableofferText}>{strings.cart.availablOffer}</Text>
+          </TouchableOpacity>
+          <Spacer space={SH(10)} />
+          <View style={styles.totalItemCon}>
+            <Text style={styles.totalItem}>
+              {strings.cart.totalItem} {productCartData?.poscart_products?.length}
+            </Text>
+          </View>
+          <Spacer space={SH(8)} />
+          <View style={styles.disPlayFlex}>
+            <Text style={styles.subTotal}>Sub Total</Text>
+            <Text style={styles.subTotalBold}>
+              ${Number(productCartData?.amount?.products_price ?? '0.00')?.toFixed(2)}
+            </Text>
+          </View>
+          <Spacer space={SH(8)} />
+          <View style={styles.disPlayFlex}>
+            <Text style={styles.subTotal}>Total Taxes</Text>
+            <Text style={styles.subTotalBold}>
+              ${Number(productCartData?.amount?.tax ?? '0.00')?.toFixed(2)}
+            </Text>
+          </View>
+          <Spacer space={SH(8)} />
+          <View style={styles.disPlayFlex}>
+            <Text style={styles.subTotal}>{`Discount ${
+              productCartData?.discount_flag === 'percentage' ? '(%)' : ''
+            } `}</Text>
+            <Text style={[styles.subTotalBold, { color: COLORS.red }]}>
+              {formattedReturnPrice(productCartData?.amount?.discount)}
+            </Text>
+          </View>
+          <Spacer space={SH(8)} />
+          <View
+            style={{
+              borderWidth: 1,
+              borderStyle: 'dashed',
+              borderColor: COLORS.solidGrey,
+            }}
+          />
+          <Spacer space={SH(8)} />
+          <View style={styles.disPlayFlex}>
+            <Text style={styles.itemValue}>Item value</Text>
+            <Text style={styles.itemValue}>
+              ${Number(productCartData?.amount?.total_amount ?? '0.00')?.toFixed(2)}
+            </Text>
+          </View>
+          <Spacer space={SH(15)} />
+          <TouchableOpacity
+            style={[
+              styles.payNowcon,
+              {
+                opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.7,
+              },
+            ]}
+            onPress={payNowHandler}
+            disabled={productCartData?.poscart_products?.length > 0 ? false : true}
+          >
+            <Text style={styles.payNowText}>{strings.cart.payNow}</Text>
+            <Image source={Images.buttonArrow} style={styles.buttonArrow} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* header modal */}
-
       <Modal animationType="fade" transparent={true} isVisible={addNotes}>
         <AddNotes notesClose={() => setAddNotes(false)} />
       </Modal>
@@ -371,30 +328,12 @@ export function Cart() {
         <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
       </Modal>
       <Modal animationType="fade" transparent={true} isVisible={priceChange}>
-        <PriceChange priceChangeClose={() => setPriceChange(false)} />
+        <PriceChange priceChangeClose={() => setPriceChange(false)} {...{ cartProduct }} />
       </Modal>
 
       <CartAmountByPay {...{ cartAmountByPayRef, cashPayNowHandler }} />
-
       <PayByCash {...{ payByCashRef }} />
-
-      {/* <RBSheet
-        ref={paymentSelection}
-        height={ms(700)}
-        animationType={'fade'}
-        closeOnDragDown={false}
-        closeOnPressMask={false}
-        customStyles={{
-          container: {
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            backgroundColor: COLORS.white,
-          },
-        }}>
-        <View></View>
-      </RBSheet> */}
-
-      {/* {isLoading ? <FullScreenLoader /> : null} */}
+      {isLoading ? <FullScreenLoader /> : null}
     </SafeAreaView>
   );
 }

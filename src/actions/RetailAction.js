@@ -1149,8 +1149,6 @@ export const clearAllCart = () => async (dispatch) => {
     const res = await RetailController.clearAllCart();
     dispatch(getClearAllCartSuccess(res));
     dispatch(getAllCart());
-    // dispatch(updateCartLength(0))
-    // dispatch(clearLocalCart())
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getClearAllCartReset());

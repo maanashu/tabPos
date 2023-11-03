@@ -606,7 +606,6 @@ export class RetailController {
         order_amount: orderAmountstrfy,
         discount_desc: data.descriptionDis,
       };
-
       HttpClient.put(endpoint, body)
         .then((response) => {
           if (response?.msg === 'PosCart updated!') {
@@ -1557,29 +1556,24 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.customProductAdd;
-      const body = data?.notes
-        ? {
-            seller_id: sellerID,
-            price: data?.price,
-            name: data?.productName,
-            description: data?.notes,
-            type: 'physical',
-            qty: data?.qty,
-            upc: data?.upc,
-          }
-        : {
-            seller_id: sellerID,
-            price: data?.price,
-            name: data?.productName,
-            type: 'physical',
-            qty: data?.qty,
-            upc: data?.upc,
-          };
+      const body = {
+        seller_id: sellerID,
+        price: data?.price,
+        name: data?.productName,
+        type: 'physical',
+        qty: data?.qty,
+        upc: data?.upc,
+        ...(data?.notes && { description: data?.notes }),
+      };
+      console.log('endpoint', endpoint);
+      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',

@@ -2,7 +2,15 @@ import React, { useMemo, useRef, useState } from 'react';
 import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { COLORS, Fonts } from '@/theme';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
@@ -12,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addProductCart } from '@mPOS/actions/RetailActions';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { addTocart } from '@/actions/RetailAction';
+import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 
 const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
   const dispatch = useDispatch();
@@ -51,39 +60,9 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
     bothSheetClose();
   };
 
-  const renderItem = ({ item, index }) => (
-    <View style={styles.alignItem}>
-      <View style={styles.sizeView}>
-        <Text style={styles.sizeText}>{item?.size}</Text>
-        <Text
-          style={[styles.quantityText, { color: index === 4 ? COLORS.yellow : COLORS.grayShade }]}
-        >
-          {item?.quantity}
-        </Text>
-      </View>
-      <TouchableOpacity style={styles.notificationView}>
-        <Image
-          source={Images.notification}
-          style={[
-            styles.notiImage,
-            {
-              tintColor: index === 4 ? COLORS.black : COLORS.grayShade,
-              height: index === 4 ? ms(13) : ms(12),
-            },
-          ]}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
-    </View>
-  );
-
-  const PanelBackground = () => {
-    return <View backdropOpacity={0.9} style={{ backgroundColor: COLORS.black }} />;
-  };
-
   return (
     <BottomSheetModal
-      backdropComponent={PanelBackground}
+      backdropComponent={CustomBackdrop}
       detached
       bottomInset={0}
       onDismiss={() => {}}
@@ -97,6 +76,7 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
       handleComponent={() => <View />}
     >
       <View style={{ flex: 1 }}>
+        {Platform.OS === 'ios' && <SafeAreaView />}
         <View style={styles.productHeaderCon}>
           <TouchableOpacity onPress={() => productDetailRef.current.dismiss()}>
             <Image source={Images.cross} style={styles.crossImageStyle} />
