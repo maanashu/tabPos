@@ -71,7 +71,10 @@ export function Delivery() {
           <Text style={styles.deliveryOrderTextStyle}>{`${item?.user_details?.firstname}`}</Text>
 
           <View style={styles.itemAndPaymentView}>
-            <Image source={Images.pin} style={[styles.payIconStyle, { tintColor: COLORS.text }]} />
+            <Image
+              source={Images.pin}
+              style={[styles.payIconStyle, { tintColor: COLORS.darkGray }]}
+            />
             <Text style={styles.priceTextStyle}>{`$${
               item?.distance ? `${item.distance} miles` : '0'
             }`}</Text>

@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   orderTextStyle: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   pieChartMainView: {
@@ -166,12 +166,12 @@ const styles = StyleSheet.create({
   },
   orderTypeTextStyle: {
     fontSize: SF(12),
-    color: COLORS.dark_gray,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.Medium,
   },
   countTextStyle: {
     fontSize: SF(12),
-    color: COLORS.dark_gray,
+    color: COLORS.dark_grey,
     paddingLeft: 10,
     fontFamily: Fonts.SemiBold,
   },

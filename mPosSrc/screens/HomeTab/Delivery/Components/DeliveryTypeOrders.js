@@ -11,7 +11,7 @@ import { getDelivery } from '@/selectors/DeliverySelector';
 
 const DeliveryTypeOrders = ({ isDeliveryOrder }) => {
   const deliveryData = useSelector(getDelivery);
-  const deliveryTypeOrders = deliveryData?.deliveryTypesOrders ?? [];
+  const deliveryTypeOrders = deliveryData?.deliveringOrder ?? [];
 
   const renderDeliveryItem = ({ item, index }) => (
     <View style={styles.deliveryItemViewStyle}>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     marginVertical: ms(6),
     paddingVertical: ms(5),
     paddingHorizontal: ms(10),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   loaderView: {
     borderRadius: 5,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: ms(6),
     paddingHorizontal: ms(10),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
   },
   deliveryTypeIconStyle: {
     width: SW(40),
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   deliveryTypeTextStyle: {
     fontSize: SF(11),
-    color: COLORS.grayShade,
+    color: COLORS.darkGray,
     fontFamily: Fonts.SemiBold,
   },
   deliveryTypeCountTextStyle: {

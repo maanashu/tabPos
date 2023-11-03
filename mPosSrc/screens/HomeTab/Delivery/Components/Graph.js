@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     paddingTop: ms(10),
     paddingHorizontal: ms(20),
-    color: COLORS.solid_grey,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.SemiBold,
   },
   flexRow: {
@@ -354,11 +354,11 @@ const styles = StyleSheet.create({
   },
   yAxistext: {
     fontSize: 11,
-    color: COLORS.darkGray,
+    color: COLORS.dark_grey,
   },
   varientTextStyle: {
     fontSize: SF(9),
-    color: COLORS.darkGray,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
     paddingLeft: 5,
   },
