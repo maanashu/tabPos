@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     backgroundColor: COLORS.white,
     borderColor: COLORS.solidGrey,
+    height: ms(120),
   },
   buttonMainContainer: {
     flexDirection: 'row',

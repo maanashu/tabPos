@@ -9,7 +9,8 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.inputBorder,
-    paddingBottom: ms(80),
+    // paddingBottom: ms(80),
+    marginBottom: ms(100),
   },
   contentContainerStyle: {
     marginVertical: ms(15),
