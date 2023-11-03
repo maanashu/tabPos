@@ -4,6 +4,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { Images } from '@mPOS/assets';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 
 const OrderWithInvoiceNumber = ({ orderData }) => {
   const getDeliveryType = (type) => {
@@ -20,7 +21,10 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
   };
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      onPress={() => commonNavigate(MPOS_NAVIGATION.returnOrderDetail, { data: orderData })}
+      style={styles.container}
+    >
       {orderData !== undefined && Object.keys(orderData).length > 0 ? (
         <View style={styles.orderRowStyle}>
           <Text style={styles.invoiceNumberTextStyle}>

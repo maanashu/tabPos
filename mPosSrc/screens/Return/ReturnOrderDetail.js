@@ -13,20 +13,20 @@ import { useDispatch } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 
-import { Images } from '@/assets';
+import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
-import { strings } from '@/localization';
-import { Header, Spacer } from '@/components';
+import { strings } from '@mPOS/localization';
+import { Header, Spacer } from '@mPOS/components';
 import ManualEntry from './Components/ManualEntry';
+import { getProductByUpc } from '@/actions/DeliveryAction';
 
 import styles from './styles';
-import { getProductByUpc } from '@/actions/DeliveryAction';
+import OrderTotal from './Components/OrderTotal';
 
 export function ReturnOrderDetail(props) {
   const dispatch = useDispatch();
   const orderData = props?.route?.params?.data;
   const customerDetail = orderData?.order?.user_details?.user_profiles;
-
   const [productUpc, setProductUpc] = useState('');
   const [orderDetails, setOrderDetails] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -38,13 +38,13 @@ export function ReturnOrderDetail(props) {
   const getDeliveryType = (type) => {
     switch (type) {
       case '1':
-        return strings.deliveryOrders.delivery;
+        return strings.return.delivery;
       case '3':
-        return strings.returnOrder.inStore;
+        return strings.return.inStore;
       case '4':
-        return strings.shipping.shippingText;
+        return strings.return.shipping;
       default:
-        return strings.returnOrder.reservation;
+        return strings.return.reservation;
     }
   };
 
@@ -59,12 +59,29 @@ export function ReturnOrderDetail(props) {
     const getArray = orderData?.order?.order_details?.findIndex(
       (attr) => attr?.product_id === value
     );
-
     if (getArray !== -1) {
       const newProdArray = [...orderData?.order?.order_details];
       newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
       setOrderDetails(newProdArray);
       setProductUpc('');
+    } else {
+      alert('Product not found in the order');
+    }
+  };
+
+  const checkboxHandler = (id, count) => {
+    const getArray = orderDetails?.findIndex((attr) => attr?.id === id);
+    if (getArray !== -1) {
+      const newProdArray = [...orderDetails];
+      if (newProdArray[0]?.attributes?.length > 0) {
+        newProdArray[getArray].qty = count;
+        newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
+        setOrderDetails(newProdArray);
+        setIsShowAttributeModal(false);
+      } else {
+        newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
+        setOrderDetails(newProdArray);
+      }
     } else {
       alert('Product not found in the order');
     }
@@ -84,14 +101,13 @@ export function ReturnOrderDetail(props) {
             </Text>
           </View>
         </View>
-        <Text style={[styles.nameTextStyle, { color: COLORS.grayShade }]}>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
           {`$${item?.price}` ?? '-'}
         </Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.grayShade }]}>{item?.qty ?? '-'}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.grayShade }]}>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty ?? '-'}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
           {`$${item?.price * item?.qty}` ?? '-'}
         </Text>
-
         {item?.isChecked ? (
           <TouchableOpacity
             style={{
@@ -104,12 +120,21 @@ export function ReturnOrderDetail(props) {
             onPress={() => checkboxHandler(item?.id, item?.qty)}
           >
             <Image
-              source={Images.darkBlueBox}
-              style={[styles.infoIconStyle, { tintColor: COLORS.primary }]}
+              source={Images.mark}
+              style={[styles.checkboxIconStyle, { tintColor: COLORS.primary }]}
             />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => checkboxHandler(item?.id, item?.qty)}>
+          <TouchableOpacity
+            style={{
+              width: SH(25),
+              height: SH(25),
+              resizeMode: 'contain',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => checkboxHandler(item?.id, item?.qty)}
+          >
             <Image source={Images.blankCheckBox} style={styles.checkboxIconStyle} />
           </TouchableOpacity>
         )}
@@ -129,7 +154,6 @@ export function ReturnOrderDetail(props) {
             }
             style={styles.profileImageStyle}
           />
-
           <View style={{ paddingLeft: 10 }}>
             <Text
               style={styles.nameTextStyle}
@@ -139,9 +163,7 @@ export function ReturnOrderDetail(props) {
             >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
           </View>
         </View>
-
         <Spacer space={SH(20)} />
-
         <View style={styles.cancelButtonStyle}>
           <Text style={styles.cancelButtonText}>
             {getDeliveryType(orderData?.order?.delivery_option)}
@@ -161,8 +183,10 @@ export function ReturnOrderDetail(props) {
             onChangeText={onChangeHandler}
           />
         </View>
-
-        <TouchableOpacity onPress={() => setIsVisible(true)} style={styles.manualView}>
+        <TouchableOpacity
+          // onPress={() => setIsVisible(true)}
+          style={styles.manualView}
+        >
           <Text style={styles.orderDateText}>{'Manual Entry'}</Text>
         </TouchableOpacity>
       </View>
@@ -178,6 +202,8 @@ export function ReturnOrderDetail(props) {
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 130 }}
         />
       </View>
+
+      <OrderTotal {...{ orderData, orderDetails }} />
 
       <ReactNativeModal
         isVisible={isVisible}

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
+import { View, TouchableOpacity, TextInput, Image } from 'react-native';
 
 import { debounce } from 'lodash';
 import { ms } from 'react-native-size-matters';
@@ -15,7 +15,6 @@ import OrderWithInvoiceNumber from './Components/OrderWithInvoiceNumber';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { getOrdersByInvoiceId, scanBarCode } from '@/actions/DashboardAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/Types';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 
 export function SearchScreen() {
@@ -32,7 +31,7 @@ export function SearchScreen() {
     } else {
       setOrder('');
     }
-  }, [invoiceNumber]);
+  }, [orderData]);
 
   const onSearchInvoiceHandler = (text) => {
     if (text) {

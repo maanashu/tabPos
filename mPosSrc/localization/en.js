@@ -286,5 +286,6 @@ export const en = {
     shipping: 'Shipping',
     customer: 'Customer:',
     noOrderFound: 'No order found',
+    next: 'Next',
   },
 };

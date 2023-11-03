@@ -33,4 +33,6 @@ export const NAVIGATION = {
   searchScreen: 'SearchScreen',
   returnOrderDetail: 'ReturnOrderDetail',
   invoice: 'Invoice',
+  productRefund: 'ProductRefund',
+  paymentSelection: 'PaymentSelection',
 };
