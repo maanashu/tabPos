@@ -28,8 +28,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.iconStyle,
               {
-                tintColor:
-                  selectedTab === MPOS_NAVIGATION.home ? COLORS.primary : COLORS.placeholderText,
+                tintColor: selectedTab === MPOS_NAVIGATION.home ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           />
@@ -53,7 +52,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           >
@@ -69,7 +68,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           >
@@ -86,8 +85,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.iconStyle,
               {
-                tintColor:
-                  selectedTab === MPOS_NAVIGATION.cart ? COLORS.primary : COLORS.placeholderText,
+                tintColor: selectedTab === MPOS_NAVIGATION.cart ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           />
@@ -116,9 +114,7 @@ const BottomTabNavigator = () => {
               styles.iconStyle,
               {
                 tintColor:
-                  selectedTab === MPOS_NAVIGATION.transactions
-                    ? COLORS.primary
-                    : COLORS.placeholderText,
+                  selectedTab === MPOS_NAVIGATION.transactions ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           />
@@ -149,7 +145,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           >
@@ -189,7 +185,7 @@ const BottomTabNavigator = () => {
             style={[
               styles.routeNameText,
               {
-                color: routeName === selectedTab ? COLORS.primary : COLORS.placeholderText,
+                color: routeName === selectedTab ? COLORS.primary : COLORS.gerySkies,
               },
             ]}
           >
@@ -276,6 +272,6 @@ const styles = StyleSheet.create({
     top: 5,
     fontSize: SF(9.5),
     textAlign: 'center',
-    fontFamily: Fonts.MaisonMonoBold,
+    fontFamily: Fonts.MaisonBold,
   },
 });

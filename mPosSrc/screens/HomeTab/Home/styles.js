@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   storeName: {
     fontSize: SF(14),
     fontFamily: Fonts.SemiBold,
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     width: ms(300),
   },
   itemViewStyle: {
@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
   },
   itemTitleStyle: {
     fontSize: ms(15),
-    fontFamily: Fonts.MaisonMonoBold,
+    fontFamily: Fonts.MaisonBold,
     justifyContent: 'center',
-    color: COLORS.dark_gray,
+    color: COLORS.black,
     paddingHorizontal: 15,
     paddingVertical: 5,
     borderWidth: 1,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     fontSize: ms(10),
     fontFamily: Fonts.Regular,
     justifyContent: 'center',
-    color: COLORS.dark_gray,
+    color: COLORS.darkGray,
   },
   descriptionView: {
     flexDirection: 'row',

@@ -172,18 +172,18 @@ export function RetailProducts(props) {
           style={[
             styles.addImage,
             {
-              tintColor: index === 0 ? COLORS.darkBlue : COLORS.placeholderText,
+              tintColor: index === 0 ? COLORS.darkBlue : COLORS.dark_grey,
             },
           ]}
         />
       </TouchableOpacity>
-      {index === 0 ? (
+      {/* {index === 0 ? (
         <TouchableOpacity style={styles.countView}>
           <Text style={{ color: COLORS.white }}>{'1'}</Text>
         </TouchableOpacity>
       ) : (
         <></>
-      )}
+      )} */}
     </TouchableOpacity>
   );
 
