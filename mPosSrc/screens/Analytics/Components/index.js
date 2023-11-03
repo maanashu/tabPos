@@ -41,7 +41,7 @@ export function HomeGraph({
           <View>
             <Text style={styles.darkBlackText}>{header}</Text>
             <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
-              {isLoading ? <ActivityIndicator color={COLORS.darkBlue} size={'small'} /> : subHeader}
+              {isLoading ? <ActivityIndicator color={COLORS.primary} size={'small'} /> : subHeader}
             </Text>
           </View>
           {rightHeader && (
@@ -63,7 +63,7 @@ export function HomeGraph({
         </View>
         {isLoading ? (
           <View style={styles.loaderView}>
-            <ActivityIndicator color={COLORS.darkBlue} size={'small'} />
+            <ActivityIndicator color={COLORS.primary} size={'small'} />
           </View>
         ) : (
           <NewChartKit

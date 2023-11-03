@@ -14,6 +14,7 @@ export { Checkout } from '@mPOS/screens/HomeTab/Checkout/Checkout';
 export { SubCategory } from '@mPOS/screens/HomeTab/Checkout/SubCategory/SubCategory';
 export { Products } from '@mPOS/screens/HomeTab/Checkout/Products/Products';
 export { PosUserProfile } from '@mPOS/screens/HomeTab/PosUserProfile/PosUserProfile';
+export { Booking } from '@mPOS/screens/HomeTab/Booking/Booking';
 
 // wallet
 export { Cart } from '@mPOS/screens/Cart/Cart';

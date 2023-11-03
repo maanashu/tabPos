@@ -23,6 +23,7 @@ import {
   // ReturnOrderDetail,
   SearchScreen,
   DeliveryReturnOrderDetail,
+  Booking,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -153,6 +154,11 @@ export function AppNavigator() {
         options={{ headerShown: false }}
         component={ReturnOrderDetail}
       /> */}
+      <Stack.Screen
+        name={MPOS_NAVIGATION.booking}
+        options={{ headerShown: false }}
+        component={Booking}
+      />
     </Stack.Navigator>
   );
 }
