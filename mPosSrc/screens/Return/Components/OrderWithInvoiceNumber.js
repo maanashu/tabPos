@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { Images, clock, pay, pin, rightIcon } from '@mPOS/assets';
+import { Images } from '@mPOS/assets';
 
 const OrderWithInvoiceNumber = ({ orderData }) => {
   const getDeliveryType = (type) => {

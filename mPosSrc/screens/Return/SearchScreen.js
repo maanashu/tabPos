@@ -8,14 +8,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SH } from '@/theme';
 import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
-import { DASHBOARD_TYPES } from '@mPOS/Types/DashboardTypes';
 import { FullScreenLoader, Header, ScreenWrapper, Spacer } from '@mPOS/components';
-import { getDashboard } from '@mPOS/selectors/DashboardSelector';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { getOrdersByInvoiceId, scanBarCode } from '@mPOS/actions/DashboardAction';
 
 import styles from './styles';
 import OrderWithInvoiceNumber from './Components/OrderWithInvoiceNumber';
+import { getDashboard } from '@/selectors/DashboardSelector';
+import { getOrdersByInvoiceId, scanBarCode } from '@/actions/DashboardAction';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 
 export function SearchScreen() {
   const dispatch = useDispatch();
@@ -48,14 +49,14 @@ export function SearchScreen() {
   const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
 
   const isLoading = useSelector((state) =>
-    isLoadingSelector([DASHBOARD_TYPES.GET_ORDERS_BY_INVOICE_ID], state)
+    isLoadingSelector([DASHBOARDTYPE.GET_ORDERS_BY_INVOICE_ID], state)
   );
 
   return (
     <ScreenWrapper>
       <Header backRequired title={strings.return.header} />
 
-      <View style={{ flex: 1, paddingHorizontal: ms(20) }}>
+      <View style={{ flex: 1, marginHorizontal: ms(20) }}>
         <View style={styles.inputWraper}>
           <View style={styles.displayRow}>
             <Image source={Images.search} style={styles.searchStyle} />

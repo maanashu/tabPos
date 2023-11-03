@@ -16,32 +16,35 @@ import ReactNativeModal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 
-import {
-  getGraphOrders,
-  getOrderCount,
-  getOrders,
-  getOrderstatistics,
-  todayCurrentStatus,
-  todayShippingStatus,
-} from '@mPOS/actions/ShippingActions';
 import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
 import Graph from './Components/Graph';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { MPOS_NAVIGATION } from '@common/commonImports';
 import { strings } from '@mPOS/localization';
 import StatusDrawer from './Components/StatusDrawer';
 import { navigate } from '@mPOS/navigation/NavigationRef';
-import { SHIPPING_TYPES } from '@mPOS/Types/ShippingTypes';
-import { getShipping } from '@mPOS/selectors/ShippingSelector';
 import OrderConvertion from './Components/OrderConvertion';
 import { Header, ScreenWrapper, Spacer } from '@mPOS/components';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 
 import styles from './styles';
+import { getShipping } from '@/selectors/ShippingSelector';
+import {
+  getGraphOrders,
+  getOrderCount,
+  getReviewDefault,
+  getShippingOrderstatistics,
+  todayCurrentStatus,
+  todayShippingStatus,
+} from '@/actions/ShippingAction';
+import { TYPES } from '@/Types/ShippingOrderTypes';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 export function Shipping() {
   const dispatch = useDispatch();
   const getShippingData = useSelector(getShipping);
+  const getAuth = useSelector(getAuthData);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const orders = getShippingData?.orders?.data;
   const shippingOrders = getShippingData?.todayShippingStatus?.[0]?.count;
   const shippedOrders = getShippingData?.todayShippingStatus?.[1]?.count;
@@ -55,18 +58,15 @@ export function Shipping() {
     React.useCallback(() => {
       dispatch(todayShippingStatus());
       dispatch(todayCurrentStatus());
-      dispatch(getOrders(0));
+      dispatch(getReviewDefault(0, sellerID));
       dispatch(getGraphOrders());
-      dispatch(getOrderstatistics());
+      dispatch(getShippingOrderstatistics());
       dispatch(getOrderCount());
     }, [])
   );
 
   const isShippingOrder = useSelector((state) =>
-    isLoadingSelector(
-      [SHIPPING_TYPES.TODAY_SHIPPING_STATUS, SHIPPING_TYPES.TODAY_CURRENT_STATUS],
-      state
-    )
+    isLoadingSelector([TYPES.TODAY_SHIPPING_STATUS, TYPES.TODAY_CURRENT_STATUS], state)
   );
 
   const renderShippingItem = ({ item, index }) => (
@@ -98,7 +98,10 @@ export function Shipping() {
           <Text style={styles.shippingOrderTextStyle}>{`${item?.user_details?.firstname}`}</Text>
 
           <View style={styles.itemAndPaymentView}>
-            <Image source={Images.pin} style={[styles.payIconStyle, { tintColor: COLORS.text }]} />
+            <Image
+              source={Images.pin}
+              style={[styles.payIconStyle, { tintColor: COLORS.darkGray }]}
+            />
             <Text style={styles.priceTextStyle}>{`$${
               item?.distance ? `${item.distance} miles` : '0'
             }`}</Text>
@@ -143,9 +146,9 @@ export function Shipping() {
     setRefreshing(true);
     dispatch(todayShippingStatus());
     dispatch(todayCurrentStatus());
-    dispatch(getOrders(0));
+    dispatch(getReviewDefault(0, sellerID));
     dispatch(getGraphOrders());
-    dispatch(getOrderstatistics());
+    dispatch(getShippingOrderstatistics());
     setRefreshing(false);
   }, []);
 
@@ -169,9 +172,9 @@ export function Shipping() {
   return (
     <ScreenWrapper>
       <Header
+        orders
         backRequired
         title={strings.profile.header}
-        orders
         rightIconOnpress={() => setIsStatusDrawer(true)}
       />
 

@@ -565,5 +565,6 @@ export const en = {
     eReceipt: 'E-Recipe',
     return: 'Return',
     noOrderFound: 'No order found',
+    searchSku: 'Search SKU here',
   },
 };

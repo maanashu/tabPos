@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   declineButtonStyle: {
     backgroundColor: COLORS.white,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     flex: 0.45,
     borderWidth: 1,
     borderRadius: 5,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   declineButtonText: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(12),
-    color: COLORS.grayShade,
+    color: COLORS.darkGray,
   },
   preparedButtonStyle: {
     backgroundColor: COLORS.primary,

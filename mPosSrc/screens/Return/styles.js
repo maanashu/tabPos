@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     height: SH(50),
     borderWidth: 0.5,
     borderColor: COLORS.inputBorder,
-    width: width - 20,
+    width: width - 40,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   displayRow: {
     height: SH(44),
     marginLeft: 5,
-    width: width - 75,
+    width: width - 95,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
@@ -32,12 +32,13 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   searchInput: {
+    height: SH(44),
     borderRadius: 7,
-    height: ms(20),
-    width: width * 0.4,
+    width: width - 125,
     fontFamily: Fonts.Italic,
     padding: 0,
     margin: 0,
+    paddingLeft: 10,
   },
   scannerIconStyle: {
     width: SW(40),

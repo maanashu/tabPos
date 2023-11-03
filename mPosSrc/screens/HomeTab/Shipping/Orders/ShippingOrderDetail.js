@@ -1,36 +1,31 @@
 import React, { useRef } from 'react';
 import { View, Text, Image, SafeAreaView, TouchableOpacity } from 'react-native';
 
-import dayjs from 'dayjs';
 import MapView from 'react-native-maps';
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { SH } from '@/theme';
 import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
-import { SH } from '@/theme';
+import OrderTotal from '../Components/OrderTotal';
+import ProductList from '../Components/ProductList';
+import { MPOS_NAVIGATION } from '@common/commonImports';
+import mapCustomStyle from '@mPOS/components/MapCustomStyles';
+import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
 import { FullScreenLoader, Header, Spacer } from '@mPOS/components';
 
 import styles from './styles';
-import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
-
-import mapCustomStyle from '@mPOS/components/MapCustomStyles';
-
-import { getAuthData } from '@mPOS/selectors/AuthSelector';
-import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { DELIVERY_TYPES } from '@mPOS/Types/DeliveryTypes';
-import OrderTotal from '../Components/OrderTotal';
-import ProductList from '../Components/ProductList';
-import { SHIPPING_TYPES } from '@mPOS/Types/ShippingTypes';
-import { acceptOrder, getOrders } from '@mPOS/actions/ShippingActions';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { acceptOrder } from '@/actions/ShippingAction';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/ShippingOrderTypes';
 
 export function ShippingOrderDetail(props) {
   const mapRef = useRef();
   const dispatch = useDispatch();
   const orderData = props?.route?.params?.data;
   const customerDetail = orderData?.user_details;
-  const shippingDate = dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') || '';
 
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -50,7 +45,7 @@ export function ShippingOrderDetail(props) {
     );
   };
 
-  const isLoading = useSelector((state) => isLoadingSelector([SHIPPING_TYPES.ACCEPT_ORDER], state));
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
 
   return (
     <SafeAreaView style={styles.container}>
@@ -87,13 +82,7 @@ export function ShippingOrderDetail(props) {
           </View>
         ) : (
           <View style={styles.deliveryDetailsView}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                flex: 0.45,
-              }}
-            >
+            <View style={styles.shippingTypeView}>
               <Image
                 source={{ uri: orderData?.shipping_details?.image }}
                 style={styles.shippingType}
