@@ -10,6 +10,7 @@ import {
   StyleSheet,
   TextInput,
   Keyboard,
+  SafeAreaView,
 } from 'react-native';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
