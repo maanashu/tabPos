@@ -19,7 +19,6 @@ import { getProduct } from '@mPOS/actions/RetailActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { RETAIL_TYPES } from '@mPOS/Types/RetailTypes';
 import { strings } from '@mPOS/localization';
 import ProductDetails from './Components/ProductDetails';
 import { FullScreenLoader, Header, ScreenWrapper } from '@mPOS/components';
@@ -188,7 +187,7 @@ export function RetailProducts(props) {
   );
 
   const isLoading = useSelector((state) =>
-    isLoadingSelector([RETAIL_TYPES.GET_ONE_PRODUCT, RETAIL_TYPES.ADD_PRODUCT_CART], state)
+    isLoadingSelector([TYPES.GET_ONE_PRODUCT, TYPES.ADDCART], state)
   );
   return (
     <ScreenWrapper>

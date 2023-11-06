@@ -91,8 +91,6 @@ export function Management() {
 
   const getDashboardData = useSelector(getDashboard);
   const getSessionObj = getDashboardData?.drawerSession;
-  console.log('asdsad', getSessionObj);
-
   const [sessionHistoryArray, setSessionHistoryArray] = useState(
     drawerData?.getSessionHistory ?? []
   );

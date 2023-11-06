@@ -23,6 +23,7 @@ import {
   ReturnOrderDetail,
   SearchScreen,
   DeliveryReturnOrderDetail,
+  Booking,
   ProductRefund,
   PaymentSelection,
 } from '@mPOS/screens';
@@ -154,6 +155,11 @@ export function AppNavigator() {
         name={MPOS_NAVIGATION.returnOrderDetail}
         options={{ headerShown: false }}
         component={ReturnOrderDetail}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.booking}
+        options={{ headerShown: false }}
+        component={Booking}
       />
       <Stack.Screen
         name={MPOS_NAVIGATION.productRefund}

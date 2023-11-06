@@ -12,7 +12,6 @@ export function ScreenWrapper(props) {
       containerStyle: {
         backgroundColor: COLORS.white,
         flex: 1,
-        paddingHorizontal: Platform.OS === 'ios' ? 0 : SW(0),
       },
     })
   );
@@ -21,7 +20,6 @@ export function ScreenWrapper(props) {
     <SafeAreaView style={[styles.containerStyle, props.containerPropStyle]}>
       <View
         style={{
-          paddingHorizontal: Platform.OS === 'ios' ? SW(0) : SW(0),
           flex: 1,
           overflow: Platform.OS === 'ios' ? 'hidden' : 'visible',
         }}

@@ -8,33 +8,42 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-
 import { moderateScale, ms } from 'react-native-size-matters';
-import RBSheet from 'react-native-raw-bottom-sheet';
-
 import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { addNotescart } from '@/actions/RetailAction';
+// import { addProuctNotes } from '@/actions/RetailActions';
 
 const AddNotes = ({ notesClose }) => {
+  const dispatch = useDispatch();
   const notesRef = useRef();
-  const [notes, setNotes] = useState('');
+  const retailData = useSelector(getRetail);
+  const productCartData = retailData?.getAllCart;
+  const cartId = retailData?.getAllCart?.id;
+  const [notes, setNotes] = useState(productCartData?.notes);
 
   useEffect(() => {
     notesRef?.current?.open();
   }, []);
 
+  const addNotesHandler = () => {
+    if (!notes) {
+      alert('Please Add Notes');
+    } else {
+      const data = {
+        cartId: cartId,
+        notes: notes,
+      };
+      dispatch(addNotescart(data));
+      notesClose();
+    }
+  };
+
   return (
-    // <RBSheet
-    // ref={notesRef}
-    // height={ms(300)}
-    // animationType={'fade'}
-    // closeOnDragDown={false}
-    // closeOnPressMask={false}
-    // customStyles={{
-    //   container: {...styles.nameBottomSheetContainerStyle},
-    // }}>
     <View style={styles.addDiscountcon}>
       <View style={styles.headerViewStyle}>
         <Text style={styles.clearCartTextStyle}>{strings.cart.addNotesHeading}</Text>
@@ -57,13 +66,13 @@ const AddNotes = ({ notesClose }) => {
         <Spacer space={SH(10)} />
 
         <View style={styles.buttonMainContainer}>
-          <TouchableOpacity style={styles.keepButtonStyle}>
+          <TouchableOpacity style={styles.keepButtonStyle} onPress={() => setNotes('')}>
             <Text style={[styles.counterText, { color: COLORS.dark_gray }]}>
               {strings.profile.Discard}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.clearButtonStyle}>
+          <TouchableOpacity style={styles.clearButtonStyle} onPress={() => addNotesHandler()}>
             <Text style={[styles.counterText, { color: COLORS.white }]}>
               {strings.profile.save}
             </Text>
@@ -71,8 +80,6 @@ const AddNotes = ({ notesClose }) => {
         </View>
       </View>
     </View>
-
-    // </RBSheet>
   );
 };
 
@@ -107,7 +114,7 @@ const styles = StyleSheet.create({
   },
   clearCartTextStyle: {
     fontSize: SF(16),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
   },
   contentViewStyle: {
@@ -122,7 +129,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     textAlignVertical: 'top',
     backgroundColor: COLORS.white,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
+    height: ms(120),
   },
   buttonMainContainer: {
     flexDirection: 'row',
@@ -143,7 +151,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
   },
   counterText: {
     fontSize: SF(14),

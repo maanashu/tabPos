@@ -9,6 +9,7 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
+  Keyboard,
 } from 'react-native';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -16,30 +17,18 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import { Images } from '@mPOS/assets';
 import { Spacer, CustomBackdrop } from '@mPOS/components';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { strings } from '@/localization';
+import { strings } from '@mPOS/localization';
 import { ms } from 'react-native-size-matters';
-import { Colors } from '@/constants/enums';
-import ProductDetails from './ProductDetails';
-import { navigate } from '@/navigation/NavigationRef';
-import { MPOS_NAVIGATION } from '@/constants';
+
 import {
-  BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetScrollView,
   BottomSheetTextInput,
 } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { addProductCart, checkSuppliedVariant } from '@/actions/RetailActions';
-import { CustomErrorToast } from '@/components/Toast';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const PayByCash = ({
-  addProductCartRef,
-  cartAmountByPayRef,
-  productDetailHanlder,
-  payByCashRef,
-}) => {
+const PayByCash = ({ payByCashRef }) => {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const productDetail = retailData?.getOneProduct;
@@ -52,9 +41,20 @@ const PayByCash = ({
   const [sizeSelectId, setSizeSelectId] = useState(null);
   const [count, setCount] = useState(1);
   const [productDetailExpand, setProductDetailExpand] = useState(false);
-  const snapPoints = useMemo(() => ['60%'], []);
+
   const [colorName, setColorName] = useState();
   const [sizeName, setSizeName] = useState();
+  const [keyboardStatus, setKeyboardStatus] = useState('60%');
+  const snapPoints = useMemo(() => [keyboardStatus], [keyboardStatus]);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus('90%');
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus('60%');
+    });
+  }, []);
   useEffect(() => {
     setColorSelectId(null);
     setSizeSelectId(null);
@@ -85,10 +85,6 @@ const PayByCash = ({
     },
   ];
 
-  const PanelBackground = () => {
-    return <View style={{ backgroundColor: COLORS.black }} />;
-  };
-
   return (
     <BottomSheetModal
       backdropComponent={CustomBackdrop}
@@ -97,13 +93,11 @@ const PayByCash = ({
       onDismiss={() => {}}
       backdropOpacity={0.5}
       ref={payByCashRef}
-      style={{ backgroundColor: 'green' }}
       snapPoints={snapPoints}
       enableDismissOnClose
       enablePanDownToClose
       stackBehavior={'replace'}
       handleComponent={() => <View />}
-      keyboardBehavior="extend"
     >
       <BottomSheetScrollView>
         <View style={{ flex: 1, paddingHorizontal: ms(10) }}>
@@ -125,14 +119,14 @@ const PayByCash = ({
                 </View>
               ))}
             </View>
-            <BottomSheetTextInput style={styles.otherAmountInput} placeholder="Other amount" />
+            {/* <BottomSheetTextInput style={styles.otherAmountInput} placeholder="Other amount" /> */}
 
-            {/* <TextInput
+            <TextInput
               style={styles.otherAmountInput}
               placeholder="Other amount"
               //  onChangeText={onChangeText}
               //  value={value}
-            /> */}
+            />
 
             <View style={styles.payNowCon}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -167,7 +161,7 @@ const styles = StyleSheet.create({
   },
   payableAmount: {
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontSize: ms(15),
   },
   darkPaybleAmount: {
@@ -179,7 +173,7 @@ const styles = StyleSheet.create({
 
   payNowCon: {
     height: ms(50),
-    backgroundColor: COLORS.darkGreen,
+    backgroundColor: COLORS.primary,
     marginTop: ms(20),
     borderRadius: ms(5),
     justifyContent: 'center',
@@ -197,15 +191,15 @@ const styles = StyleSheet.create({
     marginLeft: ms(5),
   },
   borderBlue: {
-    borderColor: COLORS.darkBlue,
+    borderColor: COLORS.primary,
   },
   blueText: {
-    color: COLORS.darkBlue,
+    color: COLORS.primary,
   },
 
   receivedAmountCon: {
     borderWidth: 1,
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     flex: 1,
     marginVertical: ms(20),
     borderRadius: ms(5),
@@ -215,7 +209,7 @@ const styles = StyleSheet.create({
   },
   receivedAmountText: {
     fontFamily: Fonts.SemiBold,
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontSize: ms(17),
     alignSelf: 'center',
   },
@@ -227,7 +221,7 @@ const styles = StyleSheet.create({
   },
   cashSelectBodyCon: {
     height: ms(60),
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.textInputBackground,
     borderRadius: ms(5),
     flexGrow: 0.3,
     justifyContent: 'center',
@@ -243,7 +237,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: ms(5),
     paddingLeft: ms(10),
-    borderColor: COLORS.light_border,
+    borderColor: COLORS.solidGrey,
     color: COLORS.text,
     fontFamily: Fonts.Italic,
   },

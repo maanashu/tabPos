@@ -194,10 +194,12 @@ export function MainScreen({
         products: localCartArray,
       };
       try {
-        eraseClearCart();
+        // eraseClearCart();
+        eraseCart();
         const bulkData = await createBulkcart(dataToSend)(dispatch);
         // if (holdProductArray?.length == 0 || getRetailData?.getAllCart?.length == 0) {
-        if (holdProductArray?.length == 0 || Object.keys(getRetailData?.getAllCart)?.length == 0) {
+        if (holdProductArray?.length == 0 && Object.keys(getRetailData?.getAllCart)?.length == 0) {
+          console.log('if');
           const data =
             holdProductArray?.length > 0
               ? {
@@ -210,6 +212,7 @@ export function MainScreen({
                 };
           dispatch(changeStatusProductCart(data));
         } else {
+          console.log('else');
           const data =
             holdProductArray?.length > 0
               ? {
@@ -222,9 +225,18 @@ export function MainScreen({
                 };
           dispatch(changeStatusProductCart(data));
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log('catch', error);
+      }
     } else {
-      holdProductArray?.length;
+      console.log('last else');
+      // const dataToSend = {
+      //   seller_id: sellerID,
+      //   products: localCartArray,
+      // };
+      // eraseCart();
+      // const bulkData = await createBulkcart(dataToSend)(dispatch);
+
       const data =
         holdProductArray?.length > 0
           ? {
@@ -614,7 +626,15 @@ export function MainScreen({
   const onSelectedItemsChange = (selectedItems) => {
     setSelectedItems(selectedItems);
   };
-
+  const eraseCart = async () => {
+    setSelectedCartItems([]);
+    dispatch(clearLocalCart());
+    dispatch(updateCartLength(0));
+    dispatch(getMainProduct());
+    setLocalCartArray([]);
+    setIsClear(true);
+    dispatch(getAllCartReset());
+  };
   const eraseClearCart = async () => {
     setSelectedCartItems([]);
     dispatch(clearLocalCart());
@@ -623,8 +643,8 @@ export function MainScreen({
     setLocalCartArray([]);
     setIsClear(true);
     if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
-      // dispatch(clearAllCart());
-      dispatch(getAllCartReset());
+      dispatch(clearAllCart());
+      // dispatch(getAllCartReset());
     }
   };
 

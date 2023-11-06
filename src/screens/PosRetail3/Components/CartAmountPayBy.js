@@ -148,6 +148,7 @@ export const CartAmountPayBy = ({
   const servicCartId = getRetailData?.getserviceCart?.id;
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
+
   const [selectedPaymentIndex, setSelectedPaymentIndex] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);

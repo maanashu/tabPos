@@ -606,7 +606,6 @@ export class RetailController {
         order_amount: orderAmountstrfy,
         discount_desc: data.descriptionDis,
       };
-
       HttpClient.put(endpoint, body)
         .then((response) => {
           if (response?.msg === 'PosCart updated!') {
@@ -897,8 +896,9 @@ export class RetailController {
     });
   }
 
-  static async getTips(sellerID) {
+  static async getTips() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.getTips + `${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
@@ -1557,24 +1557,15 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.customProductAdd;
-      const body = data?.notes
-        ? {
-            seller_id: sellerID,
-            price: data?.price,
-            name: data?.productName,
-            description: data?.notes,
-            type: 'physical',
-            qty: data?.qty,
-            upc: data?.upc,
-          }
-        : {
-            seller_id: sellerID,
-            price: data?.price,
-            name: data?.productName,
-            type: 'physical',
-            qty: data?.qty,
-            upc: data?.upc,
-          };
+      const body = {
+        seller_id: sellerID,
+        price: data?.price,
+        name: data?.productName,
+        type: 'physical',
+        qty: data?.qty,
+        upc: data?.upc,
+        ...(data?.notes && { description: data?.notes }),
+      };
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
