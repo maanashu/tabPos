@@ -15,7 +15,7 @@ import {
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import { Images } from '@mPOS/assets';
-import { Spacer, CustomBackdrop } from '@mPOS/components';
+import { Spacer, FullScreenLoader } from '@mPOS/components';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { strings } from '@mPOS/localization';
 import { ms } from 'react-native-size-matters';
@@ -27,10 +27,16 @@ import {
 } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
+import { digitWithDot } from '@/utils/validators';
+import { CustomErrorToast } from '@mPOS/components/Toast';
+import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 
-const PayByCash = ({ payByCashRef }) => {
+const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) => {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
+  const cartData = retailData?.getAllCart;
   const productDetail = retailData?.getOneProduct;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
 
@@ -46,6 +52,39 @@ const PayByCash = ({ payByCashRef }) => {
   const [sizeName, setSizeName] = useState();
   const [keyboardStatus, setKeyboardStatus] = useState('60%');
   const snapPoints = useMemo(() => [keyboardStatus], [keyboardStatus]);
+  const [selectedId, setSelectedId] = useState(1);
+
+  const [amount, setAmount] = useState();
+
+  const totalPayAmount = () => {
+    const cartAmount = cartData?.amount?.total_amount ?? '0.00';
+    // const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
+    const totalPayment = parseFloat(cartAmount);
+    return totalPayment.toFixed(2);
+  };
+
+  function findGreaterCurrencyNotes(targetValue, currencyNotes) {
+    const greaterNotes = currencyNotes.filter((note) => note > targetValue);
+    return greaterNotes;
+  }
+
+  const currencyNotes = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 5000];
+  const targetValue = totalPayAmount();
+  const greaterNotes = findGreaterCurrencyNotes(targetValue, currencyNotes);
+  const selectCashArray = [
+    {
+      id: 1,
+      usd: totalPayAmount(),
+    },
+    {
+      id: 2,
+      usd: greaterNotes[0] <= 5000 ? greaterNotes[0] : totalPayAmount(),
+    },
+    {
+      id: 3,
+      usd: greaterNotes[1] <= 5000 ? greaterNotes[1] : totalPayAmount(),
+    },
+  ];
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -84,59 +123,106 @@ const PayByCash = ({ payByCashRef }) => {
       title: 'No e-recipe',
     },
   ];
+  const [cashRate, setCashRate] = useState(selectCashArray?.[0]);
+
+  const isLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
+
+  const createOrderHandler = () => {
+    if (amount && digitWithDot.test(amount) === false) {
+      CustomErrorToast({ message: 'Please enter valid amount' });
+    } else {
+      const data = {
+        cartid: cartData.id,
+        tips: amount === undefined || amount === '' ? cashRate : amount,
+        modeOfPayment: 'cash',
+      };
+      console.log('data', data);
+      // const callback = (response) => {
+      //   if (response) {
+      //     onPressContinue(data);
+      //   }
+      // };
+
+      // dispatch(createOrder(data, callback));
+      payByCashhandler();
+    }
+  };
 
   return (
     <BottomSheetModal
       backdropComponent={CustomBackdrop}
       detached
       bottomInset={0}
-      onDismiss={() => {}}
+      onDismiss={() => {
+        setSelectedId(1);
+        setAmount();
+        setCashRate(selectCashArray?.[0]);
+        payByCashCrossHandler();
+      }}
       backdropOpacity={0.5}
       ref={payByCashRef}
       snapPoints={snapPoints}
       enableDismissOnClose
       enablePanDownToClose
-      stackBehavior={'replace'}
+      // stackBehavior={'replace'}
       handleComponent={() => <View />}
     >
       <BottomSheetScrollView>
         <View style={{ flex: 1, paddingHorizontal: ms(10) }}>
           <View style={styles.productHeaderCon}>
-            <TouchableOpacity onPress={() => payByCashRef.current.dismiss()}>
+            <TouchableOpacity onPress={() => payByCashCrossHandler()}>
               <Image source={Images.cross} style={styles.crossImageStyle} />
             </TouchableOpacity>
           </View>
           <View style={styles.payableAmountCon}>
             <Text style={styles.payableAmount}>Total Payable Amount:</Text>
-            <Text style={styles.darkPaybleAmount}>$34.05</Text>
+            <Text style={styles.darkPaybleAmount}>${totalPayAmount()}</Text>
           </View>
           <View style={styles.receivedAmountCon}>
             <Text style={styles.receivedAmountText}>Received Amount</Text>
             <View style={styles.cashSelectCon}>
-              {[1, 2, 3]?.map((item, index) => (
-                <View style={styles.cashSelectBodyCon}>
-                  <Text style={styles.cashCardCoin}>$34.05</Text>
-                </View>
-              ))}
+              {selectCashArray?.map((item, index) => {
+                const formattedNumber = (Math.round(item.usd * 100) / 100).toString();
+                return (
+                  <TouchableOpacity
+                    style={[
+                      styles.cashSelectBodyCon,
+                      {
+                        borderColor:
+                          selectedId === item.id ? COLORS.primary : COLORS.textInputBackground,
+                        backgroundColor:
+                          selectedId === item.id ? COLORS.blue_shade : COLORS.textInputBackground,
+                      },
+                    ]}
+                    onPress={() => {
+                      setSelectedId(item.id);
+                      setCashRate(item.usd);
+                    }}
+                  >
+                    <Text style={styles.cashCardCoin}>${formattedNumber}</Text>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
-            {/* <BottomSheetTextInput style={styles.otherAmountInput} placeholder="Other amount" /> */}
 
             <TextInput
               style={styles.otherAmountInput}
               placeholder="Other amount"
-              //  onChangeText={onChangeText}
-              //  value={value}
+              value={amount}
+              onChangeText={setAmount}
+              keyboardType="number-pad"
             />
 
-            <View style={styles.payNowCon}>
+            <TouchableOpacity style={styles.payNowCon} onPress={createOrderHandler}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={styles.payNowText}>{'Pay Now'}</Text>
                 <Image source={Images.buttonArrow} style={styles.buttonArrow} />
               </View>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </BottomSheetScrollView>
+      {isLoad && <FullScreenLoader />}
     </BottomSheetModal>
   );
 };
@@ -223,9 +309,11 @@ const styles = StyleSheet.create({
     height: ms(60),
     backgroundColor: COLORS.textInputBackground,
     borderRadius: ms(5),
+    // flexGrow: 0.3,
     flexGrow: 0.3,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
   },
   cashCardCoin: {
     fontFamily: Fonts.SemiBold,

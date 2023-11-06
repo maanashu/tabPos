@@ -21,6 +21,8 @@ import { getAllCart, getTip } from '@/actions/RetailAction';
 import CartAmountByPay from './Components/CartAmountByPay';
 import PayByCash from './Components/PayByCash';
 import { TYPES } from '@/Types/Types';
+import FinalPayment from './Components/FinalPayment';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 
 export function Cart() {
   const dispatch = useDispatch();
@@ -28,6 +30,7 @@ export function Cart() {
   const productCartData = retailData?.getAllCart;
   const paymentSelection = useRef();
   const payByCashRef = useRef(null);
+  const finalPaymentRef = useRef(null);
   const cartAmountByPayRef = useRef(null);
   const [cartProduct, setCartProduct] = useState();
   const [addNotes, setAddNotes] = useState(false);
@@ -44,6 +47,7 @@ export function Cart() {
         TYPES.PRODUCT_UPDATE_PRICE,
         TYPES.CUSTOM_PRODUCT_ADD,
         TYPES.GET_CLEAR_ALL_CART,
+        TYPES.UPDATE_CART_BY_TIP,
       ],
       state
     )
@@ -57,9 +61,32 @@ export function Cart() {
     dispatch(getTip());
     cartAmountByPayRef.current?.present();
   }, []);
+  const cartAmountByPayCross = useCallback(() => {
+    cartAmountByPayRef.current?.dismiss();
+  }, []);
+
   const cashPayNowHandler = useCallback(() => {
+    cartAmountByPayRef.current?.dismiss();
     payByCashRef.current?.present();
   }, []);
+
+  const payByCashhandler = useCallback(() => {
+    finalPaymentRef.current?.present();
+    payByCashRef.current?.dismiss();
+  }, []);
+
+  const payByCashCrossHandler = useCallback(() => {
+    payByCashRef.current?.dismiss();
+    // cartAmountByPayRef.current?.present();
+  }, []);
+
+  const finalPaymentCrossHandler = useCallback(() => {
+    finalPaymentRef.current?.dismiss();
+    payByCashRef.current?.dismiss();
+    cartAmountByPayRef.current?.dismiss();
+    // commonNavigate(MPOS_NAVIGATION.retailProducts);
+  }, []);
+
   const onRowDidOpen = (rowKey) => {
     console.log('This row opened', rowKey);
   };
@@ -332,8 +359,9 @@ export function Cart() {
         <PriceChange priceChangeClose={() => setPriceChange(false)} {...{ cartProduct }} />
       </Modal>
 
-      <CartAmountByPay {...{ cartAmountByPayRef, cashPayNowHandler }} />
-      <PayByCash {...{ payByCashRef }} />
+      <CartAmountByPay {...{ cartAmountByPayRef, cashPayNowHandler, cartAmountByPayCross }} />
+      <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
+      <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler }} />
       {isLoading ? <FullScreenLoader /> : null}
     </SafeAreaView>
   );

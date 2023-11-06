@@ -110,6 +110,7 @@ export const Images = {
   pencil: require('@mPOS/assets/icons/CartTab/pencil.png'),
   buttonArrow: require('@mPOS/assets/icons/CartTab/buttonArrow.png'),
   addCustomerIcon: require('@mPOS/assets/icons/CartTab/addCustomerIcon.png'),
+  email: require('@mPOS/assets/icons/CartTab/email.png'),
 
   // Wallet Tab
   graph: require('@mPOS/assets/icons/images/graph.png'),
