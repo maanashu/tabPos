@@ -15,7 +15,7 @@ import { moderateScale, ms } from 'react-native-size-matters';
 
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { Images, categoryshoes } from '@/assets';
+import { Images, categoryshoes, cross, search_light } from '@/assets';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { getProductByUpc } from '@/actions/DeliveryAction';
@@ -84,7 +84,7 @@ const ManualEntry = ({ setIsVisible, onPressCart }) => {
     <View style={[styles.container, { flex: 1 / 1.2 }]}>
       <View style={styles.headingRowStyle}>
         <TouchableOpacity onPress={() => setIsVisible(false)}>
-          <Image source={Images.cross} style={styles.crossIconStyle} />
+          <Image source={cross} style={styles.crossIconStyle} />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -107,7 +107,7 @@ const ManualEntry = ({ setIsVisible, onPressCart }) => {
       <Spacer space={SH(30)} />
 
       <View style={styles.searchInputView}>
-        <Image source={Images.search} style={styles.searchStyle} />
+        <Image source={search_light} style={styles.searchStyle} />
         <TextInput
           value={search}
           onChangeText={(text) => {
@@ -155,9 +155,10 @@ const styles = StyleSheet.create({
     paddingVertical: SH(15),
   },
   crossIconStyle: {
-    width: ms(30),
-    height: ms(30),
+    width: ms(20),
+    height: ms(20),
     resizeMode: 'contain',
+    tintColor: COLORS.gerySkies,
   },
   searchStyle: {
     width: SW(24),

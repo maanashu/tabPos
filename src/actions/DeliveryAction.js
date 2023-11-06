@@ -188,22 +188,23 @@ const getProductByUpcError = (error) => ({
   payload: { error },
 });
 
-export const getOrderCount = () => async (dispatch) => {
+export const getOrderCount = (callback) => async (dispatch) => {
   dispatch(getOrderCountRequest());
   try {
     const res = await DeliveryController.getOrderCount();
+    callback && callback(res?.payload?.status_count);
     dispatch(getOrderCountSuccess(res));
   } catch (error) {
     dispatch(getOrderCountError(error.message));
   }
 };
-export const getReviewDefault = (status, deliveryOption) => async (dispatch) => {
+export const getReviewDefault = (status) => async (dispatch) => {
   dispatch(getReviewDefRequest());
   try {
-    const res = await DeliveryController.getReviewDefault(status, deliveryOption);
+    const res = await DeliveryController.getReviewDefault(status);
     dispatch(getReviewDefSuccess(res));
     dispatch(deliOrder());
-    dispatch(getPendingOrders(sellerID));
+    dispatch(getPendingOrders());
     dispatch(getOrderCount());
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -227,12 +228,10 @@ export const acceptOrder = (data, openShippingOrders, delivery, callback) => asy
   dispatch(acceptOrderRequest());
   try {
     const res = await DeliveryController.acceptOrder(data);
+    await dispatch(getOrderCount());
     callback && callback(res);
     dispatch(acceptOrderSuccess(res));
-    dispatch(getOrderCount());
-    dispatch(orderStatusCount(data.sellerID));
-    dispatch(getReviewDefault(openShippingOrders, delivery));
-    dispatch(getPendingOrders(data.sellerID));
+    dispatch(getPendingOrders());
   } catch (error) {
     dispatch(acceptOrderError(error.message));
   }

@@ -21,6 +21,8 @@ import { Images } from '@mPOS/assets';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { ScreenWrapper, Spacer } from '@/components';
 import styles from './styles';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { Header } from '@mPOS/components';
 
 const { width, height } = Dimensions.get('window');
 
@@ -141,116 +143,92 @@ export function ProductRefund(props) {
     return { title, deliveryCharges };
   };
 
-  //   const renderProductItem = ({ item, index }) => (
-  //     <View style={styles.blueListData}>
-  //       <View style={styles.displayflex}>
-  //         <View style={[styles.tableListSide, styles.listLeft]}>
-  //           <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>{index + 1}</Text>
-  //           <View
-  //             style={{
-  //               flexDirection: 'row',
-  //               alignItems: 'center',
-  //             }}
-  //           >
-  //             <Image source={{ uri: item?.product_image }} style={styles.columbiaMen} />
-  //             <View style={{ marginLeft: 10 }}>
-  //               <Text style={[styles.blueListDataText, { width: SW(60) }]} numberOfLines={2}>
-  //                 {item?.product_name ?? '-'}
-  //               </Text>
-  //               <Text style={styles.sukNumber}>{item?.product_details?.sku ?? '-'}</Text>
-  //             </View>
-  //           </View>
+  const renderProductItem = ({ item, index }) => (
+    <View style={styles.productMainViewStyle}>
+      <View
+        style={{
+          alignItems: 'center',
+          paddingHorizontal: ms(5),
+          flexDirection: 'row',
+        }}
+      >
+        <Image source={{ uri: item?.product_image }} style={styles.productImageStyle} />
 
-  //           <View style={styles.productCartBody}>
-  //             <Text style={styles.blueListDataText} numberOfLines={1}>
-  //               ${item?.price ?? '0'}
-  //             </Text>
-  //           </View>
+        <View style={{ paddingHorizontal: ms(10) }}>
+          <Text style={styles.blueListDataText} numberOfLines={2}>
+            {item?.product_name ?? '-'}
+          </Text>
+          <Text style={styles.skuNumber}>{item?.product_details?.sku ?? '-'}</Text>
 
-  //           {applyEachItem ? (
-  //             <View style={styles.productCartBody}>
-  //               <TextInput
-  //                 style={[
-  //                   styles.productCartBody,
-  //                   {
-  //                     textAlign: 'center',
-  //                     fontFamily: Fonts.Regular,
-  //                     borderRadius: 5,
-  //                     backgroundColor: COLORS.blue_shade,
-  //                     padding: 0,
-  //                     margin: 0,
-  //                   },
-  //                 ]}
-  //                 value={item?.refundAmount}
-  //                 keyboardType={'number-pad'}
-  //                 onChangeText={(text) => {
-  //                   refundHandler(index, text, item);
-  //                 }}
-  //               />
-  //             </View>
-  //           ) : (
-  //             <View style={styles.productCartBody}>
-  //               {amount ? (
-  //                 <Text style={styles.blueListDataText} numberOfLines={1}>
-  //                   {`$${(item?.refundAmount).toFixed(2) ?? 0}`}
-  //                 </Text>
-  //               ) : (
-  //                 <Text style={styles.blueListDataText} numberOfLines={1}>
-  //                   {'-'}
-  //                 </Text>
-  //               )}
-  //             </View>
-  //           )}
+          <Text style={[styles.blueListDataText, { fontFamily: Fonts.Regular }]} numberOfLines={1}>
+            {`$${item?.price ?? '0'}  x  ${item?.qty}`}
+          </Text>
 
-  //           <View style={styles.productCartBody}>
-  //             <View style={styles.listCountCon}>
-  //               <TouchableOpacity
-  //                 style={{
-  //                   width: SW(10),
-  //                   alignItems: 'center',
-  //                 }}
-  //                 onPress={() => addRemoveQty('-', index)}
-  //               >
-  //                 <Image source={minus} style={styles.minus} />
-  //               </TouchableOpacity>
-  //               <Text>{`${item?.qty}`}</Text>
-  //               <TouchableOpacity
-  //                 style={{
-  //                   width: SW(10),
-  //                   alignItems: 'center',
-  //                 }}
-  //                 onPress={() => addRemoveQty('+', index)}
-  //               >
-  //                 <Image source={plus} style={styles.minus} />
-  //               </TouchableOpacity>
-  //             </View>
-  //           </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.refundAmountText}>{'Refund Amount:'}</Text>
 
-  //           <View style={styles.productCartBody}>
-  //             <Text style={styles.blueListDataText} numberOfLines={1}>
-  //               $
-  //               {applicableIsCheck || applyEachItem
-  //                 ? (item?.totalRefundAmount).toFixed(2) ?? 0
-  //                 : item.price * item.qty}
-  //             </Text>
-  //           </View>
-  //           <View style={{}}>
-  //             <TouchableOpacity
-  //               onPress={() => {
-  //                 setOrders((prevState) => {
-  //                   const removedArr = prevState.filter((data) => data !== item);
-  //                   return removedArr;
-  //                 });
-  //               }}
-  //               style={styles.removeContainer}
-  //             >
-  //               <Image source={borderCross} style={styles.removeIcon} />
-  //             </TouchableOpacity>
-  //           </View>
-  //         </View>
-  //       </View>
-  //     </View>
-  //   );
+            <TextInput
+              style={styles.productCartBody}
+              value={item?.refundAmount}
+              keyboardType={'number-pad'}
+              onChangeText={(text) => {
+                refundHandler(index, text, item);
+              }}
+            />
+          </View>
+        </View>
+      </View>
+
+      {/* <View style={styles.displayflex}>
+          <View style={styles.productCartBody}>
+            <View style={styles.listCountCon}>
+              <TouchableOpacity
+                style={{
+                  width: SW(10),
+                  alignItems: 'center',
+                }}
+                onPress={() => addRemoveQty('-', index)}
+              >
+                <Image source={minus} style={styles.minus} />
+              </TouchableOpacity>
+              <Text>{`${item?.qty}`}</Text>
+              <TouchableOpacity
+                style={{
+                  width: SW(10),
+                  alignItems: 'center',
+                }}
+                onPress={() => addRemoveQty('+', index)}
+              >
+                <Image source={plus} style={styles.minus} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.productCartBody}>
+            <Text style={styles.blueListDataText} numberOfLines={1}>
+              $
+              {applicableIsCheck || applyEachItem
+                ? (item?.totalRefundAmount).toFixed(2) ?? 0
+                : item.price * item.qty}
+            </Text>
+          </View>
+          <View style={{}}>
+            <TouchableOpacity
+              onPress={() => {
+                setOrders((prevState) => {
+                  const removedArr = prevState.filter((data) => data !== item);
+                  return removedArr;
+                });
+              }}
+              style={styles.removeContainer}
+            >
+              <Image source={borderCross} style={styles.removeIcon} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View> */}
+    </View>
+  );
 
   const applyRefundHandler = () => {
     if (applicableIsCheck || applyEachItem) {
@@ -326,7 +304,27 @@ export function ProductRefund(props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.leftMainViewStyle}>
+      <Header backRequired title={strings.deliveryOrders.back} />
+
+      <Spacer space={SH(10)} />
+
+      <TouchableOpacity style={styles.partialButtonStyle}>
+        <Text style={styles.partialButtonTextStyle}>{strings.returnOrder.partialReturn}</Text>
+      </TouchableOpacity>
+
+      <Spacer space={SH(20)} />
+
+      <FlatList
+        scrollEnabled
+        data={orders}
+        extraData={orders}
+        renderItem={renderProductItem}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => item?.id?.toString()}
+        contentContainerStyle={styles.contentContainerStyle}
+      />
+
+      {/* <View style={styles.leftMainViewStyle}>
         <View style={styles.rowStyle}>
           {finalOrder?.order?.delivery_charge == '0' ||
             (finalOrder?.order?.shipping_charge == '0' && (
@@ -652,7 +650,7 @@ export function ProductRefund(props) {
         </TouchableOpacity>
 
         <Spacer space={SH(20)} />
-      </View>
+      </View> */}
     </View>
   );
 }

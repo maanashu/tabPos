@@ -53,10 +53,11 @@ export function Delivery() {
     React.useCallback(() => {
       dispatch(todayOrders());
       dispatch(deliOrder());
-      dispatch(getReviewDefault(0, 1));
+      dispatch(getReviewDefault(selectedStatus));
       dispatch(getGraphOrders());
       dispatch(getOrderstatistics(1));
       dispatch(getOrderCount());
+      setHeaderText(selectedStatus);
     }, [])
   );
 
@@ -65,7 +66,16 @@ export function Delivery() {
     return (
       <TouchableOpacity
         style={styles.orderItemViewStyle}
-        onPress={() => navigate(MPOS_NAVIGATION.orderDetail, { data: item })}
+        onPress={() =>
+          navigate(
+            selectedStatus === '9'
+              ? MPOS_NAVIGATION.deliveryReturnOrderDetail
+              : MPOS_NAVIGATION.orderDetail,
+            {
+              data: item,
+            }
+          )
+        }
       >
         <View style={{ flex: 0.4 }}>
           <Text style={styles.deliveryOrderTextStyle}>{`${item?.user_details?.firstname}`}</Text>
@@ -114,18 +124,19 @@ export function Delivery() {
   };
 
   const isDeliveryOrder = useSelector((state) =>
-    isLoadingSelector([TYPES.TODAY_ORDER_STATUS, TYPES.GET_DELIVERY_TYPES_ORDERS], state)
+    isLoadingSelector([TYPES.TODAY_ORDER_STATUS, TYPES.DELIVERING_ORDER], state)
   );
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     dispatch(todayOrders());
     dispatch(deliOrder());
-    dispatch(getReviewDefault(0, 1));
+    dispatch(getReviewDefault(0));
     dispatch(getGraphOrders());
-    dispatch(getOrderstatistics());
+    dispatch(getOrderstatistics(1));
     dispatch(getOrderCount());
     setRefreshing(false);
+    setHeaderText(selectedStatus);
   }, []);
 
   const setHeaderText = (value) => {
@@ -152,9 +163,9 @@ export function Delivery() {
   return (
     <ScreenWrapper>
       <Header
+        orders
         backRequired
         title={strings.profile.header}
-        orders
         rightIconOnpress={() => setIsStatusDrawer(true)}
       />
 
@@ -232,6 +243,7 @@ export function Delivery() {
         isVisible={isStatusDrawer}
         animationIn={'slideInRight'}
         animationOut={'slideOutLeft'}
+        onBackdropPress={() => setIsStatusDrawer(false)}
       >
         <StatusDrawer
           closeModal={() => setIsStatusDrawer(false)}

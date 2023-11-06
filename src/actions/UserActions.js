@@ -13,6 +13,10 @@ const loginPosUserSuccess = (posLoginData) => ({
   type: TYPES.LOGIN_POS_USER_SUCCESS,
   payload: { posLoginData },
 });
+export const saveDefaultScreen = (defaultScreen) => ({
+  type: TYPES.SAVE_DEFAULT_SCREEN,
+  payload: { defaultScreen },
+});
 
 const getPendingOrdersRequest = () => ({
   type: TYPES.PENDING_ORDERS_REQUEST,
@@ -32,11 +36,12 @@ const clearStore = () => ({
   payload: null,
 });
 
-export const loginPosUser = (data) => async (dispatch) => {
+export const loginPosUser = (data, callback) => async (dispatch) => {
   dispatch(loginPosUserRequest());
   try {
     const res = await UserController.loginPosUser(data);
     dispatch(loginPosUserSuccess(res?.payload));
+    callback && callback();
   } catch (error) {
     return dispatch(loginPosUserError(error));
   }

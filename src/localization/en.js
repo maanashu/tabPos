@@ -566,5 +566,11 @@ export const en = {
     return: 'Return',
     noOrderFound: 'No order found',
     searchSku: 'Search SKU here',
+    partialReturn: 'Partial Return',
+    selectPayment: 'Select Payment Method',
+    sms: 'SMS',
+    email: 'Email',
+    noReceipe: 'No e-recipe',
+    confirmReturn: 'Confirm Return',
   },
 };

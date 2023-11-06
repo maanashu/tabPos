@@ -166,7 +166,7 @@ export const getAppointment =
       const totalPages = res?.payload?.total_pages;
       const pages = { currentPages: currentPages, totalPages: totalPages };
       dispatch(getAppointmentSuccess(res?.payload?.data, pages));
-      dispatch(getPendingOrders(sellerId));
+      dispatch(getPendingOrders());
     } catch (error) {
       if (error?.statusCode === 204) {
         dispatch(getAppointmentReset());

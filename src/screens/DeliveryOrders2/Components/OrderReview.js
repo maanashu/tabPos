@@ -31,8 +31,8 @@ const OrderReview = ({
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const onRefresh = () => {
-    dispatch(getReviewDefault(0, 1));
-    dispatch(getPendingOrders(sellerID));
+    dispatch(getReviewDefault(0));
+    dispatch(getPendingOrders());
   };
 
   return (

@@ -183,10 +183,7 @@ export function ReturnOrderDetail(props) {
             onChangeText={onChangeHandler}
           />
         </View>
-        <TouchableOpacity
-          // onPress={() => setIsVisible(true)}
-          style={styles.manualView}
-        >
+        <TouchableOpacity onPress={() => setIsVisible(true)} style={styles.manualView}>
           <Text style={styles.orderDateText}>{'Manual Entry'}</Text>
         </TouchableOpacity>
       </View>

@@ -20,6 +20,9 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { loginPosUser } from '@/actions/UserActions';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 
 export function Login(props) {
   const CELL_COUNT = 4;
@@ -43,7 +46,21 @@ export function Login(props) {
         pos_user_id: posUser?.user_id.toString(),
         pos_security_pin: value,
       };
-      dispatch(loginPosUser(data));
+      dispatch(
+        loginPosUser(data, (res) =>
+          props?.navigation.reset({
+            index: 0,
+            routes: [
+              {
+                name: MPOS_NAVIGATION.posUserProfile,
+                params: {
+                  screen: 'default',
+                },
+              },
+            ],
+          })
+        )
+      );
     }
   };
 

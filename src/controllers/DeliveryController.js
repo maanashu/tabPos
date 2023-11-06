@@ -33,13 +33,13 @@ export class DeliveryController {
     });
   }
 
-  static async getReviewDefault(status, deliveryOption) {
+  static async getReviewDefault(status) {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerID}&delivery_option=${deliveryOption}`;
+        `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -68,11 +68,14 @@ export class DeliveryController {
   }
 
   static async acceptOrder(data) {
+    console.log('data========', data);
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.acceptOrder + `/${data.orderId}`;
       const body = {
         status: data.status,
       };
+      console.log('endpoint========', endpoint);
+      console.log('body========', body);
       HttpClient.put(endpoint, body)
         .then((response) => {
           Toast.show({
@@ -84,6 +87,7 @@ export class DeliveryController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error========', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

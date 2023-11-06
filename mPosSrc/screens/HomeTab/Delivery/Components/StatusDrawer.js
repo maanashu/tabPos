@@ -81,7 +81,7 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
     <TouchableOpacity
       disabled={item?.count > 0 ? false : true}
       onPress={() => {
-        dispatch(getReviewDefault(item?.key, 1));
+        dispatch(getReviewDefault(item?.key));
         dispatch(getOrderCount());
         dispatch(todayOrders());
         setSelectedStatus(item?.key);

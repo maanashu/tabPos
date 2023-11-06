@@ -25,8 +25,9 @@ export class ShippingController {
     });
   }
 
-  static async getReviewDefault(status, sellerID) {
+  static async getReviewDefault(status) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
@@ -65,14 +66,12 @@ export class ShippingController {
       };
       HttpClient.put(endpoint, body)
         .then((response) => {
-          // if (response?.msg === 'Order status updated successfully!') {
           Toast.show({
             position: 'bottom',
             type: 'success_toast',
             text2: response?.msg,
             visibilityTime: 2000,
           });
-          // }
           resolve(response);
         })
         .catch((error) => {
@@ -164,8 +163,9 @@ export class ShippingController {
     });
   }
 
-  static async todayShippingStatus(sellerID) {
+  static async todayShippingStatus() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL + ApiOrderInventory.todayShipStatus + `?seller_id=${sellerID}&type=shipping`;
       HttpClient.get(endpoint)
@@ -184,8 +184,9 @@ export class ShippingController {
     });
   }
 
-  static async todayCurrentStatus(sellerID) {
+  static async todayCurrentStatus() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL + ApiOrderInventory.todayShipStatus + `?seller_id=${sellerID}&type=current`;
       HttpClient.get(endpoint)
@@ -204,8 +205,9 @@ export class ShippingController {
     });
   }
 
-  static async orderStatusCount(sellerID) {
+  static async orderStatusCount() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.orderStatusCount + `?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
@@ -246,12 +248,13 @@ export class ShippingController {
     });
   }
 
-  static async getShippingOrderstatistics(sellerId) {
+  static async getShippingOrderstatistics() {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderstatistics +
-        `?seller_id=${sellerId}&filter=week&delivery_option=4`;
+        `?seller_id=${sellerID}&filter=week&delivery_option=4`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, TouchableOpacity, TextInput, Image } from 'react-native';
+import { View, TouchableOpacity, TextInput, Image, Dimensions } from 'react-native';
 
 import { debounce } from 'lodash';
 import { ms } from 'react-native-size-matters';
+import RBSheet from 'react-native-raw-bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SH } from '@/theme';
@@ -16,8 +17,10 @@ import { getDashboard } from '@/selectors/DashboardSelector';
 import { getOrdersByInvoiceId, scanBarCode } from '@/actions/DashboardAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { PaymentSelection } from './PaymentSelection/PaymentSelection';
 
 export function SearchScreen() {
+  const showSheet = useRef();
   const dispatch = useDispatch();
   const textInputRef = useRef();
   const getDashboardData = useSelector(getDashboard);
@@ -26,6 +29,7 @@ export function SearchScreen() {
   const [order, setOrder] = useState(orderData ?? '');
 
   useEffect(() => {
+    showSheet.current.open();
     if (invoiceNumber) {
       setOrder(orderData);
     } else {
@@ -81,6 +85,20 @@ export function SearchScreen() {
       </View>
 
       {isLoading ? <FullScreenLoader /> : null}
+
+      <RBSheet
+        ref={showSheet}
+        height={Dimensions.get('window').height - 300}
+        openDuration={150}
+        customStyles={{
+          container: {
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+          },
+        }}
+      >
+        <PaymentSelection closeSheet={() => showSheet.current.close()} />
+      </RBSheet>
     </ScreenWrapper>
   );
 }

@@ -15,7 +15,7 @@ const OrderTotal = ({ orderData, orderDetails }) => {
 
   const onPressNextHandler = () => {
     if (hasCheckedItem) {
-      // commonNavigate(MPOS_NAVIGATION.productRefund, { data: orderData, list: orderDetails });
+      commonNavigate(MPOS_NAVIGATION.productRefund, { data: orderData, list: orderDetails });
     } else {
       alert('Please select products to return');
     }
