@@ -1,6 +1,5 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
 import {
   Analytics,
   Cart,
@@ -27,14 +26,25 @@ import {
   ProductRefund,
   PaymentSelection,
 } from '@mPOS/screens';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
 import { TrackOrder } from '@mPOS/screens/HomeTab/Shipping/TrackOrder/TrackOrder';
 import { Invoice } from '@mPOS/components';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Stack = createNativeStackNavigator();
 
-export function AppNavigator() {
+export function AppNavigator(navigation) {
+  const [profileScreenVis, setProfileScreenVis] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setProfileScreenVis(true);
+    }, 1000);
+  }, []);
+
+  console.log('app nav', navigation);
   return (
     <Stack.Navigator
       screenOptions={{ gestureEnabled: false }}
@@ -111,11 +121,13 @@ export function AppNavigator() {
         component={DeliveryReturnOrderDetail}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name={MPOS_NAVIGATION.posUserProfile}
-        component={PosUserProfile}
-        options={{ headerShown: false }}
-      />
+      {profileScreenVis && (
+        <Stack.Screen
+          name={MPOS_NAVIGATION.posUserProfile}
+          component={PosUserProfile}
+          options={{ headerShown: false }}
+        />
+      )}
       <Stack.Screen
         name={MPOS_NAVIGATION.shipping}
         component={Shipping}
