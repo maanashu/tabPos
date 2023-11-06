@@ -104,15 +104,15 @@ export function DeliveryOrders2({ route }) {
     if (ORDER_DATA) {
       setOpenShippingOrders(ORDER_DATA?.status?.toString());
       setOrderId(ORDER_DATA?.id);
-      dispatch(getReviewDefault(ORDER_DATA?.status, 1));
+      dispatch(getReviewDefault(ORDER_DATA?.status));
       setTrackingView(false);
     }
   }, [ORDER_DATA]);
 
   useFocusEffect(
     React.useCallback(() => {
-      dispatch(getReviewDefault(0, 1));
-      dispatch(getPendingOrders(sellerID));
+      dispatch(getReviewDefault(0));
+      dispatch(getPendingOrders());
       dispatch(todayOrders());
       dispatch(deliOrder());
       dispatch(getOrderCount());
@@ -127,7 +127,7 @@ export function DeliveryOrders2({ route }) {
       setViewAllOrder(false);
       setTrackingView(false);
       setChangeViewToRecheck(false);
-      dispatch(getReviewDefault(0, 1));
+      dispatch(getReviewDefault(0));
       dispatch(getOrderCount());
       setOpenShippingOrders('0');
     }
@@ -276,9 +276,9 @@ export function DeliveryOrders2({ route }) {
       disabled={item?.count > 0 ? false : true}
       onPress={() => {
         setOpenShippingOrders(item?.key);
-        dispatch(getReviewDefault(item?.key, 1));
+        dispatch(getReviewDefault(item?.key));
         setTrackingView(false);
-        dispatch(getOrderCount(sellerID));
+        dispatch(getOrderCount());
         dispatch(todayOrders());
       }}
       style={styles.firstIconStyle}
@@ -415,6 +415,27 @@ export function DeliveryOrders2({ route }) {
     );
   };
 
+  const getUpdatedCount = (count) => {
+    if (count) {
+      for (let index = 0; index < count?.length; index++) {
+        const item = count[index];
+        if (item.count > 0) {
+          setOpenShippingOrders(index.toString());
+          dispatch(getReviewDefault(index));
+          dispatch(orderStatusCount());
+          dispatch(todayOrders());
+          dispatch(getOrderstatistics(1));
+          dispatch(getGraphOrders(1));
+          setGetOrderDetail('ViewAllScreen');
+          setUserDetail(ordersList?.[0] ?? []);
+          setViewAllOrder(true);
+          setOrderDetail(ordersList?.[0]?.order_details ?? []);
+          return;
+        }
+      }
+    }
+  };
+
   const acceptHandler = (id) => {
     const data = {
       orderId: id,
@@ -424,15 +445,22 @@ export function DeliveryOrders2({ route }) {
     dispatch(
       acceptOrder(data, openShippingOrders, 1, (res) => {
         if (res?.msg) {
-          dispatch(getReviewDefault(openShippingOrders, 1));
-          dispatch(orderStatusCount(sellerID));
-          dispatch(todayOrders());
-          dispatch(getOrderstatistics(1));
-          dispatch(getGraphOrders(1));
-          setGetOrderDetail('ViewAllScreen');
-          setUserDetail(ordersList?.[0] ?? []);
-          setViewAllOrder(true);
-          setOrderDetail(ordersList?.[0]?.order_details ?? []);
+          if (
+            getDeliveryData?.getReviewDef?.length > 0 &&
+            getDeliveryData?.getReviewDef?.length === 1
+          ) {
+            dispatch(getOrderCount(getUpdatedCount));
+          } else {
+            dispatch(getReviewDefault(openShippingOrders));
+            dispatch(orderStatusCount());
+            dispatch(todayOrders());
+            dispatch(getOrderstatistics(1));
+            dispatch(getGraphOrders(1));
+            setGetOrderDetail('ViewAllScreen');
+            setUserDetail(ordersList?.[0] ?? []);
+            setViewAllOrder(true);
+            setOrderDetail(ordersList?.[0]?.order_details ?? []);
+          }
         }
       })
     );
@@ -448,8 +476,8 @@ export function DeliveryOrders2({ route }) {
       acceptOrder(data, openShippingOrders, 1, (res) => {
         if (res?.msg) {
           setViewAllOrder(true);
-          dispatch(getReviewDefault(openShippingOrders, 1));
-          dispatch(orderStatusCount(sellerID));
+          dispatch(getReviewDefault(openShippingOrders));
+          dispatch(orderStatusCount());
           dispatch(todayOrders());
           dispatch(getOrderstatistics(1));
           dispatch(getGraphOrders(1));
@@ -489,7 +517,7 @@ export function DeliveryOrders2({ route }) {
   };
 
   const onRefresh = () => {
-    dispatch(getReviewDefault(openShippingOrders, 1));
+    dispatch(getReviewDefault(openShippingOrders));
     dispatch(getOrderCount(sellerID));
   };
 
@@ -654,7 +682,7 @@ export function DeliveryOrders2({ route }) {
             <InvoiceDetails
               trackingView={() => {
                 setTrackingView(false);
-                dispatch(getReviewDefault(openShippingOrders, 1));
+                dispatch(getReviewDefault(openShippingOrders));
               }}
               mapRef={mapRef}
               orderList={orderDetail}

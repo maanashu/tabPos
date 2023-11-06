@@ -4,6 +4,7 @@ import notifee, { AuthorizationStatus } from '@notifee/react-native';
 import { store } from '@/store';
 import { getPendingOrders } from '@/actions/DashboardAction';
 import { deliOrder, getOrderCount, getReviewDefault, todayOrders } from '@/actions/DeliveryAction';
+import { getReviewDefault as getShippingOrders } from '@/actions/ShippingAction';
 
 // Request user permission for notifications
 const requestPermission = async () => {
@@ -30,21 +31,21 @@ const getDeviceToken = async () => {
 const onMessageReceivedForeground = async (message) => {
   console.log('onMessageReceivedForeground');
   if (message?.data?.type === 'order_delivered') {
-    store.dispatch(getReviewDefault(5, 1));
-    store.dispatch(getReviewDefault(5, 4));
+    store.dispatch(getShippingOrders(5));
+    store.dispatch(getReviewDefault(5));
     store.dispatch(getOrderCount());
     store.dispatch(todayOrders());
   }
   if (message?.data?.type === 'order_received') {
-    store.dispatch(getReviewDefault(0, 1));
-    store.dispatch(getReviewDefault(0, 4));
+    store.dispatch(getShippingOrders(0));
+    store.dispatch(getReviewDefault(0));
     store.dispatch(getOrderCount());
     store.dispatch(getPendingOrders());
     store.dispatch(deliOrder());
   }
   if (message?.data?.type === 'order_pickup') {
-    store.dispatch(getReviewDefault(4, 1));
-    store.dispatch(getReviewDefault(4, 4));
+    store.dispatch(getShippingOrders(4));
+    store.dispatch(getReviewDefault(4));
     store.dispatch(getOrderCount());
   }
   await notifee.displayNotification({
@@ -63,21 +64,21 @@ const onMessageReceivedForeground = async (message) => {
 const onMessageReceivedBackground = async (message) => {
   console.log('onMessageReceivedBackground');
   if (message?.data?.type === 'order_delivered') {
-    store.dispatch(getReviewDefault(5, 1));
-    store.dispatch(getReviewDefault(5, 4));
+    store.dispatch(getShippingOrders(5));
+    store.dispatch(getReviewDefault(5));
     store.dispatch(getOrderCount());
     store.dispatch(todayOrders());
   }
   if (message?.data?.type === 'order_received') {
-    store.dispatch(getReviewDefault(0, 1));
-    store.dispatch(getReviewDefault(0, 4));
+    store.dispatch(getShippingOrders(0));
+    store.dispatch(getReviewDefault(0));
     store.dispatch(getOrderCount());
     store.dispatch(getPendingOrders());
     store.dispatch(deliOrder());
   }
   if (message?.data?.type === 'order_pickup') {
-    store.dispatch(getReviewDefault(4, 1));
-    store.dispatch(getReviewDefault(4, 4));
+    store.dispatch(getShippingOrders(4));
+    store.dispatch(getReviewDefault(4));
     store.dispatch(getOrderCount());
   }
   await notifee.displayNotification({

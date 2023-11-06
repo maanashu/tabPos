@@ -9,19 +9,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, SH } from '@/theme';
 import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import OrderTotal from '../Components/OrderTotal';
 import ProductList from '../Components/ProductList';
-import { DELIVERY_TYPES } from '@mPOS/Types/DeliveryTypes';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { acceptOrder } from '@/actions/DeliveryAction';
+import { MPOS_NAVIGATION } from '@common/commonImports';
 import mapCustomStyle from '@mPOS/components/MapCustomStyles';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
 import { FullScreenLoader, Header, Spacer } from '@mPOS/components';
 
 import styles from './styles';
-import { getAuthData } from '@/selectors/AuthSelector';
-import { acceptOrder } from '@/actions/DeliveryAction';
-import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 export function OrderDetail(props) {
   const mapRef = useRef();

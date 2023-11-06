@@ -58,7 +58,7 @@ export function Shipping() {
     React.useCallback(() => {
       dispatch(todayShippingStatus());
       dispatch(todayCurrentStatus());
-      dispatch(getReviewDefault(0, sellerID));
+      dispatch(getReviewDefault(0));
       dispatch(getGraphOrders());
       dispatch(getShippingOrderstatistics());
       dispatch(getOrderCount());
@@ -146,7 +146,7 @@ export function Shipping() {
     setRefreshing(true);
     dispatch(todayShippingStatus());
     dispatch(todayCurrentStatus());
-    dispatch(getReviewDefault(0, sellerID));
+    dispatch(getReviewDefault(0));
     dispatch(getGraphOrders());
     dispatch(getShippingOrderstatistics());
     setRefreshing(false);

@@ -31,7 +31,7 @@ export function OrderList(props) {
   const [selectedStatus, setSelectedStatus] = useState(params ?? '0');
 
   useEffect(() => {
-    dispatch(getReviewDefault(params ? params : 0, 1));
+    dispatch(getReviewDefault(params ? params : 0));
   }, []);
 
   const renderOrderItem = ({ item, index }) => {
@@ -170,6 +170,7 @@ export function OrderList(props) {
         isVisible={isStatusDrawer}
         animationIn={'slideInRight'}
         animationOut={'slideOutLeft'}
+        onBackdropPress={() => setIsStatusDrawer(false)}
       >
         <StatusDrawer
           closeModal={() => setIsStatusDrawer(false)}

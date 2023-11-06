@@ -149,7 +149,7 @@ export function DashBoard({ navigation }) {
 
   useEffect(() => {
     setScan(false);
-    dispatch(getPendingOrders(sellerID));
+    dispatch(getPendingOrders());
   }, []);
 
   useEffect(() => {
@@ -461,7 +461,7 @@ export function DashBoard({ navigation }) {
 
   const onRefresh = () => {
     dispatch(getOrderDeliveries(sellerID, 1));
-    dispatch(getPendingOrders(sellerID));
+    dispatch(getPendingOrders());
   };
 
   const bodyView = () => (

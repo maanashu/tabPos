@@ -204,10 +204,10 @@ export const getOrderCount = (status) => async (dispatch) => {
     dispatch(getOrderCountError(error.message));
   }
 };
-export const getReviewDefault = (status, sellerID) => async (dispatch) => {
+export const getReviewDefault = (status) => async (dispatch) => {
   dispatch(getReviewDefRequest());
   try {
-    const res = await ShippingController.getReviewDefault(status, sellerID);
+    const res = await ShippingController.getReviewDefault(status);
     dispatch(getReviewDefSuccess(res));
   } catch (error) {
     if (error?.statusCode === 204) {
@@ -233,7 +233,7 @@ export const acceptOrder = (data) => async (dispatch) => {
     const res = await ShippingController.acceptOrder(data);
     dispatch(acceptOrderSuccess(res));
     dispatch(getOrderCount(data.sellerID));
-    dispatch(getReviewDefault(0, 4));
+    dispatch(getReviewDefault(0));
   } catch (error) {
     dispatch(acceptOrderError(error.message));
   }
@@ -285,30 +285,31 @@ export const shippingGraph = (sellerID) => async (dispatch) => {
   }
 };
 
-export const todayShippingStatus = (sellerID) => async (dispatch) => {
+export const todayShippingStatus = () => async (dispatch) => {
   dispatch(todayShippingStatusRequest());
   try {
-    const res = await ShippingController.todayShippingStatus(sellerID);
+    const res = await ShippingController.todayShippingStatus();
     dispatch(todayShippingStatusSuccess(res?.payload));
   } catch (error) {
     dispatch(todayShippingStatusError(error.message));
   }
 };
 
-export const todayCurrentStatus = (sellerID) => async (dispatch) => {
+export const todayCurrentStatus = () => async (dispatch) => {
   dispatch(todayCurrentStatusRequest());
   try {
-    const res = await ShippingController.todayCurrentStatus(sellerID);
+    const res = await ShippingController.todayCurrentStatus();
     dispatch(todayCurrentStatusSuccess(res?.payload));
   } catch (error) {
     dispatch(todayCurrentStatusError(error.message));
   }
 };
 
-export const orderStatusCount = (sellerID) => async (dispatch) => {
+export const orderStatusCount = (callback) => async (dispatch) => {
   dispatch(orderStatusCountRequest());
   try {
-    const res = await ShippingController.orderStatusCount(sellerID);
+    const res = await ShippingController.orderStatusCount();
+    callback && callback(res?.payload?.orderStatus);
     dispatch(orderStatusCountSuccess(res?.payload));
   } catch (error) {
     dispatch(orderStatusCountError(error.message));
@@ -325,10 +326,10 @@ export const getGraphOrders = () => async (dispatch) => {
   }
 };
 
-export const getShippingOrderstatistics = (sellerId) => async (dispatch) => {
+export const getShippingOrderstatistics = () => async (dispatch) => {
   dispatch(getShippingOrderstatisticsRequest());
   try {
-    const res = await ShippingController.getShippingOrderstatistics(sellerId);
+    const res = await ShippingController.getShippingOrderstatistics();
     dispatch(getShippingOrderstatisticsSuccess(res?.payload));
   } catch (error) {
     dispatch(getShippingOrderstatisticsError(error.message));

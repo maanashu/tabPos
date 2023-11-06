@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
 
+import Pdf from 'react-native-pdf';
+import RNPrint from 'react-native-print';
 import WebView from 'react-native-webview';
 import { ms } from 'react-native-size-matters';
-import RNPrint from 'react-native-print';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -39,7 +40,7 @@ import CurrentShippingStatus from './Components/CurrentShippingStatus';
 
 import styles from './ShippingOrder2.styles';
 import { getPendingOrders } from '@/actions/DashboardAction';
-import Pdf from 'react-native-pdf';
+import { getOrderstatistics } from '@mPOS/actions/ShippingActions';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -61,13 +62,13 @@ export function ShippingOrder2() {
 
   useFocusEffect(
     React.useCallback(() => {
-      dispatch(orderStatusCount(sellerID));
-      dispatch(todayShippingStatus(sellerID));
-      dispatch(todayCurrentStatus(sellerID));
-      dispatch(getReviewDefault(0, sellerID));
+      dispatch(orderStatusCount());
+      dispatch(todayShippingStatus());
+      dispatch(todayCurrentStatus());
+      dispatch(getReviewDefault(0));
       dispatch(getGraphOrders());
-      dispatch(getPendingOrders(sellerID));
-      dispatch(getShippingOrderstatistics(sellerID));
+      dispatch(getPendingOrders());
+      dispatch(getShippingOrderstatistics());
     }, [])
   );
 
@@ -89,8 +90,8 @@ export function ShippingOrder2() {
 
   const onPressDrawerHandler = (key) => {
     setOpenShippingOrders(key);
-    dispatch(getReviewDefault(key, sellerID));
-    dispatch(orderStatusCount(sellerID));
+    dispatch(getReviewDefault(key));
+    dispatch(orderStatusCount());
   };
 
   const onpressViewHandler = (id) => {
@@ -119,6 +120,27 @@ export function ShippingOrder2() {
 
   const isOrderLoading = useSelector((state) => isLoadingSelector([TYPES.GET_REVIEW_DEF], state));
 
+  const getUpdatedCount = (count) => {
+    if (count) {
+      for (let index = 0; index < count?.length; index++) {
+        const item = count[index];
+        if (item.count > 0) {
+          setOpenShippingOrders(index.toString());
+          dispatch(getReviewDefault(index));
+          dispatch(orderStatusCount());
+          dispatch(todayShippingStatus());
+          dispatch(getOrderstatistics());
+          dispatch(getGraphOrders());
+          setGetOrderDetail('ViewAllScreen');
+          setUserDetail(ordersList?.[0] ?? []);
+          setViewAllOrders(true);
+          setOrderDetail(ordersList?.[0]?.order_details ?? []);
+          return;
+        }
+      }
+    }
+  };
+
   const acceptHandler = (id, status) => {
     const data = {
       orderId: id,
@@ -128,12 +150,19 @@ export function ShippingOrder2() {
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg) {
-          dispatch(getReviewDefault(openShippingOrders, 4));
-          dispatch(orderStatusCount(sellerID));
-          setGetOrderDetail('ViewAllScreen');
-          setUserDetail(ordersList?.[0] ?? []);
-          setViewAllOrders(true);
-          setOrderDetail(ordersList?.[0]?.order_details ?? []);
+          if (
+            getDeliveryData?.getReviewDef?.length > 0 &&
+            getDeliveryData?.getReviewDef?.length === 1
+          ) {
+            dispatch(orderStatusCount(getUpdatedCount));
+          } else {
+            dispatch(getReviewDefault(openShippingOrders));
+            dispatch(orderStatusCount());
+            setGetOrderDetail('ViewAllScreen');
+            setUserDetail(ordersList?.[0] ?? []);
+            setViewAllOrders(true);
+            setOrderDetail(ordersList?.[0]?.order_details ?? []);
+          }
         }
       })
     );
@@ -149,7 +178,7 @@ export function ShippingOrder2() {
       acceptOrder(data, () => {
         alert('Order declined successfully');
         setViewAllOrders(false);
-        dispatch(getReviewDefault(0, sellerID));
+        dispatch(getReviewDefault(0));
       })
     );
   };
@@ -264,7 +293,7 @@ export function ShippingOrder2() {
               style={styles.backView}
               onPress={() => {
                 setOpenWebView(false);
-                dispatch(getReviewDefault(openShippingOrders, sellerID));
+                dispatch(getReviewDefault(openShippingOrders));
               }}
             >
               <Image source={backArrow2} style={styles.backImageStyle} />
