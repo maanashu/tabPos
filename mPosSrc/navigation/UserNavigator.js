@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
-import { Login, PosUsers } from '@mPOS/screens';
+import { MPOS_NAVIGATION } from '@common/commonImports';
+import { Login, PosUserProfile, PosUsers } from '@mPOS/screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +16,11 @@ export function UserNavigator() {
       <Stack.Screen
         component={Login}
         name={MPOS_NAVIGATION.login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={PosUserProfile}
+        name={MPOS_NAVIGATION.posUserProfile}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

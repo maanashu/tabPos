@@ -2,7 +2,7 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { MPOS_NAVIGATION } from '@common/commonImports';
 import { VerifyOtp, EnterPhoneNumber } from '@mPOS/screens';
 
 const Stack = createNativeStackNavigator();

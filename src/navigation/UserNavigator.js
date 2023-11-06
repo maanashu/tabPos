@@ -24,7 +24,7 @@ export function UserNavigator() {
         name={NAVIGATION.posUserPasscode}
         options={{ headerShown: false }}
       />
-      <Stack.Screen component={HomeNavigator} name={'HOME'} options={{ headerShown: false }} />
+      {/* <Stack.Screen component={HomeNavigator} name={'HOME'} options={{ headerShown: false }} /> */}
       {/* <Stack.Screen
         name={NAVIGATION.weeklyTransaction}
         component={WeeklyTransaction}

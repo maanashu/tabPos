@@ -29,35 +29,30 @@ import { getUser } from '@mPOS/selectors/UserSelectors';
 import { getAuthData } from '@mPOS/selectors/AuthSelector';
 import { acccessAndConfirmation, essential, moreApp, tagLine } from '@mPOS/constants/enums';
 import BackButton from '@mPOS/components/BackButton';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { saveDefaultScreen } from '@/actions/UserActions';
 
-export function PosUserProfile() {
+export function PosUserProfile(props) {
   const dispatch = useDispatch();
   const authData = useSelector(getAuthData);
   const posData = useSelector(getUser);
   const loginPosUser = posData?.posLoginData;
   const merchantData = authData?.merchantLoginData;
-  const navigation = useNavigation();
 
-  // useEffect(() => {
-  //   dispatch(getTotalSale());
-  // }, [])
+  const handleBackNavigation = () => {
+    if (props?.route?.params?.screen == 'default') {
+      dispatch(saveDefaultScreen(true));
+    } else {
+      goBack();
+    }
+  };
 
   return (
     <ScreenWrapper>
       <View style={styles.containerStyle}>
         <View style={{ height: ms(60) }}>
           <BackButton
-            onPress={() => {
-              navigation.reset({
-                index: 0,
-                routes: [
-                  {
-                    name: MPOS_NAVIGATION.bottomTab,
-                  },
-                ],
-              });
-            }}
+            onPress={handleBackNavigation}
             title={'Back'}
             style={{
               backgroundColor: 'transparent',
