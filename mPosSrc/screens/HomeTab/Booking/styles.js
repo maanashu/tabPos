@@ -10,7 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.textInputBackground,
   },
   displayFlex: {
     flex: 1,
@@ -44,8 +44,8 @@ export const styles = StyleSheet.create({
     padding: 0,
   },
   truckStyle: {
-    width: SH(32),
-    height: SH(32),
+    width: SH(28),
+    height: SH(28),
     resizeMode: 'contain',
   },
   deliveryView: {
@@ -75,6 +75,7 @@ export const styles = StyleSheet.create({
   },
   calenderCon: {
     flex: 1,
+    // backgroundColor: COLORS.textInputBackground,
   },
   notificationCon: {
     width: windowWidth * 0.34,
@@ -221,7 +222,7 @@ export const styles = StyleSheet.create({
   },
   calenderHeader: {
     height: SH(60),
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     paddingLeft: moderateScale(5),
   },
@@ -237,16 +238,16 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: moderateScale(10),
+    // marginLeft: moderateScale(10),
     paddingHorizontal: ms(10),
   },
   unClickedButtonCon: {
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     height: SH(32),
     borderRadius: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: moderateScale(10),
+    // marginLeft: moderateScale(10),
     paddingHorizontal: ms(10),
   },
   checkedText: {
@@ -267,7 +268,7 @@ export const styles = StyleSheet.create({
   monthlySchduel: {
     height: SH(36),
     // width: SH(240),
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.textInputBackground,
     borderRadius: 3,
     paddingHorizontal: moderateScale(5),
     justifyContent: 'center',
@@ -294,7 +295,7 @@ export const styles = StyleSheet.create({
   startEndDate: {
     color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
-    fontSize: SH(10),
+    fontSize: ms(6),
     marginTop: ms(3),
   },
   eventContainer: {
@@ -310,7 +311,7 @@ export const styles = StyleSheet.create({
   eventTitle: {
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
-    fontSize: ms(6),
+    fontSize: ms(8),
   },
   iImageCon: {
     backgroundColor: COLORS.dark_grey,
@@ -349,13 +350,13 @@ export const styles = StyleSheet.create({
     fontSize: SF(20),
   },
   arrowButtonStl: {
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     borderRadius: ms(2),
     paddingHorizontal: ms(3),
     paddingVertical: ms(2),
   },
   rightTabContainer: {
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     flex: 0.9,
     margin: ms(7),
     marginLeft: ms(10),
@@ -470,8 +471,11 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   _calendarContainer: {
-    flex: 1,
+    // flex: 1,
     marginHorizontal: ms(10),
+    overflow: 'hidden',
+    zIndex: -99,
+    backgroundColor: 'white',
   },
   _eventTitle: {
     fontFamily: Fonts.Regular,
@@ -701,7 +705,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerScrollContainer: {
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     flexGrow: 1,
     paddingLeft: ms(25),
   },
@@ -960,5 +964,42 @@ export const styles = StyleSheet.create({
     marginTop: ms(10),
     marginHorizontal: ms(26),
     alignSelf: 'center',
+  },
+  dropDownIcon: {
+    width: SW(7),
+    height: SH(7),
+    resizeMode: 'contain',
+    paddingRight: ms(10),
+  },
+  containerStyle: {
+    backgroundColor: COLORS.white,
+    width: ms(100),
+    borderRadius: ms(4),
+    borderColor: COLORS.gerySkies,
+    borderWidth: 1,
+    padding: 0,
+    // marginTop: ms(5),
+    // height: ms(20),
+    // backgroundColor: 'red',
+  },
+  dropdown: {
+    zIndex: Platform.OS === 'ios' ? 100 : 99,
+    fontStyle: Fonts.Regular,
+    fontSize: ms(6),
+    borderColor: COLORS.transparent,
+    padding: 0,
+    margin: 0,
+    height: ms(15),
+    minHeight: ms(25),
+    overflow: 'hidden',
+    // backgroundColor: 'blue',
+  },
+  calendarView: {
+    // position: 'absolute',
+    // right: ms(0),
+    // top: ms(10),
+    // height: ms(20),
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });

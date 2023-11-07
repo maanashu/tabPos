@@ -37,8 +37,8 @@ export function Home() {
       navigate(MPOS_NAVIGATION.shipping);
     } else if (item?.title === 'Return') {
       navigate(MPOS_NAVIGATION.searchScreen);
-      // } else if (item?.title === 'Booking') {
-      //   navigate(MPOS_NAVIGATION.booking);
+    } else if (item?.title === 'Booking') {
+      navigate(MPOS_NAVIGATION.booking);
     }
   };
 

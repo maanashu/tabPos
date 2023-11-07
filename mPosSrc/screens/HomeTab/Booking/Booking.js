@@ -57,7 +57,7 @@ import ListViewHeader from './Components/ListViewComponents/ListViewHeader';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 import { Modal as PaperModal } from 'react-native-paper';
 import { useRef } from 'react';
-import { navigate } from '@mPOS/navigation/NavigationRef';
+import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
 import { NAVIGATION } from '@mPOS/constants';
 import dayjs from 'dayjs';
 import { styles } from './styles';
@@ -110,6 +110,14 @@ export function Booking() {
   const [selectedStaffData, setSelectedStaffData] = useState(null);
 
   const [showMiniCalendar, setshowMiniCalendar] = useState(false);
+
+  const [time, setTime] = useState(false);
+  const [timeValue, setTimeValue] = useState('week');
+  const [timeItem, setTimeItem] = useState([
+    { label: 'Today', value: 'today' },
+    { label: 'Week', value: 'week' },
+    { label: 'Month', value: 'month' },
+  ]);
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
@@ -368,21 +376,23 @@ export function Booking() {
     return (
       <View style={styles.headerMainView}>
         <View style={styles.deliveryView}>
-          <Image source={Images.back} style={styles.truckStyle} />
+          <TouchableOpacity onPress={goBack}>
+            <Image source={Images.back} style={styles.truckStyle} />
+          </TouchableOpacity>
           <Text style={styles.deliveryText}>{'Booking'}</Text>
         </View>
         <View style={styles.deliveryView}>
-          <TouchableOpacity
-          // onPress={() =>
-          //   navigate(NAVIGATION.notificationsList, {
-          //     screen: NAVIGATION.calender,
-          //   })
-          // }
+          {/* <TouchableOpacity
+          onPress={() =>
+            navigate(NAVIGATION.notificationsList, {
+              screen: NAVIGATION.calender,
+            })
+          }
           >
             <Image source={bell} style={[styles.truckStyle, { right: 25 }]} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
-            style={styles.searchView}
+            // style={styles.searchView}
             onPress={() => {
               setShowSearchModal(true);
               setSearchedAppointments([]);
@@ -393,7 +403,7 @@ export function Booking() {
             }}
           >
             <Image source={search_light} style={styles.searchImage} />
-            <View
+            {/* <View
               style={{
                 height: SH(40),
                 width: SW(70),
@@ -404,7 +414,7 @@ export function Booking() {
               <Text style={{ color: COLORS.darkGray, fontSize: ms(10), fontFamily: Fonts.Regular }}>
                 {strings.deliveryOrders.search}
               </Text>
-            </View>
+            </View> */}
           </TouchableOpacity>
         </View>
       </View>
@@ -469,17 +479,17 @@ export function Booking() {
         {customHeader()}
         {/* <View style={[styles.calenderContainer, { flexDirection: 'row' }]}> */}
         <View style={[styles.calenderCon]}>
-          {/* <CalendarHeaderWithOptions
+          <CalendarHeaderWithOptions
             {...{
               prevMonth,
               getFormattedHeaderDate,
               nextMonth,
-              day,
-              dayHandler,
-              week,
-              weekHandler,
-              month,
-              monthHandler,
+              // day,
+              // dayHandler,
+              // week,
+              // weekHandler,
+              // month,
+              // monthHandler,
               calendarViewMode,
               shouldShowCalendarModeOptions,
             }}
@@ -488,7 +498,15 @@ export function Booking() {
             }}
             onPressCalendarViewMode={onPressCalendarViewMode}
             onPressListViewMode={onPressListViewMode}
-          /> */}
+            time={time}
+            timeValue={timeValue}
+            timeItem={timeItem}
+            setTime={setTime}
+            setTimeValue={(value) => {
+              setTimeValue(value);
+            }}
+            setTimeItem={setTimeItem}
+          />
           <View style={styles._calendarContainer}>
             {calendarViewMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW ? (
               <Calendar
@@ -505,9 +523,9 @@ export function Booking() {
                     }
                   : {})}
                 headerContainerStyle={{
-                  height: calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
-                  backgroundColor: COLORS.textInputBackground,
-                  paddingTop: ms(5),
+                  height: calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(55),
+                  backgroundColor: COLORS.white,
+                  paddingTop: ms(2),
                 }}
                 dayHeaderHighlightColor={COLORS.dayHighlight}
                 hourComponent={CustomHoursCell}

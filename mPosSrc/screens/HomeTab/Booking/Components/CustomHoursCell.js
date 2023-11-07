@@ -19,19 +19,19 @@ export default CustomHoursCell;
 const styles = StyleSheet.create({
   hourContainer: {
     alignItems: 'center',
-    marginTop: -5,
-    backgroundColor: COLORS.textInputBackground,
+    marginTop: ms(-5),
+    backgroundColor: COLORS.white,
     height: '100%',
   },
 
   timeText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(6),
+    fontSize: ms(8),
     color: COLORS.darkGray,
   },
   ampmText: {
     fontFamily: Fonts.Regular,
-    fontSize: ms(4),
+    fontSize: ms(6),
     color: COLORS.darkGray,
   },
 });
