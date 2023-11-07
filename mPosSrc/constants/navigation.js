@@ -37,4 +37,5 @@ export const NAVIGATION = {
   productRefund: 'ProductRefund',
   paymentSelection: 'PaymentSelection',
   settings: 'Settings',
+  locations: 'Locations',
 };

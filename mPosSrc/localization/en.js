@@ -313,4 +313,9 @@ export const en = {
     shop: 'Shop',
     deviceDetails: 'Device Details',
   },
+  locations: {
+    businessLocation: 'Business locations',
+    subHeading:
+      'All you need to manage Basic Point of Sale is a device nickname and location to allow team members to accept payments.',
+  },
 };

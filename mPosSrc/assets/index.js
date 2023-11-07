@@ -181,4 +181,5 @@ export const Images = {
   work: require('@/assets/icons/ic_setting/work.png'),
   policy: require('@/assets/icons/ic_setting/policy.png'),
   deviceLogo: require('@/assets/icons/ic_customers/shop_light.png'),
+  store: require('@/assets/icons/ic_setting/store.png'),
 };
