@@ -1,29 +1,13 @@
-import React, { memo, useCallback, useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TextInput,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import React, { memo, useState } from 'react';
+import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { debounce } from 'lodash';
-import { useDispatch, useSelector } from 'react-redux';
-import { moderateScale, ms } from 'react-native-size-matters';
+import { ms } from 'react-native-size-matters';
 
-import { Spacer } from '@/components';
-import { strings } from '@/localization';
-
-import { getDashboard } from '@/selectors/DashboardSelector';
-import { getProductByUpc } from '@/actions/DeliveryAction';
 import { Images } from '@mPOS/assets';
-import { COLORS, Fonts, SF, SH, SW } from '@/theme';
+import { strings } from '@/localization';
+import { COLORS, Fonts, SF, SW } from '@/theme';
 
-const { width } = Dimensions.get('window');
-
-const PartialRefund = ({ setIsVisible, onPressCart }) => {
+const PartialRefund = ({ setIsVisible, onPressApplyRefund }) => {
   const [amount, setAmount] = useState();
   const [selectedMethod, setSelectedMethod] = useState('dollar');
 
@@ -34,12 +18,27 @@ const PartialRefund = ({ setIsVisible, onPressCart }) => {
           <Image source={Images.cross} style={styles.crossIconStyle} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonViewStyle}>
+        <TouchableOpacity
+          onPress={onPressApplyRefund}
+          disabled={amount ? false : true}
+          style={[
+            styles.buttonViewStyle,
+            { backgroundColor: amount ? COLORS.primary : COLORS.gerySkies },
+          ]}
+        >
           <Text style={styles.buttonTextStyle}>{strings.returnOrder.applyRefund}</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.applicableAllViewStyle}>
+      <View
+        style={[
+          styles.applicableAllViewStyle,
+          {
+            borderWidth: amount ? 0.7 : 0,
+            borderColor: amount ? COLORS.primary : COLORS.transparent,
+          },
+        ]}
+      >
         <Text style={styles.applicableTextStyle}>{strings.returnOrder.applicable}</Text>
 
         <View style={styles.amountViewStyle}>
@@ -133,8 +132,6 @@ const styles = StyleSheet.create({
     marginHorizontal: ms(15),
     borderRadius: 10,
     padding: ms(15),
-    borderWidth: 0.7,
-    borderColor: COLORS.primary,
   },
   applicableTextStyle: {
     fontFamily: Fonts.Regular,

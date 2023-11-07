@@ -14,16 +14,40 @@ import { ms } from 'react-native-size-matters';
 import { strings } from '@/localization';
 
 import { Images } from '@mPOS/assets';
-import { COLORS, Fonts, SF, SW } from '@/theme';
+import { COLORS, Fonts, SF, SH, SW } from '@/theme';
+import { Spacer } from '@/components';
 
 const { width } = Dimensions.get('window');
 
-const EditPrice = ({ setIsVisible, onPressCart }) => {
+const EditPrice = ({ setIsVisible, selected, index, productsList, saveRefundAmount }) => {
   const [refundAmount, setRefundAmount] = useState('');
-  const [selectedMethod, setSelectedMethod] = useState('dollar');
+  const [products, setProducts] = useState();
+
+  const refundHandler = (newText) => {
+    const parsedNewText = parseFloat(newText);
+    const finalText = isNaN(parsedNewText) ? 0 : parsedNewText;
+    const isSmallerThanUnitPrice = finalText <= parseFloat(selected?.price);
+
+    const updatedDataArray = productsList?.map((order, ind) => {
+      if (ind === index) {
+        return {
+          ...order,
+          refundAmount: isSmallerThanUnitPrice ? finalText : '',
+          totalRefundAmount: isSmallerThanUnitPrice ? finalText * selected.qty : 0.0,
+        };
+      }
+
+      return order;
+    });
+
+    setProducts(updatedDataArray);
+    if (!isSmallerThanUnitPrice) {
+      alert('Refund amount should not be greater than unit price');
+    }
+  };
 
   return (
-    <View style={[styles.container, { flex: 1 / 1.8 }]}>
+    <View style={styles.container}>
       <View style={styles.headerViewStyle}>
         <Text style={styles.headerTextStyle}>{strings.returnOrder.priceChanging}</Text>
 
@@ -36,7 +60,7 @@ const EditPrice = ({ setIsVisible, onPressCart }) => {
         <Text style={styles.applicableTextStyle}>{strings.returnOrder.productPrice}</Text>
 
         <View style={styles.amountViewStyle}>
-          <Text style={styles.textInputStyle}>{'$6.56'}</Text>
+          <Text style={styles.textInputStyle}>{`$${selected?.price}`}</Text>
         </View>
       </View>
 
@@ -47,56 +71,19 @@ const EditPrice = ({ setIsVisible, onPressCart }) => {
           <TextInput
             value={refundAmount}
             style={styles.textInputStyle}
-            placeholder="Enter refund amount"
-            onChangeText={(text) => setRefundAmount(text)}
+            placeholder={'Enter refund amount'}
+            onChangeText={(text) => {
+              setRefundAmount(text);
+              refundHandler(text);
+            }}
+            keyboardType={'number-pad'}
           />
-
-          <View style={styles.amountTypeView}>
-            <TouchableOpacity
-              onPress={() => setSelectedMethod('dollar')}
-              style={[
-                styles.percentageViewStyle,
-                {
-                  backgroundColor: selectedMethod === 'dollar' ? COLORS.primary : COLORS.white,
-                  borderTopLeftRadius: selectedMethod === 'dollar' ? 5 : 0,
-                  borderBottomLeftRadius: selectedMethod === 'dollar' ? 5 : 0,
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.dollarTextStyle,
-                  { color: selectedMethod === 'dollar' ? COLORS.white : COLORS.dark_grey },
-                ]}
-              >
-                {'$'}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setSelectedMethod('percentage')}
-              style={[
-                styles.percentageViewStyle,
-                {
-                  backgroundColor: selectedMethod === 'percentage' ? COLORS.primary : COLORS.white,
-                  borderTopRightRadius: selectedMethod === 'percentage' ? 5 : 0,
-                  borderBottomRightRadius: selectedMethod === 'percentage' ? 5 : 0,
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.dollarTextStyle,
-                  { color: selectedMethod === 'percentage' ? COLORS.white : COLORS.dark_grey },
-                ]}
-              >
-                {'%'}
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
 
-      <TouchableOpacity style={styles.buttonStyle}>
+      <Spacer space={SH(20)} />
+
+      <TouchableOpacity onPress={() => saveRefundAmount(products)} style={styles.buttonStyle}>
         <Text style={styles.buttonTextStyle}>{strings.management.save}</Text>
       </TouchableOpacity>
     </View>
@@ -107,7 +94,7 @@ export default memo(EditPrice);
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 40,
+    paddingBottom: 20,
     borderRadius: 10,
     backgroundColor: COLORS.white,
   },
@@ -129,8 +116,6 @@ const styles = StyleSheet.create({
     width: SW(160),
     alignSelf: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    bottom: 30,
     justifyContent: 'center',
     backgroundColor: COLORS.primary,
   },

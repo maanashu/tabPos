@@ -88,17 +88,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(15),
   },
   productCartBody: {
-    width: ms(60),
-    alignItems: 'center',
-    justifyContent: 'center',
     textAlign: 'center',
     fontFamily: Fonts.SemiBold,
-    borderRadius: 5,
     color: COLORS.dark_grey,
     fontSize: SF(11),
-    backgroundColor: COLORS.blue_shade,
-    padding: 0,
-    margin: 0,
     marginLeft: 10,
   },
   refundAmountText: {
@@ -132,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   priceTextStyle: {
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
     fontSize: SF(12),
   },
