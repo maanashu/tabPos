@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     marginRight: ms(3),
   },
   backTitle: {
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(11),
   },

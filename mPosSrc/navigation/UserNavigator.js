@@ -18,11 +18,11 @@ export function UserNavigator() {
         name={MPOS_NAVIGATION.login}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         component={PosUserProfile}
         name={MPOS_NAVIGATION.posUserProfile}
         options={{ headerShown: false }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }

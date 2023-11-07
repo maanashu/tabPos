@@ -62,6 +62,11 @@ export const en = {
     accesConfirmation: 'Access & Confirmation',
     essential: 'Essential',
     app: 'App',
+    startTracking: 'Start Tracking Session',
+    countCashDrawer: 'Count Cash in Drawer',
+    amountCounted: 'Amount Counted',
+    note: 'Note',
+    startSession: 'Start Session',
   },
   profile: {
     todaySale: 'Today’s Sales',

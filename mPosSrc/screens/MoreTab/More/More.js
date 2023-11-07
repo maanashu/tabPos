@@ -86,7 +86,9 @@ export function More() {
         >
           {/* profile section */}
           <View style={styles.moreProfileSection}>
-            <TouchableOpacity onPress={() => navigate(MPOS_NAVIGATION.posUserProfile)}>
+            <TouchableOpacity
+              onPress={() => navigate(MPOS_NAVIGATION.posUserProfile, { data: 'fromMoreTab' })}
+            >
               <Image
                 source={
                   loginPosUser?.user_profiles?.profile_photo

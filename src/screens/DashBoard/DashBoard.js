@@ -531,11 +531,15 @@ export function DashBoard({ navigation }) {
             <Spacer space={SH(4)} backgroundColor={COLORS.textInputBackground} />
             <View style={[styles.displayflex, styles.paddingV]}>
               <Text style={styles.cashLabel}>{strings.dashboard.openBal}</Text>
-              <Text style={styles.cashAmount}>${profileObj?.openingBalance}</Text>
+              <Text style={styles.cashAmount}>
+                ${Number(profileObj?.openingBalance ?? '0.00')?.toFixed(2)}
+              </Text>
             </View>
             <View style={[styles.displayflex, styles.paddingV]}>
               <Text style={styles.cashLabel}>{strings.dashboard.closeBal}</Text>
-              <Text style={styles.cashAmount}>${profileObj?.closeBalance}</Text>
+              <Text style={styles.cashAmount}>
+                ${Number(profileObj?.closeBalance ?? '0.00')?.toFixed(2)}
+              </Text>
             </View>
           </View>
           <Spacer space={SH(10)} />

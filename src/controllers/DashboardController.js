@@ -129,8 +129,12 @@ export class DashboardController {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL + ApiOrderInventory.getTotalSale + `?seller_id=${sellerID}&filter=today`;
+
+      console.log(endpoint);
+
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log(response);
           resolve(response);
         })
         .catch((error) => {

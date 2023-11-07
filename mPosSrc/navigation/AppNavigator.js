@@ -41,7 +41,7 @@ export function AppNavigator(navigation) {
   useEffect(() => {
     setTimeout(() => {
       setProfileScreenVis(true);
-    }, 1000);
+    }, 1500);
   }, []);
 
   console.log('app nav', navigation);

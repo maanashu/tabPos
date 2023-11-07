@@ -29,8 +29,16 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     paddingTop: SH(8),
     textAlign: 'center',
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
+  },
+  lastLogin: {
+    fontSize: SF(14),
+    paddingTop: SH(8),
+    textAlign: 'center',
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.SemiBold,
+    marginVertical: ms(5),
   },
   roleTextStyle: {
     fontSize: SF(14),

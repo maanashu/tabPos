@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   buttonTextStyle: {
     fontSize: SF(12),
-    color: COLORS.text,
+    color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
   },
 });

@@ -67,7 +67,7 @@ const AddNotes = ({ notesClose }) => {
 
         <View style={styles.buttonMainContainer}>
           <TouchableOpacity style={styles.keepButtonStyle} onPress={() => setNotes('')}>
-            <Text style={[styles.counterText, { color: COLORS.dark_gray }]}>
+            <Text style={[styles.counterText, { color: COLORS.solid_grey }]}>
               {strings.profile.Discard}
             </Text>
           </TouchableOpacity>

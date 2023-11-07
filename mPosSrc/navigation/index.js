@@ -8,6 +8,7 @@ import { navigationRef } from '@mPOS/navigation/NavigationRef';
 import { AuthNavigator } from '@mPOS/navigation/AuthNavigator';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
+import { ProfileNavigator } from './ProfileNavigator';
 
 export function RootNavigator() {
   const auth = useSelector(getAuthData);
@@ -20,7 +21,7 @@ export function RootNavigator() {
     if (merchantToken && !posUserToken) {
       return <UserNavigator />;
     } else if (merchantToken && posUserToken && !defaultScreen) {
-      return <UserNavigator />;
+      return <ProfileNavigator />;
     } else if (merchantToken && posUserToken && defaultScreen) {
       return <AppNavigator />;
     } else {

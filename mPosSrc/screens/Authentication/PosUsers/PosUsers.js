@@ -70,6 +70,7 @@ export function PosUsers() {
 
         {item.user?.api_tokens.length > 0 && (
           <>
+            <Text style={styles.lastLogin}>{'Last Login'}</Text>
             <Text style={styles.datetimeTextStyle}>
               {dayjs(item.user?.api_tokens[0].updated_at).format('dddd, DD MMM YYYY')}
             </Text>
