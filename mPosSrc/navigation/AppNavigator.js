@@ -25,6 +25,7 @@ import {
   Booking,
   ProductRefund,
   PaymentSelection,
+  Settings,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -182,6 +183,11 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.paymentSelection}
         options={{ headerShown: false }}
         component={PaymentSelection}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.settings}
+        options={{ headerShown: false }}
+        component={Settings}
       />
     </Stack.Navigator>
   );

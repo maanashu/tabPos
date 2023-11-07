@@ -1,3 +1,4 @@
+import { MPOS_NAVIGATION } from '@common/commonImports';
 import { Images } from '@mPOS/assets';
 
 export const tagLine = [
@@ -69,6 +70,7 @@ export const moreApp = [
     label: 'Settings',
     image: Images.settings,
     id: 1,
+    navigation: MPOS_NAVIGATION.settings,
   },
   {
     label: 'Terms & Conditions',

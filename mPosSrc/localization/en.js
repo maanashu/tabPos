@@ -300,4 +300,17 @@ export const en = {
     noOrderFound: 'No order found',
     next: 'Next',
   },
+  settings: {
+    settings: 'Settings',
+    locations: 'Locations',
+    receipts: 'Receipts',
+    taxes: 'Taxes',
+    wallet: 'Wallet',
+    staffs: 'Staffs',
+    language: 'Language',
+    legal: 'Legal',
+    policies: 'Policies',
+    shop: 'Shop',
+    deviceDetails: 'Device Details',
+  },
 };
