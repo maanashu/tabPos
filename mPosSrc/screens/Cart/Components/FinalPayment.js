@@ -22,6 +22,7 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
   const snapPoints = useMemo(() => ['100%'], []);
   const orderInvoice = retailData?.createOrder;
   const saveProductData = saveCart?.poscart_products;
+  console.log('orderCreateData', orderCreateData);
 
   // change due function
   const payAmount = Number(orderCreateData?.tips ?? '0.00')?.toFixed(2);
