@@ -24,9 +24,10 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
   const saveProductData = saveCart?.poscart_products;
 
   // change due function
-  const payAmount = Number(orderCreateData?.tips ?? '0.00')?.toFixed(2);
+  const payAmount = Number(orderCreateData?.tips?.usd ?? '0.00')?.toFixed(2);
   const actualAmount = Number(saveCart?.amount?.total_amount ?? '0.00')?.toFixed(2);
   const changeDue = payAmount - actualAmount;
+  console.log(payAmount, actualAmount, actualAmount);
 
   return (
     <BottomSheetModal
