@@ -187,7 +187,16 @@ export function More() {
           <View style={[styles.moreProfileSection, { height: ms(275) }]}>
             <Text style={styles.profileName}>{strings.more.app}</Text>
             {moreApp?.map((item, index) => (
-              <TouchableOpacity onPress={() => alert('In progress')} key={index}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (item?.navigation) {
+                    commonNavigate(item?.navigation);
+                  } else {
+                    alert('In Progress');
+                  }
+                }}
+                key={index}
+              >
                 <View style={styles.moreTabRow} />
                 <View style={styles.disPlayCenter}>
                   <View style={styles.rowCenter}>
