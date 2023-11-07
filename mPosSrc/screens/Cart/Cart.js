@@ -22,13 +22,12 @@ import CartAmountByPay from './Components/CartAmountByPay';
 import PayByCash from './Components/PayByCash';
 import { TYPES } from '@/Types/Types';
 import FinalPayment from './Components/FinalPayment';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 export function Cart() {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const productCartData = retailData?.getAllCart;
-  const paymentSelection = useRef();
   const payByCashRef = useRef(null);
   const finalPaymentRef = useRef(null);
   const cartAmountByPayRef = useRef(null);
@@ -38,6 +37,8 @@ export function Cart() {
   const [clearCart, setClearCart] = useState(false);
   const [customProductAdd, setCustomProductAdd] = useState(false);
   const [priceChange, setPriceChange] = useState(false);
+  const [orderCreateData, setOrderCreateData] = useState();
+  const [saveCart, setSaveCart] = useState();
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -48,16 +49,17 @@ export function Cart() {
         TYPES.CUSTOM_PRODUCT_ADD,
         TYPES.GET_CLEAR_ALL_CART,
         TYPES.UPDATE_CART_BY_TIP,
+        TYPES.CREATE_ORDER,
       ],
       state
     )
   );
-  const onlyCartLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
   useEffect(() => {
     dispatch(getAllCart());
   }, []);
 
   const payNowHandler = useCallback(() => {
+    dispatch(getDrawerSessions());
     dispatch(getTip());
     cartAmountByPayRef.current?.present();
   }, []);
@@ -70,10 +72,12 @@ export function Cart() {
     payByCashRef.current?.present();
   }, []);
 
-  const payByCashhandler = useCallback(() => {
+  const payByCashhandler = (cartData, data) => {
+    setOrderCreateData(data);
+    setSaveCart(cartData);
     finalPaymentRef.current?.present();
     payByCashRef.current?.dismiss();
-  }, []);
+  };
 
   const payByCashCrossHandler = useCallback(() => {
     payByCashRef.current?.dismiss();
@@ -343,25 +347,45 @@ export function Cart() {
       </View>
 
       {/* header modal */}
-      <Modal animationType="fade" transparent={true} isVisible={addNotes}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={addNotes}
+        onBackdropPress={() => setAddNotes(false)}
+      >
         <AddNotes notesClose={() => setAddNotes(false)} />
       </Modal>
-      <Modal animationType="fade" transparent={true} isVisible={addDiscount}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={addDiscount}
+        onBackdropPress={() => setAddDiscount(false)}
+      >
         <AddDiscount discountClose={() => setAddDiscount(false)} />
       </Modal>
-      <Modal animationType="fade" transparent={true} isVisible={clearCart}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={clearCart}
+        onBackdropPress={() => setClearCart(false)}
+      >
         <ClearCart cartClose={() => setClearCart(false)} />
       </Modal>
       <Modal animationType="fade" transparent={true} isVisible={customProductAdd}>
         <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
       </Modal>
-      <Modal animationType="fade" transparent={true} isVisible={priceChange}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={priceChange}
+        onBackdropPress={() => setPriceChange(false)}
+      >
         <PriceChange priceChangeClose={() => setPriceChange(false)} {...{ cartProduct }} />
       </Modal>
 
       <CartAmountByPay {...{ cartAmountByPayRef, cashPayNowHandler, cartAmountByPayCross }} />
       <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
-      <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler }} />
+      <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
       {isLoading ? <FullScreenLoader /> : null}
     </SafeAreaView>
   );

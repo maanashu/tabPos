@@ -54,6 +54,7 @@ const CartAmountByPay = ({
 
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
+  console.log('selectedTipAmount', selectedTipAmount);
   const [tipData, setTipData] = useState('0.00');
 
   const [selectedPaymentIndex, setSelectedPaymentIndex] = useState(null);
@@ -216,7 +217,9 @@ const CartAmountByPay = ({
             </View>
             <View style={{ flex: 1, paddingHorizontal: ms(10) }}>
               <Text style={styles.payableAmount}>
-                ${calculatePercentageValue(cartData?.amount?.products_price, tipData?.title)}
+                {/* ${calculatePercentageValue(cartData?.amount?.products_price, tipData?.title)}
+                 */}
+                ${selectedTipAmount}
               </Text>
               <View style={styles.erecipeCon}>
                 {TIPS_DATA?.map((item, index) => (

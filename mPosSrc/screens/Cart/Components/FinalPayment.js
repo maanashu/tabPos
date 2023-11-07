@@ -1,147 +1,32 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  Keyboard,
-  SafeAreaView,
-} from 'react-native';
-
-import RBSheet from 'react-native-raw-bottom-sheet';
-
+import React, { useEffect, useMemo } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { Images } from '@mPOS/assets';
-import { Spacer, FullScreenLoader, Invoice } from '@mPOS/components';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { strings } from '@mPOS/localization';
 import { ms } from 'react-native-size-matters';
-
-import {
-  BottomSheetModal,
-  BottomSheetScrollView,
-  BottomSheetTextInput,
-} from '@gorhom/bottom-sheet';
-import { useDispatch, useSelector } from 'react-redux';
+import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { TYPES } from '@/Types/Types';
-import { digitWithDot } from '@/utils/validators';
-import { CustomErrorToast } from '@mPOS/components/Toast';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
+import moment from 'moment';
+import { getUser } from '@/selectors/UserSelectors';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { getAuthData } from '@/selectors/AuthSelector';
 
-const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler }) => {
-  const dispatch = useDispatch();
+const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }) => {
+  const getUserData = useSelector(getUser);
+  const getAuthdata = useSelector(getAuthData);
   const retailData = useSelector(getRetail);
   const cartData = retailData?.getAllCart;
-  const productDetail = retailData?.getOneProduct;
-  const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
-
-  const sizeArray = attributeArray?.filter((item) => item.name === 'Size');
-  const colorArray = attributeArray?.filter((item) => item.name === 'Color');
-
-  const [colorSelectId, setColorSelectId] = useState(null);
-  const [sizeSelectId, setSizeSelectId] = useState(null);
-  const [count, setCount] = useState(1);
-  const [productDetailExpand, setProductDetailExpand] = useState(false);
-
-  const [colorName, setColorName] = useState();
-  const [sizeName, setSizeName] = useState();
-  const [keyboardStatus, setKeyboardStatus] = useState('60%');
+  const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const snapPoints = useMemo(() => ['100%'], []);
-  const [selectedId, setSelectedId] = useState(1);
+  const orderInvoice = retailData?.createOrder;
+  const saveProductData = saveCart?.poscart_products;
 
-  const [amount, setAmount] = useState();
-
-  const totalPayAmount = () => {
-    const cartAmount = cartData?.amount?.total_amount ?? '0.00';
-    // const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
-    const totalPayment = parseFloat(cartAmount);
-    return totalPayment.toFixed(2);
-  };
-
-  function findGreaterCurrencyNotes(targetValue, currencyNotes) {
-    const greaterNotes = currencyNotes.filter((note) => note > targetValue);
-    return greaterNotes;
-  }
-
-  const currencyNotes = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 5000];
-  const targetValue = totalPayAmount();
-  const greaterNotes = findGreaterCurrencyNotes(targetValue, currencyNotes);
-  const selectCashArray = [
-    {
-      id: 1,
-      usd: totalPayAmount(),
-    },
-    {
-      id: 2,
-      usd: greaterNotes[0] <= 5000 ? greaterNotes[0] : totalPayAmount(),
-    },
-    {
-      id: 3,
-      usd: greaterNotes[1] <= 5000 ? greaterNotes[1] : totalPayAmount(),
-    },
-  ];
-
-  useEffect(() => {
-    setColorSelectId(null);
-    setSizeSelectId(null);
-  }, []);
-
-  const TIPS_DATA = [
-    { title: 18, percent: '18' },
-    {
-      title: 20,
-      percent: '20',
-    },
-    { title: 22, percent: '22' },
-    { title: '', percent: 'No Tips' },
-  ];
-
-  const ERECIPE_DATA = [
-    {
-      id: 1,
-      title: 'SMS',
-    },
-    {
-      id: 2,
-      title: 'Email',
-    },
-    {
-      id: 3,
-      title: 'No e-recipe',
-    },
-  ];
-  const [cashRate, setCashRate] = useState(selectCashArray?.[0]);
-
-  const isLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
-
-  const createOrderHandler = () => {
-    if (amount && digitWithDot.test(amount) === false) {
-      CustomErrorToast({ message: 'Please enter valid amount' });
-    } else {
-      const data = {
-        cartid: cartData.id,
-        tips: amount === undefined || amount === '' ? cashRate : amount,
-        modeOfPayment: 'cash',
-      };
-      console.log('data', data);
-      // const callback = (response) => {
-      //   if (response) {
-      //     onPressContinue(data);
-      //   }
-      // };
-
-      // dispatch(createOrder(data, callback));
-    }
-  };
+  // change due function
+  const payAmount = Number(orderCreateData?.tips ?? '0.00')?.toFixed(2);
+  const actualAmount = Number(saveCart?.amount?.total_amount ?? '0.00')?.toFixed(2);
+  const changeDue = payAmount - actualAmount;
 
   return (
     <BottomSheetModal
@@ -157,7 +42,7 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler }) => {
       // stackBehavior={'replace'}
       handleComponent={() => <View />}
     >
-      <BottomSheetScrollView>
+      <BottomSheetScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, paddingHorizontal: ms(10) }}>
           {Platform.OS === 'ios' && <SafeAreaView />}
           <View style={styles.productHeaderCon}>
@@ -167,55 +52,104 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler }) => {
           </View>
           <View style={styles.paidAmountCon}>
             <Text style={styles.paidAmount}>{strings.cart.paidAmount}</Text>
-            <Text style={styles.amountText}>{'$34.05'}</Text>
+            <Text style={styles.amountText}>${payAmount}</Text>
+            {orderCreateData?.modeOfPayment === 'cash' && (
+              <>
+                <View style={styles.paidAmountHr} />
+                <Text style={styles.chnageDue}>Change Due: ${changeDue}</Text>
+              </>
+            )}
           </View>
-          <Text style={styles.primark}>{strings.cart.primark}</Text>
-          <Text style={styles.sellerAddress}>{'63 Ivy Road, Hawkville, GA, USA 31036'}</Text>
-          <View style={styles.cartProductCon}>
-            <View style={styles.subContainer}>
-              <Text style={styles.count}>{'1'}</Text>
-              <View style={{ marginLeft: ms(10) }}>
-                <Text style={[styles.itemName, { width: ms(230) }]} numberOfLines={1}>
-                  {'jhuijhiofjiokvvfiuhgiuhgulifvujiovf'}
-                </Text>
-                <View style={styles.belowSubContainer}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.colorsTitle}>Colors : </Text>
-                    <View
-                      style={{
-                        width: ms(8),
-                        height: ms(8),
-                        borderRadius: ms(2),
-                        backgroundColor: COLORS.black,
-                      }}
-                    ></View>
-                  </View>
+          <Text style={styles.primark}>
+            {merchantDetails?.user_profiles?.organization_name ?? '-----'}
+          </Text>
+          <Text
+            style={styles.sellerAddress}
+          >{`${merchantDetails?.user_profiles?.current_address?.street_address}, ${merchantDetails?.user_profiles?.current_address?.city}, ${merchantDetails?.user_profiles?.current_address?.state}, ${merchantDetails?.user_profiles?.current_address?.country}, ${merchantDetails?.user_profiles?.current_address?.zipcode}`}</Text>
+          <Text style={styles.sellerAddress}>
+            {merchantDetails?.user_profiles?.full_phone_number}
+          </Text>
 
-                  <Text style={styles.sizeTitle}>Size : xxl</Text>
+          <Text style={[styles.sellerAddress, styles.boldInvoice]}>
+            Invoice No. #{orderInvoice?.invoices?.invoice_number ?? '---'}
+          </Text>
+          {saveProductData?.map((item, index) => {
+            const productSize = item?.product_details?.supply?.attributes?.filter(
+              (item) => item?.name === 'Size'
+            );
+            const productColor = item?.product_details?.supply?.attributes?.filter(
+              (item) => item?.name === 'Color'
+            );
+
+            return (
+              <View style={styles.cartProductCon} key={index}>
+                <View style={styles.subContainer}>
+                  <Text style={styles.count}>{item?.qty}</Text>
+                  <View style={{ marginLeft: ms(10) }}>
+                    <Text style={[styles.itemName, { width: ms(230) }]} numberOfLines={1}>
+                      {item?.product_details?.name}
+                    </Text>
+                    <View style={styles.belowSubContainer}>
+                      {productColor?.length > 0 && (
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Text style={styles.colorsTitle}>Colors : </Text>
+                          <View
+                            style={{
+                              width: ms(8),
+                              height: ms(8),
+                              borderRadius: ms(2),
+                              backgroundColor: productColor?.[0]?.values?.name,
+                            }}
+                          ></View>
+                        </View>
+                      )}
+
+                      {productSize?.length > 0 && (
+                        <Text style={styles.sizeTitle}>
+                          Size : {productSize?.[0]?.values?.name}
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+                </View>
+                <View style={{ width: '20%', alignItems: 'flex-end' }}>
+                  <Text style={[styles.priceTitle]} numberOfLines={1}>
+                    $
+                    {Number(
+                      item?.product_details?.supply?.supply_prices?.selling_price ?? '0.00'
+                    )?.toFixed(2)}
+                  </Text>
                 </View>
               </View>
-            </View>
-            <Text style={styles.priceTitle}>${'0.00'}</Text>
-          </View>
+            );
+          })}
 
           <View style={styles._subTotalContainer}>
             <Text style={styles._substotalTile}>Sub-Total</Text>
-            <Text style={styles._subTotalPrice}>${'0.00'}</Text>
+            <Text style={styles._subTotalPrice}>
+              ${Number(saveCart?.amount?.products_price ?? '0.00')?.toFixed(2)}
+            </Text>
           </View>
           <View style={styles._horizontalLine} />
           <View style={styles._subTotalContainer}>
             <Text style={styles._substotalTile}>Discount</Text>
-            <Text style={styles._subTotalPrice}>${'0.00'}</Text>
+            <Text style={styles._subTotalPrice}>
+              {formattedReturnPrice(saveCart?.amount?.discount)}
+            </Text>
           </View>
           <View style={styles._horizontalLine} />
           <View style={styles._subTotalContainer}>
             <Text style={styles._substotalTile}>Tips</Text>
-            <Text style={styles._subTotalPrice}>${'0.00'}</Text>
+            <Text style={styles._subTotalPrice}>
+              ${Number(saveCart?.amount?.tip ?? '0.00')?.toFixed(2)}
+            </Text>
           </View>
           <View style={styles._horizontalLine} />
           <View style={styles._subTotalContainer}>
             <Text style={styles._substotalTile}>Total Taxes</Text>
-            <Text style={styles._subTotalPrice}>${'0.00'}</Text>
+            <Text style={styles._subTotalPrice}>
+              ${Number(saveCart?.amount?.tax ?? '0.00')?.toFixed(2)}
+            </Text>
           </View>
           <View style={styles._horizontalLine} />
           <View style={styles._subTotalContainer}>
@@ -224,10 +158,8 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler }) => {
             >
               Total
             </Text>
-            <Text
-              style={[styles._subTotalPrice, { fontSize: ms(12), fontFamily: Fonts.MaisonBold }]}
-            >
-              ${'0.00'}
+            <Text style={[styles._subTotalPrice, { fontSize: ms(12), fontFamily: Fonts.SemiBold }]}>
+              ${Number(saveCart?.amount?.total_amount ?? '0.00')?.toFixed(2)}
             </Text>
           </View>
           <View style={styles._horizontalLine} />
@@ -235,18 +167,22 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler }) => {
           <View style={[styles._horizontalLine, { height: ms(1), marginTop: ms(25) }]} />
           <View style={styles._paymentTitleContainer}>
             <Text style={styles._payTitle}>Payment option: </Text>
-            <Text style={styles._paySubTitle}>{'cash'}</Text>
+            <Text style={styles._paySubTitle}>
+              {orderCreateData?.modeOfPayment?.charAt(0).toUpperCase() +
+                orderCreateData?.modeOfPayment?.slice(1)}
+            </Text>
           </View>
-          <Text style={styles._commonPayTitle}>Wed 26 Apr , 2023</Text>
+          <Text style={styles._commonPayTitle}>{moment(saveCart?.created_at).format('llll')}</Text>
           <Text style={styles._commonPayTitle}>Walk-In</Text>
-          <Text style={styles._commonPayTitle}>POS No. 467589</Text>
+          <Text style={styles._commonPayTitle}>
+            POS No. {getUserData?.posLoginData?.pos_number ?? '---'}
+          </Text>
           <Text style={styles._commonPayTitle}>User ID : ****128</Text>
           <Text style={styles._thankyou}>Thank You</Text>
-          <Image style={styles.barcodeImage} resizeMode="stretch" source={Images.barcodeImage} />
+          <Image source={{ uri: orderInvoice?.invoices?.barcode }} style={styles.barcodeImage} />
 
-          <Image style={styles.barcodeImage} resizeMode="contain" source={Images.jobrLogo} />
+          <Image style={styles.jobrLogo} resizeMode="contain" source={Images.jobrLogo} />
         </View>
-        {/* {isLoad && <FullScreenLoader />} */}
       </BottomSheetScrollView>
     </BottomSheetModal>
   );
@@ -268,11 +204,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   paidAmountCon: {
-    height: ms(90),
+    // height: ms(90),
     backgroundColor: COLORS.textInputBackground,
     borderRadius: ms(10),
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: ms(15),
   },
   paidAmount: {
     fontFamily: Fonts.SemiBold,
@@ -298,6 +235,10 @@ const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     marginTop: ms(5),
     alignSelf: 'center',
+  },
+  boldInvoice: {
+    alignSelf: 'center',
+    fontFamily: Fonts.SemiBold,
   },
   cartProductCon: {
     borderColor: COLORS.washGrey,
@@ -342,7 +283,7 @@ const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
     fontSize: ms(10),
-    marginLeft: ms(10),
+    // marginLeft: ms(10),
   },
   count: {
     color: COLORS.dark_grey,
@@ -364,13 +305,19 @@ const styles = StyleSheet.create({
   },
   _subTotalPrice: {
     color: COLORS.solid_grey,
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.Regular,
     fontSize: ms(12),
     marginTop: ms(5),
   },
   _horizontalLine: {
     height: ms(1),
     width: '100%',
+    marginTop: ms(7),
+    backgroundColor: COLORS.washGrey,
+  },
+  paidAmountHr: {
+    height: ms(1),
+    width: '80%',
     marginTop: ms(7),
     backgroundColor: COLORS.washGrey,
   },
@@ -399,8 +346,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   _thankyou: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(11),
+    fontFamily: Fonts.MaisonBold,
+    fontSize: ms(16),
     color: COLORS.dark_grey,
     marginTop: ms(25),
     alignSelf: 'center',
@@ -408,7 +355,19 @@ const styles = StyleSheet.create({
   barcodeImage: {
     height: ms(50),
     width: '80%',
-    marginBottom: ms(5),
+    marginVertical: ms(15),
     alignSelf: 'center',
+  },
+  jobrLogo: {
+    height: ms(50),
+    width: '80%',
+    alignSelf: 'center',
+    resizeMode: 'contain',
+  },
+  chnageDue: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(16),
+    color: COLORS.solid_grey,
+    marginTop: ms(10),
   },
 });
