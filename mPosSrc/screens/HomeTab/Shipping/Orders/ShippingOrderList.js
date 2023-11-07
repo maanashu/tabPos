@@ -162,12 +162,12 @@ export function ShippingOrderList(props) {
         animationOut={'slideOutLeft'}
       >
         <StatusDrawer
-          closeModal={() => setIsStatusDrawer(false)}
           selected={(value) => {
             setHeaderText(value);
             setSelectedStatus(value);
           }}
           selectedStatusOrder={selectedStatus}
+          closeModal={() => setIsStatusDrawer(false)}
         />
       </ReactNativeModal>
 
