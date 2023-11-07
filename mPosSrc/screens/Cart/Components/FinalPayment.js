@@ -56,7 +56,7 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
             {orderCreateData?.modeOfPayment === 'cash' && (
               <>
                 <View style={styles.paidAmountHr} />
-                <Text style={styles.chnageDue}>Change Due: ${changeDue}</Text>
+                <Text style={styles.chnageDue}>Change Due: ${Number(changeDue)?.toFixed(2)}</Text>
               </>
             )}
           </View>
