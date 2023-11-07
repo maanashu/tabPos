@@ -54,7 +54,6 @@ const CartAmountByPay = ({
 
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
-  console.log('selectedTipAmount', selectedTipAmount);
   const [tipData, setTipData] = useState('0.00');
 
   const [selectedPaymentIndex, setSelectedPaymentIndex] = useState(null);
@@ -159,7 +158,6 @@ const CartAmountByPay = ({
       tip: selectedTipAmount.toString(),
       cartId: cartData.id,
     };
-    console.log(data);
     const res = await dispatch(updateCartByTip(data));
     if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
       cashPayNowHandler();

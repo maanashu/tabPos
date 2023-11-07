@@ -44,8 +44,6 @@ export function AppNavigator(navigation) {
       setProfileScreenVis(true);
     }, 1500);
   }, []);
-
-  console.log('app nav', navigation);
   return (
     <Stack.Navigator
       screenOptions={{ gestureEnabled: false }}
