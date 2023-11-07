@@ -1,13 +1,5 @@
 import React, { memo, useState, useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { moderateScale, ms } from 'react-native-size-matters';
 import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
@@ -16,7 +8,6 @@ import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { addNotescart } from '@/actions/RetailAction';
-// import { addProuctNotes } from '@/actions/RetailActions';
 
 const AddNotes = ({ notesClose }) => {
   const dispatch = useDispatch();
@@ -67,7 +58,7 @@ const AddNotes = ({ notesClose }) => {
 
         <View style={styles.buttonMainContainer}>
           <TouchableOpacity style={styles.keepButtonStyle} onPress={() => setNotes('')}>
-            <Text style={[styles.counterText, { color: COLORS.dark_gray }]}>
+            <Text style={[styles.counterText, { color: COLORS.solid_grey }]}>
               {strings.profile.Discard}
             </Text>
           </TouchableOpacity>

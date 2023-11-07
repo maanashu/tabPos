@@ -46,21 +46,7 @@ export function Login(props) {
         pos_user_id: posUser?.user_id.toString(),
         pos_security_pin: value,
       };
-      dispatch(
-        loginPosUser(data, (res) =>
-          props?.navigation.reset({
-            index: 0,
-            routes: [
-              {
-                name: MPOS_NAVIGATION.posUserProfile,
-                params: {
-                  screen: 'default',
-                },
-              },
-            ],
-          })
-        )
-      );
+      dispatch(loginPosUser(data));
     }
   };
 

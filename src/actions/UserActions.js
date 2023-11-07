@@ -36,12 +36,11 @@ const clearStore = () => ({
   payload: null,
 });
 
-export const loginPosUser = (data, callback) => async (dispatch) => {
+export const loginPosUser = (data) => async (dispatch) => {
   dispatch(loginPosUserRequest());
   try {
     const res = await UserController.loginPosUser(data);
     dispatch(loginPosUserSuccess(res?.payload));
-    callback && callback();
   } catch (error) {
     return dispatch(loginPosUserError(error));
   }

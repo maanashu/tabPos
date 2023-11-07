@@ -21,13 +21,15 @@ import { getAllCart, getTip } from '@/actions/RetailAction';
 import CartAmountByPay from './Components/CartAmountByPay';
 import PayByCash from './Components/PayByCash';
 import { TYPES } from '@/Types/Types';
+import FinalPayment from './Components/FinalPayment';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 export function Cart() {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const productCartData = retailData?.getAllCart;
-  const paymentSelection = useRef();
   const payByCashRef = useRef(null);
+  const finalPaymentRef = useRef(null);
   const cartAmountByPayRef = useRef(null);
   const [cartProduct, setCartProduct] = useState();
   const [addNotes, setAddNotes] = useState(false);
@@ -35,6 +37,8 @@ export function Cart() {
   const [clearCart, setClearCart] = useState(false);
   const [customProductAdd, setCustomProductAdd] = useState(false);
   const [priceChange, setPriceChange] = useState(false);
+  const [orderCreateData, setOrderCreateData] = useState();
+  const [saveCart, setSaveCart] = useState();
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -44,22 +48,49 @@ export function Cart() {
         TYPES.PRODUCT_UPDATE_PRICE,
         TYPES.CUSTOM_PRODUCT_ADD,
         TYPES.GET_CLEAR_ALL_CART,
+        TYPES.UPDATE_CART_BY_TIP,
+        TYPES.CREATE_ORDER,
       ],
       state
     )
   );
-  const onlyCartLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
   useEffect(() => {
     dispatch(getAllCart());
   }, []);
 
   const payNowHandler = useCallback(() => {
+    dispatch(getDrawerSessions());
     dispatch(getTip());
     cartAmountByPayRef.current?.present();
   }, []);
+  const cartAmountByPayCross = useCallback(() => {
+    cartAmountByPayRef.current?.dismiss();
+  }, []);
+
   const cashPayNowHandler = useCallback(() => {
+    cartAmountByPayRef.current?.dismiss();
     payByCashRef.current?.present();
   }, []);
+
+  const payByCashhandler = (cartData, data) => {
+    setOrderCreateData(data);
+    setSaveCart(cartData);
+    finalPaymentRef.current?.present();
+    payByCashRef.current?.dismiss();
+  };
+
+  const payByCashCrossHandler = useCallback(() => {
+    payByCashRef.current?.dismiss();
+    // cartAmountByPayRef.current?.present();
+  }, []);
+
+  const finalPaymentCrossHandler = useCallback(() => {
+    finalPaymentRef.current?.dismiss();
+    payByCashRef.current?.dismiss();
+    cartAmountByPayRef.current?.dismiss();
+    // commonNavigate(MPOS_NAVIGATION.retailProducts);
+  }, []);
+
   const onRowDidOpen = (rowKey) => {
     console.log('This row opened', rowKey);
   };
@@ -316,24 +347,45 @@ export function Cart() {
       </View>
 
       {/* header modal */}
-      <Modal animationType="fade" transparent={true} isVisible={addNotes}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={addNotes}
+        onBackdropPress={() => setAddNotes(false)}
+      >
         <AddNotes notesClose={() => setAddNotes(false)} />
       </Modal>
-      <Modal animationType="fade" transparent={true} isVisible={addDiscount}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={addDiscount}
+        onBackdropPress={() => setAddDiscount(false)}
+      >
         <AddDiscount discountClose={() => setAddDiscount(false)} />
       </Modal>
-      <Modal animationType="fade" transparent={true} isVisible={clearCart}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={clearCart}
+        onBackdropPress={() => setClearCart(false)}
+      >
         <ClearCart cartClose={() => setClearCart(false)} />
       </Modal>
       <Modal animationType="fade" transparent={true} isVisible={customProductAdd}>
         <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
       </Modal>
-      <Modal animationType="fade" transparent={true} isVisible={priceChange}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={priceChange}
+        onBackdropPress={() => setPriceChange(false)}
+      >
         <PriceChange priceChangeClose={() => setPriceChange(false)} {...{ cartProduct }} />
       </Modal>
 
-      <CartAmountByPay {...{ cartAmountByPayRef, cashPayNowHandler }} />
-      <PayByCash {...{ payByCashRef }} />
+      <CartAmountByPay {...{ cartAmountByPayRef, cashPayNowHandler, cartAmountByPayCross }} />
+      <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
+      <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
       {isLoading ? <FullScreenLoader /> : null}
     </SafeAreaView>
   );

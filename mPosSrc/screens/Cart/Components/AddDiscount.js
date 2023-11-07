@@ -1,22 +1,10 @@
 import React, { memo, useState, useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
-
+import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { moderateScale, ms } from 'react-native-size-matters';
-import RBSheet from 'react-native-raw-bottom-sheet';
-
 import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { Collapse } from 'native-base';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDiscountToCart } from '@/actions/RetailAction';
@@ -326,9 +314,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   contentViewStyle: {
-    // paddingHorizontal: ms(20),
     paddingVertical: ms(20),
-    // borderWidth: 1,
   },
   notesInputStyle: {
     borderRadius: 5,

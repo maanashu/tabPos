@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     width: ms(40),
     height: ms(40),
     borderRadius: 7,
+    alignSelf: 'center',
     resizeMode: 'contain',
   },
   totalItemsText: {
@@ -107,8 +108,6 @@ const styles = StyleSheet.create({
   },
   listCountCon: {
     borderWidth: 1,
-    // width: SW(30),
-    // height: SH(30),
     borderRadius: 3,
     borderColor: COLORS.solidGrey,
     flexDirection: 'row',
@@ -120,6 +119,22 @@ const styles = StyleSheet.create({
     width: SW(5),
     height: SW(5),
     resizeMode: 'contain',
+  },
+  editIconStyle: {
+    width: SW(20),
+    height: SW(20),
+    resizeMode: 'contain',
+  },
+  editPriceViewStyle: {
+    flex: 1,
+    paddingRight: ms(20),
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+  },
+  priceTextStyle: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
   },
 });
 

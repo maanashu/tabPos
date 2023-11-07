@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
   firstName: {
     fontSize: SH(16),
     fontFamily: Fonts.SemiBold,
-    color: COLORS.black,
+    color: COLORS.solid_grey,
   },
   role: {
     fontSize: SH(14),

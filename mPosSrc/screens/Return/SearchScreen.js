@@ -29,7 +29,7 @@ export function SearchScreen() {
   const [order, setOrder] = useState(orderData ?? '');
 
   useEffect(() => {
-    showSheet.current.open();
+    // showSheet.current.open();
     if (invoiceNumber) {
       setOrder(orderData);
     } else {
@@ -86,7 +86,7 @@ export function SearchScreen() {
 
       {isLoading ? <FullScreenLoader /> : null}
 
-      <RBSheet
+      {/* <RBSheet
         ref={showSheet}
         height={Dimensions.get('window').height - 300}
         openDuration={150}
@@ -98,7 +98,7 @@ export function SearchScreen() {
         }}
       >
         <PaymentSelection closeSheet={() => showSheet.current.close()} />
-      </RBSheet>
+      </RBSheet> */}
     </ScreenWrapper>
   );
 }

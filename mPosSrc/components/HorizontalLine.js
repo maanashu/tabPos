@@ -9,7 +9,7 @@ export function HorizontalLine({ style }) {
 const styles = StyleSheet.create({
   lineStyle: {
     height: 1,
-    backgroundColor: COLORS.light_border,
+    backgroundColor: COLORS.solidGrey,
     marginTop: ms(10),
   },
 });

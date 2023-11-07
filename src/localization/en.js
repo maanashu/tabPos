@@ -572,5 +572,8 @@ export const en = {
     email: 'Email',
     noReceipe: 'No e-recipe',
     confirmReturn: 'Confirm Return',
+    priceChanging: 'Price Changing for Refund',
+    productPrice: 'Product Price',
+    refundAmount: 'Refund Amount',
   },
 };

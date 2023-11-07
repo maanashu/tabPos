@@ -1,7 +1,7 @@
+import React, { useState } from 'react';
 import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { COLORS, Fonts } from '@/theme';
-import React, { useState } from 'react';
 import {
   Dimensions,
   FlatList,

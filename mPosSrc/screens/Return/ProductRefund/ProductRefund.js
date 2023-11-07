@@ -13,6 +13,7 @@ import {
   checkedCheckboxSquare,
   blankCheckBox,
   sellingArrow,
+  editIcon,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
@@ -23,6 +24,9 @@ import { ScreenWrapper, Spacer } from '@/components';
 import styles from './styles';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Header } from '@mPOS/components';
+import ReactNativeModal from 'react-native-modal';
+import PartialRefund from '../Components/PartialRefund';
+import EditPrice from '../Components/EditPrice';
 
 const { width, height } = Dimensions.get('window');
 
@@ -38,6 +42,8 @@ export function ProductRefund(props) {
   const [orders, setOrders] = useState();
   const [selectedItem, setSelectedItem] = useState('');
   const [inventoryModal, setInventoryModal] = useState(false);
+  const [isPartialRefund, setIsPartialRefund] = useState(false);
+  const [isEditPrice, setIsEditPrice] = useState(false);
 
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
@@ -147,14 +153,13 @@ export function ProductRefund(props) {
     <View style={styles.productMainViewStyle}>
       <View
         style={{
-          alignItems: 'center',
           paddingHorizontal: ms(5),
           flexDirection: 'row',
         }}
       >
         <Image source={{ uri: item?.product_image }} style={styles.productImageStyle} />
 
-        <View style={{ paddingHorizontal: ms(10) }}>
+        <View style={{ borderWidth: 1, paddingHorizontal: ms(10) }}>
           <Text style={styles.blueListDataText} numberOfLines={2}>
             {item?.product_name ?? '-'}
           </Text>
@@ -177,56 +182,19 @@ export function ProductRefund(props) {
             />
           </View>
         </View>
-      </View>
 
-      {/* <View style={styles.displayflex}>
-          <View style={styles.productCartBody}>
-            <View style={styles.listCountCon}>
-              <TouchableOpacity
-                style={{
-                  width: SW(10),
-                  alignItems: 'center',
-                }}
-                onPress={() => addRemoveQty('-', index)}
-              >
-                <Image source={minus} style={styles.minus} />
-              </TouchableOpacity>
-              <Text>{`${item?.qty}`}</Text>
-              <TouchableOpacity
-                style={{
-                  width: SW(10),
-                  alignItems: 'center',
-                }}
-                onPress={() => addRemoveQty('+', index)}
-              >
-                <Image source={plus} style={styles.minus} />
-              </TouchableOpacity>
-            </View>
-          </View>
+        <View style={styles.editPriceViewStyle}>
+          <TouchableOpacity
+            onPress={() => {
+              setIsEditPrice(true);
+            }}
+          >
+            <Image source={editIcon} style={styles.editIconStyle} />
+          </TouchableOpacity>
 
-          <View style={styles.productCartBody}>
-            <Text style={styles.blueListDataText} numberOfLines={1}>
-              $
-              {applicableIsCheck || applyEachItem
-                ? (item?.totalRefundAmount).toFixed(2) ?? 0
-                : item.price * item.qty}
-            </Text>
-          </View>
-          <View style={{}}>
-            <TouchableOpacity
-              onPress={() => {
-                setOrders((prevState) => {
-                  const removedArr = prevState.filter((data) => data !== item);
-                  return removedArr;
-                });
-              }}
-              style={styles.removeContainer}
-            >
-              <Image source={borderCross} style={styles.removeIcon} />
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.priceTextStyle}>{item?.price}</Text>
         </View>
-      </View> */}
+      </View>
     </View>
   );
 
@@ -308,7 +276,7 @@ export function ProductRefund(props) {
 
       <Spacer space={SH(10)} />
 
-      <TouchableOpacity style={styles.partialButtonStyle}>
+      <TouchableOpacity onPress={() => setIsPartialRefund(true)} style={styles.partialButtonStyle}>
         <Text style={styles.partialButtonTextStyle}>{strings.returnOrder.partialReturn}</Text>
       </TouchableOpacity>
 
@@ -651,6 +619,14 @@ export function ProductRefund(props) {
 
         <Spacer space={SH(20)} />
       </View> */}
+
+      <ReactNativeModal isVisible={isPartialRefund}>
+        <PartialRefund setIsVisible={() => setIsPartialRefund(false)} />
+      </ReactNativeModal>
+
+      <ReactNativeModal isVisible={isEditPrice}>
+        <EditPrice setIsVisible={() => setIsEditPrice(false)} />
+      </ReactNativeModal>
     </View>
   );
 }

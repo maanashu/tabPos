@@ -12,6 +12,7 @@ import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 
 export function LoginPosUser({ setPosUserModal, selectedUser }) {
+  console.log('selectedUser', JSON.stringify(selectedUser));
   return (
     <View style={styles.modalViewStyle}>
       <TouchableOpacity onPress={() => setPosUserModal(false)}>
@@ -35,14 +36,15 @@ export function LoginPosUser({ setPosUserModal, selectedUser }) {
         <Text style={styles.userNameTextStyle}>
           {selectedUser?.user?.user_profiles?.firstname ?? '-'}
         </Text>
+        <Text style={styles.userNameTextStyle}>ID : {selectedUser?.id}</Text>
 
-        <Text style={styles.roleTextStyle}>
+        {/* <Text style={styles.roleTextStyle}>
           {selectedUser?.user?.user_roles?.length > 0
             ? selectedUser?.user?.user_roles?.map((roleItem) => roleItem?.role?.name)
             : 'admin'}
-        </Text>
+        </Text> */}
 
-        {selectedUser?.user?.api_tokens.length > 0 && (
+        {/* {selectedUser?.user?.api_tokens.length > 0 && (
           <>
             <Text style={styles.datetimeTextStyle}>
               {dayjs(selectedUser?.user?.api_tokens[0].updated_at).format('dddd, DD MMM YYYY')}
@@ -52,7 +54,7 @@ export function LoginPosUser({ setPosUserModal, selectedUser }) {
               {dayjs(selectedUser?.user?.api_tokens[0].updated_at).format('hh:mm a')}
             </Text>
           </>
-        )}
+        )} */}
       </View>
 
       <TouchableOpacity

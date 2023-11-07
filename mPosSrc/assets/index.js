@@ -110,6 +110,7 @@ export const Images = {
   pencil: require('@mPOS/assets/icons/CartTab/pencil.png'),
   buttonArrow: require('@mPOS/assets/icons/CartTab/buttonArrow.png'),
   addCustomerIcon: require('@mPOS/assets/icons/CartTab/addCustomerIcon.png'),
+  email: require('@mPOS/assets/icons/CartTab/email.png'),
 
   // Wallet Tab
   graph: require('@mPOS/assets/icons/images/graph.png'),
@@ -171,4 +172,13 @@ export const Images = {
 
   // return
   scanner: require('@mPOS/assets/icons/return/scan.png'),
+
+  // Settings
+  tax: require('@/assets/icons/ic_setting/tax.png'),
+  invoiceIcon: require('@/assets/icons/ic_setting/invoice.png'),
+  staff: require('@/assets/icons/ic_setting/staffIcon.png'),
+  language: require('@/assets/icons/ic_setting/langu.png'),
+  work: require('@/assets/icons/ic_setting/work.png'),
+  policy: require('@/assets/icons/ic_setting/policy.png'),
+  deviceLogo: require('@/assets/icons/ic_customers/shop_light.png'),
 };

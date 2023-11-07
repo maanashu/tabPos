@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { COLORS, Fonts } from '@/theme';
 import { ms } from 'react-native-size-matters';
 
@@ -6,8 +6,9 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.inputBorder,
-    paddingBottom: ms(80),
-    // marginBottom: ms(100),
+
+    ...(Platform.OS === 'android' && { paddingBottom: ms(80) }),
+    ...(Platform.OS === 'ios' && { marginBottom: ms(100) }),
   },
   contentContainerStyle: {
     marginVertical: ms(15),

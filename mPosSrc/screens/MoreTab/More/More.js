@@ -86,7 +86,9 @@ export function More() {
         >
           {/* profile section */}
           <View style={styles.moreProfileSection}>
-            <TouchableOpacity onPress={() => navigate(MPOS_NAVIGATION.posUserProfile)}>
+            <TouchableOpacity
+              onPress={() => navigate(MPOS_NAVIGATION.posUserProfile, { data: 'fromMoreTab' })}
+            >
               <Image
                 source={
                   loginPosUser?.user_profiles?.profile_photo
@@ -185,7 +187,16 @@ export function More() {
           <View style={[styles.moreProfileSection, { height: ms(275) }]}>
             <Text style={styles.profileName}>{strings.more.app}</Text>
             {moreApp?.map((item, index) => (
-              <TouchableOpacity onPress={() => alert('In progress')} key={index}>
+              <TouchableOpacity
+                onPress={() => {
+                  if (item?.navigation) {
+                    commonNavigate(item?.navigation);
+                  } else {
+                    alert('In Progress');
+                  }
+                }}
+                key={index}
+              >
                 <View style={styles.moreTabRow} />
                 <View style={styles.disPlayCenter}>
                   <View style={styles.rowCenter}>
