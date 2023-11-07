@@ -177,7 +177,9 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
           <Text style={styles._commonPayTitle}>
             POS No. {getUserData?.posLoginData?.pos_number ?? '---'}
           </Text>
-          <Text style={styles._commonPayTitle}>User ID : ****128</Text>
+          <Text style={styles._commonPayTitle}>
+            User ID : {getUserData?.posLoginData?.user_profiles?.id ?? '---'}
+          </Text>
           <Text style={styles._thankyou}>Thank You</Text>
           <Image source={{ uri: orderInvoice?.invoices?.barcode }} style={styles.barcodeImage} />
 
