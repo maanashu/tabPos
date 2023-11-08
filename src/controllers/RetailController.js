@@ -750,7 +750,6 @@ export class RetailController {
             // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
           };
-      console.log('endpoint', endpoint);
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response?.msg === 'Order placed successfully!') {
@@ -764,7 +763,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

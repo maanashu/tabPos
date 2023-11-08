@@ -12,7 +12,6 @@ import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 
 export function LoginPosUser({ setPosUserModal, selectedUser }) {
-  console.log('selectedUser', JSON.stringify(selectedUser));
   return (
     <View style={styles.modalViewStyle}>
       <TouchableOpacity onPress={() => setPosUserModal(false)}>

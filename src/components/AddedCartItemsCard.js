@@ -41,9 +41,11 @@ const AddedCartItemsCard = ({ item, index }) => {
           </View>
         </View>
       </View>
-      <Text style={styles.priceTitle}>
-        ${item?.product_details?.supply?.supply_prices?.selling_price.toFixed(2) ?? '0.00'}
-      </Text>
+      <View style={{ width: '24%', alignItems: 'flex-end' }}>
+        <Text style={styles.priceTitle} numberOfLines={1}>
+          ${item?.product_details?.supply?.supply_prices?.selling_price.toFixed(2) ?? '0.00'}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -99,6 +101,6 @@ const styles = StyleSheet.create({
     color: COLORS.dark_grey,
     fontFamily: Fonts.Regular,
     fontSize: ms(6),
-    marginLeft: ms(10),
+    // marginLeft: ms(10),
   },
 });

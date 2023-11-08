@@ -22,12 +22,12 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
   const snapPoints = useMemo(() => ['100%'], []);
   const orderInvoice = retailData?.createOrder;
   const saveProductData = saveCart?.poscart_products;
+  console.log('orderCreateData', orderCreateData);
 
   // change due function
-  const payAmount = Number(orderCreateData?.tips?.usd ?? '0.00')?.toFixed(2);
+  const payAmount = Number(orderCreateData?.tips ?? '0.00')?.toFixed(2);
   const actualAmount = Number(saveCart?.amount?.total_amount ?? '0.00')?.toFixed(2);
   const changeDue = payAmount - actualAmount;
-  console.log(payAmount, actualAmount, actualAmount);
 
   return (
     <BottomSheetModal
@@ -57,7 +57,7 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
             {orderCreateData?.modeOfPayment === 'cash' && (
               <>
                 <View style={styles.paidAmountHr} />
-                <Text style={styles.chnageDue}>Change Due: ${changeDue}</Text>
+                <Text style={styles.chnageDue}>Change Due: ${Number(changeDue)?.toFixed(2)}</Text>
               </>
             )}
           </View>
@@ -178,7 +178,9 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
           <Text style={styles._commonPayTitle}>
             POS No. {getUserData?.posLoginData?.pos_number ?? '---'}
           </Text>
-          <Text style={styles._commonPayTitle}>User ID : ****128</Text>
+          <Text style={styles._commonPayTitle}>
+            User ID : {getUserData?.posLoginData?.user_profiles?.id ?? '---'}
+          </Text>
           <Text style={styles._thankyou}>Thank You</Text>
           <Image source={{ uri: orderInvoice?.invoices?.barcode }} style={styles.barcodeImage} />
 
