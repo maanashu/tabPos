@@ -170,10 +170,6 @@ export function ProductRefund(props) {
     setIsApplyAmount('applyForEachItem');
   };
 
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([DASHBOARDTYPE.RETURN_PRODUCTS], state)
-  );
-
   return (
     <View style={styles.container}>
       <Header backRequired title={strings.deliveryOrders.back} />
@@ -307,10 +303,9 @@ export function ProductRefund(props) {
           deliveryShippingCharges={deliveryShippingCharges().deliveryCharges}
           total={totalRefundableAmount().toFixed(2)}
           payableAmount={totalRefundableAmount()}
+          isApplyAmount={isApplyAmount}
         />
       </RBSheet>
-
-      {isLoading ? <FullScreenLoader /> : null}
     </View>
   );
 }

@@ -11,6 +11,14 @@ import ReactNativeModal from 'react-native-modal';
 import SmsReceipt from '../Components/SmsReceipt';
 import EmailReceipt from '../Components/EmailReceipt';
 import { COLORS } from '@/theme';
+import { useDispatch, useSelector } from 'react-redux';
+import { returnProduct } from '@/actions/DashboardAction';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
+import { FullScreenLoader } from '@mPOS/components';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { ActivityIndicator } from 'react-native';
 
 const PaymentSelection = ({
   closeSheet,
@@ -21,67 +29,59 @@ const PaymentSelection = ({
   deliveryShippingCharges,
   total,
   payableAmount,
+  isApplyAmount,
 }) => {
+  const dispatch = useDispatch();
   const isCashOrder = data?.order?.mode_of_payment === strings.returnOrder.cash;
 
   const [isPhoneVisible, setIsPhoneVisible] = useState(false);
   const [isEmailVisible, setIsEmailVisible] = useState(false);
   const [isNoReceiptVisible, setIsNoReceiptVisible] = useState(false);
-  const [eReceiptMethod, setEReceiptMethod] = useState();
+  const [eReceiptMethod, setEReceiptMethod] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [countryCode, setCountryCode] = useState('');
 
   const refundHandler = () => {
-    if (
-      !data ||
-      !data?.order ||
-      !data?.order?.mode_of_payment ||
-      (isCashOrder && selectedRecipeIndex === null)
-    ) {
+    if (isCashOrder && eReceiptMethod === 0) {
       alert('Please select e-recipe method');
       return;
     }
     const products =
-      order?.map((item) => ({
+      data?.order?.order_details?.map((item) => ({
         id: item?.product_id,
         qty: item?.qty ?? 1,
-        write_off_qty: item?.write_off_qty,
-        add_to_inventory_qty: item?.add_to_inventory_qty,
-        refund_value: `${
-          applicableForAllItems || applyEachItem ? item?.totalRefundAmount : item?.price * item?.qty
-        }`,
+        write_off_qty: item?.write_off_qty ?? 0,
+        add_to_inventory_qty: item?.add_to_inventory_qty ?? 0,
+        refund_value: `${isApplyAmount ? item?.totalRefundAmount : item?.price * item?.qty}`,
       })) || [];
 
-    const data = {
-      order_id: orderData.order_id,
+    const dataObj = {
+      order_id: data?.order_id,
       products,
       total_taxes: totalTaxes,
       total_refund_amount: total,
       return_reason: 'testing reason',
-      ...(selectedRecipeIndex === 0 && {
-        full_phone_number: countryCode + phoneNumber,
+      ...(eReceiptMethod === 1 && {
+        full_phone_number: countryCode + phone,
       }),
-      ...(selectedRecipeIndex === 1 && { email }),
+      ...(eReceiptMethod === 2 && { email }),
     };
 
-    if (shouldRefundDeliveryAmount) {
-      let deliveryShippingParamKey;
-      if (deliveryShippingTitle === 'Delivery Charges') {
-        deliveryShippingParamKey = 'delivery_charge';
-      } else {
-        deliveryShippingParamKey = 'shipping_charge';
-      }
-      data[deliveryShippingParamKey] = deliveryShippingCharges;
-    }
+    dispatch(getDrawerSessions());
 
     const callback = (res) => {
       if (res) {
         setIsLoading(false);
-        setIsReturnConfirmation(true);
+        alert('Order returned successfully');
+        commonNavigate(MPOS_NAVIGATION.home);
       } else {
         setIsLoading(false);
       }
+      setIsLoading(true);
     };
-    setIsLoading(true);
-    dispatch(returnProduct(data, 'refundPaymentSelection', callback));
+    dispatch(returnProduct(dataObj, 'refundPaymentSelection', callback));
   };
 
   return (
@@ -135,6 +135,7 @@ const PaymentSelection = ({
                 setIsPhoneVisible(true);
                 setIsEmailVisible(false);
                 setIsNoReceiptVisible(false);
+                setEReceiptMethod(1);
               }}
               style={[
                 styles.smsViewStyle,
@@ -159,6 +160,7 @@ const PaymentSelection = ({
                 setIsPhoneVisible(false);
                 setIsEmailVisible(true);
                 setIsNoReceiptVisible(false);
+                setEReceiptMethod(2);
               }}
               style={[
                 styles.smsViewStyle,
@@ -183,6 +185,7 @@ const PaymentSelection = ({
                 setIsPhoneVisible(false);
                 setIsEmailVisible(false);
                 setIsNoReceiptVisible(true);
+                setEReceiptMethod(3);
               }}
               style={[
                 styles.smsViewStyle,
@@ -214,8 +217,9 @@ const PaymentSelection = ({
 
       <ReactNativeModal isVisible={isPhoneVisible}>
         <SmsReceipt
-          closeModal={(val) => {
-            setIsPhoneVisible(false), console.log(val);
+          closeModal={(code, val) => {
+            setIsPhoneVisible(false), setCountryCode(code);
+            setPhone(val);
           }}
         />
       </ReactNativeModal>
@@ -223,10 +227,16 @@ const PaymentSelection = ({
       <ReactNativeModal isVisible={isEmailVisible}>
         <EmailReceipt
           closeModal={(val) => {
-            setIsEmailVisible(false), console.log(val);
+            setIsEmailVisible(false), setEmail(val);
           }}
         />
       </ReactNativeModal>
+
+      {isLoading ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.3)' }]}>
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
+        </View>
+      ) : null}
     </View>
   );
 };
