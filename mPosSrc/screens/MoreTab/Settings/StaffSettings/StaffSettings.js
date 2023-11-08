@@ -12,6 +12,7 @@ import { ms } from 'react-native-size-matters';
 import { TYPES } from '@/Types/Types';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { COLORS } from '@/theme';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 
 export function StaffSettings() {
   const dispatch = useDispatch();
@@ -19,7 +20,9 @@ export function StaffSettings() {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const posUsers = getAuth?.getAllPosUsersData;
 
-  const handleClick = (item) => {};
+  const handleClick = (item) => {
+    commonNavigate(MPOS_NAVIGATION.posUserDetail, { item: item });
+  };
 
   useEffect(() => {
     const data = {

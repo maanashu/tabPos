@@ -41,4 +41,5 @@ export const NAVIGATION = {
   receipts: 'Receipts',
   walletSettings: 'WalletSettings',
   staffSettings: 'StaffSettings',
+  posUserDetail: 'PosUserDetail',
 };
