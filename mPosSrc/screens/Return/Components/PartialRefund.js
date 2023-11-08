@@ -7,9 +7,10 @@ import { Images } from '@mPOS/assets';
 import { strings } from '@/localization';
 import { COLORS, Fonts, SF, SW } from '@/theme';
 
-const PartialRefund = ({ setIsVisible, onPressApplyRefund }) => {
+const PartialRefund = ({ setIsVisible, productsList, onPressApplyRefund }) => {
   const [amount, setAmount] = useState();
   const [selectedMethod, setSelectedMethod] = useState('dollar');
+  const [products, setProducts] = useState();
 
   return (
     <View style={[styles.container, { flex: 1 / 2 }]}>
@@ -19,7 +20,7 @@ const PartialRefund = ({ setIsVisible, onPressApplyRefund }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={onPressApplyRefund}
+          onPress={() => onPressApplyRefund(products)}
           disabled={amount ? false : true}
           style={[
             styles.buttonViewStyle,
@@ -44,9 +45,24 @@ const PartialRefund = ({ setIsVisible, onPressApplyRefund }) => {
         <View style={styles.amountViewStyle}>
           <TextInput
             value={amount}
-            onChangeText={(text) => setAmount(text)}
             style={styles.textInputStyle}
             keyboardType="number-pad"
+            onChangeText={(text) => {
+              const isPercentageLabel = selectedMethod === strings.returnOrder.percentageLabel;
+
+              const updatedDataArray = productsList?.map((item) => ({
+                ...item,
+                refundAmount: isPercentageLabel
+                  ? (item.price * parseFloat(text)) / 100
+                  : parseFloat(text),
+                totalRefundAmount: isPercentageLabel
+                  ? (item.price * parseFloat(text) * item.qty) / 100
+                  : parseFloat(text) * item.qty,
+              }));
+
+              setProducts(updatedDataArray);
+              setAmount(text);
+            }}
           />
 
           <View style={styles.amountTypeView}>

@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     marginVertical: verticalScale(2),
     marginHorizontal: ms(16),
     paddingVertical: ms(10),
+    backgroundColor: COLORS.white,
   },
   blueListDataText: {
     color: COLORS.solid_grey,
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
   },
   editPriceViewStyle: {
     flex: 1,
-    paddingRight: ms(20),
+    paddingRight: ms(10),
     alignItems: 'flex-end',
     justifyContent: 'space-between',
   },
@@ -128,6 +129,81 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
     fontSize: SF(12),
+  },
+  billViewStyle: {
+    width: Dimensions.get('window').width - 40,
+    bottom: 10,
+    alignSelf: 'center',
+    position: 'absolute',
+    backgroundColor: COLORS.white,
+    marginHorizontal: ms(15),
+    borderRadius: 10,
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(10),
+  },
+  totalItemsStyles: {
+    fontSize: SF(16),
+    paddingBottom: ms(10),
+    color: COLORS.primary,
+    fontFamily: Fonts.SemiBold,
+  },
+  horizontalLineStyle: {
+    borderWidth: 0.6,
+    borderColor: COLORS.inputBorder,
+  },
+  orderDetailView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 10,
+  },
+  deliveryOrderTextStyle: {
+    fontSize: SF(10),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
+  },
+  deliveryDateTextStyle: {
+    fontSize: SF(10),
+    color: COLORS.dark_grey,
+    fontFamily: Fonts.SemiBold,
+  },
+  amountViewStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  labelTextStyle: {
+    fontSize: SF(12),
+    color: COLORS.text,
+    fontFamily: Fonts.MaisonRegular,
+  },
+  totalValueText: {
+    fontSize: SF(16),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.MaisonBold,
+  },
+  priceValueText: {
+    fontSize: SF(12),
+    color: COLORS.black,
+    fontFamily: Fonts.SemiBold,
+  },
+  dashedHorizontalLine: {
+    borderWidth: 1,
+    borderColor: COLORS.inputBorder,
+    borderStyle: 'dashed',
+  },
+  buttonStyle: {
+    backgroundColor: COLORS.textInputBackground,
+    flex: 1,
+    borderRadius: 5,
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(14),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonTextStyle: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: SF(14),
+    color: COLORS.darkGray,
   },
 });
 

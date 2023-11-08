@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   nameTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.solid_grey,
   },
   addressTextStyle: {
@@ -176,6 +176,13 @@ const styles = StyleSheet.create({
     height: SH(20),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
+  },
+  checkBoxViewStyle: {
+    width: SH(25),
+    height: SH(25),
+    resizeMode: 'contain',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

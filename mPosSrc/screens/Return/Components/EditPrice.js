@@ -1,23 +1,13 @@
 import React, { memo, useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TextInput,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 
 import { strings } from '@/localization';
 
 import { Images } from '@mPOS/assets';
-import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
-
-const { width } = Dimensions.get('window');
+import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 
 const EditPrice = ({ setIsVisible, selected, index, productsList, saveRefundAmount }) => {
   const [refundAmount, setRefundAmount] = useState('');

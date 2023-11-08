@@ -1,60 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TextInput, Dimensions, TouchableOpacity, FlatList } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 
-import { useDispatch } from 'react-redux';
-import { ms, scale } from 'react-native-size-matters';
-
-import {
-  Fonts,
-  plus,
-  minus,
-  PaymentDone,
-  borderCross,
-  checkedCheckboxSquare,
-  blankCheckBox,
-  sellingArrow,
-  editIcon,
-} from '@/assets';
-import { strings } from '@/localization';
-import { COLORS, SH, SW } from '@/theme';
-import { getDrawerSessions } from '@/actions/CashTrackingAction';
-import { Images } from '@mPOS/assets';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
-import { ScreenWrapper, Spacer } from '@/components';
-import styles from './styles';
-import { formattedReturnPrice } from '@/utils/GlobalMethods';
-import { Header } from '@mPOS/components';
+import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
-import PartialRefund from '../Components/PartialRefund';
-import EditPrice from '../Components/EditPrice';
+import RBSheet from 'react-native-raw-bottom-sheet';
 
-const { width, height } = Dimensions.get('window');
+import { SH } from '@/theme';
+import { Spacer } from '@/components';
+import { strings } from '@/localization';
+import { Fonts, editIcon } from '@/assets';
+import EditPrice from '../Components/EditPrice';
+import PartialRefund from '../Components/PartialRefund';
+import { FullScreenLoader, Header } from '@mPOS/components';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import RecheckConfirmation from '../Components/RecheckConfirmation';
+import PaymentSelection from '../PaymentSelection/PaymentSelection';
+
+import styles from './styles';
+import { useSelector } from 'react-redux';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 
 export function ProductRefund(props) {
-  const dispatch = useDispatch();
-  const [amount, setAmount] = useState('');
-  const [applicableIsCheck, setApplicableIsCheck] = useState(false);
-  const [applyEachItem, setApplyEachItem] = useState(false);
-  const [selectType, setSelectType] = useState('dollar');
-  const [buttonText, setButtonText] = useState('Apply Refund');
-  const [changeView, setChangeView] = useState('TotalItems');
+  const productDetailRef = useRef();
   const [isRefundDeliveryAmount, setIsRefundDeliveryAmount] = useState(false);
   const [orders, setOrders] = useState();
-  const [inventoryModal, setInventoryModal] = useState(false);
   const [isPartialRefund, setIsPartialRefund] = useState(false);
   const [isEditPrice, setIsEditPrice] = useState(false);
   const [selectedItem, setSelectedItem] = useState();
   const [selectedIndex, setSelectedIndex] = useState();
-
+  const [isApplyAmount, setIsApplyAmount] = useState();
+  const [modifiedArray, setModifiedArray] = useState();
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
   const orderData = props?.route?.params?.data;
   const orderList = props?.route?.params?.list;
-
   const finalOrder = JSON.parse(JSON.stringify(orderData));
   finalOrder.order.order_details = orderList;
-
-  console.log(JSON.stringify(finalOrder));
 
   useEffect(() => {
     if (orderData?.order) {
@@ -66,47 +48,9 @@ export function ProductRefund(props) {
     }
   }, []);
 
-  const refundHandler = (key, newText, item) => {
-    const parsedNewText = parseFloat(newText);
-    const finalText = isNaN(parsedNewText) ? 0 : parsedNewText;
-    const isSmallerThanUnitPrice = finalText <= parseFloat(item?.price);
-
-    const updatedDataArray = orders?.map((order, index) => {
-      if (index === key) {
-        return {
-          ...order,
-          refundAmount: isSmallerThanUnitPrice ? finalText : '',
-          totalRefundAmount: isSmallerThanUnitPrice ? finalText * item.qty : 0.0,
-        };
-      }
-      return order;
-    });
-
-    setOrders(updatedDataArray);
-
-    if (!isSmallerThanUnitPrice) {
-      alert('Refund amount should not be greater than unit price');
-    }
-  };
-
-  const addRemoveQty = (symbol, itemIndex) => {
-    const updatedOrders = [...orders];
-    const selectedItem = updatedOrders[itemIndex];
-    const originalOrderArr = orderList[itemIndex];
-
-    if (symbol === '+' && selectedItem.qty < originalOrderArr.qty) {
-      selectedItem.qty += 1;
-      selectedItem.totalRefundAmount = selectedItem.qty * selectedItem.refundAmount;
-    } else if (symbol === '-' && selectedItem.qty > 1) {
-      selectedItem.qty -= 1;
-      selectedItem.totalRefundAmount = selectedItem.qty * selectedItem.refundAmount;
-    }
-    setOrders(updatedOrders);
-  };
-
   const totalRefundAmount = orders?.reduce((accumulator, currentValue) => {
     const price =
-      applicableIsCheck || applyEachItem
+      isApplyAmount === 'applicableForAllItems' || isApplyAmount === 'applyForEachItem'
         ? currentValue.totalRefundAmount
         : currentValue.price * currentValue.qty;
     const totalRefund = accumulator + price;
@@ -125,9 +69,6 @@ export function ProductRefund(props) {
     } else if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '3') {
       deliveryCharges = finalOrder?.order?.shipping_charge;
     } else {
-      deliveryCharges = 0;
-    }
-    if (!isRefundDeliveryAmount) {
       deliveryCharges = 0;
     }
     const total_payable_amount =
@@ -153,19 +94,21 @@ export function ProductRefund(props) {
   };
 
   const renderProductItem = ({ item, index }) => {
-    console.log(item);
     return (
       <View style={styles.productMainViewStyle}>
         <View
           style={{
-            paddingHorizontal: ms(5),
             flexDirection: 'row',
-            flex: 0.05,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: ms(10),
           }}
         >
-          <Image source={{ uri: item?.product_image }} style={styles.productImageStyle} />
+          <View>
+            <Image source={{ uri: item?.product_image }} style={styles.productImageStyle} />
+          </View>
 
-          <View style={{ paddingHorizontal: ms(10) }}>
+          <View style={{ marginHorizontal: ms(10), width: ms(200) }}>
             <Text style={styles.blueListDataText} numberOfLines={2}>
               {item?.product_name ?? '-'}
             </Text>
@@ -190,6 +133,7 @@ export function ProductRefund(props) {
 
           <View style={styles.editPriceViewStyle}>
             <TouchableOpacity
+              style={{ flex: 0.5 }}
               onPress={() => {
                 setIsEditPrice(true);
                 setSelectedItem(item);
@@ -199,96 +143,36 @@ export function ProductRefund(props) {
               <Image source={editIcon} style={styles.editIconStyle} />
             </TouchableOpacity>
 
-            <Text style={styles.priceTextStyle}>{`$${item?.price * item?.qty}`}</Text>
+            <View
+              style={{
+                justifyContent: 'flex-end',
+                flex: 0.5,
+                alignItems: 'flex-end',
+              }}
+            >
+              <Text style={styles.priceTextStyle}>{`$${item?.price * item?.qty}`}</Text>
+            </View>
           </View>
         </View>
       </View>
     );
   };
 
-  const applyRefundHandler = () => {
-    if (applicableIsCheck || applyEachItem) {
-      if (applicableIsCheck && !amount) {
-        alert('Please add refund amount');
-      } else if (applyEachItem) {
-        const hasCheckedItem = orders?.every((item) => item?.refundAmount !== 0);
-        if (hasCheckedItem) {
-          setButtonText('Applied');
-          dispatch(getDrawerSessions());
-        } else {
-          alert('Please add refund amount for all items');
-        }
-      } else {
-        setButtonText('Applied');
-        dispatch(getDrawerSessions());
-      }
-    }
-  };
-
-  const applyRefundButton = () => {
-    const isApplied = buttonText === 'Applied';
-    if ((applicableIsCheck || applyEachItem || amount) && isApplied) {
-      return (
-        <View
-          style={[
-            styles.applyRefundButton,
-            { flexDirection: 'row', paddingHorizontal: ms(12), backgroundColor: 'transparent' },
-          ]}
-        >
-          <Image
-            source={Images.tick}
-            style={{
-              tintColor: COLORS.primary,
-              width: scale(7),
-              height: scale(7),
-              resizeMode: 'contain',
-            }}
-          />
-          <Text style={[styles.applyRefundButtonText, { color: COLORS.primary }]}>{'Applied'}</Text>
-        </View>
-      );
-    } else {
-      return (
-        <TouchableOpacity
-          onPress={() => applyRefundHandler()}
-          style={[
-            styles.applyRefundButton,
-            {
-              backgroundColor:
-                applicableIsCheck || applyEachItem || amount ? COLORS.primary : COLORS.gerySkies,
-            },
-          ]}
-        >
-          <Text style={styles.applyRefundButtonText}>{strings.returnOrder.applyRefund}</Text>
-        </TouchableOpacity>
-      );
-    }
-  };
-
-  const getOrdersDetail = () => {
-    if (applyEachItem) {
-      const newArray = orders.map((obj) => ({
-        ...obj, // Copy all existing key-value pairs
-        ['applyToEachItemKey']: applyEachItem, //
-      }));
-      setOrders(newArray);
-      commonNavigate(MPOS_NAVIGATION.paymentSelection);
-    } else {
-      commonNavigate(MPOS_NAVIGATION.paymentSelection);
-    }
-  };
-
-  const getFinalRefundAmount = (val) => {
-    console.log(JSON.stringify(val));
-    setIsEditPrice(false);
+  const applyRefundHandler = (val) => {
+    setIsApplyAmount('applicableForAllItems');
+    setIsPartialRefund(false);
     setOrders(val);
   };
 
-  const onPresspartialHandler = (key, newText, item) => {
-    console.log(JSON.stringify('key---------------------', key));
-    console.log(JSON.stringify('newText============', newText));
-    console.log(JSON.stringify('item=============', item));
+  const getFinalRefundAmount = (val) => {
+    setIsEditPrice(false);
+    setOrders(val);
+    setIsApplyAmount('applyForEachItem');
   };
+
+  const isLoading = useSelector((state) =>
+    isLoadingSelector([DASHBOARDTYPE.RETURN_PRODUCTS], state)
+  );
 
   return (
     <View style={styles.container}>
@@ -302,20 +186,81 @@ export function ProductRefund(props) {
 
       <Spacer space={SH(20)} />
 
-      <FlatList
-        scrollEnabled
-        data={orders}
-        extraData={orders}
-        renderItem={renderProductItem}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item?.id?.toString()}
-        contentContainerStyle={styles.contentContainerStyle}
-      />
+      <View style={{ height: ms(390) }}>
+        <FlatList
+          scrollEnabled
+          data={orders}
+          extraData={orders}
+          renderItem={renderProductItem}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item) => item?.id?.toString()}
+          contentContainerStyle={styles.contentContainerStyle}
+        />
+      </View>
+
+      <View style={styles.billViewStyle}>
+        <Text
+          style={styles.totalItemsText}
+        >{`${strings.deliveryOrders.totalRefundItems} ${orders?.length}`}</Text>
+
+        <Spacer space={SH(10)} />
+
+        <View style={styles.amountViewStyle}>
+          <Text style={styles.labelTextStyle}>{strings.deliveryOrders.subTotal}</Text>
+          <Text style={styles.priceValueText}>{`${formattedReturnPrice(totalRefundAmount)}`}</Text>
+        </View>
+
+        <Spacer space={SH(10)} />
+
+        <View style={styles.amountViewStyle}>
+          <Text style={styles.labelTextStyle}>{strings.deliveryOrders.totalTax}</Text>
+          <Text style={styles.priceValueText}>{`${formattedReturnPrice(
+            calculateRefundTax()
+          )}`}</Text>
+        </View>
+
+        {finalOrder?.order?.status === 5 && isRefundDeliveryAmount ? (
+          <>
+            <Spacer space={SH(10)} />
+            <View style={styles.amountViewStyle}>
+              <Text style={styles.labelTextStyle}>{deliveryShippingCharges().title}</Text>
+              <Text style={styles.priceValueText}>{`${formattedReturnPrice(
+                deliveryShippingCharges().deliveryCharges
+              )}`}</Text>
+            </View>
+            <Spacer space={SH(10)} />
+          </>
+        ) : null}
+
+        <Spacer space={SH(10)} />
+
+        <View style={styles.amountViewStyle}>
+          <Text style={[styles.labelTextStyle, { fontFamily: Fonts.MaisonBold }]}>
+            {strings.wallet.total}
+          </Text>
+          <Text style={[styles.totalValueText, { fontFamily: Fonts.MaisonBold }]}>
+            {`${formattedReturnPrice(totalRefundableAmount())}`}
+          </Text>
+        </View>
+
+        <Spacer space={SH(20)} />
+
+        <TouchableOpacity
+          onPress={() => setIsCheckConfirmationModalVisible(true)}
+          disabled={orders?.length > 0 ? false : true}
+          style={styles.buttonStyle}
+        >
+          <Text style={styles.buttonTextStyle}>{strings.management.next}</Text>
+        </TouchableOpacity>
+
+        <Spacer space={SH(20)} />
+      </View>
 
       <ReactNativeModal isVisible={isPartialRefund}>
         <PartialRefund
           setIsVisible={() => setIsPartialRefund(false)}
-          // onPressApplyRefund={onPressRefundHandler}
+          productsList={orders}
+          onPressApplyRefund={applyRefundHandler}
         />
       </ReactNativeModal>
 
@@ -328,6 +273,44 @@ export function ProductRefund(props) {
           saveRefundAmount={getFinalRefundAmount}
         />
       </ReactNativeModal>
+
+      <ReactNativeModal isVisible={isCheckConfirmationModalVisible}>
+        <RecheckConfirmation
+          isVisible={isCheckConfirmationModalVisible}
+          setIsVisible={setIsCheckConfirmationModalVisible}
+          orderList={orders}
+          onPress={(modifiedOrderDetailArr) => {
+            setModifiedArray([...modifiedOrderDetailArr]);
+            productDetailRef?.current?.open();
+            setIsCheckConfirmationModalVisible(false);
+          }}
+        />
+      </ReactNativeModal>
+
+      <RBSheet
+        ref={productDetailRef}
+        height={ms(550)}
+        customStyles={{
+          container: {
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+            paddingHorizontal: ms(10),
+          },
+        }}
+      >
+        <PaymentSelection
+          closeSheet={() => productDetailRef?.current?.close()}
+          data={finalOrder}
+          totalRefundAmount={totalRefundAmount}
+          totalTaxes={calculateRefundTax().toFixed(2)}
+          deliveryShippingTitle={deliveryShippingCharges().title}
+          deliveryShippingCharges={deliveryShippingCharges().deliveryCharges}
+          total={totalRefundableAmount().toFixed(2)}
+          payableAmount={totalRefundableAmount()}
+        />
+      </RBSheet>
+
+      {isLoading ? <FullScreenLoader /> : null}
     </View>
   );
 }

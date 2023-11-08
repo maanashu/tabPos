@@ -4,6 +4,7 @@ import { COLORS, SF, SH } from '@/theme';
 import { Fonts } from '@/assets';
 import PhonePopUp from './PhonePopUp';
 import { ms } from 'react-native-size-matters';
+import { isTab } from '@common/commonImports';
 export const CustomKeyboard = ({
   maxCharLength,
   enteredValue,
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
   _btnContainer: {
     flexDirection: 'row',
     alignSelf: 'center',
-    width: windowWidth * 0.33,
+    width: isTab ? windowWidth * 0.33 : ms(250),
     marginTop: ms(10),
   },
   declineBtnContainer: {

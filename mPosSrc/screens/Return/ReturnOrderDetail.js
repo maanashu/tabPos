@@ -14,19 +14,20 @@ import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 
 import { Images } from '@mPOS/assets';
-import { COLORS, SH } from '@/theme';
+import { COLORS, Fonts, SH } from '@/theme';
 import { strings } from '@mPOS/localization';
+import OrderTotal from './Components/OrderTotal';
 import { Header, Spacer } from '@mPOS/components';
 import ManualEntry from './Components/ManualEntry';
 import { getProductByUpc } from '@/actions/DeliveryAction';
 
 import styles from './styles';
-import OrderTotal from './Components/OrderTotal';
 
 export function ReturnOrderDetail(props) {
   const dispatch = useDispatch();
   const orderData = props?.route?.params?.data;
   const customerDetail = orderData?.order?.user_details?.user_profiles;
+
   const [productUpc, setProductUpc] = useState('');
   const [orderDetails, setOrderDetails] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -87,60 +88,49 @@ export function ReturnOrderDetail(props) {
     }
   };
 
-  const renderOrderProducts = ({ item }) => {
-    return (
-      <View style={styles.orderproductView}>
-        <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
-          <Image
-            source={item?.product_image ? { uri: item?.product_image } : Images.userImage}
-            style={styles.userImageStyle}
-          />
-          <View style={{ paddingLeft: 10, width: ms(100) }}>
-            <Text numberOfLines={1} style={[styles.nameTextStyle, { textAlign: 'left' }]}>
-              {item?.product_name ?? '-'}
-            </Text>
-          </View>
+  const renderOrderProducts = ({ item }) => (
+    <View style={styles.orderproductView}>
+      <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
+        <Image
+          source={item?.product_image ? { uri: item?.product_image } : Images.userImage}
+          style={styles.userImageStyle}
+        />
+        <View style={{ paddingLeft: 10, width: ms(100) }}>
+          <Text
+            numberOfLines={1}
+            style={[styles.nameTextStyle, { fontFamily: Fonts.Medium, textAlign: 'left' }]}
+          >
+            {item?.product_name ?? '-'}
+          </Text>
         </View>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
-          {`$${item?.price}` ?? '-'}
-        </Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty ?? '-'}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
-          {`$${item?.price * item?.qty}` ?? '-'}
-        </Text>
-        {item?.isChecked ? (
-          <TouchableOpacity
-            style={{
-              width: SH(25),
-              height: SH(25),
-              resizeMode: 'contain',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onPress={() => checkboxHandler(item?.id, item?.qty)}
-          >
-            <Image
-              source={Images.mark}
-              style={[styles.checkboxIconStyle, { tintColor: COLORS.primary }]}
-            />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={{
-              width: SH(25),
-              height: SH(25),
-              resizeMode: 'contain',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onPress={() => checkboxHandler(item?.id, item?.qty)}
-          >
-            <Image source={Images.blankCheckBox} style={styles.checkboxIconStyle} />
-          </TouchableOpacity>
-        )}
       </View>
-    );
-  };
+
+      <Text style={[styles.nameTextStyle, { fontFamily: Fonts.Regular, color: COLORS.darkGray }]}>
+        {`$${item?.price}  x  ${item?.qty}`}
+      </Text>
+      <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+        {`$${item?.price * item?.qty}` ?? '-'}
+      </Text>
+      {item?.isChecked ? (
+        <TouchableOpacity
+          style={styles.checkBoxViewStyle}
+          onPress={() => checkboxHandler(item?.id, item?.qty)}
+        >
+          <Image
+            source={Images.mark}
+            style={[styles.checkboxIconStyle, { tintColor: COLORS.primary }]}
+          />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.checkBoxViewStyle}
+          onPress={() => checkboxHandler(item?.id, item?.qty)}
+        >
+          <Image source={Images.blankCheckBox} style={styles.checkboxIconStyle} />
+        </TouchableOpacity>
+      )}
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -165,7 +155,9 @@ export function ReturnOrderDetail(props) {
             } ${customerDetail?.current_address?.country ?? ''}`}</Text>
           </View>
         </View>
+
         <Spacer space={SH(20)} />
+
         <View style={styles.cancelButtonStyle}>
           <Text style={styles.cancelButtonText}>
             {getDeliveryType(orderData?.order?.delivery_option)}

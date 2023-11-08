@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   boldText: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(14),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
   },
   dropDownContainerStyle: {
     borderWidth: 0,
