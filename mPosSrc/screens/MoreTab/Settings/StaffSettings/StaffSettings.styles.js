@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     marginVertical: ms(5),
     borderColor: COLORS.solidGrey,
     justifyContent: 'space-between',
+    // flex: 1,
   },
 });
 
