@@ -29,6 +29,7 @@ import {
   Locations,
   Receipts,
   WalletSettings,
+  StaffSettings,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -204,6 +205,11 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.walletSettings}
         options={{ headerShown: false }}
         component={WalletSettings}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.staffSettings}
+        options={{ headerShown: false }}
+        component={StaffSettings}
       />
     </Stack.Navigator>
   );

@@ -40,4 +40,5 @@ export const NAVIGATION = {
   locations: 'Locations',
   receipts: 'Receipts',
   walletSettings: 'WalletSettings',
+  staffSettings: 'StaffSettings',
 };

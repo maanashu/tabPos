@@ -4,9 +4,9 @@ import { Spacer } from '@/components';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts } from '@/theme';
 
-export function SettingsContainer({ heading, subHeading, children }) {
+export function SettingsContainer({ heading, subHeading, children, extraStyle }) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, extraStyle]}>
       <Text style={styles.headingTitle}>{heading}</Text>
       <Spacer space={ms(16)} />
       <Text style={styles.subHeadingTitle}>{subHeading}</Text>

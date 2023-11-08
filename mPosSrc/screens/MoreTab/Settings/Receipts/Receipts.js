@@ -59,6 +59,7 @@ export function Receipts() {
         <SettingsContainer
           heading={strings?.receipts?.invoiceSetting}
           subHeading={strings?.receipts?.subTitle}
+          extraStyle={{ flex: 0 }}
         >
           <ToggleView
             icon={Images.smsIcon}

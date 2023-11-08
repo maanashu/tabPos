@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: ms(10),
     paddingHorizontal: ms(20),
-    // flexGrow: 1,
+    flexGrow: 1,
   },
   rowJustified: {
     flexDirection: 'row',
@@ -18,49 +18,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  imageStyle: {
-    height: ms(30),
-    width: ms(30),
-    tintColor: COLORS.darkGray,
+  userIcon: {
+    height: ms(34),
+    width: ms(40),
+    // tintColor: COLORS.darkGray,
   },
-  rightIcon: {
+  toggleIcon: {
     height: ms(24),
     width: ms(24),
   },
-  titleText: {
-    color: COLORS.black,
+  userName: {
+    color: COLORS.solid_grey,
     fontSize: ms(14),
     fontFamily: Fonts.SemiBold,
   },
-  subTitleText: {
-    color: COLORS.darkGray,
-    fontSize: ms(11),
+  roleText: {
+    color: COLORS.dark_grey,
+    fontSize: ms(12),
     fontFamily: Fonts.Regular,
   },
   itemContainer: {
     borderWidth: 1,
-    paddingHorizontal: ms(15),
+    paddingHorizontal: ms(10),
     paddingVertical: ms(10),
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: ms(5),
     marginVertical: ms(5),
     borderColor: COLORS.solidGrey,
-  },
-  addressTypeText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(14),
-    color: COLORS.solid_grey,
-  },
-  addressText: {
-    fontFamily: Fonts.Regular,
-    fontSize: ms(12),
-    color: COLORS.dark_grey,
-    marginTop: ms(2),
-  },
-  storeIcon: {
-    height: ms(40),
-    width: ms(40),
+    justifyContent: 'space-between',
   },
 });
 
