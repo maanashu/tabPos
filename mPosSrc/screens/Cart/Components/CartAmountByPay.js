@@ -51,7 +51,6 @@ const CartAmountByPay = ({
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const cartData = retailData?.getAllCart;
   const getTips = retailData?.getTips;
-
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
   const [tipData, setTipData] = useState('0.00');
@@ -76,8 +75,16 @@ const CartAmountByPay = ({
 
   const [flag, setFlag] = useState('US');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [countryCode, setCountryCode] = useState('+1');
+  const [countryCode, setCountryCode] = useState('');
   const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    if (cartData?.user_details) {
+      setEmail(cartData?.user_details?.email ?? '');
+      setPhoneNumber(cartData?.user_details?.phone_no ?? '');
+      setCountryCode(cartData?.user_details?.phone_code ?? '+1');
+    }
+  }, [cartData?.user_details]);
 
   useEffect(() => {
     setColorSelectId(null);
@@ -337,7 +344,7 @@ const CartAmountByPay = ({
                   <TouchableOpacity
                     onPress={() => {
                       setSelectedRecipeIndex(index);
-                      setPhoneNumber(), setEmail();
+                      // setPhoneNumber(), setEmail();
                       if (item.title == 'No e-recipe') {
                         getTipPress();
                       }
@@ -636,7 +643,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(5),
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: ms(10),
+    marginBottom: ms(20),
   },
   payNowText: {
     fontFamily: Fonts.SemiBold,

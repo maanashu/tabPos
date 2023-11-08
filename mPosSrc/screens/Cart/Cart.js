@@ -23,6 +23,8 @@ import PayByCash from './Components/PayByCash';
 import { TYPES } from '@/Types/Types';
 import FinalPayment from './Components/FinalPayment';
 import { getDrawerSessions } from '@/actions/CashTrackingAction';
+import ProductCustomerAdd from './Components/ProductCustomerAdd';
+import { NewCustomerAdd } from '@/screens/PosRetail3/Components/NewCustomerAdd';
 
 export function Cart() {
   const dispatch = useDispatch();
@@ -39,6 +41,7 @@ export function Cart() {
   const [priceChange, setPriceChange] = useState(false);
   const [orderCreateData, setOrderCreateData] = useState();
   const [saveCart, setSaveCart] = useState();
+  const [productCustomerAdd, setProductCustomerAdd] = useState(false);
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -50,6 +53,7 @@ export function Cart() {
         TYPES.GET_CLEAR_ALL_CART,
         TYPES.UPDATE_CART_BY_TIP,
         TYPES.CREATE_ORDER,
+        TYPES.ATTACH_CUSTOMER,
       ],
       state
     )
@@ -115,6 +119,7 @@ export function Cart() {
           <TouchableOpacity
             style={styles.headerImagecCon}
             // onPress={() => setAddNotes((prev) => !prev)}
+            onPress={() => setProductCustomerAdd((prev) => !prev)}
           >
             <Image source={Images.addCustomerIcon} style={styles.headerImage} />
           </TouchableOpacity>
@@ -391,6 +396,16 @@ export function Cart() {
         onBackdropPress={() => setPriceChange(false)}
       >
         <PriceChange priceChangeClose={() => setPriceChange(false)} {...{ cartProduct }} />
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        isVisible={productCustomerAdd}
+        onBackdropPress={() => setProductCustomerAdd(false)}
+      >
+        <ProductCustomerAdd crossHandler={() => setProductCustomerAdd(false)} />
+        {/* <NewCustomerAdd /> */}
       </Modal>
 
       <CartAmountByPay {...{ cartAmountByPayRef, cashPayNowHandler, cartAmountByPayCross }} />
