@@ -25,12 +25,14 @@ import FinalPayment from './Components/FinalPayment';
 import { getDrawerSessions } from '@/actions/CashTrackingAction';
 import ProductCustomerAdd from './Components/ProductCustomerAdd';
 import { NewCustomerAdd } from '@/screens/PosRetail3/Components/NewCustomerAdd';
+import JbrCoin from './Components/JbrCoin';
 
 export function Cart() {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const productCartData = retailData?.getAllCart;
   const payByCashRef = useRef(null);
+  const jbrCoinRef = useRef(null);
   const finalPaymentRef = useRef(null);
   const cartAmountByPayRef = useRef(null);
   const [cartProduct, setCartProduct] = useState();
@@ -95,19 +97,28 @@ export function Cart() {
     // commonNavigate(MPOS_NAVIGATION.retailProducts);
   }, []);
 
+  const jbrCoinSheetshow = useCallback(() => {
+    jbrCoinRef.current.present();
+  }, []);
+
+  const jbrCoinCrossHandler = useCallback(() => {
+    jbrCoinRef.current.dismiss();
+  }, []);
+
+  const payByJbrCoinHandler = (cartData, data) => {
+    setOrderCreateData(data);
+    setSaveCart(cartData);
+    jbrCoinRef.current.dismiss();
+    finalPaymentRef.current?.present();
+  };
+
   const onRowDidOpen = (rowKey) => {
     console.log('This row opened', rowKey);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View
-        style={[
-          styles.cartScreenHeader,
-          // { opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.5 },
-        ]}
-        // pointerEvents={productCartData?.poscart_products?.length > 0 ? 'auto' : 'none'}
-      >
+      <View style={[styles.cartScreenHeader]}>
         <View
           style={{
             flexDirection: 'row',
@@ -118,7 +129,6 @@ export function Cart() {
         >
           <TouchableOpacity
             style={styles.headerImagecCon}
-            // onPress={() => setAddNotes((prev) => !prev)}
             onPress={() => setProductCustomerAdd((prev) => !prev)}
           >
             <Image source={Images.addCustomerIcon} style={styles.headerImage} />
@@ -408,9 +418,13 @@ export function Cart() {
         {/* <NewCustomerAdd /> */}
       </Modal>
 
-      <CartAmountByPay {...{ cartAmountByPayRef, cashPayNowHandler, cartAmountByPayCross }} />
+      <CartAmountByPay
+        {...{ cartAmountByPayRef, cashPayNowHandler, cartAmountByPayCross, jbrCoinSheetshow }}
+      />
       <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
+
+      <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrCoinHandler }} />
       {isLoading ? <FullScreenLoader /> : null}
     </SafeAreaView>
   );

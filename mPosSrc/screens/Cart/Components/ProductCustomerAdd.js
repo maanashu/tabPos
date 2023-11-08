@@ -12,10 +12,7 @@ import {
 } from 'react-native';
 
 import { moderateScale, ms } from 'react-native-size-matters';
-import RBSheet from 'react-native-raw-bottom-sheet';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
@@ -27,7 +24,6 @@ import {
   getUserDetail,
   getUserDetailSuccess,
 } from '@/actions/RetailAction';
-import { getAuthData } from '@/selectors/AuthSelector';
 import CountryPicker from 'react-native-country-picker-modal';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useEffect } from 'react';
@@ -35,8 +31,6 @@ import { useCallback } from 'react';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { crossButton, dropdown } from '@/assets';
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 const ProductCustomerAdd = ({ crossHandler }) => {
   const textInputRef = useRef(null);
@@ -49,7 +43,6 @@ const ProductCustomerAdd = ({ crossHandler }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [searchCustomer, setSearchCustomer] = useState('');
-  const [monthDays, setmonthDays] = useState([]);
   const getuserDetailByNo = getRetailData?.getUserDetail;
   const userLength = Object.keys(getuserDetailByNo)?.length;
   const [defaultPhoneNumber, setDefaultPhoneNumber] = useState(
@@ -424,7 +417,6 @@ const styles = StyleSheet.create({
     height: ms(490),
     alignSelf: 'center',
     paddingVertical: ms(15),
-    marginTop: ms(100),
   },
   headerConCustomProduct: {
     height: ms(40),
@@ -512,6 +504,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 5,
     fontFamily: Fonts.Italic,
+    fontSize: ms(12),
   },
 
   newFirstName: {
@@ -521,6 +514,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     fontFamily: Fonts.Italic,
     paddingHorizontal: ms(10),
+    fontSize: ms(12),
   },
   countryCodeText: {
     color: COLORS.solid_grey,

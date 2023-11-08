@@ -158,6 +158,11 @@ export const en = {
     erecipeEmail: 'e-recipe will Send to your email',
     paidAmount: 'Paid  Amount:',
     primark: 'Primark',
+    scanToPay: 'Scan to Pay',
+    moneyfaster: 'Scan QR Code to pay or send money faster',
+    requestYourWallet: 'Send payment request to your wallet',
+    sendRequest: 'Send Request',
+    validPhone: 'Please enter valid phone number',
   },
   homeTab: {
     placeholder: 'Search by Barcode, SKU, Name',
