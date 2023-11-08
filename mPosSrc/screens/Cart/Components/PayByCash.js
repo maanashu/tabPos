@@ -88,8 +88,6 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
     },
   ];
   const [cashRate, setCashRate] = useState(selectCashArray?.[0]?.usd);
-
-  console.log('cashRate', cashRate);
   useEffect(() => {
     setCashRate(selectCashArray?.[0]?.usd);
   }, [cartData]);
