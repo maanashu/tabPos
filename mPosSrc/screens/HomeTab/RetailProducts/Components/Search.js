@@ -6,7 +6,7 @@ import { strings } from '@mPOS/localization';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts } from '@/theme';
 
-const Search = ({ value, onChangeText }) => {
+const Search = ({ value, onChangeText, filterHandler }) => {
   return (
     <View style={styles.searchView}>
       <View style={styles.searchMainView}>
@@ -20,7 +20,7 @@ const Search = ({ value, onChangeText }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.scannerViewStyle}>
+      <TouchableOpacity style={styles.scannerViewStyle} onPress={filterHandler}>
         <Image source={Images.filter} style={styles.filterImage} />
         <Text style={styles.filterCount}>{'0'}</Text>
       </TouchableOpacity>
