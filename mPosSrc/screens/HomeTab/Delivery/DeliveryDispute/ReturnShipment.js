@@ -9,7 +9,6 @@ import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, ShadowStyles } from '@/theme';
 
 const ReturnShipment = ({ orderData, onPressShop }) => {
-  console.log(orderData?.seller_details);
   const orderStatus = orderData?.status;
   const [isHideView, setisHideView] = useState(false);
   const shopName = orderData?.seller_details?.organization_name;

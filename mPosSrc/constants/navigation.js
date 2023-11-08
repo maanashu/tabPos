@@ -36,4 +36,5 @@ export const NAVIGATION = {
   booking: 'Booking',
   productRefund: 'ProductRefund',
   paymentSelection: 'PaymentSelection',
+  settings: 'Settings',
 };

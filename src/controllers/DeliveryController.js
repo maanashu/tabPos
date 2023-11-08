@@ -68,14 +68,11 @@ export class DeliveryController {
   }
 
   static async acceptOrder(data) {
-    console.log('data========', data);
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.acceptOrder + `/${data.orderId}`;
       const body = {
         status: data.status,
       };
-      console.log('endpoint========', endpoint);
-      console.log('body========', body);
       HttpClient.put(endpoint, body)
         .then((response) => {
           Toast.show({
@@ -87,7 +84,6 @@ export class DeliveryController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error========', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

@@ -172,4 +172,13 @@ export const Images = {
 
   // return
   scanner: require('@mPOS/assets/icons/return/scan.png'),
+
+  // Settings
+  tax: require('@/assets/icons/ic_setting/tax.png'),
+  invoiceIcon: require('@/assets/icons/ic_setting/invoice.png'),
+  staff: require('@/assets/icons/ic_setting/staffIcon.png'),
+  language: require('@/assets/icons/ic_setting/langu.png'),
+  work: require('@/assets/icons/ic_setting/work.png'),
+  policy: require('@/assets/icons/ic_setting/policy.png'),
+  deviceLogo: require('@/assets/icons/ic_customers/shop_light.png'),
 };

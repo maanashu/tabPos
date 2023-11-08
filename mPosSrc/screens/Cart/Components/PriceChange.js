@@ -121,8 +121,6 @@ const styles = StyleSheet.create({
   headerViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    // paddingVertical: ms(15),
-    // paddingHorizontal: ms(20),
     justifyContent: 'space-between',
   },
   crossIconStyle: {

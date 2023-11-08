@@ -50,7 +50,11 @@ const CustomProductAdd = ({ customProductClose }) => {
   };
 
   return (
-    <KeyboardAwareScrollView style={[styles.addDiscountcon]} showsVerticalScrollIndicator={false}>
+    // <View style={[styles.addDiscountcon]}>
+    <KeyboardAwareScrollView
+      contentContainerStyle={[styles.addDiscountcon]}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.headerViewStyle}>
         <TouchableOpacity onPress={() => customProductClose()}>
           <Image source={Images.cross} style={styles.crossIconStyle} />
@@ -138,9 +142,9 @@ export default memo(CustomProductAdd);
 const styles = StyleSheet.create({
   addDiscountcon: {
     backgroundColor: COLORS.white,
-    borderRadius: 30,
-    width: ms(350),
-    height: ms(300),
+    borderRadius: ms(15),
+    width: ms(330),
+    height: ms(550),
     alignSelf: 'center',
     paddingHorizontal: moderateScale(15),
     paddingVertical: ms(30),

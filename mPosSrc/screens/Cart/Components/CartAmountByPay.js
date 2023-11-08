@@ -158,7 +158,6 @@ const CartAmountByPay = ({
       tip: selectedTipAmount.toString(),
       cartId: cartData.id,
     };
-    console.log(data);
     const res = await dispatch(updateCartByTip(data));
     if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
       cashPayNowHandler();
@@ -216,7 +215,9 @@ const CartAmountByPay = ({
             </View>
             <View style={{ flex: 1, paddingHorizontal: ms(10) }}>
               <Text style={styles.payableAmount}>
-                ${calculatePercentageValue(cartData?.amount?.products_price, tipData?.title)}
+                {/* ${calculatePercentageValue(cartData?.amount?.products_price, tipData?.title)}
+                 */}
+                ${selectedTipAmount}
               </Text>
               <View style={styles.erecipeCon}>
                 {TIPS_DATA?.map((item, index) => (

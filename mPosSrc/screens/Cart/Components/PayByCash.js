@@ -1,30 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  Keyboard,
-} from 'react-native';
-
-import RBSheet from 'react-native-raw-bottom-sheet';
-
+import React, { useEffect, useMemo, useState } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput, Keyboard } from 'react-native';
 import { Images } from '@mPOS/assets';
-import { Spacer, FullScreenLoader } from '@mPOS/components';
-import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { strings } from '@mPOS/localization';
+import { FullScreenLoader } from '@mPOS/components';
+import { COLORS, Fonts } from '@/theme';
 import { ms } from 'react-native-size-matters';
-
-import {
-  BottomSheetModal,
-  BottomSheetScrollView,
-  BottomSheetTextInput,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -32,6 +12,7 @@ import { TYPES } from '@/Types/Types';
 import { digitWithDot } from '@/utils/validators';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
+import { createOrder } from '@/actions/RetailAction';
 
 const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) => {
   const dispatch = useDispatch();
@@ -39,21 +20,10 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
   const cartData = retailData?.getAllCart;
   const productDetail = retailData?.getOneProduct;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
-
-  const sizeArray = attributeArray?.filter((item) => item.name === 'Size');
-  const colorArray = attributeArray?.filter((item) => item.name === 'Color');
-
-  const [colorSelectId, setColorSelectId] = useState(null);
-  const [sizeSelectId, setSizeSelectId] = useState(null);
-  const [count, setCount] = useState(1);
-  const [productDetailExpand, setProductDetailExpand] = useState(false);
-
-  const [colorName, setColorName] = useState();
-  const [sizeName, setSizeName] = useState();
   const [keyboardStatus, setKeyboardStatus] = useState('60%');
   const snapPoints = useMemo(() => [keyboardStatus], [keyboardStatus]);
   const [selectedId, setSelectedId] = useState(1);
-
+  const saveCartData = cartData;
   const [amount, setAmount] = useState();
 
   const totalPayAmount = () => {
@@ -71,6 +41,38 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
   const currencyNotes = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 5000];
   const targetValue = totalPayAmount();
   const greaterNotes = findGreaterCurrencyNotes(targetValue, currencyNotes);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus('90%');
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus('60%');
+    });
+  }, []);
+
+  const isLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_CART, TYPES.CREATE_ORDER], state)
+  );
+
+  const createOrderHandler = () => {
+    if (amount && digitWithDot.test(amount) === false) {
+      CustomErrorToast({ message: 'Please enter valid amount' });
+    } else {
+      const data = {
+        cartid: cartData.id,
+        tips: amount === undefined || amount === '' ? cashRate : amount,
+        modeOfPayment: 'cash',
+      };
+      const callback = (response) => {
+        if (response) {
+          payByCashhandler(saveCartData, data);
+        }
+      };
+      dispatch(createOrder(data, callback));
+    }
+  };
+
   const selectCashArray = [
     {
       id: 1,
@@ -85,68 +87,12 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
       usd: greaterNotes[1] <= 5000 ? greaterNotes[1] : totalPayAmount(),
     },
   ];
+  const [cashRate, setCashRate] = useState(selectCashArray?.[0]?.usd);
 
+  console.log('cashRate', cashRate);
   useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardStatus('90%');
-    });
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardStatus('60%');
-    });
-  }, []);
-  useEffect(() => {
-    setColorSelectId(null);
-    setSizeSelectId(null);
-  }, []);
-
-  const TIPS_DATA = [
-    { title: 18, percent: '18' },
-    {
-      title: 20,
-      percent: '20',
-    },
-    { title: 22, percent: '22' },
-    { title: '', percent: 'No Tips' },
-  ];
-
-  const ERECIPE_DATA = [
-    {
-      id: 1,
-      title: 'SMS',
-    },
-    {
-      id: 2,
-      title: 'Email',
-    },
-    {
-      id: 3,
-      title: 'No e-recipe',
-    },
-  ];
-  const [cashRate, setCashRate] = useState(selectCashArray?.[0]);
-
-  const isLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
-
-  const createOrderHandler = () => {
-    if (amount && digitWithDot.test(amount) === false) {
-      CustomErrorToast({ message: 'Please enter valid amount' });
-    } else {
-      const data = {
-        cartid: cartData.id,
-        tips: amount === undefined || amount === '' ? cashRate : amount,
-        modeOfPayment: 'cash',
-      };
-      console.log('data', data);
-      // const callback = (response) => {
-      //   if (response) {
-      //     onPressContinue(data);
-      //   }
-      // };
-
-      // dispatch(createOrder(data, callback));
-      payByCashhandler();
-    }
-  };
+    setCashRate(selectCashArray?.[0]?.usd);
+  }, [cartData]);
 
   return (
     <BottomSheetModal

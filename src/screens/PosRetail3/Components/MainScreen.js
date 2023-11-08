@@ -199,7 +199,6 @@ export function MainScreen({
         const bulkData = await createBulkcart(dataToSend)(dispatch);
         // if (holdProductArray?.length == 0 || getRetailData?.getAllCart?.length == 0) {
         if (holdProductArray?.length == 0 && Object.keys(getRetailData?.getAllCart)?.length == 0) {
-          console.log('if');
           const data =
             holdProductArray?.length > 0
               ? {
@@ -212,7 +211,6 @@ export function MainScreen({
                 };
           dispatch(changeStatusProductCart(data));
         } else {
-          console.log('else');
           const data =
             holdProductArray?.length > 0
               ? {
