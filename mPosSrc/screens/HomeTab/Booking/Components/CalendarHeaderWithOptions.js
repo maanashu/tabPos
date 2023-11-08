@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, Platform } from 'react-native';
-import { leftlight, newCalendar, rightlight } from '@/assets';
+import { calendarIcon, leftlight, list, newCalendar, rightlight } from '@/assets';
 import { strings } from '@/localization';
 import { ms } from 'react-native-size-matters';
 import { CALENDAR_VIEW_MODES } from '@/constants/enums';
@@ -108,9 +108,9 @@ const CalendarHeaderWithOptions = ({
             onPress={onPressCalendarViewMode}
           >
             <Image
-              source={newCalendar}
+              source={calendarIcon}
               style={[
-                styles.calendarIcon,
+                styles.calendarIconView,
                 {
                   tintColor:
                     calendarViewMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW
@@ -129,7 +129,7 @@ const CalendarHeaderWithOptions = ({
             onPress={onPressListViewMode}
           >
             <Image
-              source={newCalendar}
+              source={list}
               style={[
                 styles.calendarIcon,
                 {

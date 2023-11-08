@@ -9,7 +9,7 @@ import { getCalendarActionButtonTitle } from '@/utils/GlobalMethods';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import { changeAppointmentStatus } from '@/actions/AppointmentAction';
 import { useDispatch } from 'react-redux';
-import { editIcon } from '@/assets';
+import { clock, editIcon } from '@/assets';
 import { styles } from '../../styles';
 
 const ListViewItem = ({
@@ -146,11 +146,11 @@ const ListViewItem = ({
         <View style={[styles.listViewSubContainers, { flex: 0.3, justifyContent: 'flex-start' }]}>
           {userDetails || invitedUserDetails ? (
             <>
-              <ProfileImage
+              {/* <ProfileImage
                 source={{ uri: customerDetails?.profile_photo }}
                 style={styles.customerUserProfile}
-              />
-              <View style={{ marginLeft: ms(6), flex: 1 }}>
+              /> */}
+              <View style={{ flex: 1 }}>
                 <Text style={styles.customerName}>
                   {customerDetails?.firstname + ' ' + customerDetails?.lastname}
                 </Text>
@@ -169,17 +169,28 @@ const ListViewItem = ({
           )}
         </View>
 
-        <View style={styles.listViewSubContainers}>
+        {/* <View style={styles.listViewSubContainers}>
           <Text style={styles.lineViewValues}>
             {posUserDetails?.firstname + ' ' + posUserDetails?.lastname}
           </Text>
+        </View> */}
+
+        <View style={[styles.listViewSubContainers, { flex: 0.45, justifyContent: 'flex-start' }]}>
+          <ProfileImage
+            source={{ uri: customerDetails?.profile_photo }}
+            style={styles.customerUserProfile}
+          />
+          <View style={{ marginLeft: ms(6), flex: 1 }}>
+            <Text style={[styles.customerName, { fontFamily: Fonts.SemiBold }]}>
+              {item?.appointment_details[0]?.product_name}
+            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image source={clock} style={styles.eventAddressIcon} />
+              <Text style={styles.eventAddress}>{`${item?.start_time}-${item?.end_time}`}</Text>
+            </View>
+          </View>
         </View>
-        <View style={styles.listViewSubContainers}>
-          <Text style={styles.lineViewValues}>{item?.appointment_details[0]?.product_name}</Text>
-        </View>
-        <View style={styles.listViewSubContainers}>
-          <Text style={styles.lineViewValues}>{`${item?.start_time}-${item?.end_time}`}</Text>
-        </View>
+
         <View style={styles.listViewSubContainers}>{renderButtons[item?.status]}</View>
       </View>
       <View style={styles.deviderList} />

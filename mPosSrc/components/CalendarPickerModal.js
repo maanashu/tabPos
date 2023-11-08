@@ -59,25 +59,24 @@ const CalendarPickerModal = ({
         height={ms(400)}
         scaleFactor={400}
       />
-      {/* <View style={styles.flexDirectionRow}>
+      <View style={styles.flexDirectionRow}>
         <Button
           onPress={onCancelPress}
           style={styles.cancelButton}
-          title={"Cancel"}
-          title={"Cancel"}
+          title={'Cancel'}
           textStyle={styles.cancelText}
         />
+        <Spacer space={SW(10)} horizontal />
         <Button
           style={styles.applyButton}
-          title={"Apply"}
-          title={"Apply"}
+          title={'Apply'}
           textStyle={styles.applyText}
           onPress={() => {
             onSelectedDate(selectedDate);
           }}
         />
-      </View> */}
-      <View
+      </View>
+      {/* <View
         style={{
           justifyContent: 'space-between',
           flex: 1,
@@ -96,7 +95,7 @@ const CalendarPickerModal = ({
             onSelectedDate(selectedDate);
           }}
         />
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -140,15 +139,13 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? ms(50) : ms(60),
   },
   cancelText: {
-    color: COLORS.dark_gray,
-    color: COLORS.dark_gray,
-    fontSize: ms(11),
+    color: COLORS.darkGray,
+    fontSize: ms(12),
     fontFamily: Fonts.Regular,
   },
   cancelButton: {
     backgroundColor: COLORS.inputBorder,
     height: ms(30),
-    width: '40%',
     width: '40%',
     marginTop: ms(10),
     color: COLORS.black,
@@ -158,13 +155,12 @@ const styles = StyleSheet.create({
   },
   applyText: {
     color: COLORS.white,
-    fontSize: ms(11),
+    fontSize: ms(12),
     fontFamily: Fonts.Regular,
   },
   applyButton: {
-    backgroundColor: COLORS.darkBlue,
+    backgroundColor: COLORS.primary,
     height: ms(30),
-    width: '40%',
     width: '40%',
     marginTop: ms(10),
     color: COLORS.white,
