@@ -190,7 +190,7 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandlerHandler }) =>
     >
       <BottomSheetScrollView>
         <View
-          style={{ flex: 1, paddingHorizontal: ms(10), paddingBottom: spacing ? ms(280) : ms(20) }}
+          style={{ flex: 1, paddingHorizontal: ms(10), paddingBottom: spacing ? ms(320) : ms(20) }}
         >
           <View style={styles.productHeaderCon}>
             <TouchableOpacity onPress={() => jbrCoinCrossHandler()}>

@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     backgroundColor: COLORS.white,
     borderColor: COLORS.solidGrey,
+    height: ms(70),
   },
   quantityContainer: {
     borderRadius: 5,

@@ -9,6 +9,8 @@ import {
   Dimensions,
   ActivityIndicator,
   Keyboard,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 
 import { moderateScale, ms } from 'react-native-size-matters';
@@ -417,6 +419,7 @@ const styles = StyleSheet.create({
     height: ms(490),
     alignSelf: 'center',
     paddingVertical: ms(15),
+    marginTop: ms(30),
   },
   headerConCustomProduct: {
     height: ms(40),
