@@ -61,3 +61,4 @@ export { PaymentSelection } from '@mPOS/screens/Return/PaymentSelection/PaymentS
 export { Settings } from '@mPOS/screens/MoreTab/Settings/Settings/Settings';
 export { Locations } from '@mPOS/screens/MoreTab/Settings/Locations/Locations';
 export { Receipts } from '@mPOS/screens/MoreTab/Settings/Receipts/Receipts';
+export { WalletSettings } from '@mPOS/screens/MoreTab/Settings/WalletSettings/WalletSettings';

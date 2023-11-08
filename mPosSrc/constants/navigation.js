@@ -39,4 +39,5 @@ export const NAVIGATION = {
   settings: 'Settings',
   locations: 'Locations',
   receipts: 'Receipts',
+  walletSettings: 'WalletSettings',
 };

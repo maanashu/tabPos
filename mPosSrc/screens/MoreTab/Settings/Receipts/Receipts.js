@@ -7,8 +7,8 @@ import styles from './Receipts.styles';
 import { SettingsContainer } from '../Components/SettingsContainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
-import { ToggleView } from './Components/ToggleView';
 import { upadteApi } from '@/actions/SettingAction';
+import { ToggleView } from '../Components/ToggleView';
 
 export function Receipts() {
   const dispatch = useDispatch();
@@ -69,7 +69,7 @@ export function Receipts() {
             pending={smsLoading}
           />
           <ToggleView
-            icon={Images.smsIcon}
+            icon={Images.emailInvoice}
             title={strings?.receipts?.email}
             subTitle={strings?.receipts?.emailAdd}
             onPress={() => clickHandler(2)}
@@ -77,7 +77,7 @@ export function Receipts() {
             pending={emailLoading}
           />
           <ToggleView
-            icon={Images.smsIcon}
+            icon={Images.printInvoice}
             title={strings?.receipts?.printInvoice}
             subTitle={strings?.receipts?.connectprinter}
             onPress={() => clickHandler(3)}

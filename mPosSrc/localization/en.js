@@ -329,4 +329,14 @@ export const en = {
     emailAdd: 'Email will Send to buyers email address',
     connectprinter: 'Needs to connect printer for print invoice',
   },
+  walletSetting: {
+    wallet: 'Wallet',
+    payJbr: 'Pay by JBR Coin',
+    payCash: 'Pay by Cash',
+    payCard: 'Pay by Card Contactless',
+    subTitle:
+      'You need to provide some additional information about your business to start receiving payouts from Shopify Payments.',
+    onlineShop: 'System: Online Shop, POS',
+    pos: 'POS',
+  },
 };
