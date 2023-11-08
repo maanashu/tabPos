@@ -318,4 +318,15 @@ export const en = {
     subHeading:
       'All you need to manage Basic Point of Sale is a device nickname and location to allow team members to accept payments.',
   },
+  receipts: {
+    receipts: 'Receipts',
+    invoiceSetting: 'Invoice Setting',
+    subTitle: "Active in the markets they've been added to and visible to customers.",
+    sms: 'Sms to phone number',
+    email: 'Email',
+    printInvoice: 'Print invoice',
+    applyCharge: 'It may apply charge ',
+    emailAdd: 'Email will Send to buyers email address',
+    connectprinter: 'Needs to connect printer for print invoice',
+  },
 };

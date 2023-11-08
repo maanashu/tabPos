@@ -38,4 +38,5 @@ export const NAVIGATION = {
   paymentSelection: 'PaymentSelection',
   settings: 'Settings',
   locations: 'Locations',
+  receipts: 'Receipts',
 };
