@@ -27,6 +27,12 @@ const styles = StyleSheet.create({
     fontSize: SF(18),
     fontFamily: Fonts.Regular,
   },
+  _dollarSymbol: {
+    fontSize: ms(17),
+    marginTop: ms(2),
+    color: COLORS.primary,
+    fontFamily: Fonts.SemiBold,
+  },
   amountTextStyle: {
     color: COLORS.primary,
     fontSize: SF(36),
@@ -96,10 +102,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     padding: ms(15),
-    position: 'absolute',
-    bottom: 10,
     width: width - 40,
     alignSelf: 'center',
+    position: 'absolute',
+    bottom: 20,
   },
   confirmReturnTextStyle: {
     color: COLORS.white,
@@ -111,6 +117,42 @@ const styles = StyleSheet.create({
     height: SW(24),
     left: 5,
     resizeMode: 'contain',
+  },
+  _payBYBoxContainer: {
+    borderWidth: 1,
+    borderRadius: ms(6),
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    marginHorizontal: ms(4),
+    justifyContent: 'center',
+    borderColor: COLORS.primary,
+    width: Platform.OS === 'ios' ? ms(95) : ms(127),
+    height: Platform.OS === 'ios' ? ms(100) : ms(120),
+  },
+  _payByTitle: {
+    fontSize: ms(9),
+    marginBottom: ms(3),
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+  },
+  _payByMethod: {
+    fontSize: ms(14),
+    marginTop: ms(2),
+    color: COLORS.primary,
+    fontFamily: Fonts.SemiBold,
+  },
+  _payByAmount: {
+    fontSize: ms(10),
+    marginTop: ms(2),
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+  },
+  _payByIcon: {
+    width: ms(22),
+    height: ms(22),
+    marginTop: ms(8),
+    resizeMode: 'contain',
+    tintColor: COLORS.primary,
   },
 });
 

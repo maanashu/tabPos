@@ -3,6 +3,7 @@ import { Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-nat
 import { Fonts, cross, deleteBack } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { moderateScale, ms } from 'react-native-size-matters';
+import { isTab } from '@common/commonImports';
 
 export const PhonePopUp = ({ value, onPress }) => {
   if (value === 'cross' || value === 'deleteBack') {
@@ -105,14 +106,12 @@ const styles = StyleSheet.create({
 
   keyPadButton: {
     height: SH(110),
-    width: windowWidth * 0.11,
+    width: isTab ? windowWidth * 0.11 : ms(90),
     justifyContent: 'center',
     borderColor: COLORS.gerySkies,
     alignItems: 'center',
     borderWidth: 0.3,
     borderWidth: 0.5,
-    // borderRadius: 5,
-    // overflow: 'hidden',
   },
   outerBorderRadius: {
     borderRadius: 5,

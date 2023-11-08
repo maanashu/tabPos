@@ -25,7 +25,6 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
   const [selectedId, setSelectedId] = useState(1);
   const saveCartData = cartData;
   const [amount, setAmount] = useState();
-  const [cashRate, setCashRate] = useState(selectCashArray?.[0]?.usd);
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';
@@ -42,20 +41,6 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
   const currencyNotes = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 5000];
   const targetValue = totalPayAmount();
   const greaterNotes = findGreaterCurrencyNotes(targetValue, currencyNotes);
-  const selectCashArray = [
-    {
-      id: 1,
-      usd: totalPayAmount(),
-    },
-    {
-      id: 2,
-      usd: greaterNotes[0] <= 5000 ? greaterNotes[0] : totalPayAmount(),
-    },
-    {
-      id: 3,
-      usd: greaterNotes[1] <= 5000 ? greaterNotes[1] : totalPayAmount(),
-    },
-  ];
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -87,6 +72,27 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
       dispatch(createOrder(data, callback));
     }
   };
+
+  const selectCashArray = [
+    {
+      id: 1,
+      usd: totalPayAmount(),
+    },
+    {
+      id: 2,
+      usd: greaterNotes[0] <= 5000 ? greaterNotes[0] : totalPayAmount(),
+    },
+    {
+      id: 3,
+      usd: greaterNotes[1] <= 5000 ? greaterNotes[1] : totalPayAmount(),
+    },
+  ];
+  const [cashRate, setCashRate] = useState(selectCashArray?.[0]?.usd);
+
+  console.log('cashRate', cashRate);
+  useEffect(() => {
+    setCashRate(selectCashArray?.[0]?.usd);
+  }, [cartData]);
 
   return (
     <BottomSheetModal

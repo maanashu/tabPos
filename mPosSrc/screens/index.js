@@ -54,7 +54,6 @@ export { Analytics } from '@mPOS/screens/Analytics/Analytics';
 export { SearchScreen } from '@mPOS/screens/Return/SearchScreen';
 export { ReturnOrderDetail } from '@mPOS/screens/Return/ReturnOrderDetail';
 export { ProductRefund } from '@mPOS/screens/Return/ProductRefund/ProductRefund';
-export { PaymentSelection } from '@mPOS/screens/Return/PaymentSelection/PaymentSelection';
 
 // Settings
 

@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
+import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { Images } from '@mPOS/assets';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 
 const OrderWithInvoiceNumber = ({ orderData }) => {
@@ -22,8 +22,8 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
 
   return (
     <TouchableOpacity
-      onPress={() => commonNavigate(MPOS_NAVIGATION.returnOrderDetail, { data: orderData })}
       style={styles.container}
+      onPress={() => commonNavigate(MPOS_NAVIGATION.returnOrderDetail, { data: orderData })}
     >
       {orderData !== undefined && Object.keys(orderData).length > 0 ? (
         <View style={styles.orderRowStyle}>
@@ -37,6 +37,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
                 ? `${orderData?.order?.order_details?.length} Items`
                 : `${orderData?.order?.order_details?.length} Item`}
             </Text>
+
             <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
               <Image source={Images.pay} style={styles.pinImageStyle} />
               <Text style={styles.distanceTextStyle}>
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
   },
   invoiceNumberTextStyle: {
     fontSize: SF(10),
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.SemiBold,
     textAlignVertical: 'center',
   },
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
   nameTextStyle: {
     fontSize: SF(14),
     textAlign: 'center',
-    color: COLORS.dark_gray,
+    color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
   },
   locationViewStyle: {

@@ -67,7 +67,6 @@ export function PosUserProfile(props) {
   const [notes, setNotes] = useState('');
   const sellerID = authData?.merchantLoginData?.uniqe_id;
   const totalSale = getDashboardData?.getTotalSale;
-  console.log('TotalSale', JSON.stringify(totalSale));
   const getLoginDeatil = getDashboardData?.posLoginDetail;
 
   const profileObj = {
@@ -251,7 +250,6 @@ export function PosUserProfile(props) {
                 transactionType: 'end_tracking_session',
                 modeOfcash: 'cash_out',
               };
-              console.log('data', data);
               const res = await dispatch(endTrackingSession(data));
               if (res?.type === 'END_TRACKING_SUCCESS') {
                 dispatch(getDrawerSessionSuccess(null));

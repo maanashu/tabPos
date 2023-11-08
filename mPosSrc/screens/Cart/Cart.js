@@ -100,34 +100,44 @@ export function Cart() {
       <View
         style={[
           styles.cartScreenHeader,
-          { opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.5 },
+          // { opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.5 },
         ]}
-        pointerEvents={productCartData?.poscart_products?.length > 0 ? 'auto' : 'none'}
+        // pointerEvents={productCartData?.poscart_products?.length > 0 ? 'auto' : 'none'}
       >
-        <TouchableOpacity
-          style={styles.headerImagecCon}
-          // onPress={() => setAddNotes((prev) => !prev)}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.5,
+          }}
+          pointerEvents={productCartData?.poscart_products?.length > 0 ? 'auto' : 'none'}
         >
-          <Image source={Images.addCustomerIcon} style={styles.headerImage} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.headerImagecCon}
-          onPress={() => setAddNotes((prev) => !prev)}
-        >
-          <Image source={Images.notes} style={styles.headerImage} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.headerImagecCon}
-          onPress={() => setAddDiscount((prev) => !prev)}
-        >
-          <Image source={Images.discountOutline} style={styles.headerImage} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.headerImagecCon}
-          onPress={() => setClearCart((prev) => !prev)}
-        >
-          <Image source={Images.ClearEraser} style={styles.headerImage} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.headerImagecCon}
+            // onPress={() => setAddNotes((prev) => !prev)}
+          >
+            <Image source={Images.addCustomerIcon} style={styles.headerImage} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.headerImagecCon}
+            onPress={() => setAddNotes((prev) => !prev)}
+          >
+            <Image source={Images.notes} style={styles.headerImage} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.headerImagecCon}
+            onPress={() => setAddDiscount((prev) => !prev)}
+          >
+            <Image source={Images.discountOutline} style={styles.headerImage} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.headerImagecCon}
+            onPress={() => setClearCart((prev) => !prev)}
+          >
+            <Image source={Images.ClearEraser} style={styles.headerImage} />
+          </TouchableOpacity>
+        </View>
+
         <TouchableOpacity style={styles.headerImagecCon}>
           <Image source={Images.pause} style={styles.headerImage} />
         </TouchableOpacity>

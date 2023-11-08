@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   Analytics,
@@ -24,15 +24,12 @@ import {
   DeliveryReturnOrderDetail,
   Booking,
   ProductRefund,
-  PaymentSelection,
   Settings,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
 import { TrackOrder } from '@mPOS/screens/HomeTab/Shipping/TrackOrder/TrackOrder';
 import { Invoice } from '@mPOS/components';
-import { useState } from 'react';
-import { useEffect } from 'react';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,8 +41,6 @@ export function AppNavigator(navigation) {
       setProfileScreenVis(true);
     }, 1500);
   }, []);
-
-  console.log('app nav', navigation);
   return (
     <Stack.Navigator
       screenOptions={{ gestureEnabled: false }}
@@ -178,11 +173,6 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.productRefund}
         options={{ headerShown: false }}
         component={ProductRefund}
-      />
-      <Stack.Screen
-        name={MPOS_NAVIGATION.paymentSelection}
-        options={{ headerShown: false }}
-        component={PaymentSelection}
       />
       <Stack.Screen
         name={MPOS_NAVIGATION.settings}
