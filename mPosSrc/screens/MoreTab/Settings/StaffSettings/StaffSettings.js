@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { Images } from '@mPOS/assets';
 import { Header, ImageView, ScreenWrapper } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosUsers } from '@/actions/AuthActions';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ms } from 'react-native-size-matters';
+import { TYPES } from '@/Types/Types';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { COLORS } from '@/theme';
 
 export function StaffSettings() {
   const dispatch = useDispatch();
@@ -26,6 +29,7 @@ export function StaffSettings() {
     };
     dispatch(getAllPosUsers(data));
   }, []);
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_POS_USERS], state));
 
   const renderPosUsers = ({ item }) => {
     const firstName = item?.user?.user_profiles?.firstname;
@@ -63,7 +67,11 @@ export function StaffSettings() {
           subHeading={strings?.staffSetting?.subTitle}
           extraStyle={{ flex: 0 }}
         >
-          <FlatList data={posUsers?.pos_staff || []} renderItem={renderPosUsers} />
+          {isLoading ? (
+            <ActivityIndicator color={COLORS.primary} />
+          ) : (
+            <FlatList data={posUsers?.pos_staff || []} renderItem={renderPosUsers} />
+          )}
         </SettingsContainer>
       </View>
     </ScreenWrapper>
