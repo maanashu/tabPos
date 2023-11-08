@@ -155,12 +155,14 @@ export function ReturnOrderDetail(props) {
             style={styles.profileImageStyle}
           />
           <View style={{ paddingLeft: 10 }}>
-            <Text
-              style={styles.nameTextStyle}
-            >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
-            <Text
-              style={styles.addressTextStyle}
-            >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+            <Text style={styles.nameTextStyle}>{`${customerDetail?.firstname ?? ''} ${
+              customerDetail?.lastname ?? '-'
+            }`}</Text>
+            <Text style={styles.addressTextStyle}>{`${
+              customerDetail?.current_address?.street_address ?? ''
+            } ${customerDetail?.current_address?.city ?? '-'} ${
+              customerDetail?.current_address?.state ?? ''
+            } ${customerDetail?.current_address?.country ?? ''}`}</Text>
           </View>
         </View>
         <Spacer space={SH(20)} />
@@ -190,13 +192,13 @@ export function ReturnOrderDetail(props) {
 
       <Spacer space={SH(15)} />
 
-      <View style={{ height: SH(400) }}>
+      <View style={{ height: SH(250) }}>
         <FlatList
           scrollEnabled
           data={orderDetails}
           renderItem={renderOrderProducts}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1, paddingBottom: 130 }}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 30 }}
         />
       </View>
 

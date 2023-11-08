@@ -40,10 +40,11 @@ export function ProductRefund(props) {
   const [changeView, setChangeView] = useState('TotalItems');
   const [isRefundDeliveryAmount, setIsRefundDeliveryAmount] = useState(false);
   const [orders, setOrders] = useState();
-  const [selectedItem, setSelectedItem] = useState('');
   const [inventoryModal, setInventoryModal] = useState(false);
   const [isPartialRefund, setIsPartialRefund] = useState(false);
   const [isEditPrice, setIsEditPrice] = useState(false);
+  const [selectedItem, setSelectedItem] = useState();
+  const [selectedIndex, setSelectedIndex] = useState();
 
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
 
@@ -52,6 +53,8 @@ export function ProductRefund(props) {
 
   const finalOrder = JSON.parse(JSON.stringify(orderData));
   finalOrder.order.order_details = orderList;
+
+  console.log(JSON.stringify(finalOrder));
 
   useEffect(() => {
     if (orderData?.order) {
@@ -149,54 +152,59 @@ export function ProductRefund(props) {
     return { title, deliveryCharges };
   };
 
-  const renderProductItem = ({ item, index }) => (
-    <View style={styles.productMainViewStyle}>
-      <View
-        style={{
-          paddingHorizontal: ms(5),
-          flexDirection: 'row',
-        }}
-      >
-        <Image source={{ uri: item?.product_image }} style={styles.productImageStyle} />
+  const renderProductItem = ({ item, index }) => {
+    console.log(item);
+    return (
+      <View style={styles.productMainViewStyle}>
+        <View
+          style={{
+            paddingHorizontal: ms(5),
+            flexDirection: 'row',
+            flex: 0.05,
+          }}
+        >
+          <Image source={{ uri: item?.product_image }} style={styles.productImageStyle} />
 
-        <View style={{ borderWidth: 1, paddingHorizontal: ms(10) }}>
-          <Text style={styles.blueListDataText} numberOfLines={2}>
-            {item?.product_name ?? '-'}
-          </Text>
-          <Text style={styles.skuNumber}>{item?.product_details?.sku ?? '-'}</Text>
+          <View style={{ paddingHorizontal: ms(10) }}>
+            <Text style={styles.blueListDataText} numberOfLines={2}>
+              {item?.product_name ?? '-'}
+            </Text>
 
-          <Text style={[styles.blueListDataText, { fontFamily: Fonts.Regular }]} numberOfLines={1}>
-            {`$${item?.price ?? '0'}  x  ${item?.qty}`}
-          </Text>
+            <Text style={styles.skuNumber}>{item?.product_details?.sku ?? '-'}</Text>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={styles.refundAmountText}>{'Refund Amount:'}</Text>
+            <Text
+              style={[styles.blueListDataText, { fontFamily: Fonts.Regular }]}
+              numberOfLines={1}
+            >
+              {`$${item?.price ?? '0'}  x  ${item?.qty}`}
+            </Text>
 
-            <TextInput
-              style={styles.productCartBody}
-              value={item?.refundAmount}
-              keyboardType={'number-pad'}
-              onChangeText={(text) => {
-                refundHandler(index, text, item);
+            {item?.refundAmount ? (
+              <View style={{ marginTop: ms(10), flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.refundAmountText}>{'Refund Amount:'}</Text>
+
+                <Text style={styles.productCartBody}>{item?.refundAmount}</Text>
+              </View>
+            ) : null}
+          </View>
+
+          <View style={styles.editPriceViewStyle}>
+            <TouchableOpacity
+              onPress={() => {
+                setIsEditPrice(true);
+                setSelectedItem(item);
+                setSelectedIndex(index);
               }}
-            />
+            >
+              <Image source={editIcon} style={styles.editIconStyle} />
+            </TouchableOpacity>
+
+            <Text style={styles.priceTextStyle}>{`$${item?.price * item?.qty}`}</Text>
           </View>
         </View>
-
-        <View style={styles.editPriceViewStyle}>
-          <TouchableOpacity
-            onPress={() => {
-              setIsEditPrice(true);
-            }}
-          >
-            <Image source={editIcon} style={styles.editIconStyle} />
-          </TouchableOpacity>
-
-          <Text style={styles.priceTextStyle}>{item?.price}</Text>
-        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   const applyRefundHandler = () => {
     if (applicableIsCheck || applyEachItem) {
@@ -270,6 +278,18 @@ export function ProductRefund(props) {
     }
   };
 
+  const getFinalRefundAmount = (val) => {
+    console.log(JSON.stringify(val));
+    setIsEditPrice(false);
+    setOrders(val);
+  };
+
+  const onPresspartialHandler = (key, newText, item) => {
+    console.log(JSON.stringify('key---------------------', key));
+    console.log(JSON.stringify('newText============', newText));
+    console.log(JSON.stringify('item=============', item));
+  };
+
   return (
     <View style={styles.container}>
       <Header backRequired title={strings.deliveryOrders.back} />
@@ -292,340 +312,21 @@ export function ProductRefund(props) {
         contentContainerStyle={styles.contentContainerStyle}
       />
 
-      {/* <View style={styles.leftMainViewStyle}>
-        <View style={styles.rowStyle}>
-          {finalOrder?.order?.delivery_charge == '0' ||
-            (finalOrder?.order?.shipping_charge == '0' && (
-              <>
-                <TouchableOpacity
-                  onPress={() => {
-                    setIsRefundDeliveryAmount(!isRefundDeliveryAmount);
-                  }}
-                >
-                  <Image
-                    source={isRefundDeliveryAmount ? checkedCheckboxSquare : blankCheckBox}
-                    style={styles.checkBoxIconStyle}
-                  />
-                </TouchableOpacity>
-                <Text style={styles.applicableTextStyle}>
-                  {'Refund ' + deliveryShippingCharges().title}
-                </Text>
-              </>
-            ))}
-
-          {!applyEachItem ? (
-            <View style={styles.applicableViewStyle}>
-              {applicableIsCheck ? (
-                <TouchableOpacity
-                  onPress={() => {
-                    setButtonText('Apply Refund');
-                    setAmount('');
-                    setApplicableIsCheck(!applicableIsCheck);
-                  }}
-                >
-                  <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    setApplicableIsCheck(!applicableIsCheck);
-                    setButtonText('Apply Refund');
-                    setAmount('');
-                  }}
-                >
-                  <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
-                </TouchableOpacity>
-              )}
-              <Text style={styles.applicableTextStyle}>{strings.returnOrder.applicable}</Text>
-            </View>
-          ) : (
-            <View style={styles.applicableViewStyle}>
-              <View>
-                <Image
-                  source={blankCheckBox}
-                  style={[styles.checkBoxIconStyle, { tintColor: COLORS.solidGrey }]}
-                />
-              </View>
-              <Text style={[styles.applicableTextStyle, { color: COLORS.solidGrey }]}>
-                {strings.returnOrder.applicable}
-              </Text>
-            </View>
-          )}
-
-          <View style={styles.amountTypeView}>
-            <TextInput
-              value={amount}
-              editable={applyEachItem ? false : true}
-              keyboardType={'number-pad'}
-              style={styles.textInputStyle}
-              onChangeText={(text) => {
-                const isPercentageLabel = selectType === strings.returnOrder.percentageLabel;
-
-                const updatedDataArray = orders.map((item) => ({
-                  ...item,
-                  refundAmount: isPercentageLabel
-                    ? (item.price * parseFloat(text)) / 100
-                    : parseFloat(text),
-                  totalRefundAmount: isPercentageLabel
-                    ? (item.price * parseFloat(text) * item.qty) / 100
-                    : parseFloat(text) * item.qty,
-                }));
-
-                setOrders(updatedDataArray);
-                setButtonText('Apply Refund');
-                setAmount(text);
-                setApplicableIsCheck(!!text);
-              }}
-              placeholderTextColor={COLORS.solidGrey}
-              placeholder={selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '% 0'}
-            />
-
-            <View style={styles.typeViewStyle}>
-              <TouchableOpacity
-                disabled={applyEachItem ? true : false}
-                onPress={() => {
-                  setSelectType(strings.returnOrder.dollarLabel);
-                  setAmount('');
-                }}
-                style={[
-                  styles.dollarViewStyle,
-                  {
-                    backgroundColor:
-                      selectType === strings.returnOrder.dollarLabel && applyEachItem
-                        ? COLORS.solidGrey
-                        : selectType === strings.returnOrder.dollarLabel &&
-                          !applyEachItem &&
-                          !amount
-                        ? COLORS.gerySkies
-                        : selectType === strings.returnOrder.dollarLabel && !applyEachItem && amount
-                        ? COLORS.primary
-                        : COLORS.white,
-                    borderTopLeftRadius: 5,
-                    borderBottomLeftRadius: 5,
-                  },
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.applyRefundButtonText,
-                    {
-                      color:
-                        selectType === strings.returnOrder.dollarLabel
-                          ? COLORS.white
-                          : COLORS.dark_grey,
-                    },
-                  ]}
-                >
-                  {strings.returnOrder.dollar}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                disabled={applyEachItem ? true : false}
-                onPress={() => {
-                  setSelectType(strings.returnOrder.percentageLabel);
-                  setAmount('');
-                }}
-                style={[
-                  styles.dollarViewStyle,
-                  {
-                    paddingHorizontal: 10,
-                    backgroundColor:
-                      selectType === strings.returnOrder.percentageLabel && applyEachItem
-                        ? COLORS.solidGrey
-                        : selectType === strings.returnOrder.percentageLabel &&
-                          !applyEachItem &&
-                          !amount
-                        ? COLORS.gerySkies
-                        : selectType === strings.returnOrder.percentageLabel &&
-                          !applyEachItem &&
-                          amount
-                        ? COLORS.primary
-                        : COLORS.white,
-                    borderTopRightRadius: 5,
-                    borderBottomRightRadius: 5,
-                  },
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.applyRefundButtonText,
-                    {
-                      color:
-                        selectType === strings.returnOrder.percentageLabel
-                          ? COLORS.white
-                          : COLORS.dark_grey,
-                    },
-                  ]}
-                >
-                  {strings.returnOrder.percentage}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {applicableIsCheck ? (
-            <View style={styles.applicableViewStyle}>
-              <View>
-                <Image
-                  source={blankCheckBox}
-                  style={[styles.checkBoxIconStyle, { tintColor: COLORS.solidGrey }]}
-                />
-              </View>
-              <Text style={[styles.applicableTextStyle, { color: COLORS.solidGrey }]}>
-                {strings.returnOrder.applyEachItem}
-              </Text>
-            </View>
-          ) : (
-            <View style={styles.applicableViewStyle}>
-              {applyEachItem ? (
-                <TouchableOpacity
-                  onPress={() => {
-                    setAmount('');
-                    setApplyEachItem(!applyEachItem);
-                    setButtonText('Apply Refund');
-                  }}
-                >
-                  <Image source={checkedCheckboxSquare} style={styles.checkBoxIconStyle} />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => {
-                    setAmount('');
-                    setApplyEachItem(!applyEachItem);
-                    setButtonText('Apply Refund');
-                    const updatedDataArray = orders.map((item, index) => {
-                      return { ...item, refundAmount: 0, totalRefundAmount: 0 };
-                    });
-                    setOrders(updatedDataArray);
-                  }}
-                >
-                  <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
-                </TouchableOpacity>
-              )}
-              <Text style={styles.applicableTextStyle}>{strings.returnOrder.applyEachItem}</Text>
-            </View>
-          )}
-
-          {applyRefundButton()}
-        </View>
-
-        <Spacer space={SH(10)} />
-
-        <View style={styles.blueListHeader}>
-          <View style={styles.displayflex}>
-            <View style={[styles.tableListSide, styles.listLeft]}>
-              <Text style={[styles.cashLabelWhite, styles.cashLabelWhiteHash]}>#</Text>
-              <Text style={styles.cashLabelWhite}>Item</Text>
-            </View>
-            <View style={styles.productCartBodyRight}>
-              <View style={styles.productCartBody}>
-                <Text style={styles.cashLabelWhite}>Unit Price</Text>
-              </View>
-              <View style={styles.productCartBody}>
-                <Text style={styles.cashLabelWhite}>Refund Amount</Text>
-              </View>
-              <View style={styles.productCartBody}>
-                <Text style={styles.cashLabelWhite}>Quantity</Text>
-              </View>
-              <View style={styles.productCartBody}>
-                <Text style={styles.cashLabelWhite}>Line Total</Text>
-              </View>
-              <View style={styles.productCartBody}>
-                <Text style={styles.cashLabelWhite}></Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <FlatList
-          scrollEnabled
-          data={orders}
-          extraData={orders}
-          renderItem={renderProductItem}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item?.id?.toString()}
-          contentContainerStyle={styles.contentContainerStyle}
-        />
-      </View>
-
-      <View style={styles.billAmountViewStyle}>
-        <Text
-          style={styles.totalItemsText}
-        >{`${strings.deliveryOrders.totalRefundItems} ${orderList?.length}`}</Text>
-
-        <Spacer space={SH(10)} />
-
-        <View style={styles.totalViewStyle}>
-          <Text style={styles.subTotalText}>{strings.deliveryOrders.subTotal}</Text>
-          <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(totalRefundAmount)}`}</Text>
-        </View>
-
-        <Spacer space={SH(10)} />
-
-        <View style={styles.totalViewStyle}>
-          <Text style={styles.subTotalText}>{strings.deliveryOrders.totalTax}</Text>
-          <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
-            calculateRefundTax()
-          )}`}</Text>
-        </View>
-
-        {finalOrder?.order?.status === 5 && isRefundDeliveryAmount ? (
-          <>
-            <Spacer space={SH(10)} />
-            <View style={styles.totalViewStyle}>
-              <Text style={styles.subTotalText}>{deliveryShippingCharges().title}</Text>
-              <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
-                deliveryShippingCharges().deliveryCharges
-              )}`}</Text>
-            </View>
-            <Spacer space={SH(10)} />
-          </>
-        ) : null}
-
-        <Spacer space={SH(10)} />
-
-        <View style={styles.totalViewStyle}>
-          <Text style={[styles.subTotalText, { fontFamily: Fonts.MaisonBold }]}>
-            {strings.wallet.total}
-          </Text>
-          <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
-            {`${formattedReturnPrice(totalRefundableAmount())}`}
-          </Text>
-        </View>
-
-        <Spacer space={SH(20)} />
-
-        <TouchableOpacity
-          onPress={() => {
-            if (finalOrder?.order?.order_type === 'service') {
-              setIsCheckConfirmationModalVisible(false);
-              getOrdersDetail();
-            } else {
-              setIsCheckConfirmationModalVisible(true);
-            }
-          }}
-          disabled={orders?.length > 0 ? false : true}
-          style={[
-            styles.nextButtonStyle,
-            {
-              backgroundColor: orders?.length > 0 ? COLORS.primary : COLORS.gerySkies,
-            },
-          ]}
-        >
-          <Text style={styles.nextTextStyle}>{strings.management.next}</Text>
-          <Image source={sellingArrow} style={styles.arrowIconStyle} />
-        </TouchableOpacity>
-
-        <Spacer space={SH(20)} />
-      </View> */}
-
       <ReactNativeModal isVisible={isPartialRefund}>
-        <PartialRefund setIsVisible={() => setIsPartialRefund(false)} />
+        <PartialRefund
+          setIsVisible={() => setIsPartialRefund(false)}
+          // onPressApplyRefund={onPressRefundHandler}
+        />
       </ReactNativeModal>
 
       <ReactNativeModal isVisible={isEditPrice}>
-        <EditPrice setIsVisible={() => setIsEditPrice(false)} />
+        <EditPrice
+          setIsVisible={() => setIsEditPrice(false)}
+          selected={selectedItem}
+          index={selectedIndex}
+          productsList={orders}
+          saveRefundAmount={getFinalRefundAmount}
+        />
       </ReactNativeModal>
     </View>
   );

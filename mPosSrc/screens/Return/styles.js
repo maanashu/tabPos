@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   orderproductView: {
     borderWidth: 1,
     borderRadius: 5,
-    marginVertical: 5,
+    marginVertical: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
