@@ -72,6 +72,7 @@ export function Booking() {
   const maxDate = new Date(2030, 6, 3);
   const getSettingData = useSelector(getSetting);
   const defaultSettingsForCalendar = getSettingData?.getSetting;
+  console.log('gasdjgsjd', defaultSettingsForCalendar?.calender_view);
   const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
   const getAppointmentByStaffIdList = getCalenderData?.geAppointmentById;
@@ -102,7 +103,7 @@ export function Booking() {
   const [calendarViewMode, setCalendarViewMode] = useState(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
   const [calendarDate, setCalendarDate] = useState(dayjs());
   const [calendarMode, setCalendarMode] = useState(
-    defaultSettingsForCalendar?.calender_view ?? CALENDAR_MODES.WEEK
+    defaultSettingsForCalendar?.calender_view ?? 'week'
   );
   const [shouldShowCalendarModeOptions, setshouldShowCalendarModeOptions] = useState(true);
 
@@ -114,10 +115,11 @@ export function Booking() {
   const [time, setTime] = useState(false);
   const [timeValue, setTimeValue] = useState('week');
   const [timeItem, setTimeItem] = useState([
-    { label: 'Today', value: 'today' },
+    { label: 'Today', value: 'day' },
     { label: 'Week', value: 'week' },
     { label: 'Month', value: 'month' },
   ]);
+  console.log('calendarMode', calendarMode);
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
@@ -161,17 +163,17 @@ export function Booking() {
     }
   }, [isFocused]);
 
-  useEffect(() => {
-    if (calendarMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW) {
-      if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.DAY) {
-        dayHandler();
-      } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.WEEK) {
-        weekHandler();
-      } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.MONTH) {
-        monthHandler();
-      }
-    }
-  }, [defaultSettingsForCalendar]);
+  // useEffect(() => {
+  //   if (calendarMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW) {
+  //     if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.DAY) {
+  //       dayHandler();
+  //     } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.WEEK) {
+  //       weekHandler();
+  //     } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.MONTH) {
+  //       monthHandler();
+  //     }
+  //   }
+  // }, [defaultSettingsForCalendar]);
 
   useEffect(() => {
     if (getApprovedAppointments) {
@@ -262,7 +264,7 @@ export function Booking() {
     setisAMPM(calendarPreferences?.defaultTimeFormat);
 
     const data = {
-      calender_view: calendarPreferences?.defaultCalendarMode,
+      calender_view: timeValue,
       time_format: calendarPreferences?.defaultTimeFormat ? '12' : '24',
       accept_appointment_request: calendarPreferences?.defaultAppointmentRequestMode,
       employee_color_set: calendarPreferences?.defaultEmployeesColorSet,
@@ -271,9 +273,9 @@ export function Booking() {
   };
 
   const getFormattedHeaderDate = () => {
-    if (calendarMode === CALENDAR_MODES.MONTH || calendarMode === CALENDAR_MODES.WEEK) {
+    if (timeValue === 'month' || timeValue === 'week') {
       return calendarDate.format('MMM YYYY');
-    } else if (calendarMode === CALENDAR_MODES.DAY) {
+    } else if (timeValue === 'day') {
       return calendarDate.format('DD MMM YYYY');
     }
   };
@@ -513,9 +515,9 @@ export function Booking() {
                 ampm={isAMPM}
                 swipeEnabled={false}
                 date={calendarDate}
-                mode={calendarMode}
+                mode={timeValue}
                 events={extractedAppointment}
-                height={windowHeight * 0.91}
+                height={windowHeight * 0.98}
                 {...(showEmployeeHeader
                   ? {
                       renderHeader: () => employeeHeader(),
@@ -523,16 +525,17 @@ export function Booking() {
                     }
                   : {})}
                 headerContainerStyle={{
-                  height: calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(55),
+                  height: timeValue === 'month' ? 'auto' : ms(55),
                   backgroundColor: COLORS.white,
                   paddingTop: ms(2),
                 }}
+                calendarCellStyle={{ padding: ms(5) }}
                 dayHeaderHighlightColor={COLORS.dayHighlight}
                 hourComponent={CustomHoursCell}
                 isEventOrderingEnabled={false}
                 onPressEvent={(event) => {
                   setEventData(event);
-                  if (calendarMode === CALENDAR_MODES.MONTH) {
+                  if (timeValue === 'month') {
                     dayHandler();
                     setCalendarDate(dayjs(event.start));
                   } else {
@@ -544,7 +547,7 @@ export function Booking() {
                     event,
                     touchableOpacityProps,
                     allEvents,
-                    calendarMode,
+                    timeValue,
                     employeeHeaderLayouts,
                     showEmployeeHeader
                   )
@@ -555,7 +558,7 @@ export function Booking() {
                 data={getAppointmentsByDate}
                 refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 keyExtractor={(_, index) => index.toString()}
-                ListHeaderComponent={<ListViewHeader />}
+                // ListHeaderComponent={<ListViewHeader />}
                 renderItem={renderListViewItem}
                 ListEmptyComponent={() => (
                   <Text style={styles.noAppointmentEmpty}>
@@ -716,7 +719,7 @@ export function Booking() {
         <CalendarSettingModal
           isVisible={isCalendarSettingModalVisible}
           setIsVisible={setisCalendarSettingModalVisible}
-          currentCalendarMode={calendarMode}
+          currentCalendarMode={timeValue}
           currentTimeFormat={isAMPM}
           onPressSave={(calendarPreferences) => {
             onPressSaveCalendarSettings(calendarPreferences);

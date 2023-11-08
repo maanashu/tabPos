@@ -128,7 +128,7 @@ const ReScheduleDetailModal = ({
         <Text
           style={{
             fontFamily: Fonts.Regular,
-            fontSize: SF(14),
+            fontSize: SF(10),
             color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.dark_grey,
           }}
         >
@@ -137,7 +137,7 @@ const ReScheduleDetailModal = ({
         <Text
           style={{
             fontFamily: Fonts.SemiBold,
-            fontSize: SF(18),
+            fontSize: SF(10),
             color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.black,
           }}
         >
@@ -167,7 +167,7 @@ const ReScheduleDetailModal = ({
       <Text
         style={{
           fontFamily: Fonts.Regular,
-          fontSize: ms(6.2),
+          fontSize: ms(7),
           color: !item?.is_available
             ? COLORS.row_grey
             : selectedTimeSlotIndex === index
@@ -242,7 +242,7 @@ const ReScheduleDetailModal = ({
             <TouchableOpacity onPress={() => setShowRescheduleModal(false)}>
               <Image source={crossButton} style={styles.crossBg} />
             </TouchableOpacity>
-            <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(10) }}>
+            <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(10), marginLeft: ms(5) }}>
               Booking #{appointmentData?.id ?? 'ABC'}
             </Text>
           </View>
@@ -250,7 +250,7 @@ const ReScheduleDetailModal = ({
             <View
               style={[
                 styles.customerDetailContainer,
-                { marginTop: ms(15), marginHorizontal: ms(22) },
+                { marginTop: ms(15), marginHorizontal: ms(10) },
               ]}
             >
               <Text style={styles._eventTitle}>Customer:</Text>
@@ -281,9 +281,10 @@ const ReScheduleDetailModal = ({
 
           <View
             style={{
-              width: windowWidth * 0.42,
+              width: windowWidth * 0.75,
               alignSelf: 'center',
               marginTop: userDetails ? 0 : ms(10),
+              // marginHorizontal: ms(10),
             }}
           >
             <View>
@@ -338,7 +339,7 @@ const ReScheduleDetailModal = ({
               </View>
               <Spacer space={ms(10)} />
               <Text style={styles.selected}>
-                Service Time:{' '}
+                Time:{' '}
                 <Text style={{ color: COLORS.primary }}>
                   {selectedDate === moment(new Date()).format('YYYY-MM-DD')
                     ? `Today`
@@ -356,7 +357,7 @@ const ReScheduleDetailModal = ({
                 </Text>
               </Text>
               <Spacer space={ms(10)} />
-              <View
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -381,7 +382,7 @@ const ReScheduleDetailModal = ({
                     setselectedYearData(yearData);
                   }}
                 />
-              </View>
+              </View> */}
             </View>
 
             <View
@@ -392,7 +393,12 @@ const ReScheduleDetailModal = ({
                 width: '100%',
               }}
             >
-              <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
+              <FlatList
+                horizontal
+                data={monthDays}
+                renderItem={renderWeekItem}
+                showsHorizontalScrollIndicator={false}
+              />
               {isLoadingTimeSlot ? (
                 <View style={{ paddingVertical: ms(40) }}>
                   <ActivityIndicator size={'large'} />
@@ -425,14 +431,14 @@ const ReScheduleDetailModal = ({
             <Button
               title="Cancel Booking"
               textStyle={[styles.detailBtnCon]}
-              style={[styles.continueBtnCon, { flex: 1 }]}
+              style={styles.continueBtnCon}
               onPress={onCancelAppoinment}
             />
-            <Spacer space={ms(10)} horizontal />
+            <Spacer space={ms(30)} horizontal />
             <Button
               title="Save Modification"
               textStyle={styles.addTocartText}
-              style={[styles.addToCartCon, { flex: 1 }]}
+              style={styles.addToCartCon}
               onPress={onReschuleAppointment}
             />
           </View>

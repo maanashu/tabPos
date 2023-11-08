@@ -41,7 +41,7 @@ const CustomEventCell = (
     >
       {timeValue === 'month' ? (
         <View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', backgroundColor: 'red' }}>
             {allEvents?.map((eventItem, index) => {
               return (
                 <View key={index} style={{ margin: 1 }}>
