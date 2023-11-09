@@ -13,7 +13,7 @@ import { getDashboard } from '@/selectors/DashboardSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import OrderWithInvoiceNumber from './Components/OrderWithInvoiceNumber';
 import { getOrdersByInvoiceId, scanBarCode } from '@/actions/DashboardAction';
-import { FullScreenLoader, Header, ScreenWrapper, Spacer } from '@mPOS/components';
+import { FullScreenLoader, Header, Invoice, ScreenWrapper, Spacer } from '@mPOS/components';
 
 import styles from './styles';
 
@@ -25,6 +25,8 @@ export function SearchScreen() {
 
   const [invoiceNumber, setInvoiceNumber] = useState('');
   const [order, setOrder] = useState(orderData ?? '');
+
+  console.log(JSON.stringify(orderData?.order?.status));
 
   useEffect(() => {
     if (invoiceNumber) {

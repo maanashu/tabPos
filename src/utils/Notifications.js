@@ -29,7 +29,6 @@ const getDeviceToken = async () => {
 
 // Handle incoming push notifications when the app is in the foreground
 const onMessageReceivedForeground = async (message) => {
-  console.log('onMessageReceivedForeground');
   if (message?.data?.type === 'order_delivered') {
     store.dispatch(getShippingOrders(5));
     store.dispatch(getReviewDefault(5));
@@ -62,7 +61,6 @@ const onMessageReceivedForeground = async (message) => {
 
 // Handle incoming push notifications when the app is in the background or closed
 const onMessageReceivedBackground = async (message) => {
-  console.log('onMessageReceivedBackground');
   if (message?.data?.type === 'order_delivered') {
     store.dispatch(getShippingOrders(5));
     store.dispatch(getReviewDefault(5));

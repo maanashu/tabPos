@@ -54,7 +54,7 @@ const SmsReceipt = ({ closeModal }) => {
         setEnteredValue={setPhoneNumber}
         onClosePress={closeModal}
         onPayNowPress={() => {
-          closeModal(phoneNumber);
+          closeModal(countryCode, phoneNumber);
           setPhoneNumber(phoneNumber);
         }}
       />
