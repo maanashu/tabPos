@@ -44,7 +44,7 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandlerHandler }) =>
   const [spacing, setSpacing] = useState(false);
   const [sendRequest, setsendRequest] = useState(false);
   const [requestId, setRequestId] = useState();
-  const [duration, setDuration] = useState(50);
+  const [duration, setDuration] = useState(120);
   const requestStatus = retailData?.requestCheck;
   const qrStatus = retailData.qrStatuskey;
   const saveCartData = cartData;
@@ -73,7 +73,7 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandlerHandler }) =>
       timer = setInterval(() => setDuration(duration - 1), 1000);
     } else if (duration == 0) {
       setsendRequest(false);
-      setDuration(50);
+      setDuration(120);
     }
     return () => clearInterval(timer);
   }, [sendRequest, duration]);
@@ -129,7 +129,7 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandlerHandler }) =>
   useEffect(() => {
     let interval;
 
-    if (requestStatus !== 'success' && sendRequest) {
+    if (requestStatus !== 'approved' && sendRequest) {
       interval = setInterval(() => {
         setRequestId((requestId) => {
           const data = {
@@ -139,7 +139,7 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandlerHandler }) =>
           return requestId;
         });
       }, 10000);
-    } else if (requestStatus == 'success' && sendRequest) {
+    } else if (requestStatus == 'approved' && sendRequest) {
       createOrderHandler();
       clearInterval(interval);
     } else if (qrStatus?.status !== 'success' && sendRequest == false) {
@@ -153,7 +153,7 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandlerHandler }) =>
     }
 
     return () => clearInterval(interval);
-  }, [isFocused, requestStatus == 'success', qrStatus?.status == 'success', sendRequest]);
+  }, [isFocused, requestStatus == 'approved', qrStatus?.status == 'success', sendRequest]);
 
   const createOrderHandler = () => {
     const data = {
@@ -226,7 +226,7 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandlerHandler }) =>
                   onSelect={(code) => {
                     setFlag(code.cca2);
                     setWalletIdInp('');
-                    if (code.callingCode !== []) {
+                    if (code.callingCode?.length > 0) {
                       setWalletCountryCode('+' + code.callingCode.flat());
                     } else {
                       setWalletCountryCode('');
@@ -237,8 +237,11 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandlerHandler }) =>
                   withFilter
                   withCallingCode
                 />
+
                 <Image source={dropdown} style={styles.dropDownIcon} />
+
                 <Text style={styles.countryCodeText}>{walletCountryCode}</Text>
+
                 <TextInput
                   maxLength={15}
                   returnKeyType={'done'}
