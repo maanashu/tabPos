@@ -26,6 +26,8 @@ import { debounce } from 'lodash';
 import { getMainProduct, getOneProduct } from '@/actions/RetailAction';
 import { TYPES } from '@/Types/Types';
 import { getAuthData } from '@/selectors/AuthSelector';
+import Modal from 'react-native-modal';
+import ProductFilter from './Components/ProductFilter';
 
 export function RetailProducts(props) {
   const onEndReachedCalledDuringMomentum = useRef(false);
@@ -47,6 +49,7 @@ export function RetailProducts(props) {
     addProductCartRef.current.dismiss();
   };
   const [productSearch, setProductSearch] = useState('');
+  const [productFilter, setProductFilter] = useState(false);
   useEffect(() => {
     // dispatch(getProduct({}, 1));
     dispatch(getMainProduct());
@@ -199,6 +202,7 @@ export function RetailProducts(props) {
             setProductSearch(productSearch);
             debounceProduct(productSearch);
           }}
+          filterHandler={() => setProductFilter(true)}
         />
 
         {/* <Spacer space={SH(15)} /> */}
@@ -234,6 +238,18 @@ export function RetailProducts(props) {
 
         <AddProductCart {...{ addProductCartRef, productDetailHanlder }} />
         <ProductDetails {...{ productDetailRef, bothSheetClose }} />
+        <Modal
+          style={{ margin: 0 }}
+          animationType="fade"
+          transparent={true}
+          isVisible={productFilter}
+          onBackdropPress={() => setProductFilter(false)}
+          animationIn="slideInRight"
+          animationOut="slideOutRight"
+        >
+          <ProductFilter crossHandler={() => setProductFilter(false)} />
+          {/* <NewCustomerAdd /> */}
+        </Modal>
 
         {isLoading ? <FullScreenLoader /> : null}
       </View>

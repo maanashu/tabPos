@@ -421,37 +421,16 @@ export class RetailController {
   static async addTocart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.addTocart;
-      // let supplyID = data.supplyId.toString();
-      // let supplyPriceID = data.supplyPriceID.toString();
-      // let variantId = data.supplyVariantId.toString();
-      const body = data?.offerId
-        ? {
-            seller_id: data.seller_id,
-            service_id: data.service_id,
-            product_id: data.product_id,
-            qty: data.qty,
-            supply_id: data.supplyId.toString(),
-            supply_price_id: data.supplyPriceID.toString(),
-            offer_id: data.offerId,
-          }
-        : data?.supplyVariantId
-        ? {
-            seller_id: data.seller_id,
-            service_id: data.service_id,
-            product_id: data.product_id,
-            qty: data.qty,
-            supply_id: data.supplyId.toString(),
-            supply_price_id: data.supplyPriceID.toString(),
-            supply_variant_id: data.supplyVariantId.toString(),
-          }
-        : {
-            seller_id: data.seller_id,
-            service_id: data.service_id,
-            product_id: data.product_id,
-            qty: data.qty,
-            supply_id: data.supplyId.toString(),
-            supply_price_id: data.supplyPriceID.toString(),
-          };
+      const body = {
+        seller_id: data.seller_id,
+        service_id: data.service_id,
+        product_id: data.product_id,
+        qty: data.qty,
+        supply_id: data.supplyId.toString(),
+        supply_price_id: data.supplyPriceID.toString(),
+        ...(data?.offerId && { offer_id: data.offerId }),
+        ...(data?.supplyVariantId && { supply_variant_id: data.supplyVariantId.toString() }),
+      };
       HttpClient.post(endpoint, body)
         .then((response) => {
           // if (response?.msg === 'PosCart created successfully') {

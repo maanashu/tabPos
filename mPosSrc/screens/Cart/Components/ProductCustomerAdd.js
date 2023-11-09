@@ -128,10 +128,11 @@ const ProductCustomerAdd = ({ crossHandler }) => {
   };
 
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={styles.customProductCon}
-      showsVerticalScrollIndicator={false}
-    >
+    // <KeyboardAwareScrollView
+    //   contentContainerStyle={styles.customProductCon}
+    //   showsVerticalScrollIndicator={false}
+    // >
+    <View style={styles.customProductCon}>
       <View style={styles.headerConCustomProduct}>
         <Text style={[styles.zeroText, { fontSize: ms(14), marginBottom: ms(5) }]}>Customer</Text>
         <TouchableOpacity onPress={crossHandler}>
@@ -405,7 +406,9 @@ const ProductCustomerAdd = ({ crossHandler }) => {
           </TouchableOpacity>
         ) : null}
       </View>
-    </KeyboardAwareScrollView>
+    </View>
+
+    // </KeyboardAwareScrollView>
   );
 };
 
