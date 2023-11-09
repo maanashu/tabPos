@@ -42,7 +42,7 @@ export function ImageView({ style, imageStyle, imageUrl }) {
 ImageView.propTypes = {
   style: PropTypes.object,
   imageStyle: PropTypes.object,
-  imageUrl: PropTypes.string.isRequired,
+  // imageUrl: PropTypes.string.isRequired,
 };
 
 ImageView.defaultProps = {

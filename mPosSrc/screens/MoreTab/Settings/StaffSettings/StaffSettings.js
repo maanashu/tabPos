@@ -21,7 +21,7 @@ export function StaffSettings() {
   const posUsers = getAuth?.getAllPosUsersData;
 
   const handleClick = (item) => {
-    commonNavigate(MPOS_NAVIGATION.posUserDetail, { item: item });
+    commonNavigate(MPOS_NAVIGATION.posUserDetail, item);
   };
 
   useEffect(() => {
