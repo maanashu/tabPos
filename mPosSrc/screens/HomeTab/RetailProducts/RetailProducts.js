@@ -23,7 +23,13 @@ import { strings } from '@mPOS/localization';
 import ProductDetails from './Components/ProductDetails';
 import { FullScreenLoader, Header, ScreenWrapper } from '@mPOS/components';
 import { debounce } from 'lodash';
-import { getMainProduct, getOneProduct } from '@/actions/RetailAction';
+import {
+  getBrand,
+  getCategory,
+  getMainProduct,
+  getOneProduct,
+  getSubCategory,
+} from '@/actions/RetailAction';
 import { TYPES } from '@/Types/Types';
 import { getAuthData } from '@/selectors/AuthSelector';
 import Modal from 'react-native-modal';
@@ -41,6 +47,7 @@ export function RetailProducts(props) {
   const data = props?.route?.params?.item;
   const [isSelected, setSelected] = useState(false);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const [productFilterCount, setProductFilterCount] = useState(0);
   const productDetailHanlder = () => {
     productDetailRef.current.present();
   };
@@ -50,6 +57,12 @@ export function RetailProducts(props) {
   };
   const [productSearch, setProductSearch] = useState('');
   const [productFilter, setProductFilter] = useState(false);
+
+  useEffect(() => {
+    dispatch(getCategory(sellerID));
+    dispatch(getSubCategory(sellerID));
+    dispatch(getBrand(sellerID));
+  }, []);
   useEffect(() => {
     // dispatch(getProduct({}, 1));
     dispatch(getMainProduct());
@@ -203,6 +216,7 @@ export function RetailProducts(props) {
             debounceProduct(productSearch);
           }}
           filterHandler={() => setProductFilter(true)}
+          selectFilterCount={productFilterCount}
         />
 
         {/* <Spacer space={SH(15)} /> */}
@@ -247,7 +261,11 @@ export function RetailProducts(props) {
           animationIn="slideInRight"
           animationOut="slideOutRight"
         >
-          <ProductFilter crossHandler={() => setProductFilter(false)} />
+          <ProductFilter
+            crossHandler={() => setProductFilter(false)}
+            productFilterCount={setProductFilterCount}
+            backfilterValue={productFilterCount}
+          />
           {/* <NewCustomerAdd /> */}
         </Modal>
 

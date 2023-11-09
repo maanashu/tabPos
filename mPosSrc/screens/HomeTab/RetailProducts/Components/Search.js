@@ -6,7 +6,7 @@ import { strings } from '@mPOS/localization';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts } from '@/theme';
 
-const Search = ({ value, onChangeText, filterHandler }) => {
+const Search = ({ value, onChangeText, filterHandler, selectFilterCount }) => {
   return (
     <View style={styles.searchView}>
       <View style={styles.searchMainView}>
@@ -20,9 +20,35 @@ const Search = ({ value, onChangeText, filterHandler }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.scannerViewStyle} onPress={filterHandler}>
-        <Image source={Images.filter} style={styles.filterImage} />
-        <Text style={styles.filterCount}>{'0'}</Text>
+      <TouchableOpacity
+        style={[
+          styles.scannerViewStyle,
+          { backgroundColor: selectFilterCount > 0 ? COLORS.blue_shade : COLORS.white },
+        ]}
+        onPress={filterHandler}
+      >
+        <Image
+          source={Images.filter}
+          style={[
+            styles.filterImage,
+            { tintColor: selectFilterCount > 0 ? COLORS.primary : COLORS.gerySkies },
+          ]}
+        />
+        <View
+          style={[
+            styles.filterCountCon,
+            { borderColor: selectFilterCount > 0 ? COLORS.primary : COLORS.gerySkies },
+          ]}
+        >
+          <Text
+            style={[
+              styles.filterCountText,
+              { color: selectFilterCount > 0 ? COLORS.primary : COLORS.gerySkies },
+            ]}
+          >
+            {selectFilterCount}
+          </Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -43,6 +69,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 5,
+    flex: 0.85,
   },
   searchIconStyle: {
     width: ms(25),
@@ -64,9 +91,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     alignItems: 'center',
     // justifyContent: 'center',
-    width: ms(50),
+    // width: ms(50),
     height: ms(44),
     marginLeft: ms(15),
+    flex: 0.18,
   },
   filterImage: {
     width: ms(18),
@@ -74,20 +102,20 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginTop: ms(13),
   },
-  filterCount: {
+  filterCountCon: {
     width: ms(15),
     height: ms(15),
-    // // paddingVertical: ms(1),
-    // paddingHorizontal: ms(3),
-    marginVertical: 0,
-    fontSize: ms(10),
+
     borderWidth: 1,
     borderRadius: ms(10),
     position: 'absolute',
     bottom: ms(7),
-    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     right: ms(7),
-    borderColor: COLORS.placeholderText,
-    color: COLORS.placeholderText,
+  },
+  filterCountText: {
+    fontSize: ms(10),
+    fontFamily: Fonts.Regular,
   },
 });
