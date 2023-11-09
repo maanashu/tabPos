@@ -1,31 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { Images } from '@mPOS/assets';
-import { Header, ScreenWrapper } from '@mPOS/components';
+import { Header, ImageView, ScreenWrapper } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import styles from './StaffSettings.styles';
 import { SettingsContainer } from '../Components/SettingsContainer';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSetting } from '@/selectors/SettingSelector';
-import { upadteApi } from '@/actions/SettingAction';
-import { ToggleView } from '../Components/ToggleView';
 import { getAllPosUsers } from '@/actions/AuthActions';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ms } from 'react-native-size-matters';
+import { TYPES } from '@/Types/Types';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { COLORS } from '@/theme';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 
 export function StaffSettings() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const posUsers = getAuth?.getAllPosUsersData;
-  const getSettingData = useSelector(getSetting);
 
-  const [smsLoading, setSmsLoading] = useState(false);
-  const [emailLoading, setEmailLoading] = useState(false);
-  const [invoiceLoading, setInvoiceLoading] = useState(false);
+  const handleClick = (item) => {
+    commonNavigate(MPOS_NAVIGATION.posUserDetail, item);
+  };
 
-  const clickHandler = (id) => {};
-  console.log('pos users', posUsers?.pos_staff?.[0]?.user);
   useEffect(() => {
     const data = {
       page: 1,
@@ -34,18 +32,20 @@ export function StaffSettings() {
     };
     dispatch(getAllPosUsers(data));
   }, []);
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_POS_USERS], state));
 
   const renderPosUsers = ({ item }) => {
     const firstName = item?.user?.user_profiles?.firstname;
     const lastName = item?.user?.user_profiles?.lastname;
     return (
       <>
-        <TouchableOpacity style={styles.itemContainer}>
-          <View style={styles.rowAligned}>
-            <Image
-              source={{ uri: item?.user?.user_profiles?.profile_photo }}
+        <TouchableOpacity style={styles.itemContainer} onPress={() => handleClick(item)}>
+          <View style={[styles.rowAligned, { flex: 1 }]}>
+            <ImageView
+              imageUrl={item?.user?.user_profiles?.profile_photo || Images.user}
               resizeMode="stretch"
               style={styles.userIcon}
+              imageStyle={{ borderRadius: ms(2) }}
             />
             <View style={{ marginLeft: ms(12), flex: 1 }}>
               <Text style={styles.userName}>{`${firstName} ${lastName}`}</Text>
@@ -56,6 +56,7 @@ export function StaffSettings() {
               </Text>
             </View>
           </View>
+          <Image source={Images.rightArrow} resizeMode="contain" style={styles.toggleIcon} />
         </TouchableOpacity>
       </>
     );
@@ -69,7 +70,11 @@ export function StaffSettings() {
           subHeading={strings?.staffSetting?.subTitle}
           extraStyle={{ flex: 0 }}
         >
-          <FlatList data={posUsers?.pos_staff || []} renderItem={renderPosUsers} />
+          {isLoading ? (
+            <ActivityIndicator color={COLORS.primary} />
+          ) : (
+            <FlatList data={posUsers?.pos_staff || []} renderItem={renderPosUsers} />
+          )}
         </SettingsContainer>
       </View>
     </ScreenWrapper>

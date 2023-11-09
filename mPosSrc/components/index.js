@@ -11,3 +11,4 @@ export { DaySelector } from '@mPOS/components/DaySelector';
 export { HorizontalLine } from '@mPOS/components/HorizontalLine';
 export { SearchedOrders } from '@mPOS/components/SearchedOrders';
 export { Invoice } from '@mPOS/components/Invoice';
+export { ImageView } from '@mPOS/components/ImageView';
