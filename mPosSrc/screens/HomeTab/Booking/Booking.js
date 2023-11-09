@@ -20,10 +20,11 @@ import {
   crossButton,
   Fonts,
   backArrow,
+  cross,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
-import { ScreenWrapper } from '@/components';
+import { ScreenWrapper, Spacer } from '@/components';
 import { ms } from 'react-native-size-matters';
 import { Calendar } from '@/components/CustomCalendar';
 import { CALENDAR_MODES, CALENDAR_VIEW_MODES } from '@/constants/enums';
@@ -54,14 +55,14 @@ import { APPOINTMENT_STATUS } from '@/constants/status';
 import ReScheduleDetailModal from './Components/ReScheduleDetailModal';
 import ListViewItem from './Components/ListViewComponents/ListViewItem';
 import ListViewHeader from './Components/ListViewComponents/ListViewHeader';
-import CalendarPickerModal from '@/components/CalendarPickerModal';
 import { Modal as PaperModal } from 'react-native-paper';
 import { useRef } from 'react';
-import { navigate } from '@mPOS/navigation/NavigationRef';
+import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
 import { NAVIGATION } from '@mPOS/constants';
 import dayjs from 'dayjs';
 import { styles } from './styles';
 import { Images } from '@mPOS/assets';
+import CalendarPickerModal from '@mPOS/components/CalendarPickerModal';
 
 dayjs.suppressDeprecationWarnings = true;
 
@@ -72,6 +73,7 @@ export function Booking() {
   const maxDate = new Date(2030, 6, 3);
   const getSettingData = useSelector(getSetting);
   const defaultSettingsForCalendar = getSettingData?.getSetting;
+  console.log('gasdjgsjd', defaultSettingsForCalendar?.calender_view);
   const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
   const getAppointmentByStaffIdList = getCalenderData?.geAppointmentById;
@@ -102,7 +104,7 @@ export function Booking() {
   const [calendarViewMode, setCalendarViewMode] = useState(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
   const [calendarDate, setCalendarDate] = useState(dayjs());
   const [calendarMode, setCalendarMode] = useState(
-    defaultSettingsForCalendar?.calender_view ?? CALENDAR_MODES.WEEK
+    defaultSettingsForCalendar?.calender_view ?? 'week'
   );
   const [shouldShowCalendarModeOptions, setshouldShowCalendarModeOptions] = useState(true);
 
@@ -110,6 +112,16 @@ export function Booking() {
   const [selectedStaffData, setSelectedStaffData] = useState(null);
 
   const [showMiniCalendar, setshowMiniCalendar] = useState(false);
+  const [showMiniBookingRequest, setShowMiniBookingRequest] = useState(false);
+
+  const [time, setTime] = useState(false);
+  const [timeValue, setTimeValue] = useState('week');
+  const [timeItem, setTimeItem] = useState([
+    { label: 'Today', value: 'day' },
+    { label: 'Week', value: 'week' },
+    { label: 'Month', value: 'month' },
+  ]);
+  console.log('calendarMode', calendarMode);
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
@@ -153,17 +165,17 @@ export function Booking() {
     }
   }, [isFocused]);
 
-  useEffect(() => {
-    if (calendarMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW) {
-      if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.DAY) {
-        dayHandler();
-      } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.WEEK) {
-        weekHandler();
-      } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.MONTH) {
-        monthHandler();
-      }
-    }
-  }, [defaultSettingsForCalendar]);
+  // useEffect(() => {
+  //   if (calendarMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW) {
+  //     if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.DAY) {
+  //       dayHandler();
+  //     } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.WEEK) {
+  //       weekHandler();
+  //     } else if (defaultSettingsForCalendar?.calender_view === CALENDAR_MODES.MONTH) {
+  //       monthHandler();
+  //     }
+  //   }
+  // }, [defaultSettingsForCalendar]);
 
   useEffect(() => {
     if (getApprovedAppointments) {
@@ -254,7 +266,7 @@ export function Booking() {
     setisAMPM(calendarPreferences?.defaultTimeFormat);
 
     const data = {
-      calender_view: calendarPreferences?.defaultCalendarMode,
+      calender_view: timeValue,
       time_format: calendarPreferences?.defaultTimeFormat ? '12' : '24',
       accept_appointment_request: calendarPreferences?.defaultAppointmentRequestMode,
       employee_color_set: calendarPreferences?.defaultEmployeesColorSet,
@@ -263,9 +275,9 @@ export function Booking() {
   };
 
   const getFormattedHeaderDate = () => {
-    if (calendarMode === CALENDAR_MODES.MONTH || calendarMode === CALENDAR_MODES.WEEK) {
+    if (timeValue === 'month' || timeValue === 'week') {
       return calendarDate.format('MMM YYYY');
-    } else if (calendarMode === CALENDAR_MODES.DAY) {
+    } else if (timeValue === 'day') {
       return calendarDate.format('DD MMM YYYY');
     }
   };
@@ -368,21 +380,23 @@ export function Booking() {
     return (
       <View style={styles.headerMainView}>
         <View style={styles.deliveryView}>
-          <Image source={Images.back} style={styles.truckStyle} />
-          <Text style={styles.deliveryText}>{'Booking'}</Text>
+          <TouchableOpacity onPress={goBack}>
+            <Image source={Images.back} style={styles.truckStyle} />
+          </TouchableOpacity>
+          <Text style={styles.deliveryText}>{'Bookings'}</Text>
         </View>
-        <View style={styles.deliveryView}>
-          <TouchableOpacity
-          // onPress={() =>
-          //   navigate(NAVIGATION.notificationsList, {
-          //     screen: NAVIGATION.calender,
-          //   })
-          // }
+        <View style={[styles.deliveryView, { marginHorizontal: ms(10) }]}>
+          {/* <TouchableOpacity
+          onPress={() =>
+            navigate(NAVIGATION.notificationsList, {
+              screen: NAVIGATION.calender,
+            })
+          }
           >
             <Image source={bell} style={[styles.truckStyle, { right: 25 }]} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
-            style={styles.searchView}
+            style={{ marginRight: ms(10) }}
             onPress={() => {
               setShowSearchModal(true);
               setSearchedAppointments([]);
@@ -393,17 +407,55 @@ export function Booking() {
             }}
           >
             <Image source={search_light} style={styles.searchImage} />
+          </TouchableOpacity>
+
+          {/* <TouchableOpacity>
+            <Image source={calendarIcon} style={styles.searchImage} />
             <View
               style={{
-                height: SH(40),
-                width: SW(70),
-                paddingLeft: 5,
-                justifyContent: 'center',
+                position: 'absolute',
+                bottom: ms(-4),
+                right: 0,
+                backgroundColor: COLORS.white,
+                height: ms(14),
+                width: ms(14),
+                borderWidth: 1,
+                borderRadius: ms(10),
               }}
             >
-              <Text style={{ color: COLORS.darkGray, fontSize: ms(10), fontFamily: Fonts.Regular }}>
-                {strings.deliveryOrders.search}
+              <Text
+                style={{
+                  color: COLORS.black,
+                  textAlign: 'center',
+                  fontSize: ms(9),
+                }}
+              >
+                {'0'}
               </Text>
+            </View>
+          </TouchableOpacity> */}
+
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedStaffEmployeeId(null);
+              if (appointmentListArr?.length === 0) {
+                setshowRequestsView(false);
+              } else {
+                setshowRequestsView(!showRequestsView);
+              }
+            }}
+            style={[
+              styles.requestCalendarContainer,
+              {
+                backgroundColor: COLORS.textInputBackground,
+              },
+            ]}
+          >
+            <View>
+              <Image source={calendarIcon} style={styles.requestCalendarIcon} />
+              <View style={styles.requestEventBadgeContainer}>
+                <Text style={styles.RequestEventBadgeText}>{appointmentListArr?.length ?? 0}</Text>
+              </View>
             </View>
           </TouchableOpacity>
         </View>
@@ -469,17 +521,17 @@ export function Booking() {
         {customHeader()}
         {/* <View style={[styles.calenderContainer, { flexDirection: 'row' }]}> */}
         <View style={[styles.calenderCon]}>
-          {/* <CalendarHeaderWithOptions
+          <CalendarHeaderWithOptions
             {...{
               prevMonth,
               getFormattedHeaderDate,
               nextMonth,
-              day,
-              dayHandler,
-              week,
-              weekHandler,
-              month,
-              monthHandler,
+              // day,
+              // dayHandler,
+              // week,
+              // weekHandler,
+              // month,
+              // monthHandler,
               calendarViewMode,
               shouldShowCalendarModeOptions,
             }}
@@ -488,16 +540,24 @@ export function Booking() {
             }}
             onPressCalendarViewMode={onPressCalendarViewMode}
             onPressListViewMode={onPressListViewMode}
-          /> */}
+            time={time}
+            timeValue={timeValue}
+            timeItem={timeItem}
+            setTime={setTime}
+            setTimeValue={(value) => {
+              setTimeValue(value);
+            }}
+            setTimeItem={setTimeItem}
+          />
           <View style={styles._calendarContainer}>
             {calendarViewMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW ? (
               <Calendar
                 ampm={isAMPM}
                 swipeEnabled={false}
                 date={calendarDate}
-                mode={calendarMode}
+                mode={timeValue}
                 events={extractedAppointment}
-                height={windowHeight * 0.91}
+                height={windowHeight * 0.98}
                 {...(showEmployeeHeader
                   ? {
                       renderHeader: () => employeeHeader(),
@@ -505,16 +565,17 @@ export function Booking() {
                     }
                   : {})}
                 headerContainerStyle={{
-                  height: calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
-                  backgroundColor: COLORS.textInputBackground,
-                  paddingTop: ms(5),
+                  height: timeValue === 'month' ? 'auto' : ms(55),
+                  backgroundColor: COLORS.white,
+                  paddingTop: ms(2),
                 }}
+                calendarCellStyle={{ padding: ms(5) }}
                 dayHeaderHighlightColor={COLORS.dayHighlight}
                 hourComponent={CustomHoursCell}
                 isEventOrderingEnabled={false}
                 onPressEvent={(event) => {
                   setEventData(event);
-                  if (calendarMode === CALENDAR_MODES.MONTH) {
+                  if (timeValue === 'month') {
                     dayHandler();
                     setCalendarDate(dayjs(event.start));
                   } else {
@@ -526,7 +587,7 @@ export function Booking() {
                     event,
                     touchableOpacityProps,
                     allEvents,
-                    calendarMode,
+                    timeValue,
                     employeeHeaderLayouts,
                     showEmployeeHeader
                   )
@@ -667,38 +728,164 @@ export function Booking() {
 
         {showRequestsView && (
           <View style={styles.notificationCon}>
-            {isRequestLoading && pageNumber === 1 ? (
-              <View style={{ marginTop: 50 }}>
-                <ActivityIndicator size="large" color={COLORS.indicator} />
-              </View>
-            ) : (
-              <View style={{ marginBottom: ms(40) }}>
-                <Text style={styles._requestTitle}>
-                  {`Request (${
-                    selectedStaffEmployeeId
-                      ? getAppointmentByStaffIdList?.length ?? 0
-                      : appointmentListArr?.length ?? 0
-                  })`}
+            <View style={{ flexDirection: 'row', alignSelf: 'flex-end', alignItems: 'center' }}>
+              <Text
+                style={{
+                  color: COLORS.black,
+                  fontSize: ms(16),
+                  marginHorizontal: ms(10),
+                  fontFamily: Fonts.SemiBold,
+                }}
+              >
+                {'Booking'}
+              </Text>
+              <TouchableOpacity
+                style={{
+                  padding: ms(4),
+                  borderWidth: 1,
+                  borderRadius: ms(2),
+                  borderColor: COLORS.gerySkies,
+                }}
+                onPress={() => setshowRequestsView(false)}
+              >
+                <Image source={cross} style={styles.crossReq} />
+              </TouchableOpacity>
+            </View>
+            <Spacer space={ms(20)} />
+            <View style={styles.deviderList} />
+
+            <TouchableOpacity
+              style={{ flexDirection: 'row', marginVertical: ms(10) }}
+              onPress={() => setShowMiniBookingRequest(true)}
+            >
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: ms(14), color: COLORS.black, fontFamily: Fonts.SemiBold }}>
+                  {appointmentListArr?.length}
                 </Text>
-                <FlatList
-                  extraData={appointmentListArr}
-                  data={selectedStaffEmployeeId ? getAppointmentByStaffIdList : appointmentListArr}
-                  keyExtractor={(_, index) => index}
-                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                  renderItem={eventItem}
-                  onEndReached={handleEndReached}
-                  onEndReachedThreshold={0.1} // Adjust this value as per your requirements
-                  ListFooterComponent={renderLoader}
-                />
+                <Text
+                  style={{ fontSize: ms(12), color: COLORS.darkGray, fontFamily: Fonts.Regular }}
+                >
+                  {'Booking to Review'}
+                </Text>
               </View>
-            )}
+              <Image source={calendarIcon} style={styles.bookingSideImage} />
+            </TouchableOpacity>
+            <View style={styles.deviderList} />
+
+            <TouchableOpacity
+              onPress={() => {
+                setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
+                setshouldShowCalendarModeOptions(true);
+                setSelectedStaffEmployeeId(null);
+                if (selectedStaffEmployeeId) {
+                  setshowEmployeeHeader(true);
+                  setshowRequestsView(false);
+                } else {
+                  setshowEmployeeHeader(!showEmployeeHeader);
+                  setshowRequestsView(false);
+                }
+              }}
+              style={[
+                {
+                  flexDirection: 'row',
+                  marginVertical: ms(10),
+                },
+              ]}
+            >
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: ms(14), color: COLORS.black, fontFamily: Fonts.SemiBold }}>
+                  {totalAppointmentCountOfStaff}
+                </Text>
+                <Text
+                  style={{ fontSize: ms(12), color: COLORS.darkGray, fontFamily: Fonts.Regular }}
+                >
+                  {'Booking Accepted'}
+                </Text>
+              </View>
+              <Image source={todayCalendarIcon} style={styles.asignessCalendarImage} />
+            </TouchableOpacity>
+            <View style={styles.deviderList} />
+            <FlatList
+              data={getStaffUsers}
+              showsVerticalScrollIndicator={false}
+              style={{ marginBottom: ms(40) }}
+              keyExtractor={(_, index) => index.toString()}
+              renderItem={({ item }) => {
+                const userProfile = item?.user?.user_profiles;
+                const posUserId = item?.user?.unique_uuid;
+                return (
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
+                        setSelectedStaffEmployeeId((prev) => {
+                          if (prev === posUserId) {
+                            setSelectedStaffEmployeeId(null);
+                            setshowEmployeeHeader(false);
+                          } else {
+                            setshowEmployeeHeader(true);
+                            setSelectedStaffEmployeeId(posUserId);
+                          }
+                        });
+                        setSelectedStaffData(item);
+                      }}
+                      style={[styles.renderItemContainer]}
+                    >
+                      <View style={{ flex: 1 }}>
+                        <Text
+                          style={{
+                            fontSize: ms(14),
+                            color: COLORS.black,
+                            fontFamily: Fonts.SemiBold,
+                          }}
+                        >
+                          {item?.appointment_counts}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: ms(12),
+                            color: COLORS.darkGray,
+                            fontFamily: Fonts.Regular,
+                          }}
+                        >
+                          {userProfile?.firstname + ' ' + userProfile?.lastname}
+                        </Text>
+                      </View>
+                      <Image
+                        source={{
+                          uri: userProfile?.profile_photo,
+                        }}
+                        style={[styles.employeeImages, { borderColor: item?.color_code }]}
+                      />
+                    </TouchableOpacity>
+                    <View style={styles.deviderList} />
+                  </View>
+                );
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => setisCalendarSettingModalVisible(true)}
+              style={styles.CalendarSettingsContainer}
+            >
+              <Text
+                style={{
+                  fontSize: ms(12),
+                  color: COLORS.darkGray,
+                  flex: 1,
+                  fontFamily: Fonts.Regular,
+                }}
+              >
+                {'Calendar Setting'}
+              </Text>
+              <Image source={calendarSettingsIcon} style={styles.calendarIconSettings} />
+            </TouchableOpacity>
           </View>
         )}
 
         <CalendarSettingModal
           isVisible={isCalendarSettingModalVisible}
           setIsVisible={setisCalendarSettingModalVisible}
-          currentCalendarMode={calendarMode}
+          currentCalendarMode={timeValue}
           currentTimeFormat={isAMPM}
           onPressSave={(calendarPreferences) => {
             onPressSaveCalendarSettings(calendarPreferences);
@@ -776,6 +963,74 @@ export function Booking() {
             )}
           </View>
         </PaperModal>
+
+        <Modal
+          isVisible={showMiniBookingRequest}
+          statusBarTranslucent
+          animationIn={'slideInRight'}
+          animationInTiming={600}
+          animationOutTiming={300}
+        >
+          <View
+            style={[
+              styles.calendarModalView,
+              {
+                height: selectedStaffEmployeeId
+                  ? getAppointmentByStaffIdList?.length === 1
+                    ? windowHeight * 0.6
+                    : windowHeight * 0.9
+                  : appointmentListArr?.length === 1
+                  ? windowHeight * 0.6
+                  : windowHeight * 0.9,
+              },
+            ]}
+          >
+            {isRequestLoading && pageNumber === 1 ? (
+              <View style={{ marginTop: 50 }}>
+                <ActivityIndicator size="large" color={COLORS.indicator} />
+              </View>
+            ) : (
+              <View style={{}}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles._requestTitle}>
+                    {`Request (${
+                      selectedStaffEmployeeId
+                        ? getAppointmentByStaffIdList?.length ?? 0
+                        : appointmentListArr?.length ?? 0
+                    })`}
+                  </Text>
+                  <TouchableOpacity
+                    style={{
+                      padding: ms(4),
+                      borderWidth: 1,
+                      borderRadius: ms(2),
+                      borderColor: COLORS.gerySkies,
+                      position: 'absolute',
+                      right: ms(10),
+                      top: ms(10),
+                    }}
+                    onPress={() => setShowMiniBookingRequest(false)}
+                  >
+                    <Image source={cross} style={styles.crossReq} />
+                  </TouchableOpacity>
+                </View>
+
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  extraData={appointmentListArr}
+                  data={selectedStaffEmployeeId ? getAppointmentByStaffIdList : appointmentListArr}
+                  keyExtractor={(_, index) => index}
+                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                  renderItem={eventItem}
+                  onEndReached={handleEndReached}
+                  onEndReachedThreshold={0.1} // Adjust this value as per your requirements
+                  ListFooterComponent={renderLoader}
+                  style={{ marginBottom: ms(25) }}
+                />
+              </View>
+            )}
+          </View>
+        </Modal>
 
         <ReScheduleDetailModal
           showRecheduleModal={showRescheduleTimeModal}

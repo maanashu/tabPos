@@ -8,7 +8,7 @@ const CustomEventCell = (
   event,
   touchableOpacityProps,
   allEvents = [],
-  calendarMode,
+  timeValue,
   employeeHeaderLayouts = [],
   showEmployeeHeader = false
 ) => {
@@ -22,7 +22,7 @@ const CustomEventCell = (
     (data) => data?.user_id === staffDetails?.user_id
   );
   employeeIndex = employeeIndex > -1 ? employeeIndex : 0;
-
+  console.log('sgdjfg', timeValue);
   return (
     <TouchableOpacity
       {...touchableOpacityProps}
@@ -30,7 +30,7 @@ const CustomEventCell = (
         ...touchableOpacityProps.style,
         styles.eventContainer,
         { borderLeftColor: colorCode },
-        calendarMode === CALENDAR_MODES.DAY && showEmployeeHeader
+        timeValue === 'day' && showEmployeeHeader
           ? {
               width: '14.1%',
               marginLeft: Dimensions.get('screen').width * 0.14 * employeeIndex,
@@ -39,9 +39,9 @@ const CustomEventCell = (
       ]}
       activeOpacity={0.7}
     >
-      {calendarMode === CALENDAR_MODES.MONTH ? (
+      {timeValue === 'month' ? (
         <View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', backgroundColor: 'red' }}>
             {allEvents?.map((eventItem, index) => {
               return (
                 <View key={index} style={{ margin: 1 }}>

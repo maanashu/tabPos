@@ -17,7 +17,6 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
   const getUserData = useSelector(getUser);
   const getAuthdata = useSelector(getAuthData);
   const retailData = useSelector(getRetail);
-  const cartData = retailData?.getAllCart;
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const snapPoints = useMemo(() => ['100%'], []);
   const orderInvoice = retailData?.createOrder;

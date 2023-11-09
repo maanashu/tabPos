@@ -22,9 +22,9 @@ export const ServiceProviderItem = ({ item, onPress, borderColor, containerStyle
 
 const styles = StyleSheet.create({
   imageSelectedBorder: {
-    borderWidth: 5,
+    borderWidth: 1,
     marginHorizontal: ms(5),
-    borderRadius: 100,
+    borderRadius: 30,
     borderColor: COLORS.primary,
   },
   imageStyl: {

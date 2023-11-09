@@ -37,4 +37,8 @@ export const NAVIGATION = {
   productRefund: 'ProductRefund',
   paymentSelection: 'PaymentSelection',
   settings: 'Settings',
+  locations: 'Locations',
+  receipts: 'Receipts',
+  walletSettings: 'WalletSettings',
+  staffSettings: 'StaffSettings',
 };

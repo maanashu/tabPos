@@ -134,7 +134,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
             <Image source={crossButton} style={styles.crossStl} />
           </TouchableOpacity>
           {customerDetails && (
-            <View style={[styles.customerDetailContainer, { marginTop: ms(15) }]}>
+            <View style={[styles.customerDetailContainer, { marginTop: ms(20) }]}>
               <Text style={styles._eventTitle}>Customer:</Text>
 
               <View
@@ -153,7 +153,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                     {customerDetails?.firstname + ' ' + customerDetails?.lastname}
                   </Text>
                   {userId !== null && (
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row' }}>
                       <Image source={pin} style={styles.eventAddressIcon} />
                       <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
                     </View>
@@ -163,7 +163,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                   <View style={styles.EventDetailoptionsContainer}>
                     <TouchableOpacity
                       onPress={() => {
-                        setisShowChatModal(true);
+                        // setisShowChatModal(true);
                       }}
                     >
                       <Image source={chatIcon} style={styles.chatIconStl} />
@@ -195,7 +195,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
             <Text style={styles._eventTitle}>Service Requested:</Text>
             <Text style={styles.hairCutTitle}>{appointmentDetail?.product_name}</Text>
           </View>
-          <View style={[styles.subContainer1, { marginLeft: ms(15) }]}>
+          <View style={[styles.subContainer1, { marginLeft: ms(15), marginTop: ms(20) }]}>
             <Text style={styles._eventTitle}>Service Time:</Text>
             <View style={styles.serviceTimeContainer}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Fonts, radioSelect, radioUnSelect } from '@/assets';
 import { COLORS, SF } from '@/theme';
 import { ms } from 'react-native-size-matters';
@@ -12,6 +12,9 @@ import {
 } from '@/constants/enums';
 import { useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const CalendarSettingModal = ({
   isVisible,
@@ -212,11 +215,15 @@ const styles = StyleSheet.create({
   checkboxTitle: {
     fontFamily: Fonts.Regular,
     color: COLORS.darkGray,
-    fontSize: ms(7),
+    fontSize: ms(12),
     marginLeft: ms(5),
   },
-  checkboxIcon: { height: ms(10), width: ms(10), resizeMode: 'contain' },
-  checkboxContainer: { flexDirection: 'row', flex: 1 },
+  checkboxIcon: {
+    height: ms(10),
+    width: ms(10),
+    resizeMode: 'contain',
+  },
+  checkboxContainer: { flexDirection: 'row', flex: 1, alignItems: 'center' },
   subContainerCheckBox: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -226,7 +233,7 @@ const styles = StyleSheet.create({
   substitle: {
     fontFamily: Fonts.Regular,
     color: COLORS.black,
-    fontSize: ms(7),
+    fontSize: ms(12),
   },
   mainOptionTitleContainer: {
     height: 2,
@@ -234,15 +241,20 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     marginVertical: ms(5),
   },
-  title: { fontFamily: Fonts.SemiBold, fontSize: ms(8), color: COLORS.black },
+  title: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(14),
+    color: COLORS.black,
+  },
   calendarSettingModalContainer: {
-    width: ms(290),
-    height: ms(300),
+    width: windowWidth * 0.8,
+    height: windowHeight * 0.6,
     backgroundColor: 'white',
     padding: ms(10),
     paddingVertical: ms(15),
     alignSelf: 'center',
     borderRadius: ms(10),
+    paddingHorizontal: ms(15),
   },
   _btnContainer: {
     flexDirection: 'row',
@@ -274,7 +286,7 @@ const styles = StyleSheet.create({
   },
   declineText: {
     fontFamily: Fonts.Regular,
-    fontSize: ms(8),
+    fontSize: ms(12),
     color: COLORS.dark_grey,
   },
 });

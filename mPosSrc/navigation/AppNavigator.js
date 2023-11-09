@@ -25,6 +25,10 @@ import {
   Booking,
   ProductRefund,
   Settings,
+  Locations,
+  Receipts,
+  WalletSettings,
+  StaffSettings,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -178,6 +182,26 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.settings}
         options={{ headerShown: false }}
         component={Settings}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.locations}
+        options={{ headerShown: false }}
+        component={Locations}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.receipts}
+        options={{ headerShown: false }}
+        component={Receipts}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.walletSettings}
+        options={{ headerShown: false }}
+        component={WalletSettings}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.staffSettings}
+        options={{ headerShown: false }}
+        component={StaffSettings}
       />
     </Stack.Navigator>
   );

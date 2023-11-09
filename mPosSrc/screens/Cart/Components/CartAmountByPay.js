@@ -31,7 +31,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { height } from '@/theme/ScalerDimensions';
 import CountryPicker from 'react-native-country-picker-modal';
-import { attachCustomer, getAllCart, updateCartByTip } from '@/actions/RetailAction';
+import { attachCustomer, getAllCart, getQrCodee, updateCartByTip } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { CustomErrorToast } from '@mPOS/components/Toast';
@@ -43,6 +43,7 @@ const CartAmountByPay = ({
   productDetailHanlder,
   cashPayNowHandler,
   cartAmountByPayCross,
+  jbrCoinSheetshow,
 }) => {
   const payByCashRef = useRef(null);
   const dispatch = useDispatch();
@@ -51,7 +52,6 @@ const CartAmountByPay = ({
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const cartData = retailData?.getAllCart;
   const getTips = retailData?.getTips;
-
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
   const [tipData, setTipData] = useState('0.00');
@@ -76,8 +76,16 @@ const CartAmountByPay = ({
 
   const [flag, setFlag] = useState('US');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [countryCode, setCountryCode] = useState('+1');
+  const [countryCode, setCountryCode] = useState('');
   const [email, setEmail] = useState('');
+
+  useEffect(() => {
+    if (cartData?.user_details) {
+      setEmail(cartData?.user_details?.email ?? '');
+      setPhoneNumber(cartData?.user_details?.phone_no ?? '');
+      setCountryCode(cartData?.user_details?.phone_code ?? '+1');
+    }
+  }, [cartData?.user_details]);
 
   useEffect(() => {
     setColorSelectId(null);
@@ -169,6 +177,14 @@ const CartAmountByPay = ({
     isLoadingSelector([TYPES.UPDATE_CART_BY_TIP, TYPES.ATTACH_CUSTOMER], state)
   );
 
+  const jobrSavePercent = (value, percent) => {
+    if (percent == '') {
+      return '';
+    }
+    const percentageValue = (percent / 100) * parseFloat(value);
+    return percentageValue.toFixed(2) ?? 0.0;
+  };
+
   return (
     <BottomSheetModal
       backdropComponent={CustomBackdrop}
@@ -206,7 +222,9 @@ const CartAmountByPay = ({
           {selectedPaymentIndex !== null && selectedPaymentIndex === 1 && (
             <View style={styles.jbrSaveCon}>
               <Text style={styles.youSave}>You Save</Text>
-              <Text style={styles.saveJbr}>JBR 29</Text>
+              <Text style={styles.saveJbr}>
+                JBR {jobrSavePercent(cartData?.amount?.total_amount ?? '0.00', 1)}
+              </Text>
             </View>
           )}
           <View style={styles.selectTipsCon}>
@@ -337,7 +355,7 @@ const CartAmountByPay = ({
                   <TouchableOpacity
                     onPress={() => {
                       setSelectedRecipeIndex(index);
-                      setPhoneNumber(), setEmail();
+                      // setPhoneNumber(), setEmail();
                       if (item.title == 'No e-recipe') {
                         getTipPress();
                       }
@@ -508,7 +526,22 @@ const CartAmountByPay = ({
             )} */}
           {/* jbr coin pay now button */}
           {selectedPaymentIndex !== null && selectedPaymentIndex === 1 && (
-            <TouchableOpacity style={styles.payNowCon} onPress={() => alert('jbr coin')}>
+            <TouchableOpacity
+              style={styles.payNowCon}
+              //  onPress={jbrCoinSheetshow}
+              onPress={async () => {
+                const data = {
+                  tip: selectedTipAmount.toString(),
+                  cartId: cartData.id,
+                };
+                const res = await dispatch(updateCartByTip(data));
+                if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+                  dispatch(getQrCodee(cartData?.id));
+                  dispatch(getAllCart());
+                  jbrCoinSheetshow();
+                }
+              }}
+            >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={styles.payNowText}>{'Pay Now'}</Text>
                 <Image source={Images.buttonArrow} style={styles.buttonArrow} />
@@ -636,7 +669,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(5),
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: ms(10),
+    marginBottom: ms(20),
   },
   payNowText: {
     fontFamily: Fonts.SemiBold,

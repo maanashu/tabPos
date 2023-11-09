@@ -1,37 +1,40 @@
-import React, { useState, useRef } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import {
-  Image,
-  Text,
   View,
-  TouchableOpacity,
-  Keyboard,
-  ActivityIndicator,
+  Text,
+  Image,
   TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
+  Keyboard,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { ms } from 'react-native-size-matters';
-import { COLORS, SF, SH, SW } from '@/theme';
-import { Spacer } from '@/components';
-import { crossButton, dropdown, search_light, user } from '@/assets';
-import { getRetail } from '@/selectors/RetailSelectors';
-import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import CountryPicker from 'react-native-country-picker-modal';
+
+import { moderateScale, ms } from 'react-native-size-matters';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { Spacer } from '@mPOS/components';
 import { strings } from '@/localization';
+import { COLORS, Fonts, SF, SH, SW } from '@/theme';
+import { digitWithDot, emailReg } from '@/utils/validators';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   attachCustomer,
+  customProductAdd,
   getUserDetail,
   getUserDetailSuccess,
-  sendInvitation,
 } from '@/actions/RetailAction';
+import CountryPicker from 'react-native-country-picker-modal';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-import { useCallback } from 'react';
-import { memo } from 'react';
-import { emailReg } from '@/utils/validators';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useEffect } from 'react';
+import { crossButton, dropdown } from '@/assets';
 
-export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
+const ProductCustomerAdd = ({ crossHandler }) => {
   const textInputRef = useRef(null);
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
@@ -42,7 +45,6 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [searchCustomer, setSearchCustomer] = useState('');
-  const [monthDays, setmonthDays] = useState([]);
   const getuserDetailByNo = getRetailData?.getUserDetail;
   const userLength = Object.keys(getuserDetailByNo)?.length;
   const [defaultPhoneNumber, setDefaultPhoneNumber] = useState(
@@ -52,6 +54,10 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
 
   useEffect(() => {
     textInputRef.current.focus();
+  }, []);
+  useEffect(() => {
+    dispatch(getUserDetailSuccess({}));
+    setDetailArea(false);
   }, []);
 
   const customerPhoneSearchFun = useCallback(
@@ -122,50 +128,21 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   };
 
   return (
-    <KeyboardAwareScrollView
-      style={[styles.customProductCon, { height: ms(330) }]}
-      showsVerticalScrollIndicator={false}
-    >
+    // <KeyboardAwareScrollView
+    //   contentContainerStyle={styles.customProductCon}
+    //   showsVerticalScrollIndicator={false}
+    // >
+    <View style={styles.customProductCon}>
       <View style={styles.headerConCustomProduct}>
-        {/* <Text style={styles.zeroText}>New Product Add to Cart</Text> */}
+        <Text style={[styles.zeroText, { fontSize: ms(14), marginBottom: ms(5) }]}>Customer</Text>
         <TouchableOpacity onPress={crossHandler}>
           <Image
             source={crossButton}
             style={[styles.crossButton, { tintColor: COLORS.solid_grey }]}
           />
         </TouchableOpacity>
-        {userLength == 0 && detailArea ? (
-          <TouchableOpacity
-            style={[styles.addToCartCon, styles.newCutomersaveCon]}
-            onPress={() => saveAndAddCustomer()}
-          >
-            <Text style={styles.addTocartText}>Save</Text>
-          </TouchableOpacity>
-        ) : userLength > 0 && detailArea ? (
-          <TouchableOpacity
-            style={[styles.addToCartCon, styles.newCutomersaveCon]}
-            onPress={() => saveCustomer()}
-          >
-            <Text style={styles.addTocartText}>Save</Text>
-          </TouchableOpacity>
-        ) : null}
-
-        {/* 
-        {userLength == 0 && !detailArea
-        
-        ? null : userLength > 0 && detailArea ? null : (
-          <TouchableOpacity
-          style={[styles.addToCartCon, styles.newCutomersaveCon]}
-          onPress={() => saveCustomer()}
-        >
-          <Text style={styles.addTocartText}>Save</Text>
-        </TouchableOpacity>
-        )} */}
       </View>
-      <View style={{ padding: ms(15) }}>
-        <Text style={[styles.zeroText, { fontSize: ms(10), marginBottom: ms(5) }]}>Customer</Text>
-        <Spacer space={SH(7)} />
-
+      <View style={{ padding: ms(15), flex: 1 }}>
         <View style={styles.searchCustomerCon}>
           <CountryPicker
             onSelect={(code) => {
@@ -196,19 +173,6 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
             ref={textInputRef}
           />
         </View>
-
-        {/* <View style={styles.searchCustomerCon}>
-          <Image source={search_light} style={styles.sideSearchStyle} />
-          <TextInput
-            placeholder="Customer Phone Number"
-            style={styles.searchCustomerInput}
-            value={searchCustomer}
-            onChangeText={(searchCustomer) => customerPhoneSearchFun(searchCustomer)}
-            placeholderTextColor={COLORS.gerySkies}
-            keyboardType="number-pad"
-            maxLength={10}
-          />
-        </View> */}
         {userDetalLoader ? null : userLength > 0 && detailArea ? (
           <Text style={[styles.customerNotSystem, { color: COLORS.primary }]}>
             {strings.retail.alreadyInsystem}
@@ -408,7 +372,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                   <View>
                     <Text style={styles.newCusAdd}>{strings.retail.firstName}</Text>
                     <TextInput
-                      placeholder={strings.retail.name}
+                      placeholder={strings.retail.firstName}
                       style={styles.newFirstName}
                       placeholderTextColor={COLORS.row_grey}
                       value={firstName}
@@ -419,7 +383,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                   <View>
                     <Text style={styles.newCusAdd}>{strings.retail.lastName}</Text>
                     <TextInput
-                      placeholder={strings.retail.name}
+                      placeholder={strings.retail.lastName}
                       style={styles.newFirstName}
                       placeholderTextColor={COLORS.row_grey}
                       value={lastName}
@@ -431,7 +395,142 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
             )}
           </View>
         )}
+        <View style={{ flex: 1 }} />
+        {userDetalLoader ? null : userLength == 0 && detailArea ? (
+          <TouchableOpacity style={styles.addToCartCon} onPress={() => saveAndAddCustomer()}>
+            <Text style={styles.addTocartText}>Save</Text>
+          </TouchableOpacity>
+        ) : userLength > 0 && detailArea ? (
+          <TouchableOpacity style={styles.addToCartCon} onPress={() => saveCustomer()}>
+            <Text style={styles.addTocartText}>Save</Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
-    </KeyboardAwareScrollView>
+    </View>
+
+    // </KeyboardAwareScrollView>
   );
+};
+
+export default memo(ProductCustomerAdd);
+
+const styles = StyleSheet.create({
+  customProductCon: {
+    backgroundColor: COLORS.white,
+    borderRadius: ms(15),
+    width: ms(330),
+    height: ms(490),
+    alignSelf: 'center',
+    paddingVertical: ms(15),
+    marginTop: ms(30),
+  },
+  headerConCustomProduct: {
+    height: ms(40),
+    borderColor: COLORS.solidGrey,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: ms(12),
+  },
+  crossButton: {
+    width: SW(25),
+    height: SW(25),
+    resizeMode: 'contain',
+  },
+  addToCartCon: {
+    backgroundColor: COLORS.primary,
+    height: SH(55),
+    padding: SH(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: ms(3),
+  },
+
+  zeroText: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+    fontSize: ms(11),
+  },
+  searchCustomerCon: {
+    borderWidth: 1,
+    height: ms(55),
+    borderRadius: 10,
+    borderColor: COLORS.solidGrey,
+    paddingHorizontal: ms(10),
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  dropDownIcon: {
+    width: ms(7),
+    height: ms(7),
+    resizeMode: 'contain',
+  },
+  searchCustomerInput: {
+    flex: 1,
+    fontFamily: Fonts.Italic,
+    fontSize: ms(12),
+    color: COLORS.solid_grey,
+  },
+  customerNotSystem: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(7),
+    color: COLORS.red,
+    marginVertical: ms(4),
+  },
+  customerDarkLabel: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(12),
+    color: COLORS.solid_grey,
+  },
+  customerLightdata: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(12),
+    color: COLORS.darkGray,
+    marginTop: ms(3),
+  },
+  textInputContainer: {
+    color: COLORS.black,
+    fontSize: SF(14),
+    fontFamily: Fonts.Italic,
+    flex: 1,
+  },
+  newCusAdd: {
+    color: COLORS.dark_grey,
+    fontSize: ms(10),
+    fontFamily: Fonts.Medium,
+    marginVertical: ms(6),
+  },
+
+  phoneCodeNewCustomerView: {
+    paddingHorizontal: ms(10),
+    borderWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: ms(47),
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 5,
+    fontFamily: Fonts.Italic,
+    fontSize: ms(12),
+  },
+
+  newFirstName: {
+    width: ms(140),
+    height: ms(47),
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 5,
+    fontFamily: Fonts.Italic,
+    paddingHorizontal: ms(10),
+    fontSize: ms(12),
+  },
+  countryCodeText: {
+    color: COLORS.solid_grey,
+    fontSize: ms(14),
+    fontFamily: Fonts.Regular,
+    paddingHorizontal: moderateScale(8),
+  },
+  addTocartText: {
+    color: COLORS.white,
+    fontSize: SH(13),
+    fontFamily: Fonts.Medium,
+  },
 });

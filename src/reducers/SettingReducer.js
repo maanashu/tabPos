@@ -22,6 +22,11 @@ export const settingReducer = (state = INITIALSTATE, { payload, type }) => {
         ...state,
         getSetting: payload.getSetting,
       };
+    case TYPES.UPDATE_API_SUCCESS:
+      return {
+        ...state,
+        getSetting: payload.getSetting,
+      };
     case TYPES.GET_SHIPPICK_SUCCESS:
       return {
         ...state,

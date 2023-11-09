@@ -66,23 +66,6 @@ export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue, 
     selectedBrandArray?.length > 0 ||
     selectedSubCategoryArray?.length > 0;
 
-  // useEffect(() => {
-  //   settleFunction();
-  // }, [backfilterValue == 0]);
-
-  // useEffect(() => {
-  //   dispatch(getCategory(sellerid, search));
-  //   dispatch(getSubCategory(sellerid, searchSubCategory));
-  //   dispatch(getBrand(sellerid, searchBrand));
-  // }, [
-  //   debouncedValue,
-  //   debouncedSubValue,
-  //   debouncedBrandValue,
-  //   search,
-  //   searchSubCategory,
-  //   searchBrand,
-  // ]);
-
   // category search function
   const categorySearch = (search) => {
     setSearch(search);

@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { pin, eventClockIcon } from '@/assets';
-import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import moment from 'moment';
 import { changeAppointmentStatus } from '@/actions/AppointmentAction';
@@ -9,6 +8,7 @@ import { APPOINTMENT_STATUS } from '@/constants/status';
 import { calculateDuration } from '@/utils/GlobalMethods';
 import { useDispatch } from 'react-redux';
 import ProfileImage from '@/components/ProfileImage';
+import { styles } from '../styles';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -35,7 +35,9 @@ const EventItemCard = ({ item, index }) => {
               </Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={pin} style={styles.eventAddressIcon} />
-                <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
+                <Text style={[styles.eventAddress, { width: '90%', paddingHorizontal: ms(5) }]}>
+                  {userAddress?.street_address}
+                </Text>
               </View>
             </View>
           </View>
