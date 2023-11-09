@@ -97,6 +97,7 @@ export function Home() {
           <TextInput
             placeholder={strings.homeTab.placeholder}
             style={styles.searchTextInputStyle}
+            placeholderTextColor={COLORS.solid_grey}
           />
         </View>
 

@@ -1,5 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Text, Image, SafeAreaView, TouchableOpacity, TextInput } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
 import { styles } from './styles';
 import { COLORS, Fonts, SH } from '@/theme';
 import { ms } from 'react-native-size-matters';
@@ -386,7 +395,11 @@ export function Cart() {
         isVisible={addDiscount}
         onBackdropPress={() => setAddDiscount(false)}
       >
+        {/* <KeyboardAvoidingView>
+          <ScrollView> */}
         <AddDiscount discountClose={() => setAddDiscount(false)} />
+        {/* </ScrollView>
+        </KeyboardAvoidingView> */}
       </Modal>
       <Modal
         animationType="fade"

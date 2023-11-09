@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: moderateScale(15),
     paddingVertical: ms(30),
+    marginTop: ms(20),
   },
   nameBottomSheetContainerStyle: {
     borderTopLeftRadius: ms(30),

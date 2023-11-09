@@ -222,11 +222,11 @@ const AddDiscount = ({ discountClose }) => {
                 placeholder={'CODE'}
                 style={[
                   styles.amountInput,
-                  { color: discountCode ? COLORS.primary : COLORS.dark_gray },
+                  { color: discountCode ? COLORS.primary : COLORS.solid_grey },
                 ]}
                 value={discountCode}
                 onChangeText={setDiscountCode}
-                placeholderTextColor={COLORS.dark_gray}
+                placeholderTextColor={COLORS.solid_grey}
                 onFocus={() => {
                   setCodeCheck(true);
                   setPercentageCheck(false);
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 30,
     width: ms(350),
-    height: ms(440),
+    height: ms(450),
     alignSelf: 'center',
     paddingHorizontal: moderateScale(15),
     paddingVertical: ms(30),

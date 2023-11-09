@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily: Fonts.Italic,
     fontSize: ms(10),
+    color: COLORS.solid_grey,
   },
 });
 

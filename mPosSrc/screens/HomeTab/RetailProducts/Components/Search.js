@@ -17,6 +17,7 @@ const Search = ({ value, onChangeText, filterHandler, selectFilterCount }) => {
           style={styles.searchTextInputStyle}
           value={value}
           onChangeText={onChangeText}
+          placeholderTextColor={COLORS.solid_grey}
         />
       </View>
 

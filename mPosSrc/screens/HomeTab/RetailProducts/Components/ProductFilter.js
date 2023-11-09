@@ -8,6 +8,7 @@ import {
   FlatList,
   TextInput,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 import { moderateScale, ms } from 'react-native-size-matters';
 import { Images } from '@mPOS/assets';
@@ -486,7 +487,8 @@ const styles = StyleSheet.create({
     height: '100%',
     alignSelf: 'center',
     paddingHorizontal: moderateScale(15),
-    paddingVertical: ms(30),
+    paddingTop: ms(40),
+    paddingBottom: ms(30),
     alignSelf: 'flex-end',
   },
   nameBottomSheetContainerStyle: {
@@ -548,6 +550,7 @@ const styles = StyleSheet.create({
     // textAlignVertical: 'center',
     margin: 0,
     fontSize: ms(12, 0.3),
+    color: COLORS.primary,
   },
   applyFilterCon: {
     flexDirection: 'row',
@@ -585,6 +588,11 @@ const styles = StyleSheet.create({
   },
   ApplyText: {
     color: COLORS.white,
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(10),
+  },
+  noDataText: {
+    color: COLORS.primary,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(10),
   },
