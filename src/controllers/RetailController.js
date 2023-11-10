@@ -299,8 +299,10 @@ export class RetailController {
   static async getAllProductCart() {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.posCarts + `/`;
+      console.log(endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log(response);
           resolve(response);
         })
         .catch((error) => {

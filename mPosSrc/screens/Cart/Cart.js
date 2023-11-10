@@ -26,7 +26,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { formattedReturnPrice } from '@mPOS/utils/GlobalMethods';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { getAllCart, getTip } from '@/actions/RetailAction';
+import {
+  changeStatusProductCart,
+  getAllCart,
+  getAllProductCart,
+  getTip,
+} from '@/actions/RetailAction';
 import CartAmountByPay from './Components/CartAmountByPay';
 import PayByCash from './Components/PayByCash';
 import { TYPES } from '@/Types/Types';
@@ -36,9 +41,11 @@ import ProductCustomerAdd from './Components/ProductCustomerAdd';
 import { NewCustomerAdd } from '@/screens/PosRetail3/Components/NewCustomerAdd';
 import JbrCoin from './Components/JbrCoin';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useIsFocused } from '@react-navigation/native';
 // import { Modal } from 'react-native-paper';
 
 export function Cart() {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const productCartData = retailData?.getAllCart;
@@ -55,6 +62,9 @@ export function Cart() {
   const [orderCreateData, setOrderCreateData] = useState();
   const [saveCart, setSaveCart] = useState();
   const [productCustomerAdd, setProductCustomerAdd] = useState(false);
+  const productCartArray = retailData?.getAllProductCart;
+  const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
+  console.log('holdProductArray', holdProductArray);
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -67,13 +77,15 @@ export function Cart() {
         TYPES.UPDATE_CART_BY_TIP,
         TYPES.CREATE_ORDER,
         TYPES.ATTACH_CUSTOMER,
+        TYPES.CHANGE_STATUS_PRODUCT_CART,
       ],
       state
     )
   );
   useEffect(() => {
     dispatch(getAllCart());
-  }, []);
+    dispatch(getAllProductCart());
+  }, [isFocused]);
 
   const payNowHandler = useCallback(() => {
     dispatch(getDrawerSessions());
@@ -134,6 +146,22 @@ export function Cart() {
     console.log('This row opened', rowKey);
   };
 
+  // hold product Function
+  const cartStatusHandler = () => {
+    const data =
+      holdProductArray?.length > 0
+        ? {
+            status: !holdProductArray?.[0]?.is_on_hold,
+            cartId: holdProductArray?.[0]?.id,
+          }
+        : {
+            status: !productCartData?.is_on_hold,
+            cartId: productCartData?.id,
+          };
+    console.log(data);
+    dispatch(changeStatusProductCart(data));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.cartScreenHeader]}>
@@ -171,8 +199,8 @@ export function Cart() {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.headerImagecCon}>
-          <Image source={Images.pause} style={styles.headerImage} />
+        <TouchableOpacity style={styles.headerImagecCon} onPress={cartStatusHandler}>
+          <Image source={Images.pause} style={styles.holdImage(holdProductArray)} />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.headerImagecCon}

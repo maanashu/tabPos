@@ -129,6 +129,14 @@ export const styles = StyleSheet.create({
     height: ms(23),
     resizeMode: 'contain',
   },
+  holdImage: (holdProductArray) => {
+    return {
+      width: ms(23),
+      height: ms(23),
+      resizeMode: 'contain',
+      ...(holdProductArray?.length > 0 && { tintColor: COLORS.primary }),
+    };
+  },
   cartProductCon: {
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
