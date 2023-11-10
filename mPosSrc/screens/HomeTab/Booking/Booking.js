@@ -142,8 +142,6 @@ export function Booking() {
     { label: 'Week', value: 'week' },
     { label: 'Month', value: 'month' },
   ]);
-<<<<<<< HEAD
-=======
   const [groupedAppointments, setGroupedAppointments] = useState({});
   const [selected, setSelected] = useState('');
 
@@ -151,7 +149,6 @@ export function Booking() {
     const grouped = groupAppointmentsByDate(getAppointmentList);
     setGroupedAppointments(grouped);
   }, [getAppointmentList]);
->>>>>>> d_mansi
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
