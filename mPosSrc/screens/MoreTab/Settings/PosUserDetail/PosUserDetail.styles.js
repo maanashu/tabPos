@@ -6,8 +6,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: ms(10),
-    paddingHorizontal: ms(20),
-    flexGrow: 1,
+    // flexGrow: 1,
   },
   rowJustified: {
     flexDirection: 'row',
@@ -88,6 +87,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     // justifyContent: 'space-between',
     borderRadius: ms(5),
+    marginHorizontal: ms(20),
   },
   timeInnerView: { alignItems: 'flex-start', flex: 1 },
   blueInnerView: {
@@ -105,9 +105,21 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: ms(5),
     borderColor: COLORS.mid_grey,
     borderTopWidth: 1,
-    // flexDirection: 'row',
-    // alignItems: 'flex-start',
-    // justifyContent: 'space-evenly',
+    marginHorizontal: ms(20),
+  },
+  listView: {
+    backgroundColor: COLORS.white,
+    padding: ms(20),
+    marginTop: ms(15),
+  },
+  listHeaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.textinput_bg,
+    paddingVertical: ms(10),
+    paddingLeft: ms(5),
+    // flex: 1,
   },
 });
 

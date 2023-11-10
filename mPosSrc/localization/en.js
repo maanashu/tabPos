@@ -371,4 +371,11 @@ export const en = {
     unPaid: 'Unpaid',
     paid: 'Paid',
   },
+  policies: {
+    policies: 'Policies',
+    publishDate: 'Publish date:',
+    lastUpdate: 'Last update date:',
+    close: 'Close',
+    legal: 'Legal',
+  },
 };

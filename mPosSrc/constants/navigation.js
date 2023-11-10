@@ -43,4 +43,5 @@ export const NAVIGATION = {
   walletSettings: 'WalletSettings',
   staffSettings: 'StaffSettings',
   posUserDetail: 'PosUserDetail',
+  policies: 'Policies',
 };

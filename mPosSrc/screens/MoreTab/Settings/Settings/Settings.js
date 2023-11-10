@@ -40,7 +40,13 @@ export function Settings() {
     },
     { id: 6, title: strings?.settings?.language, image: Images.language, subTitle: 'Defaults' },
     { id: 7, title: strings?.settings?.legal, image: Images.work, subTitle: 'Defaults' },
-    { id: 8, title: strings?.settings?.policies, image: Images.policy, subTitle: 'Defaults' },
+    {
+      id: 8,
+      title: strings?.settings?.policies,
+      image: Images.policy,
+      subTitle: 'Defaults',
+      navigation: MPOS_NAVIGATION.policies,
+    },
     { id: 9, title: strings?.settings?.shop, image: Images.email, subTitle: '3 Locations' },
     { id: 10, title: strings?.settings?.deviceDetails, image: Images.policy, subTitle: 'Defaults' },
   ];

@@ -31,6 +31,7 @@ import {
   StaffSettings,
   PosUserDetail,
   RetailServices,
+  Policies,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -214,6 +215,11 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.posUserDetail}
         options={{ headerShown: false }}
         component={PosUserDetail}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.policies}
+        options={{ headerShown: false }}
+        component={Policies}
       />
     </Stack.Navigator>
   );
