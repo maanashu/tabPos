@@ -1,0 +1,12 @@
+diff --git a/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx b/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx
+index 0e8144d..933fa6e 100644
+--- a/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx
++++ b/node_modules/@gorhom/bottom-sheet/src/components/bottomSheetModal/BottomSheetModal.tsx
+@@ -389,6 +389,7 @@ const BottomSheetModalComponent = forwardRef<
+           containerOffset={containerOffset}
+           onChange={handleBottomSheetOnChange}
+           onClose={handleBottomSheetOnClose}
++          backgroundStyle={{borderBottomRightRadius: 0, borderBottomLeftRadius: 0,}}
+           children={
+             typeof Content === 'function' ? <Content data={data} /> : Content
+           }
