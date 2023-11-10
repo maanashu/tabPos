@@ -37,7 +37,6 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
   const retailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  console.log(sellerID);
 
   // useEffect(() => {
   //   dispatch(getCategory(sellerID));
@@ -78,7 +77,6 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
     selectedCategoryArray?.length > 0 ||
     selectedBrandArray?.length > 0 ||
     selectedSubCategoryArray?.length > 0;
-  console.log('multipleArrayLength', multipleArrayLength);
 
   const clearInput = () => {
     dispatch(getCategory(sellerID));

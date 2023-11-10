@@ -89,7 +89,6 @@ export function RetailServices(props) {
     perPage: serviceData?.per_page ?? '0',
     currentPage: serviceData?.current_page ?? '0',
   };
-  console.log('servicePagination', servicePagination);
 
   const onLoadMoreProduct = useCallback(() => {
     if (!serviceLoad) {

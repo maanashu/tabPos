@@ -73,7 +73,6 @@ export function Booking() {
   const maxDate = new Date(2030, 6, 3);
   const getSettingData = useSelector(getSetting);
   const defaultSettingsForCalendar = getSettingData?.getSetting;
-  console.log('gasdjgsjd', defaultSettingsForCalendar?.calender_view);
   const getCalenderData = useSelector(getAppointmentSelector);
   const getAppointmentList = getCalenderData?.getAppointment;
   const getAppointmentByStaffIdList = getCalenderData?.geAppointmentById;
@@ -121,7 +120,6 @@ export function Booking() {
     { label: 'Week', value: 'week' },
     { label: 'Month', value: 'month' },
   ]);
-  console.log('calendarMode', calendarMode);
 
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);

@@ -64,7 +64,6 @@ export function Cart() {
   const [productCustomerAdd, setProductCustomerAdd] = useState(false);
   const productCartArray = retailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
-  console.log('holdProductArray', holdProductArray);
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -165,49 +164,53 @@ export function Cart() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.cartScreenHeader]}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.5,
-          }}
-          pointerEvents={productCartData?.poscart_products?.length > 0 ? 'auto' : 'none'}
-        >
-          <TouchableOpacity
-            style={styles.headerImagecCon}
-            onPress={() => setProductCustomerAdd((prev) => !prev)}
+        <View style={styles.serviceCart}>
+          <Text style={styles.serviceCartText}>{'Service Cart'}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.5,
+            }}
+            pointerEvents={productCartData?.poscart_products?.length > 0 ? 'auto' : 'none'}
           >
-            <Image source={Images.addCustomerIcon} style={styles.headerImage} />
+            <TouchableOpacity
+              style={styles.headerImagecCon}
+              onPress={() => setProductCustomerAdd((prev) => !prev)}
+            >
+              <Image source={Images.addCustomerIcon} style={styles.headerImage} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.headerImagecCon}
+              onPress={() => setAddNotes((prev) => !prev)}
+            >
+              <Image source={Images.notes} style={styles.headerImage} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.headerImagecCon}
+              onPress={() => setAddDiscount((prev) => !prev)}
+            >
+              <Image source={Images.discountOutline} style={styles.headerImage} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.headerImagecCon}
+              onPress={() => setClearCart((prev) => !prev)}
+            >
+              <Image source={Images.ClearEraser} style={styles.headerImage} />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.headerImagecCon} onPress={cartStatusHandler}>
+            <Image source={Images.pause} style={styles.holdImage(holdProductArray)} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.headerImagecCon}
-            onPress={() => setAddNotes((prev) => !prev)}
+            onPress={() => setCustomProductAdd((prev) => !prev)}
           >
-            <Image source={Images.notes} style={styles.headerImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.headerImagecCon}
-            onPress={() => setAddDiscount((prev) => !prev)}
-          >
-            <Image source={Images.discountOutline} style={styles.headerImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.headerImagecCon}
-            onPress={() => setClearCart((prev) => !prev)}
-          >
-            <Image source={Images.ClearEraser} style={styles.headerImage} />
+            <Image source={Images.fluent} style={styles.headerImage} />
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={styles.headerImagecCon} onPress={cartStatusHandler}>
-          <Image source={Images.pause} style={styles.holdImage(holdProductArray)} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.headerImagecCon}
-          onPress={() => setCustomProductAdd((prev) => !prev)}
-        >
-          <Image source={Images.fluent} style={styles.headerImage} />
-        </TouchableOpacity>
       </View>
 
       <View style={{ flex: 1, paddingHorizontal: ms(10) }}>

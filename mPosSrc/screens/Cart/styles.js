@@ -118,7 +118,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    paddingHorizontal: ms(12),
   },
   headerImagecCon: {
     // borderWidth: 1,
@@ -330,5 +331,18 @@ export const styles = StyleSheet.create({
     height: ms(8),
     borderRadius: ms(2),
     marginHorizontal: ms(5),
+  },
+  serviceCart: {
+    backgroundColor: COLORS.primary,
+    height: ms(30),
+    width: ms(100),
+    borderRadius: ms(3),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  serviceCartText: {
+    fontSize: ms(10),
+    color: COLORS.white,
+    fontFamily: Fonts.Regular,
   },
 });
