@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
 import { Images } from '@mPOS/assets';
-import { ImageView, Spacer } from '@mPOS/components';
+import { Spacer } from '@mPOS/components';
 import { COLORS, Fonts } from '@/theme';
 import {
   Image,
@@ -79,7 +79,7 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
         {Platform.OS === 'ios' && <SafeAreaView />}
         <View style={styles.productHeaderCon}>
           <TouchableOpacity onPress={() => productDetailRef.current.dismiss()}>
-            {/* <Image source={Images.cross} style={styles.crossImageStyle} /> */}
+            <Image source={Images.cross} style={styles.crossImageStyle} />
           </TouchableOpacity>
           <View style={styles.detailAndAddBtnCon}>
             <TouchableOpacity
@@ -102,10 +102,10 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
         <View style={styles.productCartBody}>
           <BottomSheetScrollView>
             <View style={styles.ImageView}>
-              <ImageView
-                imageUrl={productDetail?.image}
+              <Image
+                source={{ uri: productDetail?.image }}
+                resizeMode="cover"
                 style={styles.detailImage}
-                imageStyle={{ borderRadius: ms(5) }}
               />
               <View style={{ marginLeft: ms(10) }}>
                 <Text style={styles.detailHeaderText}>{productDetail?.name}</Text>

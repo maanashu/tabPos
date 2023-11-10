@@ -15,7 +15,7 @@ import { COLORS } from '@/theme';
 import { Images } from '@mPOS/assets';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { strings } from '@mPOS/localization';
-import { homePageData } from '@mPOS/constants/enums';
+// import { homePageData } from '@mPOS/constants/enums';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { getAuthData } from '@/selectors/AuthSelector';
 
@@ -23,14 +23,16 @@ import styles from '@mPOS/screens/HomeTab/Home/styles';
 
 export function Home() {
   const authData = useSelector(getAuthData);
+  const merchantServiceProvide = authData?.merchantLoginData?.product_existance_status;
   const merchantData = authData?.merchantLoginData;
+  // console.log('authData', JSON.stringify(authData));
   const onPressHandler = (item) => {
     if (item?.title === 'Checkout') {
       navigate(MPOS_NAVIGATION.checkout);
     } else if (item?.title === 'Products') {
       navigate(MPOS_NAVIGATION.retailProducts);
     } else if (item?.title === 'Services') {
-      navigate(MPOS_NAVIGATION.services);
+      navigate(MPOS_NAVIGATION.retailServices);
     } else if (item?.title === 'Delivery') {
       navigate(MPOS_NAVIGATION.delivery);
     } else if (item?.title === 'Shipping') {
@@ -41,6 +43,61 @@ export function Home() {
       navigate(MPOS_NAVIGATION.booking);
     }
   };
+
+  const homePageData = [
+    merchantServiceProvide?.is_product_exist
+      ? {
+          key: '1',
+          title: 'Products',
+          image: Images.products,
+          listedProducts: '125 Products listed',
+        }
+      : null,
+    merchantServiceProvide?.is_service_exist
+      ? {
+          key: '2',
+          title: 'Services',
+          image: Images.services,
+          listedProducts: '125 Products listed',
+        }
+      : null,
+    merchantServiceProvide?.is_product_exist || merchantServiceProvide?.is_service_exist
+      ? {
+          key: '3',
+          title: 'On-Hold',
+          image: Images.hold,
+        }
+      : null,
+    {
+      key: '4',
+      title: 'Return',
+      image: Images.returnIcon,
+      listedProducts: 'Incomplete: 3',
+    },
+    {
+      key: '5',
+      title: 'Delivery',
+      image: Images.delivery,
+      listedProducts: 'Processing: 16',
+    },
+    {
+      key: '6',
+      title: 'Shipping',
+      image: Images.shippingImage,
+      listedProducts: 'On-going: 3',
+    },
+    {
+      key: '7',
+      title: 'Booking',
+      image: Images.calendar,
+      listedProducts: 'On-going: 3',
+    },
+    {
+      key: '8',
+      title: 'Add Title',
+      image: Images.addTitle,
+    },
+  ].filter(Boolean); // Remove falsy values (null in this case)
 
   const renderItem = ({ item, index }) => (
     <TouchableOpacity onPress={() => onPressHandler(item)} style={styles.itemViewStyle}>
@@ -72,7 +129,7 @@ export function Home() {
               color:
                 item?.title === 'Delivery' || item?.title === 'Shipping'
                   ? COLORS.darkBlue
-                  : COLORS.dark_gray,
+                  : COLORS.solid_grey,
               paddingHorizontal: 15,
             },
           ]}

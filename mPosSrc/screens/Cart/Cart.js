@@ -35,6 +35,8 @@ import { getDrawerSessions } from '@/actions/CashTrackingAction';
 import ProductCustomerAdd from './Components/ProductCustomerAdd';
 import { NewCustomerAdd } from '@/screens/PosRetail3/Components/NewCustomerAdd';
 import JbrCoin from './Components/JbrCoin';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+// import { Modal } from 'react-native-paper';
 
 export function Cart() {
   const dispatch = useDispatch();
@@ -115,6 +117,13 @@ export function Cart() {
   }, []);
 
   const payByJbrCoinHandler = (cartData, data) => {
+    setOrderCreateData(data);
+    setSaveCart(cartData);
+    jbrCoinRef.current.dismiss();
+    finalPaymentRef.current?.present();
+  };
+
+  const payByJbrHandler = (cartData, data) => {
     setOrderCreateData(data);
     setSaveCart(cartData);
     jbrCoinRef.current.dismiss();
@@ -409,9 +418,24 @@ export function Cart() {
       >
         <ClearCart cartClose={() => setClearCart(false)} />
       </Modal>
-      <Modal animationType="fade" transparent={true} isVisible={customProductAdd}>
-        <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
+      <Modal animationType="fade" isVisible={customProductAdd}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+        >
+          <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
+        </KeyboardAwareScrollView>
       </Modal>
+
+      {/* <Modal visible={customProductAdd}>
+        <KeyboardAvoidingView
+          behavior="padding"
+          // style={{ flex: 1 }}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
+          <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
+        </KeyboardAvoidingView>
+      </Modal> */}
+
       <Modal
         animationType="fade"
         transparent={true}
@@ -437,7 +461,7 @@ export function Cart() {
       <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
 
-      <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrCoinHandler }} />
+      <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} />
       {isLoading ? <FullScreenLoader /> : null}
     </SafeAreaView>
   );
