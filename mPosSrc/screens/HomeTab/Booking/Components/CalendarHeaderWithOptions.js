@@ -13,12 +13,6 @@ const CalendarHeaderWithOptions = ({
   prevMonth,
   getFormattedHeaderDate,
   nextMonth,
-  day,
-  dayHandler,
-  week,
-  weekHandler,
-  month,
-  monthHandler,
   time,
   setTime,
   timeValue,
@@ -61,7 +55,7 @@ const CalendarHeaderWithOptions = ({
                   setOpen={setTime}
                   setValue={setTimeValue}
                   setItems={setTimeItem}
-                  placeholder="Weekly"
+                  placeholder="Week"
                   placeholderStyle={{
                     color: '#A7A7A7',
                     fontFamily: Fonts.Regular,
