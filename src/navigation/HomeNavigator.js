@@ -25,6 +25,7 @@ import NotificationsList from '@/screens/Notifications/NotificationsList';
 import { SearchScreen } from '@/screens/Refund/Components/SearchScreen';
 import { ProductRefund } from '@/screens/DeliveryOrders2/Components/ProductRefund';
 import { PaymentSelection } from '@/screens/DeliveryOrders2/Components/PaymentSelection';
+import { ms } from 'react-native-size-matters';
 
 const Drawer = createDrawerNavigator();
 
@@ -35,8 +36,8 @@ export function HomeNavigator() {
       defaultStatus="open"
       screenOptions={{
         drawerStyle: {
-          backgroundColor: COLORS.white,
-          width: Platform.OS === 'android' ? SW(22) : SW(25),
+          backgroundColor: COLORS.sky_grey,
+          width: Platform.OS === 'android' ? SW(33) : SW(36),
           alignItems: 'center',
         },
         drawerPosition: 'left',

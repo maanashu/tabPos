@@ -10,7 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.sky_grey,
   },
   flexRow: {
     flexDirection: 'row',
@@ -41,12 +41,15 @@ export const styles = StyleSheet.create({
     paddingVertical: verticalScale(18),
   },
   headingBody: {
-    borderTopWidth: 1,
-    borderBottomWidth: 0.5,
+    // borderTopWidth: 1,
+    // borderBottomWidth: 0.5,
     borderColor: COLORS.solidGrey,
     height: Platform.OS === 'android' ? SW(13) : SW(15),
     paddingHorizontal: moderateScale(10),
     justifyContent: 'center',
+    marginVertical: ms(2),
+    borderRadius: ms(8),
+    // borderWidth: 2,
   },
   right_light: {
     width: SW(8),

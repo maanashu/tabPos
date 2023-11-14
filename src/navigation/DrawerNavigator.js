@@ -62,7 +62,7 @@ export function DrawerNavigator(props) {
     <DrawerContentScrollView
       {...props}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={styles.contentContainerStyle}
       bounces={false}
     >
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
@@ -309,7 +309,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 10,
     width: SW(25),
-    height: Platform.OS === 'android' ? windowHeight * 0.95 : windowHeight,
+    paddingVertical: ms(10),
+    backgroundColor: COLORS.white,
+    borderRadius: ms(60),
+    flex: 1,
+    marginVertical: ms(15),
   },
   drawerMainView: {
     flex: 1,
@@ -320,12 +324,14 @@ const styles = StyleSheet.create({
     width: Platform.OS === 'android' ? SW(9) : SW(10),
     height: Platform.OS === 'android' ? SW(9) : SW(10),
     resizeMode: 'contain',
+    left: SW(2.8),
   },
   iconStyle2: {
     width: Platform.OS === 'android' ? SW(7) : SW(10),
     height: Platform.OS === 'android' ? SW(7) : SW(10),
     marginLeft: 3,
     resizeMode: 'contain',
+    left: SW(2.8),
   },
   iconStyle3: {
     width: Platform.OS === 'android' ? SW(7) : SW(9),

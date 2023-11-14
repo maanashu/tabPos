@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ScreenWrapper } from '@/components';
-import { COLORS, SF, SH } from '@/theme';
+import { ScreenWrapper, Spacer } from '@/components';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import { right_light } from '@/assets';
@@ -33,6 +33,7 @@ import { strings } from '@/localization';
 import { getAllPlans } from '@/actions/SubscriptionAction';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { DeviceDetails } from './Components/DeviceDetails';
+import { ms } from 'react-native-size-matters';
 
 export function Setting() {
   const dispatch = useDispatch();
@@ -117,7 +118,7 @@ export function Setting() {
   );
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? COLORS.blue_shade : '#transparent';
+    const backgroundColor = item.id === selectedId ? COLORS.white : COLORS.sky_grey;
     const tintAndColor = item.id === selectedId ? COLORS.navy_blue : COLORS.darkGray;
     const borderColor = item.id === selectedId ? COLORS.blue_shade : COLORS.solidGrey;
     const color = item.id === selectedId ? COLORS.navy_blue : COLORS.black;
@@ -149,7 +150,7 @@ export function Setting() {
       <View style={styles.container}>
         <View style={styles.dispalyRow}>
           <View style={styles.headingCon}>
-            <View>
+            <View style={{ marginTop: 15, padding: ms(15) }}>
               <FlatList
                 data={settingLabelData}
                 renderItem={renderItem}
@@ -158,6 +159,7 @@ export function Setting() {
               />
             </View>
           </View>
+          {/* <Spacer horizontal space={SW(15)} /> */}
           <View style={styles.DataCon}>{bodyView()}</View>
         </View>
       </View>
