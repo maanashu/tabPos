@@ -25,7 +25,6 @@ const CalendarHeaderWithOptions = ({
   onPressCalendarViewMode = () => {},
   onPressListViewMode = () => {},
 }) => {
-  console.log('shfjhjsdhf', timeValue);
   return (
     <View style={styles.calenderHeader}>
       <View style={styles.displayFlex}>
