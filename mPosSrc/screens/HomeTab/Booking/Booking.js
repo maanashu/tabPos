@@ -143,7 +143,7 @@ export function Booking() {
     { label: 'Month', value: 'month' },
   ]);
   const [groupedAppointments, setGroupedAppointments] = useState({});
-  const [selected, setSelected] = useState('');
+  const [appointmentDate, setAppointmentDate] = useState('');
 
   useEffect(() => {
     const grouped = groupAppointmentsByDate(getAppointmentList);
@@ -341,6 +341,11 @@ export function Booking() {
   };
   const renderGroupedListViewItem = ({ item, index }) => {
     const appointmentId = item?.id;
+    const date = item[0];
+    const formattedDate = moment(date, 'dddd DD/MM/YYYY').format('YYYY-MM-DD');
+
+    setAppointmentDate(formattedDate);
+
     return (
       <View style={{ flex: 0.4 }}>
         <Text style={{ fontSize: 18, fontWeight: 'bold', padding: 10 }}>{item[0]}</Text>
@@ -450,11 +455,7 @@ export function Booking() {
           <TouchableOpacity
             onPress={() => {
               setSelectedStaffEmployeeId(null);
-              if (appointmentListArr?.length === 0) {
-                setshowRequestsView(false);
-              } else {
-                setshowRequestsView(!showRequestsView);
-              }
+              setshowRequestsView(!showRequestsView);
             }}
             style={[
               styles.requestCalendarContainer,
@@ -610,19 +611,13 @@ export function Booking() {
               ) : (
                 <>
                   <MonthCalendar
-                    onDayPress={(day) => {
-                      setSelected(day.dateString);
-                    }}
                     hideArrows
                     initialDates={new Date(calendarDate)}
                     markedDates={{
-                      [selected]: {
-                        selected: true,
-                        disableTouchEvent: true,
-                        selectedDotColor: 'orange',
-                      },
+                      [appointmentDate]: { marked: true, dotColor: COLORS.primary },
                     }}
                     headerStyle={{ height: ms(0) }}
+                    theme={{ todayTextColor: COLORS.primary }}
                   />
                   <FlatList
                     data={Object.entries(groupedAppointments)} // Convert the object to an array
@@ -803,6 +798,9 @@ export function Booking() {
                   </View>
                 );
               }}
+              ListEmptyComponent={() => (
+                <Text style={styles.noAppointmentEmpty}>There are no appointments on this day</Text>
+              )}
             />
             <TouchableOpacity
               onPress={() => {
@@ -971,6 +969,11 @@ export function Booking() {
                   onEndReachedThreshold={0.1} // Adjust this value as per your requirements
                   ListFooterComponent={renderLoader}
                   style={{ marginBottom: ms(25) }}
+                  ListEmptyComponent={() => (
+                    <Text style={[styles.noAppointmentEmpty]}>
+                      There are no appointment Request
+                    </Text>
+                  )}
                 />
               </View>
             )}
