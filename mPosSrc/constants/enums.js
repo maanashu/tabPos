@@ -47,6 +47,7 @@ export const essential = [
     label: 'Notifications',
     image: Images.notification,
     id: 2,
+    navigation: MPOS_NAVIGATION.notificationSettings,
   },
   {
     label: 'Plans',

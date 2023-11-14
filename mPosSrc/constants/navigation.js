@@ -44,4 +44,5 @@ export const NAVIGATION = {
   staffSettings: 'StaffSettings',
   posUserDetail: 'PosUserDetail',
   policies: 'Policies',
+  notificationSettings: 'NotificationSettings',
 };

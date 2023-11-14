@@ -378,4 +378,7 @@ export const en = {
     close: 'Close',
     legal: 'Legal',
   },
+  notifications: {
+    notifications: 'Notifications',
+  },
 };
