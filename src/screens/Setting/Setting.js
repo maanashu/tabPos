@@ -125,19 +125,29 @@ export function Setting() {
 
     return (
       <>
-        {/* {item?.name == strings.legal.LegalText ||
-        item?.name == strings.Policies.PoliciesText ||
-        item?.name == strings.deviceDetails.deviceDetailsText 
-        ? null : ( */}
-        <Item
-          item={item}
+        <TouchableOpacity
+          style={[
+            styles.headingBody,
+            {
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
+            },
+          ]}
           onPress={() => (setSelectedId(item.id), onpressFun(item.id))}
-          backgroundColor={backgroundColor}
-          textColor={color}
-          tintAndColor={tintAndColor}
-          borderColor={borderColor}
-        />
-        {/* )} */}
+        >
+          <View style={styles.flexRow}>
+            <View style={styles.dispalyRow}>
+              <Image source={item.image} style={[styles.security, { tintColor: tintAndColor }]} />
+              <View style={{ marginLeft: 6 }}>
+                <Text style={[styles.securityText, { color: color }]}>{item.name}</Text>
+                <Text style={[styles.notUpdated, { color: tintAndColor }]}>
+                  {item?.name == 'Staffs' ? posUserArray?.length : item.subhead}
+                </Text>
+              </View>
+            </View>
+            <Image source={right_light} style={[styles.right_light, { tintColor: tintAndColor }]} />
+          </View>
+        </TouchableOpacity>
       </>
     );
   };
@@ -150,12 +160,19 @@ export function Setting() {
       <View style={styles.container}>
         <View style={styles.dispalyRow}>
           <View style={styles.headingCon}>
-            <View style={{ marginTop: 15, padding: ms(15) }}>
+            <View
+              style={{
+                padding: ms(15),
+                backgroundColor: COLORS.white,
+                borderRadius: ms(20),
+              }}
+            >
               <FlatList
                 data={settingLabelData}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 extraData={selectedId}
+                showsVerticalScrollIndicator={false}
               />
             </View>
           </View>

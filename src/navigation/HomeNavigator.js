@@ -39,6 +39,7 @@ export function HomeNavigator() {
           backgroundColor: COLORS.sky_grey,
           width: Platform.OS === 'android' ? SW(33) : SW(36),
           alignItems: 'center',
+          borderRightWidth: 0,
         },
         drawerPosition: 'left',
         drawerType: 'permanent',

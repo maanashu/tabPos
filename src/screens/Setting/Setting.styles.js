@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   headingCon: {
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
+    // borderLeftWidth: 1,
+    // borderRightWidth: 1,
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.22,
     height: windowHeight * 0.96,
@@ -35,10 +35,15 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   DataCon: {
-    width: Platform.OS === 'android' ? windowWidth * 0.73 : windowWidth * 0.71,
+    width: Platform.OS === 'android' ? windowWidth * 0.66 : windowWidth * 0.71,
     height: windowHeight * 0.96,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(18),
+    backgroundColor: COLORS.white,
+    marginLeft: SW(6),
+    borderRadius: ms(20),
+    marginTop: ms(10),
+    marginBottom: ms(10),
   },
   headingBody: {
     // borderTopWidth: 1,
@@ -49,7 +54,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: ms(2),
     borderRadius: ms(8),
-    // borderWidth: 2,
+    borderWidth: ms(1),
+    // ...ShadowStyles.shadow2,
   },
   right_light: {
     width: SW(8),
