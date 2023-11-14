@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import { COLORS } from '@/theme';
@@ -20,8 +20,12 @@ import { navigate } from '@mPOS/navigation/NavigationRef';
 import { getAuthData } from '@/selectors/AuthSelector';
 
 import styles from '@mPOS/screens/HomeTab/Home/styles';
+import { useEffect } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 
 export function Home() {
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
   const authData = useSelector(getAuthData);
   const merchantServiceProvide = authData?.merchantLoginData?.product_existance_status;
   const merchantData = authData?.merchantLoginData;
@@ -43,6 +47,9 @@ export function Home() {
       navigate(MPOS_NAVIGATION.booking);
     }
   };
+  // useEffect(() => {
+  //   dispatch(getProductRoot())
+  // }, [isFocused]);
 
   const homePageData = [
     merchantServiceProvide?.is_product_exist

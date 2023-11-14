@@ -34,12 +34,14 @@ import { TYPES } from '@/Types/Types';
 import { getAuthData } from '@/selectors/AuthSelector';
 import Modal from 'react-native-modal';
 import ProductFilter from './Components/ProductFilter';
+import { Fonts } from '@/assets';
 
 export function RetailProducts(props) {
   const onEndReachedCalledDuringMomentum = useRef(false);
   const getAuth = useSelector(getAuthData);
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
+  // console.log(retailData?.categoryList);
   const productData = retailData?.getMainProduct;
   const addProductCartRef = useRef(null);
   const productDetailRef = useRef(null);
@@ -48,6 +50,8 @@ export function RetailProducts(props) {
   const [isSelected, setSelected] = useState(false);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [productFilterCount, setProductFilterCount] = useState(0);
+  const [rootServiceId, setRootServiceId] = useState(null);
+  const [subCategorySelectId, setSubCategorySelectId] = useState(null);
   const productDetailHanlder = () => {
     productDetailRef.current.present();
   };
@@ -57,6 +61,14 @@ export function RetailProducts(props) {
   };
   const [productSearch, setProductSearch] = useState('');
   const [productFilter, setProductFilter] = useState(false);
+
+  useEffect(() => {
+    const ids = {
+      ...(rootServiceId && { category_ids: rootServiceId }),
+      ...(subCategorySelectId && { sub_category_ids: subCategorySelectId }),
+    };
+    dispatch(getMainProduct(ids));
+  }, [rootServiceId, subCategorySelectId]);
 
   useEffect(() => {
     dispatch(getCategory(sellerID));
@@ -97,46 +109,49 @@ export function RetailProducts(props) {
     }
   }, [productPagination]);
 
-  const renderCategoryItem = ({ item, index }) => (
-    <TouchableOpacity
-      onPress={() => setSelected(!isSelected)}
-      style={[
-        styles.categoryMainView,
-        // {
-        //   backgroundColor:
-        //     isSelected ? COLORS.darkBlue : COLORS.red,
-        // },
-      ]}
-    >
-      <Text
-        style={[
-          styles.categoryTitleText,
-          { color: index === 0 ? COLORS.darkBlue : COLORS.grayShade },
-        ]}
-      >
-        {item?.title}
+  const renderRootServiceItem = ({ item, index }) => {
+    const color = item.id === rootServiceId ? COLORS.primary : COLORS.darkGray;
+    const fonts = item.id === rootServiceId ? Fonts.SemiBold : Fonts.Regular;
+    return (
+      <RootServiceItem
+        item={item}
+        onPress={() =>
+          rootServiceId === item.id ? setRootServiceId(null) : setRootServiceId(item.id)
+        }
+        textColor={color}
+        fonts={fonts}
+      />
+    );
+  };
+
+  const RootServiceItem = ({ item, onPress, textColor, fonts }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.categoryMainView]}>
+      <Text style={[styles.categoryTitleText, { color: textColor, fontFamily: fonts }]}>
+        {item?.name}
       </Text>
     </TouchableOpacity>
   );
 
-  const renderCollectionItem = ({ item, index }) => (
-    <TouchableOpacity
-      onPress={() => setSelected(!isSelected)}
-      style={[
-        styles.categoryMainView,
-        // {
-        //   backgroundColor:
-        //     isSelected ? COLORS.darkBlue : COLORS.red,
-        // },
-      ]}
-    >
-      <Text
-        style={[
-          styles.categoryTitleText,
-          { color: index === 0 ? COLORS.darkBlue : COLORS.grayShade },
-        ]}
-      >
-        {item?.title}
+  const renderSubCategoryItem = ({ item, index }) => {
+    const color = item.id === subCategorySelectId ? COLORS.primary : COLORS.darkGray;
+    const fonts = item.id === subCategorySelectId ? Fonts.SemiBold : Fonts.Regular;
+    return (
+      <SubCategoryItem
+        item={item}
+        onPress={() =>
+          subCategorySelectId === item.id
+            ? setSubCategorySelectId(null)
+            : setSubCategorySelectId(item.id)
+        }
+        textColor={color}
+        fonts={fonts}
+      />
+    );
+  };
+  const SubCategoryItem = ({ item, onPress, textColor, fonts }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.categoryMainView]}>
+      <Text style={[styles.categoryTitleText, { color: textColor, fontFamily: fonts }]}>
+        {item?.name}
       </Text>
     </TouchableOpacity>
   );
@@ -201,10 +216,57 @@ export function RetailProducts(props) {
   const isLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ONE_PRODUCT, TYPES.ADDCART], state)
   );
+  const categoryLoad = useSelector((state) => isLoadingSelector([TYPES.GET_CATEGORY], state));
+  const subCategoryLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_SUB_CATEGORY], state)
+  );
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <Header backRequired title={`Back`} />
+        <View style={{ backgroundColor: COLORS.white }}>
+          <Header backRequired title={`Back`} />
+          {categoryLoad ? (
+            <View style={[styles.contentContainerStyle, { height: ms(20) }]}>
+              <Text style={styles.loading}>{'Loading...'}</Text>
+            </View>
+          ) : (
+            <FlatList
+              horizontal
+              data={retailData?.categoryList ?? []}
+              renderItem={renderRootServiceItem}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => item.id}
+              contentContainerStyle={styles.contentContainerStyle}
+            />
+          )}
+
+          <View style={styles.lineSeprator} />
+          <View
+            style={{
+              borderWidth: 0.5,
+              paddingHorizontal: ms(10),
+              flex: 0.6,
+              borderColor: COLORS.washGrey,
+              backgroundColor: COLORS.washGrey,
+            }}
+          />
+          {subCategoryLoad ? (
+            <View style={[styles.contentContainerStyle, { height: ms(20) }]}>
+              <Text style={styles.loading}>{'Loading...'}</Text>
+            </View>
+          ) : (
+            <FlatList
+              horizontal
+              data={retailData?.subCategories ?? []}
+              renderItem={renderSubCategoryItem}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => item.id}
+              contentContainerStyle={styles.contentContainerStyle}
+            />
+          )}
+        </View>
+
         <Search
           value={productSearch}
           onChangeText={(productSearch) => {

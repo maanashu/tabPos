@@ -1588,4 +1588,19 @@ export class RetailController {
         });
     });
   }
+
+  static async getProductRoot() {
+    return new Promise((resolve, reject) => {
+      const endpoint =
+        PRODUCT_URL + ApiProductInventory.getProductRoot + `?page=1&limit=10&type=product`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
 }

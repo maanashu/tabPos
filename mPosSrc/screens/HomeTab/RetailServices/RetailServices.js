@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { styles } from './styles';
-import { COLORS } from '@/theme';
+import { COLORS, Fonts } from '@/theme';
 import { ms } from 'react-native-size-matters';
 import Search from '@mPOS/screens/HomeTab/RetailServices/Components/Search';
 import { Images } from '@mPOS/assets';
@@ -29,6 +29,8 @@ import {
   getMainServices,
   getOneProduct,
   getOneService,
+  getServiceCategory,
+  getServiceSubCategory,
   getSubCategory,
 } from '@/actions/RetailAction';
 import { TYPES } from '@/Types/Types';
@@ -36,6 +38,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import Modal from 'react-native-modal';
 import ProductFilter from './Components/ProductFilter';
 import AddServiceCart from './Components/AddServiceCart';
+import { getAllPosUsers } from '@/actions/AuthActions';
 
 export function RetailServices(props) {
   const onEndReachedCalledDuringMomentum = useRef(false);
@@ -50,6 +53,8 @@ export function RetailServices(props) {
   const [isSelected, setSelected] = useState(false);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [productFilterCount, setProductFilterCount] = useState(0);
+  const [rootServiceId, setRootServiceId] = useState(null);
+  const [subCategorySelectId, setSubCategorySelectId] = useState(null);
   const serviceDetailHanlder = () => {
     productDetailRef.current.present();
   };
@@ -61,10 +66,24 @@ export function RetailServices(props) {
   const [productFilter, setProductFilter] = useState(false);
 
   useEffect(() => {
-    dispatch(getCategory(sellerID));
-    dispatch(getSubCategory(sellerID));
-    dispatch(getBrand(sellerID));
+    const ids = {
+      ...(rootServiceId && { category_ids: rootServiceId }),
+      ...(subCategorySelectId && { sub_category_ids: subCategorySelectId }),
+    };
+    dispatch(getMainServices(ids));
+  }, [rootServiceId, subCategorySelectId]);
+
+  useEffect(() => {
+    dispatch(getServiceCategory(sellerID));
+    dispatch(getServiceSubCategory(sellerID));
+    const data = {
+      page: 1,
+      limit: 10,
+      seller_id: sellerID,
+    };
+    dispatch(getAllPosUsers(data));
   }, []);
+
   useEffect(() => {
     dispatch(getMainServices());
   }, []);
@@ -98,46 +117,49 @@ export function RetailServices(props) {
     }
   }, [servicePagination]);
 
-  const renderCategoryItem = ({ item, index }) => (
-    <TouchableOpacity
-      onPress={() => setSelected(!isSelected)}
-      style={[
-        styles.categoryMainView,
-        // {
-        //   backgroundColor:
-        //     isSelected ? COLORS.darkBlue : COLORS.red,
-        // },
-      ]}
-    >
-      <Text
-        style={[
-          styles.categoryTitleText,
-          { color: index === 0 ? COLORS.darkBlue : COLORS.grayShade },
-        ]}
-      >
-        {item?.title}
+  const renderRootServiceItem = ({ item, index }) => {
+    const color = item.id === rootServiceId ? COLORS.primary : COLORS.darkGray;
+    const fonts = item.id === rootServiceId ? Fonts.SemiBold : Fonts.Regular;
+    return (
+      <RootServiceItem
+        item={item}
+        onPress={() =>
+          rootServiceId === item.id ? setRootServiceId(null) : setRootServiceId(item.id)
+        }
+        textColor={color}
+        fonts={fonts}
+      />
+    );
+  };
+
+  const RootServiceItem = ({ item, onPress, textColor, fonts }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.categoryMainView]}>
+      <Text style={[styles.categoryTitleText, { color: textColor, fontFamily: fonts }]}>
+        {item?.name}
       </Text>
     </TouchableOpacity>
   );
 
-  const renderCollectionItem = ({ item, index }) => (
-    <TouchableOpacity
-      onPress={() => setSelected(!isSelected)}
-      style={[
-        styles.categoryMainView,
-        // {
-        //   backgroundColor:
-        //     isSelected ? COLORS.darkBlue : COLORS.red,
-        // },
-      ]}
-    >
-      <Text
-        style={[
-          styles.categoryTitleText,
-          { color: index === 0 ? COLORS.darkBlue : COLORS.grayShade },
-        ]}
-      >
-        {item?.title}
+  const renderSubCategoryItem = ({ item, index }) => {
+    const color = item.id === subCategorySelectId ? COLORS.primary : COLORS.darkGray;
+    const fonts = item.id === subCategorySelectId ? Fonts.SemiBold : Fonts.Regular;
+    return (
+      <SubCategoryItem
+        item={item}
+        onPress={() =>
+          subCategorySelectId === item.id
+            ? setSubCategorySelectId(null)
+            : setSubCategorySelectId(item.id)
+        }
+        textColor={color}
+        fonts={fonts}
+      />
+    );
+  };
+  const SubCategoryItem = ({ item, onPress, textColor, fonts }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.categoryMainView]}>
+      <Text style={[styles.categoryTitleText, { color: textColor, fontFamily: fonts }]}>
+        {item?.name}
       </Text>
     </TouchableOpacity>
   );
@@ -148,10 +170,57 @@ export function RetailServices(props) {
       state
     )
   );
+  const categoryLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_SERVICE_CATEGORY], state)
+  );
+  const subCategoryLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_SERVICE_SUB_CATEGORY], state)
+  );
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <Header backRequired title={`Back`} />
+        <View style={{ backgroundColor: COLORS.white }}>
+          <Header backRequired title={`Back`} />
+          {categoryLoad ? (
+            <View style={[styles.contentContainerStyle, { height: ms(20) }]}>
+              <Text style={styles.loading}>{'Loading...'}</Text>
+            </View>
+          ) : (
+            <FlatList
+              horizontal
+              data={retailData?.serviceCategoryList ?? []}
+              renderItem={renderRootServiceItem}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => item.id}
+              contentContainerStyle={styles.contentContainerStyle}
+            />
+          )}
+
+          <View style={styles.lineSeprator} />
+          <View
+            style={{
+              borderWidth: 0.5,
+              paddingHorizontal: ms(10),
+              flex: 0.6,
+              borderColor: COLORS.washGrey,
+              backgroundColor: COLORS.washGrey,
+            }}
+          />
+          {subCategoryLoad ? (
+            <View style={[styles.contentContainerStyle, { height: ms(20) }]}>
+              <Text style={styles.loading}>{'Loading...'}</Text>
+            </View>
+          ) : (
+            <FlatList
+              horizontal
+              data={retailData?.serviceSubCategoryList ?? []}
+              renderItem={renderSubCategoryItem}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => item.id}
+              contentContainerStyle={styles.contentContainerStyle}
+            />
+          )}
+        </View>
         <Search
           value={productSearch}
           onChangeText={(productSearch) => {

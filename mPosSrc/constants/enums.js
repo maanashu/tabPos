@@ -406,52 +406,6 @@ export const ProductsList = [
   },
 ];
 
-export const ProductData = [
-  {
-    key: '1',
-    title: 'Women',
-  },
-  {
-    key: '2',
-    title: 'Men',
-  },
-  {
-    key: '3',
-    title: 'Boys',
-  },
-  {
-    key: '4',
-    title: 'Girls',
-  },
-  {
-    key: '5',
-    title: 'Baby Boy',
-  },
-  {
-    key: '6',
-    title: 'Baby Girl',
-  },
-];
-
-export const ClothCollection = [
-  {
-    key: '1',
-    title: 'Athleisure Wear',
-  },
-  {
-    key: '2',
-    title: 'Belts',
-  },
-  {
-    key: '3',
-    title: 'Coats & Jackets',
-  },
-  {
-    key: '4',
-    title: 'Fitness Accessories',
-  },
-];
-
 export const StockItems = [
   {
     key: '1',

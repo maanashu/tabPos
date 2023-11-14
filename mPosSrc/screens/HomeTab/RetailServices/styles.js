@@ -245,4 +245,10 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonRegular,
     marginTop: ms(50),
   },
+  loading: {
+    fontSize: ms(14),
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+    marginHorizontal: ms(15),
+  },
 });

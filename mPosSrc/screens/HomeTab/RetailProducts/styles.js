@@ -10,17 +10,18 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.inputBorder,
   },
   contentContainerStyle: {
-    marginVertical: ms(15),
+    marginVertical: ms(12),
   },
   categoryMainView: {
     height: ms(20),
     alignItems: 'center',
-    marginHorizontal: ms(20),
+    marginHorizontal: ms(15),
     justifyContent: 'center',
   },
   categoryTitleText: {
     textAlign: 'center',
     justifyContent: 'center',
+    fontFamily: Fonts.Regular,
   },
   productDetailMainView: {
     flex: 1,
@@ -244,5 +245,15 @@ export const styles = StyleSheet.create({
     color: COLORS.red,
     fontFamily: Fonts.MaisonRegular,
     marginTop: ms(50),
+  },
+  verticalLineSeprator: {
+    backgroundColor: COLORS.light_border,
+    width: ms(2),
+  },
+  loading: {
+    fontSize: ms(14),
+    color: COLORS.primary,
+    fontFamily: Fonts.Regular,
+    marginHorizontal: ms(15),
   },
 });

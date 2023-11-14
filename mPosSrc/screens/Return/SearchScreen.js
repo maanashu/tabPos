@@ -26,8 +26,6 @@ export function SearchScreen() {
   const [invoiceNumber, setInvoiceNumber] = useState('');
   const [order, setOrder] = useState(orderData ?? '');
 
-  console.log(JSON.stringify(orderData?.order?.status));
-
   useEffect(() => {
     if (invoiceNumber) {
       setOrder(orderData);
