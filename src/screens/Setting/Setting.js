@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ScreenWrapper, Spacer } from '@/components';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW, ShadowStyles } from '@/theme';
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import { right_light } from '@/assets';
@@ -119,9 +119,9 @@ export function Setting() {
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? COLORS.white : COLORS.sky_grey;
-    const tintAndColor = item.id === selectedId ? COLORS.navy_blue : COLORS.darkGray;
-    const borderColor = item.id === selectedId ? COLORS.blue_shade : COLORS.solidGrey;
-    const color = item.id === selectedId ? COLORS.navy_blue : COLORS.black;
+    const tintAndColor = item.id === selectedId ? COLORS.navy_blue : COLORS.lavender;
+    const borderColor = item.id === selectedId ? COLORS.blue_shade : COLORS.sky_grey;
+    const color = item.id === selectedId ? COLORS.navy_blue : COLORS.lavender;
 
     return (
       <>
@@ -131,6 +131,7 @@ export function Setting() {
             {
               backgroundColor: backgroundColor,
               borderColor: borderColor,
+              // ...(selectedId && selectedId == item?.id && ShadowStyles.shadow2),
             },
           ]}
           onPress={() => (setSelectedId(item.id), onpressFun(item.id))}
@@ -138,14 +139,13 @@ export function Setting() {
           <View style={styles.flexRow}>
             <View style={styles.dispalyRow}>
               <Image source={item.image} style={[styles.security, { tintColor: tintAndColor }]} />
-              <View style={{ marginLeft: 6 }}>
+              <View style={{ marginLeft: ms(8) }}>
                 <Text style={[styles.securityText, { color: color }]}>{item.name}</Text>
                 <Text style={[styles.notUpdated, { color: tintAndColor }]}>
                   {item?.name == 'Staffs' ? posUserArray?.length : item.subhead}
                 </Text>
               </View>
             </View>
-            <Image source={right_light} style={[styles.right_light, { tintColor: tintAndColor }]} />
           </View>
         </TouchableOpacity>
       </>

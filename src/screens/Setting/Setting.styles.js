@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   DataCon: {
-    width: Platform.OS === 'android' ? windowWidth * 0.66 : windowWidth * 0.71,
+    width: Platform.OS === 'android' ? windowWidth * 0.66 : windowWidth * 0.64,
     height: windowHeight * 0.96,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(18),
@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
   // setting security css start
   securityMainCon: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     borderRadius: 10,
     // height: windowHeight * 0.33,
     padding: 15,
@@ -112,8 +112,8 @@ export const styles = StyleSheet.create({
     padding: 15,
   },
   securityLogo: {
-    width: SW(16),
-    height: SW(16),
+    width: SW(10),
+    height: SW(10),
     resizeMode: 'contain',
   },
   twoStepVerifiCon: {
@@ -123,20 +123,22 @@ export const styles = StyleSheet.create({
   twoStepText: {
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
-    color: COLORS.black,
+    color: COLORS.navy_blue,
   },
   securitysubhead: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    color: COLORS.lavender,
   },
   twoStepMemberCon: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 5,
+    borderColor: COLORS.light_purple,
+    borderRadius: ms(20),
     paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(4),
     marginVertical: verticalScale(3),
+    height: SH(96),
+    justifyContent: 'center',
   },
   twoStepMemberConTax: {
     marginLeft: Platform.OS === 'android' ? moderateScale(35) : moderateScale(20),
@@ -168,6 +170,7 @@ export const styles = StyleSheet.create({
   },
   marginLeft: {
     marginLeft: moderateScale(8),
+    flex: 1,
   },
   modalMainView: {
     width: windowWidth * 0.5,
