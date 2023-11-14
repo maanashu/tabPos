@@ -38,6 +38,7 @@ import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
 import { TrackOrder } from '@mPOS/screens/HomeTab/Shipping/TrackOrder/TrackOrder';
 import { Invoice } from '@mPOS/components';
+import { Management } from '@mPOS/screens/MoreTab/BatchManagement/Management';
 
 const Stack = createNativeStackNavigator();
 
@@ -226,6 +227,11 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.notificationSettings}
         options={{ headerShown: false }}
         component={NotificationSettings}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.batchManagement}
+        options={{ headerShown: false }}
+        component={Management}
       />
     </Stack.Navigator>
   );

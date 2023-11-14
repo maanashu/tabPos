@@ -576,4 +576,8 @@ export const en = {
     productPrice: 'Product Price',
     refundAmount: 'Refund Amount',
   },
+  batchManagement: {
+    header: 'Batch management',
+    batch: 'Batch',
+  },
 };

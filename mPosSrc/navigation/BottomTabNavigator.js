@@ -16,6 +16,7 @@ import { Images } from '@mPOS/assets';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { COLORS, Fonts, SF, SW } from '@/theme';
 import { Cart, Home, More, Transactions } from '@mPOS/screens';
+import { Management } from '@mPOS/screens/MoreTab/BatchManagement/Management';
 
 const BottomTabNavigator = () => {
   const _renderIcon = (routeName, selectedTab) => {

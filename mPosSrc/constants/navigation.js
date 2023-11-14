@@ -45,4 +45,5 @@ export const NAVIGATION = {
   posUserDetail: 'PosUserDetail',
   policies: 'Policies',
   notificationSettings: 'NotificationSettings',
+  batchManagement: 'Management',
 };
