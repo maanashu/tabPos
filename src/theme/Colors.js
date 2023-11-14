@@ -69,4 +69,5 @@ export const COLORS = {
   neutral_blue: '#F7F9FF',
   redish_brown: '#93370D',
   sky_grey: '#F5F6FC',
+  faded_purple: '#636E9F',
 };

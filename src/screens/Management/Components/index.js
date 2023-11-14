@@ -1063,8 +1063,10 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             </>
           )} */}
           <View style={styles.netPaymentHeader}>
-            <Text style={styles.sectionListHeader}>{strings.management.netPayment}</Text>
-            <Text style={styles.sectionListHeader}>
+            <Text style={[styles.sectionListHeader, { color: COLORS.navy_blue }]}>
+              {strings.management.netPayment}
+            </Text>
+            <Text style={[styles.sectionListHeader, { color: COLORS.navy_blue }]}>
               {strings.management.totalCash}
               {/* {sessionHistoryArray?.cash_balance} */}
               {totalNetPayment.toFixed(2)}

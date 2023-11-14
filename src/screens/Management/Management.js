@@ -74,6 +74,7 @@ import WalletInvoice from '../Wallet2/Components/WalletInvoice';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { getUser } from '@/selectors/UserSelectors';
 import { logoutFunction } from '@/actions/AuthActions';
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -196,22 +197,29 @@ export function Management() {
     },
   ];
 
-  const Item = ({ item, onPress, borderColor, color }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.selectAmountCon, { borderColor }]}>
+  const Item = ({ item, onPress, borderColor, color, borderWidth }) => (
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        styles.selectAmountCon,
+        { borderColor, backgroundColor: COLORS.sky_grey, borderRadius: 100, borderWidth },
+      ]}
+    >
       <Text style={[styles.cashDrawerText, { color }]}>${item.title}</Text>
     </TouchableOpacity>
   );
 
   const leaveDataItem = ({ item }) => {
-    const borderColor = item.id === leaveId ? COLORS.primary : COLORS.solidGrey;
-    const color = item.id === leaveId ? COLORS.primary : COLORS.solid_grey;
-
+    const borderColor = item.id === leaveId ? COLORS.navy_blue : null;
+    const color = item.id === leaveId ? COLORS.navy_blue : COLORS.navy_blue;
+    const borderWidth = item.id === leaveId ? 1 : null;
     return (
       <Item
         item={item}
         onPress={() => (setLeaveId(item.id), setLeaveData(item?.title))}
         borderColor={borderColor}
         color={color}
+        borderWidth={borderWidth}
       />
     );
   };
@@ -443,7 +451,7 @@ export function Management() {
         ) : (
           <View style={styles.deliveryView}>
             <Image source={tray} style={styles.truckStyle} />
-            <Text style={styles.deliveryText}>{strings.management.cashTracking}</Text>
+            <Text style={styles.deliveryText}>{strings.management.salesTracking}</Text>
           </View>
         )}
         <View style={styles.deliveryView}>
@@ -461,7 +469,7 @@ export function Management() {
             <TextInput
               placeholder={strings.deliveryOrders.search}
               style={styles.textInputStyle}
-              placeholderTextColor={COLORS.darkGray}
+              placeholderTextColor={COLORS.primaryLight}
               onChangeText={(text) => {
                 setSku(text);
                 debouncedSearchInvoice(text);
@@ -551,7 +559,7 @@ export function Management() {
           <View
             style={[
               styles.headerView,
-              { backgroundColor: removeCash ? COLORS.black : COLORS.primary },
+              // { backgroundColor: removeCash ? COLORS.black : COLORS.primary },
             ]}
           >
             <View style={{ width: SW(135), alignItems: 'center' }}>
@@ -567,26 +575,34 @@ export function Management() {
               }}
               style={{ width: SW(10) }}
             >
-              <Image
-                source={crossButton}
-                style={[styles.crossIconStyle, { tintColor: COLORS.white }]}
-              />
+              <Image source={crossButton} style={[styles.crossIconStyle]} />
             </TouchableOpacity>
           </View>
 
           <Spacer space={SH(20)} />
           <View style={styles.countCashView}>
+            <Image source={Calculator} style={[styles.crossIconStyle]} />
+            <Spacer space={SH(20)} />
             <Text style={styles.countCashText}>
-              {removeCash ? strings.management.amountRemoved : strings.management.amountAdded}
+              {removeCash ? strings.management.removeCash : strings.management.addCash}
             </Text>
-
+            <Spacer space={SH(10)} />
+            <Text
+              style={[
+                styles.amountCountedText,
+                { textAlign: 'center', color: COLORS.navy_blue, fontSize: SH(20) },
+              ]}
+            >
+              {strings.management.enterAmount}
+            </Text>
             <Spacer space={SH(20)} />
             <View>
-              <Text style={styles.amountCountedText}>{strings.management.cashAmount}</Text>
+              <Text style={styles.amountCountedText}>{strings.management.enterAmount}</Text>
+              <Spacer space={SH(5)} />
               <TextInput
                 placeholder={strings.management.amount}
                 style={styles.inputStyle}
-                placeholderTextColor={COLORS.solid_grey}
+                placeholderTextColor={COLORS.navy_blue}
                 keyboardType="number-pad"
                 value={addCashInput}
                 onChangeText={setAddCashInput}
@@ -595,22 +611,21 @@ export function Management() {
 
             <Spacer space={SH(20)} />
             <View>
-              <Text style={styles.amountCountedText}>{strings.management.note}</Text>
+              <Text style={styles.amountCountedText}>{strings.management.hintText}</Text>
+              <Spacer space={SH(5)} />
               <TextInput
                 placeholder={strings.management.note}
                 style={styles.noteInputStyle}
-                placeholderTextColor={COLORS.gerySkies}
+                placeholderTextColor={COLORS.navy_blue}
                 value={trackNotes}
                 onChangeText={setTrackNotes}
               />
             </View>
             <Spacer space={SH(20)} />
-            <View>
+            {/* <View>
               <Text style={styles.amountCountedText}>{strings.management.transactionType}</Text>
               <View style={styles.addCashDrop}>
-                {/* <TransactionDropDown 
-                isCashIn={true}
-                selected={addCashValue} /> */}
+               
                 <TextInput
                   editable={false}
                   // placeholder={"Manual Cash In"}
@@ -620,17 +635,20 @@ export function Management() {
                   // onChangeText={setTrackNotes}
                 />
               </View>
-            </View>
+            </View> */}
           </View>
 
           {/* <Spacer space={SH(90)} /> */}
-          <View style={{ flex: 1 }} />
+          {/* <View style={{ flex: 1 }} /> */}
           <Button
             title={strings.management.confirm}
             textStyle={styles.buttonText}
             style={[
               styles.saveButton,
-              { backgroundColor: addCashInput !== '' ? COLORS.primary : COLORS.gerySkies },
+              {
+                backgroundColor: addCashInput !== '' ? COLORS.navy_blue : COLORS.gerySkies,
+                borderRadius: 100,
+              },
             ]}
             // onPress={() => {
             //   setAddCash(false);
@@ -662,24 +680,25 @@ export function Management() {
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-          <View style={styles.calculatorView}>
+          {/* <View style={styles.calculatorView}>
             <Image source={Calculator} style={styles.calculatorStyle} />
-          </View>
+          </View> */}
 
           <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(60)} />
+            <Image source={Calculator} style={styles.calculatorStyle} />
+            <Spacer space={SH(30)} />
             <View>
               <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
-                {strings.management.countCash}
+                {strings.management.endCashTrackingSession}
               </Text>
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(40)} />
               <View>
                 <Text style={styles.amountCountedText}>{strings.management.enterAmount}</Text>
                 <Spacer space={SH(5)} />
                 <TextInput
                   style={styles.inputStyle}
                   placeholder={strings.management.amount}
-                  placeholderTextColor={COLORS.solid_grey}
+                  placeholderTextColor={COLORS.navy_blue}
                   value={countFirst}
                   onChangeText={setCountFirst}
                   keyboardType="number-pad"
@@ -689,7 +708,13 @@ export function Management() {
             </View>
             {/* <View style={{ flex: 1 }} /> */}
             <Button
-              style={[styles.saveButton, countFirst !== '' && { backgroundColor: COLORS.primary }]}
+              style={[
+                styles.saveButton,
+                {
+                  backgroundColor: countFirst == '' ? COLORS.gerySkies : COLORS.navy_blue,
+                  borderRadius: 100,
+                },
+              ]}
               textStyle={styles.buttonText}
               title={strings.management.next}
               // onPress={() => (setEndSession(false), setCashSummary(true))}
@@ -716,13 +741,21 @@ export function Management() {
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-          <View style={styles.calculatorView}>
+          {/* <View style={styles.calculatorView}>
             <Image source={CalculatorColor} style={styles.calculatorStyle} />
-          </View>
+          </View> */}
+
           <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(50)} />
+            <Image source={CalculatorColor} style={styles.calculatorStyle} />
+            <Spacer space={SH(5)} />
+            <Text style={[styles.countCashText, { textAlign: 'center' }]}>
+              {strings.management.endCashTrackingSession}
+            </Text>
+            <Spacer space={SH(40)} />
             <View>
-              <Text style={[styles.countCashText]}>{strings.management.cashSummary}</Text>
+              <Text style={[styles.countCashText, { textAlign: 'left' }]}>
+                {strings.management.cashSummary}
+              </Text>
               <Spacer space={SH(15)} />
               <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
@@ -760,7 +793,7 @@ export function Management() {
                 <Text
                   style={[
                     styles.amountExpect,
-                    { color: discrepancy < 0 ? COLORS.red : COLORS.dark_grey },
+                    { color: discrepancy < 0 ? COLORS.red : COLORS.navy_blue },
                   ]}
                 >
                   {strings.management.discrepancy}
@@ -768,7 +801,7 @@ export function Management() {
                 <Text
                   style={[
                     styles.amountExpect,
-                    { color: discrepancy < 0 ? COLORS.red : COLORS.dark_grey },
+                    { color: discrepancy < 0 ? COLORS.red : COLORS.navy_blue },
                   ]}
                 >
                   {discrepancy < 0 ? '-' : null} {'USD'} $
@@ -778,7 +811,7 @@ export function Management() {
             </View>
             <Spacer space={SH(60)} />
             <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+              style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
               onPress={() => {
@@ -824,16 +857,16 @@ export function Management() {
               />
               <Spacer space={SH(25)} />
               <View>
-                <Text style={styles.amountCountedText}>{strings.management.otherAmount}</Text>
+                {/* <Text style={styles.amountCountedText}>{strings.management.otherAmount}</Text> */}
                 <Spacer space={SH(15)} />
                 <Text style={[styles.amountCountedText, { fontSize: SF(12) }]}>
-                  {strings.management.enterAmount}
+                  {strings.management.otherAmount}
                 </Text>
                 <Spacer space={SH(5)} />
                 <TextInput
                   style={styles.inputStyle}
                   placeholder={strings.management.amount}
-                  placeholderTextColor={COLORS.solid_grey}
+                  placeholderTextColor={COLORS.navy_blue}
                   value={countThird}
                   onChangeText={(countThird) => (setCountThird(countThird), setLeavFun(countThird))}
                   keyboardType="numeric"
@@ -841,9 +874,9 @@ export function Management() {
               </View>
             </View>
             <Spacer space={SH(30)} />
-            <View style={{ flex: 1 }} />
+            {/* <View style={{ flex: 1 }} /> */}
             <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+              style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
               // onPress={() => (setEndSelectAmount(false), setRemoveUsd(true))}
@@ -870,27 +903,33 @@ export function Management() {
                 // setViewSession(false),
                 // dispatch(getDrawerSession());
               }}
-              style={{ width: SW(10) }}
+              style={{ width: SW(10), marginRight: SW(10) }}
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-          <Spacer space={SH(100)} />
+
+          <Spacer space={SH(30)} />
           <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(60)} />
+            <Image source={CalculatorColor} style={styles.calculatorStyle} />
+            <Spacer space={SH(25)} />
             <View>
               <Text style={styles.removerDarkText}>
-                Remove USD $ {clickAmount ?? '0'} from drawer
+                Are you sure you want to remove USD $ {clickAmount ?? '0'} from the drawer?
+                {/* Remove USD $ {clickAmount ?? '0'} from drawer */}
               </Text>
               <Spacer space={SH(21)} />
               <Text style={styles.removerDarkTextRegular}>
-                Amount left in drawer: USD ${endBalance?.amount}
+                Amount left in drawer:
+                {/* USD ${endBalance?.amount} */}
               </Text>
+              <Spacer space={SH(40)} />
+              <Text style={styles.removerDarkText}>${endBalance?.amount}</Text>
             </View>
 
             <View style={{ flex: 0.5 }} />
             <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+              style={[styles.saveButton, { backgroundColor: COLORS.orange, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={'Confirm'}
               onPress={() => {
@@ -909,7 +948,7 @@ export function Management() {
       );
     } else if (cardCoinSummary) {
       return (
-        <View style={styles.absoluteZero}>
+        <View style={[styles.absoluteZero]}>
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
@@ -921,18 +960,24 @@ export function Management() {
                 setCardCoinSummary(false);
                 setRemoveUsd(true);
               }}
-              style={{ width: SW(10) }}
+              style={{ width: SW(10), marginRight: SW(10) }}
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-          <View style={styles.calculatorView}>
+          {/* <View style={styles.calculatorView}> */}
+          {/* </View> */}
+          <View style={[styles.trackingBodyCon]}>
             <Image source={CalculatorColor} style={styles.calculatorStyle} />
-          </View>
-          <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(40)} />
+            <Spacer space={SH(15)} />
+            <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
+              {strings.management.endCashTrackingSession}
+            </Text>
+            <Spacer space={SH(30)} />
             <View>
-              <Text style={[styles.countCashText]}>{strings.management.cardSummary}</Text>
+              <Text style={[styles.countCashText, { textAlign: 'left' }]}>
+                {strings.management.cardSummary}
+              </Text>
               <Spacer space={SH(15)} />
               <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
@@ -948,9 +993,11 @@ export function Management() {
               </View>
               <Spacer space={SH(12.5)} />
             </View>
-            <Spacer space={SH(45)} />
+            <Spacer space={SH(20)} />
             <View>
-              <Text style={[styles.countCashText]}>{strings.management.jbrCoinSummary}</Text>
+              <Text style={[styles.countCashText, { textAlign: 'left' }]}>
+                {strings.management.jbrCoinSummary}
+              </Text>
               <Spacer space={SH(15)} />
               <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
@@ -966,9 +1013,9 @@ export function Management() {
               </View>
               <Spacer space={SH(12.5)} />
             </View>
-            <Spacer space={SH(60)} />
+            <Spacer space={SH(30)} />
             <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+              style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.confirm}
               onPress={() => {
@@ -1049,14 +1096,14 @@ export function Management() {
                 {historyHeader === true ? (
                   <Text style={styles.summaryText}>
                     {strings.management.summary}{' '}
-                    <Text style={[styles.summaryText, { color: COLORS.primary }]}>
+                    <Text style={[styles.summaryText, { color: COLORS.navy_blue }]}>
                       {moment(historyById?.created_at).format('LL')}
                     </Text>
                   </Text>
                 ) : (
                   <Text style={styles.summaryText}>
                     {strings.management.summary}{' '}
-                    <Text style={[styles.summaryText, { color: COLORS.primary }]}>
+                    <Text style={[styles.summaryText, { color: COLORS.navy_blue }]}>
                       {moment(userHistory?.created_at).format('LL')}
                     </Text>
                   </Text>
@@ -1090,7 +1137,7 @@ export function Management() {
       );
     } else if (viewSession) {
       return (
-        <View>
+        <View style={{}}>
           <View style={styles.sessionMainView}>
             <View style={styles.sessionView}>
               <View>
@@ -1101,45 +1148,58 @@ export function Management() {
                 </Text>
               </View>
 
-              <Text style={[styles.drawerIdText, { top: 2 }]}>
-                {moment(SessionData?.createDate).format('dddd, MMMM Do YYYY | h:mm a')}
-              </Text>
+              <View style={{ backgroundColor: 'white', padding: SH(10), borderRadius: 100 }}>
+                <Text
+                  style={[
+                    styles.drawerIdText,
+                    {
+                      top: 2,
+                    },
+                  ]}
+                >
+                  {moment(SessionData?.createDate).format('dddd, MMMM Do YYYY | h:mm a')}
+                </Text>
+              </View>
             </View>
 
             <Spacer space={SH(10)} />
             <View>
               <View>
-                <Text style={styles.usdText}>
+                <Text style={styles.usdTextNew}>
                   {strings.management.usd}
                   {Number(SessionData?.cashBalance)?.toFixed(2)}
                 </Text>
               </View>
+              <Spacer space={SH(15)} />
               <Text
-                style={[styles.cashDrawerText, { fontFamily: Fonts.Regular, textAlign: 'center' }]}
+                style={[
+                  styles.cashDrawerTextNew,
+                  { fontFamily: Fonts.Regular, textAlign: 'center' },
+                ]}
               >
                 {strings.management.expected}
               </Text>
             </View>
 
             <Spacer space={SH(25)} />
-            <View style={[styles.buttonView, { flexDirection: 'row' }]}>
-              <TouchableOpacity
-                activeOpacity={0.5}
-                onPress={() => {
-                  setAddCash(true), setRemoveCash(false), setdifferentState(true);
-                }}
-                style={styles.addCashView}
-              >
-                <Text style={styles.sessionHistoryText}>{strings.management.addCash}</Text>
-              </TouchableOpacity>
+            <View style={[styles.buttonView, { flexDirection: 'row', justifyContent: 'center' }]}>
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => {
                   setAddCash(true), setRemoveCash(true);
                 }}
-                style={styles.removeCashView}
+                style={styles.removeCashViewNew}
               >
-                <Text style={styles.cashDrawerText}>{strings.management.removeCash}</Text>
+                <Text style={styles.cashDrawerNew}>{strings.management.removeCash}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => {
+                  setAddCash(true), setRemoveCash(false), setdifferentState(true);
+                }}
+                style={styles.addCashViewNew}
+              >
+                <Text style={styles.sessionHistoryTextNew}>{strings.management.addCash}</Text>
               </TouchableOpacity>
             </View>
             <Spacer space={SH(35)} />
@@ -1148,7 +1208,7 @@ export function Management() {
           <Spacer space={SH(20)} />
           <View style={styles.buttonView}>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.cashPaymentsText}>{strings.management.cashPayments}</Text>
+              <Text style={styles.cashPaymentsNew}>{strings.management.cashPayments}</Text>
               <Text>{''}</Text>
             </View>
 
@@ -1734,7 +1794,18 @@ export function Management() {
                     )}
                   </>
                 )} */}
-                <View style={[styles.paymentOptionsView, { borderBottomWidth: 0 }]}>
+                <View
+                  style={[
+                    styles.paymentOptionsView,
+                    {
+                      borderRadius: 100,
+                      backgroundColor: COLORS.sky_grey,
+                      paddingHorizontal: SH(20),
+                      alignItems: 'center',
+                      width: '100%',
+                    },
+                  ]}
+                >
                   <Text style={styles.cashDrawerText}>{strings.management.netPayment}</Text>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
@@ -1755,9 +1826,20 @@ export function Management() {
               setViewSession(false);
               setCloseBatch(true);
             }}
-            style={styles.buttonStyle}
-            textStyle={[styles.cashDrawerText, { color: COLORS.red }]}
-            title={strings.management.endSession}
+            style={[
+              styles.buttonStyle,
+              {
+                backgroundColor: COLORS.navy_blue,
+                borderRadius: 100,
+                width: SW(100),
+                alignSelf: 'flex-end',
+                marginHorizontal: SW(5),
+                height: SH(60),
+                width: SW(70),
+              },
+            ]}
+            textStyle={[styles.cashDrawerText, { color: COLORS.white }]}
+            title={strings.management.closeBatch}
           />
           <Spacer space={SH(40)} />
         </View>
@@ -1806,14 +1888,17 @@ export function Management() {
               {
                 padding: ms(30),
                 width: '100%',
-                backgroundColor: COLORS.white,
-                borderWidth: 0.5,
-                borderColor: COLORS.gerySkies,
+                backgroundColor: COLORS.sky_grey,
+                // borderWidth: 0.5,
+                // borderColor: COLORS.gerySkies,
+                borderRadius: 40,
+                paddingVertical: SH(15),
               },
             ]}
           >
-            <View>
+            <View style={{ alignSelf: 'center', flexDirection: 'row' }}>
               <Text style={styles.cashDrawerText}>{strings.management.batch}</Text>
+              {/* <Text style={styles.cashDrawerText}>{strings.management.batch}</Text> */}
             </View>
             <TouchableOpacity
               onPress={() => {
@@ -1825,7 +1910,9 @@ export function Management() {
             </TouchableOpacity>
           </View>
           <Spacer space={SH(30)} />
-          <View style={[styles.cashDrawerView, { padding: ms(30), width: '100%' }]}>
+          <View
+            style={[styles.cashDrawerView, { padding: ms(30), width: '100%', borderRadius: 40 }]}
+          >
             <View>
               <Text style={styles.loggedInAsText}>{strings.management.loggedInAs}</Text>
               <Spacer space={SH(30)} />
@@ -1855,7 +1942,7 @@ export function Management() {
                 </View>
               </View>
             </View>
-            <View>
+            <View style={{ flexDirection: 'row' }}>
               <Spacer space={SH(30)} />
               <TouchableOpacity
                 style={styles.lockScreenButton}
@@ -1877,15 +1964,26 @@ export function Management() {
                 }}
               >
                 <View style={styles.displayRow}>
-                  <Image source={lockLight} style={styles.lockLight} />
+                  <Image
+                    source={lockLight}
+                    style={[styles.lockLight, { tintColor: COLORS.navy_blue }]}
+                  />
                   <Text style={styles.checkoutText1}>{strings.dashboard.lockScreen}</Text>
                 </View>
               </TouchableOpacity>
               <Spacer space={SH(15)} />
-              <TouchableOpacity style={styles.lockScreenButton} onPress={() => logoutHandler()}>
+              <TouchableOpacity
+                style={[styles.lockScreenButton, { backgroundColor: COLORS.navy_blue }]}
+                onPress={() => logoutHandler()}
+              >
                 <View style={styles.displayRow}>
-                  <Image source={powerAuth} style={styles.lockLight} />
-                  <Text style={styles.checkoutText1}>{strings.posUsersList.logOut}</Text>
+                  <Image
+                    source={powerAuth}
+                    style={[styles.lockLight, { tintColor: COLORS.white }]}
+                  />
+                  <Text style={[styles.checkoutText1, { color: COLORS.white }]}>
+                    {strings.posUsersList.logOut}
+                  </Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -1897,8 +1995,8 @@ export function Management() {
         <View>
           {drawerActivity?.length === 0 ? (
             <View style={styles.cashDrawerView}>
-              <View>
-                <Text style={styles.cashDrawerText}>{strings.management.cashDrawer}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.cashDrawerText}>{strings.management.batch}</Text>
                 <Text style={styles.drawerIdText}>
                   {strings.management.drawerID} {SessionData?.id}
                 </Text>
@@ -1916,9 +2014,14 @@ export function Management() {
             </View>
           ) : (
             <View style={styles.cashDrawerView}>
-              <View>
-                <Text style={styles.cashDrawerText}>{strings.management.cashDrawer}</Text>
-                <Text style={styles.drawerIdText}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={styles.cashDrawerText}>{strings.management.batch}</Text>
+                <Text style={styles.drawerIdPurple}>
                   {strings.management.drawerID} {SessionData?.id}
                 </Text>
               </View>
@@ -1930,7 +2033,8 @@ export function Management() {
                 style={styles.viewSessionButtonView}
               >
                 <Text style={styles.viewSessionButtonText}>
-                  {strings.management.viewSession.toUpperCase()}
+                  {/* {strings.management.viewSession.toUpperCase()} */}
+                  {strings.management.viewSession}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -1951,7 +2055,8 @@ export function Management() {
                   style={styles.trackingButtonView}
                 >
                   <Text style={styles.trackingButtonText}>
-                    {strings.management.session.toUpperCase()}
+                    {/* {strings.management.session.toUpperCase()} */}
+                    {strings.management.session}
                   </Text>
                 </TouchableOpacity>
               </View>
