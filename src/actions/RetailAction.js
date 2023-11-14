@@ -972,6 +972,24 @@ const customServiceAddError = (error) => ({
   payload: { error },
 });
 
+//Get product roots
+const getProductRootRequest = () => ({
+  type: TYPES.GET_PRODUCT_ROOTS_REQUEST,
+  payload: null,
+});
+const getProductRootSuccess = (getProductRoot) => ({
+  type: TYPES.GET_PRODUCT_ROOTS_SUCCESS,
+  payload: { getProductRoot },
+});
+const getProductRootError = (error) => ({
+  type: TYPES.GET_PRODUCT_ROOTS_ERROR,
+  payload: { error },
+});
+const getProductRootReset = () => ({
+  type: TYPES.GET_PRODUCT_ROOTS_RESET,
+  payload: null,
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -1690,5 +1708,18 @@ export const customServiceAdd = (data) => async (dispatch) => {
     dispatch(getMainServices());
   } catch (error) {
     dispatch(customServiceAddError(error.message));
+  }
+};
+
+export const getProductRoot = () => async (dispatch) => {
+  dispatch(getProductRootRequest());
+  try {
+    const res = await RetailController.getProductRoot();
+    dispatch(getProductRootSuccess(res?.payload));
+  } catch (error) {
+    if (error?.statusCode === 204) {
+      dispatch(getProductRootReset());
+    }
+    dispatch(getProductRootError(error.message));
   }
 };

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import { COLORS, SF, SW } from '@/theme';
 import moment from 'moment';
+import { isTablet } from 'react-native-device-info';
 
 export const DATE_TYPE = {
   MONTH: 'MONTH',
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   dropdown: {
-    width: SW(50),
+    width: isTablet() ? SW(40) : SW(130),
     height: 50,
     borderColor: 'gray',
     borderWidth: 1,

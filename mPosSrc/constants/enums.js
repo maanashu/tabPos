@@ -93,54 +93,54 @@ export const moreApp = [
 export const DUMMY_IMAGE = 'https://m.media-amazon.com/images/I/41AZp6--pGL.jpg';
 export const DUMMY_USER_IMAGE = 'https://picsum.photos/id/64/200/300';
 
-export const homePageData = [
-  {
-    key: '1',
-    title: 'Products',
-    image: Images.products,
-    listedProducts: '125 Products listed',
-  },
-  {
-    key: '2',
-    title: 'Services',
-    image: Images.services,
-    listedProducts: '125 Products listed',
-  },
-  {
-    key: '3',
-    title: 'On-Hold',
-    image: Images.hold,
-  },
-  {
-    key: '4',
-    title: 'Return',
-    image: Images.returnIcon,
-    listedProducts: 'Incomplete: 3',
-  },
-  {
-    key: '5',
-    title: 'Delivery',
-    image: Images.delivery,
-    listedProducts: 'Processing: 16',
-  },
-  {
-    key: '6',
-    title: 'Shipping',
-    image: Images.shippingImage,
-    listedProducts: 'On-going: 3',
-  },
-  {
-    key: '7',
-    title: 'Booking',
-    image: Images.calendar,
-    listedProducts: 'On-going: 3',
-  },
-  {
-    key: '8',
-    title: 'Add Title',
-    image: Images.addTitle,
-  },
-];
+// export const homePageData = [
+//   {
+//     key: '1',
+//     title: 'Products',
+//     image: Images.products,
+//     listedProducts: '125 Products listed',
+//   },
+//   {
+//     key: '2',
+//     title: 'Services',
+//     image: Images.services,
+//     listedProducts: '125 Products listed',
+//   },
+//   {
+//     key: '3',
+//     title: 'On-Hold',
+//     image: Images.hold,
+//   },
+//   {
+//     key: '4',
+//     title: 'Return',
+//     image: Images.returnIcon,
+//     listedProducts: 'Incomplete: 3',
+//   },
+//   {
+//     key: '5',
+//     title: 'Delivery',
+//     image: Images.delivery,
+//     listedProducts: 'Processing: 16',
+//   },
+//   {
+//     key: '6',
+//     title: 'Shipping',
+//     image: Images.shippingImage,
+//     listedProducts: 'On-going: 3',
+//   },
+//   {
+//     key: '7',
+//     title: 'Booking',
+//     image: Images.calendar,
+//     listedProducts: 'On-going: 3',
+//   },
+//   {
+//     key: '8',
+//     title: 'Add Title',
+//     image: Images.addTitle,
+//   },
+// ];
 
 export const AccountsData = [
   {
@@ -404,52 +404,6 @@ export const ProductsList = [
     price: '$7.59',
     itemsInStock: '12 in Stock',
     image: DUMMY_IMAGE,
-  },
-];
-
-export const ProductData = [
-  {
-    key: '1',
-    title: 'Women',
-  },
-  {
-    key: '2',
-    title: 'Men',
-  },
-  {
-    key: '3',
-    title: 'Boys',
-  },
-  {
-    key: '4',
-    title: 'Girls',
-  },
-  {
-    key: '5',
-    title: 'Baby Boy',
-  },
-  {
-    key: '6',
-    title: 'Baby Girl',
-  },
-];
-
-export const ClothCollection = [
-  {
-    key: '1',
-    title: 'Athleisure Wear',
-  },
-  {
-    key: '2',
-    title: 'Belts',
-  },
-  {
-    key: '3',
-    title: 'Coats & Jackets',
-  },
-  {
-    key: '4',
-    title: 'Fitness Accessories',
   },
 ];
 

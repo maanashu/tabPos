@@ -79,6 +79,7 @@ export const ApiProductInventory = {
   getTotalInventory: 'supplies/pos/inventory_count',
   availableOffer: 'offer/products',
   skuSearch: 'products/search-one',
+  getProductRoot: 'services/',
 };
 
 export const ApiOrderInventory = {

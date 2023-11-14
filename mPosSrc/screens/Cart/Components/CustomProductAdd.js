@@ -1,10 +1,15 @@
 import React, { memo, useRef, useState } from 'react';
-import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import { moderateScale, ms } from 'react-native-size-matters';
-import RBSheet from 'react-native-raw-bottom-sheet';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
 import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
@@ -50,86 +55,89 @@ const CustomProductAdd = ({ customProductClose }) => {
   };
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={[styles.addDiscountcon]}>
-      <View style={styles.headerViewStyle}>
-        <TouchableOpacity onPress={() => customProductClose()}>
-          <Image source={Images.cross} style={styles.crossIconStyle} />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.addToCartButtonStyle} onPress={addToCartHandler}>
-          <Text style={styles.addToCartTextStyle}>{strings.cart.addToCart}</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.contentViewStyle}>
-        <Text style={styles.titleTextStyle}>{strings.cart.title}</Text>
-
-        <Spacer space={SH(10)} />
-        <View style={styles.amountTextStyle}>
-          <Text style={styles.dollarSign}>{'$'}</Text>
-          <TextInput
-            value={amount.toString()}
-            onChangeText={setAmount}
-            keyboardType={'number-pad'}
-            style={styles.amountInput}
-            placeholder={strings.cart.amountValue}
-            placeholderTextColor={COLORS.row_grey}
-          />
-        </View>
-
-        <Spacer space={SH(20)} />
-
-        <TextInput
-          value={productName}
-          onChangeText={setProductName}
-          style={styles.productInputStyle}
-          placeholder={strings.cart.productName}
-          placeholderTextColor={COLORS.gerySkies}
-        />
-
-        <Spacer space={SH(20)} />
-
-        <TextInput
-          value={upcCode}
-          onChangeText={setUpcCode}
-          keyboardType={'number-pad'}
-          style={styles.productInputStyle}
-          placeholder={strings.cart.upcCode}
-          placeholderTextColor={COLORS.gerySkies}
-        />
-
-        <Spacer space={SH(20)} />
-
-        <TextInput
-          multiline
-          value={notes}
-          numberOfLines={6}
-          onChangeText={setNotes}
-          style={styles.notesInputStyle}
-          placeholder={strings.cart.addNotes}
-        />
-
-        {/* <Spacer space={SH(20)} /> */}
-
-        <View style={styles.quantityContainer}>
-          <TouchableOpacity
-            style={styles.minusButtonStyle}
-            onPress={() => setCount(count - 1)}
-            disabled={count == 1 ? true : false}
-          >
-            <Text style={styles.counterText}>-</Text>
+    <View style={[styles.addDiscountcon]}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+        <View style={styles.headerViewStyle}>
+          <TouchableOpacity onPress={() => customProductClose()}>
+            <Image source={Images.cross} style={styles.crossIconStyle} />
           </TouchableOpacity>
 
-          <View style={styles.minusButtonStyle}>
-            <Text style={[styles.counterText, styles.counterTextDark]}>{count}</Text>
+          <TouchableOpacity style={styles.addToCartButtonStyle} onPress={addToCartHandler}>
+            <Text style={styles.addToCartTextStyle}>{strings.cart.addToCart}</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.contentViewStyle}>
+          <Text style={styles.titleTextStyle}>{strings.cart.title}</Text>
+
+          <Spacer space={SH(10)} />
+          <View style={styles.amountTextStyle}>
+            <Text style={styles.dollarSign}>{'$'}</Text>
+            <TextInput
+              value={amount.toString()}
+              onChangeText={setAmount}
+              keyboardType={'number-pad'}
+              style={styles.amountInput}
+              placeholder={strings.cart.amountValue}
+              placeholderTextColor={COLORS.row_grey}
+            />
           </View>
 
-          <TouchableOpacity style={styles.minusButtonStyle} onPress={() => setCount(count + 1)}>
-            <Text style={styles.counterText}>+</Text>
-          </TouchableOpacity>
+          <Spacer space={SH(20)} />
+
+          <TextInput
+            value={productName}
+            onChangeText={setProductName}
+            style={styles.productInputStyle}
+            placeholder={strings.cart.productName}
+            placeholderTextColor={COLORS.gerySkies}
+          />
+
+          <Spacer space={SH(20)} />
+
+          <TextInput
+            value={upcCode}
+            onChangeText={setUpcCode}
+            keyboardType={'number-pad'}
+            style={styles.productInputStyle}
+            placeholder={strings.cart.upcCode}
+            placeholderTextColor={COLORS.gerySkies}
+          />
+
+          <Spacer space={SH(20)} />
+
+          <TextInput
+            multiline
+            value={notes}
+            numberOfLines={6}
+            onChangeText={setNotes}
+            style={styles.notesInputStyle}
+            placeholder={strings.cart.addNotes}
+            placeholderTextColor={COLORS.gerySkies}
+          />
+
+          {/* <Spacer space={SH(20)} /> */}
+
+          <View style={styles.quantityContainer}>
+            <TouchableOpacity
+              style={styles.minusButtonStyle}
+              onPress={() => setCount(count - 1)}
+              disabled={count == 1 ? true : false}
+            >
+              <Text style={styles.counterText}>-</Text>
+            </TouchableOpacity>
+
+            <View style={styles.minusButtonStyle}>
+              <Text style={[styles.counterText, styles.counterTextDark]}>{count}</Text>
+            </View>
+
+            <TouchableOpacity style={styles.minusButtonStyle} onPress={() => setCount(count + 1)}>
+              <Text style={styles.counterText}>+</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -137,13 +145,17 @@ export default memo(CustomProductAdd);
 
 const styles = StyleSheet.create({
   addDiscountcon: {
+    // flex: 1,
     backgroundColor: COLORS.white,
     borderRadius: ms(15),
     width: ms(330),
-    height: ms(550),
+    // height: ms(500),
+    // height: '75%',
+
     alignSelf: 'center',
     paddingHorizontal: moderateScale(15),
-    paddingVertical: ms(30),
+    paddingVertical: ms(20),
+    marginTop: ms(100),
   },
   nameBottomSheetContainerStyle: {
     borderTopLeftRadius: ms(30),

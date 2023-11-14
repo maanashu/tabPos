@@ -22,7 +22,7 @@ const CustomEventCell = (
     (data) => data?.user_id === staffDetails?.user_id
   );
   employeeIndex = employeeIndex > -1 ? employeeIndex : 0;
-  console.log('sgdjfg', timeValue);
+
   return (
     <TouchableOpacity
       {...touchableOpacityProps}

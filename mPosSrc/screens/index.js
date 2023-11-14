@@ -33,6 +33,7 @@ export { RetailProducts } from '@mPOS/screens/HomeTab/RetailProducts/RetailProdu
 
 //Services
 export { Services } from '@mPOS/screens/HomeTab/Services/Services';
+export { RetailServices } from '@mPOS/screens/HomeTab/RetailServices/RetailServices';
 
 // Delivery
 export { Delivery } from '@mPOS/screens/HomeTab/Delivery/Delivery';

@@ -178,10 +178,8 @@ export class SettingController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
-          console.log('success', JSON.stringify(response));
         })
         .catch((error) => {
-          console.log('error', JSON.stringify(error));
           Toast.show({
             text2: error.msg,
             position: 'bottom',
