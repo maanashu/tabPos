@@ -325,7 +325,6 @@ export const upadteApi = (data) => async (dispatch) => {
   try {
     const res = await SettingController.upadteApi(data);
     dispatch(upadteApiSuccess(res.payload));
-    // dispatch(getSettings());
     return;
   } catch (error) {
     dispatch(upadteApiError(error.message));

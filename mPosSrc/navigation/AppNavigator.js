@@ -30,6 +30,9 @@ import {
   WalletSettings,
   StaffSettings,
   PosUserDetail,
+  RetailServices,
+  Policies,
+  NotificationSettings,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -86,6 +89,11 @@ export function AppNavigator(navigation) {
       <Stack.Screen
         name={MPOS_NAVIGATION.retailProducts}
         component={RetailProducts}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.retailServices}
+        component={RetailServices}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -209,6 +217,16 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.posUserDetail}
         options={{ headerShown: false }}
         component={PosUserDetail}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.policies}
+        options={{ headerShown: false }}
+        component={Policies}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.notificationSettings}
+        options={{ headerShown: false }}
+        component={NotificationSettings}
       />
       <Stack.Screen
         name={MPOS_NAVIGATION.batchManagement}

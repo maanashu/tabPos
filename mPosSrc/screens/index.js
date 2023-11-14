@@ -33,6 +33,7 @@ export { RetailProducts } from '@mPOS/screens/HomeTab/RetailProducts/RetailProdu
 
 //Services
 export { Services } from '@mPOS/screens/HomeTab/Services/Services';
+export { RetailServices } from '@mPOS/screens/HomeTab/RetailServices/RetailServices';
 
 // Delivery
 export { Delivery } from '@mPOS/screens/HomeTab/Delivery/Delivery';
@@ -63,3 +64,5 @@ export { Receipts } from '@mPOS/screens/MoreTab/Settings/Receipts/Receipts';
 export { WalletSettings } from '@mPOS/screens/MoreTab/Settings/WalletSettings/WalletSettings';
 export { StaffSettings } from '@mPOS/screens/MoreTab/Settings/StaffSettings/StaffSettings';
 export { PosUserDetail } from '@mPOS/screens/MoreTab/Settings/PosUserDetail/PosUserDetail';
+export { Policies } from '@mPOS/screens/MoreTab/Settings/Policies/Policies';
+export { NotificationSettings } from '@mPOS/screens/MoreTab/NotificationSettings/NotificationSettings';

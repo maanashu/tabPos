@@ -13,6 +13,7 @@ import { TYPES } from '@/Types/Types';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { COLORS } from '@/theme';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { getStaffDetail } from '@/actions/SettingAction';
 
 export function StaffSettings() {
   const dispatch = useDispatch();
@@ -21,9 +22,10 @@ export function StaffSettings() {
   const posUsers = getAuth?.getAllPosUsersData;
 
   const handleClick = (item) => {
+    dispatch(getStaffDetail(item?.id));
     commonNavigate(MPOS_NAVIGATION.posUserDetail, item);
   };
-
+  // console.log('pos', getAuth?.getAllPosUsersData?.pos_staff?.[2]);
   useEffect(() => {
     const data = {
       page: 1,
@@ -32,6 +34,7 @@ export function StaffSettings() {
     };
     dispatch(getAllPosUsers(data));
   }, []);
+  // console.log('seller', sellerID);
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_POS_USERS], state));
 
   const renderPosUsers = ({ item }) => {
@@ -61,6 +64,7 @@ export function StaffSettings() {
       </>
     );
   };
+
   return (
     <ScreenWrapper>
       <Header backRequired title={strings?.staffSetting?.staffs} />
@@ -68,12 +72,16 @@ export function StaffSettings() {
         <SettingsContainer
           heading={strings?.staffSetting?.staffList}
           subHeading={strings?.staffSetting?.subTitle}
-          extraStyle={{ flex: 0 }}
+          extraStyle={{ flex: 1 }}
         >
           {isLoading ? (
             <ActivityIndicator color={COLORS.primary} />
           ) : (
-            <FlatList data={posUsers?.pos_staff || []} renderItem={renderPosUsers} />
+            <FlatList
+              data={posUsers?.pos_staff || []}
+              renderItem={renderPosUsers}
+              showsVerticalScrollIndicator={false}
+            />
           )}
         </SettingsContainer>
       </View>

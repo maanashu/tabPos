@@ -203,6 +203,7 @@ export const en = {
   },
   retail: {
     noProduct: ' No Product found',
+    noService: ' No service found',
     detail: 'Details',
     addCart: 'Add to Cart',
     productDetails: 'Product Details',
@@ -213,6 +214,7 @@ export const en = {
     onlineDelivery: 'Online - delivery',
     onlineShipping: 'Online - Shipping',
     availableForSell: 'Available for Selling',
+    backToCart: 'Back to Cart',
   },
   orderStatus: {
     reviewOrders: 'Orders to review',
@@ -368,5 +370,15 @@ export const en = {
     request: 'Request',
     unPaid: 'Unpaid',
     paid: 'Paid',
+  },
+  policies: {
+    policies: 'Policies',
+    publishDate: 'Publish date:',
+    lastUpdate: 'Last update date:',
+    close: 'Close',
+    legal: 'Legal',
+  },
+  notifications: {
+    notifications: 'Notifications',
   },
 };

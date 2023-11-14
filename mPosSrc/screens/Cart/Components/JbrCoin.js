@@ -4,11 +4,7 @@ import { Images } from '@mPOS/assets';
 import { FullScreenLoader } from '@mPOS/components';
 import { COLORS, Fonts } from '@/theme';
 import { ms } from 'react-native-size-matters';
-import {
-  BottomSheetModal,
-  BottomSheetScrollView,
-  BottomSheetTextInput,
-} from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -30,7 +26,7 @@ import CountryPicker from 'react-native-country-picker-modal';
 import { dropdown } from '@/assets';
 import { useIsFocused } from '@react-navigation/native';
 
-const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandlerHandler }) => {
+const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
@@ -163,8 +159,8 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandlerHandler }) =>
     };
     const callback = (response) => {
       if (response) {
-        payByJbrHandlerHandler(saveCartData, data);
-        jbrCoinCrossHandler();
+        payByJbrHandler(saveCartData, data);
+        // jbrCoinCrossHandler();
       }
     };
     dispatch(createOrder(data, callback));

@@ -26,7 +26,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { formattedReturnPrice } from '@mPOS/utils/GlobalMethods';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
-import { getAllCart, getTip } from '@/actions/RetailAction';
+import {
+  changeStatusProductCart,
+  getAllCart,
+  getAllProductCart,
+  getTip,
+} from '@/actions/RetailAction';
 import CartAmountByPay from './Components/CartAmountByPay';
 import PayByCash from './Components/PayByCash';
 import { TYPES } from '@/Types/Types';
@@ -35,8 +40,12 @@ import { getDrawerSessions } from '@/actions/CashTrackingAction';
 import ProductCustomerAdd from './Components/ProductCustomerAdd';
 import { NewCustomerAdd } from '@/screens/PosRetail3/Components/NewCustomerAdd';
 import JbrCoin from './Components/JbrCoin';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useIsFocused } from '@react-navigation/native';
+// import { Modal } from 'react-native-paper';
 
 export function Cart() {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const productCartData = retailData?.getAllCart;
@@ -53,6 +62,8 @@ export function Cart() {
   const [orderCreateData, setOrderCreateData] = useState();
   const [saveCart, setSaveCart] = useState();
   const [productCustomerAdd, setProductCustomerAdd] = useState(false);
+  const productCartArray = retailData?.getAllProductCart;
+  const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -65,13 +76,15 @@ export function Cart() {
         TYPES.UPDATE_CART_BY_TIP,
         TYPES.CREATE_ORDER,
         TYPES.ATTACH_CUSTOMER,
+        TYPES.CHANGE_STATUS_PRODUCT_CART,
       ],
       state
     )
   );
   useEffect(() => {
     dispatch(getAllCart());
-  }, []);
+    dispatch(getAllProductCart());
+  }, [isFocused]);
 
   const payNowHandler = useCallback(() => {
     dispatch(getDrawerSessions());
@@ -121,56 +134,83 @@ export function Cart() {
     finalPaymentRef.current?.present();
   };
 
+  const payByJbrHandler = (cartData, data) => {
+    setOrderCreateData(data);
+    setSaveCart(cartData);
+    jbrCoinRef.current.dismiss();
+    finalPaymentRef.current?.present();
+  };
+
   const onRowDidOpen = (rowKey) => {
     console.log('This row opened', rowKey);
+  };
+
+  // hold product Function
+  const cartStatusHandler = () => {
+    const data =
+      holdProductArray?.length > 0
+        ? {
+            status: !holdProductArray?.[0]?.is_on_hold,
+            cartId: holdProductArray?.[0]?.id,
+          }
+        : {
+            status: !productCartData?.is_on_hold,
+            cartId: productCartData?.id,
+          };
+    console.log(data);
+    dispatch(changeStatusProductCart(data));
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.cartScreenHeader]}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.5,
-          }}
-          pointerEvents={productCartData?.poscart_products?.length > 0 ? 'auto' : 'none'}
-        >
-          <TouchableOpacity
-            style={styles.headerImagecCon}
-            onPress={() => setProductCustomerAdd((prev) => !prev)}
+        <View style={styles.serviceCart}>
+          <Text style={styles.serviceCartText}>{'Service Cart'}</Text>
+        </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.5,
+            }}
+            pointerEvents={productCartData?.poscart_products?.length > 0 ? 'auto' : 'none'}
           >
-            <Image source={Images.addCustomerIcon} style={styles.headerImage} />
+            <TouchableOpacity
+              style={styles.headerImagecCon}
+              onPress={() => setProductCustomerAdd((prev) => !prev)}
+            >
+              <Image source={Images.addCustomerIcon} style={styles.headerImage} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.headerImagecCon}
+              onPress={() => setAddNotes((prev) => !prev)}
+            >
+              <Image source={Images.notes} style={styles.headerImage} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.headerImagecCon}
+              onPress={() => setAddDiscount((prev) => !prev)}
+            >
+              <Image source={Images.discountOutline} style={styles.headerImage} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.headerImagecCon}
+              onPress={() => setClearCart((prev) => !prev)}
+            >
+              <Image source={Images.ClearEraser} style={styles.headerImage} />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.headerImagecCon} onPress={cartStatusHandler}>
+            <Image source={Images.pause} style={styles.holdImage(holdProductArray)} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.headerImagecCon}
-            onPress={() => setAddNotes((prev) => !prev)}
+            onPress={() => setCustomProductAdd((prev) => !prev)}
           >
-            <Image source={Images.notes} style={styles.headerImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.headerImagecCon}
-            onPress={() => setAddDiscount((prev) => !prev)}
-          >
-            <Image source={Images.discountOutline} style={styles.headerImage} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.headerImagecCon}
-            onPress={() => setClearCart((prev) => !prev)}
-          >
-            <Image source={Images.ClearEraser} style={styles.headerImage} />
+            <Image source={Images.fluent} style={styles.headerImage} />
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={styles.headerImagecCon}>
-          <Image source={Images.pause} style={styles.headerImage} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.headerImagecCon}
-          onPress={() => setCustomProductAdd((prev) => !prev)}
-        >
-          <Image source={Images.fluent} style={styles.headerImage} />
-        </TouchableOpacity>
       </View>
 
       <View style={{ flex: 1, paddingHorizontal: ms(10) }}>
@@ -409,9 +449,24 @@ export function Cart() {
       >
         <ClearCart cartClose={() => setClearCart(false)} />
       </Modal>
-      <Modal animationType="fade" transparent={true} isVisible={customProductAdd}>
-        <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
+      <Modal animationType="fade" isVisible={customProductAdd}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}
+        >
+          <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
+        </KeyboardAwareScrollView>
       </Modal>
+
+      {/* <Modal visible={customProductAdd}>
+        <KeyboardAvoidingView
+          behavior="padding"
+          // style={{ flex: 1 }}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+        >
+          <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
+        </KeyboardAvoidingView>
+      </Modal> */}
+
       <Modal
         animationType="fade"
         transparent={true}
@@ -437,7 +492,7 @@ export function Cart() {
       <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
 
-      <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrCoinHandler }} />
+      <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} />
       {isLoading ? <FullScreenLoader /> : null}
     </SafeAreaView>
   );

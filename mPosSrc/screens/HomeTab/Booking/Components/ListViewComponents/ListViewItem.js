@@ -9,7 +9,7 @@ import { getCalendarActionButtonTitle } from '@/utils/GlobalMethods';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import { changeAppointmentStatus } from '@/actions/AppointmentAction';
 import { useDispatch } from 'react-redux';
-import { clock, editIcon } from '@/assets';
+import { clock, editIcon, rightlight } from '@/assets';
 import { styles } from '../../styles';
 
 const ListViewItem = ({
@@ -75,7 +75,7 @@ const ListViewItem = ({
           onPress={() => onPressCheckin(item)}
         />
         <TouchableOpacity style={styles.listViewEditBtn} onPress={() => onPressEdit(item)}>
-          <Image source={editIcon} style={styles.listViewEditIcon} />
+          <Image source={rightlight} style={styles.listViewEditIcon} />
         </TouchableOpacity>
       </View>
     ),

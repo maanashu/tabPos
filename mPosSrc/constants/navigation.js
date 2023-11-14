@@ -16,6 +16,7 @@ export const NAVIGATION = {
   subCategory: 'SubCategory',
   products: 'Products',
   retailProducts: 'RetailProducts',
+  retailServices: 'RetailServices',
   services: 'Services',
   posUsers: 'PosUsers',
   posUserProfile: 'PosUserProfile',
@@ -43,4 +44,6 @@ export const NAVIGATION = {
   staffSettings: 'StaffSettings',
   posUserDetail: 'PosUserDetail',
   batchManagement: 'Management',
+  policies: 'Policies',
+  notificationSettings: 'NotificationSettings',
 };

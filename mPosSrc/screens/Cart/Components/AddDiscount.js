@@ -134,7 +134,7 @@ const AddDiscount = ({ discountClose }) => {
                 }}
                 value={amountDiscount.toString()}
                 onChangeText={setAmountDiscount}
-                placeholderTextColor={COLORS.dark_gray}
+                placeholderTextColor={COLORS.gerySkies}
               />
             </View>
           </TouchableOpacity>
@@ -178,7 +178,7 @@ const AddDiscount = ({ discountClose }) => {
                 ]}
                 value={percentageDiscount}
                 onChangeText={setPercentageDiscount}
-                placeholderTextColor={COLORS.dark_gray}
+                placeholderTextColor={COLORS.gerySkies}
                 onFocus={() => {
                   setPercentageCheck(true);
                   setAmountCheck(false);
@@ -226,7 +226,7 @@ const AddDiscount = ({ discountClose }) => {
                 ]}
                 value={discountCode}
                 onChangeText={setDiscountCode}
-                placeholderTextColor={COLORS.solid_grey}
+                placeholderTextColor={COLORS.gerySkies}
                 onFocus={() => {
                   setCodeCheck(true);
                   setPercentageCheck(false);
