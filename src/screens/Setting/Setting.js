@@ -118,9 +118,9 @@ export function Setting() {
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? COLORS.blue_shade : '#transparent';
-    const tintAndColor = item.id === selectedId ? COLORS.primary : COLORS.darkGray;
+    const tintAndColor = item.id === selectedId ? COLORS.navy_blue : COLORS.darkGray;
     const borderColor = item.id === selectedId ? COLORS.blue_shade : COLORS.solidGrey;
-    const color = item.id === selectedId ? COLORS.primary : COLORS.black;
+    const color = item.id === selectedId ? COLORS.navy_blue : COLORS.black;
 
     return (
       <>
