@@ -62,7 +62,7 @@ export function More() {
   };
   const tagLineHandler = (item, index) => {
     if (index === 0) {
-      return alert('In progress');
+      return navigate(MPOS_NAVIGATION.batchManagement);
     } else if (index === 1) {
       return alert('In progress');
     } else if (index === 2) {

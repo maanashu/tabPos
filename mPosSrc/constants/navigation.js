@@ -42,4 +42,5 @@ export const NAVIGATION = {
   walletSettings: 'WalletSettings',
   staffSettings: 'StaffSettings',
   posUserDetail: 'PosUserDetail',
+  batchManagement: 'Management',
 };
