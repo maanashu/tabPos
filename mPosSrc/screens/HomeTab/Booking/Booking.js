@@ -59,14 +59,11 @@ import { Modal as PaperModal } from 'react-native-paper';
 import { useRef } from 'react';
 import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
 import { NAVIGATION } from '@mPOS/constants';
-import dayjs from 'dayjs';
 import { styles } from './styles';
 import { Images } from '@mPOS/assets';
 import CalendarPickerModal from '@mPOS/components/CalendarPickerModal';
 import { Calendar as MonthCalendar, LocaleConfig } from 'react-native-calendars';
 import moment from 'moment';
-
-dayjs.suppressDeprecationWarnings = true;
 
 const groupAppointmentsByDate = (data) => {
   const groupedAppointments = {};
@@ -143,11 +140,16 @@ export function Booking() {
     { label: 'Month', value: 'month' },
   ]);
   const [groupedAppointments, setGroupedAppointments] = useState({});
-  const [selected, setSelected] = useState('');
+  const [appointmentDate, setAppointmentDate] = useState([]);
 
   useEffect(() => {
     const grouped = groupAppointmentsByDate(getAppointmentList);
     setGroupedAppointments(grouped);
+    const markedDates = Object.keys(grouped).map((el) => {
+      const date = el.split(' ')[1];
+      return moment(date, 'dddd DD/MM/YYYY').format('YYYY-MM-DD');
+    });
+    setAppointmentDate(markedDates);
   }, [getAppointmentList]);
 
   //Pagination for appointments
@@ -258,7 +260,7 @@ export function Booking() {
 
   const getAppointmentsByDate = useMemo(() => {
     const filteredAppointmentsByDate = getAppointmentList?.filter(
-      (appointment) => dayjs(appointment?.date).format('L') === dayjs(calendarDate).format('L')
+      (appointment) => moment(appointment?.date).format('L') === moment(calendarDate).format('L')
     );
     return filteredAppointmentsByDate;
   }, [calendarDate, getCalenderData]);
@@ -292,6 +294,16 @@ export function Booking() {
   const isRequestLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_APPOINTMENTS], state)
   );
+
+  function convertArrayToMarkedDates(array) {
+    const convertedObject = {};
+
+    array.forEach((element) => {
+      convertedObject[element] = { marked: true, dotColor: COLORS.primary };
+    });
+
+    return convertedObject;
+  }
 
   const eventItem = ({ item, index }) => {
     return <EventItemCard item={item} index={index} />;
@@ -339,33 +351,40 @@ export function Booking() {
       />
     );
   };
+
   const renderGroupedListViewItem = ({ item, index }) => {
-    const appointmentId = item?.id;
     return (
       <View style={{ flex: 0.4 }}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold', padding: 10 }}>{item[0]}</Text>
-        {item[1].map((appointment) => (
-          <ListViewItem
-            item={appointment}
-            index={index}
-            isChangeStatusLoading={isChangeStatusLoading}
-            // isSendCheckinOTPLoading={isSendCheckinOTPLoading}
-            onPressCheckin={() => {
-              setSelectedPosStaffCompleteData(item);
-              dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
-              // dispatch(sendCheckinOTP(appointmentId)).then(() => {
-              //   setshowVerifyOTPModal(true);
-              // });
-            }}
-            onPressEdit={() => {
-              setSelectedPosStaffCompleteData(item);
-              setshowRescheduleTimeModal(true);
-            }}
-            onPressMarkComplete={() => {
-              dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
-            }}
-          />
-        ))}
+        <Text
+          style={{ fontSize: ms(14), fontFamily: Fonts.SemiBold, color: COLORS.black, padding: 10 }}
+        >
+          {item[0]}
+        </Text>
+        {item[1].map((appointment) => {
+          const appointmentId = appointment?.id;
+          return (
+            <ListViewItem
+              item={appointment}
+              index={index}
+              isChangeStatusLoading={isChangeStatusLoading}
+              // isSendCheckinOTPLoading={isSendCheckinOTPLoading}
+              onPressCheckin={() => {
+                setSelectedPosStaffCompleteData(appointment);
+                dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
+                // dispatch(sendCheckinOTP(appointmentId)).then(() => {
+                //   setshowVerifyOTPModal(true);
+                // });
+              }}
+              onPressEdit={() => {
+                setSelectedPosStaffCompleteData(appointment);
+                setshowRescheduleTimeModal(true);
+              }}
+              onPressMarkComplete={() => {
+                dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
+              }}
+            />
+          );
+        })}
       </View>
     );
   };
@@ -450,11 +469,7 @@ export function Booking() {
           <TouchableOpacity
             onPress={() => {
               setSelectedStaffEmployeeId(null);
-              if (appointmentListArr?.length === 0) {
-                setshowRequestsView(false);
-              } else {
-                setshowRequestsView(!showRequestsView);
-              }
+              setshowRequestsView(!showRequestsView);
             }}
             style={[
               styles.requestCalendarContainer,
@@ -590,7 +605,7 @@ export function Booking() {
                       setEventData(event);
                       if (timeValue === 'month') {
                         dayHandler();
-                        setCalendarDate(dayjs(event.start));
+                        setCalendarDate(moment(event.start));
                       } else {
                         setshowEventDetailModal(true);
                       }
@@ -610,19 +625,15 @@ export function Booking() {
               ) : (
                 <>
                   <MonthCalendar
-                    onDayPress={(day) => {
-                      setSelected(day.dateString);
-                    }}
                     hideArrows
                     initialDates={new Date(calendarDate)}
-                    markedDates={{
-                      [selected]: {
-                        selected: true,
-                        disableTouchEvent: true,
-                        selectedDotColor: 'orange',
-                      },
-                    }}
+                    // markedDates={{
+                    //   [appointmentDate]: { marked: true, dotColor: COLORS.primary },
+                    //   ['2023-11-15']: { marked: true, dotColor: COLORS.primary },
+                    // }}
+                    markedDates={convertArrayToMarkedDates(appointmentDate)}
                     headerStyle={{ height: ms(0) }}
+                    theme={{ todayTextColor: COLORS.primary }}
                   />
                   <FlatList
                     data={Object.entries(groupedAppointments)} // Convert the object to an array
@@ -803,6 +814,9 @@ export function Booking() {
                   </View>
                 );
               }}
+              ListEmptyComponent={() => (
+                <Text style={styles.noAppointmentEmpty}>There are no appointments on this day</Text>
+              )}
             />
             <TouchableOpacity
               onPress={() => {
@@ -855,7 +869,7 @@ export function Booking() {
               selectedStartDate={calendarDate}
               onPress={() => setshowMiniCalendar(false)}
               onSelectedDate={(date) => {
-                setCalendarDate(dayjs(date));
+                setCalendarDate(moment(date));
                 setshowMiniCalendar(false);
               }}
               onCancelPress={() => {
@@ -971,6 +985,11 @@ export function Booking() {
                   onEndReachedThreshold={0.1} // Adjust this value as per your requirements
                   ListFooterComponent={renderLoader}
                   style={{ marginBottom: ms(25) }}
+                  ListEmptyComponent={() => (
+                    <Text style={[styles.noAppointmentEmpty]}>
+                      There are no appointment Request
+                    </Text>
+                  )}
                 />
               </View>
             )}
