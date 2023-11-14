@@ -7,7 +7,7 @@ import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { addDiscountToCart } from '@/actions/RetailAction';
+import { addDiscountToCart, addServiceDiscountToCart } from '@/actions/RetailAction';
 
 const AddDiscount = ({ discountClose }) => {
   const dispatch = useDispatch();
@@ -15,34 +15,34 @@ const AddDiscount = ({ discountClose }) => {
   const percentInputRef = useRef(null);
   const discountInputRef = useRef(null);
   const retailData = useSelector(getRetail);
-  const cartId = retailData?.getAllCart?.id;
-  const productCartData = retailData?.getAllCart;
+  const presentCart = retailData?.cartFrom;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  const cartId = cartData?.id;
+
   const discountRef = useRef();
   const [amountDiscount, setAmountDiscount] = useState(
-    productCartData?.discount_flag === 'amount' ? productCartData?.discount_value : ''
+    cartData?.discount_flag === 'amount' ? cartData?.discount_value : ''
   );
   const [percentageDiscount, setPercentageDiscount] = useState(
-    productCartData?.discount_flag === 'percentage' ? productCartData?.discount_value : ''
+    cartData?.discount_flag === 'percentage' ? cartData?.discount_value : ''
   );
   const [discountCode, setDiscountCode] = useState(
-    productCartData?.discount_flag === 'code' ? productCartData?.discount_value : ''
+    cartData?.discount_flag === 'code' ? cartData?.discount_value : ''
   );
 
   const [amountCheck, setAmountCheck] = useState(
-    productCartData?.discount_flag === 'amount' ? true : false
+    cartData?.discount_flag === 'amount' ? true : false
   );
   const [percentageCheck, setPercentageCheck] = useState(
-    productCartData?.discount_flag === 'percentage' ? true : false
+    cartData?.discount_flag === 'percentage' ? true : false
   );
-  const [codeCheck, setCodeCheck] = useState(
-    productCartData?.discount_flag === 'code' ? true : false
-  );
+  const [codeCheck, setCodeCheck] = useState(cartData?.discount_flag === 'code' ? true : false);
   const [descriptionDis, setDescriptionDis] = useState(
-    productCartData?.discount_desc ? productCartData?.discount_desc : 'Discount'
+    cartData?.discount_desc ? cartData?.discount_desc : 'Discount'
   );
 
   const finalAmountForDiscount =
-    productCartData?.amount?.products_price.toFixed(2) - productCartData?.amount?.tax.toFixed(2);
+    cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
 
   useEffect(() => {
     discountRef?.current?.open();
@@ -73,10 +73,12 @@ const AddDiscount = ({ discountClose }) => {
         discountCode: discountCode,
         value: amountDiscount ? 'amount' : percentageDiscount ? 'percentage' : 'code',
         cartId: cartId,
-        orderAmount: productCartData?.amount?.total_amount,
+        orderAmount: cartData?.amount?.total_amount,
         descriptionDis: descriptionDis,
       };
-      dispatch(addDiscountToCart(data));
+      dispatch(
+        presentCart === 'product' ? addDiscountToCart(data) : addServiceDiscountToCart(data)
+      );
       discountClose();
     }
   };

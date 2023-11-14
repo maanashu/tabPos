@@ -38,6 +38,7 @@ const INITIALSTATE = {
   createOrder: {},
   createServiceOrder: {},
   availableOffer: [],
+  cartFrom: 'product',
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -413,6 +414,11 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         createServiceOrder: payload?.createServiceOrder,
+      };
+    case TYPES.CART_RUN_SUCCESS:
+      return {
+        ...state,
+        cartFrom: payload?.cartFrom,
       };
 
     case TYPES.CLEAR_RETAIL_STORE:
