@@ -68,4 +68,5 @@ export const COLORS = {
   alert_red: '#F04438',
   neutral_blue: '#F7F9FF',
   redish_brown: '#93370D',
+  sky_grey: '#F5F6FC',
 };
