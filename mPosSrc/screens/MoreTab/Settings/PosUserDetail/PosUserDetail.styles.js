@@ -13,6 +13,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  hourlyView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: ms(15),
+    paddingVertical: ms(20),
+    marginHorizontal: ms(20),
+  },
   rowAligned: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -120,6 +128,35 @@ const styles = StyleSheet.create({
     paddingVertical: ms(10),
     paddingLeft: ms(5),
     // flex: 1,
+  },
+  listInnerView: {
+    marginHorizontal: ms(15),
+    // flex: 0.5,
+    alignItems: 'center',
+  },
+  regularListText: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(11),
+    marginVertical: ms(10),
+    color: COLORS.dark_grey,
+  },
+  regularListDateText: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(11),
+    marginVertical: ms(15),
+    color: COLORS.solid_grey,
+  },
+  loaderView: {
+    backgroundColor: COLORS.light_grey,
+    opacity: 0.3,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    zIndex: 9999,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

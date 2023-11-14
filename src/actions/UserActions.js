@@ -1,5 +1,6 @@
 import { UserController } from '@/controllers/UserController';
 import { TYPES } from '@/Types/Types';
+import { getSettings } from './SettingAction';
 
 const loginPosUserRequest = () => ({
   type: TYPES.LOGIN_POS_USER_REQUEST,
@@ -41,6 +42,7 @@ export const loginPosUser = (data) => async (dispatch) => {
   try {
     const res = await UserController.loginPosUser(data);
     dispatch(loginPosUserSuccess(res?.payload));
+    dispatch(getSettings());
   } catch (error) {
     return dispatch(loginPosUserError(error));
   }

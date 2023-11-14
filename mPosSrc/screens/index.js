@@ -64,3 +64,4 @@ export { WalletSettings } from '@mPOS/screens/MoreTab/Settings/WalletSettings/Wa
 export { StaffSettings } from '@mPOS/screens/MoreTab/Settings/StaffSettings/StaffSettings';
 export { PosUserDetail } from '@mPOS/screens/MoreTab/Settings/PosUserDetail/PosUserDetail';
 export { Policies } from '@mPOS/screens/MoreTab/Settings/Policies/Policies';
+export { NotificationSettings } from '@mPOS/screens/MoreTab/NotificationSettings/NotificationSettings';

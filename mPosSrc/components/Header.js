@@ -213,6 +213,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Medium,
     fontSize: ms(14),
     color: COLORS.solid_grey,
+    left: ms(2),
   },
   backIcon: {
     height: ms(24),
