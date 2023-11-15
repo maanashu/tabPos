@@ -283,44 +283,44 @@ export function MainScreen({
       </View>
       <View style={styles.flexDirectionRow}>
         <View style={styles.totalProductCon}>
-          <Spacer space={SH(20)} />
-          <View style={[styles.displayFlex, { alignItems: 'baseline' }]}>
-            <View>
-              <Text style={styles.darkBlackText}>Total Orders</Text>
-              <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
-                {isTotalOrderLoading ? (
-                  <ActivityIndicator color={COLORS.primary} size={'small'} />
-                ) : totalOrder?.total_orders ? (
-                  totalOrder?.total_orders
-                ) : (
-                  '0'
-                )}
+          <Spacer space={SH(10)} />
+          <View style={styles.flexAlign}>
+            <Text style={[styles.darkBlackText, { flex: 1 }]}>Total Orders</Text>
+            <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
+              {isTotalOrderLoading ? (
+                <ActivityIndicator color={COLORS.dark_blue} size={'small'} />
+              ) : totalOrder?.total_orders ? (
+                totalOrder?.total_orders
+              ) : (
+                '0'
+              )}
+            </Text>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginVertical: ms(4) }}>
+            <View style={[styles.bulletView, { backgroundColor: COLORS.lightBlueBG }]}>
+              <View style={[styles.bullets, { backgroundColor: COLORS.blue2 }]} />
+              <Text style={styles.bulletText}>{'POS Orders'}</Text>
+            </View>
+            <View style={[styles.bulletView, { backgroundColor: COLORS.light_skyblue }]}>
+              <View style={[styles.bullets, { backgroundColor: COLORS.medium_skyblue }]} />
+              <Text style={[styles.bulletText, { color: COLORS.dark_skyblue }]}>
+                {'Online Orders'}
               </Text>
             </View>
-            <View>
-              <View style={styles.flexAlign}>
-                <View style={styles.bullets} />
-                <Text style={styles.bulletText}>{'POS Orders'}</Text>
-              </View>
-              <View style={styles.flexAlign}>
-                <View style={[styles.bullets, { backgroundColor: COLORS.violet }]} />
-                <Text style={styles.bulletText}>{'B2C Orders'}</Text>
-              </View>
-              {/* <View style={styles.flexAlign}>
+            {/* <View style={styles.flexAlign}>
                 <View style={[styles.bullets, { backgroundColor: COLORS.darkBlue }]} />
                 <Text style={styles.bulletText}>{'Shipping Orders'}</Text>
               </View> */}
-            </View>
           </View>
-          <Spacer space={SH(5)} />
+          {/* <Spacer space={SH(5)} /> */}
 
           <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressOrders}>
             <BarChartCom
               barWid={Dimensions.get('window').width * 0.22}
-              barHei={Platform.OS === 'android' ? SH(110) : SH(110)}
+              barHei={Platform.OS === 'android' ? ms(75) : SH(110)}
               barSpacing={SW(4.2)}
               barW={SW(1.5)}
-              labelTextSty={{ color: COLORS.darkGray, fontSize: 11 }}
+              labelTextSty={{ color: COLORS.dark_blue, fontSize: 11 }}
               initialSpacing={SH(5)}
               data={totalOrder?.graphData}
               spacing={SW(10)}

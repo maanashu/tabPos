@@ -10,19 +10,19 @@ import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
-  profit,
-  revenueTotal,
-  totalSales,
-  channel,
-  averageOrder,
-  productSelling,
-  locationSales,
-  totalCost,
-  totalOrders,
   calendar,
   dropdown,
   Fonts,
-  backArrow2,
+  backIcon,
+  profitIcon,
+  revnue,
+  posOrders,
+  deliveryIcon,
+  shippingIcon,
+  totalOrder,
+  inventory,
+  soldProduct,
+  totalCostIcon,
 } from '@/assets';
 import { MainScreen } from './Components/MainScreen';
 import { TotalProfit } from './Components/TotalProfit';
@@ -321,7 +321,7 @@ export function Analytics2() {
                   style={[
                     styles.headerView,
                     {
-                      borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
+                      borderColor: selectedStartDate ? COLORS.dark_blue : COLORS.white,
                       marginHorizontal: selectedScreen === 'TotalInventory' ? ms(0) : ms(5),
                     },
                   ]}
@@ -353,12 +353,13 @@ export function Analytics2() {
                     setItems={setChannelItem}
                     placeholder="All Channels"
                     placeholderStyle={{
-                      color: '#A7A7A7',
+                      color: COLORS.dark_blue,
                       fontFamily: Fonts.Regular,
                       fontSize: ms(8),
                     }}
                     zIndex={2000}
                     zIndexInverse={2000}
+                    textStyle={{ color: COLORS.dark_blue }}
                   />
                 ) : (
                   <></>
@@ -371,166 +372,257 @@ export function Analytics2() {
               <View style={styles.container}>{screenChangeView()}</View>
 
               <View style={styles.rightSideView}>
-                <Spacer space={SH(5)} />
-                <TouchableOpacity style={styles.bucketBackgorund} onPress={() => goBack()}>
-                  <Image source={backArrow2} style={styles.backImageStyle} />
+                <Spacer space={SH(10)} />
+                <TouchableOpacity onPress={() => goBack()}>
+                  <Image source={backIcon} style={styles.backImageStyle} />
                 </TouchableOpacity>
 
-                <Spacer space={SH(25)} />
+                <Spacer space={SH(10)} />
                 <TouchableOpacity
                   disabled={getPosUser?.user_roles?.length > 0 ? true : false}
                   onPress={() => setselectedScreen('Revenue')}
+                  style={[
+                    styles.bucketBackgorund,
+                    {
+                      backgroundColor:
+                        selectedScreen === 'Revenue'
+                          ? COLORS.lightBlueBG
+                          : getPosUser?.user_roles?.length > 0
+                          ? COLORS.mid_grey
+                          : COLORS.white,
+                    },
+                  ]}
                 >
                   <Image
-                    source={revenueTotal}
+                    source={revnue}
                     style={[
                       styles.sideBarImage,
                       {
                         tintColor:
                           selectedScreen === 'Revenue'
-                            ? COLORS.primary
+                            ? COLORS.dark_blue
                             : getPosUser?.user_roles?.length > 0
                             ? COLORS.mid_grey
-                            : COLORS.black,
+                            : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(20)} />
+                <Spacer space={SH(5)} />
                 <TouchableOpacity
                   disabled={getPosUser?.user_roles?.length > 0 ? true : false}
                   onPress={() => setselectedScreen('TotalCost')}
+                  style={[
+                    styles.bucketBackgorund,
+                    {
+                      backgroundColor:
+                        selectedScreen === 'TotalCost'
+                          ? COLORS.lightBlueBG
+                          : getPosUser?.user_roles?.length > 0
+                          ? COLORS.mid_grey
+                          : COLORS.white,
+                    },
+                  ]}
                 >
                   <Image
-                    source={totalSales}
+                    source={totalCostIcon}
                     style={[
                       styles.sideBarImage,
                       {
                         tintColor:
                           selectedScreen === 'TotalCost'
-                            ? COLORS.primary
+                            ? COLORS.dark_blue
                             : getPosUser?.user_roles?.length > 0
                             ? COLORS.mid_grey
-                            : COLORS.black,
+                            : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(20)} />
+                <Spacer space={SH(5)} />
                 <TouchableOpacity
                   disabled={getPosUser?.user_roles?.length > 0 ? true : false}
-                  // style={[
-                  //   styles.bucketBackgorund,
-                  //   {
-                  //     backgroundColor:
-                  //       selectedScreen === 'TotalProfit'
-                  //         ? COLORS.primary
-                  //         : getPosUser?.user_roles?.length > 0
-                  //         ? COLORS.mid_grey
-                  //         : COLORS.white,
-                  //   },
-                  // ]}
+                  style={[
+                    styles.bucketBackgorund,
+                    {
+                      backgroundColor:
+                        selectedScreen === 'TotalProfit'
+                          ? COLORS.lightBlueBG
+                          : getPosUser?.user_roles?.length > 0
+                          ? COLORS.mid_grey
+                          : COLORS.white,
+                    },
+                  ]}
                   onPress={() => setselectedScreen('TotalProfit')}
                 >
                   <Image
-                    source={profit}
+                    source={profitIcon}
                     style={[
                       styles.sideBarImage,
                       {
                         tintColor:
                           selectedScreen === 'TotalProfit'
-                            ? COLORS.primary
+                            ? COLORS.dark_blue
                             : getPosUser?.user_roles?.length > 0
                             ? COLORS.mid_grey
-                            : COLORS.black,
+                            : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(20)} />
-                <TouchableOpacity onPress={() => setselectedScreen('TotalPosOrder')}>
+                <Spacer space={SH(5)} />
+                <TouchableOpacity
+                  onPress={() => setselectedScreen('TotalPosOrder')}
+                  style={[
+                    styles.bucketBackgorund,
+                    {
+                      backgroundColor:
+                        selectedScreen === 'TotalPosOrder' ? COLORS.lightBlueBG : COLORS.white,
+                    },
+                  ]}
+                >
                   <Image
-                    source={channel}
+                    source={posOrders}
                     style={[
                       styles.sideBarImage,
                       {
                         tintColor:
-                          selectedScreen === 'TotalPosOrder' ? COLORS.primary : COLORS.black,
+                          selectedScreen === 'TotalPosOrder'
+                            ? COLORS.dark_blue
+                            : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(20)} />
-                <TouchableOpacity onPress={() => setselectedScreen('TotalDeliveryOrders')}>
+                <Spacer space={SH(5)} />
+                <TouchableOpacity
+                  onPress={() => setselectedScreen('TotalDeliveryOrders')}
+                  style={[
+                    styles.bucketBackgorund,
+                    {
+                      backgroundColor:
+                        selectedScreen === 'TotalDeliveryOrders'
+                          ? COLORS.lightBlueBG
+                          : COLORS.white,
+                    },
+                  ]}
+                >
                   <Image
-                    source={averageOrder}
+                    source={deliveryIcon}
                     style={[
                       styles.sideBarImage,
                       {
                         tintColor:
-                          selectedScreen === 'TotalDeliveryOrders' ? COLORS.primary : COLORS.black,
+                          selectedScreen === 'TotalDeliveryOrders'
+                            ? COLORS.dark_blue
+                            : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(20)} />
+                <Spacer space={SH(5)} />
 
-                <TouchableOpacity onPress={() => setselectedScreen('TotalShippingOrders')}>
+                <TouchableOpacity
+                  onPress={() => setselectedScreen('TotalShippingOrders')}
+                  style={[
+                    styles.bucketBackgorund,
+                    {
+                      backgroundColor:
+                        selectedScreen === 'TotalShippingOrders'
+                          ? COLORS.lightBlueBG
+                          : COLORS.white,
+                    },
+                  ]}
+                >
                   <Image
-                    source={productSelling}
+                    source={shippingIcon}
                     style={[
                       styles.sideBarImage,
                       {
                         tintColor:
-                          selectedScreen === 'TotalShippingOrders' ? COLORS.primary : COLORS.black,
+                          selectedScreen === 'TotalShippingOrders'
+                            ? COLORS.dark_blue
+                            : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(20)} />
+                <Spacer space={SH(5)} />
 
-                <TouchableOpacity onPress={() => setselectedScreen('TotalOrders')}>
+                <TouchableOpacity
+                  onPress={() => setselectedScreen('TotalOrders')}
+                  style={[
+                    styles.bucketBackgorund,
+                    {
+                      backgroundColor:
+                        selectedScreen === 'TotalOrders' ? COLORS.lightBlueBG : COLORS.white,
+                    },
+                  ]}
+                >
                   <Image
-                    source={locationSales}
-                    style={[
-                      styles.sideBarImage,
-                      {
-                        tintColor: selectedScreen === 'TotalOrders' ? COLORS.primary : COLORS.black,
-                      },
-                    ]}
-                  />
-                </TouchableOpacity>
-
-                <Spacer space={SH(20)} />
-
-                <TouchableOpacity onPress={() => setselectedScreen('TotalInventory')}>
-                  <Image
-                    source={totalOrders}
-                    style={[
-                      styles.sideBarImage,
-                      {
-                        tintColor:
-                          selectedScreen === 'TotalInventory' ? COLORS.primary : COLORS.black,
-                      },
-                    ]}
-                  />
-                </TouchableOpacity>
-
-                <Spacer space={SH(20)} />
-                <TouchableOpacity onPress={() => setselectedScreen('TotalProductSold')}>
-                  <Image
-                    source={totalCost}
+                    source={totalOrder}
                     style={[
                       styles.sideBarImage,
                       {
                         tintColor:
-                          selectedScreen === 'TotalProductSold' ? COLORS.primary : COLORS.black,
+                          selectedScreen === 'TotalOrders' ? COLORS.dark_blue : COLORS.light_blue2,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
+
+                <Spacer space={SH(5)} />
+
+                <TouchableOpacity
+                  onPress={() => setselectedScreen('TotalInventory')}
+                  style={[
+                    styles.bucketBackgorund,
+                    {
+                      backgroundColor:
+                        selectedScreen === 'TotalInventory' ? COLORS.lightBlueBG : COLORS.white,
+                    },
+                  ]}
+                >
+                  <Image
+                    source={inventory}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'TotalInventory'
+                            ? COLORS.dark_blue
+                            : COLORS.light_blue2,
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
+
+                <Spacer space={SH(5)} />
+                <TouchableOpacity
+                  onPress={() => setselectedScreen('TotalProductSold')}
+                  style={[
+                    styles.bucketBackgorund,
+                    {
+                      backgroundColor:
+                        selectedScreen === 'TotalProductSold' ? COLORS.lightBlueBG : COLORS.white,
+                    },
+                  ]}
+                >
+                  <Image
+                    source={soldProduct}
+                    style={[
+                      styles.sideBarImage,
+                      {
+                        tintColor:
+                          selectedScreen === 'TotalProductSold'
+                            ? COLORS.dark_blue
+                            : COLORS.light_blue2,
                       },
                     ]}
                   />

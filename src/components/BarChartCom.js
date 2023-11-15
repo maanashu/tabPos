@@ -31,11 +31,10 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
 
     const firstObject = {
       value: values[0] || 0,
-      frontColor: '#102773',
       label: label?.split(' ')[0], // Extracting only the day part
-      labelTextStyle: { color: '#626262', fontSize: 11, marginLeft: ms(6) },
+      labelTextStyle: { color: COLORS.dark_blue, fontSize: 11, marginLeft: ms(6) },
       // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
-      frontColor: COLORS.primary,
+      frontColor: '#4659B5',
       labelWidth: SW(70),
       spacing: 3,
       intialSpace: 0,
@@ -48,7 +47,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
         // label: '', // Empty label for the other two objects
         // labelWidth: 70,
         // labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-        frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
+        frontColor: i === 0 ? COLORS.medium_skyblue : COLORS.dark_purple,
         // initialSpace: 0,
       })),
     ];
@@ -59,11 +58,10 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
 
     const firstObject = {
       value: values[0] || 0,
-      frontColor: '#102773',
       label: label?.split(' ')[0], // Extracting only the day part
-      labelTextStyle: { color: '#626262', fontSize: 11 },
+      labelTextStyle: { color: COLORS.dark_blue, fontSize: 11 },
       // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
-      frontColor: COLORS.primary,
+      frontColor: '#4659B5',
       labelWidth: SW(70),
       spacing: 4,
       intialSpace: 0,
@@ -76,7 +74,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
         // label: '', // Empty label for the other two objects
         // labelWidth: 70,
         // labelTextStyle: { color: COLORS.darkGray, fontSize: 11 },
-        frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
+        frontColor: i === 0 ? COLORS.medium_skyblue : COLORS.dark_purple,
         // initialSpace: 0,
       })),
     ];
@@ -105,11 +103,10 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
 
     const firstObject = {
       value: values[0] || 0,
-      frontColor: '#102773',
       label: convertedLabels[index]?.split(' ')[0], // Extracting only the day part
-      labelTextStyle: { color: '#626262', fontSize: 11, marginLeft: ms(4) },
+      labelTextStyle: { color: COLORS.dark_blue, fontSize: 11, marginLeft: ms(4) },
       // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
-      frontColor: COLORS.primary,
+      frontColor: '#4659B5',
       labelWidth: SW(70),
       spacing: 6,
       intialSpace: 0,
@@ -119,7 +116,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
       ...Array.from({ length: 2 }, (_, i) => ({
         value: values[i + 1] || 0,
         spacing: i === 0 ? 6 : 14,
-        frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
+        frontColor: i === 0 ? COLORS.medium_skyblue : COLORS.dark_purple,
       })),
     ];
   });
@@ -378,7 +375,7 @@ export function BarChartCom({
     <View>
       {isLoading ? (
         <View style={styles.loaderView}>
-          <ActivityIndicator color={COLORS.primary} size={'small'} />
+          <ActivityIndicator color={COLORS.dark_blue} size={'small'} />
         </View>
       ) : (
         <BarChart
@@ -391,8 +388,8 @@ export function BarChartCom({
           yAxisThickness={0}
           xAxisType={'dashed'}
           yAxisType={'dashed'}
-          xAxisColor={`rgba(39, 90, 255, 1)`}
-          yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
+          xAxisColor={COLORS.dark_blue}
+          yAxisTextStyle={{ color: COLORS.dark_blue, fontSize: 11 }}
           noOfSections={4}
           // maxValue={100}
           yAxisLength={350}

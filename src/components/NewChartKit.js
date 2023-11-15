@@ -88,22 +88,22 @@ export function NewChartKit({
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.26
+              ? Dimensions.get('window').width * 0.265
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? SH(160) : SH(160)}
+          height={Platform.OS === 'android' ? ms(115) : SH(160)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
-            backgroundGradientFrom: COLORS.mid_grey,
-            backgroundGradientTo: COLORS.mid_grey,
+            backgroundGradientFrom: COLORS.lightBlueBG,
+            backgroundGradientTo: COLORS.lightBlueBG,
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             style: {
               borderRadius: 16,
               backgroundColor: COLORS.mid_grey,
             },
-            labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(38, 54, 130, ${opacity})`,
             propsForBackgroundLines: {
               strokeWidth: 1,
               stroke: '#EFEFEF',
@@ -115,7 +115,8 @@ export function NewChartKit({
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? SW(-3) : SW(-8),
+            marginLeft: Platform.OS === 'android' ? ms(-7) : SW(-8),
+            marginTop: ms(5),
           }}
           withShadow={false}
           fromZero
@@ -128,26 +129,26 @@ export function NewChartKit({
               {
                 data: resultArr,
                 strokeWidth: 2,
-                color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
+                color: (opacity = 1) => `rgba(114, 51, 194,${opacity})`,
               },
               {
                 data: resultArr1,
                 strokeWidth: 2,
-                color: (opacity = 1) => `rgba(107, 132, 211, ${opacity})`, // optional
+                color: (opacity = 1) => `rgba(240, 68, 56, ${opacity})`, // optional
               },
               {
                 data: resultArr2,
                 strokeWidth: 2,
-                color: (opacity = 1) => `rgba(251, 70, 108, ${opacity})`, // optional
+                color: (opacity = 1) => `rgba(240, 192, 26, ${opacity})`, // optional
               },
             ],
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.26
+              ? Dimensions.get('window').width * 0.275
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? SH(160) : SH(165)}
+          height={Platform.OS === 'android' ? ms(100) : SH(165)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -159,7 +160,7 @@ export function NewChartKit({
               borderRadius: 16,
               backgroundColor: COLORS.white,
             },
-            labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
+            color: (opacity = 1) => `rgba(70, 89, 181,${opacity})`,
             propsForBackgroundLines: {
               strokeWidth: 1,
               stroke: '#EFEFEF',
@@ -171,7 +172,7 @@ export function NewChartKit({
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? ms(-15) : SW(-8),
+            marginLeft: Platform.OS === 'android' ? ms(-10) : SW(-8),
           }}
           withShadow={false}
           fromZero
@@ -186,28 +187,30 @@ export function NewChartKit({
               {
                 data: resultArr,
                 strokeWidth: 2,
-                color: (opacity = 2) => `rgba(39, 90, 255,${opacity})`, // optional
+                color: (opacity = 1) => `rgba(70, 89, 181,${opacity})`, // optional
               },
             ],
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.26
+              ? Dimensions.get('window').width * 0.275
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? ms(95) : SH(165)}
+          height={Platform.OS === 'android' ? ms(120) : SH(165)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
             backgroundGradientFrom: COLORS.white,
             backgroundGradientTo: COLORS.white,
+            fillShadowGradientFrom: '#D8B9FF',
+            fillShadowGradientTo: COLORS.light_purple,
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             style: {
               borderRadius: 16,
               backgroundColor: COLORS.white,
             },
-            labelColor: (opacity = 1) => `rgba(60, 68, 77, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(38, 54, 130, ${opacity})`,
             propsForBackgroundLines: {
               strokeWidth: 1,
               stroke: '#EFEFEF',
@@ -219,11 +222,12 @@ export function NewChartKit({
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? ms(-15) : SW(-8),
+            marginLeft: Platform.OS === 'android' ? ms(-10) : SW(-8),
             paddingVertical: 0,
+            marginTop: ms(5),
           }}
           xLabelsOffset={ms(-2)}
-          withShadow={false}
+          // withShadow={false}
           fromZero
           bezier
         />
