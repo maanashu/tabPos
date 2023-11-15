@@ -7,15 +7,16 @@ import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { addNotescart } from '@/actions/RetailAction';
+import { addNotescart, addServiceNotescart } from '@/actions/RetailAction';
 
 const AddNotes = ({ notesClose }) => {
   const dispatch = useDispatch();
   const notesRef = useRef();
   const retailData = useSelector(getRetail);
-  const productCartData = retailData?.getAllCart;
-  const cartId = retailData?.getAllCart?.id;
-  const [notes, setNotes] = useState(productCartData?.notes);
+  const presentCart = retailData?.cartFrom;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  const cartId = cartData?.id;
+  const [notes, setNotes] = useState(cartData?.notes);
 
   useEffect(() => {
     notesRef?.current?.open();
@@ -29,7 +30,7 @@ const AddNotes = ({ notesClose }) => {
         cartId: cartId,
         notes: notes,
       };
-      dispatch(addNotescart(data));
+      dispatch(presentCart === 'product' ? addNotescart(data) : addServiceNotescart(data));
       notesClose();
     }
   };

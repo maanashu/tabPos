@@ -135,6 +135,7 @@ export const en = {
     sessionHistory: 'Session history',
     summary: 'Summary',
     countCash: 'Count cash in drawer',
+    countAmount: 'Count Cash Amount in Drawer',
     amountCounted: 'Amount counted (USD)',
     amount: '$ 0.00',
     note: 'Note',
@@ -153,6 +154,8 @@ export const en = {
     endSession: 'End Session',
     amountAdded: 'Enter amount added',
     amountRemoved: 'Enter amount removed',
+    cashAdd: 'Add Cash in Drawer',
+    cashRemove: 'Remove Cash in Drawer',
     cashAmount: 'Cash amount (USD)',
     enterAmount: 'Enter Amount',
     confirm: 'Confirm',
@@ -477,6 +480,7 @@ export const en = {
     searchSubCategory: 'Search Sub-catgories',
     searchBrand: 'Search Brands',
     searchStaff: 'Search Staffs',
+    procedtoCheckout: 'Proceed to checkout ',
   },
   Staff: {
     Staff: 'Staff',
@@ -583,5 +587,6 @@ export const en = {
   batchManagement: {
     header: 'Batch management',
     batch: 'Batch',
+    back: 'Back',
   },
 };

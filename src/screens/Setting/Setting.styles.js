@@ -10,7 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.sky_grey,
   },
   flexRow: {
     flexDirection: 'row',
@@ -26,8 +26,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   headingCon: {
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
+    // borderLeftWidth: 1,
+    // borderRightWidth: 1,
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.22,
     height: windowHeight * 0.96,
@@ -35,18 +35,27 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   DataCon: {
-    width: Platform.OS === 'android' ? windowWidth * 0.73 : windowWidth * 0.71,
+    width: Platform.OS === 'android' ? windowWidth * 0.66 : windowWidth * 0.64,
     height: windowHeight * 0.96,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(18),
+    backgroundColor: COLORS.white,
+    marginLeft: SW(6),
+    borderRadius: ms(20),
+    marginTop: ms(10),
+    marginBottom: ms(10),
   },
   headingBody: {
-    borderTopWidth: 1,
-    borderBottomWidth: 0.5,
+    // borderTopWidth: 1,
+    // borderBottomWidth: 0.5,
     borderColor: COLORS.solidGrey,
     height: Platform.OS === 'android' ? SW(13) : SW(15),
     paddingHorizontal: moderateScale(10),
     justifyContent: 'center',
+    marginVertical: ms(2),
+    borderRadius: ms(8),
+    borderWidth: ms(1),
+    // ...ShadowStyles.shadow2,
   },
   right_light: {
     width: SW(8),
@@ -78,7 +87,7 @@ export const styles = StyleSheet.create({
   // setting security css start
   securityMainCon: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     borderRadius: 10,
     // height: windowHeight * 0.33,
     padding: 15,
@@ -103,8 +112,8 @@ export const styles = StyleSheet.create({
     padding: 15,
   },
   securityLogo: {
-    width: SW(16),
-    height: SW(16),
+    width: SW(10),
+    height: SW(10),
     resizeMode: 'contain',
   },
   twoStepVerifiCon: {
@@ -114,20 +123,22 @@ export const styles = StyleSheet.create({
   twoStepText: {
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
-    color: COLORS.black,
+    color: COLORS.navy_blue,
   },
   securitysubhead: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    color: COLORS.lavender,
   },
   twoStepMemberCon: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 5,
+    borderColor: COLORS.light_purple,
+    borderRadius: ms(20),
     paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(4),
     marginVertical: verticalScale(3),
+    height: SH(96),
+    justifyContent: 'center',
   },
   twoStepMemberConTax: {
     marginLeft: Platform.OS === 'android' ? moderateScale(35) : moderateScale(20),
@@ -159,6 +170,7 @@ export const styles = StyleSheet.create({
   },
   marginLeft: {
     marginLeft: moderateScale(8),
+    flex: 1,
   },
   modalMainView: {
     width: windowWidth * 0.5,

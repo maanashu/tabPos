@@ -738,20 +738,25 @@ export function MainScreen({
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
               >
                 {productCon && getMerchantService?.is_product_exist === true ? (
                   <View style={styles.allProductSection}>
-                    <Text style={styles.allProduct}>{strings.posRetail.allProduct}</Text>
-                    <Text style={styles.productCount}>
-                      ({getRetailData?.getMainProduct?.total ?? '0'})
+                    <Text style={styles.allProduct}>
+                      {strings.posRetail.allProduct} {''}
+                      <Text style={styles.productCount}>
+                        ({getRetailData?.getMainProduct?.total ?? '0'})
+                      </Text>
                     </Text>
                   </View>
                 ) : (
                   <View style={styles.allProductSection}>
-                    <Text style={styles.allProduct}>{'All Services'}</Text>
-                    <Text style={styles.productCount}>
-                      ({getRetailData?.getMainServices?.total ?? '0'})
+                    <Text style={styles.allProduct}>
+                      {'All Services'}{' '}
+                      <Text style={styles.productCount}>
+                        ({getRetailData?.getMainServices?.total ?? '0'})
+                      </Text>
                     </Text>
                   </View>
                 )}
@@ -822,40 +827,40 @@ export function MainScreen({
                       <TouchableOpacity
                         style={
                           productCon
-                            ? [styles.prouductAndServiceCon, { borderColor: COLORS.primary }]
+                            ? [styles.prouductAndServiceCon, { backgroundColor: COLORS.navy_blue }]
                             : styles.prouductAndServiceCon
                         }
                         onPress={productHandler}
                       >
+                        <Text style={productCon ? styles.productTextBlue : styles.productText}>
+                          {'Products'}
+                        </Text>
                         <Image
                           source={product}
                           style={
                             productCon ? styles.productImageStyleBlue : styles.productImageStyle
                           }
                         />
-                        <Text style={productCon ? styles.productTextBlue : styles.productText}>
-                          {'Products'}
-                        </Text>
                       </TouchableOpacity>
                     ) : null}
                     {getMerchantService?.is_service_exist ? (
                       <TouchableOpacity
                         style={
                           serviceCon
-                            ? [styles.prouductAndServiceCon, { borderColor: COLORS.primary }]
+                            ? [styles.prouductAndServiceCon, { backgroundColor: COLORS.navy_blue }]
                             : styles.prouductAndServiceCon
                         }
                         onPress={serviceHandler}
                       >
+                        <Text style={serviceCon ? styles.productTextBlue : styles.productText}>
+                          {'Services'}
+                        </Text>
                         <Image
                           source={services}
                           style={
                             serviceCon ? styles.productImageStyleBlue : styles.productImageStyle
                           }
                         />
-                        <Text style={serviceCon ? styles.productTextBlue : styles.productText}>
-                          {'Services'}
-                        </Text>
                       </TouchableOpacity>
                     ) : null}
                     {productCon && getMerchantService?.is_product_exist === true ? (
@@ -863,7 +868,10 @@ export function MainScreen({
                         <TouchableOpacity
                           style={
                             filterCon
-                              ? [styles.prouductAndServiceCon, { borderColor: COLORS.primary }]
+                              ? [
+                                  styles.prouductAndServiceCon,
+                                  { backgroundColor: COLORS.navy_blue },
+                                ]
                               : styles.prouductAndServiceCon
                           }
                           onPress={filterHandler}
@@ -871,7 +879,7 @@ export function MainScreen({
                           <Text
                             style={
                               filterCon
-                                ? [styles.productText, { color: COLORS.primary }]
+                                ? [styles.productText, { color: COLORS.navy_blue }]
                                 : styles.productText
                             }
                           >

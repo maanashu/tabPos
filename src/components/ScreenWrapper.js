@@ -10,7 +10,7 @@ export function ScreenWrapper(props) {
   const styles = useMemo(() =>
     StyleSheet.create({
       containerStyle: {
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.sky_grey,
         flex: 1,
       },
     })

@@ -17,12 +17,15 @@ import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { digitWithDot } from '@/utils/validators';
-import { useDispatch } from 'react-redux';
-import { productUpdatePrice } from '@/actions/RetailAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { productUpdatePrice, serviceUpdatePrice } from '@/actions/RetailAction';
+import { getRetail } from '@/selectors/RetailSelectors';
 // import { productPriceUpdate } from "@/actions/RetailActions";
 
 const PriceChange = ({ priceChangeClose, cartProduct }) => {
   const dispatch = useDispatch();
+  const retailData = useSelector(getRetail);
+  const presentCart = retailData?.cartFrom;
   const productPrice = cartProduct?.product_details?.supply?.supply_prices?.selling_price;
   const notesRef = useRef();
   const [notes, setNotes] = useState('');
@@ -45,7 +48,7 @@ const PriceChange = ({ priceChangeClose, cartProduct }) => {
         cartProductId: cartProduct?.id,
         updatedPrice: amount,
       };
-      dispatch(productUpdatePrice(data));
+      dispatch(presentCart === 'product' ? productUpdatePrice(data) : serviceUpdatePrice(data));
       priceChangeClose();
     }
   };

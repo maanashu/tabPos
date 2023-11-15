@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ScreenWrapper } from '@/components';
-import { COLORS, SF, SH } from '@/theme';
+import { ScreenWrapper, Spacer } from '@/components';
+import { COLORS, SF, SH, SW, ShadowStyles } from '@/theme';
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import { right_light } from '@/assets';
@@ -33,6 +33,7 @@ import { strings } from '@/localization';
 import { getAllPlans } from '@/actions/SubscriptionAction';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { DeviceDetails } from './Components/DeviceDetails';
+import { ms } from 'react-native-size-matters';
 
 export function Setting() {
   const dispatch = useDispatch();
@@ -117,26 +118,36 @@ export function Setting() {
   );
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? COLORS.blue_shade : '#transparent';
-    const tintAndColor = item.id === selectedId ? COLORS.navy_blue : COLORS.darkGray;
-    const borderColor = item.id === selectedId ? COLORS.blue_shade : COLORS.solidGrey;
-    const color = item.id === selectedId ? COLORS.navy_blue : COLORS.black;
+    const backgroundColor = item.id === selectedId ? COLORS.white : COLORS.sky_grey;
+    const tintAndColor = item.id === selectedId ? COLORS.navy_blue : COLORS.lavender;
+    const borderColor = item.id === selectedId ? COLORS.blue_shade : COLORS.sky_grey;
+    const color = item.id === selectedId ? COLORS.navy_blue : COLORS.lavender;
 
     return (
       <>
-        {/* {item?.name == strings.legal.LegalText ||
-        item?.name == strings.Policies.PoliciesText ||
-        item?.name == strings.deviceDetails.deviceDetailsText 
-        ? null : ( */}
-        <Item
-          item={item}
+        <TouchableOpacity
+          style={[
+            styles.headingBody,
+            {
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
+              // ...(selectedId && selectedId == item?.id && ShadowStyles.shadow2),
+            },
+          ]}
           onPress={() => (setSelectedId(item.id), onpressFun(item.id))}
-          backgroundColor={backgroundColor}
-          textColor={color}
-          tintAndColor={tintAndColor}
-          borderColor={borderColor}
-        />
-        {/* )} */}
+        >
+          <View style={styles.flexRow}>
+            <View style={styles.dispalyRow}>
+              <Image source={item.image} style={[styles.security, { tintColor: tintAndColor }]} />
+              <View style={{ marginLeft: ms(8) }}>
+                <Text style={[styles.securityText, { color: color }]}>{item.name}</Text>
+                <Text style={[styles.notUpdated, { color: tintAndColor }]}>
+                  {item?.name == 'Staffs' ? posUserArray?.length : item.subhead}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
       </>
     );
   };
@@ -149,15 +160,23 @@ export function Setting() {
       <View style={styles.container}>
         <View style={styles.dispalyRow}>
           <View style={styles.headingCon}>
-            <View>
+            <View
+              style={{
+                padding: ms(15),
+                backgroundColor: COLORS.white,
+                borderRadius: ms(20),
+              }}
+            >
               <FlatList
                 data={settingLabelData}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 extraData={selectedId}
+                showsVerticalScrollIndicator={false}
               />
             </View>
           </View>
+          {/* <Spacer horizontal space={SW(15)} /> */}
           <View style={styles.DataCon}>{bodyView()}</View>
         </View>
       </View>

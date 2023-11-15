@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   cashProfileCon: {
-    width: windowWidth * 0.3,
+    width: windowWidth * 0.29,
     height: windowHeight * 0.95,
     backgroundColor: COLORS.textInputBackground,
     paddingHorizontal: moderateScale(10),
@@ -131,7 +131,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   rightOrderCon: {
-    width: windowWidth * 0.64,
+    width: windowWidth * 0.6,
     height: windowHeight * 0.95,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(5),

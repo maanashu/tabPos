@@ -22,6 +22,7 @@ import { digitWithDot, emailReg } from '@/utils/validators';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   attachCustomer,
+  attachServiceCustomer,
   customProductAdd,
   getUserDetail,
   getUserDetailSuccess,
@@ -37,15 +38,16 @@ import { crossButton, dropdown } from '@/assets';
 const ProductCustomerAdd = ({ crossHandler }) => {
   const textInputRef = useRef(null);
   const dispatch = useDispatch();
-  const getRetailData = useSelector(getRetail);
-  const cartData = getRetailData?.getAllCart;
+  const retailData = useSelector(getRetail);
+  const presentCart = retailData?.cartFrom;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [searchCustomer, setSearchCustomer] = useState('');
-  const getuserDetailByNo = getRetailData?.getUserDetail;
+  const getuserDetailByNo = retailData?.getUserDetail;
   const userLength = Object.keys(getuserDetailByNo)?.length;
   const [defaultPhoneNumber, setDefaultPhoneNumber] = useState(
     getuserDetailByNo?.full_phone_number
@@ -101,7 +103,7 @@ const ProductCustomerAdd = ({ crossHandler }) => {
         firstName: firstName,
         lastName: lastName,
       };
-      dispatch(attachCustomer(data));
+      dispatch(presentCart === 'product' ? attachCustomer(data) : attachServiceCustomer(data));
       clearInput();
       crossHandler();
     }
@@ -118,7 +120,7 @@ const ProductCustomerAdd = ({ crossHandler }) => {
           userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
           customerAdd: 'customerAdd',
         };
-    dispatch(attachCustomer(data));
+    dispatch(presentCart === 'product' ? attachCustomer(data) : attachServiceCustomer(data));
     clearInput();
     crossHandler();
   };

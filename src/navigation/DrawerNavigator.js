@@ -25,6 +25,7 @@ import {
   bluetray,
   blueCalender,
   blueSetting,
+  userImage,
 } from '@/assets';
 import { COLORS, SF, SW } from '@/theme';
 import { NAVIGATION } from '@/constants';
@@ -62,7 +63,7 @@ export function DrawerNavigator(props) {
     <DrawerContentScrollView
       {...props}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.container}
+      contentContainerStyle={styles.contentContainerStyle}
       bounces={false}
     >
       <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
@@ -78,6 +79,21 @@ export function DrawerNavigator(props) {
           }}
           icon={({ focused }) => (
             <Image style={styles.iconStyle} source={focused ? logo_icon : logo_icon} />
+          )}
+        />
+        <DrawerItem
+          label={''}
+          activeBackgroundColor={COLORS.transparent}
+          focused={active === 'posRetail3' ? true : false}
+          // onPress={() => {
+          //   setActive('posRetail3');
+          //   navigate(NAVIGATION.posRetail3);
+          //   // dispatch(addSellingSelection());
+          //   // dispatch(cartScreenTrue({ state: false }));
+          //   // dispatch(getUserDetailSuccess([]));
+          // }}
+          icon={({ focused }) => (
+            <Image source={focused ? userImage : userImage} style={styles.iconStyle} />
           )}
         />
 
@@ -309,7 +325,11 @@ const styles = StyleSheet.create({
     left: 0,
     right: 10,
     width: SW(25),
-    height: Platform.OS === 'android' ? windowHeight * 0.95 : windowHeight,
+    paddingVertical: ms(10),
+    backgroundColor: COLORS.white,
+    borderRadius: ms(60),
+    flex: 1,
+    marginVertical: ms(15),
   },
   drawerMainView: {
     flex: 1,
@@ -317,19 +337,21 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   iconStyle: {
-    width: Platform.OS === 'android' ? SW(9) : SW(10),
-    height: Platform.OS === 'android' ? SW(9) : SW(10),
+    width: ms(20),
+    height: ms(20),
     resizeMode: 'contain',
+    left: SW(2.8),
   },
   iconStyle2: {
-    width: Platform.OS === 'android' ? SW(7) : SW(10),
-    height: Platform.OS === 'android' ? SW(7) : SW(10),
+    width: ms(20),
+    height: ms(20),
     marginLeft: 3,
     resizeMode: 'contain',
+    left: SW(2.8),
   },
   iconStyle3: {
-    width: Platform.OS === 'android' ? SW(7) : SW(9),
-    height: Platform.OS === 'android' ? SW(7) : SW(9),
+    width: ms(20),
+    height: ms(20),
     marginLeft: 3,
     resizeMode: 'contain',
   },
@@ -355,7 +377,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(5),
     position: 'absolute',
     bottom: 0,
-    right: -5,
+    right: -10,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.textInputBackground,

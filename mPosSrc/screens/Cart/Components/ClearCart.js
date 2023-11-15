@@ -5,11 +5,14 @@ import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { useDispatch } from 'react-redux';
-import { clearAllCart } from '@/actions/RetailAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearAllCart, clearServiceAllCart } from '@/actions/RetailAction';
+import { getRetail } from '@/selectors/RetailSelectors';
 
 function ClearCart({ cartClose }) {
   const dispatch = useDispatch();
+  const retailData = useSelector(getRetail);
+  const presentCart = retailData?.cartFrom;
 
   return (
     <View style={styles.addDiscountcon}>
@@ -36,7 +39,7 @@ function ClearCart({ cartClose }) {
           <TouchableOpacity
             style={styles.clearButtonStyle}
             onPress={() => {
-              dispatch(clearAllCart());
+              dispatch(presentCart === 'product' ? clearAllCart() : clearServiceAllCart());
               cartClose();
             }}
           >

@@ -747,6 +747,7 @@ export const getAllProductCartSuccess = (getAllProductCart) => ({
   type: TYPES.GET_ALL_PRODUCT_CART_SUCCESS,
   payload: getAllProductCart,
 });
+
 const getAllProductCartError = (error) => ({
   type: TYPES.GET_ALL_PRODUCT_CART_ERROR,
   payload: { error },
@@ -990,6 +991,10 @@ const getProductRootReset = () => ({
   payload: null,
 });
 
+export const cartRun = (cartFrom) => ({
+  type: TYPES.CART_RUN_SUCCESS,
+  payload: { cartFrom },
+});
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {

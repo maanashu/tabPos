@@ -25,6 +25,7 @@ import { strings } from '@mPOS/localization';
 import CountryPicker from 'react-native-country-picker-modal';
 import { dropdown } from '@/assets';
 import { useIsFocused } from '@react-navigation/native';
+import { memo } from 'react';
 
 const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
   const isFocused = useIsFocused();
@@ -285,7 +286,7 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
   );
 };
 
-export default JbrCoin;
+export default memo(JbrCoin);
 
 const styles = StyleSheet.create({
   productHeaderCon: {
