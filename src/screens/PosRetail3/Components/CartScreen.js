@@ -432,7 +432,9 @@ export function CartScreen({
                                 >
                                   <Image source={minus} style={styles.minus} />
                                 </TouchableOpacity>
-                                <Text style={styles.dataQty}>{data.qty}</Text>
+                                {/* <Text style={styles.dataQty}>{data.qty}</Text> */}
+                                <Text>{data.qty}</Text>
+
                                 <TouchableOpacity
                                   style={{
                                     width: SW(10),

@@ -1287,7 +1287,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderTopLeftRadius: 10,
     borderTopEndRadius: 10,
-    width: Platform.OS === 'android' ? windowWidth * 0.82 : windowWidth * 0.83,
+    width: Platform.OS === 'android' ? windowWidth * 0.82 : windowWidth * 0.8,
     height: windowHeight * 0.88,
     paddingTop: verticalScale(6),
     paddingHorizontal: moderateScale(10),
@@ -1413,7 +1413,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   productCon: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.105 : ms(90),
+    width: Platform.OS === 'ios' ? ms(72) : ms(90),
     // height: Platform.OS === 'ios' ? windowHeight * 0.23 : windowHeight * 0.26,
     backgroundColor: COLORS.white,
     borderRadius: ms(10),
@@ -1424,7 +1424,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
   },
   categoryshoes: {
-    width: Platform.OS === 'ios' ? windowWidth * 0.09 : ms(85),
+    width: Platform.OS === 'ios' ? ms(68) : ms(85),
     height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',
