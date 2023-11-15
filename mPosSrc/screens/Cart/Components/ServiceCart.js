@@ -45,7 +45,7 @@ import ProductCustomerAdd from './ProductCustomerAdd';
 import { NewCustomerAdd } from '@/screens/PosRetail3/Components/NewCustomerAdd';
 import JbrCoin from './JbrCoin';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { updateServiceCartLength } from '@/actions/CartAction';
 import { getServiceCartLength } from '@/selectors/CartSelector';
 
@@ -70,6 +70,7 @@ export function ServiceCart({ cartChangeHandler }) {
   const serviceCartArray = retailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
   const CART_LENGTH = useSelector(getServiceCartLength);
+  console.log('----------', serviceCartData?.appointment_cart_products?.length);
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -168,19 +169,20 @@ export function ServiceCart({ cartChangeHandler }) {
   };
 
   const backCartLoad = () => {
-    var arr = retailData?.getserviceCart;
-    if (arr?.appointment_cart_products?.length > 0) {
-      const products = arr?.appointment_cart_products?.map((item) => ({
-        product_id: item?.product_id,
-        qty: item?.qty,
-      }));
-      const data = {
-        updated_products: products,
-      };
-      dispatch(updateServiceCartQty(data, arr.id));
-    }
-    // else {
-    //   clearCartHandler();
+    const arr = serviceCartData;
+    console.log('data1-----------', arr?.appointment_cart_products?.length);
+    console.log('text----------', serviceCartData?.appointment_cart_products?.length);
+    // if (arr?.appointment_cart_products?.length > 0) {
+    const products = arr?.appointment_cart_products?.map((item) => ({
+      product_id: item?.product_id,
+      qty: item?.qty,
+    }));
+    console.log('data2-----------', products?.length);
+    const data = {
+      updated_products: products,
+    };
+    console.log('data3-----------', data);
+    dispatch(updateServiceCartQty(data, arr.id));
     // }
   };
   function calculatePercentageValue(value, percentage) {
@@ -191,8 +193,6 @@ export function ServiceCart({ cartChangeHandler }) {
     return percentageValue.toFixed(2) ?? 0.0;
   }
   const removeOneCartHandler = (index) => {
-    console.log('--------', index);
-    return;
     var arr = retailData?.getserviceCart;
     const product = arr?.appointment_cart_products[index];
     const productPrice = product?.product_details?.supply?.supply_prices?.selling_price;
@@ -209,10 +209,26 @@ export function ServiceCart({ cartChangeHandler }) {
     var DATA = {
       payload: arr,
     };
-    console.log(JSON.stringify(DATA?.payload?.appointment_cart_products?.length));
     dispatch(updateServiceCartLength(CART_LENGTH - 1));
     dispatch(getServiceCartSuccess(DATA));
   };
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return () => {
+  //       backCartLoad();
+  //       alert('jkl');
+  //     };
+  //   }, [])
+  // );
+  useEffect(() => {
+    // if (isFocused) {
+    return () => {
+      backCartLoad();
+      alert('jkl');
+    };
+    // }
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
@@ -237,7 +253,10 @@ export function ServiceCart({ cartChangeHandler }) {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.headerImagecCon}
-              onPress={() => setAddNotes((prev) => !prev)}
+              onPress={() => {
+                backCartLoad();
+                setAddNotes((prev) => !prev);
+              }}
             >
               <Image source={Images.notes} style={styles.headerImage} />
             </TouchableOpacity>
@@ -259,7 +278,10 @@ export function ServiceCart({ cartChangeHandler }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.headerImagecCon}
-            onPress={() => setCustomProductAdd((prev) => !prev)}
+            onPress={() => {
+              backCartLoad();
+              setCustomProductAdd((prev) => !prev);
+            }}
           >
             <Image source={Images.fluent} style={styles.headerImage} />
           </TouchableOpacity>
@@ -338,11 +360,11 @@ export function ServiceCart({ cartChangeHandler }) {
                 </View>
               );
             }}
-            renderHiddenItem={(item, index) => (
+            renderHiddenItem={(data, rowMap) => (
               <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
                 // onPress={() => deleteRow(rowMap, data.item.key)}
-                onPress={() => removeOneCartHandler(index)}
+                onPress={() => removeOneCartHandler(data.index)}
               >
                 <Image
                   source={Images.cross}
