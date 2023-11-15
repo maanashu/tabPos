@@ -144,10 +144,7 @@ export function Security() {
 
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(8) }]}>
-        <Text style={styles.HeaderLabelText}>{strings.settings.security}</Text>
-      </View>
-      <Spacer space={SH(20)} />
+      <Spacer space={SH(10)} />
       {sixDigit ? (
         <View style={styles.verifyContainer}>
           <Spacer space={SH(25)} />
@@ -184,28 +181,20 @@ export function Security() {
           />
         </View>
       ) : (
-        <View style={styles.securityMainCon}>
-          <View style={styles.securityBodyCon}>
-            <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={securityLogo} style={styles.securityLogo} />
-              <View style={styles.twoStepVerifiCon}>
-                <Text style={styles.twoStepText}>{strings.settings.twoStepVerifiCon}</Text>
-                <Spacer space={SH(10)} />
-                <Text style={styles.securitysubhead}>{strings.settings.securitysubhead}</Text>
-                <Spacer space={SH(20)} />
-                <View style={styles.twoStepMemberCon}>
+        <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
+          <Image source={securityLogo} style={styles.securityLogo} />
+          <View style={styles.twoStepVerifiCon}>
+            <Text style={styles.twoStepText}>{strings.settings.twoStepVerifiCon}</Text>
+            <Spacer space={SH(10)} />
+            <Text style={styles.securitysubhead}>{strings.settings.securitysubhead}</Text>
+            <Spacer space={SH(20)} />
+            <View style={styles.twoStepMemberCon}>
+              <View style={styles.flexRow}>
+                <View style={styles.marginLeft}>
                   <View style={styles.flexRow}>
-                    <View style={styles.dispalyRow}>
-                      <Image source={teamMember} style={styles.teamMember} />
-                      <View style={styles.marginLeft}>
-                        <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-                          {strings.settings.teamMemeber}
-                        </Text>
-                        <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
-                          {strings.settings.memeberEnable}
-                        </Text>
-                      </View>
-                    </View>
+                    <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                      {strings.settings.teamMemeber}
+                    </Text>
                     <TouchableOpacity
                       style={styles.vectorIconCon}
                       onPress={() => toggleBtnHandler()}
@@ -216,6 +205,9 @@ export function Security() {
                       />
                     </TouchableOpacity>
                   </View>
+                  <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
+                    {strings.settings.memeberEnable}
+                  </Text>
                 </View>
               </View>
             </View>
