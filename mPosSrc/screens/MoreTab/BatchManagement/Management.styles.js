@@ -44,11 +44,24 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  headerMainViewN: {
+    width: windowWidth,
+    // paddingHorizontal: SW(16),
+    alignSelf: 'center',
+    // paddingVertical: SH(18),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   backImageStyle: {
-    width: SW(24),
-    height: SW(24),
+    height: SH(25),
+    width: SW(25),
     resizeMode: 'contain',
   },
+  // backImageStyle: {
+  //   width: SW(24),
+  //   height: SW(24),
+  //   resizeMode: 'contain',
+  // },
   searchView: {
     borderWidth: 1,
     // width: SW(65),
@@ -433,8 +446,12 @@ export const styles = StyleSheet.create({
   },
   bodyContainer2: {
     width: windowWidth * 0.88,
-    height: windowHeight * 0.84,
+    maxHeight: windowHeight * 0.7,
     alignSelf: 'center',
+    backgroundColor: COLORS.white,
+    ...ShadowStyles.shadow,
+    borderRadius: 10,
+    paddingHorizontal: SW(20),
   },
   allCashText: {
     color: COLORS.black,

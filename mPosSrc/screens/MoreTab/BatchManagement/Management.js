@@ -100,6 +100,7 @@ export function Management() {
   );
   const [addCash, setAddCash] = useState(false);
   const [cashSummary, setCashSummary] = useState('');
+  const [isHistory, setIsHistory] = useState(false);
   const [saveSession, setSaveSession] = useState('');
   const [removeCash, setRemoveCash] = useState(false);
   const [endSession, setEndSession] = useState(false);
@@ -432,6 +433,22 @@ export function Management() {
     // setSixDigit(false);
     // }
   };
+  const lockScreenHandler = async () => {
+    const data = {
+      amount: parseInt(getSessionObj?.opening_balance),
+      drawerId: getSessionObj?.id,
+      transactionType: 'end_tracking_session',
+      modeOfcash: 'cash_out',
+    };
+    const res = await dispatch(endTrackingSession(data));
+    if (res?.type === 'END_TRACKING_SUCCESS') {
+      dispatch(getDrawerSessionSuccess(null));
+      dispatch(logoutUserFunction());
+    } else {
+      alert('something went wrong');
+    }
+  };
+
   const customHeader = () => {
     return (
       <View style={styles.headerMainView}>
@@ -447,11 +464,30 @@ export function Management() {
       </View>
     );
   };
-  const Header = () => {
+  const Header = ({ onPress }) => {
     return (
-      <TouchableOpacity onPress={() => goBack()} style={styles.headerMainView}>
+      <TouchableOpacity onPress={onPress} style={styles.headerMainView}>
         <Image source={Images.back} style={styles.backImageStyle} />
         <Text style={styles.headerText}>{strings.batchManagement.header}</Text>
+      </TouchableOpacity>
+    );
+  };
+  const HeaderSummary = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          if (isHistory) {
+            setSummaryHistory(false);
+            setSessionHistory(true);
+          } else {
+            // goBack();
+            dispatch(logoutUserFunction());
+          }
+        }}
+        style={[styles.headerMainView, { paddingHorizontal: SW(1) }]}
+      >
+        <Image source={Images.back} style={styles.backImageStyle} />
+        <Text style={styles.headerText}>{strings.batchManagement.back}</Text>
       </TouchableOpacity>
     );
   };
@@ -791,11 +827,6 @@ export function Management() {
       return (
         <View style={[styles.absoluteZero, { height: WINDOW_HEIGHT / 1.2 }]}>
           <View style={styles.headerView}>
-            <View style={styles.centerSw}>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
-              </Text>
-            </View>
             <TouchableOpacity
               onPress={() => {
                 setEndSelectAmount(false), setCashSummary(true);
@@ -804,6 +835,11 @@ export function Management() {
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
+            <View style={styles.centerSw}>
+              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
+                {strings.management.endCashTrackingSession}
+              </Text>
+            </View>
           </View>
           <View style={styles.trackingBodyCon}>
             <Spacer space={SH(30)} />
@@ -1023,63 +1059,15 @@ export function Management() {
           sessionHistoryLoad={sessionHistoryLoad}
           // oneItemSend={setUserHistory}
           setSessionHistoryArray={setSessionHistoryArray}
+          setViewSession={setViewSession}
+          setSessionHistory={setSessionHistory}
+          isHistory={isHistory}
         />
       );
     } else if (summaryHistory) {
       return (
         <View>
-          <View style={styles.summaryHeaderCon}>
-            <View style={styles.displayFlex}>
-              {historyHeader === true ? (
-                <TouchableOpacity
-                  style={styles.backButtonCon}
-                  onPress={() => {
-                    setSummaryHistory(false), setViewSession(false);
-                    setHistoryHeader(false);
-                    // dispatch(getDrawerSession());
-                    // navigate(NAVIGATION.dashBoard);
-                    dispatch(logoutUserFunction());
-                  }}
-                >
-                  <Image source={backArrow} style={styles.backButtonArrow} />
-                  <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  style={styles.backButtonCon}
-                  onPress={() => {
-                    setSummaryHistory(false);
-                    setSessionHistory(true);
-                    setHistoryHeader(false);
-                  }}
-                >
-                  <Image source={backArrow} style={styles.backButtonArrow} />
-                  <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
-                </TouchableOpacity>
-              )}
-
-              <View>
-                {historyHeader === true ? (
-                  <Text style={styles.summaryText}>
-                    {strings.management.summary}{' '}
-                    <Text style={[styles.summaryText, { color: COLORS.primary }]}>
-                      {moment(historyById?.created_at).format('LL')}
-                    </Text>
-                  </Text>
-                ) : (
-                  <Text style={styles.summaryText}>
-                    {strings.management.summary}{' '}
-                    <Text style={[styles.summaryText, { color: COLORS.primary }]}>
-                      {moment(userHistory?.created_at).format('LL')}
-                    </Text>
-                  </Text>
-                )}
-              </View>
-              <View>
-                <Text>{null}</Text>
-              </View>
-            </View>
-          </View>
+          <HeaderSummary />
           <SummaryHistory
             historyHeader={historyHeader}
             // sessionHistoryArray={userHistory}
@@ -1104,6 +1092,15 @@ export function Management() {
     } else if (viewSession) {
       return (
         <View>
+          <Header
+            onPress={() => {
+              if (isHistory) {
+                setSummaryHistory(true);
+              } else {
+                setViewSession(false);
+              }
+            }}
+          />
           <View style={styles.sessionMainView}>
             <Spacer space={SH(10)} />
             <View style={styles.sessionView}>
@@ -1451,7 +1448,11 @@ export function Management() {
     } else if (closeBatch) {
       return (
         <View style={{ flex: 1, paddingHorizontal: ms(20) }}>
-          <Header />
+          <Header
+            onPress={() => {
+              setCloseBatch(false), setViewSession(true);
+            }}
+          />
 
           <View style={{ backgroundColor: COLORS.white, padding: ms(16), borderRadius: ms(8) }}>
             <View
@@ -1541,20 +1542,8 @@ export function Management() {
                 <Spacer space={SH(30)} />
                 <TouchableOpacity
                   style={styles.lockScreenButton}
-                  onPress={async () => {
-                    const data = {
-                      amount: parseInt(getSessionObj?.opening_balance),
-                      drawerId: getSessionObj?.id,
-                      transactionType: 'end_tracking_session',
-                      modeOfcash: 'cash_out',
-                    };
-                    const res = await dispatch(endTrackingSession(data));
-                    if (res?.type === 'END_TRACKING_SUCCESS') {
-                      dispatch(getDrawerSessionSuccess(null));
-                      dispatch(logoutUserFunction());
-                    } else {
-                      alert('something went wrong');
-                    }
+                  onPress={() => {
+                    lockScreenHandler();
                   }}
                 >
                   <View style={styles.displayRow}>
@@ -1577,6 +1566,7 @@ export function Management() {
     } else {
       return (
         <View>
+          <Header onPress={() => goBack()} />
           {drawerActivity?.length === 0 ? (
             <View style={[styles.cashDrawerView, { backgroundColor: 'red' }]}>
               <View>
@@ -1607,6 +1597,7 @@ export function Management() {
               <TouchableOpacity
                 onPress={() => {
                   setViewSession(true);
+                  setIsHistory(false);
                   dispatch(getDrawerSessions());
                 }}
                 style={styles.viewSessionButtonView}
@@ -1644,7 +1635,9 @@ export function Management() {
           <TouchableOpacity
             style={styles.sessionHistoryView}
             onPress={
-              () => setSessionHistory(true)
+              () => {
+                setSessionHistory(true), setIsHistory(true);
+              }
               // dispatch(getSessionHistory()
             }
           >
@@ -1659,7 +1652,7 @@ export function Management() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        {summaryHistory || closeBatch ? null : Header()}
+        {/* {summaryHistory || closeBatch ? null : Header()} */}
         {contentFunction()}
         {trackinSessionModal()}
         {addCashModal()}

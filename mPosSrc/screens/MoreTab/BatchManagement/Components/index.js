@@ -25,7 +25,7 @@ import {
   up,
 } from '@/assets';
 import { strings } from '@/localization';
-import { styles } from '@/screens/Management/Management.styles';
+import { styles } from '@mPOS/screens/MoreTab/BatchManagement/Management.styles';
 import { Spacer, TableDropdown } from '@/components';
 import { Table } from 'react-native-table-component';
 
@@ -286,27 +286,27 @@ export function SessionHistoryTable({
                   Date
                 </Text>
               </View>
-              <View style={styles.profileheaderChildView}>
+              {/* <View style={styles.profileheaderChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={1}>
                   Start
                 </Text>
-              </View>
-              <View style={styles.profileheaderChildView}>
+              </View> */}
+              {/* <View style={styles.profileheaderChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={1}>
                   Ends
                 </Text>
-              </View>
+              </View> */}
               <View style={styles.profileheaderChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={2}>
-                  Ended By System
+                  Ended By
                 </Text>
               </View>
               <View style={styles.profileheaderChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={2}>
-                  Session Started
+                  Started
                 </Text>
               </View>
-              <View style={styles.profileheaderChildView}>
+              {/* <View style={styles.profileheaderChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={2}>
                   Total {`\n`}Cash In
                 </Text>
@@ -320,10 +320,10 @@ export function SessionHistoryTable({
                 <Text style={styles.tableTextHeader} numberOfLines={2}>
                   Counted {`\n`}cash
                 </Text>
-              </View>
+              </View> */}
               <View style={styles.profileheaderChildView}>
                 <Text style={styles.tableTextHeader} numberOfLines={2}>
-                  Session Ended
+                  Ended
                 </Text>
               </View>
             </View>
@@ -496,14 +496,6 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     (item) => item.mode_of_cash === 'cash_in'
   );
 
-  // const sessionCashCount = finalCashInArray?.map((item) => item.amount);
-  // const sessionCashSum = sessionCashCount?.reduce((partialSum, a) => partialSum + a, 0);
-  // const finalCashOutArray = sessionHistoryArray?.drawer_activites.filter(
-  //   (item) => item.mode_of_cash === 'cash_out'
-  // );
-  // const sessionCashOutCount = finalCashOutArray?.map((item) => item.amount);
-  // const sessionCashOutSum = sessionCashOutCount?.reduce((partialSum, a) => partialSum + a, 0);
-
   const cashInArray = sessionHistoryArray?.drawerActivity?.filter(
     (item) => item.mode_of_cash === 'cash_in'
   );
@@ -561,24 +553,6 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
         <Spacer space={SH(20)} />
         <Text style={styles.allCashText}>{strings.management.allCash}</Text>
         <View>
-          {/* <TouchableOpacity
-            style={styles.totalCashHeader}
-            onPress={() => setViewCashInArray((prev) => !prev)}
-          >
-            <View style={styles.flexAlign}>
-              <Text style={styles.sectionListHeader}>{strings.management.totalCashIn}</Text>
-              <Image
-                source={viewCashInArray ? up : down}
-                resizeMode="contain"
-                style={{ height: ms(12), width: ms(12), marginLeft: ms(5) }}
-              />
-            </View>
-            <Text style={styles.sectionListHeader}>
-              {strings.management.usd}
-              {sessionCashSum ?? '0'}
-              {'.00'}
-            </Text>
-          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.paymentOptionsView}
             onPress={() => setViewCashInArray((prev) => !prev)}
@@ -648,25 +622,6 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                   </View>
                 </View>
               )}
-              {/* <View style={styles.paymentBodyCon}>
-                <View style={styles.flexAlign}>
-                  <Text style={styles.paymentBodyText}>{'Manual'}</Text>
-                  <Image
-                    source={dropdown}
-                    resizeMode="contain"
-                    // style={
-                    //   expandedItems[index]
-                    //     ? styles.activeDropDownPayment
-                    //     : styles.dropDownPayment
-                    // }
-                    style={styles.dropDownPayment}
-                  />
-                </View>
-                <Text style={styles.paymentBodyText}>
-                  {strings.management.usd}
-                  {cashIn?.manual}
-                </Text>
-              </View> */}
             </>
           )}
 
@@ -722,116 +677,6 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
               )}
             </>
           )}
-
-          {/* {viewCashInArray && (
-            <>
-              <TouchableOpacity
-                style={styles.paymentBodyCon}
-                onPress={() => setDelieveryFeeInExpandedView((prev) => !prev)}
-              >
-                <View style={styles.flexAlign}>
-                  <Text style={styles.paymentBodyText}>{'Delivery Fees'}</Text>
-                  <Image
-                    source={dropdown}
-                    resizeMode="contain"
-                    style={
-                      delieveryFeeInExpandedView
-                        ? styles.activeDropDownPayment
-                        : styles.dropDownPayment
-                    }
-                    // style={styles.dropDownPayment}
-                  />
-                </View>
-                <Text style={styles.paymentBodyText}>
-                  {strings.management.usd}
-                  {cashIn?.delivery_fees?.total}
-                </Text>
-              </TouchableOpacity>
-              {delieveryFeeInExpandedView && (
-                <View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashIn?.delivery_fees?.cash}
-                    </Text>
-                  </View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashIn?.delivery_fees?.card}
-                    </Text>
-                  </View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashIn?.delivery_fees?.jobr_coin}
-                    </Text>
-                  </View>
-                </View>
-              )}
-            </>
-          )} */}
-
-          {/* {viewCashInArray && (
-            <>
-              <TouchableOpacity
-                style={styles.paymentBodyCon}
-                onPress={() => setShippingFeeInExpandedView((prev) => !prev)}
-              >
-                <View style={styles.flexAlign}>
-                  <Text style={styles.paymentBodyText}>{'Shipping Fees'}</Text>
-                  <Image
-                    source={dropdown}
-                    resizeMode="contain"
-                    style={
-                      shippingFeeInExpandedView
-                        ? styles.activeDropDownPayment
-                        : styles.dropDownPayment
-                    }
-                    // style={styles.dropDownPayment}
-                  />
-                </View>
-                <Text style={styles.paymentBodyText}>
-                  {strings.management.usd}
-                  {cashIn?.shipping_fees?.total}
-                </Text>
-              </TouchableOpacity>
-              {shippingFeeInExpandedView && (
-                <View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashIn?.shipping_fees?.cash}
-                    </Text>
-                  </View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashIn?.shipping_fees?.card}
-                    </Text>
-                  </View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashIn?.shipping_fees?.jobr_coin}
-                    </Text>
-                  </View>
-                </View>
-              )}
-            </>
-          )} */}
 
           <TouchableOpacity
             style={styles.paymentOptionsView}
@@ -955,113 +800,6 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             </>
           )}
 
-          {/* {viewCashOutArray && (
-            <>
-              <TouchableOpacity
-                style={styles.paymentBodyCon}
-                onPress={() => setDelieveryFeeOutExpandedView((prev) => !prev)}
-              >
-                <View style={styles.flexAlign}>
-                  <Text style={styles.paymentBodyText}>{'Delivery Fees'}</Text>
-                  <Image
-                    source={dropdown}
-                    resizeMode="contain"
-                    style={
-                      delieveryFeeOutExpandedView
-                        ? styles.activeDropDownPayment
-                        : styles.dropDownPayment
-                    }
-                  />
-                </View>
-                <Text style={styles.paymentBodyText}>
-                  {strings.management.usd}
-                  {cashOut?.delivery_fees?.total}
-                </Text>
-              </TouchableOpacity>
-              {delieveryFeeOutExpandedView && (
-                <View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashOut?.delivery_fees?.cash}
-                    </Text>
-                  </View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashOut?.delivery_fees?.card}
-                    </Text>
-                  </View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashOut?.delivery_fees?.jobr_coin}
-                    </Text>
-                  </View>
-                </View>
-              )}
-            </>
-          )} */}
-
-          {/* {viewCashOutArray && (
-            <>
-              <TouchableOpacity
-                style={styles.paymentBodyCon}
-                onPress={() => setShippingFeeOutExpandedView((prev) => !prev)}
-              >
-                <View style={styles.flexAlign}>
-                  <Text style={styles.paymentBodyText}>{'Shipping Fees'}</Text>
-                  <Image
-                    source={dropdown}
-                    resizeMode="contain"
-                    style={
-                      shippingFeeOutExpandedView
-                        ? styles.activeDropDownPayment
-                        : styles.dropDownPayment
-                    }
-                  />
-                </View>
-                <Text style={styles.paymentBodyText}>
-                  {strings.management.usd}
-                  {cashOut?.shipping_fees?.total}
-                </Text>
-              </TouchableOpacity>
-              {shippingFeeOutExpandedView && (
-                <View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashOut?.shipping_fees?.cash}
-                    </Text>
-                  </View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashOut?.shipping_fees?.card}
-                    </Text>
-                  </View>
-                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                    <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                    <Text style={styles.paymentBodyText}>
-                      {strings.management.usd}
-                      {cashOut?.shipping_fees?.jobr_coin}
-                    </Text>
-                  </View>
-                </View>
-              )}
-            </>
-          )} */}
           <View style={styles.netPaymentHeader}>
             <Text style={styles.sectionListHeader}>{strings.management.netPayment}</Text>
             <Text style={styles.sectionListHeader}>

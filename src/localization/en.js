@@ -582,5 +582,6 @@ export const en = {
   batchManagement: {
     header: 'Batch management',
     batch: 'Batch',
+    back: 'Back',
   },
 };
