@@ -619,7 +619,7 @@ export function CartServiceScreen({
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
                 <TouchableOpacity
-                  style={styles.addDiscountCon}
+                  style={styles.addDiscountCon()}
                   onPress={() => {
                     backCartLoad();
                     addDiscountHandler();
@@ -630,7 +630,7 @@ export function CartServiceScreen({
                   <Text style={styles.addDiscountText}>Add Discount</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.addDiscountCon}
+                  style={styles.addDiscountCon(true)}
                   onPress={() => {
                     backCartLoad();
                     addNotesHandler();
@@ -702,7 +702,7 @@ export function CartServiceScreen({
               //     : true
               // }
             >
-              <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
+              <Text style={styles.checkoutText}>{strings.posRetail.procedtoCheckout}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>
           </View>

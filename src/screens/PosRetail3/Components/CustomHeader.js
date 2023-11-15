@@ -17,14 +17,15 @@ export function CustomHeader({ crossHandler, iconShow }) {
     <View style={styles.searchScreenHeader}>
       <View style={styles.displayflex}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={styles.cashLabelBold}>{moment().format('ddd DD MMM, YYYY')}</Text>
+          <Text style={styles.cashLabelBold}>{moment().format('hh:mm a')}</Text>
           <View style={styles._border} />
-          <Text style={styles.cashLabelBold}>{moment().format('hh:mm A')}</Text>
-          <View style={styles._border} />
+          {/* <Text style={styles.cashLabelBold}>{moment().format('ddd DD MMM, YYYY')}</Text> */}
+          <Text style={styles.cashLabelBold}>{moment().format('LLL')}</Text>
+
+          {/* <View style={styles._border} /> */}
         </View>
 
-        <Text style={styles.cashLabelBold}>Walk-In</Text>
-        <View style={styles._border} />
+        {/* <View style={styles._border} /> */}
         <View style={styles.displayRow}>
           <Image
             source={
@@ -42,8 +43,12 @@ export function CustomHeader({ crossHandler, iconShow }) {
             )
           </Text>
         </View>
-        <View style={styles._border} />
+        {/* <View style={styles._border} /> */}
         <Text style={styles.cashLabelBold}>POS No. {getUserData?.posLoginData?.pos_number}</Text>
+        <View style={styles.walkinCon}>
+          <Text style={styles.cashLabelBold}>Walk-In</Text>
+        </View>
+
         {iconShow ? (
           <TouchableOpacity onPress={crossHandler}>
             <Image source={crossButton} style={styles.crossBg} />

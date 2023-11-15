@@ -383,10 +383,12 @@ export function CartScreen({
                                 alignItems: 'center',
                               }}
                             >
-                              <Image
-                                source={{ uri: data.product_details?.image }}
-                                style={styles.columbiaMen}
-                              />
+                              <View style={styles.cartImageCon}>
+                                <Image
+                                  source={{ uri: data.product_details?.image }}
+                                  style={styles.columbiaMen}
+                                />
+                              </View>
                               <View style={{ marginLeft: 10 }}>
                                 <Text
                                   style={[styles.blueListDataText, { width: SW(40) }]}
@@ -430,7 +432,7 @@ export function CartScreen({
                                 >
                                   <Image source={minus} style={styles.minus} />
                                 </TouchableOpacity>
-                                <Text>{data.qty}</Text>
+                                <Text style={styles.dataQty}>{data.qty}</Text>
                                 <TouchableOpacity
                                   style={{
                                     width: SW(10),
@@ -623,7 +625,7 @@ export function CartScreen({
               <Spacer space={SH(10)} />
               <View style={styles.displayflex}>
                 <TouchableOpacity
-                  style={styles.addDiscountCon}
+                  style={styles.addDiscountCon()}
                   onPress={() => {
                     beforeDiscountCartLoad();
                     addDiscountHandler();
@@ -634,7 +636,7 @@ export function CartScreen({
                   <Text style={styles.addDiscountText}>Add Discount</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.addDiscountCon}
+                  style={styles.addDiscountCon('addnotes')}
                   onPress={() => {
                     beforeDiscountCartLoad();
                     addNotesHandler();
@@ -706,7 +708,7 @@ export function CartScreen({
               }}
               disabled={cartData?.poscart_products?.length > 0 ? false : true}
             >
-              <Text style={styles.checkoutText}>{strings.posRetail.payNow}</Text>
+              <Text style={styles.checkoutText}>{strings.posRetail.procedtoCheckout}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
             </TouchableOpacity>
           </View>

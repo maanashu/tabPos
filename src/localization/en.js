@@ -473,6 +473,7 @@ export const en = {
     searchSubCategory: 'Search Sub-catgories',
     searchBrand: 'Search Brands',
     searchStaff: 'Search Staffs',
+    procedtoCheckout: 'Proceed to checkout ',
   },
   Staff: {
     Staff: 'Staff',
