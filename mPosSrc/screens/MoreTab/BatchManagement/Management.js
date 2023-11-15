@@ -77,6 +77,7 @@ import { logoutFunction } from '@/actions/AuthActions';
 import { Images } from '@mPOS/assets';
 import { goBack } from '@mPOS/navigation/NavigationRef';
 import { styles } from './Management.styles';
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -564,7 +565,7 @@ export function Management() {
             <Spacer space={SH(20)} />
             <View style={styles.countCashView}>
               <Text style={styles.countCashText}>
-                {removeCash ? strings.management.amountRemoved : strings.management.amountAdded}
+                {removeCash ? strings.management.cashRemove : strings.management.cashAdd}
               </Text>
 
               <Spacer space={SH(20)} />
@@ -634,11 +635,6 @@ export function Management() {
       return (
         <View style={styles.absoluteZero}>
           <View style={styles.headerView}>
-            <View style={styles.centerSw}>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
-              </Text>
-            </View>
             <TouchableOpacity
               onPress={() => {
                 setEndSession(false);
@@ -647,14 +643,24 @@ export function Management() {
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
+            <View style={styles.centerSw}>
+              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
+                {strings.management.endCashTrackingSession}
+              </Text>
+            </View>
           </View>
-          <View style={styles.calculatorView}>
-            <Image source={Calculator} style={styles.calculatorStyle} />
-          </View>
+          {/* <View style={styles.calculatorView}> */}
+          {/* <Image source={Calculator} style={styles.calculatorStyle} /> */}
+          {/* </View> */}
 
           <View>
-            <Spacer space={SH(60)} />
-            <View>
+            <Spacer space={SH(20)} />
+            <Image
+              source={Calculator}
+              style={[styles.calculatorStyle, { height: 100, width: 100, alignSelf: 'center' }]}
+            />
+            <Spacer space={SH(40)} />
+            <View style={{ paddingHorizontal: SW(15) }}>
               <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
                 {strings.management.countCash}
               </Text>
@@ -673,6 +679,7 @@ export function Management() {
               </View>
               <Spacer space={SH(60)} />
             </View>
+            <Spacer space={SH(60)} />
             {/* <View style={{ flex: 1 }} /> */}
             <Button
               style={[styles.saveButton, countFirst !== '' && { backgroundColor: COLORS.primary }]}
@@ -688,11 +695,6 @@ export function Management() {
       return (
         <View style={styles.absoluteZero}>
           <View style={styles.headerView}>
-            <View style={styles.centerSw}>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
-              </Text>
-            </View>
             <TouchableOpacity
               onPress={() => {
                 setCashSummary(false), setEndSession(true);
@@ -701,11 +703,21 @@ export function Management() {
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
+            <View style={styles.centerSw}>
+              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
+                {strings.management.endCashTrackingSession}
+              </Text>
+            </View>
           </View>
-          <View style={styles.calculatorView}>
+          {/* <View style={styles.calculatorView}>
             <Image source={CalculatorColor} style={styles.calculatorStyle} />
-          </View>
+          </View> */}
           <View style={styles.trackingBodyCon}>
+            <Spacer space={SH(30)} />
+            <Image
+              source={CalculatorColor}
+              style={[styles.calculatorStyle, { height: 100, width: 100, alignSelf: 'center' }]}
+            />
             <Spacer space={SH(50)} />
             <View>
               <Text style={[styles.countCashText]}>{strings.management.cashSummary}</Text>
@@ -716,7 +728,7 @@ export function Management() {
               />
               <Spacer space={SH(15)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
-                <Text style={styles.amountExpect}>{strings.management.amountexpect}</Text>
+                <Text style={[styles.amountExpect]}>{strings.management.amountexpect}</Text>
                 <Text style={styles.amountExpect}>
                   {'USD $'}
                   {SessionData?.cashBalance}
@@ -764,7 +776,7 @@ export function Management() {
             </View>
             <Spacer space={SH(60)} />
             <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+              style={[styles.saveButtonNew, { backgroundColor: COLORS.primary }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
               onPress={() => {
@@ -777,7 +789,7 @@ export function Management() {
       );
     } else if (endSelectAmount) {
       return (
-        <View style={styles.absoluteZero}>
+        <View style={[styles.absoluteZero, { height: WINDOW_HEIGHT / 1.2 }]}>
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
@@ -794,23 +806,32 @@ export function Management() {
             </TouchableOpacity>
           </View>
           <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(60)} />
+            <Spacer space={SH(30)} />
+            <Image
+              source={CalculatorColor}
+              style={[styles.calculatorStyle, { height: 100, width: 100, alignSelf: 'center' }]}
+            />
+            <Spacer space={SH(30)} />
             <View>
-              <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonRegular }]}>
+              <Text style={[styles.countCashText, { fontFamily: Fonts.Bold }]}>
                 {strings.management.selectAmountDra}
               </Text>
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(5)} />
+              <Spacer space={SH(1)} backgroundColor={COLORS.faded_grey} />
+              <Spacer space={SH(15)} />
 
               <FlatList
                 data={leaveData}
                 extraData={leaveData}
                 renderItem={leaveDataItem}
                 keyExtractor={(item) => item.id}
-                horizontal
+                // horizontal
               />
               <Spacer space={SH(25)} />
               <View>
-                <Text style={styles.amountCountedText}>{strings.management.otherAmount}</Text>
+                <Text style={[styles.amountCountedText, { fontFamily: Fonts.Bold }]}>
+                  {strings.management.countAmount}
+                </Text>
                 <Spacer space={SH(15)} />
                 <Text style={[styles.amountCountedText, { fontSize: SF(12) }]}>
                   {strings.management.enterAmount}
@@ -829,7 +850,7 @@ export function Management() {
             <Spacer space={SH(30)} />
             <View style={{ flex: 1 }} />
             <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+              style={[styles.saveButtonNew, { backgroundColor: COLORS.primary }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
               // onPress={() => (setEndSelectAmount(false), setRemoveUsd(true))}
@@ -842,11 +863,6 @@ export function Management() {
       return (
         <View style={styles.absoluteZero}>
           <View style={styles.headerView}>
-            <View style={styles.centerSw}>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.confirm}
-              </Text>
-            </View>
             <TouchableOpacity
               // onPress={() => {
               //   setRemoveUsd(false), setEndSelectAmount(true);
@@ -860,6 +876,11 @@ export function Management() {
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
+            <View style={styles.centerSw}>
+              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
+                {strings.management.confirm}
+              </Text>
+            </View>
           </View>
           <Spacer space={SH(100)} />
           <View style={styles.trackingBodyCon}>
@@ -873,10 +894,9 @@ export function Management() {
                 Amount left in drawer: USD ${endBalance?.amount}
               </Text>
             </View>
-
-            <View style={{ flex: 0.5 }} />
+            <Spacer space={SH(150)} />
             <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+              style={[styles.saveButtonNew, { backgroundColor: COLORS.primary }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={'Confirm'}
               onPress={() => {
@@ -897,11 +917,6 @@ export function Management() {
       return (
         <View style={styles.absoluteZero}>
           <View style={styles.headerView}>
-            <View style={styles.centerSw}>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
-              </Text>
-            </View>
             <TouchableOpacity
               onPress={() => {
                 setCardCoinSummary(false);
@@ -911,11 +926,21 @@ export function Management() {
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
+            <View style={styles.centerSw}>
+              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
+                {strings.management.endCashTrackingSession}
+              </Text>
+            </View>
           </View>
-          <View style={styles.calculatorView}>
+          {/* <View style={styles.calculatorView}>
             <Image source={CalculatorColor} style={styles.calculatorStyle} />
-          </View>
+          </View> */}
           <View style={styles.trackingBodyCon}>
+            <Spacer space={SH(20)} />
+            <Image
+              source={CalculatorColor}
+              style={[styles.calculatorStyle, { height: 100, width: 100, alignSelf: 'center' }]}
+            />
             <Spacer space={SH(40)} />
             <View>
               <Text style={[styles.countCashText]}>{strings.management.cardSummary}</Text>
@@ -934,7 +959,7 @@ export function Management() {
               </View>
               <Spacer space={SH(12.5)} />
             </View>
-            <Spacer space={SH(45)} />
+            <Spacer space={SH(30)} />
             <View>
               <Text style={[styles.countCashText]}>{strings.management.jbrCoinSummary}</Text>
               <Spacer space={SH(15)} />
@@ -954,7 +979,7 @@ export function Management() {
             </View>
             <Spacer space={SH(60)} />
             <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+              style={[styles.saveButtonNew, { backgroundColor: COLORS.primary, width: '100%' }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.confirm}
               onPress={() => {
@@ -980,7 +1005,7 @@ export function Management() {
         <SafeAreaView style={{ flex: 1 }}>
           <KeyboardAwareScrollView
             keyboardShouldPersistTaps="always"
-            contentContainerStyle={styles.modalMainView}
+            contentContainerStyle={[styles.modalMainView, { width: '100%' }]}
           >
             {endSessionFunction()}
           </KeyboardAwareScrollView>

@@ -277,7 +277,7 @@ export const styles = StyleSheet.create({
   countCashText: {
     fontFamily: Fonts.MaisonBold,
     color: COLORS.dark_grey,
-    fontSize: SF(18),
+    fontSize: SF(14),
   },
   amountCountedText: {
     fontFamily: Fonts.Medium,
@@ -316,6 +316,13 @@ export const styles = StyleSheet.create({
   saveButton: {
     alignSelf: 'center',
     width: '90%',
+    height: SH(60),
+    zIndex: -999,
+    backgroundColor: COLORS.gerySkies,
+  },
+  saveButtonNew: {
+    alignSelf: 'center',
+    width: '100%',
     height: SH(60),
     zIndex: -999,
     backgroundColor: COLORS.gerySkies,
@@ -653,22 +660,25 @@ export const styles = StyleSheet.create({
   trackingBodyCon: {
     width: SW(110),
     alignSelf: 'center',
+    paddingHorizontal: SW(20),
+    width: '100%',
   },
   absoluteZero: {
     flex: 1,
-
     // position: 'absolute',
     // top: 0,
+    height: SH(windowHeight) / 1.5,
   },
   centerSw: {
-    width: SW(145),
-    paddingHorizontal: SW(5),
+    width: SW(250),
+    paddingHorizontal: SW(12),
+
     // alignItems: 'center',
   },
   amountExpect: {
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
-    fontSize: SF(18),
+    fontSize: SF(14),
   },
   removerDarkText: {
     textAlign: 'center',
@@ -735,7 +745,8 @@ export const styles = StyleSheet.create({
   selectAmountCon: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: SW(45),
+    width: '100%',
+    marginVertical: SH(8),
     height: SH(50),
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
