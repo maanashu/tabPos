@@ -25,14 +25,14 @@ import {
   up,
 } from '@/assets';
 import { strings } from '@/localization';
-import { styles } from '@mPOS/screens/MoreTab/BatchManagement/Management.styles';
+import { styles } from '@/screens/Management/Management.styles';
 import { Spacer, TableDropdown } from '@/components';
 import { Table } from 'react-native-table-component';
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import { ActivityIndicator } from 'react-native';
-import { DarkTheme, DataTable } from 'react-native-paper';
+import { DarkTheme } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessionHistory } from '@/actions/CashTrackingAction';
 import { width } from '@/theme/ScalerDimensions';
@@ -47,8 +47,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { PAGINATION_DATA } from '@/constants/enums';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CashtrackingTypes';
-import { Images } from '@mPOS/assets';
-import { goBack } from '@mPOS/navigation/NavigationRef';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -58,9 +56,6 @@ export function SessionHistoryTable({
   sessionHistoryLoad,
   // oneItemSend,
   setSessionHistoryArray,
-  setViewSession,
-  setSessionHistory,
-  isHistory,
 }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -133,61 +128,11 @@ export function SessionHistoryTable({
     setDate(formattedDate);
   };
 
-  const [numberOfItemsPerPageList] = React.useState([2, 3, 4]);
-  const [itemsPerPage, onItemsPerPageChange] = React.useState(numberOfItemsPerPageList[0]);
-
-  const [items] = React.useState([
-    {
-      key: 1,
-      name: 'Cupcake',
-      calories: 356,
-      fat: 16,
-    },
-    {
-      key: 2,
-      name: 'Eclair',
-      calories: 262,
-      fat: 16,
-    },
-    {
-      key: 3,
-      name: 'Frozen yogurt',
-      calories: 159,
-      fat: 6,
-    },
-    {
-      key: 4,
-      name: 'Gingerbread',
-      calories: 305,
-      fat: 3.7,
-    },
-  ]);
-
-  const from = page * itemsPerPage;
-  const to = Math.min((page + 1) * itemsPerPage, items.length);
-
-  React.useEffect(() => {
-    setPage(0);
-  }, [itemsPerPage]);
-  const HeaderSummary = () => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          setSessionHistory(false);
-          //  setViewSession(true);
-        }}
-        style={[styles.headerMainViewN, { paddingHorizontal: SW(1) }]}
-      >
-        <Image source={Images.back} style={styles.backImageStyle} />
-        <Text style={styles.headerText}>{strings.batchManagement.back}</Text>
-      </TouchableOpacity>
-    );
-  };
   return (
     <View style={{ flex: 1 }}>
-      {/* <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text> */}
-      <Spacer space={SH(10)} />
-      {/* <View style={styles.datePickerContainer}>
+      <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
+      <Spacer space={SH(20)} />
+      <View style={styles.datePickerContainer}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity style={styles.datePickerCon} onPress={() => setShow(!show)}>
             <Image source={calendar1} style={styles.calendarStyle} />
@@ -206,10 +151,10 @@ export function SessionHistoryTable({
             <TableDropdown placeholder="Select Staff" selected={staffSelection} data={posUsers} />
           </View>
         </View>
-      </View> */}
+      </View>
 
       {/*Calendar pagination section */}
-      {/* <View
+      <View
         style={[styles.jbrTypeCon, { zIndex: -1, opacity: payloadLength === 0 ? 0.4 : 1 }]}
         pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
       >
@@ -322,72 +267,178 @@ export function SessionHistoryTable({
             />
           </TouchableOpacity>
         </View>
-      </View> */}
-      <HeaderSummary />
-      <Spacer space={SH(20)} />
+      </View>
 
       <View style={[styles.tableMainView]}>
-        <DataTable>
-          <DataTable.Header style={{ backgroundColor: COLORS.washGrey }}>
-            {/* <DataTable.Title textStyle={styles.tableHeaderStyle}>#</DataTable.Title> */}
-            <DataTable.Title textStyle={styles.tableHeaderStyle}>{'#  ' + 'Date'}</DataTable.Title>
-            <DataTable.Title textStyle={styles.tableHeaderStyle}>Ended By</DataTable.Title>
-            <DataTable.Title numberOfLines={2} textStyle={styles.tableHeaderStyle}>
-              Started
-            </DataTable.Title>
-            <DataTable.Title numberOfLines={2} textStyle={styles.tableHeaderStyle}>
-              Ended{' '}
-            </DataTable.Title>
-          </DataTable.Header>
+        <Table>
+          <View
+            style={[
+              styles.tableDataHeaderConNew,
+              { borderTopWidth: 1, borderColor: COLORS.solidGrey },
+            ]}
+          >
+            <View style={styles.profileheaderUnderView}>
+              <View style={{ alignItems: 'center', justifyContent: 'center', marginStart: ms(15) }}>
+                <Text style={[styles.tableTextHeader]}>#</Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Date
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Start
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                  Ends
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Ended By System
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Session Started
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Total {`\n`}Cash In
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Total {`\n`}Cash Out
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Counted {`\n`}cash
+                </Text>
+              </View>
+              <View style={styles.profileheaderChildView}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
+                  Session Ended
+                </Text>
+              </View>
+            </View>
+          </View>
 
-          {tableDataArray?.map((item, index) => (
-            <DataTable.Row
-              key={item.key}
-              onPress={() => {
-                tableTouchHandler(item);
-              }}
+          <View style={{ height: windowHeight * 0.65 }}>
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              showsVerticalScrollIndicator={false}
             >
-              {/* <DataTable.Cell>{index + 1}</DataTable.Cell> */}
-              <DataTable.Cell>
-                {index + 1 + '  '}
-                {moment(item.created_at).format('YYYY/MM/DD') ?? ''}
-              </DataTable.Cell>
-              <DataTable.Cell>
-                <View style={styles.profileheaderChildView}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image
-                      source={{ uri: item?.pos_user_detail?.user_profiles?.profile_photo }}
-                      style={{
-                        width: ms(15),
-                        height: ms(15),
-                        resizeMode: 'contain',
-                        borderRadius: 100,
-                        // marginLeft: ms(-15),
-                      }}
-                    />
-                    <DataTable.Cell numeric>
-                      {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
-                      {item?.pos_user_detail?.user_profiles?.firstname == undefined
-                        ? 'System Ended'
-                        : item?.pos_user_detail?.user_profiles?.firstname}
-                    </DataTable.Cell>
-                  </View>
+              {sessionHistoryLoad ? (
+                <View style={{ marginTop: 100 }}>
+                  <ActivityIndicator size="large" color={COLORS.indicator} />
                 </View>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                ${item.start_tracking_session}
-                {'.00'}
-              </DataTable.Cell>
-              <DataTable.Cell>
-                {item.end_tracking_session < 0 ? '-' : null} $
-                {item.end_tracking_session < 0
-                  ? Math.abs(item.end_tracking_session)
-                  : item.end_tracking_session}
-                {'.00'}
-              </DataTable.Cell>
-            </DataTable.Row>
-          ))}
-        </DataTable>
+              ) : tableDataArray?.length === 0 ? (
+                <View style={{ marginTop: 80 }}>
+                  <Text style={styles.userNotFound}>History not found</Text>
+                </View>
+              ) : (
+                tableDataArray?.map((item, index) => {
+                  const currentIndex = startIndex + index;
+                  return (
+                    <TouchableOpacity
+                      style={styles.tableDataCon}
+                      onPress={
+                        () => tableTouchHandler(item)
+
+                        // ,oneItemSend(item)
+                      }
+                      key={index}
+                    >
+                      <View style={styles.profileheaderUnderData}>
+                        {/* <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}> */}
+                        <Text style={[styles.tableTextData]}>{currentIndex}</Text>
+                        {/* </View> */}
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData}>
+                            {moment(item.created_at).format('YYYY/MM/DD') ?? ''}
+                          </Text>
+                        </View>
+                        <View style={[styles.profileheaderChildView, { marginLeft: SW(-5) }]}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {item.start_session == null
+                              ? ''
+                              : moment(item.start_session).format('hh:mm A') ?? ''}
+                          </Text>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            {item.end_session == null
+                              ? ''
+                              : moment(item.end_session).format('hh:mm A') ?? ''}
+                          </Text>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Image
+                              source={{ uri: item?.pos_user_detail?.user_profiles?.profile_photo }}
+                              style={{
+                                width: ms(15),
+                                height: ms(15),
+                                resizeMode: 'contain',
+                                borderRadius: 100,
+                                // marginLeft: ms(-15),
+                              }}
+                            />
+                            <Text style={[styles.tableTextData, { marginLeft: ms(5) }]}>
+                              {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
+                              {item?.pos_user_detail?.user_profiles?.firstname == undefined
+                                ? 'System Ended'
+                                : item?.pos_user_detail?.user_profiles?.firstname}
+                            </Text>
+                          </View>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            ${item.start_tracking_session}
+                            {'.00'}
+                          </Text>
+                        </View>
+                        <View style={styles.profileheaderChildView}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            ${item.add_cash}
+                            {'.00'}
+                          </Text>
+                        </View>
+                        <View style={[styles.profileheaderChildView, { marginLeft: SW(-3) }]}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            ${item.removed_cash}
+                            {'.00'}
+                          </Text>
+                        </View>
+                        <View style={[styles.profileheaderChildView, { marginLeft: SW(-3) }]}>
+                          <Text style={styles.tableTextData} numberOfLines={1}>
+                            ${item.counted_cash}
+                            {'.00'}
+                          </Text>
+                        </View>
+                        <View style={[styles.profileheaderChildView]}>
+                          <Text style={[styles.tableTextData]} numberOfLines={1}>
+                            {item.end_tracking_session < 0 ? '-' : null} $
+                            {item.end_tracking_session < 0
+                              ? Math.abs(item.end_tracking_session)
+                              : item.end_tracking_session}
+                            {'.00'}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                })
+              )}
+            </ScrollView>
+          </View>
+        </Table>
       </View>
       {/* {show && ( */}
       <Modal
@@ -508,8 +559,26 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     <View style={historyHeader ? styles.bodyContainer : styles.bodyContainer2}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Spacer space={SH(20)} />
-        <Text style={styles.allCashText}>{strings.management.batch}</Text>
+        <Text style={styles.allCashText}>{strings.management.allCash}</Text>
         <View>
+          {/* <TouchableOpacity
+            style={styles.totalCashHeader}
+            onPress={() => setViewCashInArray((prev) => !prev)}
+          >
+            <View style={styles.flexAlign}>
+              <Text style={styles.sectionListHeader}>{strings.management.totalCashIn}</Text>
+              <Image
+                source={viewCashInArray ? up : down}
+                resizeMode="contain"
+                style={{ height: ms(12), width: ms(12), marginLeft: ms(5) }}
+              />
+            </View>
+            <Text style={styles.sectionListHeader}>
+              {strings.management.usd}
+              {sessionCashSum ?? '0'}
+              {'.00'}
+            </Text>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.paymentOptionsView}
             onPress={() => setViewCashInArray((prev) => !prev)}
@@ -579,6 +648,25 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
                   </View>
                 </View>
               )}
+              {/* <View style={styles.paymentBodyCon}>
+                <View style={styles.flexAlign}>
+                  <Text style={styles.paymentBodyText}>{'Manual'}</Text>
+                  <Image
+                    source={dropdown}
+                    resizeMode="contain"
+                    // style={
+                    //   expandedItems[index]
+                    //     ? styles.activeDropDownPayment
+                    //     : styles.dropDownPayment
+                    // }
+                    style={styles.dropDownPayment}
+                  />
+                </View>
+                <Text style={styles.paymentBodyText}>
+                  {strings.management.usd}
+                  {cashIn?.manual}
+                </Text>
+              </View> */}
             </>
           )}
 
@@ -634,6 +722,116 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
               )}
             </>
           )}
+
+          {/* {viewCashInArray && (
+            <>
+              <TouchableOpacity
+                style={styles.paymentBodyCon}
+                onPress={() => setDelieveryFeeInExpandedView((prev) => !prev)}
+              >
+                <View style={styles.flexAlign}>
+                  <Text style={styles.paymentBodyText}>{'Delivery Fees'}</Text>
+                  <Image
+                    source={dropdown}
+                    resizeMode="contain"
+                    style={
+                      delieveryFeeInExpandedView
+                        ? styles.activeDropDownPayment
+                        : styles.dropDownPayment
+                    }
+                    // style={styles.dropDownPayment}
+                  />
+                </View>
+                <Text style={styles.paymentBodyText}>
+                  {strings.management.usd}
+                  {cashIn?.delivery_fees?.total}
+                </Text>
+              </TouchableOpacity>
+              {delieveryFeeInExpandedView && (
+                <View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashIn?.delivery_fees?.cash}
+                    </Text>
+                  </View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashIn?.delivery_fees?.card}
+                    </Text>
+                  </View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashIn?.delivery_fees?.jobr_coin}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </>
+          )} */}
+
+          {/* {viewCashInArray && (
+            <>
+              <TouchableOpacity
+                style={styles.paymentBodyCon}
+                onPress={() => setShippingFeeInExpandedView((prev) => !prev)}
+              >
+                <View style={styles.flexAlign}>
+                  <Text style={styles.paymentBodyText}>{'Shipping Fees'}</Text>
+                  <Image
+                    source={dropdown}
+                    resizeMode="contain"
+                    style={
+                      shippingFeeInExpandedView
+                        ? styles.activeDropDownPayment
+                        : styles.dropDownPayment
+                    }
+                    // style={styles.dropDownPayment}
+                  />
+                </View>
+                <Text style={styles.paymentBodyText}>
+                  {strings.management.usd}
+                  {cashIn?.shipping_fees?.total}
+                </Text>
+              </TouchableOpacity>
+              {shippingFeeInExpandedView && (
+                <View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashIn?.shipping_fees?.cash}
+                    </Text>
+                  </View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashIn?.shipping_fees?.card}
+                    </Text>
+                  </View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashIn?.shipping_fees?.jobr_coin}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </>
+          )} */}
 
           <TouchableOpacity
             style={styles.paymentOptionsView}
@@ -757,6 +955,113 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
             </>
           )}
 
+          {/* {viewCashOutArray && (
+            <>
+              <TouchableOpacity
+                style={styles.paymentBodyCon}
+                onPress={() => setDelieveryFeeOutExpandedView((prev) => !prev)}
+              >
+                <View style={styles.flexAlign}>
+                  <Text style={styles.paymentBodyText}>{'Delivery Fees'}</Text>
+                  <Image
+                    source={dropdown}
+                    resizeMode="contain"
+                    style={
+                      delieveryFeeOutExpandedView
+                        ? styles.activeDropDownPayment
+                        : styles.dropDownPayment
+                    }
+                  />
+                </View>
+                <Text style={styles.paymentBodyText}>
+                  {strings.management.usd}
+                  {cashOut?.delivery_fees?.total}
+                </Text>
+              </TouchableOpacity>
+              {delieveryFeeOutExpandedView && (
+                <View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashOut?.delivery_fees?.cash}
+                    </Text>
+                  </View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashOut?.delivery_fees?.card}
+                    </Text>
+                  </View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashOut?.delivery_fees?.jobr_coin}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </>
+          )} */}
+
+          {/* {viewCashOutArray && (
+            <>
+              <TouchableOpacity
+                style={styles.paymentBodyCon}
+                onPress={() => setShippingFeeOutExpandedView((prev) => !prev)}
+              >
+                <View style={styles.flexAlign}>
+                  <Text style={styles.paymentBodyText}>{'Shipping Fees'}</Text>
+                  <Image
+                    source={dropdown}
+                    resizeMode="contain"
+                    style={
+                      shippingFeeOutExpandedView
+                        ? styles.activeDropDownPayment
+                        : styles.dropDownPayment
+                    }
+                  />
+                </View>
+                <Text style={styles.paymentBodyText}>
+                  {strings.management.usd}
+                  {cashOut?.shipping_fees?.total}
+                </Text>
+              </TouchableOpacity>
+              {shippingFeeOutExpandedView && (
+                <View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'Cash'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashOut?.shipping_fees?.cash}
+                    </Text>
+                  </View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'Card'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashOut?.shipping_fees?.card}
+                    </Text>
+                  </View>
+                  <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
+                    <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
+
+                    <Text style={styles.paymentBodyText}>
+                      {strings.management.usd}
+                      {cashOut?.shipping_fees?.jobr_coin}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </>
+          )} */}
           <View style={styles.netPaymentHeader}>
             <Text style={styles.sectionListHeader}>{strings.management.netPayment}</Text>
             <Text style={styles.sectionListHeader}>

@@ -65,7 +65,6 @@ import {
   getOrdersByInvoiceId,
   scanBarCode,
 } from '@/actions/DashboardAction';
-import { SessionHistoryTable, SummaryHistory } from '@/screens/Management/Components';
 
 // import OrderWithInvoiceNumber from '../Refund/Components/OrderWithInvoiceNumber';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
@@ -78,6 +77,7 @@ import { Images } from '@mPOS/assets';
 import { goBack } from '@mPOS/navigation/NavigationRef';
 import { styles } from './Management.styles';
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@gorhom/bottom-sheet';
+import { SessionHistoryTable, SummaryHistory } from './Components';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -484,7 +484,7 @@ export function Management() {
             dispatch(logoutUserFunction());
           }
         }}
-        style={[styles.headerMainView, { paddingHorizontal: SW(1) }]}
+        style={[styles.headerMainView, { paddingHorizontal: SW(1), marginLeft: SW(20) }]}
       >
         <Image source={Images.back} style={styles.backImageStyle} />
         <Text style={styles.headerText}>{strings.batchManagement.back}</Text>

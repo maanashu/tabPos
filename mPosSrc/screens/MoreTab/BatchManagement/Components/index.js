@@ -32,7 +32,7 @@ import { Table } from 'react-native-table-component';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import { ActivityIndicator } from 'react-native';
-import { DarkTheme } from 'react-native-paper';
+import { DarkTheme, DataTable } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessionHistory } from '@/actions/CashTrackingAction';
 import { width } from '@/theme/ScalerDimensions';
@@ -47,6 +47,9 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { PAGINATION_DATA } from '@/constants/enums';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CashtrackingTypes';
+import { Images } from '@mPOS/assets';
+import { goBack } from '@mPOS/navigation/NavigationRef';
+import Search from '../Components/Search';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -56,6 +59,9 @@ export function SessionHistoryTable({
   sessionHistoryLoad,
   // oneItemSend,
   setSessionHistoryArray,
+  setViewSession,
+  setSessionHistory,
+  isHistory,
 }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -128,317 +134,91 @@ export function SessionHistoryTable({
     setDate(formattedDate);
   };
 
-  return (
-    <View style={{ flex: 1 }}>
-      <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
-      <Spacer space={SH(20)} />
-      <View style={styles.datePickerContainer}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity style={styles.datePickerCon} onPress={() => setShow(!show)}>
-            <Image source={calendar1} style={styles.calendarStyle} />
-            <TextInput
-              value={date}
-              returnKeyType={'done'}
-              pointerEvents={'none'}
-              autoCapitalize={'none'}
-              editable={false}
-              placeholder="Date"
-              placeholderTextColor={COLORS.gerySkies}
-              style={styles.txtInput}
-            />
-          </TouchableOpacity>
-          <View style={{ marginHorizontal: moderateScale(10) }}>
-            <TableDropdown placeholder="Select Staff" selected={staffSelection} data={posUsers} />
-          </View>
-        </View>
-      </View>
-
-      {/*Calendar pagination section */}
-      <View
-        style={[styles.jbrTypeCon, { zIndex: -1, opacity: payloadLength === 0 ? 0.4 : 1 }]}
-        pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
+  const HeaderSummary = () => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setSessionHistory(false);
+          //  setViewSession(true);
+        }}
+        style={[styles.headerMainViewN, { paddingHorizontal: SW(1), marginLeft: SW(10) }]}
       >
-        <View style={styles.paginationEnd}>
-          <Text style={[styles.paginationCount, { fontSize: 12 }]}>
-            {strings.customers.showResult}
-          </Text>
-          <View style={{ marginHorizontal: moderateScale(10) }}>
-            <DropDownPicker
-              ArrowUpIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIconPagination} />
-              )}
-              ArrowDownIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIconPagination} />
-              )}
-              style={styles.dropdown}
-              containerStyle={[
-                styles.containerStylePagination,
-                { zIndex: Platform.OS === 'ios' ? 20 : 1 },
-              ]}
-              dropDownContainerStyle={styles.dropDownContainerStyle}
-              listItemLabelStyle={styles.listItemLabelStyle}
-              labelStyle={styles.labelStyle}
-              selectedItemLabelStyle={styles.selectedItemLabelStyle}
-              open={paginationModalOpen}
-              value={paginationModalValue}
-              items={paginationModalItems}
-              setOpen={() => setPaginationModalOpen(!paginationModalOpen)}
-              setValue={setPaginationModalValue}
-              setItems={setPaginationModalItems}
-              placeholder="10"
-              placeholderStyle={styles.placeholderStylePagination}
-              // onSelectItem={item => selectedNo(item.value)}
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.unionCon,
-              {
-                backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
-              },
-            ]}
-            onPress={() => {
-              setPage(page - 1);
-              setInd(ind - 1);
-            }}
-            disabled={paginationData?.currentPage == 1 ? true : false}
-          >
-            <Image
-              source={Union}
-              style={[
-                styles.unionStyle,
-                {
-                  tintColor:
-                    paginationData?.currentPage == 1 ? COLORS.gerySkies : COLORS.solid_grey,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-          <View style={styles.unionCon}>
-            <Image source={mask} style={styles.unionStyle} />
-          </View>
-          <View
-            style={{
-              width: ms(70),
-            }}
-          >
-            {isHistoryLoad ? (
-              <ActivityIndicator size="small" />
-            ) : (
-              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
-                {startIndex} - {startIndex + (tableDataArray?.length - 1)} of{' '}
-                {paginationData?.total}
-              </Text>
-            )}
-          </View>
-          <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
-            <Image
-              source={maskRight}
-              style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.unionCon,
-              {
-                backgroundColor:
-                  paginationData?.currentPage == paginationData?.totalPages
-                    ? COLORS.washGrey
-                    : COLORS.white,
-              },
-            ]}
-            onPress={() => {
-              setPage(page + 1);
-              setInd(ind + 1);
-            }}
-            disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
-          >
-            <Image
-              source={unionRight}
-              style={[
-                styles.unionStyle,
-                {
-                  tintColor:
-                    paginationData?.currentPage == paginationData?.totalPages
-                      ? COLORS.gerySkies
-                      : COLORS.solid_grey,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
+        <Image source={Images.back} style={styles.backImageStyle} />
+        <Text style={styles.headerText}>{strings.batchManagement.back}</Text>
+      </TouchableOpacity>
+    );
+  };
+  return (
+    <View style={{ flex: 1, paddingHorizontal: SW(15) }}>
+      <Spacer space={SH(10)} />
+
+      <HeaderSummary />
+      <Spacer space={SH(10)} />
+      <Search />
+      <Spacer space={SH(10)} />
 
       <View style={[styles.tableMainView]}>
-        <Table>
-          <View
-            style={[
-              styles.tableDataHeaderConNew,
-              { borderTopWidth: 1, borderColor: COLORS.solidGrey },
-            ]}
-          >
-            <View style={styles.profileheaderUnderView}>
-              <View style={{ alignItems: 'center', justifyContent: 'center', marginStart: ms(15) }}>
-                <Text style={[styles.tableTextHeader]}>#</Text>
-              </View>
-              <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={1}>
-                  Date
-                </Text>
-              </View>
-              {/* <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={1}>
-                  Start
-                </Text>
-              </View> */}
-              {/* <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={1}>
-                  Ends
-                </Text>
-              </View> */}
-              <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={2}>
-                  Ended By
-                </Text>
-              </View>
-              <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={2}>
-                  Started
-                </Text>
-              </View>
-              {/* <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={2}>
-                  Total {`\n`}Cash In
-                </Text>
-              </View>
-              <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={2}>
-                  Total {`\n`}Cash Out
-                </Text>
-              </View>
-              <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={2}>
-                  Counted {`\n`}cash
-                </Text>
-              </View> */}
-              <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={2}>
-                  Ended
-                </Text>
-              </View>
-            </View>
-          </View>
+        <DataTable>
+          <DataTable.Header style={{ backgroundColor: COLORS.washGrey }}>
+            {/* <DataTable.Title textStyle={styles.tableHeaderStyle}>#</DataTable.Title> */}
+            <DataTable.Title textStyle={styles.tableHeaderStyle}>{'#  ' + 'Date'}</DataTable.Title>
+            <DataTable.Title textStyle={styles.tableHeaderStyle}>Ended By</DataTable.Title>
+            <DataTable.Title numberOfLines={2} textStyle={styles.tableHeaderStyle}>
+              Started
+            </DataTable.Title>
+            <DataTable.Title numberOfLines={2} textStyle={styles.tableHeaderStyle}>
+              Ended{' '}
+            </DataTable.Title>
+          </DataTable.Header>
 
-          <View style={{ height: windowHeight * 0.65 }}>
-            <ScrollView
-              contentContainerStyle={{ flexGrow: 1 }}
-              showsVerticalScrollIndicator={false}
+          {tableDataArray?.map((item, index) => (
+            <DataTable.Row
+              key={item.key}
+              onPress={() => {
+                tableTouchHandler(item);
+              }}
             >
-              {sessionHistoryLoad ? (
-                <View style={{ marginTop: 100 }}>
-                  <ActivityIndicator size="large" color={COLORS.indicator} />
+              {/* <DataTable.Cell>{index + 1}</DataTable.Cell> */}
+              <DataTable.Cell>
+                {index + 1 + '  '}
+                {moment(item.created_at).format('YYYY/MM/DD') ?? ''}
+              </DataTable.Cell>
+              <DataTable.Cell>
+                <View style={styles.profileheaderChildView}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image
+                      source={{ uri: item?.pos_user_detail?.user_profiles?.profile_photo }}
+                      style={{
+                        width: ms(15),
+                        height: ms(15),
+                        resizeMode: 'contain',
+                        borderRadius: 100,
+                        // marginLeft: ms(-15),
+                      }}
+                    />
+                    <DataTable.Cell numeric>
+                      {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
+                      {item?.pos_user_detail?.user_profiles?.firstname == undefined
+                        ? 'System Ended'
+                        : item?.pos_user_detail?.user_profiles?.firstname}
+                    </DataTable.Cell>
+                  </View>
                 </View>
-              ) : tableDataArray?.length === 0 ? (
-                <View style={{ marginTop: 80 }}>
-                  <Text style={styles.userNotFound}>History not found</Text>
-                </View>
-              ) : (
-                tableDataArray?.map((item, index) => {
-                  const currentIndex = startIndex + index;
-                  return (
-                    <TouchableOpacity
-                      style={styles.tableDataCon}
-                      onPress={
-                        () => tableTouchHandler(item)
-
-                        // ,oneItemSend(item)
-                      }
-                      key={index}
-                    >
-                      <View style={styles.profileheaderUnderData}>
-                        {/* <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}> */}
-                        <Text style={[styles.tableTextData]}>{currentIndex}</Text>
-                        {/* </View> */}
-                        <View style={styles.profileheaderChildView}>
-                          <Text style={styles.tableTextData}>
-                            {moment(item.created_at).format('YYYY/MM/DD') ?? ''}
-                          </Text>
-                        </View>
-                        <View style={[styles.profileheaderChildView, { marginLeft: SW(-5) }]}>
-                          <Text style={styles.tableTextData} numberOfLines={1}>
-                            {item.start_session == null
-                              ? ''
-                              : moment(item.start_session).format('hh:mm A') ?? ''}
-                          </Text>
-                        </View>
-                        <View style={styles.profileheaderChildView}>
-                          <Text style={styles.tableTextData} numberOfLines={1}>
-                            {item.end_session == null
-                              ? ''
-                              : moment(item.end_session).format('hh:mm A') ?? ''}
-                          </Text>
-                        </View>
-                        <View style={styles.profileheaderChildView}>
-                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Image
-                              source={{ uri: item?.pos_user_detail?.user_profiles?.profile_photo }}
-                              style={{
-                                width: ms(15),
-                                height: ms(15),
-                                resizeMode: 'contain',
-                                borderRadius: 100,
-                                // marginLeft: ms(-15),
-                              }}
-                            />
-                            <Text style={[styles.tableTextData, { marginLeft: ms(5) }]}>
-                              {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
-                              {item?.pos_user_detail?.user_profiles?.firstname == undefined
-                                ? 'System Ended'
-                                : item?.pos_user_detail?.user_profiles?.firstname}
-                            </Text>
-                          </View>
-                        </View>
-                        <View style={styles.profileheaderChildView}>
-                          <Text style={styles.tableTextData} numberOfLines={1}>
-                            ${item.start_tracking_session}
-                            {'.00'}
-                          </Text>
-                        </View>
-                        <View style={styles.profileheaderChildView}>
-                          <Text style={styles.tableTextData} numberOfLines={1}>
-                            ${item.add_cash}
-                            {'.00'}
-                          </Text>
-                        </View>
-                        <View style={[styles.profileheaderChildView, { marginLeft: SW(-3) }]}>
-                          <Text style={styles.tableTextData} numberOfLines={1}>
-                            ${item.removed_cash}
-                            {'.00'}
-                          </Text>
-                        </View>
-                        <View style={[styles.profileheaderChildView, { marginLeft: SW(-3) }]}>
-                          <Text style={styles.tableTextData} numberOfLines={1}>
-                            ${item.counted_cash}
-                            {'.00'}
-                          </Text>
-                        </View>
-                        <View style={[styles.profileheaderChildView]}>
-                          <Text style={[styles.tableTextData]} numberOfLines={1}>
-                            {item.end_tracking_session < 0 ? '-' : null} $
-                            {item.end_tracking_session < 0
-                              ? Math.abs(item.end_tracking_session)
-                              : item.end_tracking_session}
-                            {'.00'}
-                          </Text>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })
-              )}
-            </ScrollView>
-          </View>
-        </Table>
+              </DataTable.Cell>
+              <DataTable.Cell>
+                ${item.start_tracking_session}
+                {'.00'}
+              </DataTable.Cell>
+              <DataTable.Cell>
+                {item.end_tracking_session < 0 ? '-' : null} $
+                {item.end_tracking_session < 0
+                  ? Math.abs(item.end_tracking_session)
+                  : item.end_tracking_session}
+                {'.00'}
+              </DataTable.Cell>
+            </DataTable.Row>
+          ))}
+        </DataTable>
       </View>
       {/* {show && ( */}
       <Modal
@@ -496,6 +276,14 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     (item) => item.mode_of_cash === 'cash_in'
   );
 
+  // const sessionCashCount = finalCashInArray?.map((item) => item.amount);
+  // const sessionCashSum = sessionCashCount?.reduce((partialSum, a) => partialSum + a, 0);
+  // const finalCashOutArray = sessionHistoryArray?.drawer_activites.filter(
+  //   (item) => item.mode_of_cash === 'cash_out'
+  // );
+  // const sessionCashOutCount = finalCashOutArray?.map((item) => item.amount);
+  // const sessionCashOutSum = sessionCashOutCount?.reduce((partialSum, a) => partialSum + a, 0);
+
   const cashInArray = sessionHistoryArray?.drawerActivity?.filter(
     (item) => item.mode_of_cash === 'cash_in'
   );
@@ -551,7 +339,7 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
     <View style={historyHeader ? styles.bodyContainer : styles.bodyContainer2}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Spacer space={SH(20)} />
-        <Text style={styles.allCashText}>{strings.management.allCash}</Text>
+        <Text style={styles.allCashText}>{strings.management.batch}</Text>
         <View>
           <TouchableOpacity
             style={styles.paymentOptionsView}

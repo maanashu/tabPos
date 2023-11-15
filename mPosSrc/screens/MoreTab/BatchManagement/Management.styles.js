@@ -440,9 +440,16 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
   },
   bodyContainer: {
+    // width: windowWidth * 0.88,
+    // height: windowHeight * 0.68,
+    // alignSelf: 'center',
     width: windowWidth * 0.88,
-    height: windowHeight * 0.68,
+    maxHeight: windowHeight * 0.7,
     alignSelf: 'center',
+    backgroundColor: COLORS.white,
+    ...ShadowStyles.shadow,
+    borderRadius: 10,
+    paddingHorizontal: SW(20),
   },
   bodyContainer2: {
     width: windowWidth * 0.88,
