@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { COLORS, SF, SH } from '@/theme';
 import { Fonts } from '@/assets';
+import { ms } from 'react-native-size-matters';
 
 const selectData = [
   {
@@ -39,8 +40,8 @@ export function DaySelector({ setSelectTime, selectId, setSelectId, onPresFun })
   );
 
   const selectItem = ({ item }) => {
-    const backgroundColor = item.id === selectId ? COLORS.primary : 'transparent';
-    const color = item.id === selectId ? COLORS.white : COLORS.dark_grey;
+    const backgroundColor = item.id === selectId ? COLORS.dark_blue : 'transparent';
+    const color = item.id === selectId ? COLORS.white : COLORS.dark_blue;
 
     return (
       <ItemSelect
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
   selectItemConatiner: {
     width: SH(90),
     height: SH(28),
-    borderRadius: 3,
+    borderRadius: ms(20),
     justifyContent: 'center',
     alignItems: 'center',
   },
