@@ -14,7 +14,6 @@ export function Cart() {
   const [showCart, setShowCart] = useState();
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
-  console.log(presentCart);
   return (
     <ScreenWrapper style={styles.container}>
       {showCart ? (

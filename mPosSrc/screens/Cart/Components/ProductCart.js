@@ -80,6 +80,11 @@ export function ProductCart({ cartChangeHandler }) {
       state
     )
   );
+
+  const jbrCoinCallback = useCallback(
+    () => <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} />,
+    [jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler]
+  );
   useEffect(() => {
     dispatch(getAllCart());
     dispatch(getAllProductCart());
@@ -156,7 +161,6 @@ export function ProductCart({ cartChangeHandler }) {
             status: !productCartData?.is_on_hold,
             cartId: productCartData?.id,
           };
-    console.log(data);
     dispatch(changeStatusProductCart(data));
   };
 
@@ -490,8 +494,8 @@ export function ProductCart({ cartChangeHandler }) {
       />
       <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
+      {jbrCoinCallback()}
 
-      <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} />
       {isLoading ? <FullScreenLoader /> : null}
     </View>
   );

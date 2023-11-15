@@ -12,12 +12,13 @@ import { TYPES } from '@/Types/Types';
 import { digitWithDot } from '@/utils/validators';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
-import { createOrder } from '@/actions/RetailAction';
+import { createOrder, createServiceOrder } from '@/actions/RetailAction';
 
 const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) => {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
-  const cartData = retailData?.getAllCart;
+  const presentCart = retailData?.cartFrom;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
   const productDetail = retailData?.getOneProduct;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const [keyboardStatus, setKeyboardStatus] = useState('60%');
@@ -52,24 +53,41 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
   }, []);
 
   const isLoad = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_ALL_CART, TYPES.CREATE_ORDER], state)
+    isLoadingSelector(
+      [TYPES.GET_ALL_CART, TYPES.CREATE_ORDER, TYPES.CREATE_SERVICE_ORDER, TYPES.GET_SERVICE_CART],
+      state
+    )
   );
 
   const createOrderHandler = () => {
     if (amount && digitWithDot.test(amount) === false) {
       CustomErrorToast({ message: 'Please enter valid amount' });
     } else {
-      const data = {
-        cartid: cartData.id,
-        tips: amount === undefined || amount === '' ? cashRate : amount,
-        modeOfPayment: 'cash',
-      };
-      const callback = (response) => {
-        if (response) {
-          payByCashhandler(saveCartData, data);
-        }
-      };
-      dispatch(createOrder(data, callback));
+      if (presentCart === 'product') {
+        const data = {
+          cartid: cartData.id,
+          tips: amount === undefined || amount === '' ? cashRate : amount,
+          modeOfPayment: 'cash',
+        };
+        const callback = (response) => {
+          if (response) {
+            payByCashhandler(saveCartData, data);
+          }
+        };
+        dispatch(createOrder(data, callback));
+      } else {
+        const data = {
+          serviceCartId: cartData.id,
+          tips: amount === undefined || amount === '' ? cashRate : amount,
+          modeOfPayment: 'cash',
+        };
+        const callback = (response) => {
+          if (response) {
+            payByCashhandler(saveCartData, data);
+          }
+        };
+        dispatch(createServiceOrder(data, callback));
+      }
     }
   };
 

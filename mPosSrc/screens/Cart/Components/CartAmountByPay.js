@@ -31,7 +31,14 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { height } from '@/theme/ScalerDimensions';
 import CountryPicker from 'react-native-country-picker-modal';
-import { attachCustomer, getAllCart, getQrCodee, updateCartByTip } from '@/actions/RetailAction';
+import {
+  attachCustomer,
+  attachServiceCustomer,
+  getAllCart,
+  getQrCodee,
+  getServiceCart,
+  updateCartByTip,
+} from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { CustomErrorToast } from '@mPOS/components/Toast';
@@ -48,9 +55,10 @@ const CartAmountByPay = ({
   const payByCashRef = useRef(null);
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
+  const presentCart = retailData?.cartFrom;
   const productDetail = retailData?.getOneProduct;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
-  const cartData = retailData?.getAllCart;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
   const getTips = retailData?.getTips;
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
@@ -165,11 +173,12 @@ const CartAmountByPay = ({
     const data = {
       tip: selectedTipAmount.toString(),
       cartId: cartData.id,
+      ...(presentCart === 'service' && { services: 'services' }),
     };
     const res = await dispatch(updateCartByTip(data));
     if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
       cashPayNowHandler();
-      dispatch(getAllCart());
+      presentCart === 'product' ? dispatch(getAllCart()) : dispatch(getServiceCart());
     }
   };
 
@@ -437,6 +446,7 @@ const CartAmountByPay = ({
                       const data = {
                         tip: selectedTipAmount.toString(),
                         cartId: cartData.id,
+                        ...(presentCart === 'service' && { services: 'services' }),
                       };
                       const res = await dispatch(updateCartByTip(data));
                       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
@@ -445,10 +455,27 @@ const CartAmountByPay = ({
                           phoneNo: phoneNumber,
                           countryCode: countryCode,
                         };
-                        const res = await dispatch(attachCustomer(data));
-                        if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+                        const res =
+                          (await presentCart) === 'product'
+                            ? dispatch(attachCustomer(data))
+                            : dispatch(attachServiceCustomer(data));
+                        if (
+                          res?.type === 'ATTACH_CUSTOMER_SUCCESS' ||
+                          'ATTACH_SERVICE_CUSTOMER_SUCCESS'
+                        ) {
                           cashPayNowHandler();
                         }
+                        // {presentCart === 'product'
+                        // ?
+                        // const res = await dispatch(attachCustomer(data));
+                        // if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+                        //   cashPayNowHandler()
+                        // }
+                        // :
+                        // const res = await dispatch(attachServiceCustomer(data));
+                        // if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+                        //   cashPayNowHandler()
+                        // }}
                       }
                     }
                   }}
@@ -492,6 +519,7 @@ const CartAmountByPay = ({
                       const data = {
                         tip: selectedTipAmount.toString(),
                         cartId: cartData.id,
+                        ...(presentCart === 'service' && { services: 'services' }),
                       };
                       const res = await dispatch(updateCartByTip(data));
                       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
@@ -499,8 +527,14 @@ const CartAmountByPay = ({
                           cartId: cartData?.id,
                           phoneEmail: email,
                         };
-                        const res = await dispatch(attachCustomer(data));
-                        if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+                        const res =
+                          (await presentCart) === 'product'
+                            ? dispatch(attachCustomer(data))
+                            : dispatch(attachServiceCustomer(data));
+                        if (
+                          res?.type === 'ATTACH_CUSTOMER_SUCCESS' ||
+                          'ATTACH_SERVICE_CUSTOMER_SUCCESS'
+                        ) {
                           cashPayNowHandler();
                         }
                       }
@@ -533,6 +567,7 @@ const CartAmountByPay = ({
                 const data = {
                   tip: selectedTipAmount.toString(),
                   cartId: cartData.id,
+                  ...(presentCart === 'service' && { services: 'services' }),
                 };
                 const res = await dispatch(updateCartByTip(data));
                 if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {

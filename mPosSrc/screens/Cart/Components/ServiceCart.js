@@ -28,6 +28,7 @@ import { formattedReturnPrice } from '@mPOS/utils/GlobalMethods';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import {
   changeStatusProductCart,
+  changeStatusServiceCart,
   getAllCart,
   getAllProductCart,
   getAllServiceCart,
@@ -70,7 +71,6 @@ export function ServiceCart({ cartChangeHandler }) {
   const serviceCartArray = retailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
   const CART_LENGTH = useSelector(getServiceCartLength);
-  console.log('----------', serviceCartData?.appointment_cart_products?.length);
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -81,9 +81,8 @@ export function ServiceCart({ cartChangeHandler }) {
         TYPES.CUSTOM_PRODUCT_ADD,
         TYPES.GET_ALL_SERVICE_CART,
         TYPES.UPDATE_CART_BY_TIP,
-        TYPES.CREATE_ORDER,
-        TYPES.ATTACH_CUSTOMER,
-        TYPES.CHANGE_STATUS_PRODUCT_CART,
+        TYPES.ATTACH_SERVICE_CUSTOMER,
+        TYPES.CHANGE_STATUS_SERVICE_CART,
         TYPES.CLEAR_SERVICE_ALL_CART,
       ],
       state
@@ -94,11 +93,24 @@ export function ServiceCart({ cartChangeHandler }) {
     dispatch(getAllServiceCart());
   }, [isFocused]);
 
-  const payNowHandler = useCallback(() => {
-    dispatch(getDrawerSessions());
-    dispatch(getTip());
-    cartAmountByPayRef.current?.present();
-  }, []);
+  // const payNowHandler = useCallback(() => {
+  //   if (Object.keys(serviceCartData?.user_details)?.length === 0) {
+  //     setProductCustomerAdd(true);
+  //   } else {
+  //     dispatch(getDrawerSessions());
+  //     dispatch(getTip());
+  //     cartAmountByPayRef.current?.present();
+  //   }
+  // }, []);
+  const payNowHandler = () => {
+    if (Object.keys(serviceCartData?.user_details)?.length === 0) {
+      setProductCustomerAdd(true);
+    } else {
+      dispatch(getDrawerSessions());
+      dispatch(getTip());
+      cartAmountByPayRef.current?.present();
+    }
+  };
   const cartAmountByPayCross = useCallback(() => {
     cartAmountByPayRef.current?.dismiss();
   }, []);
@@ -165,23 +177,19 @@ export function ServiceCart({ cartChangeHandler }) {
             status: !serviceCartData?.is_on_hold,
             cartId: serviceCartData?.id,
           };
-    dispatch(changeStatusProductCart(data));
+    dispatch(changeStatusServiceCart(data));
   };
 
   const backCartLoad = () => {
     const arr = serviceCartData;
-    console.log('data1-----------', arr?.appointment_cart_products?.length);
-    console.log('text----------', serviceCartData?.appointment_cart_products?.length);
     // if (arr?.appointment_cart_products?.length > 0) {
     const products = arr?.appointment_cart_products?.map((item) => ({
       product_id: item?.product_id,
       qty: item?.qty,
     }));
-    console.log('data2-----------', products?.length);
     const data = {
       updated_products: products,
     };
-    console.log('data3-----------', data);
     dispatch(updateServiceCartQty(data, arr.id));
     // }
   };
@@ -225,7 +233,6 @@ export function ServiceCart({ cartChangeHandler }) {
     // if (isFocused) {
     return () => {
       backCartLoad();
-      alert('jkl');
     };
     // }
   }, [isFocused]);
@@ -450,7 +457,7 @@ export function ServiceCart({ cartChangeHandler }) {
                 opacity: serviceCartData?.appointment_cart_products?.length > 0 ? 1 : 0.7,
               },
             ]}
-            // onPress={payNowHandler}
+            onPress={payNowHandler}
             disabled={serviceCartData?.appointment_cart_products?.length > 0 ? false : true}
           >
             <Text style={styles.payNowText}>{strings.cart.payNow}</Text>
@@ -531,7 +538,7 @@ export function ServiceCart({ cartChangeHandler }) {
       <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
 
-      <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} />
+      {/* <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} /> */}
       {isLoading ? <FullScreenLoader /> : null}
     </View>
   );
