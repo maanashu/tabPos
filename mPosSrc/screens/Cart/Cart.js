@@ -14,9 +14,10 @@ export function Cart() {
   const [showCart, setShowCart] = useState();
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
+  console.log('presentCart', presentCart);
   return (
     <ScreenWrapper style={styles.container}>
-      {showCart ? (
+      {showCart && presentCart === 'service' ? (
         <ServiceCart
           cartChangeHandler={() => {
             setShowCart(false);

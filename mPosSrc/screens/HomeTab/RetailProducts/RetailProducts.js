@@ -24,6 +24,7 @@ import ProductDetails from './Components/ProductDetails';
 import { FullScreenLoader, Header, ImageView, ScreenWrapper } from '@mPOS/components';
 import { debounce } from 'lodash';
 import {
+  cartRun,
   getBrand,
   getCategory,
   getMainProduct,
@@ -231,9 +232,10 @@ export function RetailProducts(props) {
             backRequired
             title={`Back`}
             cartIcon
-            cartHandler={() =>
-              navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart })
-            }
+            cartHandler={() => {
+              dispatch(cartRun('product'));
+              navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+            }}
           />
           {categoryLoad ? (
             <View style={[styles.contentContainerStyle, { height: ms(20) }]}>
