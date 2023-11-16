@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -32,7 +33,7 @@ import moment from 'moment';
 import { COLORS, SF, SH } from '@/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { useState } from 'react';
+
 import Modal, { ReactNativeModal } from 'react-native-modal';
 import { strings } from '@/localization';
 import { CustomKeyboard } from '../CustomKeyBoard';

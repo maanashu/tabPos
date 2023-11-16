@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -78,8 +78,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { ServiceCartListModal } from './ServiceCartListModal ';
 import { CustomProductAdd } from '@/screens/PosRetail3/Components';
-import { useRef } from 'react';
-import { useCallback } from 'react';
+import { Images } from '@/assets/new_icon';
 
 export function MainScreen({
   cartScreenHandler,
@@ -835,12 +834,7 @@ export function MainScreen({
                         <Text style={productCon ? styles.productTextBlue : styles.productText}>
                           {'Products'}
                         </Text>
-                        <Image
-                          source={product}
-                          style={
-                            productCon ? styles.productImageStyleBlue : styles.productImageStyle
-                          }
-                        />
+                        <Image source={Images.productsIcon} style={styles.productImageStyle} />
                       </TouchableOpacity>
                     ) : null}
                     {getMerchantService?.is_service_exist ? (
@@ -855,12 +849,7 @@ export function MainScreen({
                         <Text style={serviceCon ? styles.productTextBlue : styles.productText}>
                           {'Services'}
                         </Text>
-                        <Image
-                          source={services}
-                          style={
-                            serviceCon ? styles.productImageStyleBlue : styles.productImageStyle
-                          }
-                        />
+                        <Image source={Images.serviceIcon} style={styles.productImageStyle} />
                       </TouchableOpacity>
                     ) : null}
                     {productCon && getMerchantService?.is_product_exist === true ? (
@@ -887,7 +876,7 @@ export function MainScreen({
                           </Text>
                           <View>
                             <Image
-                              source={filter}
+                              source={Images.filterIcon}
                               style={
                                 filterCon
                                   ? [styles.productImageStyle, { tintColor: COLORS.primary }]
@@ -941,7 +930,7 @@ export function MainScreen({
                           </Text>
                           <View>
                             <Image
-                              source={filter}
+                              source={Images.filterIcon}
                               style={
                                 serviceFilterCon
                                   ? [styles.productImageStyle, { tintColor: COLORS.primary }]
@@ -1122,7 +1111,7 @@ export function MainScreen({
                     }}
                   >
                     <Image
-                      source={bucket}
+                      source={Images.cartIcon}
                       style={
                         cartLength > 0
                           ? [styles.sideBarImage, { tintColor: COLORS.primary }]
@@ -1155,36 +1144,8 @@ export function MainScreen({
                       setCustomProductOpen('product');
                     }}
                   >
-                    <Image
-                      source={plus}
-                      style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
-                    />
+                    <Image source={Images.addProduct} style={styles.sideBarImage} />
                   </TouchableOpacity>
-                  {/* {numPadModal ? (
-                      <View
-                        style={{
-                          width: Platform.OS === 'android' ? ms(300) : ms(240),
-                          height: ms(280),
-                          position: 'absolute',
-                          right: 60,
-                          top: -20,
-                          backgroundColor: COLORS.textInputBackground,
-                          borderRadius: 5,
-                        }}
-                      >
-                        <NumericPad
-                          maxCharLength={15}
-                          enteredValue={search}
-                          setEnteredValue={setSearch}
-                          // onClosePress={closeHandler}
-                          // onPayNowPress={() => {
-                          //   // payNowHandler();
-                          //   payNowByphone(selectedTipAmount);
-                          //   attachUserByPhone(phoneNumber);
-                          // }}
-                        />
-                      </View>
-                    ) : null} */}
 
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
@@ -1192,12 +1153,13 @@ export function MainScreen({
                     disabled={cartLength > 0 ? false : true}
                   >
                     <Image
-                      source={sideEarser}
-                      style={
-                        cartLength > 0
-                          ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
-                          : styles.sideBarImage
-                      }
+                      source={Images.clearCart}
+                      // style={
+                      //   cartLength > 0
+                      //     ? [styles.sideBarImage]
+                      //     : styles.sideBarImage
+                      // }
+                      style={styles.sideBarImage}
                     />
                   </TouchableOpacity>
                   <Spacer space={SH(20)} />
@@ -1206,7 +1168,7 @@ export function MainScreen({
                     // disabled={holdProductArray?.length > 0 ? false : true}
                   >
                     <Image
-                      source={holdCart}
+                      source={Images.holdCart}
                       style={
                         holdProductArray?.length > 0
                           ? [styles.sideBarImage, { tintColor: COLORS.primary }]
@@ -1266,7 +1228,7 @@ export function MainScreen({
                     onPress={() => setServiceCartModal(true)}
                   >
                     <Image
-                      source={bucket}
+                      source={Images.cartIcon}
                       style={
                         serviceCartLength > 0
                           ? [styles.sideBarImage, { tintColor: COLORS.primary }]
@@ -1299,36 +1261,8 @@ export function MainScreen({
                         setCustomProductOpen('service');
                       }}
                     >
-                      <Image
-                        source={plus}
-                        style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
-                      />
+                      <Image source={Images.addProduct} style={styles.sideBarImage} />
                     </TouchableOpacity>
-                    {/* {serviceNumPadModal ? (
-                      <View
-                        style={{
-                          width: Platform.OS === 'android' ? ms(300) : ms(240),
-                          height: ms(280),
-                          position: 'absolute',
-                          right: 60,
-                          top: -20,
-                          backgroundColor: COLORS.textInputBackground,
-                          borderRadius: 5,
-                        }}
-                      >
-                        <NumericPad
-                          maxCharLength={15}
-                          enteredValue={serviceSearch}
-                          setEnteredValue={setServiceSearch}
-                          // onClosePress={closeHandler}
-                          // onPayNowPress={() => {
-                          //   // payNowHandler();
-                          //   payNowByphone(selectedTipAmount);
-                          //   attachUserByPhone(phoneNumber);
-                          // }}
-                        />
-                      </View>
-                    ) : null} */}
                   </View>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
@@ -1336,12 +1270,13 @@ export function MainScreen({
                     disabled={serviceCartLength > 0 ? false : true}
                   >
                     <Image
-                      source={sideEarser}
-                      style={
-                        serviceCartLength > 0
-                          ? [styles.sideBarImage, { tintColor: COLORS.dark_grey }]
-                          : styles.sideBarImage
-                      }
+                      source={Images.clearCart}
+                      // style={
+                      //   serviceCartLength > 0
+                      //     ? [styles.sideBarImage]
+                      //     : styles.sideBarImage
+                      // }
+                      style={styles.sideBarImage}
                     />
                   </TouchableOpacity>
                   <Spacer space={SH(20)} />
@@ -1352,7 +1287,7 @@ export function MainScreen({
                     }}
                   >
                     <Image
-                      source={holdCart}
+                      source={Images.holdCart}
                       style={
                         holdServiceArray?.length > 0
                           ? [styles.sideBarImage, { tintColor: COLORS.primary }]
@@ -1410,7 +1345,8 @@ export function MainScreen({
         isVisible={cartModal || numPadModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        backdropOpacity={0.4}
+        backdropOpacity={0.9}
+        backdropColor={COLORS.white}
       >
         {cartModal ? (
           <CartListModal

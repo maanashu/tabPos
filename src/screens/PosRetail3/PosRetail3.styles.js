@@ -1323,7 +1323,7 @@ export const styles = StyleSheet.create({
   bucketBackgorund: {
     width: SW(17),
     height: SW(17),
-    borderRadius: 5,
+    borderRadius: ms(8),
     backgroundColor: COLORS.textInputBackground,
     justifyContent: 'center',
     alignItems: 'center',
@@ -1374,15 +1374,8 @@ export const styles = StyleSheet.create({
     height: SW(6),
     resizeMode: 'contain',
     marginHorizontal: ms(4),
-    tintColor: COLORS.navy_blue,
   },
-  productImageStyleBlue: {
-    width: SW(6),
-    height: SW(6),
-    resizeMode: 'contain',
-    marginHorizontal: ms(4),
-    tintColor: COLORS.primary,
-  },
+
   crossStyling: {
     width: SW(4),
     height: SW(4),
@@ -2223,11 +2216,11 @@ export const styles = StyleSheet.create({
   },
 
   customProductCon: {
-    width: ms(350),
+    width: ms(260),
     height: ms(280),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
-    borderRadius: 10,
+    borderRadius: ms(15),
     // padding: ms(10),
     // marginTop: Platform.OS === 'android' ? ms(10) : ms(50),
   },
