@@ -380,11 +380,11 @@ export { default as soldProduct } from '@/assets/ic_analytic/soldProduct.png';
 export { default as totalCostIcon } from '@/assets/ic_analytic/totalCost.png';
 export { default as totalOrder } from '@/assets/ic_analytic/totalOrder.png';
 // Cash Drawer New ICON
-export { default as arrowTop } from '@/assets/new_icon/ic_drawer/arrowTop.png';
+export { default as arrowRightTop } from '@/assets/new_icon/ic_drawer/arrowTop.png';
 export { default as crossDrawer } from '@/assets/new_icon/ic_drawer/cross.png';
 export { default as bellDrawer } from '@/assets/new_icon/ic_drawer/bell.png';
-export { default as arrowDown } from '@/assets/new_icon/ic_drawer/arrowRoundDown.png';
-export { default as arrowUp } from '@/assets/new_icon/ic_drawer/arrowRoundUp.png';
+export { default as arrowDownRound } from '@/assets/new_icon/ic_drawer/arrowRoundDown.png';
+export { default as arrowUpRound } from '@/assets/new_icon/ic_drawer/arrowRoundUp.png';
 export { default as moneySearch } from '@/assets/new_icon/ic_drawer/moneySearch.png';
 export { default as removeMoney } from '@/assets/new_icon/ic_drawer/removeMoney.png';
 export { default as info } from '@/assets/new_icon/ic_drawer/info.png';
@@ -392,6 +392,11 @@ export { default as plusDrawer } from '@/assets/new_icon/ic_drawer/plus.png';
 export { default as lockDrawer } from '@/assets/new_icon/ic_drawer/lock.png';
 export { default as addMoney } from '@/assets/new_icon/ic_drawer/addMoney.png';
 export { default as logOutDrawer } from '@/assets/new_icon/ic_drawer/logOut.png';
+export { default as searchDrawer } from '@/assets/new_icon/ic_drawer/searchDrawer.png';
+export { default as arrowDown } from '@/assets/new_icon/ic_drawer/arrowDown.png';
+export { default as calendarDrawer } from '@/assets/new_icon/ic_drawer/CalendarDrawer.png';
+export { default as userOutlineDrawer } from '@/assets/new_icon/ic_drawer/userOutline.png';
+export { default as arrowLeftUp } from '@/assets/new_icon/ic_drawer/ArrowLeftUp.png';
 
 /* Fonts */
 export const Fonts = {

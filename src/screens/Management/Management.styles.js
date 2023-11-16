@@ -11,6 +11,9 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
+    borderRadius: 30,
+    marginRight: SW(5),
+    marginVertical: SH(5),
   },
   displayFlex: {
     flexDirection: 'row',
@@ -43,7 +46,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   headerMainView: {
-    width: windowWidth - 10,
+    width: windowWidth - 75,
     paddingHorizontal: SW(16),
     alignSelf: 'center',
     justifyContent: 'space-between',
@@ -52,7 +55,7 @@ export const styles = StyleSheet.create({
   },
   searchView: {
     borderWidth: 1,
-    // width: SW(65),
+    width: SW(120),
     height: SH(38),
     borderRadius: 30,
     borderColor: COLORS.row_grey,
@@ -65,13 +68,19 @@ export const styles = StyleSheet.create({
     height: SH(20),
     resizeMode: 'contain',
   },
+  crossImage: {
+    width: SH(25),
+    height: SH(25),
+    resizeMode: 'contain',
+    marginLeft: 10,
+  },
   textInputStyle: {
-    width: SW(75),
+    width: SW(100),
     // marginLeft: 10,
     fontFamily: Fonts.Italic,
     // borderWidth: 3,
     fontSize: SF(15),
-    paddingLeft: 5,
+    paddingLeft: 10,
     padding: 0,
     margin: 0,
   },
@@ -86,18 +95,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   deliveryText: {
-    fontFamily: Fonts.Bold,
+    fontFamily: Fonts.MaisonBold,
     color: COLORS.navy_blue,
     fontSize: SF(20),
     paddingLeft: SW(4),
   },
   cashDrawerView: {
-    width: windowWidth - 120,
+    width: windowWidth - 180,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: SH(25),
-    paddingVertical: SH(25),
+    paddingHorizontal: SH(15),
+    paddingVertical: SH(10),
     backgroundColor: COLORS.sky_grey,
     borderRadius: 10,
     borderRadius: 100,
@@ -131,8 +140,8 @@ export const styles = StyleSheet.create({
   },
   loggedInAsText: {
     fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
-    fontSize: SF(14),
+    color: COLORS.navy_blue,
+    fontSize: SF(16),
   },
   cashierName: {
     color: COLORS.solid_grey,
@@ -184,7 +193,7 @@ export const styles = StyleSheet.create({
   },
   viewSessionButtonView: {
     width: SW(50),
-    height: SH(60),
+    height: SH(50),
     borderRadius: 100,
     justifyContent: 'center',
     // borderWidth: 1,
@@ -230,12 +239,12 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
   },
   sessionHistoryView: {
-    width: windowWidth - 120,
+    width: windowWidth - 180,
     alignSelf: 'center',
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: COLORS.light_purple,
     borderRadius: 10,
-    paddingVertical: SH(30),
+    paddingVertical: SH(20),
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: SH(25),
@@ -259,10 +268,12 @@ export const styles = StyleSheet.create({
   },
   modalMainView: {
     backgroundColor: COLORS.white,
-    width: SW(160),
+    width: SW(140),
     borderRadius: 30,
     alignSelf: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+
     minHeight: windowHeight - 300,
     // borderWidth:10
   },
@@ -285,6 +296,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.black,
     alignSelf: 'center',
+    right: SW(15),
   },
   addMoneyStyle: {
     width: SW(90),
@@ -318,7 +330,7 @@ export const styles = StyleSheet.create({
   amountCountedText: {
     fontFamily: Fonts.Medium,
     color: COLORS.navy_blue,
-    fontSize: SF(14),
+    fontSize: SF(15),
   },
   inputStyle: {
     marginTop: 4,
@@ -363,14 +375,15 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.gerySkies,
   },
   sessionMainView: {
-    width: windowWidth - 110,
+    width: windowWidth - 220,
     alignSelf: 'center',
-    borderRadius: 10,
+    borderRadius: 20,
     paddingTop: SH(10),
     backgroundColor: COLORS.sky_grey,
+    marginTop: SH(12),
   },
   sessionView: {
-    width: windowWidth - 140,
+    width: windowWidth - 250,
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -390,7 +403,7 @@ export const styles = StyleSheet.create({
   },
   buttonView: {
     justifyContent: 'space-between',
-    width: windowWidth - 140,
+    width: windowWidth - 220,
     alignSelf: 'center',
   },
   addCashView: {
@@ -402,13 +415,38 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.blue_shade,
   },
   addCashViewNew: {
-    width: SW(80),
-    height: SH(70),
+    width: SW(75),
+    height: SH(65),
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.navy_blue,
     borderRadius: 100,
+    flexDirection: 'row',
+  },
+  closeBatchButton: {
+    width: SW(75),
+    height: SH(65),
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.navy_blue,
+    borderRadius: 100,
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    right: 20,
+    flexDirection: 'row',
+  },
+  nextButtonEnd: {
+    width: '100%',
+    height: SH(65),
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.navy_blue,
+    borderRadius: 100,
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
     flexDirection: 'row',
   },
   removeCashView: {
@@ -420,8 +458,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.silver_solid,
   },
   removeCashViewNew: {
-    width: SW(80),
-    height: SH(70),
+    width: SW(75),
+    height: SH(65),
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
@@ -470,11 +508,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   backButtonCon: {
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
     borderRadius: 3,
     width: windowWidth * 0.08,
     alignItems: 'center',
     flexDirection: 'row',
+    borderRadius: 100,
   },
   backButtonArrow: {
     width: SW(12),
@@ -497,11 +536,13 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.88,
     height: windowHeight * 0.68,
     alignSelf: 'center',
+    paddingHorizontal: SW(10),
   },
   bodyContainer2: {
     width: windowWidth * 0.88,
     height: windowHeight * 0.84,
     alignSelf: 'center',
+    paddingHorizontal: SW(10),
   },
   allCashText: {
     color: COLORS.navy_blue,
@@ -565,6 +606,24 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(12),
   },
+  tableHeaderStyle: {
+    color: COLORS.faded_purple,
+    fontFamily: Fonts.Bold,
+    fontSize: SF(12),
+  },
+  tableRowStyle: {
+    borderBottomColor: COLORS.sky_grey,
+    borderTopColor: COLORS.sky_grey,
+    borderRadius: 100,
+    borderBottomWidth: 2,
+    borderTopWidth: 2,
+    borderEndWidth: 2,
+    borderStartWidth: 2,
+    borderStartColor: COLORS.sky_grey,
+    borderEndColor: COLORS.sky_grey,
+    marginVertical: 3,
+    flex: 1,
+  },
   senEmailButton: {
     alignSelf: 'center',
     width: windowWidth * 0.88,
@@ -573,9 +632,9 @@ export const styles = StyleSheet.create({
   // summary history css end
   // summary history css start
   sessionHistory: {
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.MaisonBold,
-    fontSize: SF(18),
+    fontSize: SF(20),
     paddingHorizontal: moderateScale(12),
   },
   datePickerContainer: {
@@ -585,6 +644,17 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderTopWidth: 1,
     borderColor: COLORS.solidGrey,
+  },
+  datePickerContainerNew: {
+    height: SH(63),
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(12),
+    // borderBottomWidth: 1,
+    // borderTopWidth: 1,
+    // borderColor: COLORS.solidGrey,
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginRight: SW(-10),
   },
   datepickerConatiner: {
     borderWidth: 1,
@@ -600,6 +670,24 @@ export const styles = StyleSheet.create({
     height: SW(5),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
+  },
+  calendarStyleNew: {
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+    // tintColor: COLORS.darkGray,
+  },
+  arrowLeftUp: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+    // tintColor: COLORS.darkGray,
+  },
+  dropIcon: {
+    width: SW(5),
+    height: SW(5),
+    resizeMode: 'contain',
+    // tintColor: COLORS.darkGray,
   },
   datePlaceholder: {
     fontFamily: Fonts.Regular,
@@ -794,6 +882,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: moderateScale(7),
   },
+  datePickerConNew: {
+    borderWidth: 1,
+    height: SH(38),
+    width: SW(60),
+    borderRadius: 12,
+    borderColor: COLORS.blue2,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(7),
+    alignContent: 'center',
+  },
   calendarStyle: {
     width: SW(5),
     height: SW(5),
@@ -802,8 +902,9 @@ export const styles = StyleSheet.create({
   txtInput: {
     flex: 1,
     justifyContent: 'center',
-    fontSize: SF(11),
-    top: 2,
+    fontSize: SF(13),
+    top: 0,
+    left: 5,
     color: COLORS.solid_grey,
   },
   selectAmountCon: {
@@ -929,6 +1030,12 @@ export const styles = StyleSheet.create({
   // pagination table ui css
   jbrTypeCon: {
     backgroundColor: COLORS.textInputBackground,
+    height: SH(55),
+    justifyContent: 'center',
+    paddingHorizontal: moderateScale(8),
+  },
+  jbrTypeConNew: {
+    backgroundColor: COLORS.white,
     height: SH(55),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(8),

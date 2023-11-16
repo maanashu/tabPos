@@ -36,6 +36,7 @@ export const en = {
   },
   deliveryOrders: {
     search: 'Search',
+    searchInHistory: 'Search In History',
     orderNumber: 'Number of Orders',
     back: 'Back',
     ready: 'Ready for Pickup',

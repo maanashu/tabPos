@@ -9,11 +9,15 @@ import {
   TextInput,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
 import { moderateScale, ms } from 'react-native-size-matters';
 import {
   allien,
+  arrowDown,
+  arrowLeftUp,
   calendar1,
+  calendarDrawer,
+  cashProfile,
   down,
   dropdown,
   dropdown2,
@@ -26,13 +30,13 @@ import {
 } from '@/assets';
 import { strings } from '@/localization';
 import { styles } from '@/screens/Management/Management.styles';
-import { Spacer, TableDropdown } from '@/components';
+import { Spacer } from '@/components';
 import { Table } from 'react-native-table-component';
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import { ActivityIndicator } from 'react-native';
-import { DarkTheme } from 'react-native-paper';
+import { DarkTheme, DataTable } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSessionHistory } from '@/actions/CashTrackingAction';
 import { width } from '@/theme/ScalerDimensions';
@@ -47,6 +51,8 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { PAGINATION_DATA } from '@/constants/enums';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CashtrackingTypes';
+import { TableDropdown } from './TableDropdown';
+import { goBack } from '@/navigation/NavigationRef';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -56,6 +62,7 @@ export function SessionHistoryTable({
   sessionHistoryLoad,
   // oneItemSend,
   setSessionHistoryArray,
+  setSessionHistory,
 }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -97,6 +104,10 @@ export function SessionHistoryTable({
     perPage: sessionHistoryData?.per_page ?? '0',
     currentPage: sessionHistoryData?.current_page ?? '0',
   };
+  function isNegative(value) {
+    const numberValue = parseFloat(value);
+    return !isNaN(numberValue) && numberValue < 0;
+  }
 
   useEffect(() => {
     const data = {
@@ -129,13 +140,28 @@ export function SessionHistoryTable({
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
+    <View style={{ flex: 1, paddingHorizontal: SW(5) }}>
       <Spacer space={SH(20)} />
-      <View style={styles.datePickerContainer}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity style={styles.datePickerCon} onPress={() => setShow(!show)}>
-            <Image source={calendar1} style={styles.calendarStyle} />
+      <View style={styles.datePickerContainerNew}>
+        <TouchableOpacity
+          onPress={() => setSessionHistory(false)}
+          style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}
+        >
+          <Image source={arrowLeftUp} style={styles.arrowLeftUp} />
+
+          <Text style={styles.sessionHistory}>{strings.management.sessionHistory}</Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            // alignSelf: 'flex-end',
+            justifyContent: 'flex-end',
+            flex: 1,
+          }}
+        >
+          <TouchableOpacity style={styles.datePickerConNew} onPress={() => setShow(!show)}>
+            <Image source={calendarDrawer} style={styles.calendarStyleNew} />
             <TextInput
               value={date}
               returnKeyType={'done'}
@@ -143,9 +169,10 @@ export function SessionHistoryTable({
               autoCapitalize={'none'}
               editable={false}
               placeholder="Date"
-              placeholderTextColor={COLORS.gerySkies}
-              style={styles.txtInput}
+              placeholderTextColor={COLORS.navy_blue}
+              style={[styles.txtInput, { color: COLORS.navy_blue }]}
             />
+            <Image source={arrowDown} style={styles.dropIcon} />
           </TouchableOpacity>
           <View style={{ marginHorizontal: moderateScale(10) }}>
             <TableDropdown placeholder="Select Staff" selected={staffSelection} data={posUsers} />
@@ -153,12 +180,11 @@ export function SessionHistoryTable({
         </View>
       </View>
 
-      {/*Calendar pagination section */}
-      <View
-        style={[styles.jbrTypeCon, { zIndex: -1, opacity: payloadLength === 0 ? 0.4 : 1 }]}
+      {/* <View
+        style={[styles.jbrTypeConNew, { zIndex: -1, opacity: payloadLength === 0 ? 0.4 : 1 }]}
         pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
-      >
-        <View style={styles.paginationEnd}>
+      > */}
+      {/* <View style={styles.paginationEnd}>
           <Text style={[styles.paginationCount, { fontSize: 12 }]}>
             {strings.customers.showResult}
           </Text>
@@ -187,7 +213,6 @@ export function SessionHistoryTable({
               setItems={setPaginationModalItems}
               placeholder="10"
               placeholderStyle={styles.placeholderStylePagination}
-              // onSelectItem={item => selectedNo(item.value)}
             />
           </View>
           <TouchableOpacity
@@ -266,11 +291,11 @@ export function SessionHistoryTable({
               ]}
             />
           </TouchableOpacity>
-        </View>
-      </View>
-
+        </View> */}
+      {/* </View> */}
+      <Spacer space={SH(20)} />
       <View style={[styles.tableMainView]}>
-        <Table>
+        {/* <Table>
           <View
             style={[
               styles.tableDataHeaderConNew,
@@ -351,14 +376,14 @@ export function SessionHistoryTable({
                       onPress={
                         () => tableTouchHandler(item)
 
-                        // ,oneItemSend(item)
+                 
                       }
                       key={index}
                     >
                       <View style={styles.profileheaderUnderData}>
-                        {/* <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}> */}
+                       
                         <Text style={[styles.tableTextData]}>{currentIndex}</Text>
-                        {/* </View> */}
+
                         <View style={styles.profileheaderChildView}>
                           <Text style={styles.tableTextData}>
                             {moment(item.created_at).format('YYYY/MM/DD') ?? ''}
@@ -387,11 +412,11 @@ export function SessionHistoryTable({
                                 height: ms(15),
                                 resizeMode: 'contain',
                                 borderRadius: 100,
-                                // marginLeft: ms(-15),
+
                               }}
                             />
                             <Text style={[styles.tableTextData, { marginLeft: ms(5) }]}>
-                              {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
+                         
                               {item?.pos_user_detail?.user_profiles?.firstname == undefined
                                 ? 'System Ended'
                                 : item?.pos_user_detail?.user_profiles?.firstname}
@@ -438,16 +463,125 @@ export function SessionHistoryTable({
               )}
             </ScrollView>
           </View>
-        </Table>
+        </Table> */}
+
+        <DataTable>
+          <DataTable.Header style={{ borderBottomColor: COLORS.white }}>
+            <DataTable.Title textStyle={styles.tableHeaderStyle}>{'#   ' + 'Date'}</DataTable.Title>
+            <DataTable.Title textStyle={styles.tableHeaderStyle}>Starts</DataTable.Title>
+            <DataTable.Title textStyle={styles.tableHeaderStyle}>Ends</DataTable.Title>
+            <DataTable.Title textStyle={styles.tableHeaderStyle}>Ended By</DataTable.Title>
+            <DataTable.Title textStyle={styles.tableHeaderStyle}>Session Started</DataTable.Title>
+            <DataTable.Title textStyle={styles.tableHeaderStyle}>Total Cash In</DataTable.Title>
+            <DataTable.Title textStyle={styles.tableHeaderStyle}>Total Cash Out</DataTable.Title>
+            <DataTable.Title textStyle={styles.tableHeaderStyle}>Counted Cash</DataTable.Title>
+            <DataTable.Title numberOfLines={2} textStyle={styles.tableHeaderStyle}>
+              Session Ended
+            </DataTable.Title>
+          </DataTable.Header>
+
+          {tableDataArray?.map((item, index) => (
+            <DataTable.Row
+              style={styles.tableRowStyle}
+              key={item.key}
+              onPress={() => {
+                tableTouchHandler(item);
+              }}
+            >
+              {/* <DataTable.Cell>{index + 1}</DataTable.Cell> */}
+              <DataTable.Cell>
+                {index + 1 + '   '}
+                {moment(item.created_at).format('YYYY/MM/DD') ?? ''}
+              </DataTable.Cell>
+              <DataTable.Cell>
+                {item.start_session == null
+                  ? ''
+                  : moment(item.start_session).format('hh:mm A') ?? ''}
+              </DataTable.Cell>
+              <DataTable.Cell>
+                {item.end_session == null ? '' : moment(item.end_session).format('hh:mm A') ?? ''}
+              </DataTable.Cell>
+
+              <DataTable.Cell>
+                <View style={styles.profileheaderChildView}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image
+                      source={
+                        item?.pos_user_detail?.user_profiles?.profile_photo == null
+                          ? cashProfile
+                          : {
+                              uri: item?.pos_user_detail?.user_profiles?.profile_photo,
+                            }
+                      }
+                      style={{
+                        width: ms(15),
+                        height: ms(15),
+                        resizeMode: 'contain',
+                        borderRadius: 100,
+                        marginLeft: ms(-5),
+                      }}
+                    />
+                    <DataTable.Cell>
+                      {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
+                      {item?.pos_user_detail?.user_profiles?.firstname == undefined
+                        ? 'System Ended'
+                        : item?.pos_user_detail?.user_profiles?.firstname}
+                    </DataTable.Cell>
+                  </View>
+                </View>
+              </DataTable.Cell>
+              <DataTable.Cell>
+                ${item.start_tracking_session}
+                {'.00'}
+              </DataTable.Cell>
+
+              <DataTable.Cell>
+                ${item.add_cash}
+                {'.00'}
+              </DataTable.Cell>
+              <DataTable.Cell>
+                ${item.removed_cash}
+                {'.00'}
+              </DataTable.Cell>
+              <DataTable.Cell>
+                ${item.counted_cash}
+                {'.00'}
+              </DataTable.Cell>
+
+              <DataTable.Cell
+                style={{
+                  backgroundColor:
+                    item.end_tracking_session < 0 ? COLORS.cream_yellow : COLORS.sky_grey,
+                  height: 20,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 100,
+                  elevation: 10,
+                  shadowColor: '#000000',
+                  shadowRadius: 1,
+                  shadowOpacity: 0.1,
+                  shadowOffset: {
+                    width: 1,
+                    height: 1,
+                  },
+                }}
+              >
+                {item.end_tracking_session < 0 ? '-' : null} $
+                {item.end_tracking_session < 0
+                  ? Math.abs(item.end_tracking_session)
+                  : item.end_tracking_session}
+                {'.00'}
+              </DataTable.Cell>
+            </DataTable.Row>
+          ))}
+        </DataTable>
       </View>
-      {/* {show && ( */}
+
       <Modal
         isVisible={show}
         statusBarTranslucent
         animationIn={'bounceIn'}
         animationOut={'fadeOut'}
-        // animationInTiming={600}
-        // animationOutTiming={300}
         onBackdropPress={() => setShow(false)}
       >
         <View style={styles.calendarModalView}>

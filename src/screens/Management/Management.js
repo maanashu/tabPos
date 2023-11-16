@@ -50,6 +50,13 @@ import {
   cross,
   moneySearch,
   info,
+  bellDrawer,
+  searchDrawer,
+  arrowUp,
+  arrowDown,
+  arrowUpRound,
+  arrowDownRound,
+  arrowRightTop,
 } from '@/assets';
 import {
   endTrackingSession,
@@ -461,7 +468,7 @@ export function Management() {
           </TouchableOpacity>
         ) : (
           <View style={styles.deliveryView}>
-            <Image source={tray} style={styles.truckStyle} />
+            <Image source={moneySearch} style={styles.truckStyle} />
             <Text style={styles.deliveryText}>{strings.management.salesTracking}</Text>
           </View>
         )}
@@ -473,14 +480,14 @@ export function Management() {
               })
             }
           >
-            <Image source={bell} style={[styles.truckStyle, { right: 25 }]} />
+            <Image source={bellDrawer} style={[styles.truckStyle, { right: 25 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
-            <Image source={search_light} style={styles.searchImage} />
+            <Image source={searchDrawer} style={styles.searchImage} />
             <TextInput
-              placeholder={strings.deliveryOrders.search}
+              placeholder={strings.deliveryOrders.searchInHistory}
               style={styles.textInputStyle}
-              placeholderTextColor={COLORS.primaryLight}
+              placeholderTextColor={COLORS.navy_blue}
               onChangeText={(text) => {
                 setSku(text);
                 debouncedSearchInvoice(text);
@@ -566,7 +573,7 @@ export function Management() {
   const addCashModal = () => {
     return (
       <Modal transparent isVisible={addCash}>
-        <KeyboardAwareScrollView contentContainerStyle={styles.modalMainView}>
+        <KeyboardAwareScrollView contentContainerStyle={[styles.modalMainView, { width: SW(150) }]}>
           <View
             style={[
               styles.headerView,
@@ -586,7 +593,7 @@ export function Management() {
               }}
               style={{ width: SW(10) }}
             >
-              <Image source={crossButton} style={[styles.crossIconStyle]} />
+              <Image source={crossButton} style={[styles.crossIconStyle, { right: SW(5) }]} />
             </TouchableOpacity>
           </View>
 
@@ -678,11 +685,11 @@ export function Management() {
   const endSessionFunction = () => {
     if (endSession) {
       return (
-        <View style={styles.absoluteZero}>
+        <View style={[styles.absoluteZero]}>
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
+                {/* {strings.management.endCashTrackingSession} */}
               </Text>
             </View>
             <TouchableOpacity
@@ -699,13 +706,14 @@ export function Management() {
           </View> */}
 
           <View style={styles.trackingBodyCon}>
+            <Spacer space={SH(15)} />
             <Image source={moneySearch} style={styles.calculatorStyle} />
-            <Spacer space={SH(30)} />
+            <Spacer space={SH(25)} />
             <View>
               <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
                 {strings.management.endCashTrackingSession}
               </Text>
-              <Spacer space={SH(40)} />
+              <Spacer space={SH(45)} />
               <View>
                 <Text style={styles.amountCountedText}>{strings.management.enterAmount}</Text>
                 <Spacer space={SH(5)} />
@@ -718,10 +726,10 @@ export function Management() {
                   keyboardType="number-pad"
                 />
               </View>
-              <Spacer space={SH(60)} />
+              <Spacer space={SH(80)} />
             </View>
             {/* <View style={{ flex: 1 }} /> */}
-            <Button
+            {/* <Button
               style={[
                 styles.saveButton,
                 {
@@ -733,7 +741,17 @@ export function Management() {
               title={strings.management.next}
               // onPress={() => (setEndSession(false), setCashSummary(true))}
               onPress={countCashFirst}
-            />
+            /> */}
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => {
+                setEndSession(false), setCashSummary(true);
+              }}
+              style={styles.nextButtonEnd}
+            >
+              <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
+              <Image source={arrowRightTop} style={styles.crossImage} />
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -743,7 +761,7 @@ export function Management() {
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
+                {/* {strings.management.endCashTrackingSession} */}
               </Text>
             </View>
             <TouchableOpacity
@@ -771,9 +789,17 @@ export function Management() {
                 {strings.management.cashSummary}
               </Text>
               <Spacer space={SH(15)} />
-              <Spacer
+              {/* <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
                 backgroundColor={COLORS.gerySkies}
+              /> */}
+              <View
+                style={{
+                  borderColor: COLORS.navy_blue,
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  // height: 1,
+                }}
               />
               <Spacer space={SH(15)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
@@ -784,9 +810,17 @@ export function Management() {
                 </Text>
               </View>
               <Spacer space={SH(12.5)} />
-              <Spacer
+              {/* <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
                 backgroundColor={COLORS.gerySkies}
+              /> */}
+              <View
+                style={{
+                  borderColor: COLORS.navy_blue,
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  // height: 1,
+                }}
               />
               <Spacer space={SH(12.5)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
@@ -798,9 +832,17 @@ export function Management() {
               </View>
 
               <Spacer space={SH(12.5)} />
-              <Spacer
+              {/* <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
                 backgroundColor={COLORS.gerySkies}
+              /> */}
+              <View
+                style={{
+                  borderColor: COLORS.navy_blue,
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  // height: 1,
+                }}
               />
               <Spacer space={SH(12.5)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
@@ -824,7 +866,7 @@ export function Management() {
               </View>
             </View>
             <Spacer space={SH(60)} />
-            <Button
+            {/* <Button
               style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
@@ -832,7 +874,19 @@ export function Management() {
                 setCashSummary(false), setEndSelectAmount(true);
                 setCountThird(''), setLeaveId(1), setLeaveData('0');
               }}
-            />
+            /> */}
+
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => {
+                setCashSummary(false), setEndSelectAmount(true);
+                setCountThird(''), setLeaveId(1), setLeaveData('0');
+              }}
+              style={styles.nextButtonEnd}
+            >
+              <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
+              <Image source={arrowRightTop} style={styles.crossImage} />
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -842,14 +896,14 @@ export function Management() {
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
+                {/* {strings.management.endCashTrackingSession} */}
               </Text>
             </View>
             <TouchableOpacity
               onPress={() => {
                 setEndSelectAmount(false), setCashSummary(true);
               }}
-              style={{ width: SW(12), marginRight: SW(10) }}
+              style={{ width: SW(12) }}
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
@@ -890,13 +944,22 @@ export function Management() {
             </View>
             <Spacer space={SH(30)} />
             {/* <View style={{ flex: 1 }} /> */}
-            <Button
+            {/* <Button
               style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
               // onPress={() => (setEndSelectAmount(false), setRemoveUsd(true))}
               onPress={endTrackingHandler}
-            />
+            /> */}
+
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={endTrackingHandler}
+              style={styles.nextButtonEnd}
+            >
+              <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
+              <Image source={arrowRightTop} style={styles.crossImage} />
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -906,7 +969,7 @@ export function Management() {
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.confirm}
+                {/* {strings.management.confirm} */}
               </Text>
             </View>
             <TouchableOpacity
@@ -918,7 +981,7 @@ export function Management() {
                 // setViewSession(false),
                 // dispatch(getDrawerSession());
               }}
-              style={{ width: SW(10), marginRight: SW(10) }}
+              style={{ width: SW(10) }}
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
@@ -966,8 +1029,8 @@ export function Management() {
         <View style={{ flex: 1, height: WINDOW_HEIGHT / 1.2 }}>
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
+              <Text style={[styles.trackingButtonText, { fontSize: SF(0) }]}>
+                {/* {strings.management.endCashTrackingSession} */}
               </Text>
             </View>
             <TouchableOpacity
@@ -975,7 +1038,7 @@ export function Management() {
                 setCardCoinSummary(false);
                 setRemoveUsd(true);
               }}
-              style={{ width: SW(10), marginRight: SW(10) }}
+              style={{ width: SW(10) }}
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
@@ -1059,7 +1122,7 @@ export function Management() {
               <Spacer space={SH(12.5)} />
             </View>
             <Spacer space={SH(30)} />
-            <Button
+            {/* <Button
               style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.confirm}
@@ -1070,7 +1133,21 @@ export function Management() {
                 setCashSummary('');
                 setSummaryHistory(true), setHistoryHeader(true);
               }}
-            />
+            /> */}
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => {
+                dispatch(getDrawerSessionById(endBalance?.drawer_id));
+                setCardCoinSummary(false);
+                setEndSession(false);
+                setCashSummary('');
+                setSummaryHistory(true), setHistoryHeader(true);
+              }}
+              style={styles.nextButtonEnd}
+            >
+              <Text style={styles.sessionHistoryTextNew}>{strings.management.confirm}</Text>
+              <Image source={arrowRightTop} style={styles.crossImage} />
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -1102,6 +1179,7 @@ export function Management() {
           sessionHistoryLoad={sessionHistoryLoad}
           // oneItemSend={setUserHistory}
           setSessionHistoryArray={setSessionHistoryArray}
+          setSessionHistory={setSessionHistory}
         />
       );
     } else if (summaryHistory) {
@@ -1182,13 +1260,26 @@ export function Management() {
       );
     } else if (viewSession) {
       return (
-        <View style={{}}>
+        <View
+          style={{
+            borderWidth: 0.5,
+            borderColor: COLORS.navy_blue,
+            borderRadius: 20,
+            width: WINDOW_WIDTH - 190,
+            alignSelf: 'center',
+          }}
+        >
           <View style={styles.sessionMainView}>
             <View style={styles.sessionView}>
-              <View>
-                <Text style={styles.cashDrawerText}>{strings.management.cashDrawer}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.cashDrawerText}>{strings.management.batch}</Text>
 
-                <Text style={styles.drawerIdText}>
+                <Text
+                  style={[
+                    styles.drawerIdText,
+                    { left: SW(20), color: COLORS.purple, fontFamily: Fonts.Regular },
+                  ]}
+                >
                   {strings.management.drawerID} {SessionData?.id}
                 </Text>
               </View>
@@ -1272,7 +1363,7 @@ export function Management() {
                       {strings.management.totalCashIn}
                     </Text>
                     <Image
-                      source={viewCashInArray ? up : down}
+                      source={viewCashInArray ? arrowUpRound : arrowDownRound}
                       resizeMode="contain"
                       style={{ height: ms(12), width: ms(12), marginLeft: ms(5) }}
                     />
@@ -1284,59 +1375,6 @@ export function Management() {
                 </TouchableOpacity>
                 {viewCashInArray && (
                   <>
-                    {/* {cashInArray?.map((item, index) => (
-                      <View key={index}>
-                        <TouchableOpacity
-                          style={styles.paymentBodyCon}
-                          onPress={() => toggleExpansion(index)}
-                        >
-                          <View style={styles.flexAlign}>
-                            <Text style={styles.paymentBodyText}>{item.transaction_type}</Text>
-                            <Image
-                              source={dropdown}
-                              resizeMode="contain"
-                              style={
-                                expandedItems[index]
-                                  ? styles.activeDropDownPayment
-                                  : styles.dropDownPayment
-                              }
-                            />
-                          </View>
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {item.amount}
-                          </Text>
-                        </TouchableOpacity>
-                        {expandedItems[index] && (
-                          <View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                          </View>
-                        )}
-                      </View>
-                    ))} */}
                     <TouchableOpacity
                       style={styles.paymentBodyCon}
                       onPress={() => setSalesExpandedView((prev) => !prev)}
@@ -1344,7 +1382,7 @@ export function Management() {
                       <View style={styles.flexAlign}>
                         <Text style={styles.paymentBodyText}>{'Sales'}</Text>
                         <Image
-                          source={dropdown}
+                          source={arrowDown}
                           resizeMode="contain"
                           style={
                             salesExpandedView
@@ -1395,7 +1433,7 @@ export function Management() {
                       <View style={styles.flexAlign}>
                         <Text style={styles.paymentBodyText}>{'Manual'}</Text>
                         <Image
-                          source={dropdown}
+                          source={arrowDown}
                           resizeMode="contain"
                           style={
                             manualInExpandedView
@@ -1438,157 +1476,6 @@ export function Management() {
                         </View>
                       </View>
                     )}
-
-                    {/* <TouchableOpacity
-                      style={styles.paymentBodyCon}
-                      onPress={() => setDelieveryFeeInExpandedView((prev) => !prev)}
-                    >
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Delivery Fees'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          style={
-                            delieveryFeeInExpandedView
-                              ? styles.activeDropDownPayment
-                              : styles.dropDownPayment
-                          }
-                          // style={styles.dropDownPayment}
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashIn?.delivery_fees?.total}
-                      </Text>
-                    </TouchableOpacity>
-                    {delieveryFeeInExpandedView && (
-                      <View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.delivery_fees?.cash}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.delivery_fees?.card}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.delivery_fees?.jobr_coin}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-
-                    <TouchableOpacity
-                      style={styles.paymentBodyCon}
-                      onPress={() => setShippingFeeInExpandedView((prev) => !prev)}
-                    >
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Shipping Fees'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          style={
-                            shippingFeeInExpandedView
-                              ? styles.activeDropDownPayment
-                              : styles.dropDownPayment
-                          }
-                          // style={styles.dropDownPayment}
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashIn?.shipping_fees?.total}
-                      </Text>
-                    </TouchableOpacity>
-                    {shippingFeeInExpandedView && (
-                      <View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.shipping_fees?.cash}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.shipping_fees?.card}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.shipping_fees?.jobr_coin}
-                          </Text>
-                        </View>
-                      </View>
-                    )} */}
-
-                    {/* <View
-                      style={styles.paymentBodyCon}
-                      // onPress={() => toggleExpansion(index)}
-                    >
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Manual'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          // style={
-                          //   expandedItems[index]
-                          //     ? styles.activeDropDownPayment
-                          //     : styles.dropDownPayment
-                          // }
-                          style={styles.dropDownPayment}
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashIn?.manual}
-                      </Text>
-                    </View> */}
-                    {/* <View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                          </View> */}
                   </>
                 )}
                 <TouchableOpacity
@@ -1600,7 +1487,7 @@ export function Management() {
                       {strings.management.totalCashOut}
                     </Text>
                     <Image
-                      source={viewCashOutArray ? up : down}
+                      source={viewCashOutArray ? arrowUpRound : arrowDownRound}
                       resizeMode="contain"
                       style={{ height: ms(12), width: ms(12), marginLeft: ms(5) }}
                     />
@@ -1619,7 +1506,7 @@ export function Management() {
                       <View style={styles.flexAlign}>
                         <Text style={styles.paymentBodyText}>{'Refund'}</Text>
                         <Image
-                          source={dropdown}
+                          source={arrowDown}
                           resizeMode="contain"
                           style={
                             salesOutExpandedView
@@ -1661,24 +1548,6 @@ export function Management() {
                         </View>
                       </View>
                     )}
-                    {/* <TouchableOpacity style={styles.paymentBodyCon}>
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Manual'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          style={
-                            salesOutExpandedView
-                              ? styles.activeDropDownPayment
-                              : styles.dropDownPayment
-                          }
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashOut?.manual}
-                      </Text>
-                    </TouchableOpacity> */}
                   </>
                 )}
 
@@ -1691,7 +1560,7 @@ export function Management() {
                       <View style={styles.flexAlign}>
                         <Text style={styles.paymentBodyText}>{'Manual'}</Text>
                         <Image
-                          source={dropdown}
+                          source={arrowDown}
                           resizeMode="contain"
                           style={
                             manualOutExpandedView
@@ -1735,114 +1604,7 @@ export function Management() {
                     )}
                   </>
                 )}
-                {/* 
-                {viewCashOutArray && (
-                  <>
-                    <TouchableOpacity
-                      style={styles.paymentBodyCon}
-                      onPress={() => setDelieveryFeeOutExpandedView((prev) => !prev)}
-                    >
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Delivery Fees'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          style={
-                            delieveryFeeOutExpandedView
-                              ? styles.activeDropDownPayment
-                              : styles.dropDownPayment
-                          }
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashOut?.delivery_fees?.total.toFixed(2)}
-                      </Text>
-                    </TouchableOpacity>
-                    {delieveryFeeOutExpandedView && (
-                      <View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
 
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.delivery_fees?.cash.toFixed(2)}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.delivery_fees?.card.toFixed(2)}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.delivery_fees?.jobr_coin.toFixed(2)}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                  </>
-                )}
-
-                {viewCashOutArray && (
-                  <>
-                    <TouchableOpacity
-                      style={styles.paymentBodyCon}
-                      onPress={() => setShippingFeeOutExpandedView((prev) => !prev)}
-                    >
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Shipping Fees'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          style={
-                            shippingFeeOutExpandedView
-                              ? styles.activeDropDownPayment
-                              : styles.dropDownPayment
-                          }
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashOut?.shipping_fees?.total}
-                      </Text>
-                    </TouchableOpacity>
-                    {shippingFeeOutExpandedView && (
-                      <View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.shipping_fees?.cash}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.shipping_fees?.card}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.shipping_fees?.jobr_coin}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                  </>
-                )} */}
                 <View
                   style={[
                     styles.paymentOptionsView,
@@ -1851,7 +1613,7 @@ export function Management() {
                       backgroundColor: COLORS.sky_grey,
                       paddingHorizontal: SH(20),
                       alignItems: 'center',
-                      width: '100%',
+                      // width: '100%',
                     },
                   ]}
                 >
@@ -1867,8 +1629,8 @@ export function Management() {
           </View>
 
           {/* <Spacer space={SH(40)} /> */}
-          <View style={{ flex: 1 }} />
-          <Button
+          {/* <View style={{ flex: 1.5 }} /> */}
+          {/* <Button
             onPress={() => {
               //  setEndSession(true),
               //  setCountFirst('');
@@ -1885,11 +1647,24 @@ export function Management() {
                 marginHorizontal: SW(5),
                 height: SH(60),
                 width: SW(70),
+                bottom: -20,
               },
             ]}
             textStyle={[styles.cashDrawerText, { color: COLORS.white }]}
             title={strings.management.closeBatch}
-          />
+          /> */}
+
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              setViewSession(false);
+              setCloseBatch(true);
+            }}
+            style={styles.closeBatchButton}
+          >
+            <Text style={styles.sessionHistoryTextNew}>{strings.management.closeBatch}</Text>
+            <Image source={crossDrawer} style={styles.crossImage} />
+          </TouchableOpacity>
           <Spacer space={SH(40)} />
         </View>
       );
@@ -1940,7 +1715,7 @@ export function Management() {
                 backgroundColor: COLORS.sky_grey,
                 // borderWidth: 0.5,
                 // borderColor: COLORS.gerySkies,
-                borderRadius: 40,
+                borderRadius: 100,
                 paddingVertical: SH(15),
               },
             ]}
@@ -1964,7 +1739,10 @@ export function Management() {
           </View>
           <Spacer space={SH(30)} />
           <View
-            style={[styles.cashDrawerView, { padding: ms(30), width: '100%', borderRadius: 40 }]}
+            style={[
+              styles.cashDrawerView,
+              { padding: ms(40), width: '100%', borderRadius: 40, paddingVertical: 30 },
+            ]}
           >
             <View>
               <Text style={styles.loggedInAsText}>{strings.management.loggedInAs}</Text>
@@ -2185,7 +1963,8 @@ export function Management() {
         </>
       ) : (
         <View style={styles.container}>
-          {summaryHistory || closeBatch ? null : customHeader()}
+          <Spacer space={SH(5)} />
+          {summaryHistory || closeBatch || sessionHistory ? null : customHeader()}
           {contentFunction()}
           {trackinSessionModal()}
           {addCashModal()}
