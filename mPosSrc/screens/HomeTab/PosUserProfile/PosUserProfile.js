@@ -68,7 +68,6 @@ export function PosUserProfile(props) {
   const sellerID = authData?.merchantLoginData?.uniqe_id;
   const totalSale = getDashboardData?.getTotalSale;
   const getLoginDeatil = getDashboardData?.posLoginDetail;
-
   const profileObj = {
     openingBalance: getSessionObj?.opening_balance,
     closeBalance: getSessionObj?.cash_balance,

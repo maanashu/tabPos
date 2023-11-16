@@ -229,6 +229,7 @@ export class AuthController {
           }
         })
         .catch((error) => {
+          console.log('error: ' + JSON.stringify(error));
           reject(error);
         });
     });

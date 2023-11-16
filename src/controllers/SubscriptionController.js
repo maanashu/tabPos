@@ -36,6 +36,7 @@ export class SubscriptionController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
+          console.log('response: ' + JSON.stringify(response));
         })
         .catch((error) => {
           reject(error);
