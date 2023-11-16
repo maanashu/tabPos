@@ -36,6 +36,12 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(10),
   },
+  cross: {
+    width: SW(10),
+    height: SH(10),
+    resizeMode: 'contain',
+    paddingHorizontal: moderateScale(10),
+  },
   headerMainView: {
     width: windowWidth - 10,
     paddingHorizontal: SW(16),
@@ -204,7 +210,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderWidth: 1,
     borderColor: COLORS.navy_blue,
-    width: windowWidth * 0.13,
+    width: windowWidth * 0.14,
     marginHorizontal: SH(10),
 
     height: SW(14),
@@ -280,10 +286,23 @@ export const styles = StyleSheet.create({
     tintColor: COLORS.black,
     alignSelf: 'center',
   },
+  addMoneyStyle: {
+    width: SW(90),
+    height: SH(90),
+    resizeMode: 'contain',
+    tintColor: COLORS.green,
+    alignSelf: 'center',
+  },
   calculatorStyle: {
     width: SW(100),
     height: SH(100),
     resizeMode: 'contain',
+  },
+  infoStyle: {
+    width: SW(80),
+    height: SH(80),
+    resizeMode: 'contain',
+    alignSelf: 'center',
   },
   countCashView: {
     width: SW(130),
@@ -383,13 +402,14 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.blue_shade,
   },
   addCashViewNew: {
-    width: SW(100),
-    height: SH(90),
+    width: SW(80),
+    height: SH(70),
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.navy_blue,
     borderRadius: 100,
+    flexDirection: 'row',
   },
   removeCashView: {
     width: SW(144),
@@ -400,8 +420,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.silver_solid,
   },
   removeCashViewNew: {
-    width: SW(100),
-    height: SH(90),
+    width: SW(80),
+    height: SH(70),
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',

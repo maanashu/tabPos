@@ -39,6 +39,17 @@ import {
   lockLight,
   powerAuth,
   userImage,
+  plusDrawer,
+  plus,
+  addMoney,
+  removeMoney,
+  lock,
+  lockDrawer,
+  logOutDrawer,
+  crossDrawer,
+  cross,
+  moneySearch,
+  info,
 } from '@/assets';
 import {
   endTrackingSession,
@@ -581,7 +592,10 @@ export function Management() {
 
           <Spacer space={SH(20)} />
           <View style={styles.countCashView}>
-            <Image source={Calculator} style={[styles.crossIconStyle]} />
+            <Image
+              source={removeCash ? removeMoney : addMoney}
+              style={[styles.addMoneyStyle, removeCash && { tintColor: COLORS.orange }]}
+            />
             <Spacer space={SH(20)} />
             <Text style={styles.countCashText}>
               {removeCash ? strings.management.removeCash : strings.management.addCash}
@@ -685,7 +699,7 @@ export function Management() {
           </View> */}
 
           <View style={styles.trackingBodyCon}>
-            <Image source={Calculator} style={styles.calculatorStyle} />
+            <Image source={moneySearch} style={styles.calculatorStyle} />
             <Spacer space={SH(30)} />
             <View>
               <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
@@ -746,7 +760,7 @@ export function Management() {
           </View> */}
 
           <View style={styles.trackingBodyCon}>
-            <Image source={CalculatorColor} style={styles.calculatorStyle} />
+            <Image source={moneySearch} style={styles.calculatorStyle} />
             <Spacer space={SH(5)} />
             <Text style={[styles.countCashText, { textAlign: 'center' }]}>
               {strings.management.endCashTrackingSession}
@@ -835,16 +849,17 @@ export function Management() {
               onPress={() => {
                 setEndSelectAmount(false), setCashSummary(true);
               }}
-              style={{ width: SW(10) }}
+              style={{ width: SW(12), marginRight: SW(10) }}
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
           <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(60)} />
+            <Image source={moneySearch} style={styles.calculatorStyle} />
+            <Spacer space={SH(30)} />
             <View>
-              <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonRegular }]}>
-                {strings.management.selectAmountDra}
+              <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
+                {strings.management.endCashTrackingSession}
               </Text>
               <Spacer space={SH(20)} />
 
@@ -911,7 +926,7 @@ export function Management() {
 
           <Spacer space={SH(30)} />
           <View style={styles.trackingBodyCon}>
-            <Image source={CalculatorColor} style={styles.calculatorStyle} />
+            <Image source={info} style={styles.infoStyle} />
             <Spacer space={SH(25)} />
             <View>
               <Text style={styles.removerDarkText}>
@@ -948,7 +963,7 @@ export function Management() {
       );
     } else if (cardCoinSummary) {
       return (
-        <View style={[styles.absoluteZero]}>
+        <View style={{ flex: 1, height: WINDOW_HEIGHT / 1.2 }}>
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
@@ -968,20 +983,35 @@ export function Management() {
           {/* <View style={styles.calculatorView}> */}
           {/* </View> */}
           <View style={[styles.trackingBodyCon]}>
-            <Image source={CalculatorColor} style={styles.calculatorStyle} />
+            <Image source={moneySearch} style={styles.calculatorStyle} />
             <Spacer space={SH(15)} />
             <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
               {strings.management.endCashTrackingSession}
             </Text>
             <Spacer space={SH(30)} />
-            <View>
+            <View
+              style={{
+                borderWidth: 1,
+                borderRadius: 20,
+                padding: SH(20),
+                borderColor: COLORS.navy_blue,
+              }}
+            >
               <Text style={[styles.countCashText, { textAlign: 'left' }]}>
                 {strings.management.cardSummary}
               </Text>
               <Spacer space={SH(15)} />
-              <Spacer
+              {/* <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
                 backgroundColor={COLORS.gerySkies}
+              /> */}
+              <View
+                style={{
+                  borderColor: COLORS.navy_blue,
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  // height: 1,
+                }}
               />
               <Spacer space={SH(15)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
@@ -994,14 +1024,29 @@ export function Management() {
               <Spacer space={SH(12.5)} />
             </View>
             <Spacer space={SH(20)} />
-            <View>
+            <View
+              style={{
+                borderWidth: 1,
+                borderRadius: 20,
+                padding: SH(20),
+                borderColor: COLORS.navy_blue,
+              }}
+            >
               <Text style={[styles.countCashText, { textAlign: 'left' }]}>
                 {strings.management.jbrCoinSummary}
               </Text>
               <Spacer space={SH(15)} />
-              <Spacer
+              {/* <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
                 backgroundColor={COLORS.gerySkies}
+              /> */}
+              <View
+                style={{
+                  borderColor: COLORS.navy_blue,
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  // height: 1,
+                }}
               />
               <Spacer space={SH(15)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
@@ -1200,6 +1245,10 @@ export function Management() {
                 style={styles.addCashViewNew}
               >
                 <Text style={styles.sessionHistoryTextNew}>{strings.management.addCash}</Text>
+                {/* <Image
+                  source={plus}
+                  style={{ height: SH(30), width: SW(30), resizeMode: 'contain' }}
+                /> */}
               </TouchableOpacity>
             </View>
             <Spacer space={SH(35)} />
@@ -1857,7 +1906,7 @@ export function Management() {
             <Image source={backArrow} style={styles.backButtonArrow} />
             <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
           </TouchableOpacity>
-          <Spacer space={SH(50)} />
+          {/* <Spacer space={SH(50)} /> */}
           <View
             style={{
               flexDirection: 'row',
@@ -1906,7 +1955,11 @@ export function Management() {
               }}
               style={styles.closeBatchButtonView}
             >
-              <Text style={styles.closeBatchButtonText}>{strings.management.closeBatch}</Text>
+              <View style={styles.displayRow}>
+                <Text style={styles.closeBatchButtonText}>{strings.management.closeBatch}</Text>
+
+                <Image source={cross} style={[styles.cross]} />
+              </View>
             </TouchableOpacity>
           </View>
           <Spacer space={SH(30)} />
@@ -1964,11 +2017,8 @@ export function Management() {
                 }}
               >
                 <View style={styles.displayRow}>
-                  <Image
-                    source={lockLight}
-                    style={[styles.lockLight, { tintColor: COLORS.navy_blue }]}
-                  />
                   <Text style={styles.checkoutText1}>{strings.dashboard.lockScreen}</Text>
+                  <Image source={lockDrawer} style={[styles.lockLight]} />
                 </View>
               </TouchableOpacity>
               <Spacer space={SH(15)} />
@@ -1977,13 +2027,10 @@ export function Management() {
                 onPress={() => logoutHandler()}
               >
                 <View style={styles.displayRow}>
-                  <Image
-                    source={powerAuth}
-                    style={[styles.lockLight, { tintColor: COLORS.white }]}
-                  />
                   <Text style={[styles.checkoutText1, { color: COLORS.white }]}>
                     {strings.posUsersList.logOut}
                   </Text>
+                  <Image source={logOutDrawer} style={[styles.lockLight]} />
                 </View>
               </TouchableOpacity>
             </View>
