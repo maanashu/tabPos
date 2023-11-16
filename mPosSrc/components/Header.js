@@ -26,7 +26,9 @@ export function Header({
   rightIconOnpress,
   calendar,
   defaultFilterVal,
+  cartIcon,
   dates = {},
+  cartHandler,
 }) {
   const maxDate = new Date(2023, 10, 29);
   const [open, setOpen] = useState(false);
@@ -161,6 +163,11 @@ export function Header({
             TickIconComponent={() => {}}
           />
         )}
+        {cartIcon && (
+          <TouchableOpacity style={styles.cartCon} onPress={cartHandler}>
+            <Image source={Images.cart} style={styles.cartIcon} />
+          </TouchableOpacity>
+        )}
 
         <Modal
           isVisible={isCalendarVisible}
@@ -278,6 +285,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: SW(5),
     borderRadius: SW(5),
     // flex: 1,
+  },
+  cartCon: {
+    width: ms(35),
+    height: ms(35),
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: ms(8),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartIcon: {
+    width: ms(25),
+    height: ms(25),
+    resizeMode: 'contain',
   },
 
   // maincontainer: {

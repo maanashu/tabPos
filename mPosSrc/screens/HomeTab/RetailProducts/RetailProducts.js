@@ -35,6 +35,8 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import Modal from 'react-native-modal';
 import ProductFilter from './Components/ProductFilter';
 import { Fonts } from '@/assets';
+import { navigate } from '@mPOS/navigation/NavigationRef';
+import { MPOS_NAVIGATION } from '@common/commonImports';
 
 export function RetailProducts(props) {
   const onEndReachedCalledDuringMomentum = useRef(false);
@@ -225,7 +227,14 @@ export function RetailProducts(props) {
     <ScreenWrapper>
       <View style={styles.container}>
         <View style={{ backgroundColor: COLORS.white }}>
-          <Header backRequired title={`Back`} />
+          <Header
+            backRequired
+            title={`Back`}
+            cartIcon
+            cartHandler={() =>
+              navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart })
+            }
+          />
           {categoryLoad ? (
             <View style={[styles.contentContainerStyle, { height: ms(20) }]}>
               <Text style={styles.loading}>{'Loading...'}</Text>
