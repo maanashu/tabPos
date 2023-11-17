@@ -10,15 +10,18 @@ import {
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { averageOrder, backArrow2, locationSales, profit, totalOrders } from '@/assets';
+import { averageOrder, backArrow2, locationSales, profit, profitIcon, totalOrders } from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { COLORS } from '@/theme';
+import { useRef } from 'react';
+import { getTotalInventory } from '@/actions/AnalyticsAction';
+import { useDebouncedCallback } from 'use-lodash-debounce';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -51,28 +54,48 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
 };
 
 export function TotalInventory() {
-  const [channel, setChannel] = useState(false);
-  const [channelValue, setChannelValue] = useState(null);
-  const [channelItem, setChannelItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
-  ]);
+  const dispatch = useDispatch();
 
   const getAnalyticsData = useSelector(getAnalytics);
   const totalInventory = getAnalyticsData?.getTotalInventory;
-  const interval = 1;
-  const maxLabel = 31;
-  const daysLength = 31;
-
-  const dataLabelsInventory = totalInventory?.graph_data?.labels;
-  const labelsInvetory = generateLabels(dataLabelsInventory, interval, maxLabel, daysLength);
 
   const isInventoryLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TOTAL_INVENTORY], state)
   );
 
+  const onEndReachedCalledDuringMomentum = useRef(false);
+  const paginationData = {
+    total: totalInventory?.inventory_list?.total,
+    totalPages: totalInventory?.inventory_list?.total_pages,
+    perPage: totalInventory?.inventory_list?.per_page,
+    currentPage: totalInventory?.inventory_list?.current_page,
+  };
+
+  const onLoadMoreInventory = useCallback(() => {
+    if (!isInventoryLoading) {
+      if (paginationData?.currentPage < paginationData?.totalPages) {
+        dispatch(getTotalInventory(sellerID, data, paginationData?.currentPage + 1));
+      }
+    }
+  }, [paginationData]);
+
+  const debouncedLoadMoreInventory = useDebouncedCallback(onLoadMoreInventory, 300);
+
+  const renderFooter = () => {
+    return isInventoryLoading ? <ActivityIndicator size="large" color={COLORS.navy_blue} /> : null;
+  };
+
   const getProductList = ({ item, index }) => (
-    <DataTable.Row>
+    <DataTable.Row
+      style={{
+        borderColor: COLORS.sky_grey,
+        borderWidth: 2,
+        borderRadius: ms(25),
+        marginBottom: ms(6),
+        borderBottomWidth: 2,
+        borderBottomColor: COLORS.sky_grey,
+      }}
+    >
       <DataTable.Cell style={styles.dateTablealignStart2}>
         <Text>{index + 1 + '.     '}</Text>
         <Text style={styles.revenueDataText}>{item?.name}</Text>
@@ -108,7 +131,7 @@ export function TotalInventory() {
         <Text style={styles.text}>{text}</Text>
         {isLoading ? (
           <ActivityIndicator
-            color={COLORS.primary}
+            color={COLORS.navy_blue}
             size={'small'}
             style={{ alignSelf: 'flex-start' }}
           />
@@ -121,9 +144,29 @@ export function TotalInventory() {
   );
 
   return (
-    <View style={styles.flex1}>
-      <Text style={styles.graphTitle}>{' Total Inventory'}</Text>
-
+    <View
+      style={{
+        height: '97%',
+        backgroundColor: COLORS.white,
+        borderRadius: ms(10),
+        marginTop: ms(5),
+        marginRight: ms(8),
+        paddingHorizontal: ms(12),
+      }}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: ms(10),
+        }}
+      >
+        <Image
+          source={profitIcon}
+          style={{ height: ms(15), width: ms(15), resizeMode: 'contain' }}
+        />
+        <Text style={styles.graphTitle}>{' Total Inventory'}</Text>
+      </View>
       <View style={styles.headerContainer}>
         <HeaderView
           image={locationSales}
@@ -226,7 +269,7 @@ export function TotalInventory() {
           initialSpacing={SH(50)}
         /> */}
       {/* </View> */}
-      <Spacer space={ms(15)} />
+      {/* <Spacer space={ms(15)} /> */}
 
       <View style={styles.tableMainView}>
         <ScrollView
@@ -261,7 +304,7 @@ export function TotalInventory() {
             <View style={styles.mainListContainer}>
               {isInventoryLoading ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                  <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
                 </View>
               ) : totalInventory?.inventory_list?.data === undefined ? (
                 <View style={styles.listLoader}>
@@ -276,7 +319,19 @@ export function TotalInventory() {
                     keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
-                    bounces={false}
+                    // bounces={false}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                    onMomentumScrollBegin={() => {}}
+                    onMomentumScrollEnd={() => {
+                      if (onEndReachedCalledDuringMomentum.current) {
+                        // onLoadMoreProduct();
+                        debouncedLoadMoreInventory();
+                        onEndReachedCalledDuringMomentum.current = false;
+                      }
+                    }}
+                    removeClippedSubviews={true}
+                    ListFooterComponent={renderFooter}
                   />
                 </View>
               )}

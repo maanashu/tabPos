@@ -10,7 +10,15 @@ import {
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { backArrow2, channel, locationSales, totalOrders, totalSales } from '@/assets';
+import {
+  backArrow2,
+  channel,
+  locationSales,
+  profitIcon,
+  totalOrder,
+  totalOrders,
+  totalSales,
+} from '@/assets';
 import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
@@ -74,7 +82,16 @@ export function TotalPosOrder({ onPressReview }) {
   );
 
   const getPOSOrderList = ({ item, index }) => (
-    <DataTable.Row>
+    <DataTable.Row
+      style={{
+        borderColor: COLORS.sky_grey,
+        borderWidth: 2,
+        borderRadius: ms(25),
+        marginBottom: ms(6),
+        borderBottomWidth: 2,
+        borderBottomColor: COLORS.sky_grey,
+      }}
+    >
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
           <Text>{index + 1 + '.        '}</Text>
@@ -110,7 +127,7 @@ export function TotalPosOrder({ onPressReview }) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
-          <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
+          <Text style={[styles.revenueDataText, { color: COLORS.navy_blue, fontSize: ms(7) }]}>
             {'Review'}
           </Text>
         </TouchableOpacity>
@@ -125,7 +142,7 @@ export function TotalPosOrder({ onPressReview }) {
         <Text style={styles.text}>{text}</Text>
         {isLoading ? (
           <ActivityIndicator
-            color={COLORS.primary}
+            color={COLORS.navy_blue}
             size={'small'}
             style={{ alignSelf: 'flex-start' }}
           />
@@ -148,9 +165,29 @@ export function TotalPosOrder({ onPressReview }) {
       : posGraph?.ordersOverView?.total_sales_or_actual_amount;
 
   return (
-    <View style={styles.flex1}>
-      <Text style={styles.graphTitle}> {'Total POS Orders'}</Text>
-
+    <View
+      style={{
+        height: '97%',
+        backgroundColor: COLORS.white,
+        borderRadius: ms(10),
+        marginTop: ms(5),
+        marginRight: ms(8),
+        paddingHorizontal: ms(12),
+      }}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: ms(10),
+        }}
+      >
+        <Image
+          source={profitIcon}
+          style={{ height: ms(15), width: ms(15), resizeMode: 'contain' }}
+        />
+        <Text style={styles.graphTitle}> {'Total POS Orders'}</Text>
+      </View>
       <View style={styles.headerContainer}>
         <HeaderView
           image={locationSales}
@@ -195,7 +232,7 @@ export function TotalPosOrder({ onPressReview }) {
         />
       </View>
 
-      <Spacer space={ms(15)} />
+      {/* <Spacer space={ms(15)} /> */}
 
       <View style={styles.tableMainView}>
         <ScrollView
@@ -232,7 +269,7 @@ export function TotalPosOrder({ onPressReview }) {
             <View style={styles.mainListContainer}>
               {isAnalyticOrderGraphLoading ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                  <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
                 </View>
               ) : posGraph?.ordersListData?.length === 0 ? (
                 <View style={styles.listLoader}>

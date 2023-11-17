@@ -481,11 +481,25 @@ export const getSellerProductDetails = (sellerID) => async (dispatch) => {
   }
 };
 
-export const getAnalyticStatistics = (sellerID, data) => async (dispatch) => {
+export const getAnalyticStatistics = (sellerID, data, page, callback) => async (dispatch) => {
+  const analyticsGraph = store.getState()?.analytics?.getAnalyticStatistics;
   dispatch(getAnalyticStatisticsRequest());
   try {
-    const res = await AnalyticsController.getAnalyticStatistics(sellerID, data);
-    dispatch(getAnalyticStatisticsSuccess(res?.payload));
+    const res = await AnalyticsController.getAnalyticStatistics(sellerID, data, page);
+    const prevAnalyticsGraph = { ...analyticsGraph };
+    if (analyticsGraph && Object.keys(analyticsGraph).length > 0 && page > 1) {
+      prevAnalyticsGraph.orderData.total = res?.payload?.orderData?.total;
+      prevAnalyticsGraph.orderData.current_page = res?.payload?.orderData?.current_page;
+      prevAnalyticsGraph.orderData.total_pages = res?.payload?.orderData?.total_pages;
+      prevAnalyticsGraph.orderData.per_page = res?.payload?.orderData?.per_page;
+      prevAnalyticsGraph.orderData.data = prevAnalyticsGraph?.orderData.data?.concat(
+        res?.payload?.orderData?.data
+      );
+      dispatch(getAnalyticStatisticsSuccess(prevAnalyticsGraph));
+    } else {
+      dispatch(getAnalyticStatisticsSuccess(res?.payload));
+    }
+    callback && callback(res);
   } catch (error) {
     dispatch(getAnalyticStatisticsError(error.message));
   }
@@ -511,11 +525,26 @@ export const getTotalOrder = (sellerID, data) => async (dispatch) => {
   }
 };
 
-export const getTotalInventory = (sellerID, data) => async (dispatch) => {
+export const getTotalInventory = (sellerID, data, page, callback) => async (dispatch) => {
+  const inventory = store.getState()?.analytics?.getTotalInventory;
+
   dispatch(getTotalInventoryRequest());
   try {
-    const res = await AnalyticsController.getTotalInventory(sellerID, data);
-    dispatch(getTotalInventorySuccess(res?.payload));
+    const res = await AnalyticsController.getTotalInventory(sellerID, data, page);
+    const prevInventory = { ...inventory };
+    if (inventory && Object.keys(inventory).length > 0 && page > 1) {
+      prevInventory.inventory_list.total = res?.payload?.inventory_list?.total;
+      prevInventory.inventory_list.current_page = res?.payload?.inventory_list?.current_page;
+      prevInventory.inventory_list.total_pages = res?.payload?.inventory_list?.total_pages;
+      prevInventory.inventory_list.per_page = res?.payload?.inventory_list?.per_page;
+      prevInventory.inventory_list.data = prevInventory?.inventory_list.data?.concat(
+        res?.payload?.inventory_list?.data
+      );
+      dispatch(getTotalInventorySuccess(prevInventory));
+    } else {
+      dispatch(getTotalInventorySuccess(res?.payload));
+    }
+    callback && callback(res);
   } catch (error) {
     dispatch(getTotalInventoryError(error.message));
   }

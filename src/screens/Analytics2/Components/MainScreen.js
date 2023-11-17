@@ -155,6 +155,7 @@ export function MainScreen({
             filter={filter}
             startDated={startDated}
             endDated={endDated}
+            style={{ marginLeft: ms(2) }}
           />
         )}
         {getPosUser?.user_roles?.length > 0 ? (
@@ -239,6 +240,7 @@ export function MainScreen({
           filter={filter}
           startDated={startDated}
           endDated={endDated}
+          style={{ marginLeft: ms(2) }}
         />
         <HomeGraph
           header="Total Delivery Orders"
@@ -282,13 +284,13 @@ export function MainScreen({
         />
       </View>
       <View style={styles.flexDirectionRow}>
-        <View style={styles.totalProductCon}>
+        <View style={[styles.totalProductCon, { marginLeft: ms(2) }]}>
           <Spacer space={SH(10)} />
           <View style={styles.flexAlign}>
             <Text style={[styles.darkBlackText, { flex: 1 }]}>Total Orders</Text>
             <Text style={[styles.darkBlackText, { fontSize: SF(24) }]}>
               {isTotalOrderLoading ? (
-                <ActivityIndicator color={COLORS.dark_blue} size={'small'} />
+                <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
               ) : totalOrder?.total_orders ? (
                 totalOrder?.total_orders
               ) : (
@@ -297,12 +299,12 @@ export function MainScreen({
             </Text>
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginVertical: ms(4) }}>
-            <View style={[styles.bulletView, { backgroundColor: COLORS.lightBlueBG }]}>
+            <View style={[styles.bulletView, { backgroundColor: COLORS.sky_grey }]}>
               <View style={[styles.bullets, { backgroundColor: COLORS.blue2 }]} />
               <Text style={styles.bulletText}>{'POS Orders'}</Text>
             </View>
-            <View style={[styles.bulletView, { backgroundColor: COLORS.light_skyblue }]}>
-              <View style={[styles.bullets, { backgroundColor: COLORS.medium_skyblue }]} />
+            <View style={[styles.bulletView, { backgroundColor: COLORS.light_sky_blue }]}>
+              <View style={[styles.bullets, { backgroundColor: COLORS.sky_blue }]} />
               <Text style={[styles.bulletText, { color: COLORS.dark_skyblue }]}>
                 {'Online Orders'}
               </Text>
@@ -317,10 +319,10 @@ export function MainScreen({
           <TouchableOpacity style={{ overflow: 'hidden' }} onPress={onPressOrders}>
             <BarChartCom
               barWid={Dimensions.get('window').width * 0.22}
-              barHei={Platform.OS === 'android' ? ms(75) : SH(110)}
+              barHei={Platform.OS === 'android' ? ms(62) : SH(110)}
               barSpacing={SW(4.2)}
-              barW={SW(1.5)}
-              labelTextSty={{ color: COLORS.dark_blue, fontSize: 11 }}
+              barW={SW(2)}
+              labelTextSty={{ color: COLORS.navy_blue, fontSize: 11 }}
               initialSpacing={SH(5)}
               data={totalOrder?.graphData}
               spacing={SW(10)}

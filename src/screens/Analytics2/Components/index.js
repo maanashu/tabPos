@@ -31,14 +31,14 @@ export function HomeGraph({
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={[styles.darkBlackText, { flex: 1 }]}>{header}</Text>
           <Text style={styles.darkBlackText}>
-            {isLoading ? <ActivityIndicator color={COLORS.dark_blue} size={'small'} /> : subHeader}
+            {isLoading ? <ActivityIndicator color={COLORS.navy_blue} size={'small'} /> : subHeader}
           </Text>
         </View>
         {rightHeader && (
           <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginVertical: ms(4) }}>
             <View style={styles.bulletView}>
               <View style={[styles.bullets, { backgroundColor: COLORS.medium_purple }]} />
-              <Text style={[styles.bulletText, { color: COLORS.dark_purple }]}>
+              <Text style={[styles.bulletText, { color: COLORS.purple }]}>
                 {bulletText ? bulletText : 'Delivered'}
               </Text>
             </View>
@@ -47,15 +47,15 @@ export function HomeGraph({
               <Text style={[styles.bulletText, { color: COLORS.dark_yellow }]}>{'Returned'}</Text>
             </View>
             <View style={[styles.bulletView, { backgroundColor: COLORS.light_red }]}>
-              <View style={[styles.bullets, { backgroundColor: COLORS.medium_red }]} />
-              <Text style={[styles.bulletText, { color: COLORS.dark_red }]}>{'Cancelled'}</Text>
+              <View style={[styles.bullets, { backgroundColor: COLORS.blur_red }]} />
+              <Text style={[styles.bulletText, { color: COLORS.bright_red }]}>{'Cancelled'}</Text>
             </View>
           </View>
         )}
         {/* </View> */}
         {isLoading ? (
           <View style={styles.loaderView}>
-            <ActivityIndicator color={COLORS.dark_blue} size={'small'} />
+            <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
           </View>
         ) : (
           <NewChartKit
