@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     marginTop: SH(15),
   },
   numberOrdersText: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
     paddingHorizontal: ms(12),

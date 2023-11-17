@@ -40,7 +40,7 @@ export default memo(CurrentShippingStatus);
 
 const styles = StyleSheet.create({
   currentStatusView: {
-    flex: 0.8,
+    flex: 0.9,
     borderRadius: 10,
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
@@ -49,24 +49,26 @@ const styles = StyleSheet.create({
   currentStatusText: {
     fontFamily: Fonts.SemiBold,
     fontSize: scale(6),
-    color: COLORS.text,
+    color: COLORS.navy_blue,
     paddingLeft: ms(12),
   },
   itemMainViewStyle: {
-    borderWidth: 1,
+    borderWidth: 2,
     marginHorizontal: ms(12),
     marginVertical: ms(3),
-    borderRadius: 5,
-    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    borderColor: COLORS.light_purple,
     backgroundColor: COLORS.white,
     paddingHorizontal: ms(8),
+    paddingVertical: ms(6),
     alignItems: 'center',
     flexDirection: 'row',
   },
   shippingTypeImage: {
-    width: ms(16),
-    height: ms(16),
+    width: ms(20),
+    height: ms(20),
     resizeMode: 'contain',
+    borderRadius: ms(5),
   },
   shippingTypeDetails: {
     justifyContent: 'center',
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
   shippingTypeText: {
     fontFamily: Fonts.SemiBold,
     fontSize: scale(4),
-    color: COLORS.darkGray,
+    color: COLORS.navy_blue,
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,

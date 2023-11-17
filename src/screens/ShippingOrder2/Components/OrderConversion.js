@@ -37,7 +37,7 @@ const OrderConversion = () => {
 
   return (
     <View style={styles.orderConvertionView}>
-      <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
+      <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConversion}</Text>
 
       <Spacer space={ms(15)} />
       <View style={styles.piechartViewStyle}>
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   orderTextStyle: {
     fontFamily: Fonts.MaisonBold,
     fontSize: scale(7),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     paddingLeft: ms(12),
     paddingTop: ms(9),
   },
@@ -156,6 +156,6 @@ const styles = StyleSheet.create({
   countTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(14),
-    color: COLORS.dark_grey,
+    color: COLORS.textBlue,
   },
 });

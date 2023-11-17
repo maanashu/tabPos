@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   shippingStatusText: {
     fontSize: SF(16),
     paddingLeft: ms(15),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
   },
   loaderViewStyle: {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     fontSize: SF(14),
     paddingTop: ms(10),
     paddingLeft: ms(15),
-    color: COLORS.solid_grey,
+    color: COLORS.textBlue,
     fontFamily: Fonts.Regular,
   },
 });
