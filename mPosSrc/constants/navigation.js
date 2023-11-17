@@ -46,4 +46,6 @@ export const NAVIGATION = {
   policies: 'Policies',
   notificationSettings: 'NotificationSettings',
   batchManagement: 'Management',
+  customers: 'Customers',
+  customerList: 'CustomerList',
 };

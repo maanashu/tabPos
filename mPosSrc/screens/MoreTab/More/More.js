@@ -64,7 +64,7 @@ export function More() {
     if (index === 0) {
       return navigate(MPOS_NAVIGATION.batchManagement);
     } else if (index === 1) {
-      return alert('In progress');
+      return navigate(MPOS_NAVIGATION.customers);
     } else if (index === 2) {
       return alert('In progress');
     } else if (index === 3) {

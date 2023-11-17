@@ -416,6 +416,7 @@ export function Booking() {
         onPressReject={() => {
           onSearchAppoinment(searchedText);
         }}
+        timeStyle={{ width: ms(70) }}
       />
     );
   };

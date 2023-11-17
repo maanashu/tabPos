@@ -22,6 +22,7 @@ const ListViewItem = ({
   isSendCheckinOTPLoading,
   onPressAccept = () => {},
   onPressReject = () => {},
+  timeStyle,
 }) => {
   const userDetails = item?.user_details;
   const invitedUserDetails = item?.invitation_details;
@@ -184,7 +185,7 @@ const ListViewItem = ({
             <Text style={[styles.customerName, { fontFamily: Fonts.SemiBold }]}>
               {item?.appointment_details[0]?.product_name}
             </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={[timeStyle, { flexDirection: 'row', alignItems: 'center' }]}>
               <Image source={clock} style={styles.eventAddressIcon} />
               <Text style={styles.eventAddress}>{`${item?.start_time}-${item?.end_time}`}</Text>
             </View>

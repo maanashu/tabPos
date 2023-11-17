@@ -22,6 +22,8 @@ export { Cart } from '@mPOS/screens/Cart/Cart';
 // Customers
 export { Transactions } from '@mPOS/screens/Customers/Transactions';
 export { TransactionList } from '@mPOS/screens/Customers/TransactionList/TransactionList';
+export { Customers } from '@mPOS/screens/Customers/Customers';
+export { CustomerList } from '@mPOS/screens/Customers/Components/CustomerList';
 
 // more
 export { More } from '@mPOS/screens/MoreTab/More/More';

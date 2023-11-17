@@ -33,6 +33,8 @@ import {
   RetailServices,
   Policies,
   NotificationSettings,
+  Customers,
+  CustomerList,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -232,6 +234,16 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.batchManagement}
         options={{ headerShown: false }}
         component={Management}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.customers}
+        options={{ headerShown: false }}
+        component={Customers}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.customerList}
+        options={{ headerShown: false }}
+        component={CustomerList}
       />
     </Stack.Navigator>
   );
