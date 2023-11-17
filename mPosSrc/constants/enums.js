@@ -53,6 +53,7 @@ export const essential = [
     label: 'Plans',
     image: Images.planIcon,
     id: 3,
+    navigation: MPOS_NAVIGATION.plans,
   },
   {
     label: 'Shipping & Pickups',
