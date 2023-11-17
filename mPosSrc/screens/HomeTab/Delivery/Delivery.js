@@ -44,7 +44,6 @@ export function Delivery() {
   const deliveryData = useSelector(getDelivery);
   const todayDeliveryOrders = deliveryData?.todayOrderStatus?.[0]?.count ?? '0';
   const orders = deliveryData?.getReviewDef ?? [];
-  console.log('orders', JSON.stringify(orders));
 
   const [refreshing, setRefreshing] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('0');

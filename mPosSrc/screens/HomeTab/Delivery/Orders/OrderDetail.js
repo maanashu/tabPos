@@ -24,11 +24,15 @@ import styles from './styles';
 import ReactNativeModal from 'react-native-modal';
 import StatusDrawer from '../Components/StatusDrawer';
 import { useState } from 'react';
+import { getDelivery } from '@/selectors/DeliverySelector';
 
 export function OrderDetail(props) {
   const mapRef = useRef();
   const dispatch = useDispatch();
+  const deliveryData = useSelector(getDelivery);
+  const orders = deliveryData?.getReviewDef ?? [];
   const orderData = props?.route?.params?.data;
+  console.log('orders', JSON.stringify(orderData));
   const customerDetail = orderData?.user_details;
   const deliveryDate = dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') || '';
   const [selectedStatus, setSelectedStatus] = useState('0');
