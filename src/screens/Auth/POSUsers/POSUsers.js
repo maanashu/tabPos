@@ -20,9 +20,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-import { COLORS, SH } from '@/theme';
+import { COLORS, Fonts, SH } from '@/theme';
 import { TYPES } from '@/Types/Types';
-import { crossButton } from '@/assets';
+import { crossButton, verifyGreen } from '@/assets';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { digits } from '@/utils/validators';
@@ -39,6 +39,8 @@ import { styles } from './POSUsers.styles';
 import { useRef } from 'react';
 import { useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
+import ReactNativeModal from 'react-native-modal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
@@ -63,10 +65,28 @@ export function POSUsers({ navigation }) {
   const [sixDigit, setSixDigit] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
   const [isLoadingBottom, setIsLoadingBottom] = useState(false);
+  const [isSucessModalVis, setIsSuccessModalVis] = useState(false);
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
+
+  const getSuccessFlag = async () => {
+    try {
+      const successFlag = await AsyncStorage.getItem('success-flag');
+      if (successFlag) {
+        setIsSuccessModalVis(true);
+        setTimeout(() => {
+          setIsSuccessModalVis(false);
+        }, 3000);
+        await AsyncStorage.removeItem('success-flag');
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getSuccessFlag();
+  }, []);
 
   useEffect(() => {
     // dispatch(getAllPosUsers(sellerID));
@@ -374,6 +394,48 @@ export function POSUsers({ navigation }) {
           )}
         </View>
       )}
+      <ReactNativeModal
+        isVisible={isSucessModalVis}
+        backdropColor={COLORS.sky_grey}
+        backdropOpacity={1}
+        style={{
+          backgroundColor: COLORS.sky_grey,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <View
+          style={{
+            width: ms(250),
+            height: ms(200),
+            borderRadius: ms(40),
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: COLORS.white,
+          }}
+        >
+          <Image
+            style={{
+              width: ms(40),
+              height: ms(40),
+              marginBottom: ms(15),
+              resizeMode: 'contain',
+            }}
+            source={verifyGreen}
+          />
+          <Text
+            style={{
+              color: COLORS.navy_blue,
+              textAlign: 'center',
+              fontFamily: Fonts.Regular,
+              fontSize: ms(22, 0.3),
+              width: ms(150),
+            }}
+          >
+            Successfully verified
+          </Text>
+        </View>
+      </ReactNativeModal>
     </ScreenWrapper>
   );
 }

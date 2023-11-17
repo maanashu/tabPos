@@ -2,6 +2,7 @@ import React from 'react';
 import { Fonts, cross, deleteBack } from '@/assets';
 import { COLORS, SH } from '@/theme';
 import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ms } from 'react-native-size-matters';
 
 export const KeyPadButton = ({ value, onPress }) => {
   if (value === 'cross' || value === 'deleteBack') {
@@ -22,10 +23,7 @@ export const KeyPadButton = ({ value, onPress }) => {
   } else {
     // Render a text button for the numeric keys
     return (
-      <TouchableOpacity
-        style={styles.keyPadButton}
-        onPress={() => onPress(value)}
-      >
+      <TouchableOpacity style={styles.keyPadButton} onPress={() => onPress(value)}>
         <Text style={styles.keyPadText}>{value}</Text>
       </TouchableOpacity>
     );
@@ -41,6 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: SH(20),
+    marginVertical: ms(10),
   },
   keyPadText: {
     fontSize: SH(28),

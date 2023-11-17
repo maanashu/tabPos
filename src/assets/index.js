@@ -379,6 +379,7 @@ export { default as shippingIcon } from '@/assets/ic_analytic/shipping.png';
 export { default as soldProduct } from '@/assets/ic_analytic/soldProduct.png';
 export { default as totalCostIcon } from '@/assets/ic_analytic/totalCost.png';
 export { default as totalOrder } from '@/assets/ic_analytic/totalOrder.png';
+export { default as verifyGreen } from '@/assets/new_icon/Auth_icons/verify_green.png';
 
 /* Fonts */
 export const Fonts = {
