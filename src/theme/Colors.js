@@ -87,4 +87,5 @@ export const COLORS = {
   dark_green: '#003921',
   medium_green: '#027547',
   light_green: '#D1FADF',
+  navy_light_blue: '#636E9F',
 };

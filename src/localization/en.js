@@ -65,8 +65,8 @@ export const en = {
     returned: 'Returned',
   },
   verifyPhone: {
-    heading: 'Verify your phone number',
-    subHeading: 'Please enter your phone number',
+    heading: 'Verify your phone \nnumber',
+    subHeading: 'Enter your phone number to get started',
     placeHolderText: '815-288-0329',
     button: 'Continue',
   },

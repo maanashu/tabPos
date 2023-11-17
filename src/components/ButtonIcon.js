@@ -2,13 +2,33 @@ import React from 'react';
 import { Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
-import { ms, vs } from 'react-native-size-matters';
+import { ms } from 'react-native-size-matters';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-export function ButtonIcon({ title, icon, style, textStyle, iconStyle, onPress }) {
+export function ButtonIcon({
+  pending,
+  title,
+  icon,
+  style,
+  textStyle,
+  iconStyle,
+  onPress,
+  iconPostion = 'left',
+  ...rest
+}) {
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-      <Image source={icon} resizeMode="contain" style={[styles.iconSize, iconStyle]} />
+    <TouchableOpacity style={[styles.button, style]} onPress={onPress} {...rest}>
+      {pending && <Spinner visible={true} color={COLORS.primary} size="large" />}
+
+      {iconPostion === 'left' && (
+        <Image source={icon} resizeMode="contain" style={[styles.iconSize, iconStyle]} />
+      )}
+
       <Text style={[styles.text, textStyle]}>{title}</Text>
+
+      {iconPostion === 'right' && (
+        <Image source={icon} resizeMode="contain" style={[styles.iconSize, iconStyle]} />
+      )}
     </TouchableOpacity>
   );
 }
@@ -17,7 +37,7 @@ const styles = StyleSheet.create({
   button: {
     marginHorizontal: ms(30),
     borderWidth: 1,
-    height: vs(50),
+    height: ms(50),
     borderRadius: ms(7),
     flexDirection: 'row',
     alignItems: 'center',

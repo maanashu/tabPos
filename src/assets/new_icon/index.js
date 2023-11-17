@@ -8,4 +8,5 @@ export const Images = {
   addProduct: require('@/assets/new_icon/retail_con/addProduct.png'),
   clearCart: require('@/assets/new_icon/retail_con/clearCart.png'),
   holdCart: require('@/assets/new_icon/retail_con/holdCart.png'),
+  arrowLeftUp: require('@/assets/new_icon/Auth_icons/ArrowLeftUp.png'),
 };
