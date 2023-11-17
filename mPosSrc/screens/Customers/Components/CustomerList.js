@@ -99,6 +99,7 @@ export function CustomerList({
   const [searchedText, setSearchedText] = useState('');
   const [searchedAppointments, setSearchedCustomer] = useState([]);
   const time = selectTime?.value;
+  const [filterVal, setFilterVal] = useState('week');
 
   const onPresFun = () => {
     setFormatedDate();
@@ -262,9 +263,9 @@ export function CustomerList({
         backRequired
         title={'Back'}
         filter
-        // onValueChange={(item) => {
-        //   setFilterVal(item);
-        // }}
+        onValueChange={(item) => {
+          setFilterVal(item);
+        }}
       />
       <Spacer space={ms(5)} />
       <View
@@ -287,7 +288,7 @@ export function CustomerList({
       <View style={styles.searchContainer}>
         <TouchableOpacity
           onPress={() => {
-            setShowSearchModal(true);
+            setShowSearchModal(false);
             setSearchedCustomer([]);
             setSearchedText('');
           }}

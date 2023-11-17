@@ -6,7 +6,7 @@ import { getCustomers } from '@/selectors/CustomersSelector';
 import { filter, newCustomer, onlineCutomer, returnCustomer, walkinCustomer } from '@/assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCustomerDummy } from '@/constants/flatListData';
-import { Header, ScreenWrapper, Search } from '@mPOS/components';
+import { Header, ScreenWrapper, Search, Spacer } from '@mPOS/components';
 import Toast from 'react-native-toast-message';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
@@ -94,9 +94,11 @@ export function Customers() {
         onValueChange={(item) => {
           setFilterVal(item);
         }}
+        backRequired
       />
-      <View style={{ height: Dimensions.get('window').height * 0.45 }}>
+      <View style={{ height: Dimensions.get('window').height * 0.42 }}>
         <FlatList
+          bounces={false}
           data={newCustomerData}
           extraData={newCustomerData}
           style={styles.headerContainer}
@@ -124,7 +126,6 @@ export function Customers() {
           backgroundColor: COLORS.white,
           borderRadius: ms(10),
           padding: ms(10),
-          marginBottom: ms(10),
         }}
       >
         <Text style={styles.totalCusPrimary}>{strings.customers.totalCustomer}</Text>
@@ -139,6 +140,7 @@ export function Customers() {
         </View>
         <Graph graphDetail={getCustomerStatitics?.graphData} />
       </View>
+      <Spacer space={ms(10)} />
     </ScreenWrapper>
   );
 }

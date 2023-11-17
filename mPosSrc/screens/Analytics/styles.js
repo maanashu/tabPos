@@ -167,7 +167,7 @@ export const styles = StyleSheet.create({
   },
   containerStyle: {
     backgroundColor: COLORS.white,
-    width: ms(120),
+    width: Platform.OS === 'android' ? ms(120) : ms(105),
     borderRadius: ms(4),
     borderColor: COLORS.gerySkies,
     borderWidth: 1,

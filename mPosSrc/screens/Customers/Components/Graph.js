@@ -122,9 +122,7 @@ const Graph = ({ graphDetail }) => {
               }}
               width={
                 graphDetail?.labels?.length > 20
-                  ? Platform.OS === 'ios'
-                    ? Dimensions.get('window').width * 1.8
-                    : Dimensions.get('window').width * 5.5
+                  ? Dimensions.get('window').width * 5.5
                   : Dimensions.get('window').width * 0.86
               }
               height={ms(200)}

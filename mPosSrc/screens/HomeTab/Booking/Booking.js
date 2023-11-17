@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import {
   bell,
@@ -416,7 +417,7 @@ export function Booking() {
         onPressReject={() => {
           onSearchAppoinment(searchedText);
         }}
-        timeStyle={{ width: ms(70) }}
+        timeStyle={{ width: Platform.OS === 'android' ? ms(70) : ms(60) }}
       />
     );
   };

@@ -176,7 +176,7 @@ const ListViewItem = ({
           </Text>
         </View> */}
 
-        <View style={[styles.listViewSubContainers, { flex: 0.45, justifyContent: 'flex-start' }]}>
+        <View style={[styles.listViewSubContainers, { flex: 0.48, justifyContent: 'flex-start' }]}>
           <ProfileImage
             source={{ uri: customerDetails?.profile_photo }}
             style={styles.customerUserProfile}
