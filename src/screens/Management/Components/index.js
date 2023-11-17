@@ -555,6 +555,7 @@ export function SessionHistoryTable({
                   height: 20,
                   alignSelf: 'center',
                   justifyContent: 'center',
+                  alignItems: 'center',
                   borderRadius: 100,
                   elevation: 10,
                   shadowColor: '#000000',

@@ -503,6 +503,7 @@ export const en = {
     shippingOrders: 'Shipping Orders',
     currentStatus: 'Current Status',
     orderConvertion: 'Order convertion',
+    orderConversion: 'Order Conversion',
     incomingOrders: 'Incoming Orders',
     processingOrders: 'Order Processing',
     readyPickupOrders: 'Ready For Pickup',

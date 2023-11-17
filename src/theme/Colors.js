@@ -88,4 +88,5 @@ export const COLORS = {
   medium_skyblue: '#58C2E8',
   dark_skyblue: '#308CAD',
   faded_yellow: 'FEEFC6',
+  textBlue: '2F3552',
 };

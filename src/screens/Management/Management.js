@@ -597,7 +597,7 @@ export function Management() {
             </TouchableOpacity>
           </View>
 
-          <Spacer space={SH(20)} />
+          {/* <Spacer space={SH(20)} /> */}
           <View style={styles.countCashView}>
             <Image
               source={removeCash ? removeMoney : addMoney}
