@@ -8,6 +8,7 @@ import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { addDiscountToCart, addServiceDiscountToCart } from '@/actions/RetailAction';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const AddDiscount = ({ discountClose }) => {
   const dispatch = useDispatch();
@@ -84,202 +85,204 @@ const AddDiscount = ({ discountClose }) => {
   };
 
   return (
-    <View style={styles.addDiscountcon}>
-      <View style={styles.headerViewStyle}>
-        <Text style={styles.clearCartTextStyle}>{strings.cart.addDiscount}</Text>
+    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.addDiscountcon}>
+        <View style={styles.headerViewStyle}>
+          <Text style={styles.clearCartTextStyle}>{strings.cart.addDiscount}</Text>
 
-        <TouchableOpacity onPress={() => discountClose()}>
-          <Image source={Images.cross} style={styles.crossIconStyle} />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => discountClose()}>
+            <Image source={Images.cross} style={styles.crossIconStyle} />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.contentViewStyle}>
+          <View
+            style={[
+              styles.discountInputWraper,
+              {
+                backgroundColor: amountCheck ? COLORS.light_blue : COLORS.white,
+                borderColor: amountCheck ? COLORS.primary : COLORS.solidGrey,
+              },
+            ]}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                setAmountCheck(true);
+                setPercentageCheck(false);
+                setCodeCheck(false);
+                amountInputRef.current.focus();
+              }}
+              style={styles.displayFlex}
+            >
+              <View style={styles.displayFlex}>
+                <Text numberOfLines={1} style={styles.amountLabel}>
+                  {strings.cart.amountDiscount}
+                </Text>
+              </View>
+              <View style={styles.addDiscountInputCon}>
+                <Text style={styles.dollarsign}>$ </Text>
+                <TextInput
+                  ref={amountInputRef}
+                  placeholder={'00.00'}
+                  keyboardType={'numeric'}
+                  style={[
+                    styles.amountInput,
+                    {
+                      color: amountDiscount ? COLORS.primary : COLORS.dark_gray,
+                    },
+                  ]}
+                  onFocus={() => {
+                    setAmountCheck(true);
+                    setPercentageCheck(false);
+                    setCodeCheck(false);
+                  }}
+                  value={amountDiscount.toString()}
+                  onChangeText={setAmountDiscount}
+                  placeholderTextColor={COLORS.gerySkies}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <Spacer space={SH(15)} />
+
+          <View
+            style={[
+              styles.discountInputWraper,
+              {
+                backgroundColor: percentageCheck ? COLORS.light_blue : COLORS.white,
+                borderColor: percentageCheck ? COLORS.primary : COLORS.solidGrey,
+              },
+            ]}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                setAmountCheck(false);
+                setPercentageCheck(true);
+                setCodeCheck(false);
+                percentInputRef.current.focus();
+              }}
+              style={styles.displayFlex}
+            >
+              <View style={styles.displayFlex}>
+                <Text numberOfLines={1} style={styles.amountLabel}>
+                  {strings.cart.percentageDiscount}
+                </Text>
+              </View>
+              <View style={styles.addDiscountInputCon}>
+                <TextInput
+                  ref={percentInputRef}
+                  placeholder={'00.00'}
+                  keyboardType={'numeric'}
+                  style={[
+                    styles.amountInput,
+                    {
+                      color: percentageDiscount ? COLORS.primary : COLORS.dark_gray,
+                    },
+                  ]}
+                  value={percentageDiscount}
+                  onChangeText={setPercentageDiscount}
+                  placeholderTextColor={COLORS.gerySkies}
+                  onFocus={() => {
+                    setPercentageCheck(true);
+                    setAmountCheck(false);
+                    setCodeCheck(false);
+                  }}
+                />
+
+                <Text style={styles.dollarsign}>% </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
+          <Spacer space={SH(15)} />
+
+          <View
+            style={[
+              styles.discountInputWraper,
+              {
+                backgroundColor: codeCheck ? COLORS.light_blue : COLORS.white,
+                borderColor: codeCheck ? COLORS.primary : COLORS.solidGrey,
+              },
+            ]}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                setAmountCheck(false);
+                setPercentageCheck(false);
+                setCodeCheck(true);
+                discountInputRef.current.focus();
+              }}
+              style={styles.displayFlex}
+            >
+              <View style={styles.displayFlex}>
+                <Text numberOfLines={1} style={styles.amountLabel}>
+                  {strings.cart.discountCode}
+                </Text>
+              </View>
+              <View style={styles.addDiscountInputCon}>
+                <TextInput
+                  ref={discountInputRef}
+                  placeholder={'CODE'}
+                  style={[
+                    styles.amountInput,
+                    { color: discountCode ? COLORS.primary : COLORS.solid_grey },
+                  ]}
+                  value={discountCode}
+                  onChangeText={setDiscountCode}
+                  placeholderTextColor={COLORS.gerySkies}
+                  onFocus={() => {
+                    setCodeCheck(true);
+                    setPercentageCheck(false);
+                    setAmountCheck(false);
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Spacer space={SH(20)} />
+
+          <Text style={styles.discountTitle}>{strings.cart.discountTitle}</Text>
+
+          <Spacer space={SH(7)} />
+          <TextInput
+            placeholder="Tittle"
+            style={styles.discountTitleInput}
+            value={descriptionDis}
+            onChangeText={setDescriptionDis}
+            placeholderTextColor={COLORS.gerySkies}
+            autoCorrect={false}
+            spellCheck={false}
+          />
+
+          <Spacer space={SH(15)} />
+
+          <View style={styles.buttonMainContainer}>
+            <TouchableOpacity
+              style={styles.keepButtonStyle}
+              onPress={() => {
+                setDiscountCode('');
+                setPercentageDiscount('');
+                setAmountDiscount('');
+                setAmountCheck(false);
+                setPercentageCheck(false);
+                setCodeCheck(false);
+              }}
+            >
+              <Text style={[styles.counterText, { color: COLORS.solid_grey }]}>
+                {strings.profile.Discard}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.clearButtonStyle} onPress={addDiscountHandler}>
+              <Text style={[styles.counterText, { color: COLORS.white }]}>
+                {strings.cart.addToCart}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-
-      <View style={styles.contentViewStyle}>
-        <View
-          style={[
-            styles.discountInputWraper,
-            {
-              backgroundColor: amountCheck ? COLORS.light_blue : COLORS.white,
-              borderColor: amountCheck ? COLORS.primary : COLORS.solidGrey,
-            },
-          ]}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              setAmountCheck(true);
-              setPercentageCheck(false);
-              setCodeCheck(false);
-              amountInputRef.current.focus();
-            }}
-            style={styles.displayFlex}
-          >
-            <View style={styles.displayFlex}>
-              <Text numberOfLines={1} style={styles.amountLabel}>
-                {strings.cart.amountDiscount}
-              </Text>
-            </View>
-            <View style={styles.addDiscountInputCon}>
-              <Text style={styles.dollarsign}>$ </Text>
-              <TextInput
-                ref={amountInputRef}
-                placeholder={'00.00'}
-                keyboardType={'numeric'}
-                style={[
-                  styles.amountInput,
-                  {
-                    color: amountDiscount ? COLORS.primary : COLORS.dark_gray,
-                  },
-                ]}
-                onFocus={() => {
-                  setAmountCheck(true);
-                  setPercentageCheck(false);
-                  setCodeCheck(false);
-                }}
-                value={amountDiscount.toString()}
-                onChangeText={setAmountDiscount}
-                placeholderTextColor={COLORS.gerySkies}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        <Spacer space={SH(15)} />
-
-        <View
-          style={[
-            styles.discountInputWraper,
-            {
-              backgroundColor: percentageCheck ? COLORS.light_blue : COLORS.white,
-              borderColor: percentageCheck ? COLORS.primary : COLORS.solidGrey,
-            },
-          ]}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              setAmountCheck(false);
-              setPercentageCheck(true);
-              setCodeCheck(false);
-              percentInputRef.current.focus();
-            }}
-            style={styles.displayFlex}
-          >
-            <View style={styles.displayFlex}>
-              <Text numberOfLines={1} style={styles.amountLabel}>
-                {strings.cart.percentageDiscount}
-              </Text>
-            </View>
-            <View style={styles.addDiscountInputCon}>
-              <TextInput
-                ref={percentInputRef}
-                placeholder={'00.00'}
-                keyboardType={'numeric'}
-                style={[
-                  styles.amountInput,
-                  {
-                    color: percentageDiscount ? COLORS.primary : COLORS.dark_gray,
-                  },
-                ]}
-                value={percentageDiscount}
-                onChangeText={setPercentageDiscount}
-                placeholderTextColor={COLORS.gerySkies}
-                onFocus={() => {
-                  setPercentageCheck(true);
-                  setAmountCheck(false);
-                  setCodeCheck(false);
-                }}
-              />
-
-              <Text style={styles.dollarsign}>% </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        <Spacer space={SH(15)} />
-
-        <View
-          style={[
-            styles.discountInputWraper,
-            {
-              backgroundColor: codeCheck ? COLORS.light_blue : COLORS.white,
-              borderColor: codeCheck ? COLORS.primary : COLORS.solidGrey,
-            },
-          ]}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              setAmountCheck(false);
-              setPercentageCheck(false);
-              setCodeCheck(true);
-              discountInputRef.current.focus();
-            }}
-            style={styles.displayFlex}
-          >
-            <View style={styles.displayFlex}>
-              <Text numberOfLines={1} style={styles.amountLabel}>
-                {strings.cart.discountCode}
-              </Text>
-            </View>
-            <View style={styles.addDiscountInputCon}>
-              <TextInput
-                ref={discountInputRef}
-                placeholder={'CODE'}
-                style={[
-                  styles.amountInput,
-                  { color: discountCode ? COLORS.primary : COLORS.solid_grey },
-                ]}
-                value={discountCode}
-                onChangeText={setDiscountCode}
-                placeholderTextColor={COLORS.gerySkies}
-                onFocus={() => {
-                  setCodeCheck(true);
-                  setPercentageCheck(false);
-                  setAmountCheck(false);
-                }}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <Spacer space={SH(20)} />
-
-        <Text style={styles.discountTitle}>{strings.cart.discountTitle}</Text>
-
-        <Spacer space={SH(7)} />
-        <TextInput
-          placeholder="Tittle"
-          style={styles.discountTitleInput}
-          value={descriptionDis}
-          onChangeText={setDescriptionDis}
-          placeholderTextColor={COLORS.gerySkies}
-          autoCorrect={false}
-          spellCheck={false}
-        />
-
-        <Spacer space={SH(15)} />
-
-        <View style={styles.buttonMainContainer}>
-          <TouchableOpacity
-            style={styles.keepButtonStyle}
-            onPress={() => {
-              setDiscountCode('');
-              setPercentageDiscount('');
-              setAmountDiscount('');
-              setAmountCheck(false);
-              setPercentageCheck(false);
-              setCodeCheck(false);
-            }}
-          >
-            <Text style={[styles.counterText, { color: COLORS.solid_grey }]}>
-              {strings.profile.Discard}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.clearButtonStyle} onPress={addDiscountHandler}>
-            <Text style={[styles.counterText, { color: COLORS.white }]}>
-              {strings.cart.addToCart}
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -289,11 +292,13 @@ const styles = StyleSheet.create({
   addDiscountcon: {
     backgroundColor: COLORS.white,
     borderRadius: 30,
-    width: ms(350),
+    // width: ms(350),
+    flex: 1,
     height: ms(450),
     alignSelf: 'center',
     paddingHorizontal: moderateScale(15),
-    paddingVertical: ms(30),
+    paddingVertical: ms(20),
+    marginTop: ms(100),
   },
   nameBottomSheetContainerStyle: {
     borderTopLeftRadius: ms(30),
