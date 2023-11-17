@@ -272,7 +272,8 @@ export function Shipping() {
       <ReactNativeModal
         isVisible={isStatusDrawer}
         animationIn={'slideInRight'}
-        animationOut={'slideOutLeft'}
+        animationOut={'slideInRight'}
+        onBackdropPress={() => setIsStatusDrawer(false)}
       >
         <StatusDrawer
           closeModal={() => setIsStatusDrawer(false)}

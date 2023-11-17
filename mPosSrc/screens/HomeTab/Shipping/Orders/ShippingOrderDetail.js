@@ -20,15 +20,21 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { acceptOrder } from '@/actions/ShippingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/ShippingOrderTypes';
+import ReactNativeModal from 'react-native-modal';
+import StatusDrawer from '../Components/StatusDrawer';
+import { useState } from 'react';
 
 export function ShippingOrderDetail(props) {
   const mapRef = useRef();
   const dispatch = useDispatch();
   const orderData = props?.route?.params?.data;
   const customerDetail = orderData?.user_details;
+  const orders = orderData;
 
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  const [selectedStatus, setSelectedStatus] = useState('0');
+  const [isStatusDrawer, setIsStatusDrawer] = useState(false);
 
   const onPressAcceptHandler = () => {
     const data = {
@@ -46,10 +52,31 @@ export function ShippingOrderDetail(props) {
   };
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
-
+  const setHeaderText = (value) => {
+    switch (value) {
+      case '0':
+        return strings.orderStatus.reviewOrders;
+      case '3':
+        return strings.orderStatus.printingLabel;
+      case '4':
+        return strings.orderStatus.trackOrders;
+      case '5':
+        return strings.orderStatus.ordersDelivered;
+      case '7,8':
+        return strings.orderStatus.ordersRejected;
+      default:
+        return strings.orderStatus.deliveryReturns;
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
-      <Header backRequired title={strings.profile.header} />
+      {/* <Header backRequired title={strings.profile.header} /> */}
+      <Header
+        orders
+        backRequired
+        title={strings.profile.header}
+        rightIconOnpress={() => setIsStatusDrawer(true)}
+      />
 
       <View style={styles.userDetailView}>
         <View style={{ flexDirection: 'row' }}>
@@ -146,6 +173,21 @@ export function ShippingOrderDetail(props) {
       <OrderTotal {...{ orderData, onPressAcceptHandler }} />
 
       {isLoading ? <FullScreenLoader /> : null}
+      <ReactNativeModal
+        isVisible={isStatusDrawer}
+        animationIn={'slideInRight'}
+        animationOut={'slideInRight'}
+        onBackdropPress={() => setIsStatusDrawer(false)}
+      >
+        <StatusDrawer
+          closeModal={() => setIsStatusDrawer(false)}
+          selected={(value) => {
+            setHeaderText(value);
+            setSelectedStatus(value);
+          }}
+          selectedStatusOrder={selectedStatus}
+        />
+      </ReactNativeModal>
     </SafeAreaView>
   );
 }
