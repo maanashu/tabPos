@@ -1,5 +1,7 @@
 import { COLORS, Fonts, SF, SH, ShadowStyles, SW } from '@/theme';
 import { Dimensions, StyleSheet } from 'react-native';
+import { moderateScale } from 'react-native-size-matters';
+import { ms } from 'react-native-size-matters';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -8,113 +10,48 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.white,
   },
-  headerView: {
-    height: SH(50),
-    flexDirection: 'row',
-    alignItems: 'center',
-    ...ShadowStyles.shadow1,
+  notiContainer: {
     backgroundColor: COLORS.white,
-    alignSelf: 'center',
-    paddingHorizontal: 15,
-    justifyContent: 'space-between',
-    width: Dimensions.get('window').width,
+    borderRadius: ms(7),
+    paddingVertical: ms(16),
+    borderWidth: ms(1),
+    borderColor: COLORS.solidGrey,
   },
-  backViewStyle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+  toggleBtn: {
+    height: ms(24),
+    width: ms(24),
   },
-  backTextStyle: {
-    textAlign: 'center',
-    color: COLORS.text,
-    fontFamily: Fonts.SemiBold,
+  itemSeparatorStyle: {
+    borderBottomWidth: ms(1),
+    marginVertical: ms(10),
+    borderBottomColor: COLORS.solidGrey,
+    marginHorizontal: ms(15),
   },
-  backArrowStyle: {
-    width: SH(20),
-    height: SH(30),
-    resizeMode: 'contain',
-  },
-  qrCodeImageStyle: {
-    width: SW(24),
-    height: SW(24),
-    resizeMode: 'contain',
-  },
-  profileImageView: {
-    ...ShadowStyles.shadow,
-    backgroundColor: COLORS.white,
-    width: SW(100),
-    height: SW(100),
-    alignSelf: 'center',
-    borderRadius: SW(50),
-    resizeMode: 'contain',
-  },
-  profileImageStyle: {
-    alignSelf: 'center',
-    width: SW(100),
-    height: SW(100),
-    resizeMode: 'cover',
-    borderRadius: 97,
-  },
-  pencilIconStyle: {
-    width: SW(20),
-    height: SW(20),
-    resizeMode: 'contain',
-    position: 'absolute',
-    alignSelf: 'flex-end',
-    bottom: 0,
-    right: 10,
-  },
-  actionSheetItemStyle: {
-    textAlign: 'center',
-    color: COLORS.darkBlue,
-    fontFamily: Fonts.SemiBold,
-  },
-  cancelItemStyle: {
-    textAlign: 'center',
-    color: COLORS.red,
-    fontFamily: Fonts.SemiBold,
-  },
-  actionItemStyle: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  personalInfoText: {
-    fontFamily: Fonts.MaisonMonoBold,
-    fontSize: SF(16),
-    color: COLORS.dark_gray,
-    paddingHorizontal: 20,
-  },
-  profileDataContainer: {
-    alignSelf: 'center',
-    flexDirection: 'column',
-    width: windowWidth * 0.92,
-    paddingHorizontal: SW(20),
-  },
-  nameText: {
-    fontSize: SF(14),
-    fontFamily: Fonts.Medium,
-    color: COLORS.text,
-  },
-  userIcon: {
-    width: SW(18),
-    height: SW(18),
-    resizeMode: 'contain',
-  },
-  directionRow: {
+  notiView: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginHorizontal: ms(25),
   },
-  valueText: {
-    fontSize: SF(16),
-    color: COLORS.dark_gray,
-    fontFamily: Fonts.Medium,
-    paddingHorizontal: SW(10),
+  notificationType: {
+    fontSize: ms(12),
+    color: COLORS.solid_grey,
+    fontFamily: Fonts.Regular,
   },
-  rowStyle: {
-    paddingLeft: 5,
-    width: SW(250),
-    justifyContent: 'flex-start',
+  headerTitle: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(14),
+    color: COLORS.solid_grey,
+  },
+  notiHeaderView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: ms(15),
+  },
+  bottomLine: {
+    marginBottom: ms(15),
+    marginHorizontal: ms(15),
   },
 });
 
