@@ -287,6 +287,7 @@ export function Security() {
                 <Text style={styles.primaryClr}>iOS App Store</Text>
               </Text>
               <Spacer space={SH(50)} />
+
               <TouchableOpacity
                 style={googleAuthStart ? styles.googleAuthConSel : styles.googleAuthCon}
                 onPress={() => setGoogleAuthStart(!googleAuthStart)}
@@ -302,7 +303,9 @@ export function Security() {
                   </View>
                 </View>
               </TouchableOpacity>
+
               <View style={{ flex: 1 }} />
+
               <View style={styles.buttonSetting}>
                 <View style={styles.dispalyRow}>
                   <Image source={checkboxSec} style={styles.checkboxSec} />

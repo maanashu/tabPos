@@ -11,10 +11,12 @@ import { getRetail } from '@/selectors/RetailSelectors';
 
 export function Cart() {
   const dispatch = useDispatch();
-  const [showCart, setShowCart] = useState();
+
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
-  console.log('presentCart', presentCart);
+  console.log('presentCart', presentCart, showCart);
+  const [showCart, setShowCart] = useState(presentCart === 'service' ? true : false);
+
   return (
     <ScreenWrapper style={styles.container}>
       {showCart && presentCart === 'service' ? (

@@ -159,7 +159,7 @@ export function ShippingOrderList(props) {
       <ReactNativeModal
         isVisible={isStatusDrawer}
         animationIn={'slideInRight'}
-        animationOut={'slideOutLeft'}
+        animationOut={'slideOutRight'}
       >
         <StatusDrawer
           selected={(value) => {

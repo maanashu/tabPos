@@ -44,7 +44,8 @@ export function RetailProducts(props) {
   const getAuth = useSelector(getAuthData);
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
-  // console.log(retailData?.categoryList);
+  const productCart = retailData?.getAllCart?.poscart_products ?? [];
+  const productCartLength = productCart?.length;
   const productData = retailData?.getMainProduct;
   const addProductCartRef = useRef(null);
   const productDetailRef = useRef(null);
@@ -217,7 +218,7 @@ export function RetailProducts(props) {
   );
 
   const isLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_ONE_PRODUCT, TYPES.ADDCART], state)
+    isLoadingSelector([TYPES.GET_ONE_PRODUCT, TYPES.ADDCART, TYPES.GET_ALL_CART], state)
   );
   const categoryLoad = useSelector((state) => isLoadingSelector([TYPES.GET_CATEGORY], state));
   const subCategoryLoad = useSelector((state) =>
@@ -236,6 +237,7 @@ export function RetailProducts(props) {
               dispatch(cartRun('product'));
               navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
             }}
+            cartLength={productCartLength}
           />
           {categoryLoad ? (
             <View style={[styles.contentContainerStyle, { height: ms(20) }]}>

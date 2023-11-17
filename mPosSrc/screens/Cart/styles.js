@@ -186,7 +186,7 @@ export const styles = StyleSheet.create({
   _flatListContainer: {
     // height: ms(280),
     width: '100%',
-    flex: 0.53,
+    flex: 0.51,
   },
   availablOffercon: {
     marginTop: ms(10),

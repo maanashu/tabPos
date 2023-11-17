@@ -68,3 +68,5 @@ export { StaffSettings } from '@mPOS/screens/MoreTab/Settings/StaffSettings/Staf
 export { PosUserDetail } from '@mPOS/screens/MoreTab/Settings/PosUserDetail/PosUserDetail';
 export { Policies } from '@mPOS/screens/MoreTab/Settings/Policies/Policies';
 export { NotificationSettings } from '@mPOS/screens/MoreTab/NotificationSettings/NotificationSettings';
+export { Plans } from '@mPOS/screens/MoreTab/Plans/Plans';
+export { ChangePlans } from '@mPOS/screens/MoreTab/ChangePlans/ChangePlans';

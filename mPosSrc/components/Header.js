@@ -9,6 +9,7 @@ import { goBack } from '@mPOS/navigation/NavigationRef';
 import Modal from 'react-native-modal';
 import CalendarPickerModal from './CalendarPickerModal';
 import dayjs from 'dayjs';
+import { log } from 'react-native-reanimated';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -29,6 +30,7 @@ export function Header({
   cartIcon,
   dates = {},
   cartHandler,
+  cartLength,
 }) {
   const maxDate = new Date(2023, 10, 29);
   const [open, setOpen] = useState(false);
@@ -37,6 +39,7 @@ export function Header({
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [selectedDate, setSelectDate] = useState('');
+  console.log('cartLength', cartLength);
 
   const [items, setItems] = useState([
     { label: 'Today', value: 'today' },
@@ -164,8 +167,11 @@ export function Header({
           />
         )}
         {cartIcon && (
-          <TouchableOpacity style={styles.cartCon} onPress={cartHandler}>
-            <Image source={Images.cart} style={styles.cartIcon} />
+          <TouchableOpacity style={styles.cartCon(cartLength)} onPress={cartHandler}>
+            <Image source={Images.cart} style={styles.cartIcon(cartLength)} />
+            <View style={styles.badgeCon(cartLength)}>
+              <Text style={styles.badgeText(cartLength)}>{cartLength ?? '0'}</Text>
+            </View>
           </TouchableOpacity>
         )}
 
@@ -286,18 +292,45 @@ const styles = StyleSheet.create({
     borderRadius: SW(5),
     // flex: 1,
   },
-  cartCon: {
-    width: ms(35),
-    height: ms(35),
-    backgroundColor: COLORS.textInputBackground,
-    borderRadius: ms(8),
-    justifyContent: 'center',
-    alignItems: 'center',
+  cartCon: (cartLength) => {
+    return {
+      width: ms(35),
+      height: ms(35),
+      backgroundColor: cartLength > 0 ? COLORS.blue_shade : COLORS.textInputBackground,
+      borderRadius: ms(8),
+      justifyContent: 'center',
+      alignItems: 'center',
+    };
   },
-  cartIcon: {
-    width: ms(25),
-    height: ms(25),
-    resizeMode: 'contain',
+  cartIcon: (cartLength) => {
+    return {
+      width: ms(25),
+      height: ms(25),
+      resizeMode: 'contain',
+      tintColor: cartLength > 0 ? COLORS.primary : COLORS.darkGray,
+    };
+  },
+  badgeCon: (cartLength) => {
+    return {
+      borderWidth: 2,
+      width: ms(15),
+      height: ms(15),
+      borderRadius: ms(10),
+      position: 'absolute',
+      right: 4,
+      bottom: 2,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderColor: cartLength > 0 ? COLORS.primary : COLORS.darkGray,
+      backgroundColor: COLORS.white,
+    };
+  },
+  badgeText: (cartLength) => {
+    return {
+      fontFamily: Fonts.Regular,
+      fontSize: ms(7),
+      color: cartLength > 0 ? COLORS.primary : COLORS.darkGray,
+    };
   },
 
   // maincontainer: {

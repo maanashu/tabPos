@@ -48,4 +48,6 @@ export const NAVIGATION = {
   batchManagement: 'Management',
   customers: 'Customers',
   customerList: 'CustomerList',
+  plans: 'Plans',
+  changePlans: 'ChangePlans',
 };

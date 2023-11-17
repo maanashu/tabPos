@@ -23,6 +23,7 @@ import ProductDetails from './Components/ProductDetails';
 import { FullScreenLoader, Header, ImageView, ScreenWrapper } from '@mPOS/components';
 import { debounce } from 'lodash';
 import {
+  cartRun,
   getBrand,
   getCategory,
   getMainProduct,
@@ -39,6 +40,8 @@ import Modal from 'react-native-modal';
 import ProductFilter from './Components/ProductFilter';
 import AddServiceCart from './Components/AddServiceCart';
 import { getAllPosUsers } from '@/actions/AuthActions';
+import { navigate } from '@mPOS/navigation/NavigationRef';
+import { MPOS_NAVIGATION } from '@common/commonImports';
 
 export function RetailServices(props) {
   const onEndReachedCalledDuringMomentum = useRef(false);
@@ -46,6 +49,8 @@ export function RetailServices(props) {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const serviceData = retailData?.getMainServices;
+  const servicecCart = retailData?.getserviceCart?.appointment_cart_products ?? [];
+  const serviceCartLength = servicecCart?.length;
   const addServiceCartRef = useRef(null);
   const productDetailRef = useRef(null);
   const [selectedProduct, setSelectedProduct] = useState('');
@@ -180,7 +185,16 @@ export function RetailServices(props) {
     <ScreenWrapper>
       <View style={styles.container}>
         <View style={{ backgroundColor: COLORS.white }}>
-          <Header backRequired title={`Back`} />
+          <Header
+            backRequired
+            title={`Back`}
+            cartIcon
+            cartHandler={() => {
+              dispatch(cartRun('service'));
+              navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+            }}
+            cartLength={serviceCartLength}
+          />
           {categoryLoad ? (
             <View style={[styles.contentContainerStyle, { height: ms(20) }]}>
               <Text style={styles.loading}>{'Loading...'}</Text>

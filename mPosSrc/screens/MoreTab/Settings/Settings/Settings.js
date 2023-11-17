@@ -47,7 +47,7 @@ export function Settings() {
       subTitle: 'Defaults',
       navigation: MPOS_NAVIGATION.policies,
     },
-    { id: 9, title: strings?.settings?.shop, image: Images.email, subTitle: '3 Locations' },
+    // { id: 9, title: strings?.settings?.shop, image: Images.email, subTitle: '3 Locations' },
     { id: 10, title: strings?.settings?.deviceDetails, image: Images.policy, subTitle: 'Defaults' },
   ];
   const handleNav = (item) => {
