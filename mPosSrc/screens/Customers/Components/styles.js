@@ -21,8 +21,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     textAlign: 'center',
     borderColor: COLORS.solidGrey,
-    paddingHorizontal: moderateScale(20),
+    paddingHorizontal: moderateScale(10),
     justifyContent: 'center',
+    width: width * 0.74,
   },
   tableHeaderLeft: {
     flexDirection: 'row',
@@ -45,13 +46,14 @@ const styles = StyleSheet.create({
   },
   tableHeaderRight: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: Platform.OS === 'android' ? width * 0.6 : width * 0.45,
+    // justifyContent: 'space-between',
+    // width: width * 0.6,
   },
   tableHeaderRightInner: {
-    width: Platform.OS === 'android' ? width * 0.3 : width * 0.14,
+    width: width * 0.3,
     justifyContent: 'center',
     alignItems: 'center',
+    // backgroundColor: 'red',
   },
   tableTextHeader: {
     color: COLORS.dark_grey,
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(2),
   },
   searchView: {
-    height: SH(45),
+    height: ms(30),
     borderRadius: ms(15),
     flexDirection: 'row',
     alignItems: 'center',

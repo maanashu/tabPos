@@ -56,6 +56,7 @@ import { Header, ScreenWrapper, Search } from '@mPOS/components';
 import styles from './styles';
 import { Images } from '@mPOS/assets';
 import CustomerListView from '@/screens/Customers2/Components/CustomerListView';
+import SearchList from './SearchList';
 const result = Dimensions.get('window').height - 50;
 
 export function CustomerList({
@@ -288,7 +289,7 @@ export function CustomerList({
       <View style={styles.searchContainer}>
         <TouchableOpacity
           onPress={() => {
-            setShowSearchModal(false);
+            setShowSearchModal(true);
             setSearchedCustomer([]);
             setSearchedText('');
           }}
@@ -425,20 +426,21 @@ export function CustomerList({
         </Table>
       </View>
       <Modal isVisible={showSearchModal}>
-        <KeyboardAvoidingView style={{ flex: 1 }}>
+        <KeyboardAvoidingView style={{ flex: 1, justifyContent: 'center' }}>
           <View
             style={{
-              marginHorizontal: ms(40),
-              marginVertical: ms(40),
+              marginHorizontal: ms(10),
+              // marginVertical: ms(60),
               backgroundColor: 'white',
-              borderRadius: ms(5),
+              borderRadius: ms(10),
               paddingHorizontal: ms(20),
-              paddingVertical: ms(20),
+              paddingVertical: ms(30),
               minHeight: '70%',
+              // justifyContent: 'center',
             }}
           >
             <TouchableOpacity
-              style={{ position: 'absolute', top: ms(5), right: ms(7) }}
+              style={{ position: 'absolute', top: ms(10), right: ms(7) }}
               onPress={() => setShowSearchModal(false)}
             >
               <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
@@ -457,7 +459,7 @@ export function CustomerList({
                 }}
               />
             </View>
-            <CustomerListView
+            <SearchList
               searchedAppointments={searchedAppointments}
               profileHandler={(item, customerId, customerTypes) => {
                 setSaveCustomerId(customerId);
