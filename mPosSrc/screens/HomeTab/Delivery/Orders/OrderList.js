@@ -169,7 +169,7 @@ export function OrderList(props) {
       <ReactNativeModal
         isVisible={isStatusDrawer}
         animationIn={'slideInRight'}
-        animationOut={'slideOutLeft'}
+        animationOut={'slideOutRight'}
         onBackdropPress={() => setIsStatusDrawer(false)}
       >
         <StatusDrawer
