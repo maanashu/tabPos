@@ -1346,7 +1346,7 @@ export function MainScreen({
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
         backdropOpacity={0.9}
-        backdropColor={COLORS.white}
+        backdropColor={COLORS.row_grey}
       >
         {cartModal ? (
           <CartListModal
@@ -1387,7 +1387,7 @@ export function MainScreen({
         isVisible={serviceCartModal || numPadModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        backdropOpacity={0.4}
+        backdropOpacity={0.6}
       >
         {serviceCartModal ? (
           <ServiceCartListModal
