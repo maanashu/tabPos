@@ -86,4 +86,5 @@ export const COLORS = {
   light_skyblue: '#EFFBFF',
   medium_skyblue: '#58C2E8',
   dark_skyblue: '#308CAD',
+  placeHoldeText: '#636E9F',
 };
