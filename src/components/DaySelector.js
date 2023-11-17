@@ -40,8 +40,8 @@ export function DaySelector({ setSelectTime, selectId, setSelectId, onPresFun })
   );
 
   const selectItem = ({ item }) => {
-    const backgroundColor = item.id === selectId ? COLORS.dark_blue : 'transparent';
-    const color = item.id === selectId ? COLORS.white : COLORS.dark_blue;
+    const backgroundColor = item.id === selectId ? COLORS.navy_blue : 'transparent';
+    const color = item.id === selectId ? COLORS.white : COLORS.navy_blue;
 
     return (
       <ItemSelect

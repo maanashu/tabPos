@@ -14,6 +14,7 @@ import {
   Fonts,
   backArrow2,
   locationSales,
+  profitIcon,
   revenueTotal,
   totalCost,
   totalOrders,
@@ -80,7 +81,16 @@ export function TotalCost() {
   );
 
   const getCostList = ({ item, index }) => (
-    <DataTable.Row>
+    <DataTable.Row
+      style={{
+        borderColor: COLORS.sky_grey,
+        borderWidth: 2,
+        borderRadius: ms(25),
+        marginBottom: ms(6),
+        borderBottomWidth: 2,
+        borderBottomColor: COLORS.sky_grey,
+      }}
+    >
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
           <Text>{index + 1 + '.        '}</Text>
@@ -119,7 +129,7 @@ export function TotalCost() {
         <Text style={styles.text}>{text}</Text>
         {isLoading ? (
           <ActivityIndicator
-            color={COLORS.primary}
+            color={COLORS.navy_blue}
             size={'small'}
             style={{ alignSelf: 'flex-start' }}
           />
@@ -132,8 +142,29 @@ export function TotalCost() {
   );
 
   return (
-    <View style={styles.flex1}>
-      <Text style={styles.graphTitle}> {'Total Cost'}</Text>
+    <View
+      style={{
+        height: '97%',
+        backgroundColor: COLORS.white,
+        borderRadius: ms(10),
+        marginTop: ms(5),
+        marginRight: ms(8),
+        paddingHorizontal: ms(12),
+      }}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: ms(10),
+        }}
+      >
+        <Image
+          source={profitIcon}
+          style={{ height: ms(15), width: ms(15), resizeMode: 'contain' }}
+        />
+        <Text style={styles.graphTitle}> {'Total Cost'}</Text>
+      </View>
       <View style={styles.headerContainer}>
         <HeaderView
           image={locationSales}
@@ -184,7 +215,7 @@ export function TotalCost() {
         />
       </View>
 
-      <Spacer space={ms(15)} />
+      {/* <Spacer space={ms(15)} /> */}
 
       <View style={styles.tableMainView}>
         <ScrollView
@@ -221,7 +252,7 @@ export function TotalCost() {
             <View style={styles.mainListContainer}>
               {costStatisticsLoader ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                  <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
                 </View>
               ) : analyticStatistics?.orderData?.length === 0 ? (
                 <View style={styles.listLoader}>

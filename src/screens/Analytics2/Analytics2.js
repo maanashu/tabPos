@@ -150,10 +150,10 @@ export function Analytics2() {
   const dispatch = useDispatch();
   useFocusEffect(
     useCallback(() => {
-      dispatch(getAnalyticStatistics(sellerID, data));
+      dispatch(getAnalyticStatistics(sellerID, data, 1));
       dispatch(getAnalyticOrderGraphs(sellerID, data));
       dispatch(getTotalOrder(sellerID, data));
-      dispatch(getTotalInventory(sellerID, data));
+      dispatch(getTotalInventory(sellerID, data, 1));
       dispatch(getSoldProduct(sellerID, data, 1));
       getData();
     }, [filter, channelValue, selectDate])
@@ -321,7 +321,7 @@ export function Analytics2() {
                   style={[
                     styles.headerView,
                     {
-                      borderColor: selectedStartDate ? COLORS.dark_blue : COLORS.white,
+                      borderColor: selectedStartDate ? COLORS.navy_blue : COLORS.white,
                       marginHorizontal: selectedScreen === 'TotalInventory' ? ms(0) : ms(5),
                     },
                   ]}
@@ -353,13 +353,13 @@ export function Analytics2() {
                     setItems={setChannelItem}
                     placeholder="All Channels"
                     placeholderStyle={{
-                      color: COLORS.dark_blue,
+                      color: COLORS.navy_blue,
                       fontFamily: Fonts.Regular,
                       fontSize: ms(8),
                     }}
                     zIndex={2000}
                     zIndexInverse={2000}
-                    textStyle={{ color: COLORS.dark_blue }}
+                    textStyle={{ color: COLORS.navy_blue }}
                   />
                 ) : (
                   <></>
@@ -372,12 +372,12 @@ export function Analytics2() {
               <View style={styles.container}>{screenChangeView()}</View>
 
               <View style={styles.rightSideView}>
-                <Spacer space={SH(10)} />
+                <Spacer space={ms(10)} />
                 <TouchableOpacity onPress={() => goBack()}>
                   <Image source={backIcon} style={styles.backImageStyle} />
                 </TouchableOpacity>
 
-                <Spacer space={SH(10)} />
+                <Spacer space={ms(10)} />
                 <TouchableOpacity
                   disabled={getPosUser?.user_roles?.length > 0 ? true : false}
                   onPress={() => setselectedScreen('Revenue')}
@@ -386,7 +386,7 @@ export function Analytics2() {
                     {
                       backgroundColor:
                         selectedScreen === 'Revenue'
-                          ? COLORS.lightBlueBG
+                          ? COLORS.sky_grey
                           : getPosUser?.user_roles?.length > 0
                           ? COLORS.mid_grey
                           : COLORS.white,
@@ -400,7 +400,7 @@ export function Analytics2() {
                       {
                         tintColor:
                           selectedScreen === 'Revenue'
-                            ? COLORS.dark_blue
+                            ? COLORS.navy_blue
                             : getPosUser?.user_roles?.length > 0
                             ? COLORS.mid_grey
                             : COLORS.light_blue2,
@@ -409,7 +409,8 @@ export function Analytics2() {
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(5)} />
+                <Spacer space={ms(2)} />
+
                 <TouchableOpacity
                   disabled={getPosUser?.user_roles?.length > 0 ? true : false}
                   onPress={() => setselectedScreen('TotalCost')}
@@ -418,7 +419,7 @@ export function Analytics2() {
                     {
                       backgroundColor:
                         selectedScreen === 'TotalCost'
-                          ? COLORS.lightBlueBG
+                          ? COLORS.sky_grey
                           : getPosUser?.user_roles?.length > 0
                           ? COLORS.mid_grey
                           : COLORS.white,
@@ -432,7 +433,7 @@ export function Analytics2() {
                       {
                         tintColor:
                           selectedScreen === 'TotalCost'
-                            ? COLORS.dark_blue
+                            ? COLORS.navy_blue
                             : getPosUser?.user_roles?.length > 0
                             ? COLORS.mid_grey
                             : COLORS.light_blue2,
@@ -441,7 +442,7 @@ export function Analytics2() {
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(5)} />
+                <Spacer space={ms(2)} />
                 <TouchableOpacity
                   disabled={getPosUser?.user_roles?.length > 0 ? true : false}
                   style={[
@@ -449,7 +450,7 @@ export function Analytics2() {
                     {
                       backgroundColor:
                         selectedScreen === 'TotalProfit'
-                          ? COLORS.lightBlueBG
+                          ? COLORS.sky_grey
                           : getPosUser?.user_roles?.length > 0
                           ? COLORS.mid_grey
                           : COLORS.white,
@@ -464,7 +465,7 @@ export function Analytics2() {
                       {
                         tintColor:
                           selectedScreen === 'TotalProfit'
-                            ? COLORS.dark_blue
+                            ? COLORS.navy_blue
                             : getPosUser?.user_roles?.length > 0
                             ? COLORS.mid_grey
                             : COLORS.light_blue2,
@@ -473,14 +474,14 @@ export function Analytics2() {
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(5)} />
+                <Spacer space={ms(2)} />
                 <TouchableOpacity
                   onPress={() => setselectedScreen('TotalPosOrder')}
                   style={[
                     styles.bucketBackgorund,
                     {
                       backgroundColor:
-                        selectedScreen === 'TotalPosOrder' ? COLORS.lightBlueBG : COLORS.white,
+                        selectedScreen === 'TotalPosOrder' ? COLORS.sky_grey : COLORS.white,
                     },
                   ]}
                 >
@@ -491,23 +492,21 @@ export function Analytics2() {
                       {
                         tintColor:
                           selectedScreen === 'TotalPosOrder'
-                            ? COLORS.dark_blue
+                            ? COLORS.navy_blue
                             : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(5)} />
+                <Spacer space={ms(2)} />
                 <TouchableOpacity
                   onPress={() => setselectedScreen('TotalDeliveryOrders')}
                   style={[
                     styles.bucketBackgorund,
                     {
                       backgroundColor:
-                        selectedScreen === 'TotalDeliveryOrders'
-                          ? COLORS.lightBlueBG
-                          : COLORS.white,
+                        selectedScreen === 'TotalDeliveryOrders' ? COLORS.sky_grey : COLORS.white,
                     },
                   ]}
                 >
@@ -518,14 +517,14 @@ export function Analytics2() {
                       {
                         tintColor:
                           selectedScreen === 'TotalDeliveryOrders'
-                            ? COLORS.dark_blue
+                            ? COLORS.navy_blue
                             : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(5)} />
+                <Spacer space={ms(2)} />
 
                 <TouchableOpacity
                   onPress={() => setselectedScreen('TotalShippingOrders')}
@@ -533,9 +532,7 @@ export function Analytics2() {
                     styles.bucketBackgorund,
                     {
                       backgroundColor:
-                        selectedScreen === 'TotalShippingOrders'
-                          ? COLORS.lightBlueBG
-                          : COLORS.white,
+                        selectedScreen === 'TotalShippingOrders' ? COLORS.sky_grey : COLORS.white,
                     },
                   ]}
                 >
@@ -546,14 +543,14 @@ export function Analytics2() {
                       {
                         tintColor:
                           selectedScreen === 'TotalShippingOrders'
-                            ? COLORS.dark_blue
+                            ? COLORS.navy_blue
                             : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(5)} />
+                <Spacer space={ms(2)} />
 
                 <TouchableOpacity
                   onPress={() => setselectedScreen('TotalOrders')}
@@ -561,7 +558,7 @@ export function Analytics2() {
                     styles.bucketBackgorund,
                     {
                       backgroundColor:
-                        selectedScreen === 'TotalOrders' ? COLORS.lightBlueBG : COLORS.white,
+                        selectedScreen === 'TotalOrders' ? COLORS.sky_grey : COLORS.white,
                     },
                   ]}
                 >
@@ -571,13 +568,13 @@ export function Analytics2() {
                       styles.sideBarImage,
                       {
                         tintColor:
-                          selectedScreen === 'TotalOrders' ? COLORS.dark_blue : COLORS.light_blue2,
+                          selectedScreen === 'TotalOrders' ? COLORS.navy_blue : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(5)} />
+                <Spacer space={ms(2)} />
 
                 <TouchableOpacity
                   onPress={() => setselectedScreen('TotalInventory')}
@@ -585,7 +582,7 @@ export function Analytics2() {
                     styles.bucketBackgorund,
                     {
                       backgroundColor:
-                        selectedScreen === 'TotalInventory' ? COLORS.lightBlueBG : COLORS.white,
+                        selectedScreen === 'TotalInventory' ? COLORS.sky_grey : COLORS.white,
                     },
                   ]}
                 >
@@ -596,21 +593,21 @@ export function Analytics2() {
                       {
                         tintColor:
                           selectedScreen === 'TotalInventory'
-                            ? COLORS.dark_blue
+                            ? COLORS.navy_blue
                             : COLORS.light_blue2,
                       },
                     ]}
                   />
                 </TouchableOpacity>
 
-                <Spacer space={SH(5)} />
+                <Spacer space={ms(2)} />
                 <TouchableOpacity
                   onPress={() => setselectedScreen('TotalProductSold')}
                   style={[
                     styles.bucketBackgorund,
                     {
                       backgroundColor:
-                        selectedScreen === 'TotalProductSold' ? COLORS.lightBlueBG : COLORS.white,
+                        selectedScreen === 'TotalProductSold' ? COLORS.sky_grey : COLORS.white,
                     },
                   ]}
                 >
@@ -621,7 +618,7 @@ export function Analytics2() {
                       {
                         tintColor:
                           selectedScreen === 'TotalProductSold'
-                            ? COLORS.dark_blue
+                            ? COLORS.navy_blue
                             : COLORS.light_blue2,
                       },
                     ]}

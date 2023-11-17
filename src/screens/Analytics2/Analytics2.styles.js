@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   totalProductCon: {
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
-    width: Platform.OS === 'android' ? windowWidth * 0.275 : windowWidth * 0.27,
+    width: Platform.OS === 'android' ? windowWidth * 0.268 : windowWidth * 0.27,
     height: Platform.OS === 'android' ? windowHeight * 0.29 : windowHeight * 0.28,
     resizeMode: 'contain',
     // ...ShadowStyles.shadow2,
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
   },
   darkBlackText: {
     fontFamily: Fonts.SemiBold,
-    color: COLORS.dark_blue,
+    color: COLORS.navy_blue,
     fontSize: SF(18),
     // flex: 1,
     // height: SH(30),
@@ -62,24 +62,24 @@ export const styles = StyleSheet.create({
   },
 
   homeMainContainer: {
-    paddingHorizontal: moderateScale(5),
+    paddingRight: ms(8),
     paddingBottom: Platform.OS === 'ios' ? ms(10) : ms(20),
     flex: 1,
   },
 
   rightSideView: {
     backgroundColor: COLORS.white,
-    borderRadius: ms(20),
+    borderRadius: ms(30),
     width: windowWidth * 0.06,
-    height: Platform.OS === 'ios' ? windowHeight * 0.875 : windowHeight - ms(135),
+    height: Platform.OS === 'ios' ? windowHeight * 0.875 : windowHeight - ms(120),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
     // alignSelf: 'center',
     marginTop: Platform.OS === 'ios' ? ms(7) : ms(5),
   },
   sideBarImage: {
-    width: SW(7),
-    height: SW(7),
+    width: ms(12),
+    height: ms(12),
     resizeMode: 'contain',
   },
   bucketBackgorund: {
@@ -139,7 +139,7 @@ export const styles = StyleSheet.create({
     borderRadius: SW(5),
   },
   headerImage: {
-    tintColor: COLORS.primary,
+    tintColor: COLORS.navy_blue,
     height: SH(18),
     width: SW(7),
     resizeMode: 'contain',
@@ -167,7 +167,7 @@ export const styles = StyleSheet.create({
     height: SH(7),
     resizeMode: 'contain',
     paddingRight: 30,
-    tintColor: COLORS.dark_blue,
+    tintColor: COLORS.navy_blue,
   },
   containerStyle: {
     backgroundColor: COLORS.white,
@@ -186,7 +186,7 @@ export const styles = StyleSheet.create({
   },
   revenueText: {
     fontFamily: Fonts.MaisonBold,
-    color: COLORS.solid_grey,
+    color: COLORS.lavender,
     fontSize: SF(14),
     textAlign: 'center',
     letterSpacing: -1,
@@ -238,7 +238,7 @@ export const styles = StyleSheet.create({
   },
   revenueDataText2: {
     fontWeight: '500',
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontSize: SF(14),
   },
   bottomTableView: {
@@ -265,11 +265,12 @@ export const styles = StyleSheet.create({
     marginVertical: ms(5),
   },
   tableListHeader: {
-    backgroundColor: COLORS.white,
-    borderTopRightRadius: SW(4),
-    borderTopLeftRadius: SW(4),
-    overflow: 'hidden',
+    // backgroundColor: COLORS.white,
+    // overflow: 'hidden',
     // width: Dimensions.get('window').width - ms(160),
+    borderRadius: 5,
+    borderBottomWidth: 0,
+    borderColor: 'blue',
   },
   graphHeaderText: {
     paddingHorizontal: SW(10),
@@ -291,12 +292,12 @@ export const styles = StyleSheet.create({
   dateText: {
     marginLeft: SW(3),
     fontSize: SF(12),
-    color: COLORS.dark_blue,
+    color: COLORS.navy_blue,
   },
   calenderImage: {
     height: ms(12),
     width: ms(10),
-    tintColor: COLORS.dark_blue,
+    tintColor: COLORS.navy_blue,
   },
   headerView: {
     flexDirection: 'row',
@@ -313,16 +314,16 @@ export const styles = StyleSheet.create({
   graphTitle: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(20),
-    color: COLORS.black,
-    marginVertical: ms(5),
-    height: SH(30),
+    color: COLORS.navy_blue,
+    // marginVertical: ms(5),
+    // height: SH(30),
     // marginLeft: ms(5),
   },
   bullets: {
     height: SH(7),
     width: SH(7),
     borderRadius: SW(7),
-    backgroundColor: COLORS.dark_blue,
+    backgroundColor: COLORS.navy_blue,
     marginRight: ms(3),
   },
   bulletText: {
@@ -332,8 +333,9 @@ export const styles = StyleSheet.create({
   },
   listLoader: {
     marginTop: SH(140),
-    marginLeft: SW(150),
-    alignItems: 'flex-start',
+    // marginLeft: SW(150),
+    // alignItems: 'flex-start',
+    alignItems: 'center',
   },
   flex1: {
     flex: 1,
@@ -346,32 +348,41 @@ export const styles = StyleSheet.create({
     //     : Dimensions.get('window').width - ms(180),
   },
   listStyle: {
-    backgroundColor: COLORS.white,
+    // backgroundColor: COLORS.white,
     width:
       Platform.OS === 'ios'
         ? Dimensions.get('window').width - ms(105)
-        : Dimensions.get('window').width - ms(124),
+        : Dimensions.get('window').width - ms(175),
+    // width:
+    //   Platform.OS === 'ios'
+    //     ? Dimensions.get('window').width - ms(105)
+    //     : Dimensions.get('window').width - ms(124),
   },
   tableView: {
     zIndex: -99,
     width:
       Platform.OS === 'ios'
         ? Dimensions.get('window').width - ms(105)
-        : Dimensions.get('window').width - ms(124),
+        : Dimensions.get('window').width - ms(175),
+
+    // width:
+    //   Platform.OS === 'ios'
+    //     ? Dimensions.get('window').width - ms(105)
+    //     : Dimensions.get('window').width - ms(124),
   },
   mainListContainer: {
     zIndex: -99,
-    backgroundColor: COLORS.white,
+    // backgroundColor: COLORS.white,
     height: Platform.OS === 'ios' ? ms(255) : ms(288),
     borderBottomRightRadius: ms(10),
     borderBottomLeftRadius: ms(10),
   },
   noDataFoundText: {
     fontSize: ms(14),
-    color: COLORS.black,
+    color: COLORS.navy_blue,
   },
   subContainer: {
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.light_green,
     marginRight: ms(5),
     borderRadius: ms(10),
     flex: 1,
@@ -381,26 +392,26 @@ export const styles = StyleSheet.create({
   imageStyle: {
     width: ms(20),
     height: ms(20),
+    tintColor: COLORS.medium_green,
   },
   text: {
     fontSize: ms(10),
     marginTop: ms(10),
-    color: COLORS.darkGray,
+    color: COLORS.dark_green,
   },
   text2: {
     fontSize: ms(14),
-    color: COLORS.black,
+    color: COLORS.dark_green,
     fontFamily: Fonts.Bold,
   },
   headerContainer: {
     height: ms(100),
-    backgroundColor: COLORS.white,
-    marginLeft: ms(4),
+    // backgroundColor: COLORS.white,
+    // marginHorizontal: ms(4),
     borderRadius: ms(10),
     flexDirection: 'row',
     paddingVertical: ms(8),
-    marginRight: ms(10),
-    paddingHorizontal: ms(5),
+    // paddingHorizontal: ms(5),
   },
   calendarModalView: {
     backgroundColor: COLORS.white,
@@ -420,13 +431,13 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   reviewView: {
-    borderColor: COLORS.primary,
+    borderColor: COLORS.light_blue2,
     top: 12,
     paddingHorizontal: ms(10),
-    paddingVertical: ms(2),
+    paddingVertical: ms(3),
     borderWidth: 1,
-    backgroundColor: COLORS.white,
-    borderRadius: ms(2),
+    backgroundColor: COLORS.sky_grey,
+    borderRadius: ms(10),
   },
   loaderView: {
     alignItems: 'center',
