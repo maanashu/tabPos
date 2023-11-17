@@ -6,12 +6,18 @@ import { View, Text, TouchableOpacity, Image, FlatList, ActivityIndicator } from
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import {
+  Calendar_Outline,
+  CheckBadgeFilled,
   Fonts,
+  SimpleCheck,
   changePlan,
   checkArrow,
+  checkCircle,
   checkmark,
   crossButton,
+  newCalendar,
   radioFillPlan,
+  upgradeIcon,
   visa,
 } from '@/assets';
 import { moderateScale, ms, verticalScale } from 'react-native-size-matters';
@@ -66,12 +72,8 @@ export function Plans() {
   const planTagItem = ({ item }) => {
     return (
       <View style={[styles.dispalyRow, { paddingVertical: verticalScale(2) }]}>
-        <Image source={checkmark} style={styles.checkmark} />
-        <Text
-          style={[styles.changePlanText, { fontFamily: Fonts.Regular, color: COLORS.dark_grey }]}
-        >
-          {item}{' '}
-        </Text>
+        <Image source={SimpleCheck} style={styles.checkmark} resizeMode="contain" />
+        <Text style={[styles.includedText, { fontFamily: Fonts.SemiBold }]}>{item} </Text>
       </View>
     );
   };
@@ -190,55 +192,94 @@ export function Plans() {
   const renderPlanView = useCallback(
     () => (
       <View>
-        <View style={[styles.flexRow, { height: SW(8) }]}>
-          <Text style={styles.HeaderLabelText}>{strings.settings.plans}</Text>
+        <View style={styles.rowAligned}>
+          <Image source={checkCircle} resizeMode="contain" style={{ height: 24, width: 24 }} />
+          <Spacer horizontal space={ms(10)} />
+          <Text style={[styles.HeaderLabelText, { fontSize: ms(12) }]}>
+            {strings.settings.plans}
+          </Text>
         </View>
         <Spacer space={SH(20)} />
         <View style={styles.securityMainCon}>
-          <Text style={styles.yourPlan}>{strings.settings.yourPlan}</Text>
-          <Spacer space={SH(15)} />
-          <View style={styles.flexRow}>
+          <View style={[styles.flexRow, { alignItems: 'flex-start' }]}>
             <View>
-              <Text style={styles.basic}>{activePlan?.plan_id?.name}</Text>
+              <Text style={[styles.basic, { fontSize: 24 }]}>{activePlan?.plan_id?.name}</Text>
+              <Spacer space={SH(3)} />
               <Text style={styles.everyThingNeed}>{activePlan?.plan_id?.description}</Text>
             </View>
-            <TouchableOpacity style={styles.dispalyRow} onPress={() => setPlanModal(true)}>
-              <Text style={styles.changePlanText}>{strings.settings.chnagePlan}</Text>
-              <Image source={changePlan} style={styles.changePlan} />
+            <TouchableOpacity style={styles.upgradePlanView} onPress={() => setPlanModal(true)}>
+              <Text style={[styles.changePlanText, { fontFamily: Fonts.SemiBold }]}>
+                {strings.settings.upgradePlan}
+              </Text>
+              <Image source={upgradeIcon} style={styles.changePlan} />
             </TouchableOpacity>
           </View>
-          <Spacer space={SH(20)} />
-          <Text style={styles.changePlanText}>{strings.settings.includePlan}</Text>
-          {activePlan?.plan_id?.included_apps?.map((item) => (
-            <View key={item} style={[styles.dispalyRow, { paddingVertical: verticalScale(2) }]}>
-              <Image source={radioFillPlan} style={styles.radioFillPlan} />
-              <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>{item}</Text>
-            </View>
-          ))}
+          <Spacer space={SH(10)} />
 
-          <Spacer space={SH(20)} />
-          <Text style={styles.changePlanText}>{strings.settings.planFeat}</Text>
-          <FlatList
-            data={activePlan?.plan_id?.tags}
-            extraData={activePlan?.plan_id?.tags}
-            renderItem={planTagItem}
-            keyExtractor={(item) => item}
+          <View
+            style={{ borderBottomWidth: 1, borderStyle: 'dashed', borderColor: COLORS.lavender }}
           />
-          <Spacer space={SH(20)} />
-          <View style={styles.billingDateCon}>
-            <Text style={styles.changePlanText}>Next billing date</Text>
-            <Spacer space={SH(3)} />
-            <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
-              {/* March 2, 2023 for $1.00 USD */}
 
-              {moment(activePlan?.expiry_date).format('MMMM D, YYYY')}
-              {' for $' + activePlan?.plan_id?.amount + '.00 USD'}
-            </Text>
+          <Spacer space={SH(10)} />
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.changePlanText}>{strings.settings.includePlan}</Text>
+              <Spacer space={SH(2)} />
+
+              {activePlan?.plan_id?.included_apps?.map((item) => (
+                <View key={item} style={[styles.dispalyRow, { paddingVertical: verticalScale(2) }]}>
+                  <Image source={CheckBadgeFilled} style={styles.radioFillPlan} />
+                  <Text style={styles.includedText}>{item}</Text>
+                </View>
+              ))}
+            </View>
+            <FlatList
+              data={activePlan?.plan_id?.tags}
+              extraData={activePlan?.plan_id?.tags}
+              renderItem={planTagItem}
+              keyExtractor={(item) => item}
+            />
           </View>
-          <Spacer space={SH(20)} />
+          <Spacer space={SH(15)} />
+
+          <View
+            style={{ borderBottomWidth: 1, borderStyle: 'dashed', borderColor: COLORS.lavender }}
+          />
+          <Spacer space={SH(10)} />
+          <View style={styles.rowAligned}>
+            <View style={styles.subscribedView}>
+              <Text style={styles.subscribedText}>{'Subscribed'}</Text>
+            </View>
+            <Spacer horizontal space={ms(50)} />
+            <Text style={[styles.subscribedText, { fontSize: ms(14) }]}>{`$${parseFloat(
+              activePlan?.plan_id?.amount
+            ).toFixed(2)} /mo`}</Text>
+          </View>
+        </View>
+        <Spacer space={SH(20)} />
+
+        <View style={[styles.rowAligned, { marginHorizontal: ms(15) }]}>
+          <View style={styles.billingDateCon}>
+            <Text style={[styles.changePlanText, { fontFamily: Fonts.Medium }]}>
+              Next billing date
+            </Text>
+            <Spacer space={SH(10)} />
+            <View style={styles.rowAligned}>
+              <Image
+                source={Calendar_Outline}
+                resizeMode="contain"
+                style={{ height: 20, width: 20, marginRight: 5 }}
+              />
+              <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
+                {moment(activePlan?.expiry_date).format('MMMM D, YYYY')}
+                {' for $' + activePlan?.plan_id?.amount + '.00 USD'}
+              </Text>
+            </View>
+          </View>
+          <Spacer horizontal space={SW(5)} />
           <View style={styles.billingDateCon}>
             <Text style={styles.changePlanText}>{strings.settings.paymentMethod}</Text>
-            <Spacer space={SH(3)} />
+            <Spacer space={SH(10)} />
             <View style={styles.dispalyRow}>
               <Image source={visa} style={styles.visa} />
               <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
@@ -276,7 +317,7 @@ export function Plans() {
     [activePlan]
   );
   return (
-    <View>
+    <View style={{ paddingHorizontal: ms(10) }}>
       {getActiveSubLoader && (
         <ActivityIndicator style={{ marginTop: ms(50) }} size={'large'} color={COLORS.primary} />
       )}

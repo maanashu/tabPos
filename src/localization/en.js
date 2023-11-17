@@ -298,7 +298,8 @@ export const en = {
     basic: 'Basic',
     everyThingNeed: 'Everything you need to create a store, ship products, and process payments',
     chnagePlan: 'Change Plan',
-    includePlan: 'Your Plan includes app',
+    upgradePlan: 'Upgrade Plan?',
+    includePlan: 'Apps included:',
     planFeat: 'Plan Features',
     paymentMethod: 'Payment method',
     planFit: 'Plan that fits your scale',
@@ -365,6 +366,10 @@ export const en = {
     businessName: 'Business Name',
     staff: 'Staff',
     request: 'Request',
+    addDevice:
+      'Add a new device as any of the following or configure the settings of a registered one.',
+    addNewDevice: 'Add a new device',
+    codeDisplays: 'The code displays here',
   },
   dashboard: {
     todaySale: "Today's Sales",

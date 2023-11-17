@@ -12,6 +12,7 @@ import {
   googleAuth,
   securityLogo,
   teamMember,
+  twoStepVerification,
   vector,
   vectorOff,
 } from '@/assets';
@@ -182,7 +183,7 @@ export function Security() {
         </View>
       ) : (
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-          <Image source={securityLogo} style={styles.securityLogo} />
+          <Image source={twoStepVerification} style={styles.securityLogo} resizeMode="contain" />
           <View style={styles.twoStepVerifiCon}>
             <Text style={styles.twoStepText}>{strings.settings.twoStepVerifiCon}</Text>
             <Spacer space={SH(10)} />
