@@ -17,16 +17,18 @@ import { FullScreenLoader, Header, Spacer } from '@mPOS/components';
 
 import styles from './styles';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { acceptOrder } from '@/actions/ShippingAction';
+import { acceptOrder, getReviewDefault } from '@/actions/ShippingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/ShippingOrderTypes';
 import ReactNativeModal from 'react-native-modal';
 import StatusDrawer from '../Components/StatusDrawer';
 import { useState } from 'react';
+import { getDelivery } from '@/selectors/DeliverySelector';
 
 export function ShippingOrderDetail(props) {
   const mapRef = useRef();
   const dispatch = useDispatch();
+  const deliveryData = useSelector(getDelivery);
   const orderData = props?.route?.params?.data;
   const customerDetail = orderData?.user_details;
   const orders = orderData;
@@ -35,6 +37,10 @@ export function ShippingOrderDetail(props) {
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
+
+  // const statusCount = deliveryData?.getOrderCount;
+  // const orders = deliveryData?.getReviewDef ?? [];
+  // const orderData = orders[props?.route?.params?.index ?? 0];
 
   const onPressAcceptHandler = () => {
     const data = {
@@ -49,6 +55,31 @@ export function ShippingOrderDetail(props) {
         }
       })
     );
+    checkOtherOrder();
+  };
+
+  const checkOtherOrder = () => {
+    const statusData = deliveryData?.getOrderCount;
+    var index = 0;
+    if (statusData[0].count > 0) {
+    } else if (statusData[1].count > 0) {
+      index = 1;
+    } else if (statusData[2].count > 0) {
+      index = 2;
+    } else if (statusData[3].count > 0) {
+      index = 3;
+    } else if (statusData[4].count > 0) {
+      index = 4;
+    } else if (statusData[5].count > 0) {
+      index = 5;
+    } else if (statusData[6].count > 0) {
+      index = 6;
+    } else if (parseInt(statusCount?.[7]?.count) + parseInt(statusCount?.[8]?.count) > 0) {
+      index = 7;
+    } else if (statusData[9].count > 0) {
+      index = 9;
+    }
+    dispatch(getReviewDefault(index));
   };
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
@@ -77,56 +108,56 @@ export function ShippingOrderDetail(props) {
         title={strings.profile.header}
         rightIconOnpress={() => setIsStatusDrawer(true)}
       />
+      {orders.length == 0 && (
+        <View style={styles.userDetailView}>
+          <View style={{ flexDirection: 'row' }}>
+            <Image
+              source={
+                customerDetail?.profile_photo ? { uri: customerDetail?.profile_photo } : Images.user
+              }
+              style={styles.profileImageStyle}
+            />
 
-      <View style={styles.userDetailView}>
-        <View style={{ flexDirection: 'row' }}>
-          <Image
-            source={
-              customerDetail?.profile_photo ? { uri: customerDetail?.profile_photo } : Images.user
-            }
-            style={styles.profileImageStyle}
-          />
-
-          <View style={{ paddingLeft: 10 }}>
-            <Text
-              style={styles.nameTextStyle}
-            >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
-            <Text
-              style={styles.addressTextStyle}
-            >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+            <View style={{ paddingLeft: 10 }}>
+              <Text
+                style={styles.nameTextStyle}
+              >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
+              <Text
+                style={styles.addressTextStyle}
+              >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+            </View>
           </View>
+
+          <Spacer space={SH(20)} />
+
+          {orderData?.status === 7 ? (
+            <View style={styles.cancelButtonStyle}>
+              <Text style={styles.cancelButtonText}>{strings.buttonStatus.cancelledByuser}</Text>
+            </View>
+          ) : orderData?.status === 8 ? (
+            <View>
+              <Text>{strings.buttonStatus.cancelledBySeller}</Text>
+            </View>
+          ) : (
+            <View style={styles.deliveryDetailsView}>
+              <View style={styles.shippingTypeView}>
+                <Image
+                  source={{ uri: orderData?.shipping_details?.image }}
+                  style={styles.shippingType}
+                />
+                <Text style={styles.deliveryTypeText}>{orderData?.shipping_details?.title}</Text>
+              </View>
+
+              <View style={styles.deliveryTimeViewStyle}>
+                <Image source={Images.clockIcon} style={styles.clockImageStyle} />
+                <Text style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}>{`${
+                  orderData?.preffered_delivery_start_time ?? '00 -'
+                } ${orderData?.preffered_delivery_end_time ?? '00'}`}</Text>
+              </View>
+            </View>
+          )}
         </View>
-
-        <Spacer space={SH(20)} />
-
-        {orderData?.status === 7 ? (
-          <View style={styles.cancelButtonStyle}>
-            <Text style={styles.cancelButtonText}>{strings.buttonStatus.cancelledByuser}</Text>
-          </View>
-        ) : orderData?.status === 8 ? (
-          <View>
-            <Text>{strings.buttonStatus.cancelledBySeller}</Text>
-          </View>
-        ) : (
-          <View style={styles.deliveryDetailsView}>
-            <View style={styles.shippingTypeView}>
-              <Image
-                source={{ uri: orderData?.shipping_details?.image }}
-                style={styles.shippingType}
-              />
-              <Text style={styles.deliveryTypeText}>{orderData?.shipping_details?.title}</Text>
-            </View>
-
-            <View style={styles.deliveryTimeViewStyle}>
-              <Image source={Images.clockIcon} style={styles.clockImageStyle} />
-              <Text style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}>{`${
-                orderData?.preffered_delivery_start_time ?? '00 -'
-              } ${orderData?.preffered_delivery_end_time ?? '00'}`}</Text>
-            </View>
-          </View>
-        )}
-      </View>
-
+      )}
       <Spacer space={SH(15)} />
 
       {orderData?.status === 4 || orderData?.status === 5 ? (
@@ -166,13 +197,12 @@ export function ShippingOrderDetail(props) {
       ) : null}
 
       <Spacer space={SH(10)} />
-      <ProductList {...{ orderData }} />
+      {orders.length == 0 && <ProductList {...{ orderData }} />}
 
       <Spacer space={SH(20)} />
-
-      <OrderTotal {...{ orderData, onPressAcceptHandler }} />
-
+      {orders.length == 0 && <OrderTotal {...{ orderData, onPressAcceptHandler }} />}
       {isLoading ? <FullScreenLoader /> : null}
+      {/* {orderLoad ? <FullScreenLoader /> : null} */}
       <ReactNativeModal
         isVisible={isStatusDrawer}
         animationIn={'slideInRight'}
