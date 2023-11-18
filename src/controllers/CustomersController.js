@@ -20,7 +20,7 @@ export class CustomersController {
 
         if (search) queryParams.push(`search=${search}`);
         if (calenderDate !== undefined) queryParams.push(`date=${calenderDate}`);
-        if (area !== 'none') queryParams.push(`area=${area}`);
+        if (area !== 'none' && undefined) queryParams.push(`area=${area}`);
         if (dayWisefilter) queryParams.push(`filter=${dayWisefilter}`);
         if (page) queryParams.push(`page=${page}`);
         if (limit) queryParams.push(`limit=${limit}`);
@@ -85,6 +85,7 @@ export class CustomersController {
         ORDER_URL + ApiOrderInventory.getCustomer + `?seller_id=${sellerID}&filter=${time}`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('adagsjdghjasd', endpoint);
           resolve(response);
         })
         .catch((error) => {

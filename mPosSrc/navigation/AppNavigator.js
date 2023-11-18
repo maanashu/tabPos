@@ -37,6 +37,7 @@ import {
   CustomerList,
   Plans,
   ChangePlans,
+  UserProfile,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -256,6 +257,11 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.changePlans}
         options={{ headerShown: false }}
         component={ChangePlans}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.userProfile}
+        options={{ headerShown: false }}
+        component={UserProfile}
       />
     </Stack.Navigator>
   );

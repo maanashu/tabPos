@@ -28,13 +28,11 @@ import {
   crossButton,
   filter,
 } from '@/assets';
-import { DaySelector, Spacer, TableDropdown } from '@/components';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { Spacer } from '@/components';
+import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
 import moment from 'moment';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { moderateScale } from 'react-native-size-matters';
-import DropDownPicker from 'react-native-dropdown-picker';
+
 import { Table } from 'react-native-table-component';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,41 +43,25 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/CustomersTypes';
 import { PAGINATION_DATA } from '@/constants/enums';
 import Modal from 'react-native-modal';
-import CalendarPickerModal from '@/components/CalendarPickerModal';
-import { navigate } from '@/navigation/NavigationRef';
-import { NAVIGATION } from '@/constants';
+
 import { debounce } from 'lodash';
-// import CustomerListView from './CustomerListView';
 import { useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { Header, ScreenWrapper, Search } from '@mPOS/components';
+import { Header, ScreenWrapper } from '@mPOS/components';
 import styles from './styles';
 import { Images } from '@mPOS/assets';
-import CustomerListView from '@/screens/Customers2/Components/CustomerListView';
 import SearchList from './SearchList';
-const result = Dimensions.get('window').height - 50;
+import { commonNavigate, MPOS_NAVIGATION } from '@common/commonImports';
+import { height } from '@/theme/ScalerDimensions';
 
-export function CustomerList({
-  backHandler,
-  profileClickHandler,
-  saveCustomerId,
-  saveCustomeType,
-  setSaveCustomerId,
-  setSaveCustomerType,
-  setAllUsers,
-  setUserProfile,
-  setUserData,
-}) {
+export function CustomerList(props) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getCustomerData = useSelector(getCustomers);
   const areaData = getCustomerData?.getArea?.data;
-  const [selectedId, setSelectedId] = useState(saveCustomerId === undefined ? 1 : saveCustomerId);
-  const [customerType, setCustomerType] = useState(
-    saveCustomeType === undefined ? 'all_customers' : saveCustomeType
-  );
+
   const [show, setShow] = useState(false);
   const customerArray = getCustomerData?.getUserOrder?.data ?? [];
+  console.log('hfdhdskf', getCustomerData?.getUserOrder?.data);
   const payloadLength = Object.keys(getCustomerData?.getUserOrder)?.length ?? 0;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [dateformat, setDateformat] = useState('');
@@ -95,13 +77,20 @@ export function CustomerList({
   const [dropdownSelect, setDropdownSelect] = useState('none');
   const onchangeValue = (value) => setDropdownSelect(value);
   const [selectId, setSelectId] = useState(2);
-  const [selectTime, setSelectTime] = useState({ value: 'week' });
+  const [selectTime, setSelectTime] = useState(props?.route?.params?.filter || 'week');
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [searchedText, setSearchedText] = useState('');
   const [searchedAppointments, setSearchedCustomer] = useState([]);
-  const time = selectTime?.value;
+  const time = selectTime;
   const [filterVal, setFilterVal] = useState('week');
-
+  const [saveCustomerId, setSaveCustomerId] = useState(props?.route?.params?.customer_id || '');
+  const [saveCustomeType, setSaveCustomerType] = useState(
+    props?.route?.params?.customer_type || ''
+  );
+  const [selectedId, setSelectedId] = useState(saveCustomerId === undefined ? 1 : saveCustomerId);
+  const [customerType, setCustomerType] = useState(
+    saveCustomeType === undefined ? 'all_customers' : saveCustomeType
+  );
   const onPresFun = () => {
     setFormatedDate();
     setDate();
@@ -136,12 +125,10 @@ export function CustomerList({
       customerType: customerType,
       page: page,
       limit: paginationModalValue,
-      area: dropdownSelect,
-      calenderDate: formatedDate,
       dayWisefilter: time,
     };
     dispatch(getUserOrder(data));
-  }, [time, selectedId, paginationModalValue, page, dropdownSelect, formatedDate]);
+  }, [time, selectedId, paginationModalValue, page]);
 
   const paginationInchandler = () => {
     setPage(page + 1);
@@ -156,29 +143,7 @@ export function CustomerList({
   const endIndex = page * paginationModalValue;
 
   const isCustomerLoad = useSelector((state) => isLoadingSelector([TYPES.GET_USER_ORDER], state));
-  // const onChangeDate = (selectedDate) => {
-  //   const currentDate = moment().format('MM/DD/YYYY');
-  //   const selected = moment(selectedDate).format('MM/DD/YYYY');
-  //   if (currentDate === selected) {
-  //     setShow(false);
-  //     const fullDate = new Date(moment(selectedDate).subtract(21, 'years'));
-  //     const changedDate = moment(fullDate).format('MM / DD / YYYY');
-  //     const newDateFormat = moment(fullDate).format('YYYY-MM-DD');
-  //     setDateformat(newDateFormat);
-  //     setDate(changedDate);
-  //   } else {
-  //     setShow(false);
-  //     const month = selectedDate.getMonth() + 1;
-  //     const selectedMonth = month < 10 ? '0' + month : month;
-  //     const day = selectedDate.getDate();
-  //     const selectedDay = day < 10 ? '0' + day : day;
-  //     const year = selectedDate.getFullYear();
-  //     const fullDate = selectedMonth + ' / ' + selectedDay + ' / ' + year;
-  //     const newDateFormat = year + '-' + selectedMonth + '-' + selectedDay;
-  //     setDateformat(newDateFormat);
-  //     setDate(fullDate);
-  //   }
-  // };
+
   const onChangeDate = (selectedDate) => {
     setDefaultDate(selectedDate);
     const formattedDate = moment(selectedDate).format('YYYY-MM-DD');
@@ -214,7 +179,11 @@ export function CustomerList({
       type: 'walkin_customers',
     },
   ];
-
+  const Item = ({ item, onPress, backgroundColor, color }) => (
+    <TouchableOpacity style={[styles.horizontalCustomerCon, { backgroundColor }]} onPress={onPress}>
+      <Text style={[styles.horizCustomerText, { color }]}>{item.name}</Text>
+    </TouchableOpacity>
+  );
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
     const color = item.id === selectedId ? COLORS.white : COLORS.dark_grey;
@@ -230,12 +199,6 @@ export function CustomerList({
       />
     );
   };
-
-  const Item = ({ item, onPress, backgroundColor, color }) => (
-    <TouchableOpacity style={[styles.horizontalCustomerCon, { backgroundColor }]} onPress={onPress}>
-      <Text style={[styles.horizCustomerText, { color }]}>{item.name}</Text>
-    </TouchableOpacity>
-  );
 
   const onSearchAppoinment = (searchText) => {
     if (searchText != '') {
@@ -258,6 +221,10 @@ export function CustomerList({
 
   const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), [time]);
 
+  const profileClickHandler = (item) => {
+    commonNavigate(MPOS_NAVIGATION.userProfile, { userDetail: item });
+  };
+
   return (
     <ScreenWrapper>
       <Header
@@ -265,8 +232,9 @@ export function CustomerList({
         title={'Back'}
         filter
         onValueChange={(item) => {
-          setFilterVal(item);
+          setSelectTime(item);
         }}
+        defaultFilterVal={selectTime}
       />
       <Spacer space={ms(5)} />
       <View
@@ -287,19 +255,28 @@ export function CustomerList({
         />
       </View>
       <View style={styles.searchContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            setShowSearchModal(true);
-            setSearchedCustomer([]);
-            setSearchedText('');
-          }}
-          style={{ flex: 1 }}
-        >
-          <View style={[styles.container]}>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowSearchModal(true);
+              setSearchedCustomer([]);
+              setSearchedText('');
+            }}
+            style={[styles.container]}
+          >
             <Image source={Images.search} style={styles.searchIcon} resizeMode="contain" />
-            <TextInput style={styles.inputStyle} placeholder="Search here" editable={false} />
-          </View>
-        </TouchableOpacity>
+            <TextInput
+              style={styles.inputStyle}
+              placeholder="Search here"
+              editable={false}
+              onPressIn={() => {
+                setShowSearchModal(true);
+                setSearchedCustomer([]);
+                setSearchedText('');
+              }}
+            />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity style={styles.filterContainer}>
           <Image source={filter} resizeMode="contain" style={styles.filterIcon} />
         </TouchableOpacity>
@@ -327,7 +304,16 @@ export function CustomerList({
               </View>
             </View>
           </View>
-          <View style={{ zIndex: -9, height: ms(290) }}>
+          <View
+            style={{
+              zIndex: -9,
+              height: Platform.OS === 'android' ? ms(230) : height - ms(300),
+              backgroundColor: COLORS.white,
+              borderBottomLeftRadius: ms(10),
+              borderBottomRightRadius: ms(10),
+              marginHorizontal: ms(11),
+            }}
+          >
             <ScrollView showsVerticalScrollIndicator={false}>
               {isCustomerLoad ? (
                 <View style={{ marginTop: 100 }}>
@@ -346,7 +332,7 @@ export function CustomerList({
                       key={index}
                       style={[styles.tableDataCon, { zIndex: -99 }]}
                       activeOpacity={0.7}
-                      onPress={() => profileClickHandler(item, selectedId, customerType)}
+                      onPress={() => profileClickHandler(item)}
                       // onPress={profileClickHandler}
                     >
                       <View style={styles.displayFlex}>
@@ -412,7 +398,7 @@ export function CustomerList({
                           <View style={styles.tableHeaderRightInner}>
                             <Text style={styles.tableTextData} numberOfLines={1}>
                               {'$'}
-                              {item?.life_time_spent}
+                              {item?.life_time_spent.toFixed(2)}
                             </Text>
                           </View>
                         </View>
@@ -462,13 +448,8 @@ export function CustomerList({
             <SearchList
               searchedAppointments={searchedAppointments}
               profileHandler={(item, customerId, customerTypes) => {
-                setSaveCustomerId(customerId);
-                setSaveCustomerType(customerTypes);
-                setAllUsers(true);
-                setUserProfile(true);
-                setUserData(item);
+                profileClickHandler(item);
                 setShowSearchModal(false);
-                // dispatch(getOrderUser(item?.user_id, sellerID));
               }}
             />
           </View>

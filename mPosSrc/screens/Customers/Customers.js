@@ -82,7 +82,11 @@ export function Customers() {
         visibilityTime: 1500,
       });
     } else {
-      commonNavigate(MPOS_NAVIGATION.customerList);
+      commonNavigate(MPOS_NAVIGATION.customerList, {
+        customer_id: id,
+        customer_type: type,
+        filter: filterVal,
+      });
     }
   };
 

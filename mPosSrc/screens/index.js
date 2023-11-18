@@ -24,6 +24,7 @@ export { Transactions } from '@mPOS/screens/Customers/Transactions';
 export { TransactionList } from '@mPOS/screens/Customers/TransactionList/TransactionList';
 export { Customers } from '@mPOS/screens/Customers/Customers';
 export { CustomerList } from '@mPOS/screens/Customers/Components/CustomerList';
+export { UserProfile } from '@mPOS/screens/Customers/Components/UserProfile';
 
 // more
 export { More } from '@mPOS/screens/MoreTab/More/More';

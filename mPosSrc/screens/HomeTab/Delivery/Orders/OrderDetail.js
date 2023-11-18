@@ -32,9 +32,10 @@ export function OrderDetail(props) {
   const deliveryData = useSelector(getDelivery);
   const orders = deliveryData?.getReviewDef ?? [];
   const orderData = props?.route?.params?.data;
-  console.log('orders', JSON.stringify(orderData));
   const customerDetail = orderData?.user_details;
-  const deliveryDate = dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+  const deliveryDate =
+    dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') &&
+    dayjs(orderData?.invoices?.created_at).format('DD MMM YYYY');
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
   const getAuth = useSelector(getAuthData);
@@ -90,18 +91,20 @@ export function OrderDetail(props) {
         <View style={{ flexDirection: 'row' }}>
           <Image
             source={
-              customerDetail?.profile_photo ? { uri: customerDetail?.profile_photo } : Images.user
+              orderData?.seller_details?.profile_photo
+                ? { uri: orderData?.seller_details?.profile_photo }
+                : Images.user
             }
             style={styles.profileImageStyle}
           />
 
           <View style={{ paddingLeft: 10 }}>
-            <Text
-              style={styles.nameTextStyle}
-            >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
-            <Text
-              style={styles.addressTextStyle}
-            >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+            <Text style={styles.nameTextStyle}>
+              {orderData?.seller_details?.organization_name ?? ''}
+            </Text>
+            <Text style={styles.addressTextStyle}>
+              {`${orderData?.seller_details?.current_address?.city} ${orderData?.seller_details?.current_address?.country} ${orderData?.seller_details?.current_address?.zipcode}`}
+            </Text>
           </View>
         </View>
 
@@ -123,9 +126,10 @@ export function OrderDetail(props) {
 
             <View style={styles.deliveryTimeViewStyle}>
               <Image source={Images.clockIcon} style={styles.clockImageStyle} />
-              <Text
-                style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
-              >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
+              <Text style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}>
+                {`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}` &&
+                  'Immediately'}
+              </Text>
             </View>
           </View>
         )}

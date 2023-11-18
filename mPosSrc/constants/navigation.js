@@ -50,4 +50,5 @@ export const NAVIGATION = {
   customerList: 'CustomerList',
   plans: 'Plans',
   changePlans: 'ChangePlans',
+  userProfile: 'UserProfile',
 };

@@ -32,9 +32,7 @@ const SearchList = ({ searchedAppointments, profileHandler, saveCustomerId, save
   return (
     <View style={{ zIndex: -9 }}>
       <Table>
-        <View
-          style={[styles.tableDataHeaderCon, { borderTopWidth: 1, borderColor: COLORS.solidGrey }]}
-        >
+        <View style={[styles.searchTableDataHeaderCon]}>
           <View style={styles.displayFlex}>
             <View style={[styles.tableHeaderLeft, { width: windowWidth * 0.2 }]}>
               <Text style={styles.tableTextHeaFirst}>#</Text>
@@ -92,7 +90,12 @@ const SearchList = ({ searchedAppointments, profileHandler, saveCustomerId, save
                                 ? userImage
                                 : { uri: item?.user_details?.profile_photo }
                             }
-                            style={{ height: ms(15), width: ms(15), resizeMode: 'contain' }}
+                            style={{
+                              height: ms(15),
+                              width: ms(15),
+                              resizeMode: 'cover',
+                              borderRadius: ms(15),
+                            }}
                           />
                           <View style={{ flexDirection: 'column', marginLeft: ms(2) }}>
                             <Text
@@ -149,7 +152,7 @@ const SearchList = ({ searchedAppointments, profileHandler, saveCustomerId, save
                         <View style={styles.tableHeaderRightInner}>
                           <Text style={styles.tableTextData} numberOfLines={1}>
                             {'$'}
-                            {item?.life_time_spent}
+                            {item?.life_time_spent.toFixed(2)}
                           </Text>
                         </View>
                       </View>
