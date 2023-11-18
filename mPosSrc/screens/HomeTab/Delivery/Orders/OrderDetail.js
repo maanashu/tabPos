@@ -13,7 +13,7 @@ import OrderTotal from '../Components/OrderTotal';
 import ProductList from '../Components/ProductList';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { acceptOrder } from '@/actions/DeliveryAction';
+import { acceptOrder, deliOrder, todayOrders } from '@/actions/DeliveryAction';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import mapCustomStyle from '@mPOS/components/MapCustomStyles';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -24,38 +24,29 @@ import styles from './styles';
 import ReactNativeModal from 'react-native-modal';
 import StatusDrawer from '../Components/StatusDrawer';
 import { useState } from 'react';
+
+import { useEffect } from 'react';
 import { getDelivery } from '@/selectors/DeliverySelector';
+import { getOrderCount, getReviewDefault } from '@/actions/ShippingAction';
 
 export function OrderDetail(props) {
   const mapRef = useRef();
   const dispatch = useDispatch();
   const deliveryData = useSelector(getDelivery);
+  const [orderList, setOrderList] = useState([]);
+  const statusCount = deliveryData?.getOrderCount;
   const orders = deliveryData?.getReviewDef ?? [];
-  const orderData = props?.route?.params?.data;
-  console.log('orders', JSON.stringify(orderData));
+  const orderData = orders[props?.route?.params?.index ?? 0];
   const customerDetail = orderData?.user_details;
   const deliveryDate = dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') || '';
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const onPressAcceptHandler = () => {
-    const data = {
-      orderId: orderData?.id,
-      status: parseInt(orderData?.status) + 1,
-      sellerID: sellerID,
-    };
-    dispatch(
-      acceptOrder(data, orderData?.status, (res) => {
-        if (res?.msg) {
-          goBack();
-        }
-      })
-    );
-  };
-
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
-
+  const orderLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.TODAY_ORDER_STATUS, TYPES.DELIVERING_ORDER], state)
+  );
   const setHeaderText = (value) => {
     switch (value) {
       case '0':
@@ -76,6 +67,48 @@ export function OrderDetail(props) {
         return strings.orderStatus.deliveryReturns;
     }
   };
+  const onPressAcceptHandler = () => {
+    const data = {
+      orderId: orderData?.id,
+      status: parseInt(orderData?.status) + 1,
+      sellerID: sellerID,
+    };
+    dispatch(
+      acceptOrder(data, orderData?.status, (res) => {
+        if (res?.msg) {
+          goBack();
+        }
+      })
+    );
+    setTimeout(() => {
+      checkOtherOrder();
+    }, 500);
+  };
+
+  const checkOtherOrder = () => {
+    const statusData = deliveryData?.getOrderCount;
+    var index = 0;
+    if (statusData[0].count > 0) {
+    } else if (statusData[1].count > 0) {
+      index = 1;
+    } else if (statusData[2].count > 0) {
+      index = 2;
+    } else if (statusData[3].count > 0) {
+      index = 3;
+    } else if (statusData[4].count > 0) {
+      index = 4;
+    } else if (statusData[5].count > 0) {
+      index = 5;
+    } else if (statusData[6].count > 0) {
+      index = 6;
+    } else if (parseInt(statusCount?.[7]?.count) + parseInt(statusCount?.[8]?.count) > 0) {
+      index = 7;
+    } else if (statusData[9].count > 0) {
+      index = 9;
+    }
+    dispatch(getReviewDefault(index));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <Header backRequired title={strings.profile.header} /> */}
@@ -85,51 +118,52 @@ export function OrderDetail(props) {
         title={strings.profile.header}
         rightIconOnpress={() => setIsStatusDrawer(true)}
       />
+      {orders.length > 0 && (
+        <View style={styles.userDetailView}>
+          <View style={{ flexDirection: 'row' }}>
+            <Image
+              source={
+                customerDetail?.profile_photo ? { uri: customerDetail?.profile_photo } : Images.user
+              }
+              style={styles.profileImageStyle}
+            />
 
-      <View style={styles.userDetailView}>
-        <View style={{ flexDirection: 'row' }}>
-          <Image
-            source={
-              customerDetail?.profile_photo ? { uri: customerDetail?.profile_photo } : Images.user
-            }
-            style={styles.profileImageStyle}
-          />
-
-          <View style={{ paddingLeft: 10 }}>
-            <Text
-              style={styles.nameTextStyle}
-            >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
-            <Text
-              style={styles.addressTextStyle}
-            >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
-          </View>
-        </View>
-
-        <Spacer space={SH(20)} />
-
-        {orderData?.status === 7 ? (
-          <View style={styles.cancelButtonStyle}>
-            <Text style={styles.cancelButtonText}>{strings.buttonStatus.cancelledByuser}</Text>
-          </View>
-        ) : orderData?.status === 8 ? (
-          <View style={styles.cancelButtonStyle}>
-            <Text style={styles.cancelButtonText}>{strings.buttonStatus.cancelledBySeller}</Text>
-          </View>
-        ) : (
-          <View style={styles.deliveryDetailsView}>
-            <View style={{ flex: 0.35 }}>
-              <Text style={styles.deliveryTypeText}>{deliveryDate}</Text>
-            </View>
-
-            <View style={styles.deliveryTimeViewStyle}>
-              <Image source={Images.clockIcon} style={styles.clockImageStyle} />
+            <View style={{ paddingLeft: 10 }}>
               <Text
-                style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
-              >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
+                style={styles.nameTextStyle}
+              >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
+              <Text
+                style={styles.addressTextStyle}
+              >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
             </View>
           </View>
-        )}
-      </View>
+
+          <Spacer space={SH(20)} />
+
+          {orderData?.status === 7 ? (
+            <View style={styles.cancelButtonStyle}>
+              <Text style={styles.cancelButtonText}>{strings.buttonStatus.cancelledByuser}</Text>
+            </View>
+          ) : orderData?.status === 8 ? (
+            <View style={styles.cancelButtonStyle}>
+              <Text style={styles.cancelButtonText}>{strings.buttonStatus.cancelledBySeller}</Text>
+            </View>
+          ) : (
+            <View style={styles.deliveryDetailsView}>
+              <View style={{ flex: 0.35 }}>
+                <Text style={styles.deliveryTypeText}>{deliveryDate}</Text>
+              </View>
+
+              <View style={styles.deliveryTimeViewStyle}>
+                <Image source={Images.clockIcon} style={styles.clockImageStyle} />
+                <Text
+                  style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
+                >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
+              </View>
+            </View>
+          )}
+        </View>
+      )}
 
       <Spacer space={SH(15)} />
 
@@ -197,14 +231,31 @@ export function OrderDetail(props) {
       ) : null}
 
       <Spacer space={SH(10)} />
-
-      <ProductList {...{ orderData }} />
+      {orders.length > 0 && (
+        <ProductList
+          orderData={orderData}
+          // {...{ orderData }}
+        />
+      )}
 
       <Spacer space={SH(20)} backgroundColor={COLORS.transparent} />
 
-      <OrderTotal {...{ orderData, onPressAcceptHandler }} />
+      {orders.length > 0 && (
+        <OrderTotal
+          orderData={orderData}
+          onPressAcceptHandler={onPressAcceptHandler}
 
+          // {...{ orderData, onPressAcceptHandler }}
+        />
+      )}
+      {orders.length == 0 && (
+        <View style={styles.emptyViewStyle}>
+          <Text style={styles.todayStatusTextStyle}>{strings.delivery.noOrders}</Text>
+        </View>
+      )}
       {isLoading ? <FullScreenLoader /> : null}
+      {orderLoad ? <FullScreenLoader /> : null}
+
       <ReactNativeModal
         isVisible={isStatusDrawer}
         animationIn={'slideInRight'}

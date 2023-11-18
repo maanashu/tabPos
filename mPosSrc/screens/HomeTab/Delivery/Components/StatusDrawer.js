@@ -23,6 +23,7 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
   const dispatch = useDispatch();
   const getDeliveryData = useSelector(getDelivery);
   const statusCount = getDeliveryData?.getOrderCount;
+  console.log('STATUS_COUNT', JSON.stringify(statusCount));
   const [selectedStatus, setSelectedStatus] = useState(selectedStatusOrder);
   const { height } = Dimensions.get('window');
 
