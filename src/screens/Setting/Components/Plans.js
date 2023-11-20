@@ -166,7 +166,9 @@ export function Plans() {
               </View>
             );
           })}
+
           <Spacer space={SH(15)} />
+
           <Text
             style={[
               styles.basicPrice,
