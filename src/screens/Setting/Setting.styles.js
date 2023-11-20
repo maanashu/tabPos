@@ -94,6 +94,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
+    textAlign: 'center',
   },
 
   // setting security css start
@@ -320,8 +321,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   checkArrow: {
-    width: SW(8),
-    height: SW(3),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(6),
     tintColor: COLORS.darkGray,
@@ -503,6 +504,20 @@ export const styles = StyleSheet.create({
     height: SW(7),
     resizeMode: 'contain',
     marginHorizontal: moderateScale(4),
+    // item?.name == 'Standard'
+    // ? COLORS.lavenders
+    // : item?.name == 'Premium'
+    // ? COLORS.navy_blue
+    // : COLORS.sky_blue,
+  },
+  appIncludedIcon: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    marginHorizontal: moderateScale(4),
+
+    // COLORS.navy_blue
+    //  COLORS.sky_blue
   },
   checkmark: {
     width: SW(4),
@@ -515,7 +530,7 @@ export const styles = StyleSheet.create({
     borderRadius: 16,
     flex: 1,
     padding: 16,
-    height: ms(70),
+    height: ms(65),
     justifyContent: 'center',
   },
   visa: {
@@ -560,15 +575,24 @@ export const styles = StyleSheet.create({
     fontSize: SF(11),
     fontFamily: Fonts.Regular,
   },
-  basicContainer: {
-    // borderWidth:1,
-    width: windowWidth * 0.26,
-    borderRadius: 10,
-    backgroundColor: COLORS.white,
-    padding: 12,
-    marginHorizontal: moderateScale(9),
-    marginBottom: 15,
-    borderWidth: 2,
+  basicContainer: (item) => {
+    return {
+      width: windowWidth * 0.2,
+      borderRadius: 10,
+      backgroundColor: COLORS.white,
+      padding: 12,
+      marginHorizontal: moderateScale(3),
+      marginBottom: 15,
+      borderWidth: 2,
+      borderColor:
+        item == 'Standard'
+          ? COLORS.lavenders
+          : item == 'Premium'
+          ? COLORS.navy_blue
+          : COLORS.sky_blue,
+      flex: 1,
+      height: windowHeight * 0.69,
+    };
   },
   basic: {
     color: COLORS.sky_blue,
@@ -1601,5 +1625,35 @@ export const styles = StyleSheet.create({
     color: COLORS.sky_blue,
     fontFamily: Fonts.Medium,
     fontSize: ms(10),
+  },
+  appIncludedText: {
+    color: COLORS.sky_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(7),
+    textAlign: 'center',
+  },
+  changePlanButton: (item) => {
+    return {
+      width: ms(90),
+      height: 50,
+      borderRadius: 30,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      backgroundColor:
+        item == 'Standard'
+          ? COLORS.lavenders
+          : item == 'Premium'
+          ? COLORS.navy_blue
+          : COLORS.sky_blue,
+      alignSelf: 'center',
+    };
+  },
+  dashedBorderLine: {
+    borderBottomWidth: 1,
+    borderStyle: 'dashed',
+    marginBottom: SH(5),
+    marginTop: SH(10),
+    borderColor: COLORS.lavender,
   },
 });

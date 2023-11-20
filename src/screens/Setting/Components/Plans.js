@@ -4,24 +4,20 @@ import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { View, Text, TouchableOpacity, Image, FlatList, ActivityIndicator } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
-import Modal from 'react-native-modal';
 import {
   Calendar_Outline,
   CheckBadgeFilled,
   Fonts,
   SimpleCheck,
-  changePlan,
+  arrowRightTop,
   checkArrow,
   checkCircle,
-  checkmark,
   crossButton,
-  newCalendar,
-  radioFillPlan,
   upgradeIcon,
   visa,
 } from '@/assets';
 import { moderateScale, ms, verticalScale } from 'react-native-size-matters';
-import { ANNUALDATA, PLANFEATUREDATA, basicData } from '@/constants/flatListData';
+import { ANNUALDATA } from '@/constants/flatListData';
 import { buySubscription, getActiveSubscription, getAllPlans } from '@/actions/SubscriptionAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -36,7 +32,6 @@ export function Plans() {
   const isFocused = useIsFocused();
   const getPlanData = useSelector(getAllPlansData);
   const activeUserPlan = getPlanData?.activeSubscription;
-  // var activePlan = {};
   const [planModal, setPlanModal] = useState(false);
   const [selectedId, setSelectedId] = useState(1);
   const [selectedPlanIndex, setSelectedPlanIndex] = useState(null);
@@ -48,11 +43,13 @@ export function Plans() {
       dispatch(getActiveSubscription());
     }
   }, [isFocused]);
+
   useEffect(() => {
     if (activeUserPlan?.length > 0) {
       setActivePlan(getPlanData?.activeSubscription[0]);
     }
   }, [Object.keys(activeUserPlan).length]);
+
   const monthlyPlans = [];
   const yearlyPlans = [];
   if (getPlanData?.allPlans?.length > 0) {
@@ -64,9 +61,11 @@ export function Plans() {
       }
     });
   }
+
   const getActiveSubLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ACTIVE_SUBSCRIPTION], state)
   );
+
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.BUY_SUBSCRIPTION], state));
 
   const planTagItem = ({ item }) => {
@@ -77,93 +76,140 @@ export function Plans() {
       </View>
     );
   };
-  const basicItem = ({ item, index }) => {
-    return (
-      <View style={styles.basicContainer}>
-        <Text
-          style={[
-            styles.basic,
-            item?.name == 'Standard'
-              ? { color: COLORS.primary }
-              : item?.name == 'Premium'
-              ? { color: COLORS.black }
-              : { color: COLORS.bluish_green },
-          ]}
-        >
-          {item?.name}
-        </Text>
-        <Text style={styles.everyThingNeed}>{item?.description}</Text>
-        <Spacer space={SH(10)} />
-        <Text style={styles.basicPrice}>{'$' + item.amount + '.00'}</Text>
-        <Text style={styles.everyThingNeed}>
-          {item?.tenure?.charAt(0).toUpperCase() + item?.tenure?.slice(1)}{' '}
-        </Text>
-        <Spacer space={SH(10)} />
-        <Text style={styles.changePlanText}>{strings.settings.includePlan}</Text>
 
-        {item?.included_apps?.map((item) => (
-          <View style={styles.dispalyRow}>
-            <Image source={radioFillPlan} style={styles.radioFillPlan} />
-            <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>{item}</Text>
-          </View>
-        ))}
-        {/* <View style={styles.dispalyRow}>
-          <Image source={radioFillPlan} style={styles.radioFillPlan} />
-          <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>JOBR Wallet</Text>
-        </View>
-        <View style={styles.dispalyRow}>
-          <Image source={radioFillPlan} style={styles.radioFillPlan} />
-          <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>JOBR Wallet</Text>
-        </View>
-        <View style={styles.dispalyRow}>
-          <Image source={radioFillPlan} style={styles.radioFillPlan} />
-          <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>JOBR Wallet</Text>
-        </View>
-        <View style={styles.dispalyRow}>
-          <Image source={radioFillPlan} style={styles.radioFillPlan} />
-          <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>JOBR Wallet</Text>
-        </View> */}
-        <Spacer space={SH(10)} />
-        <TouchableOpacity
-          onPress={() => {
-            onBuySubscription(item?._id), setSelectedPlanIndex(index);
-          }}
-          // style={[
-          //   styles.checkoutButton,
-          //   styles.checkoutButtonSec,
-          //   item?.name == 'Standard'
-          //     ? { backgroundColor: COLORS.primary }
-          //     : item?.name == 'Premium'
-          //     ? { backgroundColor: COLORS.black }
-          //     : { backgroundColor: COLORS.bluish_green },
-          // ]}
-          style={{
-            backgroundColor: COLORS.navy_blue,
-            width: ms(90),
-            height: 50,
-            borderRadius: 30,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {isLoading && selectedPlanIndex == index ? (
-            <ActivityIndicator animating={isLoading} size={'small'} color={COLORS.white} />
-          ) : (
-            <>
-              <Text style={[styles.checkoutText, { color: COLORS.white }]}>
-                {strings.settings.change}
+  const basicItem = ({ item, index }) => {
+    const tenure = item?.tenure.slice(0, 2);
+    return (
+      <View style={styles.basicContainer(item?.name)}>
+        <View style={{ flex: 1 }}>
+          <Text
+            style={[
+              styles.basic,
+              item?.name == 'Standard'
+                ? { color: COLORS.lavenders }
+                : item?.name == 'Premium'
+                ? { color: COLORS.navy_blue }
+                : { color: COLORS.sky_blue },
+              { fontSize: SF(18) },
+            ]}
+          >
+            {item?.name}
+          </Text>
+          <Text style={[styles.everyThingNeed, { fontSize: SF(11) }]}>{item?.description}</Text>
+
+          <Spacer space={SH(5)} />
+          <Text style={[styles.changePlanText, { color: COLORS.lavender, fontSize: SF(13) }]}>
+            {strings.settings.includePlan}
+          </Text>
+          <Spacer space={SH(8)} />
+
+          {item?.included_apps?.map((el) => (
+            <View style={styles.dispalyRow}>
+              <Image
+                source={CheckBadgeFilled}
+                style={[
+                  styles.appIncludedIcon,
+                  {
+                    tintColor:
+                      item?.name == 'Standard'
+                        ? COLORS.lavenders
+                        : item?.name == 'Premium'
+                        ? COLORS.navy_blue
+                        : COLORS.sky_blue,
+                  },
+                ]}
+              />
+
+              <Text
+                style={[
+                  styles.appIncludedText,
+                  {
+                    color:
+                      item?.name == 'Standard'
+                        ? COLORS.lavenders
+                        : item?.name == 'Premium'
+                        ? COLORS.navy_blue
+                        : COLORS.sky_blue,
+                  },
+                ]}
+              >
+                JOBR {el}
               </Text>
-              <Image source={checkArrow} style={[styles.checkArrow, { tintColor: COLORS.white }]} />
-            </>
+            </View>
+          ))}
+
+          <View style={styles.dashedBorderLine} />
+
+          {item?.tags?.map((ele) => {
+            return (
+              <View style={[styles.dispalyRow, { paddingVertical: verticalScale(1) }]}>
+                {activeUserPlan?.[0]?.plan_id?._id == item?._id && (
+                  <Image source={SimpleCheck} style={styles.checkmark} resizeMode="contain" />
+                )}
+                <Text
+                  style={[
+                    styles.includedText,
+                    {
+                      fontFamily: Fonts.SemiBold,
+                      color:
+                        item?.name == 'Standard'
+                          ? COLORS.lavenders
+                          : item?.name == 'Premium'
+                          ? COLORS.navy_blue
+                          : COLORS.sky_blue,
+                      fontSize: SF(13),
+                    },
+                  ]}
+                >
+                  {ele}{' '}
+                </Text>
+              </View>
+            );
+          })}
+          <Spacer space={SH(15)} />
+          <Text
+            style={[
+              styles.basicPrice,
+              {
+                textAlign: 'center',
+                color:
+                  item?.name == 'Standard'
+                    ? COLORS.lavenders
+                    : item?.name == 'Premium'
+                    ? COLORS.navy_blue
+                    : COLORS.sky_blue,
+              },
+            ]}
+          >{`$${parseFloat(item.amount).toFixed(2)} /${tenure}`}</Text>
+        </View>
+        <View style={{ flex: 0.12, justifyContent: 'flex-end' }}>
+          {activeUserPlan?.[0]?.plan_id?._id == item?._id ? (
+            <View style={{ justifyContent: 'center', flex: 1 }}>
+              <Text style={styles.appIncludedText}>{'Subscribed'}</Text>
+            </View>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                onBuySubscription(item?._id), setSelectedPlanIndex(index);
+              }}
+              style={styles.changePlanButton(item?.name)}
+            >
+              {isLoading && selectedPlanIndex == index ? (
+                <ActivityIndicator animating={isLoading} size={'small'} color={COLORS.white} />
+              ) : (
+                <>
+                  <Text style={[styles.checkoutText, { color: COLORS.white }]}>
+                    {strings.settings.change}
+                  </Text>
+                  <Image
+                    source={arrowRightTop}
+                    style={[styles.checkArrow, { tintColor: COLORS.sky_blue }]}
+                  />
+                </>
+              )}
+            </TouchableOpacity>
           )}
-        </TouchableOpacity>
-        <Spacer space={SH(10)} />
-        <FlatList
-          data={item?.tags}
-          extraData={item?.tags}
-          renderItem={planTagItem}
-          keyExtractor={(item) => item}
-        />
+        </View>
       </View>
     );
   };
@@ -177,7 +223,6 @@ export function Plans() {
   const annualItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? COLORS.navy_blue : COLORS.sky_grey;
     const color = item.id === selectedId ? COLORS.white : COLORS.darkGray;
-
     return (
       <Item
         item={item}
@@ -198,6 +243,7 @@ export function Plans() {
       }
     }
   };
+
   const renderPlanView = useCallback(
     () => (
       <View>
@@ -238,7 +284,7 @@ export function Plans() {
               {activePlan?.plan_id?.included_apps?.map((item) => (
                 <View key={item} style={[styles.dispalyRow, { paddingVertical: verticalScale(2) }]}>
                   <Image source={CheckBadgeFilled} style={styles.radioFillPlan} />
-                  <Text style={styles.includedText}>{item}</Text>
+                  <Text style={styles.includedText}>JOBR {item}</Text>
                 </View>
               ))}
             </View>
@@ -270,7 +316,7 @@ export function Plans() {
         <View style={[styles.rowAligned, { marginHorizontal: ms(15) }]}>
           <View style={styles.billingDateCon}>
             <Text style={[styles.changePlanText, { fontFamily: Fonts.Medium }]}>
-              Next billing date
+              {'Next billing date'}
             </Text>
             <Spacer space={SH(10)} />
             <View style={styles.rowAligned}>
@@ -292,7 +338,7 @@ export function Plans() {
             <View style={styles.dispalyRow}>
               <Image source={visa} style={styles.visa} />
               <Text style={[styles.changePlanText, { fontFamily: Fonts.Regular }]}>
-                Visa ending in 2275
+                {'Visa ending in 2275'}
               </Text>
             </View>
           </View>
@@ -301,6 +347,7 @@ export function Plans() {
     ),
     [activeUserPlan, activePlan]
   );
+
   const renderBuyView = useCallback(
     () => (
       <View
@@ -325,8 +372,9 @@ export function Plans() {
     ),
     [activePlan]
   );
+
   return (
-    <View style={{ paddingHorizontal: ms(10) }}>
+    <View style={{ paddingHorizontal: 0 }}>
       {getActiveSubLoader && (
         <ActivityIndicator style={{ marginTop: ms(50) }} size={'large'} color={COLORS.primary} />
       )}
@@ -355,7 +403,7 @@ export function Plans() {
               keyExtractor={(item) => item.id}
               horizontal
               contentContainerStyle={{
-                padding: 10,
+                padding: 7,
                 borderRadius: 30,
                 borderWidth: 1,
               }}
@@ -363,7 +411,6 @@ export function Plans() {
             />
           </View>
           <Spacer space={SH(20)} />
-
           <FlatList
             style={{ alignSelf: 'center' }}
             data={selectedId == 1 ? monthlyPlans : yearlyPlans}
