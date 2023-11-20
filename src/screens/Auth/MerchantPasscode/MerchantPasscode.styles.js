@@ -23,7 +23,6 @@ export const styles = StyleSheet.create({
     borderRadius: 40,
     alignItems: 'center',
     backgroundColor: COLORS.white,
-    paddingHorizontal: ms(60),
     ...ShadowStyles.shadow2,
   },
   heading: {

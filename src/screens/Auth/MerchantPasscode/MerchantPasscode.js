@@ -109,7 +109,7 @@ export function MerchantPasscode({ route }) {
         <View style={styles.verifyContainer}>
           <Spacer space={SH(25)} />
 
-          <Text style={styles.heading}>{strings.verifyOtp.heading}</Text>
+          <Text style={styles.heading}>Verify your phone {'\n'} number</Text>
           <Spacer space={SH(10)} />
           <Text style={styles.subHeading}>{strings.passcode.heading}</Text>
 
@@ -129,8 +129,7 @@ export function MerchantPasscode({ route }) {
 
           <VirtualKeyBoard
             FLCntStyle={{
-              alignItems: 'flex-start',
-              marginLeft: ms(10),
+              alignItems: 'center',
             }}
             maxCharLength={4}
             enteredValue={value}
