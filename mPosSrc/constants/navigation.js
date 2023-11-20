@@ -55,5 +55,9 @@ export const NAVIGATION = {
   privacyPolicy: 'Privacy Policy',
   security: 'Security',
   notificationList: 'NotificationsList',
+  pinId: 'PinId',
+  oldPin: 'OldPin',
+  setPin: 'SetPin',
+  reSetPin: 'ReEnterPin',
   changePlans: 'ChangePlans',
 };

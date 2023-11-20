@@ -29,6 +29,9 @@ export const en = {
     verified: 'You are verified!',
     pinSet: 'Your new pin is set now',
     login: 'Log in',
+    setUpPin: 'Set up PIN',
+    setNewPin: 'Enter your New PIN',
+    reNewPin: 'Reenter your New PIN',
   },
   validationMessages: {
     emptyPhoneNumber: 'Please enter phone number',

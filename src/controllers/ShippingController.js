@@ -11,6 +11,7 @@ export class ShippingController {
         ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${status}&delivery_option=4`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('SHIPPING', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -170,6 +171,7 @@ export class ShippingController {
         ORDER_URL + ApiOrderInventory.todayShipStatus + `?seller_id=${sellerID}&type=shipping`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('shippingh status', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

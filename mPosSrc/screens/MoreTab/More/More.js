@@ -71,6 +71,14 @@ export function More() {
       return navigate(MPOS_NAVIGATION.analytics);
     }
   };
+
+  const acccessAndConfirmationHandler = (item, index) => {
+    if (index === 0) {
+      return alert('In progress');
+    } else if (index === 1) {
+      return navigate(MPOS_NAVIGATION.pinId);
+    }
+  };
   const essentialHandler = (item, index) => {
     if (index === 0) {
       return navigate(MPOS_NAVIGATION.security);
@@ -180,7 +188,10 @@ export function More() {
           <View style={[styles.moreProfileSection, { height: ms(128) }]}>
             <Text style={styles.profileName}>{strings.more.accesConfirmation}</Text>
             {acccessAndConfirmation?.map((item, index) => (
-              <TouchableOpacity onPress={() => alert('In progress')} key={index}>
+              <TouchableOpacity
+                onPress={() => acccessAndConfirmationHandler(item, index)}
+                key={index}
+              >
                 <View style={styles.moreTabRow} />
                 <View style={styles.disPlayCenter}>
                   <View style={styles.rowCenter}>

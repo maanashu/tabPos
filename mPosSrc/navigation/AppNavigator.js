@@ -49,6 +49,10 @@ import { TermsConditions } from '@mPOS/screens/MoreTab/TermsConditions/TermsCond
 import { PrivacyPolicy } from '@mPOS/screens/MoreTab/PrivacyPolicy/PrivacyPolicy';
 import { Security } from '@mPOS/screens/MoreTab/BatchManagement/Security/Security';
 import NotificationsList from '@mPOS/screens/MoreTab/Notifications/NotificationList';
+import { PinId } from '@mPOS/screens/MoreTab/PinId/PinId';
+import { OldPin } from '@mPOS/screens/MoreTab/OldPin/OldPin';
+import { SetPin } from '@mPOS/screens/MoreTab/SetPin/SetPin';
+import { ReEnterPin } from '@mPOS/screens/MoreTab/ReEnterPin/ReEnterPin';
 
 const Stack = createNativeStackNavigator();
 
@@ -252,6 +256,26 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.customers}
         options={{ headerShown: false }}
         component={Customers}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.pinId}
+        options={{ headerShown: false }}
+        component={PinId}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.oldPin}
+        options={{ headerShown: false }}
+        component={OldPin}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.setPin}
+        options={{ headerShown: false }}
+        component={SetPin}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.reSetPin}
+        options={{ headerShown: false }}
+        component={ReEnterPin}
       />
       <Stack.Screen
         name={MPOS_NAVIGATION.customerList}
