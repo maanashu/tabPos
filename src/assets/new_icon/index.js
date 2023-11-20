@@ -7,5 +7,7 @@ export const Images = {
   cartIcon: require('@/assets/new_icon/retail_con/cartIcon.png'),
   addProduct: require('@/assets/new_icon/retail_con/addProduct.png'),
   clearCart: require('@/assets/new_icon/retail_con/clearCart.png'),
+  addNotesIcon: require('@/assets/new_icon/retail_con/addNotesIcon.png'),
   holdCart: require('@/assets/new_icon/retail_con/holdCart.png'),
+  arrowLeftUp: require('@/assets/new_icon/Auth_icons/ArrowLeftUp.png'),
 };

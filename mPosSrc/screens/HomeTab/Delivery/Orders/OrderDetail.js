@@ -21,17 +21,24 @@ import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
 import { FullScreenLoader, Header, Spacer } from '@mPOS/components';
 
 import styles from './styles';
+import ReactNativeModal from 'react-native-modal';
+import StatusDrawer from '../Components/StatusDrawer';
+import { useState } from 'react';
+import { getDelivery } from '@/selectors/DeliverySelector';
 
 export function OrderDetail(props) {
   const mapRef = useRef();
   const dispatch = useDispatch();
+  const deliveryData = useSelector(getDelivery);
+  const orders = deliveryData?.getReviewDef ?? [];
   const orderData = props?.route?.params?.data;
+  console.log('orders', JSON.stringify(orderData));
   const customerDetail = orderData?.user_details;
   const deliveryDate = dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') || '';
-
+  const [selectedStatus, setSelectedStatus] = useState('0');
+  const [isStatusDrawer, setIsStatusDrawer] = useState(false);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-
   const onPressAcceptHandler = () => {
     const data = {
       orderId: orderData?.id,
@@ -49,9 +56,35 @@ export function OrderDetail(props) {
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
 
+  const setHeaderText = (value) => {
+    switch (value) {
+      case '0':
+        return strings.orderStatus.reviewOrders;
+      case '1':
+        return strings.orderStatus.ordersToAccepted;
+      case '2':
+        return strings.orderStatus.ordersToPrepared;
+      case '3':
+        return strings.orderStatus.assignedDriver;
+      case '4':
+        return strings.orderStatus.ordersPickedUp;
+      case '5':
+        return strings.orderStatus.ordersDelivered;
+      case '7,8':
+        return strings.orderStatus.ordersRejected;
+      default:
+        return strings.orderStatus.deliveryReturns;
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
-      <Header backRequired title={strings.profile.header} />
+      {/* <Header backRequired title={strings.profile.header} /> */}
+      <Header
+        orders
+        backRequired
+        title={strings.profile.header}
+        rightIconOnpress={() => setIsStatusDrawer(true)}
+      />
 
       <View style={styles.userDetailView}>
         <View style={{ flexDirection: 'row' }}>
@@ -172,6 +205,21 @@ export function OrderDetail(props) {
       <OrderTotal {...{ orderData, onPressAcceptHandler }} />
 
       {isLoading ? <FullScreenLoader /> : null}
+      <ReactNativeModal
+        isVisible={isStatusDrawer}
+        animationIn={'slideInRight'}
+        animationOut={'slideOutRight'}
+        onBackdropPress={() => setIsStatusDrawer(false)}
+      >
+        <StatusDrawer
+          closeModal={() => setIsStatusDrawer(false)}
+          selected={(value) => {
+            setHeaderText(value);
+            setSelectedStatus(value);
+          }}
+          selectedStatusOrder={selectedStatus}
+        />
+      </ReactNativeModal>
     </SafeAreaView>
   );
 }

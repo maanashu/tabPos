@@ -43,6 +43,7 @@ export const NAVIGATION = {
   walletSettings: 'WalletSettings',
   staffSettings: 'StaffSettings',
   posUserDetail: 'PosUserDetail',
+  batchManagement: 'Management',
   policies: 'Policies',
   notificationSettings: 'NotificationSettings',
   batchManagement: 'Management',

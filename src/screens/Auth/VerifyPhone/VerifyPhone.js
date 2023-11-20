@@ -121,6 +121,7 @@ export function VerifyPhone() {
             setEnteredValue={setPhoneNumber}
             isButtonLoading={isLoading}
             onPressContinueButton={verifyPhoneHandler}
+            isBackButtonDisbaled={true}
           />
         </View>
       </View>

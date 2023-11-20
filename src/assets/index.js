@@ -386,16 +386,33 @@ export { default as messageSend } from '@/assets/icons/ic_chat/messageSend.png';
 export { default as AttachIcon } from '@/assets/icons/ic_chat/Attach.png';
 export { default as list } from '@/assets/images/list.png';
 
-export { default as backIcon } from '@/assets/ic_analytic/backIcon.png';
-export { default as deliveryIcon } from '@/assets/ic_analytic/delivery.png';
-export { default as inventory } from '@/assets/ic_analytic/inventory.png';
-export { default as posOrders } from '@/assets/ic_analytic/posOrders.png';
-export { default as profitIcon } from '@/assets/ic_analytic/profit.png';
-export { default as revnue } from '@/assets/ic_analytic/revnue.png';
-export { default as shippingIcon } from '@/assets/ic_analytic/shipping.png';
-export { default as soldProduct } from '@/assets/ic_analytic/soldProduct.png';
-export { default as totalCostIcon } from '@/assets/ic_analytic/totalCost.png';
-export { default as totalOrder } from '@/assets/ic_analytic/totalOrder.png';
+// Cash Drawer New ICON
+export { default as arrowRightTop } from '@/assets/new_icon/ic_drawer/arrowTop.png';
+export { default as crossDrawer } from '@/assets/new_icon/ic_drawer/cross.png';
+export { default as bellDrawer } from '@/assets/new_icon/ic_drawer/bell.png';
+export { default as arrowDownRound } from '@/assets/new_icon/ic_drawer/arrowRoundDown.png';
+export { default as arrowUpRound } from '@/assets/new_icon/ic_drawer/arrowRoundUp.png';
+export { default as moneySearch } from '@/assets/new_icon/ic_drawer/moneySearch.png';
+export { default as removeMoney } from '@/assets/new_icon/ic_drawer/removeMoney.png';
+export { default as info } from '@/assets/new_icon/ic_drawer/info.png';
+export { default as plusDrawer } from '@/assets/new_icon/ic_drawer/plus.png';
+export { default as lockDrawer } from '@/assets/new_icon/ic_drawer/lock.png';
+export { default as addMoney } from '@/assets/new_icon/ic_drawer/addMoney.png';
+export { default as logOutDrawer } from '@/assets/new_icon/ic_drawer/logOut.png';
+export { default as searchDrawer } from '@/assets/new_icon/ic_drawer/searchDrawer.png';
+export { default as arrowDown } from '@/assets/new_icon/ic_drawer/arrowDown.png';
+export { default as calendarDrawer } from '@/assets/new_icon/ic_drawer/CalendarDrawer.png';
+export { default as userOutlineDrawer } from '@/assets/new_icon/ic_drawer/userOutline.png';
+export { default as arrowLeftUp } from '@/assets/new_icon/ic_drawer/ArrowLeftUp.png';
+export { default as backIcon } from '@/assets/new_icon/ic_analytic/backIcon.png';
+export { default as inventory } from '@/assets/new_icon/ic_analytic/inventory.png';
+export { default as posOrders } from '@/assets/new_icon/ic_analytic/posOrders.png';
+export { default as profitIcon } from '@/assets/new_icon/ic_analytic/profit.png';
+export { default as revnue } from '@/assets/new_icon/ic_analytic/revnue.png';
+export { default as shippingIcon } from '@/assets/new_icon/ic_analytic/shipping.png';
+export { default as soldProduct } from '@/assets/new_icon/ic_analytic/soldProduct.png';
+export { default as totalCostIcon } from '@/assets/new_icon/ic_analytic/totalCost.png';
+export { default as totalOrder } from '@/assets/new_icon/ic_analytic/totalOrder.png';
 
 /* Fonts */
 export const Fonts = {

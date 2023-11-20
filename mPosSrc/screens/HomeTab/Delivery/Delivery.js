@@ -28,7 +28,7 @@ import { strings } from '@mPOS/localization';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import OrderConvertion from './Components/OrderConvertion';
-import { Header, ScreenWrapper, Spacer } from '@mPOS/components';
+import { FullScreenLoader, Header, ScreenWrapper, Spacer } from '@mPOS/components';
 import DeliveryTypeOrders from './Components/DeliveryTypeOrders';
 
 import styles from './styles';
@@ -123,7 +123,8 @@ export function Delivery() {
     );
   };
 
-  const isDeliveryOrder = useSelector((state) =>
+  const isDeliveryOrder = useSelector((state) => isLoadingSelector([TYPES.GET_REVIEW_DEF], state));
+  const orderLoad = useSelector((state) =>
     isLoadingSelector([TYPES.TODAY_ORDER_STATUS, TYPES.DELIVERING_ORDER], state)
   );
 
@@ -216,18 +217,24 @@ export function Delivery() {
         <Spacer space={SH(15)} backgroundColor={COLORS.transparent} />
 
         <View style={styles.ordersContainer}>
-          <FlatList
-            data={orders?.slice(0, 4)}
-            extraData={orders}
-            renderItem={renderOrderItem}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item, index) => index.toString()}
-            ListEmptyComponent={() => (
-              <View style={styles.emptyViewStyle}>
-                <Text style={styles.todayStatusTextStyle}>{strings.delivery.noOrders}</Text>
-              </View>
-            )}
-          />
+          {orderLoad ? (
+            <View style={styles.loaderView}>
+              <ActivityIndicator size={'small'} color={COLORS.primary} />
+            </View>
+          ) : (
+            <FlatList
+              data={orders?.slice(0, 4)}
+              extraData={orders}
+              renderItem={renderOrderItem}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item, index) => index.toString()}
+              ListEmptyComponent={() => (
+                <View style={styles.emptyViewStyle}>
+                  <Text style={styles.todayStatusTextStyle}>{strings.delivery.noOrders}</Text>
+                </View>
+              )}
+            />
+          )}
         </View>
 
         <Spacer space={SH(15)} backgroundColor={COLORS.transparent} />
@@ -242,7 +249,7 @@ export function Delivery() {
       <ReactNativeModal
         isVisible={isStatusDrawer}
         animationIn={'slideInRight'}
-        animationOut={'slideOutLeft'}
+        animationOut={'slideOutRight'}
         onBackdropPress={() => setIsStatusDrawer(false)}
       >
         <StatusDrawer

@@ -36,6 +36,7 @@ export const en = {
   },
   deliveryOrders: {
     search: 'Search',
+    searchInHistory: 'Search In History',
     orderNumber: 'Number of Orders',
     back: 'Back',
     ready: 'Ready for Pickup',
@@ -64,8 +65,8 @@ export const en = {
     returned: 'Returned',
   },
   verifyPhone: {
-    heading: 'Verify your phone number',
-    subHeading: 'Please enter your phone number',
+    heading: 'Verify your phone \nnumber',
+    subHeading: 'Enter your phone number to get started',
     placeHolderText: '815-288-0329',
     button: 'Continue',
   },
@@ -127,6 +128,7 @@ export const en = {
   },
   management: {
     cashTracking: 'Cash Tracking',
+    hintText: 'This is a hint text to help user.',
     cashDrawer: 'Cash Drawer',
     drawerID: 'Drawer ID:',
     drawerID2: 'Drawer ID: 2',
@@ -139,7 +141,7 @@ export const en = {
     amount: '$ 0.00',
     note: 'Note',
     save: 'Save',
-    viewSession: 'View session',
+    viewSession: 'View Session',
     batch: 'Batch',
     closeBatch: 'Close Batch',
     date: 'Today Friday Auguest 26, 2022   | 11.04 AM',
@@ -170,7 +172,7 @@ export const en = {
     leftDrawer: 'Amount left in drawer : USD $0.00',
     dateTime: 'Today Friday Auguest 26, 2022   | 11.04 AM',
     allein: 'Allein',
-    removeCash: 'Removed cash',
+    removedCash: 'Removed cash',
     discrepancy: 'Discrepancy',
     breakFast: 'Note: breakfast',
     startTrackingSession: 'Stared tracking session',
@@ -188,6 +190,9 @@ export const en = {
     startSession: 'Start Session',
     amountText: 'Amount',
     loggedInAs: 'Logged in as',
+
+    //New UI
+    salesTracking: 'Sales Tracking',
   },
   customers: {
     totalCustomer: 'Total Customers',
@@ -504,6 +509,7 @@ export const en = {
     shippingOrders: 'Shipping Orders',
     currentStatus: 'Current Status',
     orderConvertion: 'Order convertion',
+    orderConversion: 'Order Conversion',
     incomingOrders: 'Incoming Orders',
     processingOrders: 'Order Processing',
     readyPickupOrders: 'Ready For Pickup',

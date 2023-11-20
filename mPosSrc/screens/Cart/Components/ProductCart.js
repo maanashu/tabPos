@@ -19,6 +19,7 @@ import ClearCart from '@mPOS/screens/Cart/Components/ClearCart';
 import CustomProductAdd from '@mPOS/screens/Cart/Components/CustomProductAdd';
 import PriceChange from '@mPOS/screens/Cart/Components/PriceChange';
 import Modal from 'react-native-modal';
+import { ReactNativeModal } from 'react-native-modal';
 import { strings } from '@mPOS/localization';
 import { FullScreenLoader, Spacer } from '@mPOS/components';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -362,7 +363,7 @@ export function ProductCart({ cartChangeHandler }) {
           <TouchableOpacity style={styles.availablOffercon}>
             <Text style={styles.avaliableofferText}>{strings.cart.availablOffer}</Text>
           </TouchableOpacity>
-          <Spacer space={SH(10)} />
+          {/* <Spacer space={SH(10)} /> */}
           <View style={styles.totalItemCon}>
             <Text style={styles.totalItem}>
               {strings.cart.totalItem} {productCartData?.poscart_products?.length}
@@ -432,18 +433,7 @@ export function ProductCart({ cartChangeHandler }) {
       >
         <AddNotes notesClose={() => setAddNotes(false)} />
       </Modal>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        isVisible={addDiscount}
-        onBackdropPress={() => setAddDiscount(false)}
-      >
-        {/* <KeyboardAvoidingView>
-          <ScrollView> */}
-        <AddDiscount discountClose={() => setAddDiscount(false)} />
-        {/* </ScrollView>
-        </KeyboardAvoidingView> */}
-      </Modal>
+
       <Modal
         animationType="fade"
         transparent={true}
@@ -460,15 +450,14 @@ export function ProductCart({ cartChangeHandler }) {
         </KeyboardAwareScrollView>
       </Modal>
 
-      {/* <Modal visible={customProductAdd}>
-        <KeyboardAvoidingView
-          behavior="padding"
-          // style={{ flex: 1 }}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-        >
-          <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
-        </KeyboardAvoidingView>
-      </Modal> */}
+      <ReactNativeModal
+        animationType="fade"
+        transparent={true}
+        isVisible={addDiscount}
+        onBackdropPress={() => setAddDiscount(false)}
+      >
+        <AddDiscount discountClose={() => setAddDiscount(false)} />
+      </ReactNativeModal>
 
       <Modal
         animationType="fade"
@@ -479,15 +468,14 @@ export function ProductCart({ cartChangeHandler }) {
         <PriceChange priceChangeClose={() => setPriceChange(false)} {...{ cartProduct }} />
       </Modal>
 
-      <Modal
+      <ReactNativeModal
         animationType="fade"
         transparent={true}
         isVisible={productCustomerAdd}
         onBackdropPress={() => setProductCustomerAdd(false)}
       >
         <ProductCustomerAdd crossHandler={() => setProductCustomerAdd(false)} />
-        {/* <NewCustomerAdd /> */}
-      </Modal>
+      </ReactNativeModal>
 
       <CartAmountByPay
         {...{ cartAmountByPayRef, cashPayNowHandler, cartAmountByPayCross, jbrCoinSheetshow }}

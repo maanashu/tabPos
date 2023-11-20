@@ -123,34 +123,34 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
     });
   };
 
-  useEffect(() => {
-    let interval;
+  // useEffect(() => {
+  //   let interval;
 
-    if (requestStatus !== 'approved' && sendRequest) {
-      interval = setInterval(() => {
-        setRequestId((requestId) => {
-          const data = {
-            requestId: requestId,
-          };
-          dispatch(requestCheck(data));
-          return requestId;
-        });
-      }, 10000);
-    } else if (requestStatus == 'approved' && sendRequest) {
-      createOrderHandler();
-      clearInterval(interval);
-    } else if (qrStatus?.status !== 'success' && sendRequest == false) {
-      interval = setInterval(() => {
-        dispatch(qrcodestatus(cartData.id));
-        // Alert.alert('3 condition', sendRequest);
-      }, 5000);
-    } else if (qrStatus?.status == 'success' && sendRequest == false) {
-      createOrderHandler();
-      clearInterval(interval);
-    }
+  //   if (requestStatus !== 'approved' && sendRequest) {
+  //     interval = setInterval(() => {
+  //       setRequestId((requestId) => {
+  //         const data = {
+  //           requestId: requestId,
+  //         };
+  //         dispatch(requestCheck(data));
+  //         return requestId;
+  //       });
+  //     }, 10000);
+  //   } else if (requestStatus == 'approved' && sendRequest) {
+  //     createOrderHandler();
+  //     clearInterval(interval);
+  //   } else if (qrStatus?.status !== 'success' && sendRequest == false) {
+  //     interval = setInterval(() => {
+  //       dispatch(qrcodestatus(cartData.id));
+  //       // Alert.alert('3 condition', sendRequest);
+  //     }, 5000);
+  //   } else if (qrStatus?.status == 'success' && sendRequest == false) {
+  //     createOrderHandler();
+  //     clearInterval(interval);
+  //   }
 
-    return () => clearInterval(interval);
-  }, [isFocused, requestStatus == 'approved', qrStatus?.status == 'success', sendRequest]);
+  //   return () => clearInterval(interval);
+  // }, [isFocused, requestStatus == 'approved', qrStatus?.status == 'success', sendRequest]);
 
   const createOrderHandler = () => {
     const data = {

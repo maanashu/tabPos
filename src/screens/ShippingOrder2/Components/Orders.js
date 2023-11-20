@@ -56,7 +56,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
               ? `${item?.order_details?.length} Items`
               : `${item?.order_details?.length} Item`}
           </Text>
-          <View style={styles.locationViewStyle}>
+          <View style={[styles.locationViewStyle]}>
             <Image source={pay} style={styles.pinImageStyle} />
             <Text style={styles.distanceTextStyle}>{item?.payable_amount ?? '00'}</Text>
           </View>
@@ -153,12 +153,15 @@ const styles = StyleSheet.create({
   distanceTextStyle: {
     fontFamily: Fonts.Regular,
     fontSize: SF(11),
-    color: COLORS.dark_grey,
+    color: COLORS.orange_bright,
     paddingLeft: 5,
   },
   locationViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: COLORS.light_yellow,
+    paddingVertical: ms(1),
+    borderRadius: 10,
   },
   pinImageStyle: {
     width: SH(16),
@@ -195,7 +198,7 @@ const styles = StyleSheet.create({
     paddingVertical: SH(15),
   },
   ordersToReviewText: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
   },
@@ -224,6 +227,6 @@ const styles = StyleSheet.create({
   noOrdersText: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(22),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
   },
 });

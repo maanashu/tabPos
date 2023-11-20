@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { backArrow2, locationSales, profit, revenueTotal, totalOrders } from '@/assets';
+import { backArrow2, locationSales, profit, profitIcon, revenueTotal, totalOrders } from '@/assets';
 import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
@@ -37,7 +37,16 @@ export function TotalOrders({ onPressReview }) {
   );
 
   const getTotalOrderList = ({ item, index }) => (
-    <DataTable.Row>
+    <DataTable.Row
+      style={{
+        borderColor: COLORS.sky_grey,
+        borderWidth: 2,
+        borderRadius: ms(25),
+        marginBottom: ms(6),
+        borderBottomWidth: 2,
+        borderBottomColor: COLORS.sky_grey,
+      }}
+    >
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
           <Text>{index + 1 + '.       '}</Text>
@@ -64,7 +73,7 @@ export function TotalOrders({ onPressReview }) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
-          <Text style={[styles.revenueDataText, { color: COLORS.primary, fontSize: ms(7) }]}>
+          <Text style={[styles.revenueDataText, { color: COLORS.navy_blue, fontSize: ms(7) }]}>
             {'Review'}
           </Text>
         </TouchableOpacity>
@@ -79,7 +88,7 @@ export function TotalOrders({ onPressReview }) {
         <Text style={styles.text}>{text}</Text>
         {isLoading ? (
           <ActivityIndicator
-            color={COLORS.primary}
+            color={COLORS.navy_blue}
             size={'small'}
             style={{ alignSelf: 'flex-start' }}
           />
@@ -91,9 +100,29 @@ export function TotalOrders({ onPressReview }) {
     []
   );
   return (
-    <View style={styles.flex1}>
-      <Text style={styles.graphTitle}> {'Total Orders'}</Text>
-
+    <View
+      style={{
+        height: '97%',
+        backgroundColor: COLORS.white,
+        borderRadius: ms(10),
+        marginTop: ms(5),
+        marginRight: ms(8),
+        paddingHorizontal: ms(12),
+      }}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: ms(10),
+        }}
+      >
+        <Image
+          source={profitIcon}
+          style={{ height: ms(15), width: ms(15), resizeMode: 'contain' }}
+        />
+        <Text style={styles.graphTitle}> {'Total Orders'}</Text>
+      </View>
       <View style={styles.headerContainer}>
         <HeaderView
           image={locationSales}
@@ -140,7 +169,7 @@ export function TotalOrders({ onPressReview }) {
         />
       </View>
 
-      <Spacer space={ms(15)} />
+      {/* <Spacer space={ms(15)} /> */}
 
       <View style={styles.tableMainView}>
         <ScrollView
@@ -177,7 +206,7 @@ export function TotalOrders({ onPressReview }) {
             <View style={styles.mainListContainer}>
               {isTotalOrderLoading ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                  <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
                 </View>
               ) : totalOrder?.order_listing?.length === 0 ? (
                 <View style={styles.listLoader}>

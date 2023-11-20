@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { backArrow2, locationSales, margin, profit, revenueTotal } from '@/assets';
+import { backArrow2, locationSales, margin, profit, profitIcon, revenueTotal } from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
@@ -81,7 +81,9 @@ export function TotalProductSold({ sellerID, data }) {
   const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
 
   const renderFooter = () => {
-    return isSoldProductLoading ? <ActivityIndicator size="large" color={COLORS.primary} /> : null;
+    return isSoldProductLoading ? (
+      <ActivityIndicator size="large" color={COLORS.navy_blue} />
+    ) : null;
   };
   const interval = 1;
   const maxLabel = 31;
@@ -91,7 +93,16 @@ export function TotalProductSold({ sellerID, data }) {
   const labelsProductSold = generateLabels(dataLabelsProductSold, interval, maxLabel, daysLength);
 
   const getSoldProductList = ({ item, index }) => (
-    <DataTable.Row>
+    <DataTable.Row
+      style={{
+        borderColor: COLORS.sky_grey,
+        borderWidth: 2,
+        borderRadius: ms(25),
+        marginBottom: ms(6),
+        borderBottomWidth: 2,
+        borderBottomColor: COLORS.sky_grey,
+      }}
+    >
       <DataTable.Cell style={styles.dateTablealignStart2}>
         <Text>{index + 1 + '.    '}</Text>
         <Text style={styles.revenueDataText}>{item?.product_name}</Text>
@@ -125,7 +136,7 @@ export function TotalProductSold({ sellerID, data }) {
         <Text style={styles.text}>{text}</Text>
         {isLoading ? (
           <ActivityIndicator
-            color={COLORS.primary}
+            color={COLORS.navy_blue}
             size={'small'}
             style={{ alignSelf: 'flex-start' }}
           />
@@ -138,8 +149,29 @@ export function TotalProductSold({ sellerID, data }) {
   );
 
   return (
-    <View style={styles.flex1}>
-      <Text style={styles.graphTitle}> {'Total Proucts Sold'}</Text>
+    <View
+      style={{
+        height: '97%',
+        backgroundColor: COLORS.white,
+        borderRadius: ms(10),
+        marginTop: ms(5),
+        marginRight: ms(8),
+        paddingHorizontal: ms(12),
+      }}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: ms(10),
+        }}
+      >
+        <Image
+          source={profitIcon}
+          style={{ height: ms(15), width: ms(15), resizeMode: 'contain' }}
+        />
+        <Text style={styles.graphTitle}> {'Total Proucts Sold'}</Text>
+      </View>
 
       <View style={styles.headerContainer}>
         <HeaderView
@@ -231,7 +263,7 @@ export function TotalProductSold({ sellerID, data }) {
           withVerticalLines={false}
         />
       </View> */}
-      <Spacer space={ms(15)} />
+      {/* <Spacer space={ms(15)} /> */}
 
       <View style={styles.tableMainView}>
         <ScrollView
@@ -265,7 +297,7 @@ export function TotalProductSold({ sellerID, data }) {
             <View style={[styles.mainListContainer]}>
               {/* {isSoldProductLoading ? (
                 <View style={styles.loaderView}>
-                  <ActivityIndicator color={COLORS.primary} size={'small'} />
+                  <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
                 </View>
               ) :  */}
 

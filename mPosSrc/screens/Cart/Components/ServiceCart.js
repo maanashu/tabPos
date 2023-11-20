@@ -49,6 +49,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { updateServiceCartLength } from '@/actions/CartAction';
 import { getServiceCartLength } from '@/selectors/CartSelector';
+import { ReactNativeModal } from 'react-native-modal';
 
 export function ServiceCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -475,18 +476,14 @@ export function ServiceCart({ cartChangeHandler }) {
       >
         <AddNotes notesClose={() => setAddNotes(false)} />
       </Modal>
-      <Modal
+      <ReactNativeModal
         animationType="fade"
         transparent={true}
         isVisible={addDiscount}
         onBackdropPress={() => setAddDiscount(false)}
       >
-        {/* <KeyboardAvoidingView>
-          <ScrollView> */}
         <AddDiscount discountClose={() => setAddDiscount(false)} />
-        {/* </ScrollView>
-        </KeyboardAvoidingView> */}
-      </Modal>
+      </ReactNativeModal>
       <Modal
         animationType="fade"
         transparent={true}
@@ -503,16 +500,6 @@ export function ServiceCart({ cartChangeHandler }) {
         </KeyboardAwareScrollView>
       </Modal>
 
-      {/* <Modal visible={customProductAdd}>
-        <KeyboardAvoidingView
-          behavior="padding"
-          // style={{ flex: 1 }}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-        >
-          <CustomProductAdd customProductClose={() => setCustomProductAdd(false)} />
-        </KeyboardAvoidingView>
-      </Modal> */}
-
       <Modal
         animationType="fade"
         transparent={true}
@@ -522,7 +509,7 @@ export function ServiceCart({ cartChangeHandler }) {
         <PriceChange priceChangeClose={() => setPriceChange(false)} {...{ cartProduct }} />
       </Modal>
 
-      <Modal
+      <ReactNativeModal
         animationType="fade"
         transparent={true}
         isVisible={productCustomerAdd}
@@ -530,7 +517,7 @@ export function ServiceCart({ cartChangeHandler }) {
       >
         <ProductCustomerAdd crossHandler={() => setProductCustomerAdd(false)} />
         {/* <NewCustomerAdd /> */}
-      </Modal>
+      </ReactNativeModal>
 
       <CartAmountByPay
         {...{ cartAmountByPayRef, cashPayNowHandler, cartAmountByPayCross, jbrCoinSheetshow }}

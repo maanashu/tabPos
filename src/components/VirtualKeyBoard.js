@@ -6,12 +6,16 @@ import { Button } from './Button';
 import { COLORS, SF, SH } from '@/theme';
 import { Fonts } from '@/assets';
 import { goBack } from '@/navigation/NavigationRef';
+import { ms } from 'react-native-size-matters';
+import { ButtonIcon } from './ButtonIcon';
+import { Images } from '@/assets/new_icon';
 
 export const VirtualKeyBoard = ({
   maxCharLength,
   enteredValue,
   setEnteredValue,
   isButtonLoading,
+  isBackButtonDisbaled = false,
   onPressContinueButton = () => {},
   screen,
 }) => {
@@ -50,7 +54,7 @@ export const VirtualKeyBoard = ({
         )}
         ListFooterComponent={() => (
           <View style={screen === 'passcode' ? styles.buttonViewStyle : styles.continueMainView}>
-            {screen === 'passcode' && (
+            {/* {screen === 'passcode' && (
               <Button
                 onPress={() => goBack()}
                 textStyle={[styles.buttonText, { color: COLORS.dark_grey }]}
@@ -65,9 +69,48 @@ export const VirtualKeyBoard = ({
                   },
                 ]}
               />
-            )}
+            )} */}
 
-            <Button
+            <View style={{ flexDirection: 'row' }}>
+              <ButtonIcon
+                disabled={isBackButtonDisbaled}
+                onPress={() => goBack()}
+                style={{
+                  width: 'auto',
+                  height: ms(35),
+                  padding: ms(10),
+                  backgroundColor: '#F5F6FC',
+                  borderWidth: 0,
+                  borderRadius: ms(20),
+                  marginHorizontal: 0,
+                }}
+                textStyle={{ fontSize: ms(12), fontFamily: Fonts.Regular }}
+                iconStyle={{ height: ms(15), width: ms(15) }}
+                icon={Images.arrowLeftUp}
+                title={'Back'}
+              />
+              <ButtonIcon
+                pending={isButtonLoading}
+                iconPostion="right"
+                style={{
+                  width: 'auto',
+                  height: ms(35),
+                  padding: ms(10),
+                  backgroundColor: COLORS.dark_blue,
+                  borderWidth: 0,
+                  borderRadius: ms(20),
+                  marginLeft: ms(20),
+                  marginHorizontal: 0,
+                }}
+                textStyle={{ fontSize: ms(12), fontFamily: Fonts.Regular, color: COLORS.white }}
+                iconStyle={{ height: ms(15), width: ms(15), transform: [{ rotate: '90deg' }] }}
+                icon={Images.arrowLeftUp}
+                onPress={onPressContinueButton}
+                title={'Next'}
+              />
+            </View>
+
+            {/* <Button
               pending={isButtonLoading}
               onPress={onPressContinueButton}
               title={strings.verifyPhone.button}
@@ -93,7 +136,7 @@ export const VirtualKeyBoard = ({
                       { color: screen === 'passcode' ? COLORS.white : COLORS.darkGray },
                     ]
               }
-            />
+            /> */}
           </View>
         )}
       />

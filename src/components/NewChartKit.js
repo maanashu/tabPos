@@ -88,15 +88,15 @@ export function NewChartKit({
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.265
+              ? Dimensions.get('window').width * 0.255
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? ms(115) : SH(160)}
+          height={Platform.OS === 'android' ? ms(105) : SH(160)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
-            backgroundGradientFrom: COLORS.lightBlueBG,
-            backgroundGradientTo: COLORS.lightBlueBG,
+            backgroundGradientFrom: COLORS.sky_grey,
+            backgroundGradientTo: COLORS.sky_grey,
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             style: {
@@ -145,10 +145,10 @@ export function NewChartKit({
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.275
+              ? Dimensions.get('window').width * 0.265
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? ms(100) : SH(165)}
+          height={Platform.OS === 'android' ? ms(90) : SH(165)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -177,7 +177,7 @@ export function NewChartKit({
           withShadow={false}
           fromZero
           bezier
-          xLabelsOffset={ms(-2)}
+          xLabelsOffset={ms(-4)}
         />
       ) : (
         <LineChart
@@ -193,10 +193,10 @@ export function NewChartKit({
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.275
+              ? Dimensions.get('window').width * 0.265
               : Dimensions.get('window').width * 0.26
           }
-          height={Platform.OS === 'android' ? ms(120) : SH(165)}
+          height={Platform.OS === 'android' ? ms(110) : SH(165)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
