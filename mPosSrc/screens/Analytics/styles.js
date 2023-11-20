@@ -424,9 +424,8 @@ export const styles = StyleSheet.create({
     borderRadius: ms(2),
   },
   loaderView: {
-    alignItems: 'center',
-    justifyContent: 'center',
     paddingVertical: ms(30),
+    marginRight: ms(250),
   },
   headerMainView: {
     // height: SH(55),
