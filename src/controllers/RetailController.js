@@ -1551,33 +1551,25 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.customServiceAdd;
-      const body = data?.notes
-        ? {
-            seller_id: sellerID,
-            price: data?.price,
-            name: data?.productName,
-            description: data?.notes,
-            type: 'digital',
-            qty: data?.qty,
-            date: data?.date,
-            start_time: data?.startTime,
-            end_time: data?.endTime,
-          }
-        : {
-            seller_id: sellerID,
-            price: data?.price,
-            name: data?.productName,
-            type: 'digital',
-            qty: data?.qty,
-            date: data?.date,
-            start_time: data?.startTime,
-            end_time: data?.endTime,
-          };
+      const body = {
+        seller_id: sellerID,
+        price: data?.price,
+        name: data?.productName,
+        ...(data?.notes && { description: data?.notes }),
+        type: 'digital',
+        qty: data?.qty,
+        date: data?.date,
+        start_time: data?.startTime,
+        end_time: data?.endTime,
+      };
+      console.log('endpoint', endpoint);
+      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
+          console.log(error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',

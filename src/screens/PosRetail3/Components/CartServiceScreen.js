@@ -17,6 +17,7 @@ import {
   cartEdit,
   checkArrow,
   cross,
+  crossButton,
   eraser,
   holdCart,
   newCustomer,
@@ -62,6 +63,7 @@ import { useMemo } from 'react';
 import { NewCustomerAddService } from './NewCustomerAddService';
 import Toast from 'react-native-toast-message';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { Images } from '@/assets/new_icon';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -281,10 +283,8 @@ export function CartServiceScreen({
                   getScreen('Service');
                 }}
               >
-                <Image source={rightBack} style={styles.arrowStyle} />
-                <Text style={[styles.holdCart, { color: COLORS.dark_grey }]}>
-                  {strings.posRetail.backServicescreen}
-                </Text>
+                <Image source={Images.arrowLeftUp} style={styles.arrowStyle} />
+                <Text style={styles.fullCartText}>{'Full Cart'}</Text>
               </TouchableOpacity>
               <View style={[styles.barcodeInputWraper, styles.cartSearchInputWraper]}>
                 <View style={styles.displayRow}>
@@ -296,7 +296,7 @@ export function CartServiceScreen({
                     style={[styles.sideBarsearchInput, styles.searchCartInput]}
                     value={cartSearch}
                     onChangeText={setCartSearch}
-                    placeholderTextColor={COLORS.gerySkies}
+                    placeholderTextColor={COLORS.lavender}
                   />
                   {cartSearch?.length > 0 ? (
                     <TouchableOpacity
@@ -310,6 +310,8 @@ export function CartServiceScreen({
                 </View>
               </View>
             </View>
+            <Spacer space={SH(10)} />
+            <View style={{ borderWidth: 0.5, borderColor: COLORS.light_purple }}></View>
             <Spacer space={SH(10)} />
             <View style={styles.blueListHeader}>
               <View style={styles.displayflex}>
@@ -370,18 +372,17 @@ export function CartServiceScreen({
                                 style={styles.cartItemImage}
                               />
 
-                              <View style={{ marginLeft: 10 }}>
+                              <View style={{ marginLeft: ms(2) }}>
                                 <Text
                                   style={[
                                     styles.holdCart,
                                     { color: COLORS.dark_grey, width: SW(40) },
                                   ]}
-                                  numberOfLines={1}
                                 >
                                   {data.product_details?.name}
                                 </Text>
                                 <Text
-                                  style={[styles.sukNumber, { width: SW(40) }]}
+                                  style={[styles.sukNumber, { width: SW(20) }]}
                                   numberOfLines={1}
                                 >
                                   {moment(data?.date).format('LL')} @
@@ -493,7 +494,7 @@ export function CartServiceScreen({
                                 <TouchableOpacity
                                   onPress={() => removeOneCartHandler(data.id, ind)}
                                 >
-                                  <Image source={borderCross} style={styles.borderCross} />
+                                  <Image source={crossButton} style={styles.borderCross} />
                                 </TouchableOpacity>
                               </View>
                             </View>
@@ -551,7 +552,7 @@ export function CartServiceScreen({
               </TouchableOpacity>
             </View>
             <Spacer space={SH(10)} />
-            <View>
+            <View style={{ flex: 1 }}>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
@@ -617,7 +618,7 @@ export function CartServiceScreen({
                 )}
               </View>
               <Spacer space={SH(10)} />
-              <View style={styles.displayflex}>
+              <View style={[styles.displayflex, { marginVertical: ms(10) }]}>
                 <TouchableOpacity
                   style={styles.addDiscountCon()}
                   onPress={() => {
@@ -641,7 +642,62 @@ export function CartServiceScreen({
                   <Text style={styles.addDiscountText}>Add Notes</Text>
                 </TouchableOpacity>
               </View>
-              <Spacer space={SH(10)} />
+              <View style={styles.discountCon}>
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>Sub Total</Text>
+                  <Text style={styles.subTotalDollar}>
+                    ${cartServiceData?.amount?.products_price.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
+
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>Total Taxes</Text>
+                  <Text style={styles.subTotalDollar}>
+                    ${cartServiceData?.amount?.tax.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
+
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>{`Discount ${
+                    cartServiceData?.discount_flag === 'percentage' ? '(%)' : ''
+                  } `}</Text>
+                  <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
+                    {formattedReturnPrice(cartServiceData?.amount?.discount)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderStyle: 'dashed',
+                    borderColor: COLORS.solidGrey,
+                    marginVertical: ms(10),
+                  }}
+                />
+
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.itemValue}>Total</Text>
+                  <Text style={styles.itemValue}>
+                    ${cartServiceData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity
+                  style={[
+                    styles.checkoutButtonSideBar,
+                    { opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7 },
+                  ]}
+                  // onPress={() => {
+                  //   backCartLoad();
+                  //   onPressPayNow();
+                  // }}
+                  onPress={() => payNowHandler()}
+                  disabled={cartServiceData?.appointment_cart_products?.length > 0 ? false : true}
+                >
+                  <Text style={styles.checkoutText}>{strings.posRetail.procedtoCheckout}</Text>
+                  <Image source={checkArrow} style={styles.checkArrow} />
+                </TouchableOpacity>
+              </View>
+              {/* <Spacer space={SH(10)} />
               <View style={styles.totalItemCon}>
                 <Text style={styles.totalItem}>
                   {strings.dashboard.totalItem} {cartServiceData?.appointment_cart_products?.length}
@@ -682,10 +738,9 @@ export function CartServiceScreen({
                 <Text style={[styles.subTotalDollar, styles.itemValueBold]}>
                   ${cartServiceData?.amount?.total_amount.toFixed(2) ?? '0.00'}
                 </Text>
-              </View>
+              </View> */}
             </View>
-            <View style={{ flex: 1 }} />
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[
                 styles.checkoutButtonSideBar,
                 // { opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7 },
@@ -704,7 +759,7 @@ export function CartServiceScreen({
             >
               <Text style={styles.checkoutText}>{strings.posRetail.procedtoCheckout}</Text>
               <Image source={checkArrow} style={styles.checkArrow} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

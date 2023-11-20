@@ -23,6 +23,7 @@ import {
   cartEdit,
   checkArrow,
   cross,
+  crossButton,
   eraser,
   holdCart,
   minus,
@@ -64,6 +65,7 @@ import { useCallback } from 'react';
 import { useMemo } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { Images } from '@/assets/new_icon';
 
 export function CartScreen({
   onPressPayNow,
@@ -305,10 +307,8 @@ export function CartScreen({
                   // dispatch(getUserDetailSuccess([]));
                 }}
               >
-                <Image source={rightBack} style={styles.arrowStyle} />
-                <Text style={[styles.holdCart, { color: COLORS.dark_grey }]}>
-                  {strings.posRetail.backProdscreen}
-                </Text>
+                <Image source={Images.arrowLeftUp} style={styles.arrowStyle} />
+                <Text style={styles.fullCartText}>{'Full Cart'}</Text>
               </TouchableOpacity>
               <View style={[styles.barcodeInputWraper, styles.cartSearchInputWraper]}>
                 <View style={styles.displayRow}>
@@ -320,7 +320,7 @@ export function CartScreen({
                     style={[styles.sideBarsearchInput, styles.searchCartInput]}
                     value={cartSearch}
                     onChangeText={setCartSearch}
-                    placeholderTextColor={COLORS.gerySkies}
+                    placeholderTextColor={COLORS.lavender}
                   />
                   {cartSearch?.length > 0 ? (
                     <TouchableOpacity
@@ -334,6 +334,8 @@ export function CartScreen({
                 </View>
               </View>
             </View>
+            <Spacer space={SH(10)} />
+            <View style={{ borderWidth: 0.5, borderColor: COLORS.light_purple }}></View>
             <Spacer space={SH(10)} />
             <View style={styles.blueListHeader}>
               <View style={styles.displayflex}>
@@ -392,7 +394,7 @@ export function CartScreen({
                               <View style={{ marginLeft: 10 }}>
                                 <Text
                                   style={[styles.blueListDataText, { width: SW(40) }]}
-                                  numberOfLines={1}
+                                  numberOfLines={3}
                                 >
                                   {data.product_details?.name}
                                 </Text>
@@ -424,7 +426,7 @@ export function CartScreen({
                               >
                                 <TouchableOpacity
                                   style={{
-                                    width: SW(10),
+                                    width: ms(10),
                                     alignItems: 'center',
                                   }}
                                   onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
@@ -432,12 +434,13 @@ export function CartScreen({
                                 >
                                   <Image source={minus} style={styles.minus} />
                                 </TouchableOpacity>
-                                {/* <Text style={styles.dataQty}>{data.qty}</Text> */}
-                                <Text>{data.qty}</Text>
+                                <View style={styles.dataQtyCon}>
+                                  <Text style={styles.dataQty}>{data.qty}</Text>
+                                </View>
 
                                 <TouchableOpacity
                                   style={{
-                                    width: SW(10),
+                                    width: ms(10),
                                     alignItems: 'center',
                                   }}
                                   onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
@@ -470,7 +473,7 @@ export function CartScreen({
                                       styles.saveButtonCon,
                                       {
                                         backgroundColor: unitPrice
-                                          ? COLORS.primary
+                                          ? COLORS.navy_blue
                                           : COLORS.textInputBackground,
                                       },
                                     ]}
@@ -498,7 +501,7 @@ export function CartScreen({
                                 <TouchableOpacity
                                   onPress={() => removeOneCartHandler(data.id, ind)}
                                 >
-                                  <Image source={borderCross} style={styles.borderCross} />
+                                  <Image source={crossButton} style={styles.borderCross} />
                                 </TouchableOpacity>
                               </View>
                             </View>
@@ -537,7 +540,7 @@ export function CartScreen({
               <TouchableOpacity
                 style={[
                   styles.holdCartPad,
-                  { borderColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.black },
+                  { borderColor: holdProductArray?.length > 0 ? COLORS.navy_blue : COLORS.black },
                 ]}
                 onPress={cartStatusHandler}
               >
@@ -545,7 +548,9 @@ export function CartScreen({
                   source={holdCart}
                   style={[
                     styles.keyboardIcon,
-                    { tintColor: holdProductArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
+                    {
+                      tintColor: holdProductArray?.length > 0 ? COLORS.navy_blue : COLORS.dark_grey,
+                    },
                   ]}
                 />
               </TouchableOpacity>
@@ -563,7 +568,7 @@ export function CartScreen({
                 </View>
                 {availableOfferLoad ? (
                   <View style={{ marginTop: ms(30) }}>
-                    <ActivityIndicator size="small" color={COLORS.primary} />
+                    <ActivityIndicator size="small" color={COLORS.navy_blue} />
                   </View>
                 ) : (
                   <FlatList
@@ -624,8 +629,8 @@ export function CartScreen({
                   />
                 )}
               </View>
-              <Spacer space={SH(10)} />
-              <View style={styles.displayflex}>
+
+              <View style={[styles.displayflex, { marginVertical: ms(10) }]}>
                 <TouchableOpacity
                   style={styles.addDiscountCon()}
                   onPress={() => {
@@ -649,70 +654,61 @@ export function CartScreen({
                   <Text style={styles.addDiscountText}>Add Notes</Text>
                 </TouchableOpacity>
               </View>
+              <View style={styles.discountCon}>
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>Sub Total</Text>
+                  <Text style={styles.subTotalDollar}>
+                    ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
 
-              <Spacer space={SH(10)} />
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>Total Taxes</Text>
+                  <Text style={styles.subTotalDollar}>
+                    ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
 
-              <View style={styles.totalItemCon}>
-                <Text style={styles.totalItem}>
-                  {strings.dashboard.totalItem} {cartData?.poscart_products?.length}
-                </Text>
-              </View>
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>{`Discount ${
+                    cartData?.discount_flag === 'percentage' ? '(%)' : ''
+                  } `}</Text>
+                  <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
+                    {formattedReturnPrice(cartData?.amount?.discount)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderStyle: 'dashed',
+                    borderColor: COLORS.solidGrey,
+                    marginVertical: ms(10),
+                  }}
+                />
 
-              <Spacer space={SH(5)} />
-
-              <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>Sub Total</Text>
-                <Text style={styles.subTotalDollar}>
-                  ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
-                </Text>
-              </View>
-              <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>Total Taxes</Text>
-                <Text style={styles.subTotalDollar}>
-                  ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
-                </Text>
-              </View>
-
-              <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>{`Discount ${
-                  cartData?.discount_flag === 'percentage' ? '(%)' : ''
-                } `}</Text>
-                <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                  {formattedReturnPrice(cartData?.amount?.discount)}
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderStyle: 'dashed',
-                  borderColor: COLORS.solidGrey,
-                }}
-              />
-
-              <Spacer space={SH(5)} />
-              <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.itemValue}>Item value</Text>
-                <Text style={[styles.subTotalDollar, styles.itemValueBold]}>
-                  ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
-                </Text>
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.itemValue}>Total</Text>
+                  <Text style={styles.itemValue}>
+                    ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity
+                  style={[
+                    styles.checkoutButtonSideBar,
+                    { opacity: cartData?.poscart_products?.length > 0 ? 1 : 0.7 },
+                  ]}
+                  onPress={() => {
+                    beforeDiscountCartLoad();
+                    onPressPayNow();
+                  }}
+                  disabled={cartData?.poscart_products?.length > 0 ? false : true}
+                >
+                  <Text style={styles.checkoutText}>{strings.posRetail.procedtoCheckout}</Text>
+                  <Image source={checkArrow} style={styles.checkArrow} />
+                </TouchableOpacity>
               </View>
             </View>
-
-            <TouchableOpacity
-              style={[
-                styles.checkoutButtonSideBar,
-                { opacity: cartData?.poscart_products?.length > 0 ? 1 : 0.7 },
-              ]}
-              onPress={() => {
-                beforeDiscountCartLoad();
-                onPressPayNow();
-              }}
-              disabled={cartData?.poscart_products?.length > 0 ? false : true}
-            >
-              <Text style={styles.checkoutText}>{strings.posRetail.procedtoCheckout}</Text>
-              <Image source={checkArrow} style={styles.checkArrow} />
-            </TouchableOpacity>
           </View>
         </View>
       </View>

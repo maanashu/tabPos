@@ -457,9 +457,9 @@ export const styles = StyleSheet.create({
     };
   },
   addDiscountText: {
-    color: COLORS.dark_grey,
-    fontSize: ms(6.5),
-    fontFamily: Fonts.MaisonRegular,
+    color: COLORS.coffee,
+    fontSize: ms(7.5),
+    fontFamily: Fonts.Medium,
   },
   addDiscountPic: {
     width: SW(5),
@@ -484,22 +484,20 @@ export const styles = StyleSheet.create({
   },
   subTotal: {
     fontSize: SF(14),
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.MaisonBold,
+    color: COLORS.lavender,
+    fontFamily: Fonts.Medium,
   },
   subTotalDollar: {
     fontSize: SF(14),
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
   },
   itemValue: {
     fontSize: SF(16),
-    color: COLORS.solid_grey,
-    fontFamily: Fonts.MaisonBold,
+    color: COLORS.textBlue,
+    fontFamily: Fonts.Medium,
   },
-  itemValueBold: {
-    fontFamily: Fonts.SemiBold,
-  },
+
   checkoutButtonSideBar: {
     width: windowWidth * 0.22,
     height: ms(35),
@@ -514,7 +512,7 @@ export const styles = StyleSheet.create({
   checkoutText: {
     color: COLORS.white,
     fontSize: SF(16),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
   },
   checkArrow: {
     width: SW(10),
@@ -951,7 +949,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(15),
   },
   tableListSide: {
-    width: windowWidth * 0.25,
+    width: windowWidth * 0.22,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -970,7 +968,7 @@ export const styles = StyleSheet.create({
     marginVertical: verticalScale(2),
   },
   blueListDataText: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(13),
     fontFamily: Fonts.Regular,
   },
@@ -1006,8 +1004,8 @@ export const styles = StyleSheet.create({
   listCountCon: {
     borderWidth: 1,
     width: SW(30),
-    height: SH(40),
-    borderRadius: ms(8),
+    height: SH(35),
+    borderRadius: ms(4),
     borderColor: COLORS.light_purple,
     // paddingVertical: verticalScale(1),
     flexDirection: 'row',
@@ -1016,9 +1014,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   borderCross: {
-    width: SW(5),
-    height: SW(5),
+    width: ms(13),
+    height: ms(13),
     resizeMode: 'contain',
+    tintColor: COLORS.red,
   },
   _subTotalContainer: {
     flexDirection: 'row',
@@ -1211,21 +1210,21 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Medium,
   },
   backProScreen: {
-    backgroundColor: COLORS.washGrey,
-    width: SW(65),
-    borderRadius: 5,
-    height: SH(45),
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: ms(10),
+    // alignItems: 'center',
+    marginHorizontal: ms(10),
   },
   arrowStyle: {
-    width: SW(5),
-    height: SW(5),
+    width: SW(8),
+    height: SW(8),
     resizeMode: 'contain',
-    tintColor: COLORS.solid_grey,
-    transform: [{ rotate: '180deg' }],
+    tintColor: COLORS.navy_blue,
+  },
+  fullCartText: {
+    color: COLORS.navy_blue,
+    fontSize: ms(12),
+    fontFamily: Fonts.SemiBold,
   },
   iconStyle: {
     width: SW(8),
@@ -1361,14 +1360,7 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.42,
     paddingHorizontal: ms(5),
   },
-  sideSearchStyle: {
-    width: SW(6),
-    height: SW(6),
-    resizeMode: 'contain',
-    marginLeft: moderateScale(5),
-    marginRight: moderateScale(5),
-    tintColor: COLORS.gerySkies,
-  },
+
   productImageStyle: {
     width: SW(6),
     height: SW(6),
@@ -1383,9 +1375,9 @@ export const styles = StyleSheet.create({
   sideBarsearchInput: {
     flex: 0.9,
     borderRadius: 7,
-    fontFamily: Fonts.Italic,
-    fontSize: SF(11),
-    color: COLORS.solid_grey,
+    fontFamily: Fonts.Medium,
+    fontSize: SF(13),
+    color: COLORS.lavender,
     height: SH(40),
   },
   searchCartInput: {
@@ -2124,7 +2116,7 @@ export const styles = StyleSheet.create({
 
   cartHeaderLeftSide: {
     flexDirection: 'row',
-    width: windowWidth * 0.22,
+    width: windowWidth * 0.18,
   },
   cartHeaderRightSide: {
     flexDirection: 'row',
@@ -2140,7 +2132,7 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SF(14),
     fontFamily: Fonts.Medium,
-    width: windowWidth * 0.18,
+    width: windowWidth * 0.13,
   },
   cartBodyRightSide: {
     color: COLORS.solid_grey,
@@ -2310,7 +2302,7 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontSize: SF(13),
     fontFamily: Fonts.Regular,
-    borderRadius: 3,
+    borderRadius: ms(4),
     paddingHorizontal: ms(3),
   },
   unitPriceInputWidth: {
@@ -2332,7 +2324,7 @@ export const styles = StyleSheet.create({
   },
   productCartBodyRight: {
     // borderWidth: 1,
-    width: Platform.OS === 'android' ? ms(330) : ms(255),
+    width: Platform.OS === 'android' ? ms(330) : ms(240),
     height: ms(20),
     flexDirection: 'row',
   },
@@ -2344,20 +2336,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   serviceCartRightBody: {
-    // borderWidth: 1,
     width: Platform.OS === 'android' ? ms(360) : ms(280),
     height: ms(20),
     flexDirection: 'row',
   },
   serviceCartBody: {
-    // borderWidth: 1,
-    width: Platform.OS === 'android' ? ms(68) : ms(54),
+    width: Platform.OS === 'android' ? ms(68) : ms(52),
     height: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
   },
   cartHeaderBodyRighSide: {
-    color: COLORS.white,
+    color: COLORS.lavender,
     fontSize: SF(14),
     fontFamily: Fonts.Medium,
   },
@@ -2431,12 +2421,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   sideSearchStyle: {
-    width: SW(6),
-    height: SW(6),
+    width: SW(8),
+    height: SW(8),
     resizeMode: 'contain',
     marginLeft: moderateScale(5),
     marginRight: moderateScale(5),
-    tintColor: COLORS.gerySkies,
+    tintColor: COLORS.navy_blue,
   },
   searchCustomerInput: {
     flex: 1,
@@ -2507,12 +2497,23 @@ export const styles = StyleSheet.create({
     borderRadius: ms(30),
   },
   dataQty: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(8),
+    color: COLORS.navy_blue,
+  },
+  dataQtyCon: {
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: COLORS.light_purple,
-    height: SH(40),
+    height: SH(35),
     width: ms(20),
-    textAlignVertical: 'center',
+    borderColor: COLORS.light_purple,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  discountCon: {
+    backgroundColor: COLORS.textInputBackground,
+    flexGrow: 1,
+    borderRadius: ms(12),
+    padding: ms(10),
   },
 });
