@@ -240,12 +240,24 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
           </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity onPress={crossHandler}>
+      {/* <TouchableOpacity onPress={crossHandler}>
         <Image
           source={crossButton}
           style={[styles.crossButton, { tintColor: COLORS.solid_grey }]}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <Spacer space={SH(12)} />
+      <View style={styles.addNotesCon}>
+        <Image source={Images.addNotesIcon} style={styles.dollar} />
+        <TextInput
+          placeholder="Add Notes"
+          style={styles.dollarInput}
+          placeholderTextColor={COLORS.placeHoldeText}
+          keyboardType="number-pad"
+          value={amount}
+          onChangeText={setAmount}
+        />
+      </View>
     </KeyboardAwareScrollView>
   );
 }
@@ -346,6 +358,15 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
     fontSize: ms(11),
+  },
+  addNotesCon: {
+    height: ms(34),
+    borderRadius: ms(10),
+    borderColor: COLORS.light_purple,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: ms(10),
   },
 });
 // import React, { useState } from 'react';
