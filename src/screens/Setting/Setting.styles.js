@@ -14,12 +14,24 @@ export const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  rowAligned: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
   dispalyRow: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  upgradePlanView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.sky_grey,
+    borderRadius: 30,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
   },
   countryStateWidth: {
     width: windowWidth * 0.36,
@@ -79,18 +91,21 @@ export const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   HeaderLabelText: {
-    fontSize: SF(16),
+    fontSize: SF(18),
     fontFamily: Fonts.SemiBold,
-    color: COLORS.black,
+    color: COLORS.navy_blue,
+    textAlign: 'center',
   },
 
   // setting security css start
   securityMainCon: {
-    borderWidth: 1,
-    borderColor: COLORS.light_purple,
-    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: COLORS.sky_blue,
+    borderRadius: 20,
     // height: windowHeight * 0.33,
-    padding: 15,
+    paddingVertical: ms(15),
+    paddingHorizontal: ms(20),
+    marginHorizontal: ms(15),
   },
   securityStaffMainCon: {
     // borderWidth: 1,
@@ -112,17 +127,22 @@ export const styles = StyleSheet.create({
     padding: 15,
   },
   securityLogo: {
-    width: SW(10),
-    height: SW(10),
-    resizeMode: 'contain',
+    width: SW(8),
+    height: SW(8),
+    top: SH(-6),
   },
   twoStepVerifiCon: {
     flex: 1,
     paddingHorizontal: moderateScale(10),
   },
   twoStepText: {
-    fontSize: SF(18),
+    fontSize: SF(24),
     fontFamily: Fonts.MaisonBold,
+    color: COLORS.navy_blue,
+  },
+  mainHeading: {
+    fontSize: SF(24),
+    fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
   },
   securitysubhead: {
@@ -133,11 +153,20 @@ export const styles = StyleSheet.create({
   twoStepMemberCon: {
     borderWidth: 1,
     borderColor: COLORS.light_purple,
-    borderRadius: ms(20),
+    borderRadius: SH(20),
     paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(4),
     marginVertical: verticalScale(3),
-    height: SH(96),
+    height: SH(100),
+    justifyContent: 'center',
+  },
+  locationsView: {
+    borderRadius: SH(20),
+    paddingHorizontal: moderateScale(12),
+    paddingVertical: verticalScale(4),
+    marginVertical: verticalScale(3),
+    height: SH(90),
+    backgroundColor: COLORS.sky_grey,
     justifyContent: 'center',
   },
   twoStepMemberConTax: {
@@ -151,6 +180,12 @@ export const styles = StyleSheet.create({
     height: SW(10),
     resizeMode: 'contain',
     borderRadius: 100,
+  },
+  locationPinStyle: {
+    width: ms(15),
+    height: ms(15),
+    // top: ms(-5),
+    marginRight: ms(10),
   },
   teamMember2: {
     width: SW(10),
@@ -169,17 +204,32 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   marginLeft: {
-    marginLeft: moderateScale(8),
+    // marginLeft: moderateScale(8),
     flex: 1,
   },
-  modalMainView: {
-    width: windowWidth * 0.5,
-    height: windowHeight * 0.8,
-    borderRadius: 10,
-    borderWidth: 1,
+  confirmModalView: {
+    width: windowWidth * 0.32,
+    height: windowHeight * 0.73,
+    borderRadius: 30,
     alignSelf: 'center',
     position: 'absolute',
     backgroundColor: COLORS.white,
+    paddingVertical: ms(20),
+    paddingHorizontal: SW(15),
+    alignItems: 'center',
+    flex: 1,
+  },
+  modalMainView: {
+    width: windowWidth * 0.32,
+    height: windowHeight * 0.8,
+    borderRadius: 30,
+    alignSelf: 'center',
+    position: 'absolute',
+    backgroundColor: COLORS.white,
+    paddingVertical: ms(20),
+    paddingHorizontal: SW(15),
+    alignItems: 'center',
+    flex: 1,
   },
   blueToothModalHeight: {
     height: windowHeight * 0.65,
@@ -271,8 +321,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   checkArrow: {
-    width: SW(8),
-    height: SW(3),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(6),
     tintColor: COLORS.darkGray,
@@ -341,7 +391,7 @@ export const styles = StyleSheet.create({
     marginLeft: 5,
   },
   scanner: {
-    width: SW(140),
+    width: SW(100),
     height: SW(30),
     resizeMode: 'contain',
   },
@@ -435,31 +485,53 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonRegular,
   },
   everyThingNeed: {
-    color: COLORS.dark_grey,
+    color: COLORS.lavender,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
   },
   changePlanText: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(14),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Regular,
+  },
+  includedText: {
+    color: COLORS.sky_blue,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
   },
   radioFillPlan: {
     width: SW(7),
     height: SW(7),
     resizeMode: 'contain',
     marginHorizontal: moderateScale(4),
+    // item?.name == 'Standard'
+    // ? COLORS.lavenders
+    // : item?.name == 'Premium'
+    // ? COLORS.navy_blue
+    // : COLORS.sky_blue,
+  },
+  appIncludedIcon: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    marginHorizontal: moderateScale(4),
+
+    // COLORS.navy_blue
+    //  COLORS.sky_blue
   },
   checkmark: {
-    width: SW(5),
-    height: SW(5),
-    resizeMode: 'contain',
+    width: SW(4),
+    height: SW(4),
     marginHorizontal: moderateScale(4),
   },
   billingDateCon: {
-    borderTopWidth: 1,
-    borderColor: COLORS.solidGrey,
-    paddingVertical: verticalScale(4),
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
+    borderRadius: 16,
+    flex: 1,
+    padding: 16,
+    height: ms(65),
+    justifyContent: 'center',
   },
   visa: {
     width: SW(12),
@@ -495,7 +567,7 @@ export const styles = StyleSheet.create({
     height: SW(10),
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 30,
     marginHorizontal: moderateScale(4),
   },
   monthlyBil: {
@@ -503,18 +575,27 @@ export const styles = StyleSheet.create({
     fontSize: SF(11),
     fontFamily: Fonts.Regular,
   },
-  basicContainer: {
-    // borderWidth:1,
-    width: windowWidth * 0.26,
-    borderRadius: 10,
-    ...ShadowStyles.shadow,
-    backgroundColor: COLORS.white,
-    padding: 12,
-    marginHorizontal: moderateScale(9),
-    marginBottom: 15,
+  basicContainer: (item) => {
+    return {
+      width: windowWidth * 0.2,
+      borderRadius: 10,
+      backgroundColor: COLORS.white,
+      padding: 12,
+      marginHorizontal: moderateScale(3),
+      marginBottom: 15,
+      borderWidth: 2,
+      borderColor:
+        item == 'Standard'
+          ? COLORS.lavenders
+          : item == 'Premium'
+          ? COLORS.navy_blue
+          : COLORS.sky_blue,
+      flex: 1,
+      height: windowHeight * 0.69,
+    };
   },
   basic: {
-    color: COLORS.bluish_green,
+    color: COLORS.sky_blue,
     fontSize: SF(20),
     fontFamily: Fonts.MaisonRegular,
   },
@@ -1040,11 +1121,11 @@ export const styles = StyleSheet.create({
   notificationName: {
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
   },
   horizontalRow: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     marginVertical: verticalScale(3),
   },
   arrowStyle: {
@@ -1492,5 +1573,87 @@ export const styles = StyleSheet.create({
     fontSize: ms(14),
     fontFamily: Fonts.Regular,
     alignSelf: 'center',
+  },
+  devicesLogo: {
+    height: ms(20),
+    width: ms(20),
+    marginRight: ms(7),
+  },
+  deviceText: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
+    fontSize: SF(14),
+  },
+  codeDisplayText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.lavender,
+    fontSize: SF(12),
+  },
+  deviceOptionsView: {
+    backgroundColor: COLORS.sky_grey,
+    paddingHorizontal: ms(16),
+    paddingVertical: ms(10),
+    borderRadius: 16,
+    alignItems: 'center',
+    marginHorizontal: SW(2),
+  },
+  codeView: {
+    backgroundColor: COLORS.sky_grey,
+    borderRadius: ms(12),
+    paddingHorizontal: ms(12),
+    paddingVertical: ms(15),
+    width: '87%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 60,
+  },
+  confirmButton: {
+    width: '87%',
+    borderRadius: ms(30),
+    height: ms(42),
+    backgroundColor: COLORS.navy_blue,
+  },
+  subscribedView: {
+    height: ms(37),
+    width: ms(100),
+    backgroundColor: COLORS.light_skyblue,
+    borderRadius: ms(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  subscribedText: {
+    color: COLORS.sky_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(10),
+  },
+  appIncludedText: {
+    color: COLORS.sky_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(7),
+    textAlign: 'center',
+  },
+  changePlanButton: (item) => {
+    return {
+      width: ms(90),
+      height: 50,
+      borderRadius: 30,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      backgroundColor:
+        item == 'Standard'
+          ? COLORS.lavenders
+          : item == 'Premium'
+          ? COLORS.navy_blue
+          : COLORS.sky_blue,
+      alignSelf: 'center',
+    };
+  },
+  dashedBorderLine: {
+    borderBottomWidth: 1,
+    borderStyle: 'dashed',
+    marginBottom: SH(5),
+    marginTop: SH(10),
+    borderColor: COLORS.lavender,
   },
 });

@@ -11,6 +11,7 @@ import { ButtonIcon } from './ButtonIcon';
 import { Images } from '@/assets/new_icon';
 
 export const VirtualKeyBoard = ({
+  FLCntStyle,
   maxCharLength,
   enteredValue,
   setEnteredValue,
@@ -27,9 +28,12 @@ export const VirtualKeyBoard = ({
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
         keyExtractor={(_, index) => index.toString()}
-        contentContainerStyle={{
-          alignItems: 'center',
-        }}
+        contentContainerStyle={[
+          {
+            alignItems: 'center',
+          },
+          FLCntStyle,
+        ]}
         numColumns={3}
         renderItem={({ item, index }) => (
           <KeyPadButton

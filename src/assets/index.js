@@ -175,6 +175,7 @@ export { default as rewardFlower } from '@/assets/icons/ic_reward/rewardFlower.p
 export { default as tableProfile } from '@/assets/icons/ic_reward/tableProfile.png';
 export { default as security } from '@/assets/icons/ic_setting/security.png';
 export { default as device } from '@/assets/icons/ic_setting/device.png';
+export { default as devices } from '@/assets/icons/ic_setting/Settings-Devices.png';
 export { default as systemUpdate } from '@/assets/icons/ic_setting/SystemUpdate.png';
 
 export { default as cardReader } from '@/assets/icons/ic_setting/cardReader.png';
@@ -195,12 +196,28 @@ export { default as work } from '@/assets/icons/ic_setting/work.png';
 export { default as policy } from '@/assets/icons/ic_setting/policy.png';
 export { default as right_light } from '@/assets/icons/ic_setting/right_light.png';
 export { default as securityLogo } from '@/assets/icons/ic_setting/securityLogo.png';
+export { default as twoStepVerification } from '@/assets/icons/ic_setting/twoStepVerification.png';
 export { default as teamMember } from '@/assets/icons/ic_setting/teamMember.png';
 export { default as toggleSecurity } from '@/assets/icons/ic_setting/toggle.png';
 export { default as googleAuth } from '@/assets/icons/ic_setting/googleAuth.png';
 export { default as checkboxSec } from '@/assets/icons/ic_setting/checkbox.png';
 export { default as checkboxSecBlue } from '@/assets/icons/ic_setting/checkboxSecBlue.png';
 export { default as scurityScan } from '@/assets/icons/ic_setting/scurityScan.png';
+export { default as scanNew } from '@/assets/icons/ic_setting/scanNew.png';
+export { default as barCodeNavyBlue } from '@/assets/icons/ic_setting/barCodeNavyBlue.png';
+export { default as locationRoundNew } from '@/assets/icons/ic_setting/locationRoundNew.png';
+export { default as checkCircle } from '@/assets/icons/ic_setting/checkCircle.png';
+export { default as CheckBadgeFilled } from '@/assets/icons/ic_setting/CheckBadgeFilled.png';
+export { default as CheckBadgeOutline } from '@/assets/icons/ic_setting/CheckBadgeOutline.png';
+export { default as SimpleCheck } from '@/assets/icons/ic_setting/Simple-Check.png';
+export { default as Calendar_Outline } from '@/assets/icons/ic_setting/Calendar_Outline.png';
+export { default as upgradeIcon } from '@/assets/icons/ic_setting/upgradeIcon.png';
+export { default as credCard } from '@/assets/icons/ic_setting/credCard.png';
+export { default as cashDrawerDevice } from '@/assets/icons/ic_setting/cashDrawerDevice.png';
+export { default as printerNew } from '@/assets/icons/ic_setting/printerNew.png';
+export { default as bluetoothProgress } from '@/assets/icons/ic_setting/bluetoothProgress.png';
+export { default as toggleOnNavyBlue } from '@/assets/icons/ic_setting/toggleOnNavyBlue.png';
+export { default as newToggleOff } from '@/assets/icons/ic_setting/newToggleOff.png';
 export { default as deviceLogo } from '@/assets/icons/ic_setting/deviceLogo.png';
 export { default as trackCamera } from '@/assets/icons/ic_setting/trackCamera.png';
 export { default as addIcon } from '@/assets/icons/ic_setting/addIcon.png';
@@ -396,6 +413,7 @@ export { default as shippingIcon } from '@/assets/new_icon/ic_analytic/shipping.
 export { default as soldProduct } from '@/assets/new_icon/ic_analytic/soldProduct.png';
 export { default as totalCostIcon } from '@/assets/new_icon/ic_analytic/totalCost.png';
 export { default as totalOrder } from '@/assets/new_icon/ic_analytic/totalOrder.png';
+export { default as verifyGreen } from '@/assets/new_icon/Auth_icons/verify_green.png';
 
 /* Fonts */
 export const Fonts = {
