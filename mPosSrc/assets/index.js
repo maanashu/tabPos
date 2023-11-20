@@ -87,6 +87,9 @@ export const Images = {
   devices: require('@mPOS/assets/icons/moreTab/devices.png'),
   power: require('@mPOS/assets/icons/moreTab/power.png'),
   lockIcon: require('@mPOS/assets/icons/moreTab/lockIcon.png'),
+  right_light: require('@mPOS/assets/icons/moreTab/right_light2x.png'),
+  lockPin: require('@mPOS/assets/icons/moreTab/lockPin.png'),
+  lock_light: require('@mPOS/assets/icons/moreTab/lock_light.png'),
 
   // profile
   qrCode: require('@mPOS/assets/icons/Profile/qrCode.png'),

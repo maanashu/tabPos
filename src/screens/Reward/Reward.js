@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  DaySelector,
-  ScreenWrapper,
-  Spacer,
-  TableDropdown,
-} from '@/components';
+import { DaySelector, ScreenWrapper, Spacer, TableDropdown } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import {
@@ -47,11 +42,7 @@ import moment from 'moment';
 const windowWidth = Dimensions.get('window').width;
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getRewardGraph,
-  getRewardUser,
-  getRewardedUsersList,
-} from '@/actions/RewardAction';
+import { getRewardGraph, getRewardUser, getRewardedUsersList } from '@/actions/RewardAction';
 import { useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getReward } from '@/selectors/RewardSelectors';
@@ -91,7 +82,7 @@ export function Reward() {
   const [selectId, setSelectId] = useState(2);
   const [show, setShow] = useState(false);
 
-  const onPresFun2 = value => {
+  const onPresFun2 = (value) => {
     dispatch(getRewardUser(value, sellerID));
   };
 
@@ -103,11 +94,11 @@ export function Reward() {
     }
   }, [isFocus]);
 
-  const isLoading = useSelector(state =>
+  const isLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_REWARDED_USERS, TYPES.GET_REWARD_USER], state)
   );
 
-  const onChangeDate = selectedDate => {
+  const onChangeDate = (selectedDate) => {
     const currentDate = moment().format('MM/DD/YYYY');
     const selected = moment(selectedDate).format('MM/DD/YYYY');
     if (currentDate === selected) {
@@ -131,9 +122,7 @@ export function Reward() {
     }
   };
 
-  const isUserLoad = useSelector(state =>
-    isLoadingSelector([TYPES.GET_REWARD_USER], state)
-  );
+  const isUserLoad = useSelector((state) => isLoadingSelector([TYPES.GET_REWARD_USER], state));
   const viewHandler = () => {
     if (tableArray?.length === 0) {
       Toast.show({
@@ -151,10 +140,7 @@ export function Reward() {
     return (
       <View style={styles.headerMainView}>
         {rewardList ? (
-          <TouchableOpacity
-            style={styles.backButtonCon}
-            onPress={() => setRewardList(false)}
-          >
+          <TouchableOpacity style={styles.backButtonCon} onPress={() => setRewardList(false)}>
             <Image source={backArrow} style={styles.backButtonArrow} />
             <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
           </TouchableOpacity>
@@ -196,9 +182,7 @@ export function Reward() {
           <View style={[styles.displayflex, styles.paddingVerHor]}>
             <Text style={styles.totalRewardText2}>
               {strings.reward.totalReward}:{' '}
-              <Text style={{ color: COLORS.primary }}>
-                ${totalReward ?? '0'}
-              </Text>
+              <Text style={{ color: COLORS.primary }}>${totalReward ?? '0'}</Text>
             </Text>
             <View>
               <DaySelector
@@ -212,10 +196,7 @@ export function Reward() {
           <View style={styles.orderTypeCon}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               {/* <View style={{ marginHorizontal: moderateScale(10) }}> */}
-              <TouchableOpacity
-                style={styles.datePickerCon}
-                onPress={() => setShow(!show)}
-              >
+              <TouchableOpacity style={styles.datePickerCon} onPress={() => setShow(!show)}>
                 <Image source={calendar1} style={styles.calendarStyle} />
                 <TextInput
                   value={date}
@@ -250,16 +231,10 @@ export function Reward() {
               <View style={{ marginHorizontal: moderateScale(10) }}>
                 <DropDownPicker
                   ArrowUpIconComponent={({ style }) => (
-                    <Image
-                      source={dropdown2}
-                      style={styles.dropDownIconPagination}
-                    />
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
                   )}
                   ArrowDownIconComponent={({ style }) => (
-                    <Image
-                      source={dropdown2}
-                      style={styles.dropDownIconPagination}
-                    />
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
                   )}
                   style={styles.dropdown}
                   containerStyle={[
@@ -286,34 +261,22 @@ export function Reward() {
               <View style={styles.unionCon}>
                 <Image source={mask} style={styles.unionStyle} />
               </View>
-              <Text style={styles.paginationCount}>
-                {strings.wallet.paginationCount}
-              </Text>
-              <View
-                style={[styles.unionCon, { backgroundColor: COLORS.white }]}
-              >
+              <Text style={styles.paginationCount}>{strings.wallet.paginationCount}</Text>
+              <View style={[styles.unionCon, { backgroundColor: COLORS.white }]}>
                 <Image source={maskRight} style={styles.unionStyle} />
               </View>
-              <View
-                style={[styles.unionCon, { backgroundColor: COLORS.white }]}
-              >
+              <View style={[styles.unionCon, { backgroundColor: COLORS.white }]}>
                 <Image source={unionRight} style={styles.unionStyle} />
               </View>
             </View>
           </View>
           <View style={{ zIndex: -9 }}>
             <Table>
-              <View
-                style={[styles.tableDataHeaderCon, styles.tableDataHeaderCon2]}
-              >
+              <View style={[styles.tableDataHeaderCon, styles.tableDataHeaderCon2]}>
                 <View style={styles.displayflex}>
-                  <View
-                    style={{ flexDirection: 'row', width: windowWidth * 0.2 }}
-                  >
+                  <View style={{ flexDirection: 'row', width: windowWidth * 0.2 }}>
                     <Text style={styles.text1}>#</Text>
-                    <Text style={[styles.text, { textAlign: 'left' }]}>
-                      User
-                    </Text>
+                    <Text style={[styles.text, { textAlign: 'left' }]}>User</Text>
                   </View>
                   <View style={styles.dateHeadAlign}>
                     <Text style={styles.text}>Total Spent</Text>
@@ -327,31 +290,21 @@ export function Reward() {
                 <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                   {tableArray?.length === 0 ? (
                     <View>
-                      <Text style={styles.requestNotFound}>
-                        Reward not found
-                      </Text>
+                      <Text style={styles.requestNotFound}>Reward not found</Text>
                     </View>
                   ) : (
                     tableArray?.map((item, index) => (
                       <View style={styles.tableDataDataCon} key={index}>
                         <View style={styles.displayflex}>
-                          <View
-                            style={[
-                              styles.rowCenter,
-                              { width: windowWidth * 0.2 },
-                            ]}
-                          >
-                            <Text style={[styles.text1, styles.text2]}>
-                              {index + 1}
-                            </Text>
+                          <View style={[styles.rowCenter, { width: windowWidth * 0.2 }]}>
+                            <Text style={[styles.text1, styles.text2]}>{index + 1}</Text>
                             <View style={styles.tableProfileData}>
                               <View style={styles.rowCenter}>
                                 <Image
                                   source={
                                     item?.user_details?.profile_photo
                                       ? {
-                                          uri: item?.user_details
-                                            ?.profile_photo,
+                                          uri: item?.user_details?.profile_photo,
                                         }
                                       : userImage
                                   }
@@ -363,20 +316,11 @@ export function Reward() {
                                     {item?.user_details?.lastname}
                                   </Text>
                                   <View style={styles.rowCenter}>
-                                    <Image
-                                      source={location}
-                                      style={styles.Phonelight}
-                                    />
+                                    <Image source={location} style={styles.Phonelight} />
                                     <Text style={styles.userAddress}>
-                                      {
-                                        item?.user_details?.current_address
-                                          ?.state
-                                      }
+                                      {item?.user_details?.current_address?.state}
                                       {', '}
-                                      {
-                                        item?.user_details?.current_address
-                                          ?.country
-                                      }
+                                      {item?.user_details?.current_address?.country}
                                     </Text>
                                   </View>
                                 </View>
@@ -387,9 +331,7 @@ export function Reward() {
                             <Text style={styles.DataText}>
                               ${item.total_spent_jbr_coin ?? '0.00'}
                             </Text>
-                            <Text style={styles.DataText}>
-                              ${item.redeem_coin ?? '0.00'}
-                            </Text>
+                            <Text style={styles.DataText}>${item.redeem_coin ?? '0.00'}</Text>
                             <Text style={styles.DataText}>
                               {item.status === true ? 'Active' : 'Inactive'}
                             </Text>
@@ -414,9 +356,7 @@ export function Reward() {
         {customHeader()}
         <View style={styles.walletMainCon}>
           <View style={styles.displayflex}>
-            <Text style={styles.totalRewardText}>
-              {strings.reward.totalReward}
-            </Text>
+            <Text style={styles.totalRewardText}>{strings.reward.totalReward}</Text>
             <View>
               <DaySelector
                 onPresFun={onPresFun2}
@@ -439,12 +379,7 @@ export function Reward() {
               <Image source={rewardFlower} style={styles.rewardFlower} />
               <View style={styles.rewaurdMainCon}>
                 <View style={styles.thirdRewardCon}>
-                  <View
-                    style={[
-                      styles.userImageBorder,
-                      styles.userImageBorderThird,
-                    ]}
-                  >
+                  <View style={[styles.userImageBorder, styles.userImageBorderThird]}>
                     <Image
                       source={
                         getPositionData?.[2]
@@ -460,12 +395,7 @@ export function Reward() {
                     {strings.reward.rd}
                   </Text>
                   <Spacer space={SH(3)} />
-                  <View
-                    style={[
-                      styles.rewardConPrice,
-                      { backgroundColor: COLORS.lightBlue },
-                    ]}
-                  >
+                  <View style={[styles.rewardConPrice, { backgroundColor: COLORS.lightBlue }]}>
                     <View style={styles.displayRow}>
                       <Image source={reward} style={styles.reward} />
                       <Text style={styles.rewardPrice}>
@@ -501,12 +431,7 @@ export function Reward() {
                   </View>
                 </View>
                 <View style={styles.secondRewardCon}>
-                  <View
-                    style={[
-                      styles.userImageBorder,
-                      styles.userImageBorderSecond,
-                    ]}
-                  >
+                  <View style={[styles.userImageBorder, styles.userImageBorderSecond]}>
                     <Image
                       source={
                         getPositionData?.[1]
@@ -522,12 +447,7 @@ export function Reward() {
                     {strings.reward.nd}
                   </Text>
                   <Spacer space={SH(5)} />
-                  <View
-                    style={[
-                      styles.rewardConPrice,
-                      { backgroundColor: COLORS.blueLight },
-                    ]}
-                  >
+                  <View style={[styles.rewardConPrice, { backgroundColor: COLORS.blueLight }]}>
                     <View style={styles.displayRow}>
                       <Image source={reward} style={styles.reward} />
                       <Text style={styles.rewardPrice}>
@@ -548,13 +468,9 @@ export function Reward() {
             <Table>
               <View style={styles.tableDataHeaderCon}>
                 <View style={styles.displayflex}>
-                  <View
-                    style={{ flexDirection: 'row', width: windowWidth * 0.2 }}
-                  >
+                  <View style={{ flexDirection: 'row', width: windowWidth * 0.2 }}>
                     <Text style={styles.text1}>#</Text>
-                    <Text style={[styles.text, { textAlign: 'left' }]}>
-                      User
-                    </Text>
+                    <Text style={[styles.text, { textAlign: 'left' }]}>User</Text>
                   </View>
                   <View style={styles.dateHeadAlign}>
                     <Text style={styles.text}>Total Spent</Text>
@@ -573,12 +489,8 @@ export function Reward() {
                 tableArray?.slice(0, 4).map((item, index) => (
                   <View style={styles.tableDataDataCon} key={index}>
                     <View style={styles.displayflex}>
-                      <View
-                        style={[styles.rowCenter, { width: windowWidth * 0.2 }]}
-                      >
-                        <Text style={[styles.text1, styles.text2]}>
-                          {index + 1}
-                        </Text>
+                      <View style={[styles.rowCenter, { width: windowWidth * 0.2 }]}>
+                        <Text style={[styles.text1, styles.text2]}>{index + 1}</Text>
                         <View style={styles.tableProfileData}>
                           <View style={styles.rowCenter}>
                             <Image
@@ -597,10 +509,7 @@ export function Reward() {
                                 {item?.user_details?.lastname}
                               </Text>
                               <View style={styles.rowCenter}>
-                                <Image
-                                  source={location}
-                                  style={styles.Phonelight}
-                                />
+                                <Image source={location} style={styles.Phonelight} />
                                 <Text style={styles.userAddress}>
                                   {item?.user_details?.current_address?.state}
                                   {', '}
@@ -612,19 +521,12 @@ export function Reward() {
                         </View>
                       </View>
                       <View style={styles.dateHeadAlign}>
-                        <Text style={styles.DataText}>
-                          ${item?.total_spent_jbr_coin ?? '0.00'}
-                        </Text>
-                        <Text style={styles.DataText}>
-                          {' '}
-                          ${item?.redeem_coin ?? '0.00'}
-                        </Text>
+                        <Text style={styles.DataText}>${item?.total_spent_jbr_coin ?? '0.00'}</Text>
+                        <Text style={styles.DataText}> ${item?.redeem_coin ?? '0.00'}</Text>
                         <Text style={styles.DataText}>
                           {item.status === true ? 'Active' : 'Inactive'}
                         </Text>
-                        <Text style={[styles.DataText]}>
-                          {moment(item.updated_at).format('L')}
-                        </Text>
+                        <Text style={[styles.DataText]}>{moment(item.updated_at).format('L')}</Text>
                       </View>
                     </View>
                   </View>
@@ -642,11 +544,7 @@ export function Reward() {
       <View style={styles.container}>{bodyView()}</View>
       {isLoading ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator
-            color={COLORS.primary}
-            size="large"
-            style={styles.loader}
-          />
+          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
         </View>
       ) : null}
     </ScreenWrapper>

@@ -49,17 +49,19 @@ export function Delivery() {
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      dispatch(todayOrders());
-      dispatch(deliOrder());
-      dispatch(getReviewDefault(selectedStatus));
-      dispatch(getGraphOrders());
-      dispatch(getOrderstatistics(1));
-      dispatch(getOrderCount());
-      setHeaderText(selectedStatus);
-    }, [])
-  );
+  useFocusEffect(React.useCallback(() => {}, []));
+
+  React.useEffect(() => {
+    dispatch(todayOrders());
+    dispatch(deliOrder());
+    dispatch(getReviewDefault(selectedStatus));
+    dispatch(getGraphOrders());
+    dispatch(getOrderstatistics(1));
+    dispatch(getOrderCount());
+    setHeaderText(selectedStatus);
+
+    return () => {};
+  }, []);
 
   const renderOrderItem = ({ item, index }) => {
     const deliveryDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
@@ -73,6 +75,7 @@ export function Delivery() {
               : MPOS_NAVIGATION.orderDetail,
             {
               data: item,
+              index: index,
             }
           )
         }

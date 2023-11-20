@@ -41,7 +41,9 @@ export function ShippingOrderList(props) {
     const shippingDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     return (
       <TouchableOpacity
-        onPress={() => commonNavigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item })}
+        onPress={() =>
+          commonNavigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item, index: index })
+        }
         style={[styles.orderItemViewStyle, { marginHorizontal: ms(15) }]}
       >
         <View style={{ flex: 0.4 }}>
