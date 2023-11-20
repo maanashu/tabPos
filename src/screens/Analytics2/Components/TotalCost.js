@@ -254,7 +254,7 @@ export function TotalCost() {
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
                 </View>
-              ) : analyticStatistics?.orderData?.length === 0 ? (
+              ) : analyticStatistics?.orderData?.data?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
@@ -262,7 +262,7 @@ export function TotalCost() {
                 <View style={styles.listView}>
                   <FlatList
                     style={styles.listStyle}
-                    data={analyticStatistics?.orderData}
+                    data={analyticStatistics?.orderData?.data}
                     renderItem={getCostList}
                     // keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
