@@ -552,7 +552,7 @@ export const styles = StyleSheet.create({
     height: SW(10),
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: 30,
     marginHorizontal: moderateScale(4),
   },
   monthlyBil: {
@@ -564,11 +564,11 @@ export const styles = StyleSheet.create({
     // borderWidth:1,
     width: windowWidth * 0.26,
     borderRadius: 10,
-    ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
     padding: 12,
     marginHorizontal: moderateScale(9),
     marginBottom: 15,
+    borderWidth: 2,
   },
   basic: {
     color: COLORS.sky_blue,

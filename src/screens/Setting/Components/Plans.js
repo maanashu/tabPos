@@ -128,25 +128,34 @@ export function Plans() {
           onPress={() => {
             onBuySubscription(item?._id), setSelectedPlanIndex(index);
           }}
-          style={[
-            styles.checkoutButton,
-            styles.checkoutButtonSec,
-            item?.name == 'Standard'
-              ? { backgroundColor: COLORS.primary }
-              : item?.name == 'Premium'
-              ? { backgroundColor: COLORS.black }
-              : { backgroundColor: COLORS.bluish_green },
-          ]}
+          // style={[
+          //   styles.checkoutButton,
+          //   styles.checkoutButtonSec,
+          //   item?.name == 'Standard'
+          //     ? { backgroundColor: COLORS.primary }
+          //     : item?.name == 'Premium'
+          //     ? { backgroundColor: COLORS.black }
+          //     : { backgroundColor: COLORS.bluish_green },
+          // ]}
+          style={{
+            backgroundColor: COLORS.navy_blue,
+            width: ms(90),
+            height: 50,
+            borderRadius: 30,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           {isLoading && selectedPlanIndex == index ? (
             <ActivityIndicator animating={isLoading} size={'small'} color={COLORS.white} />
           ) : (
-            <Text style={[styles.checkoutText, { color: COLORS.white }]}>
-              {strings.settings.getStart}
-            </Text>
+            <>
+              <Text style={[styles.checkoutText, { color: COLORS.white }]}>
+                {strings.settings.change}
+              </Text>
+              <Image source={checkArrow} style={[styles.checkArrow, { tintColor: COLORS.white }]} />
+            </>
           )}
-
-          <Image source={checkArrow} style={[styles.checkArrow, { tintColor: COLORS.white }]} />
         </TouchableOpacity>
         <Spacer space={SH(10)} />
         <FlatList
@@ -166,7 +175,7 @@ export function Plans() {
   );
 
   const annualItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
+    const backgroundColor = item.id === selectedId ? COLORS.navy_blue : COLORS.sky_grey;
     const color = item.id === selectedId ? COLORS.white : COLORS.darkGray;
 
     return (
@@ -203,7 +212,7 @@ export function Plans() {
         <View style={styles.securityMainCon}>
           <View style={[styles.flexRow, { alignItems: 'flex-start' }]}>
             <View>
-              <Text style={[styles.basic, { fontSize: 24 }]}>{activePlan?.plan_id?.name}</Text>
+              <Text style={[styles.basic, { fontSize: 26 }]}>{activePlan?.plan_id?.name}</Text>
               <Spacer space={SH(3)} />
               <Text style={styles.everyThingNeed}>{activePlan?.plan_id?.description}</Text>
             </View>
@@ -321,21 +330,22 @@ export function Plans() {
       {getActiveSubLoader && (
         <ActivityIndicator style={{ marginTop: ms(50) }} size={'large'} color={COLORS.primary} />
       )}
-      {Object.keys(activePlan).length > 0 && !getActiveSubLoader && renderPlanView()}
-      {Object.keys(activePlan).length <= 0 && !getActiveSubLoader && renderBuyView()}
 
-      <Modal animationType="fade" transparent={true} isVisible={planModal}>
-        <View style={styles.planModalcon}>
-          <Spacer space={SH(20)} />
+      {planModal ? (
+        <View>
           <View style={[styles.flexRow, { paddingHorizontal: moderateScale(20) }]}>
             <Text>{null}</Text>
-            <Text style={styles.planFit}>{strings.settings.planFit}</Text>
+            <Text style={[styles.HeaderLabelText, { fontSize: ms(12) }]}>
+              {strings.settings.planFit}
+            </Text>
 
             <TouchableOpacity style={styles.crossButtonCon} onPress={() => setPlanModal(false)}>
               <Image source={crossButton} style={styles.crossButton} />
             </TouchableOpacity>
           </View>
-          <Text style={styles.planModalSunhead}>{strings.settings.simpleTra}</Text>
+          <Text style={[styles.everyThingNeed, { textAlign: 'center' }]}>
+            {strings.settings.simpleTra}
+          </Text>
           <Spacer space={SH(10)} />
           <View style={{ alignItems: 'center' }}>
             <FlatList
@@ -344,6 +354,12 @@ export function Plans() {
               renderItem={annualItem}
               keyExtractor={(item) => item.id}
               horizontal
+              contentContainerStyle={{
+                padding: 10,
+                borderRadius: 30,
+                borderWidth: 1,
+              }}
+              style={{ backgroundColor: COLORS.sky_grey, borderRadius: 30 }}
             />
           </View>
           <Spacer space={SH(20)} />
@@ -356,9 +372,13 @@ export function Plans() {
             keyExtractor={(item) => item.id}
             horizontal
           />
-          {/* <Spacer space={SH(25)} /> */}
         </View>
-      </Modal>
+      ) : (
+        <>
+          {Object.keys(activePlan).length > 0 && !getActiveSubLoader && renderPlanView()}
+          {Object.keys(activePlan).length <= 0 && !getActiveSubLoader && renderBuyView()}
+        </>
+      )}
     </View>
   );
 }

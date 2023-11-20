@@ -306,6 +306,7 @@ export const en = {
     simpleTra: 'Simple, Transparent pricing that grows with you',
     basicSubHead: 'Everything you need to create a store, ship products, and process payments',
     getStart: 'Get Started',
+    change: 'Change',
     invoice: 'Invoices',
     invoiveHeading: 'Invoices',
     // invoiveHeading: 'Taxes and duties',
