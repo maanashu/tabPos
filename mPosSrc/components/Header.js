@@ -10,6 +10,7 @@ import Modal from 'react-native-modal';
 import CalendarPickerModal from './CalendarPickerModal';
 import dayjs from 'dayjs';
 import { log } from 'react-native-reanimated';
+import { editIcon } from '@/assets';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -31,6 +32,8 @@ export function Header({
   dates = {},
   cartHandler,
   cartLength,
+  edit,
+  editHandler,
 }) {
   const maxDate = new Date(2023, 10, 29);
   const [open, setOpen] = useState(false);
@@ -39,7 +42,6 @@ export function Header({
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [selectedDate, setSelectDate] = useState('');
-  console.log('cartLength', cartLength);
 
   const [items, setItems] = useState([
     { label: 'Today', value: 'today' },
@@ -174,7 +176,11 @@ export function Header({
             </View>
           </TouchableOpacity>
         )}
-
+        {edit && (
+          <TouchableOpacity style={styles.editView} onPress={editHandler}>
+            <Image source={editIcon} style={styles.editIconStyle} resizeMode="contain" />
+          </TouchableOpacity>
+        )}
         <Modal
           isVisible={isCalendarVisible}
           statusBarTranslucent
@@ -368,4 +374,11 @@ const styles = StyleSheet.create({
   //   height: SW(24),
   //   resizeMode: 'contain',
   // },
+  editView: {
+    marginHorizontal: ms(5),
+  },
+  editIconStyle: {
+    height: ms(23),
+    width: ms(23),
+  },
 });
