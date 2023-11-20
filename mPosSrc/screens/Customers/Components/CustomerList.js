@@ -61,7 +61,6 @@ export function CustomerList(props) {
 
   const [show, setShow] = useState(false);
   const customerArray = getCustomerData?.getUserOrder?.data ?? [];
-  console.log('hfdhdskf', getCustomerData?.getUserOrder?.data);
   const payloadLength = Object.keys(getCustomerData?.getUserOrder)?.length ?? 0;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [dateformat, setDateformat] = useState('');
@@ -307,7 +306,7 @@ export function CustomerList(props) {
           <View
             style={{
               zIndex: -9,
-              height: Platform.OS === 'android' ? ms(230) : height - ms(300),
+              height: Platform.OS === 'android' ? height - ms(260) : height - ms(300),
               backgroundColor: COLORS.white,
               borderBottomLeftRadius: ms(10),
               borderBottomRightRadius: ms(10),

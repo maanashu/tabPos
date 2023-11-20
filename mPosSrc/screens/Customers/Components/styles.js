@@ -373,6 +373,73 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
   },
+  textInputView: {
+    paddingHorizontal: ms(10),
+    borderWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: 5,
+    marginVertical: ms(8),
+  },
+  codeText: {
+    fontSize: SF(18),
+    color: COLORS.black,
+    fontFamily: Fonts.Regular,
+  },
+  textInputContainer: {
+    backgroundColor: COLORS.input_bg,
+    color: COLORS.black,
+    fontSize: SF(14),
+    fontFamily: Fonts.Italic,
+    flex: 1,
+  },
+  continueBtnCon: {
+    flex: 1,
+    padding: SH(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.gerySkies,
+    borderWidth: 1,
+    borderRadius: 3,
+  },
+  addToCartCon: {
+    backgroundColor: COLORS.primary,
+    padding: SH(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: SH(10),
+    borderRadius: 3,
+    flex: 1,
+  },
+  addTocartText: {
+    color: COLORS.white,
+    fontSize: SH(13),
+    fontFamily: Fonts.SemiBold,
+  },
+  detailBtnCon: {
+    color: COLORS.gerySkies,
+    fontSize: SH(13),
+    fontFamily: Fonts.SemiBold,
+  },
+  dropDownContainerStyle: {
+    borderWidth: 0,
+    zIndex: 999,
+  },
+  dropdownStyle: {
+    minHeight: ms(35),
+    borderWidth: 0,
+    borderRadius: ms(5),
+    backgroundColor: COLORS.textInputBackground,
+    // width: ms(88),
+    zIndex: 999,
+  },
+  arrowIconStyle: {
+    height: ms(16),
+    width: ms(16),
+    tintColor: COLORS.black,
+    marginLeft: SW(-5),
+  },
 });
 
 export default styles;
