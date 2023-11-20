@@ -1,7 +1,7 @@
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { ms } from 'react-native-size-matters';
-
+const height = Dimensions.get('screen').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -23,8 +23,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(21),
     borderRadius: ms(10),
     alignItems: 'flex-start',
-    // height: SH(70),
+    height: height * 0.065,
     flex: 1,
+    justifyContent: 'center',
   },
   amountText: {
     fontFamily: Fonts.MaisonBold,
@@ -58,8 +59,8 @@ const styles = StyleSheet.create({
     marginHorizontal: ms(10),
   },
   amountTypeIcon: {
-    height: SH(34),
-    width: SH(34),
+    height: SH(30),
+    width: SH(30),
   },
   typeSmallText: {
     fontSize: ms(8),

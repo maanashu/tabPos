@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
     width: SW(50),
     height: SW(50),
     borderRadius: SW(50),
-    borderColor: COLORS.light_border,
-    backgroundColor: COLORS.lightgray,
+    borderColor: COLORS.solidGrey,
+    backgroundColor: COLORS.white,
     marginHorizontal: SW(5),
   },
   cellText: {

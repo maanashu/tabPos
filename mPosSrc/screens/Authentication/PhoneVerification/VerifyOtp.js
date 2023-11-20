@@ -90,21 +90,14 @@ export function VerifyOtp() {
           textContentType={'oneTimeCode'}
           onSubmitEditing={Keyboard.dismiss}
           rootStyle={styles.alignSelfCenter}
-          renderCell={({ index, symbol, isFocused }) => (
-            <View
-              key={index}
-              style={[
-                styles.cellRoot,
-                {
-                  borderColor: isFocused ? COLORS.primary : COLORS.solidGrey,
-                  borderWidth: isFocused ? 1.5 : 1,
-                },
-              ]}
-              onLayout={getCellOnLayoutHandler(index)}
-            >
-              <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
-            </View>
-          )}
+          renderCell={({ index, symbol, isFocused }) => {
+            const displaySymbol = value[index] ? '*' : '';
+            return (
+              <View key={index} style={[styles.cellRoot]} onLayout={getCellOnLayoutHandler(index)}>
+                <Text style={styles.cellText}>{isFocused ? <Cursor /> : displaySymbol}</Text>
+              </View>
+            );
+          }}
         />
 
         <View style={styles.container} />

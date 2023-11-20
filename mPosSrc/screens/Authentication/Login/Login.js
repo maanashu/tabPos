@@ -71,21 +71,14 @@ export function Login(props) {
           keyboardType={'number-pad'}
           textContentType={'oneTimeCode'}
           onSubmitEditing={Keyboard.dismiss}
-          renderCell={({ index, symbol, isFocused }) => (
-            <View
-              key={index}
-              style={[
-                styles.cellRoot,
-                {
-                  borderColor: isFocused ? COLORS.primary : COLORS.solidGrey,
-                  borderWidth: isFocused ? 1.5 : 1,
-                },
-              ]}
-              onLayout={getCellOnLayoutHandler(index)}
-            >
-              <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
-            </View>
-          )}
+          renderCell={({ index, symbol, isFocused }) => {
+            const displaySymbol = value[index] ? '*' : '';
+            return (
+              <View key={index} style={[styles.cellRoot]} onLayout={getCellOnLayoutHandler(index)}>
+                <Text style={styles.cellText}>{isFocused ? <Cursor /> : displaySymbol}</Text>
+              </View>
+            );
+          }}
         />
       </View>
 
