@@ -85,6 +85,7 @@ export function ServiceCart({ cartChangeHandler }) {
         TYPES.ATTACH_SERVICE_CUSTOMER,
         TYPES.CHANGE_STATUS_SERVICE_CART,
         TYPES.CLEAR_SERVICE_ALL_CART,
+        TYPES.CUSTOM_SERVICE_ADD,
       ],
       state
     )

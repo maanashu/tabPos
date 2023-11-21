@@ -193,7 +193,9 @@ const CustomProductAdd = ({ customProductClose }) => {
         </View>
 
         <View style={styles.contentViewStyle}>
-          <Text style={styles.titleTextStyle}>{strings.cart.title}</Text>
+          <Text style={styles.titleTextStyle}>
+            {presentCart === 'product' ? strings.cart.title : strings.cart.serviceTitle}
+          </Text>
 
           <Spacer space={SH(10)} />
           <View style={styles.amountTextStyle}>
@@ -396,7 +398,7 @@ const styles = StyleSheet.create({
     fontSize: SF(14),
     paddingLeft: SW(10),
     borderWidth: 1,
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
     backgroundColor: COLORS.white,
     borderColor: COLORS.solidGrey,
   },

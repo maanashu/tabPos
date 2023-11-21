@@ -1079,6 +1079,7 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      console.log('-----', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
