@@ -9,6 +9,7 @@ import { AuthNavigator } from '@mPOS/navigation/AuthNavigator';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
 import { ProfileNavigator } from './ProfileNavigator';
+import Modals from './Modals';
 
 export function RootNavigator() {
   const auth = useSelector(getAuthData);
@@ -30,7 +31,7 @@ export function RootNavigator() {
   };
   return (
     <NavigationContainer ref={navigationRef} onReady={() => RNBootSplash.hide()}>
-      {getNavigator()}
+      <Modals>{getNavigator()}</Modals>
     </NavigationContainer>
   );
 }

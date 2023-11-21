@@ -14,6 +14,7 @@ export const Images = {
   back: require('@mPOS/assets/icons/Common/back.png'),
   noproduct: require('@mPOS/assets/icons/Common/noProductImage.png'),
   borderCross: require('@mPOS/assets/icons/Common/borderCross.png'),
+  face_Id: require('@mPOS/assets/icons/Common/face_id.png'),
 
   // bottom tab bar
   scan: require('@mPOS/assets/icons/bottomTab/scan.png'),

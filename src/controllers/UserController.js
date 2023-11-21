@@ -42,4 +42,54 @@ export class UserController {
         });
     });
   }
+
+  static async deviceRegister() {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ApiUserInventory.deviceRegister;
+      const uniqueId = await DeviceInfo.getUniqueId();
+      const body = {
+        device_id: uniqueId,
+        app_name: 'pos',
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          if (error.msg === 'biometric_off') {
+            alert(
+              'Please login with PIN and enable biometric authentication from your application'
+            );
+          } else {
+            alert(error.msg);
+          }
+          reject(error);
+        });
+    });
+  }
+
+  static async updateBioMetricLoginPreference() {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ApiUserInventory.deviceUnRegister;
+      const uniqueId = await DeviceInfo.getUniqueId();
+      const body = {
+        device_id: uniqueId,
+        app_name: 'pos',
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+          console.log('ok resp', response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
 }

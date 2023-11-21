@@ -24,7 +24,7 @@ export function ScreenWrapper(props) {
           overflow: Platform.OS === 'ios' ? 'hidden' : 'visible',
         }}
       >
-        <StatusBar barStyle="dark-content" backgroundColor={COLORS.white} />
+        <StatusBar barStyle="dark-content" backgroundColor={COLORS.sky_grey} />
         {props.children}
       </View>
     </SafeAreaView>

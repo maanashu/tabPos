@@ -61,4 +61,5 @@ export const NAVIGATION = {
   reSetPin: 'ReEnterPin',
   changePlans: 'ChangePlans',
   userProfile: 'UserProfile',
+  faceId: 'FaceId',
 };

@@ -27,6 +27,7 @@ import { getUser } from '@mPOS/selectors/UserSelectors';
 import { getAuthData } from '@mPOS/selectors/AuthSelector';
 import { acccessAndConfirmation, essential, moreApp, tagLine } from '@mPOS/constants/enums';
 import { logoutFunction } from '@/actions/AuthActions';
+import { store } from '@/store';
 
 export function More() {
   const dispatch = useDispatch();
@@ -34,6 +35,8 @@ export function More() {
   const posData = useSelector(getUser);
   const loginPosUser = posData?.posLoginData;
   const merchantData = authData?.merchantLoginData;
+
+  // console.log('profuile get', authData?.getProfile);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.rowCard}>
@@ -73,10 +76,8 @@ export function More() {
   };
 
   const acccessAndConfirmationHandler = (item, index) => {
-    if (index === 0) {
-      return alert('In progress');
-    } else if (index === 1) {
-      return navigate(MPOS_NAVIGATION.pinId);
+    if (item?.navigation) {
+      commonNavigate(item?.navigation);
     }
   };
   const essentialHandler = (item, index) => {

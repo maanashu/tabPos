@@ -29,11 +29,13 @@ export const acccessAndConfirmation = [
     label: 'Face Recognitions',
     image: Images.faceRecoIcon,
     id: 1,
+    navigation: MPOS_NAVIGATION.faceId,
   },
   {
     label: 'PIN',
     image: Images.numPad,
     id: 2,
+    navigation: MPOS_NAVIGATION.pinId,
   },
 ];
 
