@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  Keyboard,
 } from 'react-native';
 import { styles } from './styles';
 import { COLORS, Fonts } from '@/theme';
@@ -94,18 +95,18 @@ export function RetailServices(props) {
   }, []);
   const serviceLoad = useSelector((state) => isLoadingSelector([TYPES.GET_MAIN_SERVICES], state));
 
-  const productSearchFun = async (search) => {
+  const serviceSearchFun = async (search) => {
     if (search?.length > 2) {
       const searchName = {
         search: search,
       };
-      dispatch(getProduct(searchName, 1));
+      dispatch(getMainServices(searchName));
     } else if (search?.length === 0) {
-      dispatch(getProduct({}, 1));
+      dispatch(getMainServices());
     }
   };
 
-  const debounceProduct = useCallback(debounce(productSearchFun, 1000), []);
+  const debounceService = useCallback(debounce(serviceSearchFun, 1000), []);
 
   const servicePagination = {
     total: serviceData?.total ?? '0',
@@ -239,10 +240,13 @@ export function RetailServices(props) {
           value={productSearch}
           onChangeText={(productSearch) => {
             setProductSearch(productSearch);
-            debounceProduct(productSearch);
+            debounceService(productSearch);
           }}
-          // filterHandler={() => setProductFilter(true)}
+          filterHandler={() => setProductFilter(true)}
           selectFilterCount={productFilterCount}
+          crossHandler={() => {
+            setProductSearch(''), dispatch(getMainServices()), Keyboard.dismiss();
+          }}
         />
 
         {/* <Spacer space={SH(15)} /> */}
@@ -295,10 +299,13 @@ export function RetailServices(props) {
                 </View>
 
                 <TouchableOpacity
-                  style={[
-                    styles.addView,
-                    { borderColor: index === 0 ? COLORS.darkBlue : COLORS.inputBorder },
-                  ]}
+                  style={[styles.addView, { borderColor: COLORS.inputBorder }]}
+                  onPress={async () => {
+                    const res = await dispatch(getOneService(sellerID, item.id));
+                    if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
+                      addServiceCartRef.current.present();
+                    }
+                  }}
                 >
                   <Image
                     source={Images.addTitle}
@@ -306,7 +313,7 @@ export function RetailServices(props) {
                     style={[
                       styles.addImage,
                       {
-                        tintColor: index === 0 ? COLORS.darkBlue : COLORS.dark_grey,
+                        tintColor: COLORS.dark_grey,
                       },
                     ]}
                   />

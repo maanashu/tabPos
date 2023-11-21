@@ -24,7 +24,6 @@ export function ChangePlans() {
 
   const [appNotiValue, setappNotiValue] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  console.log('all plans', JSON.stringify(getPlanData?.allPlans?.[0]));
 
   useEffect(() => {
     dispatch(getAllPlans());

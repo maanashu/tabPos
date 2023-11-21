@@ -136,6 +136,7 @@ export const en = {
   cart: {
     addToCart: 'Add to Cart',
     title: 'New Product Add to Cart',
+    serviceTitle: 'New Service Add to Cart',
     productName: 'Product Name',
     amountValue: '0.00',
     addNotes: 'Add notes',

@@ -31,6 +31,7 @@ import {
   changeStatusProductCart,
   getAllCart,
   getAllProductCart,
+  getAvailableOffer,
   getTip,
 } from '@/actions/RetailAction';
 import CartAmountByPay from './CartAmountByPay';
@@ -43,6 +44,7 @@ import { NewCustomerAdd } from '@/screens/PosRetail3/Components/NewCustomerAdd';
 import JbrCoin from './JbrCoin';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useIsFocused } from '@react-navigation/native';
+import AvailableOffer from './AvailableOffer';
 
 export function ProductCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -50,6 +52,7 @@ export function ProductCart({ cartChangeHandler }) {
   const retailData = useSelector(getRetail);
   const productCartData = retailData?.getAllCart;
   const payByCashRef = useRef(null);
+  const availableOfferRef = useRef(null);
   const jbrCoinRef = useRef(null);
   const finalPaymentRef = useRef(null);
   const cartAmountByPayRef = useRef(null);
@@ -360,7 +363,17 @@ export function ProductCart({ cartChangeHandler }) {
             alignSelf: 'center',
           }}
         >
-          <TouchableOpacity style={styles.availablOffercon}>
+          <TouchableOpacity
+            style={styles.availablOffercon}
+            // onPress={() => {
+            //   const data = {
+            //     servicetype: 'product',
+            //   };
+            //   dispatch(getAvailableOffer(data));
+            //   availableOfferRef?.current?.present();
+            // }}
+            onPress={() => alert('inProgress')}
+          >
             <Text style={styles.avaliableofferText}>{strings.cart.availablOffer}</Text>
           </TouchableOpacity>
           {/* <Spacer space={SH(10)} /> */}
@@ -483,6 +496,8 @@ export function ProductCart({ cartChangeHandler }) {
       <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
       {jbrCoinCallback()}
+
+      <AvailableOffer {...{ availableOfferRef }} />
 
       {isLoading ? <FullScreenLoader /> : null}
     </View>

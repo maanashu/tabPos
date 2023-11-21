@@ -29,7 +29,6 @@ export function Home() {
   const authData = useSelector(getAuthData);
   const merchantServiceProvide = authData?.merchantLoginData?.product_existance_status;
   const merchantData = authData?.merchantLoginData;
-  // console.log('authData', JSON.stringify(authData));
   const onPressHandler = (item) => {
     if (item?.title === 'Checkout') {
       navigate(MPOS_NAVIGATION.checkout);

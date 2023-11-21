@@ -14,7 +14,6 @@ export function Cart() {
 
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
-  console.log('presentCart', presentCart, showCart);
   const [showCart, setShowCart] = useState(presentCart === 'service' ? true : false);
 
   return (
