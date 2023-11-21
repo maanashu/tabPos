@@ -59,19 +59,21 @@ export function Login(props) {
       dispatch(loginPosUser(data));
     }
   };
-
   const bioMetricLogin = () => {
     rnBiometrics.isSensorAvailable().then((resultObject) => {
       const { available, biometryType } = resultObject;
 
-      if (available && biometryType === BiometryTypes.TouchID) {
-        checkBioMetricKeyExists();
-      } else if (available && biometryType === BiometryTypes.FaceID) {
+      if (
+        available &&
+        (biometryType === BiometryTypes.TouchID || biometryType === BiometryTypes.FaceID)
+      ) {
         checkBioMetricKeyExists();
       } else if (available && biometryType === BiometryTypes.Biometrics) {
         checkBioMetricKeyExists();
       } else {
         setBioMetricsAvailable(false);
+        // Handle the case when no biometric option is available (fallback to passcode)
+        promptPasscode();
       }
     });
   };
@@ -100,7 +102,14 @@ export function Login(props) {
 
         if (success) {
           dispatch(deviceLogin(posUser?.user?.id));
+        } else {
+          // Handle failure or use passcode as an alternative
+          promptPasscode();
         }
+      })
+      .catch((error) => {
+        console.error('Biometric signature error:', error);
+        promptPasscode();
       });
   };
 
@@ -108,8 +117,11 @@ export function Login(props) {
     rnBiometrics.createKeys().then((resultObject) => {
       const { publicKey } = resultObject;
       promptBioMetricSignin();
-      // sendPublicKeyToServer(publicKey);
     });
+  };
+
+  const promptPasscode = () => {
+    dispatch(deviceLogin(posUser?.user?.id));
   };
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.LOGIN_POS_USER], state));
