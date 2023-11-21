@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Spacer, Header, ScreenWrapper } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { styles } from './ReEnterPin.styles';
@@ -10,54 +10,45 @@ import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
-  Cursor,
 } from 'react-native-confirmation-code-field';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { errorsSelector } from '@/selectors/ErrorSelectors';
-import { changeOldPin, forgetPin, TYPES } from '@/actions/UserActions';
-import { getAuthData } from '@/selectors/UserSelectors';
-import { useNavigation } from '@react-navigation/native';
+import { changeOldPin } from '@/actions/UserActions';
 
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { MPOS_NAVIGATION } from '@common/commonImports';
+import { TYPES } from '@/Types/Types';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 const CELL_COUNT = 4;
 
 export function ReEnterPin(props) {
   const dispatch = useDispatch();
-  // const getData = useSelector(getAuthData);
-  // const navigation = useNavigation();
-  // const profileData = getData?.userProfile;
+  const authdata = useSelector(getAuthData);
+
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
-  // const isLoading = useSelector((state) => isLoadingSelector([TYPES.FORGET_PIN], state));
-
-  // const errors = useSelector((state) => errorsSelector([TYPES.FORGET_PIN], state), shallowEqual);
-  // const isLoadingChangePin = useSelector((state) =>
-  //   isLoadingSelector([TYPES.CHANGE_OLD_PIN], state)
-  // );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.CHANGE_OLD_PIN], state));
 
   const countryCode = props.route && props.route.params && props.route.params.countryCode;
   const phoneNumber = props.route && props.route.params && props.route.params.phoneNumber;
   const otp = props.route && props.route.params && props.route.params.otp;
   const newPin = props.route && props.route.params && props.route.params.data;
-  console.log('props', props.navigation);
 
   const submit = () => {
-    return;
     if (!value) {
       Toast.show({
-        text2: strings.validation.enterPin,
+        text2: 'Please enter security pin',
         position: 'bottom',
         type: 'error_toast',
         visibilityTime: 2000,
       });
     } else if (value != newPin) {
       Toast.show({
-        text2: strings.validation.samePin,
+        text2: 'Pin does not match',
         position: 'bottom',
         type: 'error_toast',
         visibilityTime: 2000,
@@ -66,17 +57,30 @@ export function ReEnterPin(props) {
       if (props?.route?.params?.key == 'change_pin') {
         dispatch(
           changeOldPin({
-            old_pin: profileData?.user_profiles?.security_pin,
+            old_pin: authdata?.getProfile?.user_profiles?.security_pin,
             new_pin: value,
           })
         )
-          .then(() => props.navigation.navigate('homeNav', { screen: 'More' }))
+          .then(() =>
+            props.navigation.navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.more })
+          )
           .catch({});
       } else {
-        dispatch(forgetPin(phoneNumber, countryCode, otp, value));
+        // dispatch(forgetPin(phoneNumber, countryCode, otp, value));
       }
     }
   };
+
+  const renderCell = ({ index }) => {
+    const displaySymbol = value[index] ? '*' : '';
+
+    return (
+      <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
+        <Text style={styles.cellText}>{displaySymbol}</Text>
+      </View>
+    );
+  };
+
   return (
     <ScreenWrapper>
       <Header title={strings.setPin.setUpPin} subTitle={strings.setPin.subTitle} backRequired />
@@ -92,21 +96,12 @@ export function ReEnterPin(props) {
           rootStyle={styles.containerOtp}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({ index, symbol, isFocused }) => (
-            <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
-              <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
-            </View>
-          )}
+          renderCell={renderCell}
         />
       </View>
       <View style={{ flex: 1 }} />
 
-      <Button
-        title={'Next'}
-        // pending={isLoading || isLoadingChangePin}
-        onPress={submit}
-        style={{ height: SW(55) }}
-      />
+      <Button title={'Next'} pending={isLoading} onPress={submit} style={{ height: SW(55) }} />
     </ScreenWrapper>
   );
 }

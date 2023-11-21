@@ -58,6 +58,11 @@ export const ApiUserInventory = {
   getPosDetailWeekly: 'pos_staff_salary/get-data-basis-of-week',
   staffRequest: 'pos_staff_salary/request-payment',
   getStaffTransaction: 'pos_staff_salary/pos/paid-salary-details',
+  deviceRegister: USER_URL + 'users/device/register',
+  deviceUnRegister: USER_URL + 'users/device/un-register',
+  deviceLogin: USER_URL + 'users/device/login',
+  verifyPin: USER_URL + 'users/verify-pin',
+  changeOldPin: USER_URL + 'users/change-old-pin',
 };
 
 export const ApiProductInventory = {

@@ -42,4 +42,128 @@ export class UserController {
         });
     });
   }
+
+  static async deviceRegister() {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ApiUserInventory.deviceRegister;
+      const uniqueId = await DeviceInfo.getUniqueId();
+      const body = {
+        device_id: uniqueId,
+        app_name: 'pos',
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          if (error.msg === 'biometric_off') {
+            alert(
+              'Please login with PIN and enable biometric authentication from your application'
+            );
+          } else {
+            alert(error.msg);
+          }
+          reject(error);
+        });
+    });
+  }
+
+  static async updateBioMetricLoginPreference() {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ApiUserInventory.deviceUnRegister;
+      const uniqueId = await DeviceInfo.getUniqueId();
+      const body = {
+        device_id: uniqueId,
+        app_name: 'pos',
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+          console.log('ok resp', response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async deviceLogin(id) {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ApiUserInventory.deviceLogin;
+      const uniqueId = await DeviceInfo.getUniqueId();
+      const body = {
+        device_id: uniqueId,
+        app_name: 'pos',
+        user_id: id,
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          if (error.msg === 'biometric_off') {
+            alert(
+              'Please login with PIN and enable biometric authentication from your application'
+            );
+          } else {
+            alert(error.msg);
+          }
+          reject(error);
+        });
+    });
+  }
+
+  static async verifyPin(pin) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ApiUserInventory.verifyPin;
+      const body = {
+        security_pin: pin,
+      };
+
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async changeOldPin(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ApiUserInventory.changeOldPin;
+      HttpClient.post(endpoint, data)
+        .then((response) => {
+          resolve(response);
+          Toast.show({
+            text2: 'Pin changed successfully',
+            position: 'bottom',
+            type: 'success_toast',
+            visibilityTime: 2000,
+          });
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
 }

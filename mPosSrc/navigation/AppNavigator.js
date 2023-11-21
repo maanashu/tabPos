@@ -38,6 +38,7 @@ import {
   Plans,
   ChangePlans,
   UserProfile,
+  FaceId,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -322,6 +323,11 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.userProfile}
         options={{ headerShown: false }}
         component={UserProfile}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.faceId}
+        options={{ headerShown: false }}
+        component={FaceId}
       />
     </Stack.Navigator>
   );

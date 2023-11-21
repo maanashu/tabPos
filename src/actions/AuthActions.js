@@ -1,4 +1,5 @@
 import { AuthController } from '@/controllers/AuthController';
+import { store } from '@/store';
 import { TYPES } from '@/Types/Types';
 
 const verifyPhoneRequest = () => ({
@@ -126,7 +127,8 @@ export const merchantLogin = (data) => async (dispatch) => {
 export const getProfile = (id) => async (dispatch) => {
   dispatch(getProfileRequest());
   try {
-    const res = await AuthController.getProfile(id);
+    let user = store.getState().user?.posLoginData?.id;
+    const res = await AuthController.getProfile(id || user);
     dispatch(getProfileSuccess(res));
   } catch (error) {
     dispatch(getProfileError(error.message));

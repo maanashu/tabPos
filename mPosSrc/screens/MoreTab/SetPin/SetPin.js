@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StatusBar, Platform } from 'react-native';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Button, Spacer, Header, ScreenWrapper } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { styles } from './SetPin.styles';
@@ -12,19 +12,15 @@ import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
-  Cursor,
 } from 'react-native-confirmation-code-field';
-import { NormalAlert } from '@/utils/GlobalMethods';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { errorsSelector } from '@/selectors/ErrorSelectors';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { getAuthData } from '@/selectors/UserSelectors';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 const CELL_COUNT = 4;
 
 export function SetPin(props) {
-  // const getData = useSelector(getAuthData);
-  // const profileData = getData?.userProfile;
+  const authdata = useSelector(getAuthData);
+
   const countryCode = props.route && props.route.params && props.route.params.countryCode;
   const phoneNumber = props.route && props.route.params && props.route.params.phoneNumber;
   const otp = props.route && props.route.params && props.route.params.value;
@@ -35,15 +31,25 @@ export function SetPin(props) {
     setValue,
   });
 
+  const renderCell = ({ index }) => {
+    const displaySymbol = value[index] ? '*' : '';
+
+    return (
+      <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
+        <Text style={styles.cellText}>{displaySymbol}</Text>
+      </View>
+    );
+  };
+
   const submit = () => {
-    navigate(NAVIGATION.reSetPin, {
-      key: 'Pin',
-      data: value,
-      otp: otp,
-      countryCode: countryCode,
-      phoneNumber: phoneNumber,
-    });
-    return;
+    // navigate(NAVIGATION.reSetPin, {
+    //   key: 'Pin',
+    //   data: value,
+    //   otp: otp,
+    //   countryCode: countryCode,
+    //   phoneNumber: phoneNumber,
+    // });
+    // return;
     if (!value) {
       Toast.show({
         text2: 'Please enter pin',
@@ -53,7 +59,7 @@ export function SetPin(props) {
       });
     } else if (
       props?.route?.params?.key == 'change_pin' &&
-      value == profileData?.user_profiles?.security_pin
+      value == authdata?.getProfile?.user_profiles?.security_pin
     ) {
       Toast.show({
         text2: 'New pin should be different from current',
@@ -93,11 +99,7 @@ export function SetPin(props) {
           rootStyle={styles.containerOtp}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({ index, symbol, isFocused }) => (
-            <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
-              <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
-            </View>
-          )}
+          renderCell={renderCell}
         />
       </View>
       <View style={{ flex: 1 }} />

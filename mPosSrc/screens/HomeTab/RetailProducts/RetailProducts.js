@@ -191,10 +191,13 @@ export function RetailProducts(props) {
       </View>
 
       <TouchableOpacity
-        style={[
-          styles.addView,
-          { borderColor: index === 0 ? COLORS.darkBlue : COLORS.inputBorder },
-        ]}
+        style={styles.addView}
+        onPress={async () => {
+          const res = await dispatch(getOneProduct(sellerID, item.id));
+          if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+            addProductCartRef.current.present();
+          }
+        }}
       >
         <Image
           source={Images.addTitle}
