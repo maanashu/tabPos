@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.light_border,
     marginHorizontal: moderateScale(5),
+    paddingTop: SH(8),
   },
   cellText: {
     fontFamily: Fonts.Medium,

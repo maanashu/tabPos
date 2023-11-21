@@ -118,4 +118,52 @@ export class UserController {
         });
     });
   }
+
+  static async verifyPin(pin) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ApiUserInventory.verifyPin;
+      const body = {
+        security_pin: pin,
+      };
+
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
+  static async changeOldPin(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ApiUserInventory.changeOldPin;
+      HttpClient.post(endpoint, data)
+        .then((response) => {
+          resolve(response);
+          Toast.show({
+            text2: 'Pin changed successfully',
+            position: 'bottom',
+            type: 'success_toast',
+            visibilityTime: 2000,
+          });
+        })
+        .catch((error) => {
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
 }

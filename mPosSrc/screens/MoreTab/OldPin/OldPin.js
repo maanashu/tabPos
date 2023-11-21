@@ -1,28 +1,26 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
-import { useSelector } from 'react-redux';
+import { View, Text, ActivityIndicator } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Spacer, Header, ScreenWrapper } from '@mPOS/components';
-import { strings } from '@mPOS/localization';
 import { styles } from './OldPin.styles';
 import { COLORS, SW, TextStyles } from '@/theme';
-import { navigate } from '@mPOS/navigation/NavigationRef';
 import { NAVIGATION } from '@mPOS/constants';
 
 import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
-  Cursor,
 } from 'react-native-confirmation-code-field';
 import { ms } from 'react-native-size-matters';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { getAuthData } from '@/selectors/UserSelectors';
+import { verifyPin } from '@/actions/UserActions';
+import { commonNavigate } from '@common/commonImports';
+import { TYPES } from '@/Types/Types';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const CELL_COUNT = 4;
 
-export function OldPin(props) {
-  // const getData = useSelector(getAuthData);
-  // const profileData = getData?.userProfile;
+export function OldPin() {
+  const dispatch = useDispatch();
 
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -32,32 +30,28 @@ export function OldPin(props) {
   });
 
   const submit = () => {
-    navigate(NAVIGATION.setPin, {
-      key: 'change_pin',
-      data: value,
-    });
-    return;
-    if (!value) {
-      Toast.show({
-        text2: strings.validation.enterPin,
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 2000,
-      });
-      return;
-    } else if (value != profileData?.user_profiles?.security_pin) {
-      Toast.show({
-        text2: 'Old pin does not match',
-        position: 'bottom',
-        type: 'error_toast',
-        visibilityTime: 2000,
-      });
-    } else
-      navigate(NAVIGATION.setPin, {
-        key: 'change_pin',
-        data: value,
-      });
+    dispatch(
+      verifyPin(value, (res) => {
+        commonNavigate(NAVIGATION.setPin, {
+          key: 'change_pin',
+          data: value,
+        });
+      })
+    );
   };
+
+  const renderCell = ({ index }) => {
+    const displaySymbol = value[index] ? '*' : '';
+
+    return (
+      <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
+        <Text style={styles.cellText}>{displaySymbol}</Text>
+      </View>
+    );
+  };
+
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.VERIFY_PIN], state));
+
   return (
     <ScreenWrapper>
       <Header title={'Set up PIN'} backRequired />
@@ -75,20 +69,16 @@ export function OldPin(props) {
           rootStyle={styles.containerOtp}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({ index, symbol, isFocused }) => (
-            <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
-              <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
-            </View>
-          )}
+          renderCell={renderCell}
         />
       </View>
       <View style={{ flex: 1 }} />
-      <Button
-        // onPress={() => navigate(NAVIGATION.reSetPin, { data: 'Pin' })}
-        title={'Next'}
-        onPress={submit}
-        style={{ height: SW(55) }}
-      />
+      <Button title={'Next'} onPress={submit} style={{ height: SW(55) }} />
+      {isLoading && (
+        <View style={styles.loaderViewStyle}>
+          <ActivityIndicator color={COLORS.primary} size={'large'} style={styles.loaderViewStyle} />
+        </View>
+      )}
     </ScreenWrapper>
   );
 }
