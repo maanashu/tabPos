@@ -1651,7 +1651,7 @@ export const getAvailableOffer = (data) => async (dispatch) => {
   dispatch(getAvailableOfferRequest());
   try {
     const res = await RetailController.getAvailableOffer(data);
-    dispatch(getAvailableOfferSuccess(res?.payload?.data));
+    dispatch(getAvailableOfferSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAvailableOfferReset());
