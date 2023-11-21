@@ -32,6 +32,7 @@ import {
   getAllCart,
   getAllProductCart,
   getAllServiceCart,
+  getAvailableOffer,
   getServiceCart,
   getServiceCartSuccess,
   getTip,
@@ -50,6 +51,9 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { updateServiceCartLength } from '@/actions/CartAction';
 import { getServiceCartLength } from '@/selectors/CartSelector';
 import { ReactNativeModal } from 'react-native-modal';
+import AvailableOffer from './AvailableOffer';
+import { AddServiceCartModal } from '@mPOS/screens/HomeTab/Services/AddServiceCart';
+import AddServiceCart from '@mPOS/screens/HomeTab/RetailServices/Components/AddServiceCart';
 
 export function ServiceCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -57,6 +61,8 @@ export function ServiceCart({ cartChangeHandler }) {
   const retailData = useSelector(getRetail);
   const serviceCartData = retailData?.getserviceCart;
   const payByCashRef = useRef(null);
+  const availableOfferRef = useRef(null);
+  const addServiceCartRef = useRef(null);
   const jbrCoinRef = useRef(null);
   const finalPaymentRef = useRef(null);
   const cartAmountByPayRef = useRef(null);
@@ -404,7 +410,16 @@ export function ServiceCart({ cartChangeHandler }) {
             alignSelf: 'center',
           }}
         >
-          <TouchableOpacity style={styles.availablOffercon}>
+          <TouchableOpacity
+            style={styles.availablOffercon}
+            onPress={() => {
+              const data = {
+                servicetype: 'service',
+              };
+              dispatch(getAvailableOffer(data));
+              availableOfferRef?.current?.present();
+            }}
+          >
             <Text style={styles.avaliableofferText}>{strings.cart.availablOffer}</Text>
           </TouchableOpacity>
           <Spacer space={SH(10)} />
@@ -527,6 +542,15 @@ export function ServiceCart({ cartChangeHandler }) {
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
 
       {/* <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} /> */}
+
+      <AvailableOffer
+        availableOfferRef={availableOfferRef}
+        serviceCartOpen={() => {
+          addServiceCartRef?.current?.present();
+        }}
+      />
+      <AddServiceCart {...{ addServiceCartRef }} />
+      {/* serviceDetailHanlder */}
       {isLoading ? <FullScreenLoader /> : null}
     </View>
   );

@@ -81,7 +81,8 @@ export function CartServiceScreen({
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
   const [serviceItemSave, setServiceItemSave] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const availableOfferArray = getRetailData?.availableOffer;
+  const availableOfferArray = getRetailData?.availableOffer?.data;
+
   const [cartSearch, setCartSearch] = useState('');
   const [offerId, setOfferId] = useState();
   const CART_LENGTH = useSelector(getServiceCartLength);
@@ -563,8 +564,8 @@ export function CartServiceScreen({
                   </View>
                 ) : (
                   <FlatList
-                    data={availableOfferArray}
-                    extraData={availableOfferArray}
+                    data={availableOfferArray || []}
+                    extraData={availableOfferArray || []}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
                       <TouchableOpacity
@@ -580,7 +581,7 @@ export function CartServiceScreen({
                             <Text style={[styles.offerText, [{ width: ms(90) }]]} numberOfLines={1}>
                               {item?.name}
                             </Text>
-                            <Text style={styles.offerPrice}>White/S</Text>
+                            {/* <Text style={styles.offerPrice}>White/S</Text> */}
                             {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
                             item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
                               <View style={{ flexDirection: 'row' }}>
