@@ -31,6 +31,7 @@ export { More } from '@mPOS/screens/MoreTab/More/More';
 export { Profile } from '@mPOS/screens/MoreTab/Profile/Profile';
 export { ProfileQRCode } from '@mPOS/screens/MoreTab/ProfileQRCode/ProfileQRCode';
 export { FaceId } from '@mPOS/screens/MoreTab/FaceId/FaceId';
+export { HelpCenter } from '@mPOS/screens/MoreTab/HelpCenter/HelpCenter';
 
 //retail products
 export { RetailProducts } from '@mPOS/screens/HomeTab/RetailProducts/RetailProducts';

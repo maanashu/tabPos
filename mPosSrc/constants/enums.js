@@ -98,6 +98,7 @@ export const moreApp = [
     label: 'Help center',
     image: Images.helpCenter,
     id: 4,
+    navigation: MPOS_NAVIGATION.helpCenter,
   },
 ];
 

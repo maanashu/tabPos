@@ -506,6 +506,9 @@ export const en = {
     walletNoti: 'Wallet Notifications',
     accountNoti: 'Account Notifications',
   },
+  help: {
+    helpCenter: 'Help Center',
+  },
   plans: {
     plans: 'Plans',
     terms: 'Manage or change your JOBR plan. View our terms of service and privacy policy.',
