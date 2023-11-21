@@ -60,6 +60,7 @@ export const ApiUserInventory = {
   getStaffTransaction: 'pos_staff_salary/pos/paid-salary-details',
   deviceRegister: USER_URL + 'users/device/register',
   deviceUnRegister: USER_URL + 'users/device/un-register',
+  deviceLogin: USER_URL + 'users/device/login',
 };
 
 export const ApiProductInventory = {

@@ -92,4 +92,30 @@ export class UserController {
         });
     });
   }
+
+  static async deviceLogin(id) {
+    return new Promise(async (resolve, reject) => {
+      const endpoint = ApiUserInventory.deviceLogin;
+      const uniqueId = await DeviceInfo.getUniqueId();
+      const body = {
+        device_id: uniqueId,
+        app_name: 'pos',
+        user_id: id,
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          if (error.msg === 'biometric_off') {
+            alert(
+              'Please login with PIN and enable biometric authentication from your application'
+            );
+          } else {
+            alert(error.msg);
+          }
+          reject(error);
+        });
+    });
+  }
 }

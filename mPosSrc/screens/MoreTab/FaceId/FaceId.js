@@ -33,7 +33,6 @@ export function FaceId() {
       (item) => item?.app_name === 'pos' && item?.status === true
     );
 
-  console.log('has true', hasPosTrue);
   useEffect(() => {
     rnBiometrics
       .isSensorAvailable()

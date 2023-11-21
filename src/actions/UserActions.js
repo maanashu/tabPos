@@ -65,6 +65,18 @@ export const loginPosUser = (data) => async (dispatch) => {
   }
 };
 
+export const deviceLogin = (id) => async (dispatch) => {
+  dispatch(loginPosUserRequest());
+  try {
+    const res = await UserController.deviceLogin(id);
+    dispatch(loginPosUserSuccess(res?.payload));
+    dispatch(getSettings());
+    dispatch(getProfile(res?.payload?.id));
+  } catch (error) {
+    return dispatch(loginPosUserError(error));
+  }
+};
+
 export const deviceRegister = () => async (dispatch) => {
   dispatch(deviceRegisterRequest());
   try {
