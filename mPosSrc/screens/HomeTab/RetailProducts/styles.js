@@ -93,6 +93,7 @@ export const styles = StyleSheet.create({
     padding: ms(4),
     borderWidth: 1,
     borderRadius: ms(5),
+    borderColor: COLORS.inputBorder,
   },
   alignItem: {
     flexDirection: 'row',

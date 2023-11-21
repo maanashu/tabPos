@@ -14,7 +14,7 @@ import {
 import RBSheet from 'react-native-raw-bottom-sheet';
 
 import { Images } from '@mPOS/assets';
-import { ImageView, Spacer } from '@mPOS/components';
+import { FullScreenLoader, ImageView, Spacer } from '@mPOS/components';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { strings } from '@mPOS/localization';
 import { ms } from 'react-native-size-matters';
@@ -29,19 +29,19 @@ import { addProductCart } from '@mPOS/actions/RetailActions';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
+import { addTocart, checkSuppliedVariant, getOneService } from '@/actions/RetailAction';
 import { clothes } from '@/assets';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 
-const AvailableOffer = ({ availableOfferRef }) => {
+const AvailableOffer = ({ availableOfferRef, serviceCartOpen }) => {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const productDetail = retailData?.getOneProduct;
+  const addServiceCartRef = useRef(null);
   const availableOfferArray = retailData?.availableOffer?.data;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
-  console.log('availableOfferArray', availableOfferArray);
 
   const sizeArray = attributeArray?.filter((item) => item.name === 'Size');
   const colorArray = attributeArray?.filter((item) => item.name === 'Color');
@@ -58,7 +58,9 @@ const AvailableOffer = ({ availableOfferRef }) => {
     setColorSelectId(null);
     setSizeSelectId(null);
   }, []);
-  const productLoad = useSelector((state) => isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state));
+  const productLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_AVAILABLE_OFFER, TYPES.GET_ONE_SERVICE], state)
+  );
 
   return (
     <BottomSheetModal
@@ -83,74 +85,79 @@ const AvailableOffer = ({ availableOfferRef }) => {
           <TouchableOpacity onPress={() => availableOfferRef.current.dismiss()}>
             <Image source={Images.cross} style={styles.crossImageStyle} />
           </TouchableOpacity>
+          <Text style={styles.availableOfferText}>{'Available offers'}</Text>
         </View>
         <View style={[styles.productCartBody]}>
-          {productLoad ? (
-            <View>
-              <ActivityIndicator size="large" color={COLORS.darkBlue} />
-            </View>
-          ) : (
-            <FlatList
-              data={availableOfferArray || []}
-              extraData={availableOfferArray || []}
-              renderItem={({ item, index }) => (
-                <TouchableOpacity
-                  // onPress={async () => {
-                  //   const res = await dispatch(getOneProduct(sellerID, item.id));
-                  //   if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-                  //     addProductCartRef.current.present();
-                  //   }
-                  // }}
-                  style={[styles.productDetailMainView, { marginTop: index === 0 ? ms(0) : ms(5) }]}
-                >
-                  <View style={styles.imageDetailView}>
-                    <ImageView
-                      // imageUrl={item?.image}
-                      imageUrl={clothes}
-                      style={styles.productImageStyle}
-                      imageStyle={{ borderRadius: ms(5) }}
-                    />
-                    <View style={{ flex: 1, paddingLeft: 10 }}>
-                      <Text style={styles.productNameText} numberOfLines={1}>
-                        {'dummy name'}
-                      </Text>
-                      <Text style={styles.genderTextStyle} numberOfLines={1}>
+          <FlatList
+            data={availableOfferArray || []}
+            extraData={availableOfferArray || []}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                onPress={async () => {
+                  const res = await dispatch(getOneService(sellerID, item.id));
+                  if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
+                    serviceCartOpen();
+                  }
+                }}
+                style={[styles.productDetailMainView, { marginTop: index === 0 ? ms(0) : ms(5) }]}
+              >
+                <View style={styles.imageDetailView}>
+                  <ImageView
+                    imageUrl={item?.image}
+                    style={styles.productImageStyle}
+                    imageStyle={{ borderRadius: ms(5) }}
+                  />
+                  <View style={{ flex: 1, paddingLeft: 10 }}>
+                    <Text style={styles.productNameText} numberOfLines={1}>
+                      {item?.name}
+                    </Text>
+                    {/* <Text style={styles.genderTextStyle} numberOfLines={1}>
                         {'item?.category?.name'}
-                      </Text>
-                      <Text style={styles.priceTextStyle} numberOfLines={1}>
-                        {/* ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price} */}
-                        $10
-                      </Text>
-                    </View>
+                      </Text> */}
+                    {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
+                    item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.actualPrice} numberOfLines={1}>
+                          ${item?.supplies?.[0]?.supply_prices?.[0]?.actual_price}
+                        </Text>
+                        <Text style={styles.priceTextStyle} numberOfLines={1}>
+                          ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                        </Text>
+                      </View>
+                    ) : (
+                      <View style={styles.priceTextStyle} numberOfLines={1}>
+                        <Text style={styles.offerPriceDark}>
+                          ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                        </Text>
+                      </View>
+                    )}
                   </View>
+                </View>
 
-                  <TouchableOpacity style={[styles.addView]}>
-                    <Image
-                      source={Images.addTitle}
-                      resizeMode="contain"
-                      style={[styles.addImage]}
-                    />
-                  </TouchableOpacity>
+                <TouchableOpacity style={[styles.addView]}>
+                  <Image source={Images.addTitle} resizeMode="contain" style={[styles.addImage]} />
                 </TouchableOpacity>
-              )}
-              keyExtractor={(item, index) => item.id}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                paddingBottom: ms(50),
-              }}
-              ListEmptyComponent={() => (
-                <View style={styles.noProductCon}>
-                  <Text style={styles.noProduct}>{strings.retail.noProduct}</Text>
-                </View>
-              )}
-              ListFooterComponent={() => (
-                <View>
-                  {/* {productLoad && <ActivityIndicator size="large" color={COLORS.darkBlue} />} */}
-                </View>
-              )}
-            />
-          )}
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item, index) => item.id}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingBottom: ms(50),
+            }}
+            ListEmptyComponent={() => (
+              <View style={styles.noProductCon}>
+                <Text style={styles.noProduct}>{strings.retail.noProduct}</Text>
+              </View>
+            )}
+            ListFooterComponent={() => (
+              <View>
+                {/* {productLoad && <ActivityIndicator size="large" color={COLORS.darkBlue} />} */}
+              </View>
+            )}
+          />
         </View>
+        {productLoad ? <FullScreenLoader /> : null}
+        {/* <FullScreenLoader /> */}
       </View>
     </BottomSheetModal>
   );
@@ -171,7 +178,7 @@ const styles = StyleSheet.create({
 
   productCartBody: {
     flex: 1,
-    paddingHorizontal: ms(10),
+    // paddingHorizontal: ms(10),
     paddingVertical: ms(10),
   },
 
@@ -237,8 +244,15 @@ const styles = StyleSheet.create({
   },
   priceTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(14),
+    fontSize: ms(13),
     color: COLORS.solid_grey,
+  },
+  actualPrice: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(13),
+    color: COLORS.darkGray,
+    textDecorationLine: 'line-through',
+    marginRight: ms(3),
   },
   addView: {
     padding: ms(4),
@@ -259,5 +273,10 @@ const styles = StyleSheet.create({
     color: COLORS.red,
     fontFamily: Fonts.MaisonRegular,
     marginTop: ms(50),
+  },
+  availableOfferText: {
+    fontSize: ms(14),
+    color: COLORS.darkGray,
+    fontFamily: Fonts.Medium,
   },
 });

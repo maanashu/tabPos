@@ -584,7 +584,7 @@ export function CartScreen({
                               <Text style={[styles.offerText, { width: ms(90) }]} numberOfLines={1}>
                                 {item?.name}
                               </Text>
-                              <Text style={styles.offerPrice}>White/S</Text>
+                              {/* <Text style={styles.offerPrice}>White/S</Text> */}
                               {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
                               item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
                                 <View style={{ flexDirection: 'row' }}>
