@@ -855,14 +855,7 @@ export function MainScreen({
                     {productCon && getMerchantService?.is_product_exist === true ? (
                       <View>
                         <TouchableOpacity
-                          style={
-                            filterCon
-                              ? [
-                                  styles.prouductAndServiceCon,
-                                  { backgroundColor: COLORS.navy_blue },
-                                ]
-                              : styles.prouductAndServiceCon
-                          }
+                          style={styles.prouductAndServiceCon}
                           onPress={filterHandler}
                         >
                           <Text
@@ -879,7 +872,7 @@ export function MainScreen({
                               source={Images.filterIcon}
                               style={
                                 filterCon
-                                  ? [styles.productImageStyle, { tintColor: COLORS.primary }]
+                                  ? [styles.productImageStyle, { tintColor: COLORS.navy_blue }]
                                   : styles.productImageStyle
                               }
                             />
@@ -922,7 +915,7 @@ export function MainScreen({
                           <Text
                             style={
                               serviceFilterCon
-                                ? [styles.productText, { color: COLORS.primary }]
+                                ? [styles.productText, { color: COLORS.navy_blue }]
                                 : styles.productText
                             }
                           >

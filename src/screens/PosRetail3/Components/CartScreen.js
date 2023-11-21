@@ -661,14 +661,6 @@ export function CartScreen({
                     ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
                   </Text>
                 </View>
-
-                <View style={[styles.displayflex2, styles.paddVertical]}>
-                  <Text style={styles.subTotal}>Total Taxes</Text>
-                  <Text style={styles.subTotalDollar}>
-                    ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
-                  </Text>
-                </View>
-
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.subTotal}>{`Discount ${
                     cartData?.discount_flag === 'percentage' ? '(%)' : ''
@@ -677,6 +669,14 @@ export function CartScreen({
                     {formattedReturnPrice(cartData?.amount?.discount)}
                   </Text>
                 </View>
+
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>Total Taxes</Text>
+                  <Text style={styles.subTotalDollar}>
+                    ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
+
                 <View
                   style={{
                     borderWidth: 1,
