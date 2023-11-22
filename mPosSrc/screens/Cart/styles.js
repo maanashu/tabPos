@@ -345,4 +345,10 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: Fonts.Regular,
   },
+  sukNumber: {
+    color: COLORS.darkGray,
+    fontSize: ms(10),
+    fontFamily: Fonts.Regular,
+    marginTop: ms(1),
+  },
 });

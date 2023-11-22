@@ -54,12 +54,17 @@ import { ReactNativeModal } from 'react-native-modal';
 import AvailableOffer from './AvailableOffer';
 import { AddServiceCartModal } from '@mPOS/screens/HomeTab/Services/AddServiceCart';
 import AddServiceCart from '@mPOS/screens/HomeTab/RetailServices/Components/AddServiceCart';
+import moment from 'moment';
 
 export function ServiceCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const serviceCartData = retailData?.getserviceCart;
+  console.log(
+    'serviceCartData?.appointment_cart_products',
+    JSON.stringify(serviceCartData?.appointment_cart_products)
+  );
   const payByCashRef = useRef(null);
   const availableOfferRef = useRef(null);
   const addServiceCartRef = useRef(null);
@@ -320,25 +325,30 @@ export function ServiceCart({ cartChangeHandler }) {
             extraData={serviceCartData?.appointment_cart_products}
             keyExtractor={(_, index) => index.toString()}
             renderItem={(data, ind) => {
-              const productSize = data?.item?.product_details?.supply?.attributes?.filter(
-                (item) => item?.name === 'Size'
-              );
-              const productColor = data?.item?.product_details?.supply?.attributes?.filter(
-                (item) => item?.name === 'Color'
-              );
               return (
                 <View style={styles.cartProductCon}>
                   <View style={[styles.disPlayFlex]}>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Image
                         source={{ uri: data?.item?.product_details?.image }}
                         style={{ width: ms(35), height: ms(35) }}
                       />
-                      <View style={{ marginLeft: ms(10) }}>
+                      <View style={{ marginLeft: ms(10), flex: 0.9 }}>
                         <Text style={styles.cartProductName} numberOfLines={1}>
                           {data?.item?.product_details?.name}
                         </Text>
-                        <View
+                        <Text style={styles.sukNumber}>
+                          {moment(data?.item?.date).format('LL')} @
+                          {data?.item?.start_time + '-' + data?.item?.start_time}
+                        </Text>
+                        {data?.item?.product_details?.supply?.approx_service_time == null ? (
+                          <Text style={styles.sukNumber}>Estimated Time Not found</Text>
+                        ) : (
+                          <Text style={styles.sukNumber}>
+                            Est: {data?.item?.product_details?.supply?.approx_service_time} min
+                          </Text>
+                        )}
+                        {/* <View
                           style={{
                             flexDirection: 'row',
                             alignItems: 'center',
@@ -348,7 +358,7 @@ export function ServiceCart({ cartChangeHandler }) {
                           <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
                             ${data?.item?.product_details?.supply?.supply_prices?.selling_price}
                           </Text>
-                        </View>
+                        </View> */}
                       </View>
                     </View>
                     <View

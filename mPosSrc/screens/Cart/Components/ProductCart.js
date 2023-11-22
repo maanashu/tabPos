@@ -246,7 +246,7 @@ export function ProductCart({ cartChangeHandler }) {
               return (
                 <View style={styles.cartProductCon}>
                   <View style={[styles.disPlayFlex]}>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Image
                         source={{ uri: data?.item?.product_details?.image }}
                         style={{ width: ms(35), height: ms(35) }}
@@ -281,6 +281,9 @@ export function ProductCart({ cartChangeHandler }) {
                             </Text>
                           )}
                         </View>
+                        <Text style={styles.colorName}>
+                          UPC: {data?.item?.product_details?.upc}
+                        </Text>
                         <View
                           style={{
                             flexDirection: 'row',
