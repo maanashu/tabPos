@@ -9,7 +9,7 @@ export const supportReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.GET_SUPPORTLIST_SUCCESS:
       return {
         ...state,
-        ticketsList: payload.ticketsList,
+        ticketsList: payload.ticketsList?.payload,
       };
 
     default:

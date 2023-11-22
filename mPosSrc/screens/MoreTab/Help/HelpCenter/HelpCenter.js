@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { ScreenWrapper } from '@/components';
 import { Header, HorizontalLine } from '@mPOS/components';
@@ -79,14 +79,15 @@ export function HelpCenter() {
   return (
     <ScreenWrapper>
       <Header backRequired title={strings?.help?.howCan} />
-
-      <FlatList
-        data={helpTypeData}
-        renderItem={renderdataItem}
-        keyExtractor={(item) => item.id}
-        showsHorizontalScrollIndicator={false}
-        bounces={false}
-      />
+      <View style={{ paddingHorizontal: ms(20) }}>
+        <FlatList
+          data={helpTypeData}
+          renderItem={renderdataItem}
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          bounces={false}
+        />
+      </View>
     </ScreenWrapper>
   );
 }

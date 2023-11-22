@@ -173,6 +173,7 @@ export const en = {
   },
   successMessages: {
     loginSuccess: 'Login succesfully',
+    emptyList: 'No records found',
   },
   transactions: {
     numberOfOrders: 'Number of Orders',
@@ -512,6 +513,8 @@ export const en = {
     mySupportRequest: 'My Support Request',
     support: 'Support',
     mySupport: 'My support',
+    subject: 'Subject',
+    lastRespond: 'Last Respond',
   },
   plans: {
     plans: 'Plans',

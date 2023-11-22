@@ -13,9 +13,5 @@ import { upadteApi } from '@/actions/SettingAction';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 
 export function Support() {
-  return (
-    <ScreenWrapper>
-      <Header backRequired title={strings?.help?.support} />
-    </ScreenWrapper>
-  );
+  return <ScreenWrapper></ScreenWrapper>;
 }

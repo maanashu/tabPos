@@ -102,6 +102,25 @@ const styles = StyleSheet.create({
     height: SH(15),
     resizeMode: 'contain',
   },
+  //
+
+  selectScreenContainer: (screen, id) => {
+    return {
+      paddingHorizontal: ms(10),
+      paddingVertical: ms(3),
+      borderWidth: 1,
+      borderRadius: ms(7),
+      borderColor: screen == id ? COLORS.primary : COLORS.solidGrey,
+    };
+  },
+
+  selectScreenText: (screen, id) => {
+    return {
+      fontFamily: screen == id ? Fonts.SemiBold : Fonts.Regular,
+      color: screen == id ? COLORS.primary : COLORS.solid_grey,
+      fontSize: ms(12),
+    };
+  },
 });
 
 export default styles;
