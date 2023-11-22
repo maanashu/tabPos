@@ -331,10 +331,10 @@ export function ServiceCart({ cartChangeHandler }) {
             showsVerticalScrollIndicator={false}
             data={serviceCartData?.appointment_cart_products}
             extraData={serviceCartData?.appointment_cart_products}
-            keyExtractor={(_, index) => index.toString()}
+            keyExtractor={(data, index) => data?.item?.id}
             renderItem={(data, ind) => {
               return (
-                <View style={styles.cartProductCon}>
+                <View style={styles.cartProductCon} key={data?.item?.index}>
                   <View style={[styles.disPlayFlex]}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Image

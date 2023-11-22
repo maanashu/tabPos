@@ -1406,15 +1406,17 @@ export class RetailController {
         `?app_name=pos&delivery_options=2&seller_id=${sellerID}&service_type=${data?.servicetype}`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log(response);
           resolve(response);
         })
         .catch((error) => {
-          // Toast.show({
-          //   text2: error?.msg,
-          //   position: 'bottom',
-          //   type: 'error_toast',
-          //   visibilityTime: 1500,
-          // });
+          error?.statusCode === 204 &&
+            Toast.show({
+              text2: 'Offer Not Found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
           reject(error);
         });
     });
