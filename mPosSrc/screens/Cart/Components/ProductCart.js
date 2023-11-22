@@ -45,6 +45,8 @@ import JbrCoin from './JbrCoin';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useIsFocused } from '@react-navigation/native';
 import AvailableOffer from './AvailableOffer';
+import AddProductCart from '@mPOS/screens/HomeTab/RetailProducts/Components/AddProductCart';
+import ProductDetails from '@mPOS/screens/HomeTab/RetailProducts/Components/ProductDetails';
 
 export function ProductCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -53,6 +55,8 @@ export function ProductCart({ cartChangeHandler }) {
   const productCartData = retailData?.getAllCart;
   const payByCashRef = useRef(null);
   const availableOfferRef = useRef(null);
+  const addProductCartRef = useRef(null);
+  const productDetailRef = useRef(null);
   const jbrCoinRef = useRef(null);
   const finalPaymentRef = useRef(null);
   const cartAmountByPayRef = useRef(null);
@@ -67,7 +71,6 @@ export function ProductCart({ cartChangeHandler }) {
   const [productCustomerAdd, setProductCustomerAdd] = useState(false);
   const productCartArray = retailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
-  console.log(JSON.stringify(productCartData?.poscart_products));
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -81,6 +84,7 @@ export function ProductCart({ cartChangeHandler }) {
         TYPES.CREATE_ORDER,
         TYPES.ATTACH_CUSTOMER,
         TYPES.CHANGE_STATUS_PRODUCT_CART,
+        TYPES.GET_AVAILABLE_OFFER,
       ],
       state
     )
@@ -94,6 +98,13 @@ export function ProductCart({ cartChangeHandler }) {
     dispatch(getAllCart());
     dispatch(getAllProductCart());
   }, [isFocused]);
+  const bothSheetClose = () => {
+    productDetailRef.current.dismiss();
+    addProductCartRef.current.dismiss();
+  };
+  const productDetailHanlder = () => {
+    productDetailRef.current.present();
+  };
 
   const payNowHandler = useCallback(() => {
     dispatch(getDrawerSessions());
@@ -369,14 +380,16 @@ export function ProductCart({ cartChangeHandler }) {
         >
           <TouchableOpacity
             style={styles.availablOffercon}
-            // onPress={() => {
-            //   const data = {
-            //     servicetype: 'product',
-            //   };
-            //   dispatch(getAvailableOffer(data));
-            //   availableOfferRef?.current?.present();
-            // }}
-            onPress={() => alert('inProgress')}
+            onPress={() => {
+              const data = {
+                servicetype: 'product',
+              };
+              dispatch(
+                getAvailableOffer(data, () => {
+                  availableOfferRef?.current?.present();
+                })
+              );
+            }}
           >
             <Text style={styles.avaliableofferText}>{strings.cart.availablOffer}</Text>
           </TouchableOpacity>
@@ -501,8 +514,15 @@ export function ProductCart({ cartChangeHandler }) {
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
       {jbrCoinCallback()}
 
-      <AvailableOffer {...{ availableOfferRef }} />
-
+      <AvailableOffer
+        availableOfferRef={availableOfferRef}
+        productCartOpen={() => {
+          addProductCartRef?.current?.present();
+        }}
+      />
+      <AddProductCart {...{ addProductCartRef, productDetailHanlder }} />
+      <ProductDetails {...{ productDetailRef, bothSheetClose }} />
+      {/* productDetailHanlder */}
       {isLoading ? <FullScreenLoader /> : null}
     </View>
   );

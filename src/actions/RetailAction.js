@@ -1647,11 +1647,12 @@ export const getTimeSlots = (params) => async (dispatch) => {
   }
 };
 
-export const getAvailableOffer = (data) => async (dispatch) => {
+export const getAvailableOffer = (data, callback) => async (dispatch) => {
   dispatch(getAvailableOfferRequest());
   try {
     const res = await RetailController.getAvailableOffer(data);
     dispatch(getAvailableOfferSuccess(res?.payload));
+    callback && callback(res);
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getAvailableOfferReset());
