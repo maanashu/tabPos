@@ -11,9 +11,9 @@ const getSupportListError = (error) => ({
   payload: { error },
 });
 
-const getSupportListSuccess = (support) => ({
+const getSupportListSuccess = (ticketsList) => ({
   type: TYPES.GET_SUPPORTLIST_SUCCESS,
-  payload: { support },
+  payload: { ticketsList },
 });
 
 export const getSupportList = () => async (dispatch) => {
