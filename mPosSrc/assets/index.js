@@ -189,4 +189,11 @@ export const Images = {
   smsIcon: require('@/assets/icons/ic_setting/smsInvoice.png'),
   emailInvoice: require('@/assets/icons/ic_setting/emailInvoice.png'),
   printInvoice: require('@/assets/icons/ic_setting/printInvoice.png'),
+
+  // Help Center
+  bagOrders: require('@mPOS/assets/icons/help/bagOrders.png'),
+  infoGrey: require('@mPOS/assets/icons/help/infoGrey.png'),
+  menuDots: require('@mPOS/assets/icons/help/menuDots.png'),
+  supportEmail: require('@mPOS/assets/icons/help/supportEmail.png'),
+  userProfileIcon: require('@mPOS/assets/icons/help/userProfileIcon.png'),
 };

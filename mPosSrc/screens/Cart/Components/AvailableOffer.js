@@ -44,7 +44,6 @@ const AvailableOffer = ({ availableOfferRef, serviceCartOpen, productCartOpen })
   const retailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const presentCart = retailData?.cartFrom;
-  console.log('presentCart', presentCart);
   const productDetail = retailData?.getOneProduct;
   const addServiceCartRef = useRef(null);
   const availableOfferArray = retailData?.availableOffer?.data;

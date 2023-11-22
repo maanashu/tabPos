@@ -64,14 +64,10 @@ export function More() {
     ]);
   };
   const tagLineHandler = (item, index) => {
-    if (index === 0) {
-      return navigate(MPOS_NAVIGATION.batchManagement);
-    } else if (index === 1) {
-      return navigate(MPOS_NAVIGATION.customers);
-    } else if (index === 2) {
-      return alert('In progress');
-    } else if (index === 3) {
-      return navigate(MPOS_NAVIGATION.analytics);
+    if (item?.navigation) {
+      commonNavigate(item?.navigation);
+    } else {
+      alert('In Progress');
     }
   };
 
@@ -169,7 +165,7 @@ export function More() {
             </View>
           </View>
           {/* tag line section */}
-          <View style={[styles.moreProfileSection, { height: ms(210) }]}>
+          <View style={[styles.moreProfileSection, { height: ms(235) }]}>
             <Text style={styles.profileName}>{strings.more.tagLine}</Text>
             {tagLine?.map((item, index) => (
               <TouchableOpacity onPress={() => tagLineHandler(item, index)} key={index}>

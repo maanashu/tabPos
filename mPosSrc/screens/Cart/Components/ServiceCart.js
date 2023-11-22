@@ -61,8 +61,6 @@ export function ServiceCart({ cartChangeHandler }) {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const serviceCartData = retailData?.getserviceCart;
-  console.log('------------', serviceCartData?.appointment_cart_products?.length);
-
   const payByCashRef = useRef(null);
   const availableOfferRef = useRef(null);
   const addServiceCartRef = useRef(null);
@@ -211,7 +209,6 @@ export function ServiceCart({ cartChangeHandler }) {
     const data = {
       updated_products: products,
     };
-    console.log(data);
     dispatch(updateServiceCartQty(data, arr.id));
     // }
   };

@@ -6,11 +6,13 @@ export const tagLine = [
     label: 'Batch management',
     image: Images.batch,
     id: 1,
+    navigation: MPOS_NAVIGATION.batchManagement,
   },
   {
     label: 'Customers',
     image: Images.customersIcon,
     id: 2,
+    navigation: MPOS_NAVIGATION.customers,
   },
   {
     label: 'Rewards',
@@ -21,6 +23,12 @@ export const tagLine = [
     label: 'Analytics ',
     image: Images.analyticsIcon,
     id: 4,
+    navigation: MPOS_NAVIGATION.analytics,
+  },
+  {
+    label: 'Wallet ',
+    image: Images.wallet,
+    id: 5,
   },
 ];
 
@@ -90,6 +98,7 @@ export const moreApp = [
     label: 'Help center',
     image: Images.helpCenter,
     id: 4,
+    navigation: MPOS_NAVIGATION.helpCenter,
   },
 ];
 

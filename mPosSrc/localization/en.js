@@ -173,6 +173,7 @@ export const en = {
   },
   successMessages: {
     loginSuccess: 'Login succesfully',
+    emptyList: 'No records found',
   },
   transactions: {
     numberOfOrders: 'Number of Orders',
@@ -505,6 +506,15 @@ export const en = {
     servicesNoti: 'Services Notifications',
     walletNoti: 'Wallet Notifications',
     accountNoti: 'Account Notifications',
+  },
+  help: {
+    helpCenter: 'Help Center',
+    howCan: 'How can we help you',
+    mySupportRequest: 'My Support Request',
+    support: 'Support',
+    mySupport: 'My support',
+    subject: 'Subject',
+    lastRespond: 'Last Respond',
   },
   plans: {
     plans: 'Plans',

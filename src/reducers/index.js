@@ -18,6 +18,7 @@ import { cartReducer } from './CartReducer';
 import { TYPES } from '@/Types/Types';
 import { subscriptionReducer } from '@/reducers/SubscriptionReducer';
 import { chatReducer } from './ChatReducer';
+import { supportReducer } from './SupportReducer';
 
 export const appReducer = combineReducers({
   error: errorReducer,
@@ -38,6 +39,7 @@ export const appReducer = combineReducers({
   cartReducer: cartReducer,
   chat: chatReducer,
   plan: subscriptionReducer,
+  support: supportReducer,
 });
 
 export const rootReducer = (state, action) => {
