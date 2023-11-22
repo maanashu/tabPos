@@ -67,6 +67,7 @@ export function ProductCart({ cartChangeHandler }) {
   const [productCustomerAdd, setProductCustomerAdd] = useState(false);
   const productCartArray = retailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
+  console.log(JSON.stringify(productCartData?.poscart_products));
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [

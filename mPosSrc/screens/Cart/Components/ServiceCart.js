@@ -337,10 +337,17 @@ export function ServiceCart({ cartChangeHandler }) {
                         <Text style={styles.cartProductName} numberOfLines={1}>
                           {data?.item?.product_details?.name}
                         </Text>
-                        <Text style={styles.sukNumber}>
-                          {moment(data?.item?.date).format('LL')} @
-                          {data?.item?.start_time + '-' + data?.item?.start_time}
-                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
+                            {data?.item?.pos_user_details?.user?.user_profiles?.firstname}
+                          </Text>
+                          <Text style={styles.verticalRow}>{'|'}</Text>
+                          <Text style={[styles.sukNumber, styles.timeitalic]}>
+                            {moment(data?.item?.date).format('LL')} @
+                            {data?.item?.start_time + '-' + data?.item?.start_time}
+                          </Text>
+                        </View>
+                        <Spacer space={SH(2)} />
                         {data?.item?.product_details?.supply?.approx_service_time == null ? (
                           <Text style={styles.sukNumber}>Estimated Time Not found</Text>
                         ) : (

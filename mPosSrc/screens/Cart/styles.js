@@ -346,9 +346,16 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   sukNumber: {
-    color: COLORS.darkGray,
+    color: COLORS.solid_grey,
     fontSize: ms(10),
     fontFamily: Fonts.Regular,
     marginTop: ms(1),
+  },
+  verticalRow: {
+    color: COLORS.solidGrey,
+    marginHorizontal: ms(2),
+  },
+  timeitalic: {
+    fontFamily: Fonts.Italic,
   },
 });
