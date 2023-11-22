@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   selectScreenContainer: (screen, id) => {
     return {
       paddingHorizontal: ms(10),
-      paddingVertical: ms(3),
+      paddingVertical: ms(5),
       borderWidth: 1,
       borderRadius: ms(7),
       borderColor: screen == id ? COLORS.primary : COLORS.solidGrey,
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     return {
       fontFamily: screen == id ? Fonts.SemiBold : Fonts.Regular,
       color: screen == id ? COLORS.primary : COLORS.solid_grey,
-      fontSize: ms(12),
+      fontSize: ms(14),
     };
   },
 });

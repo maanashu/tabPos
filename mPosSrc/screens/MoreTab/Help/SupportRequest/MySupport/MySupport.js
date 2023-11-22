@@ -56,7 +56,7 @@ export function MySupport() {
       <View style={styles.sopportContainer}>
         <View style={styles.orderCon}>
           <Text style={styles.order}>{'#' + track}</Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
           // onPress={() =>
           //   navigate(NAVIGATION.supportDetails, { item: item, id: item?.id })
           // }
@@ -65,7 +65,7 @@ export function MySupport() {
             <Text style={styles.deliveredText}>
               {item?.status?.name === 'Unresponse' ? 'Pending' : item?.status?.name}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <Spacer space={SH(10)} />

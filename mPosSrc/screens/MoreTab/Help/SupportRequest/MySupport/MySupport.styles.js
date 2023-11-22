@@ -13,8 +13,7 @@ const styles = StyleSheet.create({
   sopportContainer: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    width: SW(350),
-    // height: SW(291),
+    width: '100%',
     borderRadius: 15,
     paddingHorizontal: SW(15),
     paddingTop: SW(15),
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     textAlign: 'center',
     fontSize: SF(12),
-    color: COLORS.bluish_green,
+    color: COLORS.white,
     fontFamily: Fonts.Regular,
     borderWidth: 1,
     borderStyle: 'dashed',
