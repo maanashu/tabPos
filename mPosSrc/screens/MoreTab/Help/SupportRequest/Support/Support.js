@@ -8,13 +8,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { Image } from 'react-native';
 import { Images } from '@mPOS/assets';
-import styles from './HelpCenter.styles';
+import styles from './Support.styles';
 import { upadteApi } from '@/actions/SettingAction';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 
-export function HelpCenter() {
+export function Support() {
   return (
     <ScreenWrapper>
-      <Header backRequired title={strings?.help?.helpCenter} />
+      <Header backRequired title={strings?.help?.support} />
     </ScreenWrapper>
   );
 }

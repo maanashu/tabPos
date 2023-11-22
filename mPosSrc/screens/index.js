@@ -31,7 +31,10 @@ export { More } from '@mPOS/screens/MoreTab/More/More';
 export { Profile } from '@mPOS/screens/MoreTab/Profile/Profile';
 export { ProfileQRCode } from '@mPOS/screens/MoreTab/ProfileQRCode/ProfileQRCode';
 export { FaceId } from '@mPOS/screens/MoreTab/FaceId/FaceId';
-export { HelpCenter } from '@mPOS/screens/MoreTab/HelpCenter/HelpCenter';
+export { HelpCenter } from '@mPOS/screens/MoreTab/Help/HelpCenter/HelpCenter';
+export { SupportRequest } from '@mPOS/screens/MoreTab/Help/SupportRequest/SupportRequest';
+export { MySupport } from '@mPOS/screens/MoreTab/Help/SupportRequest/MySupport/MySupport';
+export { Support } from '@mPOS/screens/MoreTab/Help/SupportRequest/Support/Support';
 
 //retail products
 export { RetailProducts } from '@mPOS/screens/HomeTab/RetailProducts/RetailProducts';

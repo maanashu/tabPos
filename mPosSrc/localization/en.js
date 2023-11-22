@@ -508,6 +508,10 @@ export const en = {
   },
   help: {
     helpCenter: 'Help Center',
+    howCan: 'How can we help you',
+    mySupportRequest: 'My Support Request',
+    support: 'Support',
+    mySupport: 'My support',
   },
   plans: {
     plans: 'Plans',
