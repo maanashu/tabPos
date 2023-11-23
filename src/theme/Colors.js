@@ -62,7 +62,7 @@ export const COLORS = {
   light_red: '#FEE4E2',
   bright_red: '#D92D20',
   success_green: '#12B76A',
-  light_sky_blue: '##EFFBFF',
+  light_sky_blue: '#EFFBFF',
   coffee: '#5D4800',
   blur_red: '#F97066',
   alert_red: '#F04438',
@@ -87,4 +87,7 @@ export const COLORS = {
   medium_green: '#027547',
   light_green: '#D1FADF',
   navy_light_blue: '#636E9F',
+  light_skyblue: '#BFEEFF',
+  aqua: '#47B0D6',
+  graySky: '#B4BEEB',
 };

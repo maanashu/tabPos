@@ -26,6 +26,10 @@ import {
   userImage,
   Fonts,
   crossButton,
+  users,
+  searchDrawer,
+  bellDrawer,
+  calendarDrawer,
 } from '@/assets';
 import { DaySelector, Spacer, TableDropdown } from '@/components';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -258,17 +262,27 @@ const AllUsers = ({
       <View style={styles.headerMainView}>
         <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
           <Image source={leftBack} style={styles.backIcon} />
-          <Text style={styles.backTitle}>{'Back'}</Text>
+          <View style={styles.deliveryView}>
+            <Image source={users} style={[styles.truckStyle]} />
+            <Text style={styles.deliveryText}>{'Users'}</Text>
+          </View>
         </TouchableOpacity>
         <View style={styles.deliveryView}>
+          <DaySelector
+            onPresFun={onPresFun}
+            selectId={selectId}
+            setSelectId={setSelectId}
+            setSelectTime={setSelectTime}
+          />
           <TouchableOpacity
             onPress={() =>
               navigate(NAVIGATION.notificationsList, {
                 screen: NAVIGATION.customers2,
               })
             }
+            style={{ marginHorizontal: ms(10) }}
           >
-            <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
+            <Image source={bellDrawer} style={[styles.truckStyle]} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.searchView}
@@ -278,49 +292,13 @@ const AllUsers = ({
               setSearchedText('');
             }}
           >
-            <Image source={search_light} style={styles.searchImage} />
-            <View
-              style={{
-                height: SH(40),
-                width: SW(70),
-                paddingLeft: 5,
-                justifyContent: 'center',
-              }}
-            >
-              <Text style={{ color: COLORS.darkGray, fontSize: ms(10), fontFamily: Fonts.Regular }}>
-                {strings.deliveryOrders.search}
-              </Text>
-            </View>
-            {/* <TextInput
-                  placeholder={strings.deliveryOrders.search}
-                  style={styles.textInputStyles}
-                  placeholderTextColor={COLORS.darkGray}
-                /> */}
+            <Image source={searchDrawer} style={styles.searchImage} />
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ paddingHorizontal: ms(10), flexDirection: 'row', alignItems: 'center' }}>
-        <FlatList
-          data={dummyCustomerData}
-          extraData={dummyCustomerData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        />
 
-        <View>
-          <DaySelector
-            onPresFun={onPresFun}
-            selectId={selectId}
-            setSelectId={setSelectId}
-            setSelectTime={setSelectTime}
-          />
-        </View>
-      </View>
-      <Spacer space={SH(10)} />
-      {/* Date and Area section */}
-      <View style={styles.orderTypeCon}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {/* Date and Area section */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
             style={[styles.datePickerCon, { borderWidth: 1 }]}
@@ -332,7 +310,7 @@ const AllUsers = ({
               setShow(!show);
             }}
           >
-            <Image source={calendar1} style={styles.calendarStyle} />
+            <Image source={calendarDrawer} style={styles.calendarStyle} />
             <TextInput
               value={date}
               returnKeyType={'done'}
@@ -341,7 +319,7 @@ const AllUsers = ({
               editable={false}
               placeholder="Date"
               placeholderTextColor={COLORS.gerySkies}
-              style={[styles.txtInput, { padding: 0, margin: 0 }]}
+              style={[styles.txtInput, { padding: 0, marginLeft: ms(2) }]}
             />
           </TouchableOpacity>
 
@@ -377,120 +355,153 @@ const AllUsers = ({
               />
             </View>
           </Modal>
-          <View style={{ marginHorizontal: moderateScale(10) }}>
-            <TableDropdown selected={onchangeValue} placeholder="Area" data={areaSelector?.[0]} />
+          <View style={{}}>
+            <TableDropdown
+              selected={onchangeValue}
+              placeholder="Area"
+              data={areaSelector?.[0]}
+              containerStyle={{ width: ms(70), borderRadius: ms(5) }}
+            />
+          </View>
+        </View>
+
+        {/*Calendar pagination section */}
+        <View
+          style={[styles.jbrTypeCon, { opacity: payloadLength === 0 ? 0.4 : 1 }]}
+          pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
+        >
+          <View style={styles.paginationEnd}>
+            <Text style={[styles.paginationCount]}>{strings.customers.showResult}</Text>
+            <View style={{ marginHorizontal: moderateScale(10) }}>
+              <DropDownPicker
+                ArrowUpIconComponent={({ style }) => (
+                  <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                )}
+                ArrowDownIconComponent={({ style }) => (
+                  <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                )}
+                style={styles.dropdown}
+                containerStyle={[
+                  styles.containerStylePagination,
+                  { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+                ]}
+                dropDownContainerStyle={styles.dropDownContainerStyle}
+                listItemLabelStyle={styles.listItemLabelStyle}
+                labelStyle={styles.labelStyle}
+                selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                open={paginationModalOpen}
+                value={paginationModalValue}
+                items={paginationModalItems}
+                setOpen={() => setPaginationModalOpen(!paginationModalOpen)}
+                setValue={setPaginationModalValue}
+                setItems={setPaginationModalItems}
+                placeholder="10"
+                placeholderStyle={styles.placeholderStylePagination}
+                // onSelectItem={item => selectedNo(item.value)}
+              />
+            </View>
+            <TouchableOpacity
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                },
+              ]}
+              onPress={paginationDechandler}
+              disabled={paginationData?.currentPage == 1 ? true : false}
+            >
+              <Image
+                source={Union}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor: paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+            <View style={styles.unionCon}>
+              <Image source={mask} style={[styles.unionStyle, { tintColor: COLORS.graySky }]} />
+            </View>
+            <View
+              style={{
+                width: ms(70),
+              }}
+            >
+              {isCustomerLoad ? (
+                <ActivityIndicator size="small" />
+              ) : (
+                <Text
+                  style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}
+                >
+                  {startIndex} - {startIndex + (customerArray?.length - 1)} of{' '}
+                  {paginationData?.total}
+                </Text>
+              )}
+            </View>
+            <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
+              <Image
+                source={maskRight}
+                style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
+              />
+            </View>
+            <TouchableOpacity
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.sky_grey
+                      : COLORS.white,
+                  borderColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.white
+                      : COLORS.white,
+                  borderWidth: 1,
+                },
+              ]}
+              onPress={paginationInchandler}
+              disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
+            >
+              <Image
+                source={unionRight}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor:
+                      paginationData?.currentPage == paginationData?.totalPages
+                        ? COLORS.navy_blue
+                        : COLORS.navy_blue,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
 
-      {/*Calendar pagination section */}
+      <Spacer space={ms(20)} />
+
       <View
-        style={[styles.jbrTypeCon, { zIndex: -1, opacity: payloadLength === 0 ? 0.4 : 1 }]}
-        pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
+        style={{
+          paddingHorizontal: ms(10),
+          flexDirection: 'row',
+          alignItems: 'center',
+          zIndex: -1,
+        }}
       >
-        <View style={styles.paginationEnd}>
-          <Text style={[styles.paginationCount, { fontSize: 12 }]}>
-            {strings.customers.showResult}
-          </Text>
-          <View style={{ marginHorizontal: moderateScale(10) }}>
-            <DropDownPicker
-              ArrowUpIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIconPagination} />
-              )}
-              ArrowDownIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIconPagination} />
-              )}
-              style={styles.dropdown}
-              containerStyle={[
-                styles.containerStylePagination,
-                { zIndex: Platform.OS === 'ios' ? 20 : 1 },
-              ]}
-              dropDownContainerStyle={styles.dropDownContainerStyle}
-              listItemLabelStyle={styles.listItemLabelStyle}
-              labelStyle={styles.labelStyle}
-              selectedItemLabelStyle={styles.selectedItemLabelStyle}
-              open={paginationModalOpen}
-              value={paginationModalValue}
-              items={paginationModalItems}
-              setOpen={() => setPaginationModalOpen(!paginationModalOpen)}
-              setValue={setPaginationModalValue}
-              setItems={setPaginationModalItems}
-              placeholder="10"
-              placeholderStyle={styles.placeholderStylePagination}
-              // onSelectItem={item => selectedNo(item.value)}
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.unionCon,
-              {
-                backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
-              },
-            ]}
-            onPress={paginationDechandler}
-            disabled={paginationData?.currentPage == 1 ? true : false}
-          >
-            <Image
-              source={Union}
-              style={[
-                styles.unionStyle,
-                {
-                  tintColor:
-                    paginationData?.currentPage == 1 ? COLORS.gerySkies : COLORS.solid_grey,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-          <View style={styles.unionCon}>
-            <Image source={mask} style={styles.unionStyle} />
-          </View>
-          <View
-            style={{
-              width: ms(70),
-            }}
-          >
-            {isCustomerLoad ? (
-              <ActivityIndicator size="small" />
-            ) : (
-              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
-                {startIndex} - {startIndex + (customerArray?.length - 1)} of {paginationData?.total}
-              </Text>
-            )}
-          </View>
-          <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
-            <Image
-              source={maskRight}
-              style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.unionCon,
-              {
-                backgroundColor:
-                  paginationData?.currentPage == paginationData?.totalPages
-                    ? COLORS.washGrey
-                    : COLORS.white,
-              },
-            ]}
-            onPress={paginationInchandler}
-            disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
-          >
-            <Image
-              source={unionRight}
-              style={[
-                styles.unionStyle,
-                {
-                  tintColor:
-                    paginationData?.currentPage == paginationData?.totalPages
-                      ? COLORS.gerySkies
-                      : COLORS.solid_grey,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-        </View>
+        <FlatList
+          data={dummyCustomerData}
+          extraData={dummyCustomerData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
+
+      <Spacer space={SH(10)} />
 
       <View style={{ zIndex: -9 }}>
         <Table>
