@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     marginVertical: verticalScale(7),
   },
   textArea: {
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.washGrey,
     borderColor: 'transparent',
     color: COLORS.black,
     // paddingVertical: verticalScale(10),
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     textAlignVertical: 'top',
     flex: 1,
+    padding: ms(10),
   },
   cameraInput: {
     display: 'flex',
@@ -94,7 +95,8 @@ const styles = StyleSheet.create({
   selectedButton: {
     alignSelf: 'center',
     backgroundColor: COLORS.primary,
-    width: windowWidth * 0.94,
+    width: '100%',
+    paddingVertical: ms(15),
   },
   selectedText: {
     color: COLORS.white,
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
   profileDataCon: {
     display: 'flex',
     flexDirection: 'column',
-    width: windowWidth * 0.94,
+    width: '100%',
     alignSelf: 'center',
   },
   nameText: {
@@ -136,9 +138,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: SW(16),
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: ms(5),
     backgroundColor: COLORS.washGrey,
-    paddingVertical: SH(15),
+    paddingVertical: SH(14),
+  },
+  notesView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: ms(5),
+    backgroundColor: COLORS.washGrey,
   },
   input: {
     paddingLeft: SW(10),

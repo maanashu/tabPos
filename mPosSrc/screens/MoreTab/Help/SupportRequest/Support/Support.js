@@ -1,24 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  Dimensions,
-  FlatList,
-  Platform,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Dimensions, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Button, ScreenWrapper, Spacer } from '@/components';
-import { Header, HorizontalLine } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
-import { getSetting } from '@/selectors/SettingSelector';
 import { useDispatch, useSelector } from 'react-redux';
-import { ms } from 'react-native-size-matters';
 import { Image } from 'react-native';
 import { Images } from '@mPOS/assets';
 import styles from './Support.styles';
-import { upadteApi } from '@/actions/SettingAction';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { addNewTicket } from '@/actions/SupportActions';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SupportTypes';
@@ -28,6 +15,8 @@ import { getUser } from '@/selectors/UserSelectors';
 import { capitalizeFirstLetter } from '@/utils/GlobalMethods';
 import { COLORS, SH } from '@/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { emailReg } from '@/utils/validators';
+import Toast from 'react-native-toast-message';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -203,7 +192,7 @@ export function Support() {
         <Spacer space={SH(7)} />
         <View style={styles.profileDataCon}>
           {/* <Text style={styles.nameText}>Name</Text> */}
-          <View style={[styles.imageTextView, { paddingVertical: 10 }]}>
+          <View style={styles.notesView}>
             <TextInput
               value={notes}
               onChangeText={setNotes}
