@@ -29,6 +29,7 @@ import {
   getBrand,
   getCategory,
   getMainProduct,
+  getMainProductPagination,
   getMainProductSuccess,
   getOneProduct,
   getSubCategory,
@@ -96,7 +97,9 @@ export function RetailProducts(props) {
     // dispatch(getProduct({}, 1));
     dispatch(getMainProduct());
   }, []);
-  const productLoad = useSelector((state) => isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state));
+  const productLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_MAIN_PRODUCT, TYPES.GET_ALL_PRODUCT_PAGINATION], state)
+  );
 
   const productSearchFun = async (search) => {
     if (search?.length > 2) {
@@ -119,12 +122,16 @@ export function RetailProducts(props) {
   };
 
   const onLoadMoreProduct = useCallback(() => {
-    if (!productLoad) {
-      if (productPagination?.currentPage < productPagination?.totalPages) {
-        dispatch(getProduct({}, productPagination?.currentPage + 1));
-      }
+    const totalPages = retailData?.getMainProduct?.total_pages;
+    const currentPage = retailData?.getMainProduct?.current_page;
+    if (currentPage < totalPages) {
+      const data = {
+        page: currentPage + 1,
+      };
+      dispatch(getMainProductPagination(data));
     }
-  }, [productPagination]);
+  }, [retailData]);
+
   // locally work function
 
   useEffect(() => {
@@ -348,6 +355,12 @@ export function RetailProducts(props) {
   const subCategoryLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_SUB_CATEGORY], state)
   );
+
+  useEffect(() => {
+    if (!isFocus) {
+      dispatch(getMainProduct());
+    }
+  }, [isFocus]);
 
   return (
     <ScreenWrapper>

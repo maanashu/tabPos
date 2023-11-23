@@ -212,7 +212,6 @@ export function ServiceCart({ cartChangeHandler }) {
     const data = {
       updated_products: products,
     };
-    console.log(data);
     dispatch(updateServiceCartQty(data, arr.id));
     // }
   };
@@ -482,9 +481,14 @@ export function ServiceCart({ cartChangeHandler }) {
           </View>
           <Spacer space={SH(8)} />
           <View style={styles.disPlayFlex}>
-            <Text style={styles.subTotal}>{`Discount ${
-              serviceCartData?.discount_flag === 'percentage' ? '(%)' : ''
-            } `}</Text>
+            <Text style={styles.subTotal}>
+              {'Discount'}{' '}
+              <Text style={[styles.subTotal, { fontFamily: Fonts.Regular }]}>
+                {serviceCartData?.discount_flag === 'percentage'
+                  ? `(${serviceCartData?.discount_value}%)`
+                  : ''}
+              </Text>
+            </Text>
             <Text style={[styles.subTotalBold, { color: COLORS.red }]}>
               {formattedReturnPrice(serviceCartData?.amount?.discount)}
             </Text>
