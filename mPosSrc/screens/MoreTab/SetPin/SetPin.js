@@ -19,11 +19,11 @@ import { getAuthData } from '@/selectors/AuthSelector';
 const CELL_COUNT = 4;
 
 export function SetPin(props) {
-  const authdata = useSelector(getAuthData);
+  // const authdata = useSelector(getAuthData);
 
-  const countryCode = props.route && props.route.params && props.route.params.countryCode;
-  const phoneNumber = props.route && props.route.params && props.route.params.phoneNumber;
-  const otp = props.route && props.route.params && props.route.params.value;
+  // const countryCode = props.route && props.route.params && props.route.params.countryCode;
+  // const phoneNumber = props.route && props.route.params && props.route.params.phoneNumber;
+  // const otp = props.route && props.route.params && props.route.params.value;
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({

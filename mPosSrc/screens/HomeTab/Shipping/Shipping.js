@@ -19,7 +19,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Images } from '@mPOS/assets';
 import { COLORS, SH } from '@/theme';
 import Graph from './Components/Graph';
-import { MPOS_NAVIGATION } from '@common/commonImports';
+import { commonNavigate, MPOS_NAVIGATION } from '@common/commonImports';
 import { strings } from '@mPOS/localization';
 import StatusDrawer from './Components/StatusDrawer';
 import { navigate } from '@mPOS/navigation/NavigationRef';
@@ -34,6 +34,7 @@ import {
   getOrderCount,
   getReviewDefault,
   getShippingOrderstatistics,
+  orderStatusCount,
   todayCurrentStatus,
   todayShippingStatus,
 } from '@/actions/ShippingAction';
@@ -49,12 +50,12 @@ export function Shipping() {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const orders = getShippingData?.orders?.data;
-  const shippingOrders = getShippingData?.todayShippingStatus?.[0]?.count;
-  const shippedOrders = getShippingData?.todayShippingStatus?.[1]?.count;
+  const shippingOrders = getShippingData?.[0]?.count;
+  const shippedOrders = getShippingData?.[1]?.count;
   const shippingTypeOrders = getShippingData?.todayCurrentStatus;
 
   const ordersList = getShippingData?.getReviewDef;
-  console.log('SIPPING dataa', JSON.stringify(getShippingData));
+  // console.log('SIPPING dataa', JSON.stringify(getShippingData));
 
   const [userDetail, setUserDetail] = useState(ordersList?.[0] ?? []);
   const [orderDetail, setOrderDetail] = useState(ordersList?.[0]?.order_details ?? []);
@@ -66,8 +67,11 @@ export function Shipping() {
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
 
+  console.log('sdjklsadas', ordersList?.length);
+
   useFocusEffect(
     React.useCallback(() => {
+      dispatch(orderStatusCount());
       dispatch(todayShippingStatus());
       dispatch(todayCurrentStatus());
       dispatch(getReviewDefault(0));
@@ -119,7 +123,12 @@ export function Shipping() {
   const renderOrderItem = ({ item, index }) => {
     const deliveryDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     return (
-      <TouchableOpacity style={styles.orderItemViewStyle}>
+      <TouchableOpacity
+        onPress={() =>
+          commonNavigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item, index: index })
+        }
+        style={styles.orderItemViewStyle}
+      >
         <View style={{ flex: 0.4 }}>
           <Text style={styles.shippingOrderTextStyle}>{`${item?.user_details?.firstname}`}</Text>
 

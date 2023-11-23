@@ -26,7 +26,7 @@ const CELL_COUNT = 4;
 
 export function ReEnterPin(props) {
   const dispatch = useDispatch();
-  const authdata = useSelector(getAuthData);
+  // const authdata = useSelector(getAuthData);
 
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -40,8 +40,7 @@ export function ReEnterPin(props) {
 
   const newPin = props.route && props.route.params && props.route.params.data;
   const oldPin = props.route && props.route.params && props.route.params.oldPin;
-  console.log('props', props);
-  // const isLoading = useSelector((state) => isLoadingSelector([TYPES.CHANGE_PIN], state));
+
   const submit = () => {
     if (!value) {
       Toast.show({

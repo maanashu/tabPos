@@ -24,24 +24,42 @@ import ReactNativeModal from 'react-native-modal';
 import StatusDrawer from '../Components/StatusDrawer';
 import { useState } from 'react';
 import { getDelivery } from '@/selectors/DeliverySelector';
+import { getShipping } from '@/selectors/ShippingSelector';
 
 export function ShippingOrderDetail(props) {
   const mapRef = useRef();
   const dispatch = useDispatch();
   const deliveryData = useSelector(getDelivery);
-  const orderData = props?.route?.params?.data;
-  const customerDetail = orderData?.user_details;
+  const getOrdersData = useSelector(getDelivery);
+  const ordersData = getOrdersData?.getReviewDef;
+
+  const orderData = ordersData[props?.route?.params?.index ?? 0];
   const orders = orderData;
+  const customerDetail = orderData?.user_details;
 
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
+  const shippingData = useSelector(getShipping);
+  const orderStatusCountData = shippingData?.orderStatus;
 
-  // const statusCount = deliveryData?.getOrderCount;
-  // const orders = deliveryData?.getReviewDef ?? [];
-  // const orderData = orders[props?.route?.params?.index ?? 0];
-
+  const setHeaderText = (value) => {
+    switch (value) {
+      case '0':
+        return strings.orderStatus.reviewOrders;
+      case '3':
+        return strings.orderStatus.printingLabel;
+      case '4':
+        return strings.orderStatus.trackOrders;
+      case '5':
+        return strings.orderStatus.ordersDelivered;
+      case '7,8':
+        return strings.orderStatus.ordersRejected;
+      default:
+        return strings.orderStatus.deliveryReturns;
+    }
+  };
   const onPressAcceptHandler = () => {
     const data = {
       orderId: orderData?.id,
@@ -59,7 +77,7 @@ export function ShippingOrderDetail(props) {
   };
 
   const checkOtherOrder = () => {
-    const statusData = deliveryData?.getOrderCount;
+    const statusData = shippingData?.orderStatus;
     var index = 0;
     if (statusData[0].count > 0) {
     } else if (statusData[1].count > 0) {
@@ -74,7 +92,7 @@ export function ShippingOrderDetail(props) {
       index = 5;
     } else if (statusData[6].count > 0) {
       index = 6;
-    } else if (parseInt(statusCount?.[7]?.count) + parseInt(statusCount?.[8]?.count) > 0) {
+    } else if (parseInt(statusData?.[7]?.count) + parseInt(statusData?.[8]?.count) > 0) {
       index = 7;
     } else if (statusData[9].count > 0) {
       index = 9;
@@ -82,23 +100,10 @@ export function ShippingOrderDetail(props) {
     dispatch(getReviewDefault(index));
   };
 
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
-  const setHeaderText = (value) => {
-    switch (value) {
-      case '0':
-        return strings.orderStatus.reviewOrders;
-      case '3':
-        return strings.orderStatus.printingLabel;
-      case '4':
-        return strings.orderStatus.trackOrders;
-      case '5':
-        return strings.orderStatus.ordersDelivered;
-      case '7,8':
-        return strings.orderStatus.ordersRejected;
-      default:
-        return strings.orderStatus.deliveryReturns;
-    }
-  };
+  const isLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.ACCEPT_ORDER, TYPES.GET_REVIEW_DEF], state)
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <Header backRequired title={strings.profile.header} /> */}
@@ -108,7 +113,7 @@ export function ShippingOrderDetail(props) {
         title={strings.profile.header}
         rightIconOnpress={() => setIsStatusDrawer(true)}
       />
-      {orders.length == 0 && (
+      {Object.keys(orders).length !== 0 && (
         <View style={styles.userDetailView}>
           <View style={{ flexDirection: 'row' }}>
             <Image
@@ -197,10 +202,10 @@ export function ShippingOrderDetail(props) {
       ) : null}
 
       <Spacer space={SH(10)} />
-      {orders.length == 0 && <ProductList {...{ orderData }} />}
+      {Object.keys(orders).length !== 0 && <ProductList {...{ orderData }} />}
 
       <Spacer space={SH(20)} />
-      {orders.length == 0 && <OrderTotal {...{ orderData, onPressAcceptHandler }} />}
+      {Object.keys(orders).length !== 0 && <OrderTotal {...{ orderData, onPressAcceptHandler }} />}
       {isLoading ? <FullScreenLoader /> : null}
       {/* {orderLoad ? <FullScreenLoader /> : null} */}
       <ReactNativeModal

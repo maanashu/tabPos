@@ -18,6 +18,7 @@ import { verifyOldPin } from '@/actions/AuthActions';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { CustomButton } from '@mPOS/components/CustomButton';
+import { navigate } from '@mPOS/navigation/NavigationRef';
 
 const CELL_COUNT = 4;
 
