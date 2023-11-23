@@ -9,7 +9,7 @@ const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   ticketContainer: {
     borderColor: COLORS.solidGrey,
-    width: SW(350),
+    // width: SW(350),
     borderRadius: 15,
     // padding: 10,
   },
@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: SW(16),
     alignItems: 'center',
     borderRadius: 5,
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.washGrey,
+    paddingVertical: SH(15),
   },
   input: {
     paddingLeft: SW(10),
@@ -161,9 +162,9 @@ const styles = StyleSheet.create({
     paddingRight: 30,
   },
   dropdown: {
-    width: SW(330),
-    alignSelf: 'center',
-    backgroundColor: COLORS.textInputBackground,
+    width: '100%',
+    // alignSelf: 'center',
+    backgroundColor: COLORS.washGrey,
     borderColor: 'transparent',
     marginVertical: verticalScale(2),
     zIndex: Platform.OS === 'ios' ? 100 : 0,
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: verticalScale(7),
     backgroundColor: COLORS.inputBorder,
-    borderRadius: 5,
+    // borderRadius: 5,
   },
 });
 

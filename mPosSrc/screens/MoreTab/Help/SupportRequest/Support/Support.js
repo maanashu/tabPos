@@ -39,10 +39,10 @@ export function Support() {
   const SUBJECT = useSelector(getSupportData);
   const getData = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
-  console.log('jusers: ' + JSON.stringify(getUserData));
+  console.log('jusers: ' + JSON.stringify(getData?.getProfile?.email));
 
-  const profileData = getData?.userProfile;
-  const emailID = getData?.userProfile?.email ?? '';
+  const profileData = getData?.getProfile;
+  const emailID = getData?.getProfile?.email ?? '';
   const username = profileData?.user_profiles?.username ?? '';
 
   const [firstName, setFirstName] = useState(capitalizeFirstLetter(username));
