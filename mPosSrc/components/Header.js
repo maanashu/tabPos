@@ -120,7 +120,7 @@ export function Header({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {backRequired ? (
         <TouchableOpacity onPress={handleBackNavi} style={styles.row}>
           <Image source={Images.back} resizeMode="contain" style={styles.backIcon} />
