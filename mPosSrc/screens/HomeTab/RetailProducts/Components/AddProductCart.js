@@ -160,6 +160,7 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
       onDismiss={() => {
         setColorSelectId(null);
         setSizeSelectId(null);
+        setCount(1);
       }}
       backdropOpacity={0.5}
       ref={addProductCartRef}
@@ -197,9 +198,16 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
               {/* <Text style={styles.headerText}>
                 {productDetail?.product_detail?.category?.name}
               </Text> */}
-              <Text style={styles.amount}>
-                ${productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-              </Text>
+              {productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+              productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+                <Text style={styles.amount}>
+                  ${productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                </Text>
+              ) : (
+                <Text style={styles.amount}>
+                  ${productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                </Text>
+              )}
             </View>
             <Spacer space={ms(2)} />
             {colorSelectId === null ? (

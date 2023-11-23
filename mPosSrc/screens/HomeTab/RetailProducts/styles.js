@@ -89,11 +89,13 @@ export const styles = StyleSheet.create({
     height: ms(30),
     width: ms(30),
   },
-  addView: {
-    padding: ms(4),
-    borderWidth: 1,
-    borderRadius: ms(5),
-    borderColor: COLORS.inputBorder,
+  addView: () => {
+    return {
+      padding: ms(4),
+      borderWidth: 1,
+      borderRadius: ms(5),
+      borderColor: COLORS.inputBorder,
+    };
   },
   alignItem: {
     flexDirection: 'row',

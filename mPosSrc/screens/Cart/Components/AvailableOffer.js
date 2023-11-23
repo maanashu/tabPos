@@ -29,15 +29,21 @@ import { addProductCart } from '@mPOS/actions/RetailActions';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { addTocart, checkSuppliedVariant, getOneService } from '@/actions/RetailAction';
+import {
+  addTocart,
+  checkSuppliedVariant,
+  getOneProduct,
+  getOneService,
+} from '@/actions/RetailAction';
 import { clothes } from '@/assets';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 
-const AvailableOffer = ({ availableOfferRef, serviceCartOpen }) => {
+const AvailableOffer = ({ availableOfferRef, serviceCartOpen, productCartOpen }) => {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
+  const presentCart = retailData?.cartFrom;
   const productDetail = retailData?.getOneProduct;
   const addServiceCartRef = useRef(null);
   const availableOfferArray = retailData?.availableOffer?.data;
@@ -94,9 +100,16 @@ const AvailableOffer = ({ availableOfferRef, serviceCartOpen }) => {
             renderItem={({ item, index }) => (
               <TouchableOpacity
                 onPress={async () => {
-                  const res = await dispatch(getOneService(sellerID, item.id));
-                  if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-                    serviceCartOpen();
+                  const res =
+                    (await presentCart) === 'product'
+                      ? dispatch(getOneProduct(sellerID, item.id))
+                      : dispatch(getOneService(sellerID, item.id));
+                  if (
+                    (res?.type === presentCart) === 'product'
+                      ? 'GET_ONE_PRODUCT_SUCCESS'
+                      : 'GET_ONE_SERVICE_SUCCESS'
+                  ) {
+                    presentCart === 'product' ? productCartOpen() : serviceCartOpen();
                   }
                 }}
                 style={[styles.productDetailMainView, { marginTop: index === 0 ? ms(0) : ms(5) }]}
@@ -134,7 +147,7 @@ const AvailableOffer = ({ availableOfferRef, serviceCartOpen }) => {
                   </View>
                 </View>
 
-                <TouchableOpacity style={[styles.addView]}>
+                <TouchableOpacity style={styles.addView}>
                   <Image source={Images.addTitle} resizeMode="contain" style={[styles.addImage]} />
                 </TouchableOpacity>
               </TouchableOpacity>

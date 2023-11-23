@@ -54,6 +54,7 @@ import { ReactNativeModal } from 'react-native-modal';
 import AvailableOffer from './AvailableOffer';
 import { AddServiceCartModal } from '@mPOS/screens/HomeTab/Services/AddServiceCart';
 import AddServiceCart from '@mPOS/screens/HomeTab/RetailServices/Components/AddServiceCart';
+import moment from 'moment';
 
 export function ServiceCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -92,10 +93,19 @@ export function ServiceCart({ cartChangeHandler }) {
         TYPES.CHANGE_STATUS_SERVICE_CART,
         TYPES.CLEAR_SERVICE_ALL_CART,
         TYPES.CUSTOM_SERVICE_ADD,
+        TYPES.GET_AVAILABLE_OFFER,
+        TYPES.GET_AVAILABLE_OFFER,
       ],
       state
     )
   );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => backCartLoad();
+    }, [])
+  );
+
   useEffect(() => {
     dispatch(getServiceCart());
     dispatch(getAllServiceCart());
@@ -190,6 +200,7 @@ export function ServiceCart({ cartChangeHandler }) {
 
   const backCartLoad = () => {
     const arr = serviceCartData;
+    console.log('chek lengh', serviceCartData?.appointment_cart_products?.length);
     // if (arr?.appointment_cart_products?.length > 0) {
     const products = arr?.appointment_cart_products?.map((item) => ({
       product_id: item?.product_id,
@@ -229,26 +240,16 @@ export function ServiceCart({ cartChangeHandler }) {
     dispatch(getServiceCartSuccess(DATA));
   };
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     return () => {
-  //       backCartLoad();
-  //       alert('jkl');
-  //     };
-  //   }, [])
-  // );
-  useEffect(() => {
-    // if (isFocused) {
-    return () => {
-      backCartLoad();
-    };
-    // }
-  }, [isFocused]);
-
   return (
     <View style={styles.container}>
       <View style={[styles.cartScreenHeader]}>
-        <TouchableOpacity style={styles.serviceCart} onPress={cartChangeHandler}>
+        <TouchableOpacity
+          style={styles.serviceCart}
+          onPress={() => {
+            backCartLoad();
+            cartChangeHandler();
+          }}
+        >
           <Text style={styles.serviceCartText}>{'Product Cart'}</Text>
         </TouchableOpacity>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -262,7 +263,10 @@ export function ServiceCart({ cartChangeHandler }) {
           >
             <TouchableOpacity
               style={styles.headerImagecCon}
-              onPress={() => setProductCustomerAdd((prev) => !prev)}
+              onPress={() => {
+                backCartLoad();
+                setProductCustomerAdd((prev) => !prev);
+              }}
             >
               <Image source={Images.addCustomerIcon} style={styles.headerImage} />
             </TouchableOpacity>
@@ -277,7 +281,10 @@ export function ServiceCart({ cartChangeHandler }) {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.headerImagecCon}
-              onPress={() => setAddDiscount((prev) => !prev)}
+              onPress={() => {
+                backCartLoad();
+                setAddDiscount((prev) => !prev);
+              }}
             >
               <Image source={Images.discountOutline} style={styles.headerImage} />
             </TouchableOpacity>
@@ -288,7 +295,13 @@ export function ServiceCart({ cartChangeHandler }) {
               <Image source={Images.ClearEraser} style={styles.headerImage} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.headerImagecCon} onPress={cartStatusHandler}>
+          <TouchableOpacity
+            style={styles.headerImagecCon}
+            onPress={() => {
+              backCartLoad();
+              cartStatusHandler();
+            }}
+          >
             <Image source={Images.pause} style={styles.holdImage(holdServiceArray)} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -318,27 +331,39 @@ export function ServiceCart({ cartChangeHandler }) {
             showsVerticalScrollIndicator={false}
             data={serviceCartData?.appointment_cart_products}
             extraData={serviceCartData?.appointment_cart_products}
-            keyExtractor={(_, index) => index.toString()}
+            keyExtractor={(data, index) => data?.item?.id}
             renderItem={(data, ind) => {
-              const productSize = data?.item?.product_details?.supply?.attributes?.filter(
-                (item) => item?.name === 'Size'
-              );
-              const productColor = data?.item?.product_details?.supply?.attributes?.filter(
-                (item) => item?.name === 'Color'
-              );
               return (
-                <View style={styles.cartProductCon}>
+                <View style={styles.cartProductCon} key={data?.item?.index}>
                   <View style={[styles.disPlayFlex]}>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Image
                         source={{ uri: data?.item?.product_details?.image }}
                         style={{ width: ms(35), height: ms(35) }}
                       />
-                      <View style={{ marginLeft: ms(10) }}>
+                      <View style={{ marginLeft: ms(10), flex: 0.9 }}>
                         <Text style={styles.cartProductName} numberOfLines={1}>
                           {data?.item?.product_details?.name}
                         </Text>
-                        <View
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
+                            {data?.item?.pos_user_details?.user?.user_profiles?.firstname}
+                          </Text>
+                          <Text style={styles.verticalRow}>{'|'}</Text>
+                          <Text style={[styles.sukNumber, styles.timeitalic]}>
+                            {moment(data?.item?.date).format('LL')} @
+                            {data?.item?.start_time + '-' + data?.item?.start_time}
+                          </Text>
+                        </View>
+                        <Spacer space={SH(2)} />
+                        {data?.item?.product_details?.supply?.approx_service_time == null ? (
+                          <Text style={styles.sukNumber}>Estimated Time Not found</Text>
+                        ) : (
+                          <Text style={styles.sukNumber}>
+                            Est: {data?.item?.product_details?.supply?.approx_service_time} min
+                          </Text>
+                        )}
+                        {/* <View
                           style={{
                             flexDirection: 'row',
                             alignItems: 'center',
@@ -348,7 +373,7 @@ export function ServiceCart({ cartChangeHandler }) {
                           <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
                             ${data?.item?.product_details?.supply?.supply_prices?.selling_price}
                           </Text>
-                        </View>
+                        </View> */}
                       </View>
                     </View>
                     <View
@@ -359,6 +384,7 @@ export function ServiceCart({ cartChangeHandler }) {
                     >
                       <TouchableOpacity
                         onPress={() => {
+                          backCartLoad();
                           setPriceChange((prev) => !prev);
                           setCartProduct(data?.item);
                         }}
@@ -413,11 +439,15 @@ export function ServiceCart({ cartChangeHandler }) {
           <TouchableOpacity
             style={styles.availablOffercon}
             onPress={() => {
+              backCartLoad();
               const data = {
                 servicetype: 'service',
               };
-              dispatch(getAvailableOffer(data));
-              availableOfferRef?.current?.present();
+              dispatch(
+                getAvailableOffer(data, () => {
+                  availableOfferRef?.current?.present();
+                })
+              );
             }}
           >
             <Text style={styles.avaliableofferText}>{strings.cart.availablOffer}</Text>
@@ -474,7 +504,10 @@ export function ServiceCart({ cartChangeHandler }) {
                 opacity: serviceCartData?.appointment_cart_products?.length > 0 ? 1 : 0.7,
               },
             ]}
-            onPress={payNowHandler}
+            onPress={() => {
+              backCartLoad();
+              payNowHandler();
+            }}
             disabled={serviceCartData?.appointment_cart_products?.length > 0 ? false : true}
           >
             <Text style={styles.payNowText}>{strings.cart.payNow}</Text>

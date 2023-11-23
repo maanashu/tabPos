@@ -299,7 +299,7 @@ export function RetailServices(props) {
                 </View>
 
                 <TouchableOpacity
-                  style={[styles.addView, { borderColor: COLORS.inputBorder }]}
+                  style={styles.addView()}
                   onPress={async () => {
                     const res = await dispatch(getOneService(sellerID, item.id));
                     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
