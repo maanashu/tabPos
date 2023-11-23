@@ -346,15 +346,11 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(4),
   },
   productDes: {
-    color: COLORS.black,
-    fontSize: SF(11),
+    color: COLORS.navy_blue,
+    fontSize: ms(8),
     fontFamily: Fonts.Medium,
   },
-  productSubHead: {
-    color: COLORS.darkGray,
-    fontSize: SF(11),
-    fontFamily: Fonts.Italic,
-  },
+
   productPrice: {
     color: COLORS.black,
     fontSize: SF(12),
@@ -1397,38 +1393,36 @@ export const styles = StyleSheet.create({
     borderWidth: 0.4,
     borderColor: COLORS.solidGrey,
   },
-  productCon: {
-    width: Platform.OS === 'ios' ? ms(72) : ms(90),
-    // height: Platform.OS === 'ios' ? windowHeight * 0.23 : windowHeight * 0.26,
-    backgroundColor: COLORS.white,
-    borderRadius: ms(10),
-    paddingHorizontal: moderateScale(3),
-    marginTop: verticalScale(5),
-    marginRight: 10,
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
+  productCon: (qty) => {
+    return {
+      width: Platform.OS === 'ios' ? ms(85) : ms(95),
+      backgroundColor: COLORS.white,
+      borderRadius: ms(9),
+      // paddingHorizontal: moderateScale(3),
+      marginTop: verticalScale(7),
+      marginRight: 10,
+      borderWidth: 1,
+      borderColor: COLORS.textInputBackground,
+      ...(qty > 0 && { ...ShadowStyles.shadow }),
+    };
   },
   categoryshoes: {
-    width: Platform.OS === 'ios' ? ms(68) : ms(85),
+    width: Platform.OS === 'ios' ? ms(75) : ms(85),
     height: windowHeight * 0.11,
     resizeMode: 'contain',
     alignSelf: 'center',
     marginTop: ms(6),
   },
-  productDes: {
-    color: COLORS.black,
-    fontSize: SF(11),
+
+  productSubHead: {
+    color: COLORS.lavender,
+    fontSize: ms(8),
     fontFamily: Fonts.Medium,
   },
-  productSubHead: {
-    color: COLORS.darkGray,
-    fontSize: SF(11),
-    fontFamily: Fonts.Italic,
-  },
   productPrice: {
-    color: COLORS.black,
-    fontSize: SF(12),
-    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
+    fontSize: ms(8),
+    fontFamily: Fonts.Medium,
   },
   addToCart: {
     width: ms(28),
@@ -2515,5 +2509,23 @@ export const styles = StyleSheet.create({
     flexGrow: 1,
     borderRadius: ms(12),
     padding: ms(10),
+  },
+  imageBackground: {
+    flex: 1,
+    borderRadius: ms(8),
+    justifyContent: 'center',
+  },
+  imageInnerView: {
+    flex: 1,
+    borderRadius: ms(8),
+    backgroundColor: COLORS.black,
+    opacity: 0.5,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

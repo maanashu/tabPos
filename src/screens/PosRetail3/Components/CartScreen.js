@@ -362,7 +362,7 @@ export function CartScreen({
               nestedScrollEnabled={true}
             > */}
             <View style={{ marginBottom: ms(60) }}>
-              <ScrollView style={{ paddingBottom: ms(20) }} showsVerticalScrollIndicator={false}>
+              <ScrollView style={{ paddingBottom: ms(40) }} showsVerticalScrollIndicator={false}>
                 {arr?.map((item, index) => (
                   <View key={index}>
                     {item?.poscart_products?.map((data, ind) => (

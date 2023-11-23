@@ -556,52 +556,60 @@ export function MainScreen({
     return (
       <TouchableOpacity
         key={index}
-        style={styles.productCon}
-        onPress={() => productFun(item.id, index, item)}
+        style={styles.productCon(updatedItem?.cart_qty)}
+        // onPress={() => productFun(item.id, index, item)}
         activeOpacity={0.7}
+        onPress={() => checkAttributes(item, index, cartAddQty)}
       >
-        <FastImage
-          source={{
-            uri: item.image,
-            priority: FastImage.priority.normal,
-          }}
-          style={styles.categoryshoes}
-          resizeMode={FastImage.resizeMode.contain}
-        />
-        <Spacer space={SH(10)} />
-        <Text numberOfLines={1} style={styles.productDes}>
-          {item.name}
-        </Text>
-        <Spacer space={SH(6)} />
-        <Text numberOfLines={1} style={styles.productSubHead}>
-          {item.sub_category?.name}
-        </Text>
-        <Spacer space={SH(6)} />
-        <TouchableOpacity style={styles.displayflex}>
+        <View style={styles.imageBackground}>
+          <FastImage
+            source={{
+              uri: item.image,
+              priority: FastImage.priority.normal,
+            }}
+            style={styles.categoryshoes}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+          {updatedItem?.cart_qty > 0 && (
+            <View style={styles.imageInnerView}>
+              <Image source={plus} style={[styles.plusButton, { tintColor: COLORS.white }]} />
+            </View>
+          )}
+        </View>
+
+        <View style={{ padding: ms(5) }}>
+          <Spacer space={SH(6)} />
+          <Text numberOfLines={1} style={styles.productDes}>
+            {item.name}
+          </Text>
+          <Spacer space={SH(6)} />
+          <Text numberOfLines={1} style={styles.productSubHead}>
+            {item.sub_category?.name}
+          </Text>
+          <Spacer space={SH(6)} />
           <Text numberOfLines={1} style={styles.productPrice}>
             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
           </Text>
+          <Spacer space={SH(10)} />
 
-          <TouchableOpacity
-            // activeOpacity={1}
-            onPress={
-              () => checkAttributes(item, index, cartAddQty)
-              // onClickAddCart(item, index, cartAddQty)
-            }
-          >
-            <FastImage
-              source={isProductMatchArray ? addToCartBlue : addToCart}
-              style={styles.addToCart}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+          {/* <TouchableOpacity
+              onPress={
+                () => checkAttributes(item, index, cartAddQty)
+              }
+            >
+              <FastImage
+                source={isProductMatchArray ? addToCartBlue : addToCart}
+                style={styles.addToCart}
+                resizeMode={FastImage.resizeMode.contain}
+              />
 
-            {updatedItem.cart_qty > 0 && (
-              <View style={styles.productBadge}>
-                <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-        </TouchableOpacity>
+              {updatedItem.cart_qty > 0 && (
+                <View style={styles.productBadge}>
+                  <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
+                </View>
+              )}
+            </TouchableOpacity> */}
+        </View>
       </TouchableOpacity>
     );
   };
@@ -963,7 +971,7 @@ export function MainScreen({
                   extraData={mainProductArray}
                   renderItem={renderItem}
                   keyExtractor={(_, index) => index.toString()}
-                  numColumns={7}
+                  numColumns={6}
                   contentContainerStyle={{
                     justifyContent: 'space-between',
                     marginTop: isLoadingMore ? -50 : 0,
@@ -997,7 +1005,7 @@ export function MainScreen({
                   renderItem={({ item, index }) => {
                     return (
                       <TouchableOpacity
-                        style={styles.productCon}
+                        style={styles.productCon()}
                         onPress={() => serviceFun(item.id)}
                         activeOpacity={0.7}
                       >
