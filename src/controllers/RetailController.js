@@ -1079,6 +1079,7 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      console.log('-----', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1398,21 +1399,24 @@ export class RetailController {
 
   static async getAvailableOffer(data) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.availableOffer +
-        `?app_name=pos&delivery_options=2&page=1&limit=10&seller_id=${data?.seller_id}&service_type=${data?.servicetype}`;
+        `?app_name=pos&delivery_options=2&seller_id=${sellerID}&service_type=${data?.servicetype}`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log(response);
           resolve(response);
         })
         .catch((error) => {
-          // Toast.show({
-          //   text2: error?.msg,
-          //   position: 'bottom',
-          //   type: 'error_toast',
-          //   visibilityTime: 1500,
-          // });
+          error?.statusCode === 204 &&
+            Toast.show({
+              text2: 'Offer Not Found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
           reject(error);
         });
     });
@@ -1551,28 +1555,18 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.customServiceAdd;
-      const body = data?.notes
-        ? {
-            seller_id: sellerID,
-            price: data?.price,
-            name: data?.productName,
-            description: data?.notes,
-            type: 'digital',
-            qty: data?.qty,
-            date: data?.date,
-            start_time: data?.startTime,
-            end_time: data?.endTime,
-          }
-        : {
-            seller_id: sellerID,
-            price: data?.price,
-            name: data?.productName,
-            type: 'digital',
-            qty: data?.qty,
-            date: data?.date,
-            start_time: data?.startTime,
-            end_time: data?.endTime,
-          };
+      const body = {
+        seller_id: sellerID,
+        price: data?.price,
+        name: data?.productName,
+        ...(data?.notes && { description: data?.notes }),
+        type: 'digital',
+        qty: data?.qty,
+        date: data?.date,
+        start_time: data?.startTime,
+        end_time: data?.endTime,
+      };
+
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);

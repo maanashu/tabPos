@@ -81,7 +81,7 @@ export function CartScreen({
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
-  const availableOfferArray = getRetailData?.availableOffer;
+  const availableOfferArray = getRetailData?.availableOffer?.data;
   const [cartSearch, setCartSearch] = useState('');
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
@@ -567,8 +567,8 @@ export function CartScreen({
                   </View>
                 ) : (
                   <FlatList
-                    data={availableOfferArray}
-                    extraData={availableOfferArray}
+                    data={availableOfferArray ?? []}
+                    extraData={availableOfferArray ?? []}
                     renderItem={({ item, index }) => {
                       return (
                         <TouchableOpacity
@@ -584,7 +584,7 @@ export function CartScreen({
                               <Text style={[styles.offerText, { width: ms(90) }]} numberOfLines={1}>
                                 {item?.name}
                               </Text>
-                              <Text style={styles.offerPrice}>White/S</Text>
+                              {/* <Text style={styles.offerPrice}>White/S</Text> */}
                               {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
                               item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
                                 <View style={{ flexDirection: 'row' }}>

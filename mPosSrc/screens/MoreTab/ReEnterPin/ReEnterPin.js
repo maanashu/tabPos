@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Spacer, Header, ScreenWrapper } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { styles } from './ReEnterPin.styles';
@@ -10,7 +10,6 @@ import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
-  Cursor,
 } from 'react-native-confirmation-code-field';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { errorsSelector } from '@/selectors/ErrorSelectors';
@@ -27,9 +26,8 @@ const CELL_COUNT = 4;
 
 export function ReEnterPin(props) {
   const dispatch = useDispatch();
-  // const getData = useSelector(getAuthData);
-  // const navigation = useNavigation();
-  // const profileData = getData?.userProfile;
+  const authdata = useSelector(getAuthData);
+
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -38,12 +36,7 @@ export function ReEnterPin(props) {
     value,
     setValue,
   });
-  // const isLoading = useSelector((state) => isLoadingSelector([TYPES.FORGET_PIN], state));
-
-  // const errors = useSelector((state) => errorsSelector([TYPES.FORGET_PIN], state), shallowEqual);
-  // const isLoadingChangePin = useSelector((state) =>
-  //   isLoadingSelector([TYPES.CHANGE_OLD_PIN], state)
-  // );
+  // const isLoading = useSelector((state) => isLoadingSelector([TYPES.CHANGE_OLD_PIN], state));
 
   const newPin = props.route && props.route.params && props.route.params.data;
   const oldPin = props.route && props.route.params && props.route.params.oldPin;
@@ -86,6 +79,17 @@ export function ReEnterPin(props) {
       }
     }
   };
+
+  const renderCell = ({ index }) => {
+    const displaySymbol = value[index] ? '*' : '';
+
+    return (
+      <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
+        <Text style={styles.cellText}>{displaySymbol}</Text>
+      </View>
+    );
+  };
+
   return (
     <ScreenWrapper>
       <Header title={strings.setPin.setUpPin} subTitle={strings.setPin.subTitle} backRequired />
@@ -101,11 +105,7 @@ export function ReEnterPin(props) {
           rootStyle={styles.containerOtp}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({ index, symbol, isFocused }) => (
-            <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
-              <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
-            </View>
-          )}
+          renderCell={renderCell}
         />
       </View>
       <View style={{ flex: 1 }} />

@@ -60,4 +60,10 @@ export const NAVIGATION = {
   setPin: 'SetPin',
   reSetPin: 'ReEnterPin',
   changePlans: 'ChangePlans',
+  userProfile: 'UserProfile',
+  faceId: 'FaceId',
+  helpCenter: 'HelpCenter',
+  supportRequest: 'SupportRequest',
+  mySupport: 'MySupport',
+  support: 'Support',
 };

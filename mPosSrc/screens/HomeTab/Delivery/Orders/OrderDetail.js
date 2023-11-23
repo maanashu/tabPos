@@ -38,7 +38,9 @@ export function OrderDetail(props) {
   const orders = deliveryData?.getReviewDef ?? [];
   const orderData = orders[props?.route?.params?.index ?? 0];
   const customerDetail = orderData?.user_details;
-  const deliveryDate = dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+  const deliveryDate =
+    dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') &&
+    dayjs(orderData?.invoices?.created_at).format('DD MMM YYYY');
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
   const getAuth = useSelector(getAuthData);

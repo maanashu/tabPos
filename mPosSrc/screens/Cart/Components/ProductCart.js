@@ -30,8 +30,11 @@ import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import {
   changeStatusProductCart,
   getAllCart,
+  getAllCartSuccess,
   getAllProductCart,
+  getAvailableOffer,
   getTip,
+  updateCartQty,
 } from '@/actions/RetailAction';
 import CartAmountByPay from './CartAmountByPay';
 import PayByCash from './PayByCash';
@@ -42,14 +45,23 @@ import ProductCustomerAdd from './ProductCustomerAdd';
 import { NewCustomerAdd } from '@/screens/PosRetail3/Components/NewCustomerAdd';
 import JbrCoin from './JbrCoin';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import AvailableOffer from './AvailableOffer';
+import AddProductCart from '@mPOS/screens/HomeTab/RetailProducts/Components/AddProductCart';
+import ProductDetails from '@mPOS/screens/HomeTab/RetailProducts/Components/ProductDetails';
+import { updateCartLength } from '@/actions/CartAction';
+import { getCartLength } from '@/selectors/CartSelector';
 
 export function ProductCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const productCartData = retailData?.getAllCart;
+  const CART_LENGTH = useSelector(getCartLength);
   const payByCashRef = useRef(null);
+  const availableOfferRef = useRef(null);
+  const addProductCartRef = useRef(null);
+  const productDetailRef = useRef(null);
   const jbrCoinRef = useRef(null);
   const finalPaymentRef = useRef(null);
   const cartAmountByPayRef = useRef(null);
@@ -77,6 +89,7 @@ export function ProductCart({ cartChangeHandler }) {
         TYPES.CREATE_ORDER,
         TYPES.ATTACH_CUSTOMER,
         TYPES.CHANGE_STATUS_PRODUCT_CART,
+        TYPES.GET_AVAILABLE_OFFER,
       ],
       state
     )
@@ -90,6 +103,13 @@ export function ProductCart({ cartChangeHandler }) {
     dispatch(getAllCart());
     dispatch(getAllProductCart());
   }, [isFocused]);
+  const bothSheetClose = () => {
+    productDetailRef.current.dismiss();
+    addProductCartRef.current.dismiss();
+  };
+  const productDetailHanlder = () => {
+    productDetailRef.current.present();
+  };
 
   const payNowHandler = useCallback(() => {
     dispatch(getDrawerSessions());
@@ -165,10 +185,106 @@ export function ProductCart({ cartChangeHandler }) {
     dispatch(changeStatusProductCart(data));
   };
 
+  // locally work function
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        beforeDiscountCartLoad();
+      };
+    }, [])
+  );
+
+  const beforeDiscountCartLoad = () => {
+    var arr = retailData?.getAllCart;
+    if (arr?.poscart_products?.length > 0) {
+      const products = arr?.poscart_products.map((item) => ({
+        product_id: item?.product_id,
+        qty: item?.qty,
+      }));
+      const data = {
+        updated_products: products,
+      };
+      console.log('data', data);
+      dispatch(updateCartQty(data, arr.id));
+    } else {
+      // clearCartHandler();
+    }
+  };
+  function calculatePercentageValue(value, percentage) {
+    if (percentage == '') {
+      return '';
+    }
+    const percentageValue = (percentage / 100) * parseFloat(value);
+    return percentageValue.toFixed(2) ?? 0.0;
+  }
+
+  const updateQuantity = (operation, index) => {
+    var arr = retailData?.getAllCart;
+    const product = arr?.poscart_products[index];
+    // const productPrice = product.product_details.price;
+    const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+    if (operation === '+') {
+      product.qty += 1;
+      arr.amount.total_amount += productPrice;
+      arr.amount.products_price += productPrice;
+      const totalAmount = arr.amount.products_price;
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      arr.amount.tax = parseFloat(TAX); // Update tax value
+      arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
+    } else if (operation === '-') {
+      if (product.qty > 0) {
+        if (product.qty === 1) {
+          arr?.poscart_products.splice(index, 1);
+          dispatch(updateCartLength(CART_LENGTH - 1));
+        }
+        product.qty -= 1;
+
+        arr.amount.products_price -= productPrice;
+        const totalAmount = arr.amount.products_price;
+
+        const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+
+        arr.amount.tax = parseFloat(TAX); // Update tax value
+        arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
+      }
+    }
+    var DATA = {
+      payload: arr,
+    };
+    dispatch(getAllCartSuccess(DATA));
+  };
+
+  const removeOneCartHandler = (index) => {
+    var arr = retailData?.getAllCart;
+    const product = arr?.poscart_products[index];
+    // const productPrice = product.product_details.price;
+    const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+    if (product.qty > 0) {
+      arr.amount.total_amount -= productPrice * product.qty;
+      arr.amount.products_price -= productPrice * product.qty;
+      arr?.poscart_products.splice(index, 1);
+    }
+    const totalAmount = arr.amount.products_price;
+    const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+    arr.amount.tax = parseFloat(TAX); // Update tax value
+    arr.amount.total_amount = totalAmount + parseFloat(TAX);
+    var DATA = {
+      payload: arr,
+    };
+    dispatch(updateCartLength(CART_LENGTH - 1));
+    dispatch(getAllCartSuccess(DATA));
+  };
+
   return (
     <View style={styles.container}>
       <View style={[styles.cartScreenHeader]}>
-        <TouchableOpacity style={styles.serviceCart} onPress={cartChangeHandler}>
+        <TouchableOpacity
+          style={styles.serviceCart}
+          onPress={() => {
+            beforeDiscountCartLoad();
+            cartChangeHandler();
+          }}
+        >
           <Text style={styles.serviceCartText}>{'Service Cart'}</Text>
         </TouchableOpacity>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -182,35 +298,56 @@ export function ProductCart({ cartChangeHandler }) {
           >
             <TouchableOpacity
               style={styles.headerImagecCon}
-              onPress={() => setProductCustomerAdd((prev) => !prev)}
+              onPress={() => {
+                beforeDiscountCartLoad();
+                setProductCustomerAdd((prev) => !prev);
+              }}
             >
               <Image source={Images.addCustomerIcon} style={styles.headerImage} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.headerImagecCon}
-              onPress={() => setAddNotes((prev) => !prev)}
+              onPress={() => {
+                beforeDiscountCartLoad();
+                setAddNotes((prev) => !prev);
+              }}
             >
               <Image source={Images.notes} style={styles.headerImage} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.headerImagecCon}
-              onPress={() => setAddDiscount((prev) => !prev)}
+              onPress={() => {
+                beforeDiscountCartLoad();
+                setAddDiscount((prev) => !prev);
+              }}
             >
               <Image source={Images.discountOutline} style={styles.headerImage} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.headerImagecCon}
-              onPress={() => setClearCart((prev) => !prev)}
+              onPress={() => {
+                beforeDiscountCartLoad();
+                setClearCart((prev) => !prev);
+              }}
             >
               <Image source={Images.ClearEraser} style={styles.headerImage} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.headerImagecCon} onPress={cartStatusHandler}>
+          <TouchableOpacity
+            style={styles.headerImagecCon}
+            onPress={() => {
+              beforeDiscountCartLoad();
+              cartStatusHandler();
+            }}
+          >
             <Image source={Images.pause} style={styles.holdImage(holdProductArray)} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.headerImagecCon}
-            onPress={() => setCustomProductAdd((prev) => !prev)}
+            onPress={() => {
+              beforeDiscountCartLoad();
+              setCustomProductAdd((prev) => !prev);
+            }}
           >
             <Image source={Images.fluent} style={styles.headerImage} />
           </TouchableOpacity>
@@ -233,7 +370,7 @@ export function ProductCart({ cartChangeHandler }) {
             data={productCartData?.poscart_products}
             extraData={productCartData?.poscart_products}
             keyExtractor={(_, index) => index.toString()}
-            renderItem={(data) => {
+            renderItem={(data, index) => {
               const productSize = data?.item?.product_details?.supply?.attributes?.filter(
                 (item) => item?.name === 'Size'
               );
@@ -243,7 +380,7 @@ export function ProductCart({ cartChangeHandler }) {
               return (
                 <View style={styles.cartProductCon}>
                   <View style={[styles.disPlayFlex]}>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Image
                         source={{ uri: data?.item?.product_details?.image }}
                         style={{ width: ms(35), height: ms(35) }}
@@ -278,6 +415,9 @@ export function ProductCart({ cartChangeHandler }) {
                             </Text>
                           )}
                         </View>
+                        <Text style={styles.colorName}>
+                          UPC: {data?.item?.product_details?.upc}
+                        </Text>
                         <View
                           style={{
                             flexDirection: 'row',
@@ -290,11 +430,18 @@ export function ProductCart({ cartChangeHandler }) {
                           </Text>
                           <Text style={[styles.colorName, { marginLeft: ms(10) }]}>X</Text>
                           <View style={styles.counterCon}>
-                            <TouchableOpacity style={styles.cartPlusCon}>
+                            <TouchableOpacity
+                              style={styles.cartPlusCon}
+                              onPress={() => updateQuantity('-', data?.index)}
+                              disabled={data.item?.qty == 1 ? true : false}
+                            >
                               <Text style={styles.counterDigit}>-</Text>
                             </TouchableOpacity>
                             <Text style={styles.counterDigit}>{data?.item?.qty}</Text>
-                            <TouchableOpacity style={styles.cartPlusCon}>
+                            <TouchableOpacity
+                              style={styles.cartPlusCon}
+                              onPress={() => updateQuantity('+', data?.index)}
+                            >
                               <Text style={styles.counterDigit}>+</Text>
                             </TouchableOpacity>
                           </View>
@@ -304,11 +451,12 @@ export function ProductCart({ cartChangeHandler }) {
                     <View
                       style={{
                         flexDirection: 'column',
-                        justifyContent: 'space-between',
+                        alignItems: 'flex-end',
                       }}
                     >
                       <TouchableOpacity
                         onPress={() => {
+                          beforeDiscountCartLoad();
                           setPriceChange((prev) => !prev);
                           setCartProduct(data?.item);
                         }}
@@ -317,19 +465,21 @@ export function ProductCart({ cartChangeHandler }) {
                       </TouchableOpacity>
                       <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
                         $
-                        {data?.item?.product_details?.supply?.supply_prices?.selling_price *
-                          data?.item?.qty}
+                        {Number(
+                          data?.item?.product_details?.supply?.supply_prices?.selling_price *
+                            data?.item?.qty
+                        )?.toFixed(2)}
                       </Text>
                     </View>
                   </View>
                 </View>
               );
             }}
-            renderHiddenItem={() => (
+            renderHiddenItem={(data) => (
               <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
                 // onPress={() => deleteRow(rowMap, data.item.key)}
-                onPress={() => alert('in Progress')}
+                onPress={() => removeOneCartHandler(data?.index)}
               >
                 <Image
                   source={Images.cross}
@@ -360,7 +510,20 @@ export function ProductCart({ cartChangeHandler }) {
             alignSelf: 'center',
           }}
         >
-          <TouchableOpacity style={styles.availablOffercon}>
+          <TouchableOpacity
+            style={styles.availablOffercon}
+            onPress={() => {
+              beforeDiscountCartLoad();
+              const data = {
+                servicetype: 'product',
+              };
+              dispatch(
+                getAvailableOffer(data, () => {
+                  availableOfferRef?.current?.present();
+                })
+              );
+            }}
+          >
             <Text style={styles.avaliableofferText}>{strings.cart.availablOffer}</Text>
           </TouchableOpacity>
           {/* <Spacer space={SH(10)} /> */}
@@ -415,7 +578,10 @@ export function ProductCart({ cartChangeHandler }) {
                 opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.7,
               },
             ]}
-            onPress={payNowHandler}
+            onPress={() => {
+              beforeDiscountCartLoad();
+              payNowHandler();
+            }}
             disabled={productCartData?.poscart_products?.length > 0 ? false : true}
           >
             <Text style={styles.payNowText}>{strings.cart.payNow}</Text>
@@ -484,6 +650,15 @@ export function ProductCart({ cartChangeHandler }) {
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
       {jbrCoinCallback()}
 
+      <AvailableOffer
+        availableOfferRef={availableOfferRef}
+        productCartOpen={() => {
+          addProductCartRef?.current?.present();
+        }}
+      />
+      <AddProductCart {...{ addProductCartRef, productDetailHanlder }} />
+      <ProductDetails {...{ productDetailRef, bothSheetClose }} />
+      {/* productDetailHanlder */}
       {isLoading ? <FullScreenLoader /> : null}
     </View>
   );

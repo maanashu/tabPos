@@ -8,6 +8,7 @@ import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { addNotescart, addServiceNotescart } from '@/actions/RetailAction';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const AddNotes = ({ notesClose }) => {
   const dispatch = useDispatch();
@@ -36,42 +37,44 @@ const AddNotes = ({ notesClose }) => {
   };
 
   return (
-    <View style={styles.addDiscountcon}>
-      <View style={styles.headerViewStyle}>
-        <Text style={styles.clearCartTextStyle}>{strings.cart.addNotesHeading}</Text>
+    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.addDiscountcon}>
+        <View style={styles.headerViewStyle}>
+          <Text style={styles.clearCartTextStyle}>{strings.cart.addNotesHeading}</Text>
 
-        <TouchableOpacity onPress={() => notesClose()}>
-          <Image source={Images.cross} style={styles.crossIconStyle} />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.contentViewStyle}>
-        <TextInput
-          multiline
-          value={notes}
-          numberOfLines={6}
-          onChangeText={setNotes}
-          style={styles.notesInputStyle}
-          placeholder={strings.cart.addNotes}
-        />
-
-        <Spacer space={SH(10)} />
-
-        <View style={styles.buttonMainContainer}>
-          <TouchableOpacity style={styles.keepButtonStyle} onPress={() => setNotes('')}>
-            <Text style={[styles.counterText, { color: COLORS.solid_grey }]}>
-              {strings.profile.Discard}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.clearButtonStyle} onPress={() => addNotesHandler()}>
-            <Text style={[styles.counterText, { color: COLORS.white }]}>
-              {strings.profile.save}
-            </Text>
+          <TouchableOpacity onPress={() => notesClose()}>
+            <Image source={Images.cross} style={styles.crossIconStyle} />
           </TouchableOpacity>
         </View>
+
+        <View style={styles.contentViewStyle}>
+          <TextInput
+            multiline
+            value={notes}
+            numberOfLines={6}
+            onChangeText={setNotes}
+            style={styles.notesInputStyle}
+            placeholder={strings.cart.addNotes}
+          />
+
+          <Spacer space={SH(10)} />
+
+          <View style={styles.buttonMainContainer}>
+            <TouchableOpacity style={styles.keepButtonStyle} onPress={() => setNotes('')}>
+              <Text style={[styles.counterText, { color: COLORS.solid_grey }]}>
+                {strings.profile.Discard}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.clearButtonStyle} onPress={() => addNotesHandler()}>
+              <Text style={[styles.counterText, { color: COLORS.white }]}>
+                {strings.profile.save}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -86,6 +89,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: moderateScale(15),
     paddingVertical: ms(30),
+    marginTop: ms(200),
   },
   nameBottomSheetContainerStyle: {
     borderTopLeftRadius: ms(30),

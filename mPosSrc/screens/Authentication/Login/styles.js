@@ -19,8 +19,8 @@ export const styles = StyleSheet.create({
     borderRadius: SW(50),
     marginHorizontal: SW(5),
     justifyContent: 'center',
-    borderColor: COLORS.light_border,
-    backgroundColor: COLORS.lightgray,
+    borderColor: COLORS.solidGrey,
+    backgroundColor: COLORS.white,
   },
   cellText: {
     fontSize: SF(20),

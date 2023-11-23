@@ -37,6 +37,12 @@ import {
   CustomerList,
   Plans,
   ChangePlans,
+  UserProfile,
+  FaceId,
+  HelpCenter,
+  SupportRequest,
+  MySupport,
+  Support,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -316,6 +322,36 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.changePlans}
         options={{ headerShown: false }}
         component={ChangePlans}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.userProfile}
+        options={{ headerShown: false }}
+        component={UserProfile}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.faceId}
+        options={{ headerShown: false }}
+        component={FaceId}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.helpCenter}
+        options={{ headerShown: false }}
+        component={HelpCenter}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.supportRequest}
+        options={{ headerShown: false }}
+        component={SupportRequest}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.mySupport}
+        options={{ headerShown: false }}
+        component={MySupport}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.support}
+        options={{ headerShown: false }}
+        component={Support}
       />
     </Stack.Navigator>
   );

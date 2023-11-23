@@ -269,11 +269,25 @@ export class AuthController {
   }
 
   static async getAllPosUsers(data, search) {
+    const getUrl = (data, search) => {
+      if (data && search) {
+        return (
+          USER_URL +
+          ApiUserInventory.getPosUsers +
+          `?page=${data.page}&limit=${data.limit}&seller_id=${data.seller_id}&search=${search}`
+        );
+      } else {
+        return (
+          USER_URL +
+          ApiUserInventory.getPosUsers +
+          `?page=${data.page}&limit=${data.limit}&seller_id=${data.seller_id}`
+        );
+      }
+    };
     return new Promise(async (resolve, reject) => {
-      const endpoint =
-        USER_URL +
-        ApiUserInventory.getPosUsers +
-        `?page=${data.page}&limit=${data.limit}&seller_id=${data.seller_id}`;
+      const endpoint = getUrl(data, search);
+
+      console.log('endpoint', endpoint);
       await HttpClient.get(endpoint)
         .then((response) => {
           if (response?.status_code === 200) {

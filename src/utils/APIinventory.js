@@ -8,7 +8,7 @@ import { store } from '@/store';
 import { useEffect } from 'react';
 
 export const USER_URL = 'https://apiuserservice.jobr.com/api/v1/';
-// export const SUPPORT_URL = 'https://apisupport.jobr.com/api/v1/';
+const SUPPORT_URL = 'https://apisupport.jobr.com/api/v1/';
 export const ORDER_URL = 'https://apiorder.jobr.com:8004/api/v1/';
 export const PRODUCT_URL = 'https://apiproductmgmt.jobr.com/api/v1/';
 export const WALLET_URL = 'https://apiwallet.jobr.com/api/v1/';
@@ -60,6 +60,11 @@ export const ApiUserInventory = {
   getPosDetailWeekly: 'pos_staff_salary/get-data-basis-of-week',
   staffRequest: 'pos_staff_salary/request-payment',
   getStaffTransaction: 'pos_staff_salary/pos/paid-salary-details',
+  deviceRegister: USER_URL + 'users/device/register',
+  deviceUnRegister: USER_URL + 'users/device/un-register',
+  deviceLogin: USER_URL + 'users/device/login',
+  verifyPin: USER_URL + 'users/verify-pin',
+  changeOldPin: USER_URL + 'users/change-old-pin',
 };
 
 export const ApiProductInventory = {
@@ -178,6 +183,15 @@ export const ApiChatInverntory = {
   sendChat: 'messages',
   getMessages: USER_URL + `messageheads/`,
   getMessageHeads: `messageheads`,
+};
+export const ApiSupportInventory = {
+  subjectList: SUPPORT_URL + 'subjects',
+  uploadSupportDoc: SUPPORT_URL + 'supports/document',
+  addTicket: SUPPORT_URL + 'supports',
+  supportList: SUPPORT_URL + 'supports/user',
+  faqList: SUPPORT_URL + 'faqs',
+  getAllSupportCommments: SUPPORT_URL + 'support_comments',
+  getAllCommentbySupportId: SUPPORT_URL + 'support_comments/support/',
 };
 
 export const ApiRewards = {

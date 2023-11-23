@@ -27,6 +27,7 @@ import { getUser } from '@mPOS/selectors/UserSelectors';
 import { getAuthData } from '@mPOS/selectors/AuthSelector';
 import { acccessAndConfirmation, essential, moreApp, tagLine } from '@mPOS/constants/enums';
 import { logoutFunction } from '@/actions/AuthActions';
+import { store } from '@/store';
 
 export function More() {
   const dispatch = useDispatch();
@@ -34,6 +35,8 @@ export function More() {
   const posData = useSelector(getUser);
   const loginPosUser = posData?.posLoginData;
   const merchantData = authData?.merchantLoginData;
+
+  // console.log('profuile get', authData?.getProfile);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.rowCard}>
@@ -61,22 +64,16 @@ export function More() {
     ]);
   };
   const tagLineHandler = (item, index) => {
-    if (index === 0) {
-      return navigate(MPOS_NAVIGATION.batchManagement);
-    } else if (index === 1) {
-      return navigate(MPOS_NAVIGATION.customers);
-    } else if (index === 2) {
-      return alert('In progress');
-    } else if (index === 3) {
-      return navigate(MPOS_NAVIGATION.analytics);
+    if (item?.navigation) {
+      commonNavigate(item?.navigation);
+    } else {
+      alert('In Progress');
     }
   };
 
   const acccessAndConfirmationHandler = (item, index) => {
-    if (index === 0) {
-      return alert('In progress');
-    } else if (index === 1) {
-      return navigate(MPOS_NAVIGATION.pinId);
+    if (item?.navigation) {
+      commonNavigate(item?.navigation);
     }
   };
   const essentialHandler = (item, index) => {
@@ -168,7 +165,7 @@ export function More() {
             </View>
           </View>
           {/* tag line section */}
-          <View style={[styles.moreProfileSection, { height: ms(210) }]}>
+          <View style={[styles.moreProfileSection, { height: ms(235) }]}>
             <Text style={styles.profileName}>{strings.more.tagLine}</Text>
             {tagLine?.map((item, index) => (
               <TouchableOpacity onPress={() => tagLineHandler(item, index)} key={index}>

@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Spacer, Header, ScreenWrapper } from '@mPOS/components';
-import { strings } from '@mPOS/localization';
 import { styles } from './OldPin.styles';
 import { COLORS, SW, TextStyles } from '@/theme';
-import { navigate } from '@mPOS/navigation/NavigationRef';
 import { NAVIGATION } from '@mPOS/constants';
 
 import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
-  Cursor,
 } from 'react-native-confirmation-code-field';
 import { ms } from 'react-native-size-matters';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
@@ -71,6 +68,19 @@ export function OldPin(props) {
       setIsLoading(false);
     }
   };
+
+  const renderCell = ({ index }) => {
+    const displaySymbol = value[index] ? '*' : '';
+
+    return (
+      <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
+        <Text style={styles.cellText}>{displaySymbol}</Text>
+      </View>
+    );
+  };
+
+  // const isLoading = useSelector((state) => isLoadingSelector([TYPES.VERIFY_PIN], state));
+
   return (
     <ScreenWrapper>
       <Header title={'Set up PIN'} backRequired />
@@ -88,11 +98,7 @@ export function OldPin(props) {
           rootStyle={styles.containerOtp}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({ index, symbol, isFocused }) => (
-            <View onLayout={getCellOnLayoutHandler(index)} key={index} style={styles.cellRoot}>
-              <Text style={styles.cellText}>{symbol || (isFocused ? <Cursor /> : null)}</Text>
-            </View>
-          )}
+          renderCell={renderCell}
         />
       </View>
       <View style={{ flex: 1 }} />

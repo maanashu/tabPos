@@ -15,13 +15,7 @@ import { Images } from '@mPOS/assets';
 import { FullScreenLoader, Spacer } from '@mPOS/components';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  clearAllCart,
-  getBrand,
-  getCategory,
-  getMainProduct,
-  getSubCategory,
-} from '@/actions/RetailAction';
+import { getMainServices, getServiceCategory, getServiceSubCategory } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -31,6 +25,7 @@ import { useState } from 'react';
 import { useDebounce } from 'use-lodash-debounce';
 import { strings } from '@/localization';
 import { blankCheckBox, checkedCheckboxSquare, down, up } from '@/assets';
+import { getAllPosUsers } from '@/actions/AuthActions';
 
 function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
   const dispatch = useDispatch();
@@ -38,14 +33,11 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
-  // useEffect(() => {
-  //   dispatch(getCategory(sellerID));
-  //   dispatch(getSubCategory(sellerID));
-  //   dispatch(getBrand(sellerID));
-  // }, []);
-
   const isLoad = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_CATEGORY, TYPES.GET_SUB_CATEGORY, TYPES.GET_BRAND], state)
+    isLoadingSelector(
+      [TYPES.GET_SERVICE_CATEGORY, TYPES.GET_SERVICE_SUB_CATEGORY, TYPES.GET_BRAND],
+      state
+    )
   );
 
   // category search
@@ -79,44 +71,50 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
     selectedSubCategoryArray?.length > 0;
 
   const clearInput = () => {
-    dispatch(getCategory(sellerID));
-    dispatch(getSubCategory(sellerID));
-    dispatch(getBrand(sellerID));
+    dispatch(getServiceCategory(sellerID));
+    dispatch(getServiceSubCategory(sellerID));
+    // dispatch(getAllPosUsers(sellerid));
+    const data = {
+      page: 1,
+      limit: 10,
+      seller_id: sellerID,
+    };
+    dispatch(getAllPosUsers(data));
   };
 
   useEffect(() => {
     setCategoryData(
-      retailData?.categoryList //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+      retailData?.serviceCategoryList //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
     );
 
     setSubCategoryData(
-      retailData?.subCategories //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+      retailData?.serviceSubCategoryList //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
     );
 
     setBrandData(
-      retailData?.brands //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
+      getAuth?.getAllPosUsers //?.map((item) => Object.assign({}, item, { isChecked: false })) ?? []
     );
-  }, [retailData]);
+  }, [retailData, getAuth]);
 
   // category search function
-  const categorySearch = (search) => {
+  const serviceCategorySearch = (search) => {
     setSearch(search);
     setCategoryOpenDropDown(true);
     if (search?.length > 2) {
-      dispatch(getCategory(sellerID, search));
+      dispatch(getServiceCategory(sellerID, search));
     } else if (search?.length === 0) {
-      dispatch(getCategory(sellerID));
+      dispatch(getServiceCategory(sellerID));
     }
   };
 
   // subCategory search function
-  const subCategorySearch = (search) => {
+  const serviceSubCategorySearch = (search) => {
     setSearchSubCategory(search);
     setSubCategoryOpenDropDown(true);
     if (search?.length > 2) {
-      dispatch(getSubCategory(sellerID, search));
+      dispatch(getServiceSubCategory(sellerID, search));
     } else if (search?.length === 0) {
-      dispatch(getSubCategory(sellerID));
+      dispatch(getServiceSubCategory(sellerID));
     }
   };
 
@@ -125,9 +123,19 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
     setSearchBrand(search);
     setBrandOpenDropDown(true);
     if (search?.length > 2) {
-      dispatch(getBrand(sellerID, search));
+      const data = {
+        page: 1,
+        limit: 10,
+        seller_id: sellerID,
+      };
+      dispatch(getAllPosUsers(data, search));
     } else if (search?.length === 0) {
-      dispatch(getBrand(sellerID));
+      const data = {
+        page: 1,
+        limit: 10,
+        seller_id: sellerID,
+      };
+      dispatch(getAllPosUsers(data));
     }
   };
 
@@ -140,7 +148,7 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
           value={search}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchCategory}
-          onChangeText={(search) => categorySearch(search)}
+          onChangeText={(search) => serviceCategorySearch(search)}
         />
 
         {isLoad ? (
@@ -156,7 +164,7 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
             keyExtractor={(item) => item.id}
             style={{
               paddingBottom: ms(20),
-              height: retailData?.categoryList?.length > 0 ? ms(150) : 0,
+              height: retailData?.serviceCategoryList?.length > 0 ? ms(150) : 0,
             }}
             ListEmptyComponent={() => (
               <Text style={styles.noDataText}>{strings.valiadtion.noData}</Text>
@@ -210,7 +218,7 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
           value={searchSubCategory}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchSubCategory}
-          onChangeText={(search) => subCategorySearch(search)}
+          onChangeText={(search) => serviceSubCategorySearch(search)}
         />
 
         {isLoad ? (
@@ -225,7 +233,7 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
             showsVerticalScrollIndicator={false}
             style={{
               paddingBottom: ms(20),
-              height: retailData?.subCategories?.length > 0 ? ms(150) : 0,
+              height: retailData?.serviceSubCategoryList?.length > 0 ? ms(150) : 0,
             }}
             ListEmptyComponent={() => (
               <Text style={styles.noDataText}>{strings.valiadtion.noData}</Text>
@@ -279,7 +287,7 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
             showsVerticalScrollIndicator={false}
             style={{
               paddingBottom: ms(20),
-              height: retailData?.brands?.length > 0 ? ms(150) : 0,
+              height: getAuth?.getAllPosUsers?.length > 0 ? ms(150) : 0,
             }}
             ListEmptyComponent={() => (
               <Text style={styles.noDataText}>{strings.valiadtion.noData}</Text>
@@ -305,7 +313,10 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
             <Image source={blankCheckBox} style={styles.dropdownIconStyle} />
           </View>
         )}
-        <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>{item?.name}</Text>
+
+        <Text style={[styles.itemNameTextStyle, { paddingLeft: 10 }]}>
+          {item?.user?.user_profiles?.firstname + ' ' + item?.user?.user_profiles?.lastname}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -402,7 +413,7 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
               setSubCategoryOpenDropDown(false);
             }}
           >
-            <Text style={styles.itemNameTextStyle}>{'Brand'}</Text>
+            <Text style={styles.itemNameTextStyle}>{'Staff'}</Text>
 
             {brandOpenDropDown ? (
               <Image source={up} style={styles.dropdownIconStyle} />
@@ -430,7 +441,7 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
               setCategoryOpenDropDown(false);
               setSubCategoryOpenDropDown(false);
               setBrandOpenDropDown(false);
-              dispatch(getMainProduct());
+              dispatch(getMainServices());
               clearInput();
               productFilterCount(0);
               crossHandler();
@@ -458,9 +469,9 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
               const ids = {
                 category_ids: selectedCategoryArray.join(','),
                 sub_category_ids: selectedSubCategoryArray.join(','),
-                brand_id: selectedBrandArray.join(','),
+                pos_staff_ids: selectedBrandArray.join(','),
               };
-              dispatch(getMainProduct(ids));
+              dispatch(getMainServices(ids));
               productFilterCount(productArrayLength?.[0]);
               crossHandler();
             }}
@@ -590,8 +601,9 @@ const styles = StyleSheet.create({
     fontSize: ms(10),
   },
   noDataText: {
-    color: COLORS.primary,
+    color: COLORS.red,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(10),
+    alignSelf: 'center',
   },
 });

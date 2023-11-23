@@ -86,13 +86,13 @@ export function TransactionList(props) {
     {
       id: 3,
       title: 'Cash',
-      count: getWalletData?.getTotalTraType?.[2]?.count || 0,
+      count: getWalletData?.getTotalTraType?.[3]?.count || 0,
       value: 'cash',
     },
     {
       id: 4,
       title: 'Card',
-      count: getWalletData?.getTotalTraType?.[3]?.count || 0,
+      count: getWalletData?.getTotalTraType?.[2]?.count || 0,
       value: 'card',
     },
   ];

@@ -1,6 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { ScreenWrapper, Spacer } from '@/components';
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { Button, ScreenWrapper, Spacer } from '@/components';
 import { Header, HorizontalLine } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
 import { getSetting } from '@/selectors/SettingSelector';
@@ -11,33 +18,38 @@ import { Images } from '@mPOS/assets';
 import styles from './ChangePlans.styles';
 import { upadteApi } from '@/actions/SettingAction';
 import { getAllPlansData } from '@/selectors/SubscriptionSelector';
-import { getActiveSubscription, getAllPlans } from '@/actions/SubscriptionAction';
-import { COLORS } from '@/theme';
-import { changePlan, checkmark } from '@/assets';
+import { buySubscription, getActiveSubscription, getAllPlans } from '@/actions/SubscriptionAction';
+import { COLORS, Fonts } from '@/theme';
+import { changePlan, checkmark, rightBack } from '@/assets';
 import Plans from './Components/Plans';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/SubscriptionTypes';
+import { SH, SW, width } from '@/theme/ScalerDimensions';
 
 export function ChangePlans() {
   const dispatch = useDispatch();
   const getPlanData = useSelector(getAllPlansData);
-  const activeUserPlan = getPlanData?.activeSubscription;
 
-  const [appNotiValue, setappNotiValue] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  console.log('all plans', JSON.stringify(getPlanData?.allPlans?.[0]));
+  // console.log('plans', getPlanData?.allPlans?.[0]);
 
-  useEffect(() => {
-    dispatch(getAllPlans());
-  }, []);
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_PLANS], state));
 
-  const feature = [
-    { id: 1, title: 'Online store' },
-    { id: 2, title: 'Shareable product pages' },
-    { id: 3, title: 'Unlimited products' },
-    { id: 4, title: '24/7 support' },
-    { id: 5, title: 'Abandoned cart recovery' },
-    { id: 6, title: 'Advanced report builder' },
-  ];
+  // useEffect(() => {
+  //   dispatch(getAllPlans());
+  // }, []);
+
+  const monthlyPlans = [];
+  const yearlyPlans = [];
+  if (getPlanData?.allPlans?.length > 0) {
+    getPlanData?.allPlans?.forEach((plan) => {
+      if (plan?.tenure === 'monthly') {
+        monthlyPlans.push(plan);
+      } else if (plan.tenure === 'yearly') {
+        yearlyPlans.push(plan);
+      }
+    });
+  }
 
   const renderFeatures = ({ item }) => {
     return (
@@ -45,18 +57,35 @@ export function ChangePlans() {
         <View style={[styles.rowAligned, { marginVertical: ms(5) }]}>
           <Image source={checkmark} style={{ height: 20, width: 20 }} />
           <View style={{ flex: 1 }}>
-            <Text style={styles.featuresText}>{item?.title}</Text>
+            <Text style={styles.featuresText}>{item}</Text>
           </View>
         </View>
       </>
     );
   };
+
+  const planColors = (plan) => {
+    if (plan == 'Basic') {
+      return COLORS.bluish_green;
+    }
+    if (plan == 'Standard') {
+      return COLORS.primary;
+    } else {
+      return COLORS.dark_grey;
+    }
+  };
+
+  const updatePlan = async (plan_id) => {
+    await dispatch(buySubscription(plan_id));
+    const data = await dispatch(getActiveSubscription());
+  };
+
   const renderPlans = ({ item }) => {
     const amount = parseFloat(item?.amount);
     return (
       <>
         <View style={styles.innerContainer} showsVerticalScrollIndicator={false}>
-          <Text style={styles.planType}>{item?.name}</Text>
+          <Text style={[styles.planType, { color: planColors(item?.name) }]}>{item?.name}</Text>
           <Spacer space={ms(10)} />
           <Text style={styles.everythingText}>{strings?.plans?.everything}</Text>
           <Spacer space={ms(25)} />
@@ -65,16 +94,26 @@ export function ChangePlans() {
 
           <Spacer space={ms(25)} />
           <Text style={styles.subTitleText}>{strings?.plans?.appsIncluded}</Text>
-          <Plans
-            data={[
-              { id: 1, appName: 'JOBR B2B' },
-              { id: 2, appName: 'JOBR Wallet' },
-            ]}
+          <Plans data={item?.included_apps} />
+
+          <Spacer space={ms(20)} />
+
+          <Button
+            style={{
+              width: width - SW(80),
+              alignSelf: 'center',
+              height: SH(50),
+              backgroundColor: planColors(item?.name),
+              borderWidth: 0,
+            }}
+            title={'Get Started'}
+            textStyle={{ fontFamily: Fonts.Regular, color: COLORS.white }}
+            onPress={() => updatePlan(item?.id)}
           />
 
           <Spacer space={ms(20)} />
 
-          <FlatList data={feature} renderItem={renderFeatures} />
+          <FlatList data={item?.tags} renderItem={renderFeatures} />
         </View>
       </>
     );
@@ -87,7 +126,11 @@ export function ChangePlans() {
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Text style={styles.termsText}>{strings?.plans?.terms}</Text>
         <Spacer space={ms(10)} />
-        <FlatList data={getPlanData?.allPlans} renderItem={renderPlans} />
+        {isLoading ? (
+          <ActivityIndicator color={COLORS.primary} size={'large'} />
+        ) : (
+          <FlatList data={monthlyPlans} renderItem={renderPlans} />
+        )}
 
         <Spacer space={ms(20)} />
       </ScrollView>
