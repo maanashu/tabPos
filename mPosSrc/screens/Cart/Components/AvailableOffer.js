@@ -147,7 +147,7 @@ const AvailableOffer = ({ availableOfferRef, serviceCartOpen, productCartOpen })
                   </View>
                 </View>
 
-                <TouchableOpacity style={[styles.addView()]}>
+                <TouchableOpacity style={styles.addView}>
                   <Image source={Images.addTitle} resizeMode="contain" style={[styles.addImage]} />
                 </TouchableOpacity>
               </TouchableOpacity>
