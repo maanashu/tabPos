@@ -43,6 +43,7 @@ import {
   SupportRequest,
   MySupport,
   Support,
+  SupportChat,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -352,6 +353,11 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.support}
         options={{ headerShown: false }}
         component={Support}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.supportChat}
+        options={{ headerShown: false }}
+        component={SupportChat}
       />
     </Stack.Navigator>
   );

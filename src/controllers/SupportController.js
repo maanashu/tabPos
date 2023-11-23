@@ -29,7 +29,6 @@ export class SupportController {
   }
 
   static async addNewTicket(data) {
-    console.log('request payload: ' + JSON.stringify(data));
     const getBody = (data) => {
       if (data.document_url === undefined && data.type === 'refund') {
         return {

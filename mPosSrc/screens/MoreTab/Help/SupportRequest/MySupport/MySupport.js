@@ -53,7 +53,10 @@ export function MySupport() {
     const track = result?.toUpperCase();
     // const id = item?.id;
     return (
-      <View style={styles.sopportContainer}>
+      <TouchableOpacity
+        style={styles.sopportContainer}
+        onPress={() => commonNavigate(MPOS_NAVIGATION.supportChat, { item: item, id: item?.id })}
+      >
         <View style={styles.orderCon}>
           <Text style={styles.order}>{'#' + track}</Text>
           {/* <TouchableOpacity
@@ -102,7 +105,7 @@ export function MySupport() {
             <></>
           )}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
   const renderEmptyContainer = () => {
@@ -124,12 +127,12 @@ export function MySupport() {
             contentContainerStyle={{
               justifyContent: tickets?.length > 0 ? 'flex-start' : 'center',
             }}
-            data={tickets || [1]}
+            data={tickets || []}
             extraData={tickets || []}
             renderItem={renderItem}
             // keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
-            // ListEmptyComponent={renderEmptyContainer}
+            ListEmptyComponent={renderEmptyContainer}
             ListHeaderComponent={() => (
               <View style={{ marginTop: 10, backgroundColor: COLORS.transparent }} />
             )}

@@ -66,4 +66,5 @@ export const NAVIGATION = {
   supportRequest: 'SupportRequest',
   mySupport: 'MySupport',
   support: 'Support',
+  supportChat: 'SupportChat',
 };
