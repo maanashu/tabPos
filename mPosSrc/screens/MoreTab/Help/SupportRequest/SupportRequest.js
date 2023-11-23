@@ -1,20 +1,18 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { ScreenWrapper, Spacer } from '@/components';
-import { Header, HorizontalLine } from '@mPOS/components';
+import { Header } from '@mPOS/components';
 import { strings } from '@mPOS/localization';
-import { getSetting } from '@/selectors/SettingSelector';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
-import { Image } from 'react-native';
-import { Images } from '@mPOS/assets';
 import styles from './SupportRequest.styles';
-import { upadteApi } from '@/actions/SettingAction';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { MySupport } from './MySupport/MySupport';
 import { Support } from './Support/Support';
+import { getSupportData } from '@/selectors/SupportSelector';
 
 export function SupportRequest() {
+  const supportData = useSelector(getSupportData);
+  const tickets = supportData?.ticketsList?.data;
   const [selectScreen, setSelectScreen] = useState(1);
   const [index, setIndex] = useState(0);
   const screens = [
@@ -36,7 +34,7 @@ export function SupportRequest() {
                   {idx == 0 ? (
                     <Text style={styles.selectScreenText(selectScreen, item?.id)}>{`${
                       item?.title
-                    } (${'0'})`}</Text>
+                    } (${tickets?.length || '0'})`}</Text>
                   ) : (
                     <Text style={styles.selectScreenText(selectScreen, item?.id)}>
                       {item?.title}
@@ -48,7 +46,12 @@ export function SupportRequest() {
             );
           })}
         </View>
-        {selectScreen == 1 ? <MySupport /> : <Support />}
+        <Spacer space={ms(15)} />
+        {selectScreen == 1 ? (
+          <MySupport setScreen={setSelectScreen} />
+        ) : (
+          <Support setScreen={setSelectScreen} />
+        )}
       </View>
     </ScreenWrapper>
   );
