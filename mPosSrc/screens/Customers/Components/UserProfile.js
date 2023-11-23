@@ -46,7 +46,12 @@ const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 import { TYPES } from '@/Types/CustomersTypes';
 import { useEffect } from 'react';
-import { getAcceptMarketing, getOrderUser, marketingUpdate } from '@/actions/CustomersAction';
+import {
+  getAcceptMarketing,
+  getOrderUser,
+  marketingUpdate,
+  updateUserProfile,
+} from '@/actions/CustomersAction';
 import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
 import { useMemo } from 'react';
 import { useCallback } from 'react';
@@ -59,32 +64,54 @@ import { commonNavigate, MPOS_NAVIGATION } from '@common/commonImports';
 import Modal from 'react-native-modal';
 import CountryPicker from 'react-native-country-picker-modal';
 import { strings } from '@mPOS/localization';
+import { getUser } from '@/selectors/UserSelectors';
 
 export function UserProfile(props) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getCustomerData = useSelector(getCustomers);
+  const getUserData = useSelector(getUser);
+  const getPosUser = getUserData?.posLoginData;
+  const posUsers = getAuth?.getAllPosUsersData;
+
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
   const userDetail = props?.route?.params?.userDetail;
+  const [posStaffId, setPosStaffId] = useState();
+  const [roleId, setRoleId] = useState();
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
   }, [getCustomerData?.getOrderUser?.data]);
 
-  const [paginationModalValue, setPaginationModalValue] = useState(10);
+  const [paginationModalValue, setPaginationModalValue] = useState(20);
   const [page, setPage] = useState(1);
   const [locationSelect, setLocationSelect] = useState('none');
   const [monthSelect, setMonthSelect] = useState('none');
   const [showEditModal, setShowEditModal] = useState(false);
   const [flag, setFlag] = useState('US');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [countryCode, setCountryCode] = useState('+1');
-  const [name, setName] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
-  const [streetAddress, setStreetAddress] = useState('');
-  const [apt, setApt] = useState('');
-  const [zipCode, setZipCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState(
+    userDetail?.user_details?.current_address?.phone_no || ''
+  );
+  const [countryCode, setCountryCode] = useState(
+    userDetail?.user_details?.current_address?.phone_code || '+1'
+  );
+  const [name, setName] = useState(userDetail?.user_details?.firstname || '');
+  const [emailAddress, setEmailAddress] = useState(userDetail?.user_details?.email || '');
+  const [streetAddress, setStreetAddress] = useState(
+    userDetail?.user_details?.current_address?.custom_address || ''
+  );
+
+  const [apt, setApt] = useState(userDetail?.user_details?.current_address?.address_type || '');
+  const [zipCode, setZipCode] = useState(userDetail?.user_details?.zipcode || '');
+
+  const posStaffID = () => {
+    posUsers?.pos_staff?.map((item) => {
+      if (item?.user_id === getPosUser?.id) {
+        return setPosStaffId(item?.id), setRoleId(item?.user?.user_roles[0]?.role_id);
+      }
+    });
+  };
 
   useEffect(() => {
     const data = {
@@ -92,7 +119,8 @@ export function UserProfile(props) {
       sellerid: userDetail?.seller_details?.id,
     };
     dispatch(getAcceptMarketing(data));
-  }, []);
+    posStaffID();
+  }, [posStaffId, roleId]);
 
   const startIndex = useMemo(
     () => (page - 1) * paginationModalValue + 1,
@@ -108,9 +136,8 @@ export function UserProfile(props) {
     city: userDetail?.user_details?.current_address?.city,
     state: userDetail?.user_details?.current_address?.state,
     country: userDetail?.user_details?.current_address?.country,
-    postalCode: userDetail?.user_details?.current_address?.postal_code,
+    postalCode: userDetail?.user_details?.current_address?.zipcode,
   };
-
   useEffect(() => {
     const data = {
       userId: userDetail?.user_id,
@@ -142,7 +169,7 @@ export function UserProfile(props) {
   };
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(userDetail?.user_details?.current_address?.country || null);
   const [items, setItems] = useState([
     { label: 'US', value: 'us' },
     { label: 'INDIA', value: 'india' },
@@ -155,6 +182,25 @@ export function UserProfile(props) {
     { label: 'INDIA', value: 'india' },
     { label: 'AUSTRALIA', value: 'australia' },
   ]);
+
+  const saveHandler = () => {
+    const data = {
+      pos_staff_id: posStaffId,
+      firstname: name,
+      phone_number: phoneNumber,
+      email: emailAddress,
+      role_id: roleId,
+      phone_code: countryCode,
+      custom_address: streetAddress,
+      address_type: apt,
+      country: value,
+      city: value,
+      state: stateValue,
+      zipCode: zipCode,
+    };
+    dispatch(updateUserProfile(data));
+    setShowEditModal(false);
+  };
 
   return (
     <ScreenWrapper>
@@ -186,7 +232,7 @@ export function UserProfile(props) {
             <Image source={location} style={styles.Phonelight} />
             {userDetail?.user_details?.current_address ? (
               <Text style={styles.adressText} numberOfLines={1}>
-                {data?.streetAdd}, {data?.city}, {data?.state}, {data?.country},{data?.postalCode}
+                {data?.streetAdd} {data?.city} {data?.state} {data?.country} {data?.postalCode}
               </Text>
             ) : null}
           </View>
@@ -250,7 +296,7 @@ export function UserProfile(props) {
 
           <View
             style={{
-              height: Platform.OS === 'android' ? height - ms(320) : height - ms(360),
+              height: Platform.OS === 'android' ? height - ms(287) : height - ms(360),
               backgroundColor: COLORS.white,
               borderBottomLeftRadius: ms(10),
               borderBottomRightRadius: ms(10),
@@ -349,231 +395,229 @@ export function UserProfile(props) {
         </Table>
       </View>
 
-      <Modal isVisible={showEditModal} style={{ minHeight: '60%' }}>
-        <KeyboardAvoidingView style={{ flex: 1 }}>
-          <ScrollView>
-            <View
-              style={{
-                marginHorizontal: ms(5),
-                // marginVertical: ms(60),
-                backgroundColor: COLORS.white,
-                borderRadius: ms(10),
-                paddingHorizontal: ms(20),
-                paddingVertical: ms(30),
-                minHeight: '60%',
-                // justifyContent: 'center',
-              }}
+      <Modal isVisible={showEditModal}>
+        <KeyboardAvoidingView style={{ flex: 1, justifyContent: 'center' }}>
+          <View
+            style={{
+              marginHorizontal: ms(10),
+              // marginVertical: ms(60),
+              backgroundColor: 'white',
+              borderRadius: ms(10),
+              paddingHorizontal: ms(20),
+              paddingVertical: ms(30),
+              minHeight: '70%',
+              // justifyContent: 'center',
+            }}
+          >
+            <TouchableOpacity
+              style={{ position: 'absolute', top: ms(10), right: ms(7) }}
+              onPress={() => setShowEditModal(false)}
             >
-              <TouchableOpacity
-                style={{ position: 'absolute', top: ms(10), right: ms(7) }}
-                onPress={() => setShowEditModal(false)}
-              >
-                <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
-              </TouchableOpacity>
-              <Text style={styles.phoneText}>{'Name'}</Text>
+              <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
+            </TouchableOpacity>
+            <Text style={styles.phoneText}>{'Name'}</Text>
 
-              <View style={styles.textInputView}>
-                <TextInput
-                  maxLength={15}
-                  returnKeyType={'done'}
-                  keyboardType={'default'}
-                  value={name.trim()}
-                  onChangeText={(text) => {
-                    setName(text);
+            <View style={styles.textInputView}>
+              <TextInput
+                maxLength={15}
+                returnKeyType={'done'}
+                keyboardType={'default'}
+                value={name.trim()}
+                onChangeText={(text) => {
+                  setName(text);
+                }}
+                style={styles.textInputContainer}
+                placeholder={'Name'}
+                placeholderTextColor={COLORS.darkGray}
+                // showSoftInputOnFocus={false}
+              />
+            </View>
+            <Text>{'Phone Number'}</Text>
+
+            <View style={styles.textInputView}>
+              <CountryPicker
+                withFilter
+                withCallingCode
+                countryCode={flag}
+                onSelect={(code) => {
+                  setFlag(code.cca2);
+                  if (code?.callingCode?.length > 0) {
+                    setCountryCode('+' + code.callingCode.flat());
+                  } else {
+                    setCountryCode('');
+                  }
+                }}
+              />
+
+              <Text style={styles.codeText}>{countryCode}</Text>
+
+              <TextInput
+                maxLength={10}
+                value={phoneNumber}
+                autoCorrect={false}
+                returnKeyType={'done'}
+                keyboardType={'number-pad'}
+                style={styles.textInputContainer}
+                onChangeText={(phone) => setPhoneNumber(phone)}
+                placeholderTextColor={COLORS.gerySkies}
+                placeholder={strings.phoneNumber.numberText}
+              />
+            </View>
+            <Text style={styles.phoneText}>{'Email-Address'}</Text>
+
+            <View style={styles.textInputView}>
+              <TextInput
+                maxLength={15}
+                returnKeyType={'done'}
+                keyboardType={'default'}
+                value={emailAddress}
+                onChangeText={(text) => {
+                  setEmailAddress(text);
+                }}
+                style={styles.textInputContainer}
+                placeholder={'Email'}
+                placeholderTextColor={COLORS.darkGray}
+                // showSoftInputOnFocus={false}
+              />
+            </View>
+            <Text style={styles.phoneText}>{'Street Address'}</Text>
+
+            <View style={styles.textInputView}>
+              <TextInput
+                maxLength={15}
+                returnKeyType={'done'}
+                keyboardType={'default'}
+                value={streetAddress}
+                onChangeText={(text) => {
+                  setStreetAddress(text);
+                }}
+                style={styles.textInputContainer}
+                placeholder={'Street Address'}
+                placeholderTextColor={COLORS.darkGray}
+                // showSoftInputOnFocus={false}
+              />
+            </View>
+            <Text style={styles.phoneText}>{'Apartment/Suite'}</Text>
+
+            <View style={styles.textInputView}>
+              <TextInput
+                maxLength={15}
+                returnKeyType={'done'}
+                keyboardType={'default'}
+                value={apt}
+                onChangeText={(text) => {
+                  setApt(text);
+                }}
+                style={styles.textInputContainer}
+                placeholder={'Apartment/Suite'}
+                placeholderTextColor={COLORS.darkGray}
+                // showSoftInputOnFocus={false}
+              />
+            </View>
+
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={{ marginBottom: ms(8) }}>{'Country'}</Text>
+                <DropDownPicker
+                  open={open}
+                  value={value}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setItems}
+                  containerStyle={styles.dropDownContainerStyle}
+                  style={styles.dropdownStyle}
+                  arrowIconStyle={styles.arrowIconStyle}
+                  textStyle={{
+                    color: COLORS.black,
+                    fontFamily: Fonts.Regular,
+                    fontSize: ms(10),
                   }}
-                  style={styles.textInputContainer}
-                  placeholder={'Name'}
-                  placeholderTextColor={COLORS.darkGray}
-                  // showSoftInputOnFocus={false}
+                  listItemLabelStyle={{ color: COLORS.black }}
+                  zIndex={999}
+                  placeholder={userDetail?.user_details?.current_address?.country || 'Country'}
                 />
               </View>
-              <Text>{'Phone Number'}</Text>
-
-              <View style={styles.textInputView}>
-                <CountryPicker
-                  withFilter
-                  withCallingCode
-                  countryCode={flag}
-                  onSelect={(code) => {
-                    setFlag(code.cca2);
-                    if (code?.callingCode?.length > 0) {
-                      setCountryCode('+' + code.callingCode.flat());
-                    } else {
-                      setCountryCode('');
-                    }
+              <View style={{ flex: 1, marginLeft: ms(10) }}>
+                <Text style={{ marginBottom: ms(8) }}>{'State'}</Text>
+                <DropDownPicker
+                  open={stateOpen}
+                  value={stateValue}
+                  items={stateItems}
+                  setOpen={setStateOpen}
+                  setValue={setStateValue}
+                  setItems={setStateItems}
+                  containerStyle={styles.dropDownContainerStyle}
+                  style={styles.dropdownStyle}
+                  arrowIconStyle={styles.arrowIconStyle}
+                  textStyle={{
+                    color: COLORS.black,
+                    fontFamily: Fonts.Regular,
+                    fontSize: ms(10),
                   }}
+                  listItemLabelStyle={{ color: COLORS.black }}
+                  zIndex={999}
+                  placeholder={userDetail?.user_details?.current_address?.state || 'State'}
                 />
-
-                <Text style={styles.codeText}>{countryCode}</Text>
-
-                <TextInput
-                  maxLength={10}
-                  value={phoneNumber}
-                  autoCorrect={false}
-                  returnKeyType={'done'}
-                  keyboardType={'number-pad'}
-                  style={styles.textInputContainer}
-                  onChangeText={(phone) => setPhoneNumber(phone)}
-                  placeholderTextColor={COLORS.gerySkies}
-                  placeholder={strings.phoneNumber.numberText}
-                />
-              </View>
-              <Text style={styles.phoneText}>{'Email-Address'}</Text>
-
-              <View style={styles.textInputView}>
-                <TextInput
-                  maxLength={15}
-                  returnKeyType={'done'}
-                  keyboardType={'default'}
-                  value={emailAddress}
-                  onChangeText={(text) => {
-                    setEmailAddress(text);
-                  }}
-                  style={styles.textInputContainer}
-                  placeholder={'Email'}
-                  placeholderTextColor={COLORS.darkGray}
-                  // showSoftInputOnFocus={false}
-                />
-              </View>
-              <Text style={styles.phoneText}>{'Street Address'}</Text>
-
-              <View style={styles.textInputView}>
-                <TextInput
-                  maxLength={15}
-                  returnKeyType={'done'}
-                  keyboardType={'default'}
-                  value={streetAddress}
-                  onChangeText={(text) => {
-                    setStreetAddress(text);
-                  }}
-                  style={styles.textInputContainer}
-                  placeholder={'Street Address'}
-                  placeholderTextColor={COLORS.darkGray}
-                  // showSoftInputOnFocus={false}
-                />
-              </View>
-              <Text style={styles.phoneText}>{'Apartment/Suite'}</Text>
-
-              <View style={styles.textInputView}>
-                <TextInput
-                  maxLength={15}
-                  returnKeyType={'done'}
-                  keyboardType={'default'}
-                  value={apt}
-                  onChangeText={(text) => {
-                    setApt(text);
-                  }}
-                  style={styles.textInputContainer}
-                  placeholder={'Apartment/Suite'}
-                  placeholderTextColor={COLORS.darkGray}
-                  // showSoftInputOnFocus={false}
-                />
-              </View>
-
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ flex: 1 }}>
-                  <Text style={{ marginBottom: ms(8) }}>{'Country'}</Text>
-                  <DropDownPicker
-                    open={open}
-                    value={value}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
-                    containerStyle={styles.dropDownContainerStyle}
-                    style={styles.dropdownStyle}
-                    arrowIconStyle={styles.arrowIconStyle}
-                    textStyle={{
-                      color: COLORS.black,
-                      fontFamily: Fonts.Regular,
-                      fontSize: ms(10),
-                    }}
-                    listItemLabelStyle={{ color: COLORS.black }}
-                    zIndex={999}
-                    placeholder="Country"
-                  />
-                </View>
-                <View style={{ flex: 1, marginLeft: ms(10) }}>
-                  <Text style={{ marginBottom: ms(8) }}>{'State'}</Text>
-                  <DropDownPicker
-                    open={stateOpen}
-                    value={stateValue}
-                    items={stateItems}
-                    setOpen={setStateOpen}
-                    setValue={setStateValue}
-                    setItems={setStateItems}
-                    containerStyle={styles.dropDownContainerStyle}
-                    style={styles.dropdownStyle}
-                    arrowIconStyle={styles.arrowIconStyle}
-                    textStyle={{
-                      color: COLORS.black,
-                      fontFamily: Fonts.Regular,
-                      fontSize: ms(10),
-                    }}
-                    listItemLabelStyle={{ color: COLORS.black }}
-                    zIndex={999}
-                    placeholder="State"
-                  />
-                </View>
-              </View>
-              <View style={{ flexDirection: 'row', marginVertical: ms(8) }}>
-                <View style={{ flex: 1 }}>
-                  <Text style={{ marginBottom: ms(8) }}>{'City'}</Text>
-                  <DropDownPicker
-                    open={open}
-                    value={value}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
-                    containerStyle={styles.dropDownContainerStyle}
-                    style={styles.dropdownStyle}
-                    arrowIconStyle={styles.arrowIconStyle}
-                    textStyle={{
-                      color: COLORS.black,
-                      fontFamily: Fonts.Regular,
-                      fontSize: ms(10),
-                    }}
-                    listItemLabelStyle={{ color: COLORS.black }}
-                    zIndex={999}
-                    placeholder="City"
-                  />
-                </View>
-                <View style={{ flex: 1, marginLeft: ms(10) }}>
-                  <Text style={{ marginBottom: ms(8) }}>{'Zip Code'}</Text>
-                  <TextInput
-                    maxLength={15}
-                    returnKeyType={'done'}
-                    keyboardType={'default'}
-                    value={zipCode}
-                    onChangeText={(text) => {
-                      setZipCode(text);
-                    }}
-                    style={[
-                      styles.textInputContainer,
-                      { backgroundColor: COLORS.textInputBackground, paddingHorizontal: ms(10) },
-                    ]}
-                    placeholder={'Zip Code'}
-                    placeholderTextColor={COLORS.darkGray}
-                    // showSoftInputOnFocus={false}
-                  />
-                </View>
-              </View>
-
-              <View style={{ flexDirection: 'row', marginTop: ms(10) }}>
-                <TouchableOpacity
-                  style={styles.continueBtnCon}
-                  onPress={() => setShowEditModal(false)}
-                >
-                  <Text style={styles.detailBtnCon}>Discard</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.addToCartCon} onPress={() => {}}>
-                  <Text style={styles.addTocartText}>Save</Text>
-                </TouchableOpacity>
               </View>
             </View>
-          </ScrollView>
+            <View style={{ flexDirection: 'row', marginVertical: ms(8) }}>
+              <View style={{ flex: 1 }}>
+                <Text style={{ marginBottom: ms(8) }}>{'City'}</Text>
+                <DropDownPicker
+                  open={open}
+                  value={value}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setItems}
+                  containerStyle={styles.dropDownContainerStyle}
+                  style={styles.dropdownStyle}
+                  arrowIconStyle={styles.arrowIconStyle}
+                  textStyle={{
+                    color: COLORS.black,
+                    fontFamily: Fonts.Regular,
+                    fontSize: ms(10),
+                  }}
+                  listItemLabelStyle={{ color: COLORS.black }}
+                  zIndex={999}
+                  placeholder={userDetail?.user_details?.current_address?.city || 'City'}
+                />
+              </View>
+              <View style={{ flex: 1, marginLeft: ms(10) }}>
+                <Text style={{ marginBottom: ms(8) }}>{'Zip Code'}</Text>
+                <TextInput
+                  maxLength={15}
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={zipCode}
+                  onChangeText={(text) => {
+                    setZipCode(text);
+                  }}
+                  style={[
+                    styles.textInputContainer,
+                    { backgroundColor: COLORS.textInputBackground, paddingHorizontal: ms(10) },
+                  ]}
+                  placeholder={'Zip Code'}
+                  placeholderTextColor={COLORS.darkGray}
+                  // showSoftInputOnFocus={false}
+                />
+              </View>
+            </View>
+
+            <View style={{ flexDirection: 'row', marginTop: ms(10) }}>
+              <TouchableOpacity
+                style={styles.continueBtnCon}
+                onPress={() => setShowEditModal(false)}
+              >
+                <Text style={styles.detailBtnCon}>Discard</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.addToCartCon} onPress={saveHandler}>
+                <Text style={styles.addTocartText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </KeyboardAvoidingView>
       </Modal>
     </ScreenWrapper>

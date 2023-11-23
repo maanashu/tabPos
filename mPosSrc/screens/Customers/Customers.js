@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, Image, FlatList, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import styles from './styles';
 import { ms } from 'react-native-size-matters';
 import { getCustomers } from '@/selectors/CustomersSelector';
@@ -100,7 +108,14 @@ export function Customers() {
         }}
         backRequired
       />
-      <View style={{ height: Dimensions.get('window').height * 0.42 }}>
+      <View
+        style={{
+          height:
+            Platform.OS === 'ios'
+              ? Dimensions.get('window').height * 0.42
+              : Dimensions.get('window').height * 0.45,
+        }}
+      >
         <FlatList
           bounces={false}
           data={newCustomerData}

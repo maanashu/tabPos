@@ -4,6 +4,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 import { store } from '@/store';
 import { log } from 'react-native-reanimated';
+import axios from 'axios';
 
 export class CustomersController {
   static async getUserOrder(data) {
@@ -34,9 +35,12 @@ export class CustomersController {
 
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response', endpoint);
+
           resolve(response);
         })
         .catch((error) => {
+          console.log('dsjhsdk', error);
           error?.msg &&
             Toast.show({
               text2: error.msg,
@@ -155,5 +159,52 @@ export class CustomersController {
           reject(error);
         });
     });
+  }
+
+  static async updateUserProfile(data) {
+    const endpoint = USER_URL + ApiUserInventory.updateUserProfile;
+    const posToken = store.getState().user?.posLoginData?.token;
+    const body = {
+      pos_staff_id: data?.pos_staff_id,
+      firstname: data?.firstname,
+      email: data?.email,
+      role_ids: [data?.role_id],
+      phone_no: data?.phone_number,
+      custom_address: data?.custom_address,
+      address_type: data?.address_type,
+      country: data?.country,
+      city: data?.city,
+      state: data?.state,
+      zipcode: data?.zipCode,
+    };
+
+    const config = {
+      headers: { Authorization: posToken, 'app-name': 'pos' },
+    };
+
+    try {
+      const response = await axios.put(endpoint, body, config);
+      if (response?.status === 200) {
+        console.log('asgdhasgd', response);
+        Toast.show({
+          position: 'bottom',
+          type: 'success_toast',
+          text2: response?.data?.msg,
+          visibilityTime: 2000,
+        });
+        return response.data; // Assuming you want to return the response data
+      } else {
+        throw new Error(`Unexpected status code: ${response?.status}`);
+      }
+    } catch (error) {
+      console.log('shdjhas', error?.response?.data);
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        text2: errorMessage,
+        visibilityTime: 2000,
+      });
+      throw error; // Re-throw the error to propagate it to the calling function
+    }
   }
 }
