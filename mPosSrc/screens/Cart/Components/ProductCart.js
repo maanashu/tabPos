@@ -29,6 +29,7 @@ import { formattedReturnPrice } from '@mPOS/utils/GlobalMethods';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import {
   changeStatusProductCart,
+  clearAllCart,
   getAllCart,
   getAllCartSuccess,
   getAllProductCart,
@@ -102,6 +103,9 @@ export function ProductCart({ cartChangeHandler }) {
   useEffect(() => {
     dispatch(getAllCart());
     dispatch(getAllProductCart());
+    if (!isFocused) {
+      beforeDiscountCartLoad();
+    }
   }, [isFocused]);
   const bothSheetClose = () => {
     productDetailRef.current.dismiss();
@@ -186,13 +190,6 @@ export function ProductCart({ cartChangeHandler }) {
   };
 
   // locally work function
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => {
-        beforeDiscountCartLoad();
-      };
-    }, [])
-  );
 
   const beforeDiscountCartLoad = () => {
     var arr = retailData?.getAllCart;
@@ -256,23 +253,26 @@ export function ProductCart({ cartChangeHandler }) {
 
   const removeOneCartHandler = (index) => {
     var arr = retailData?.getAllCart;
-    const product = arr?.poscart_products[index];
-    // const productPrice = product.product_details.price;
-    const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
-    if (product.qty > 0) {
-      arr.amount.total_amount -= productPrice * product.qty;
-      arr.amount.products_price -= productPrice * product.qty;
-      arr?.poscart_products.splice(index, 1);
+    if (arr?.poscart_products.length == 1 && index == 0) {
+      dispatch(clearAllCart());
+    } else {
+      const product = arr?.poscart_products[index];
+      const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+      if (product.qty > 0) {
+        arr.amount.total_amount -= productPrice * product.qty;
+        arr.amount.products_price -= productPrice * product.qty;
+        arr?.poscart_products.splice(index, 1);
+      }
+      const totalAmount = arr.amount.products_price;
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      arr.amount.tax = parseFloat(TAX); // Update tax value
+      arr.amount.total_amount = totalAmount + parseFloat(TAX);
+      var DATA = {
+        payload: arr,
+      };
+      dispatch(updateCartLength(CART_LENGTH - 1));
+      dispatch(getAllCartSuccess(DATA));
     }
-    const totalAmount = arr.amount.products_price;
-    const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-    arr.amount.tax = parseFloat(TAX); // Update tax value
-    arr.amount.total_amount = totalAmount + parseFloat(TAX);
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(updateCartLength(CART_LENGTH - 1));
-    dispatch(getAllCartSuccess(DATA));
   };
 
   return (

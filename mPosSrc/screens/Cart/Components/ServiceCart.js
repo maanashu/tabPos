@@ -29,6 +29,7 @@ import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import {
   changeStatusProductCart,
   changeStatusServiceCart,
+  clearServiceAllCart,
   getAllCart,
   getAllProductCart,
   getAllServiceCart,
@@ -100,15 +101,18 @@ export function ServiceCart({ cartChangeHandler }) {
     )
   );
 
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => backCartLoad();
-    }, [])
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return () => ;
+  //   }, [])
+  // );
 
   useEffect(() => {
     dispatch(getServiceCart());
     dispatch(getAllServiceCart());
+    if (!isFocused) {
+      backCartLoad();
+    }
   }, [isFocused]);
 
   // const payNowHandler = useCallback(() => {
@@ -200,7 +204,6 @@ export function ServiceCart({ cartChangeHandler }) {
 
   const backCartLoad = () => {
     const arr = serviceCartData;
-    console.log('chek lengh', serviceCartData?.appointment_cart_products?.length);
     // if (arr?.appointment_cart_products?.length > 0) {
     const products = arr?.appointment_cart_products?.map((item) => ({
       product_id: item?.product_id,
@@ -209,6 +212,7 @@ export function ServiceCart({ cartChangeHandler }) {
     const data = {
       updated_products: products,
     };
+    console.log(data);
     dispatch(updateServiceCartQty(data, arr.id));
     // }
   };
@@ -221,23 +225,27 @@ export function ServiceCart({ cartChangeHandler }) {
   }
   const removeOneCartHandler = (index) => {
     var arr = retailData?.getserviceCart;
-    const product = arr?.appointment_cart_products[index];
-    const productPrice = product?.product_details?.supply?.supply_prices?.selling_price;
-    if (product?.qty > 0) {
-      // arr.amount.total_amount -= productPrice * product.qty;
-      arr.amount.products_price -= productPrice * product.qty;
-      arr.appointment_cart_products.splice(index, 1);
-    }
-    const totalAmount = arr.amount.products_price;
-    const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-    arr.amount.tax = parseFloat(TAX);
-    arr.amount.total_amount = arr.amount.products_price + arr.amount.tax;
+    if (arr?.appointment_cart_products.length == 1 && index == 0) {
+      dispatch(clearServiceAllCart());
+    } else {
+      const product = arr?.appointment_cart_products[index];
+      const productPrice = product?.product_details?.supply?.supply_prices?.selling_price;
+      if (product?.qty > 0) {
+        // arr.amount.total_amount -= productPrice * product.qty;
+        arr.amount.products_price -= productPrice * product.qty;
+        arr.appointment_cart_products.splice(index, 1);
+      }
+      const totalAmount = arr.amount.products_price;
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      arr.amount.tax = parseFloat(TAX);
+      arr.amount.total_amount = arr.amount.products_price + arr.amount.tax;
 
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(updateServiceCartLength(CART_LENGTH - 1));
-    dispatch(getServiceCartSuccess(DATA));
+      var DATA = {
+        payload: arr,
+      };
+      dispatch(updateServiceCartLength(CART_LENGTH - 1));
+      dispatch(getServiceCartSuccess(DATA));
+    }
   };
 
   return (

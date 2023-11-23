@@ -234,8 +234,6 @@ export class AuthController {
     };
     return new Promise(async (resolve, reject) => {
       const endpoint = getUrl(data, search);
-
-      console.log('endpoint', endpoint);
       await HttpClient.get(endpoint)
         .then((response) => {
           if (response?.status_code === 200) {

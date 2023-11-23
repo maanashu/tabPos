@@ -31,8 +31,6 @@ export function ChangePlans() {
   const dispatch = useDispatch();
   const getPlanData = useSelector(getAllPlansData);
 
-  // console.log('plans', getPlanData?.allPlans?.[0]);
-
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_PLANS], state));
 
   // useEffect(() => {

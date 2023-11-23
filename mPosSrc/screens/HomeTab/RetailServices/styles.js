@@ -76,22 +76,35 @@ export const styles = StyleSheet.create({
   },
 
   countView: {
+    width: ms(15),
+    height: ms(15),
     position: 'absolute',
-    top: 0,
-    right: ms(20),
+    top: 8,
+    right: ms(16),
     backgroundColor: COLORS.primary,
-    paddingVertical: ms(1),
-    paddingHorizontal: ms(5),
+    borderWidth: 1,
+    borderColor: COLORS.white,
     borderRadius: ms(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  countText: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(9),
+    color: COLORS.white,
   },
   addImage: {
-    height: ms(30),
-    width: ms(30),
+    height: ms(22),
+    width: ms(22),
+    resizeMode: 'contain',
   },
-  addView: {
-    padding: ms(4),
-    borderWidth: 1,
-    borderRadius: ms(5),
+  addView: (qty) => {
+    return {
+      padding: ms(3),
+      borderWidth: 1,
+      borderRadius: ms(5),
+      borderColor: qty > 0 ? COLORS.primary : COLORS.inputBorder,
+    };
   },
   alignItem: {
     flexDirection: 'row',
