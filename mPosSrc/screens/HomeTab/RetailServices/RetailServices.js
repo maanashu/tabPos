@@ -255,14 +255,12 @@ export function RetailServices(props) {
           data={serviceData?.data ?? []}
           extraData={serviceData?.data ?? []}
           renderItem={({ item, index }) => {
+            // const cartMatchService = item?.find(
+            //   (item) => item.id === servicecCart?.find((item) => item?.product_id)
+            // );
+            const cartMatchService = servicecCart?.find((data) => data?.product_id == item.id);
             return (
               <TouchableOpacity
-                // onPress={async () => {
-                //   const res = await dispatch(getOneProduct(sellerID, item.id));
-                //   if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-                //     addServiceCartRef.current.present();
-                //   }
-                // }}
                 onPress={async () => {
                   const res = await dispatch(getOneService(sellerID, item.id));
                   if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
@@ -299,7 +297,7 @@ export function RetailServices(props) {
                 </View>
 
                 <TouchableOpacity
-                  style={styles.addView()}
+                  style={styles.addView(cartMatchService?.qty)}
                   onPress={async () => {
                     const res = await dispatch(getOneService(sellerID, item.id));
                     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
@@ -318,13 +316,12 @@ export function RetailServices(props) {
                     ]}
                   />
                 </TouchableOpacity>
-                {/* {index === 0 ? (
-                <TouchableOpacity style={styles.countView}>
-                  <Text style={{ color: COLORS.white }}>{'1'}</Text>
-                </TouchableOpacity>
-              ) : (
-                <></>
-              )} */}
+
+                {cartMatchService?.qty > 0 && (
+                  <TouchableOpacity style={styles.countView}>
+                    <Text style={styles.countText}>{cartMatchService?.qty}</Text>
+                  </TouchableOpacity>
+                )}
               </TouchableOpacity>
             );
           }}

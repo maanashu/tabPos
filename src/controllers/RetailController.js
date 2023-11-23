@@ -509,7 +509,6 @@ export class RetailController {
   static async updateServiceCartQty(data, cartId) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.updateServiceCartQty + `/${cartId}`;
-
       HttpClient.put(endpoint, data)
         .then((response) => {
           resolve(response);
@@ -1079,7 +1078,6 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-      console.log('-----', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1406,7 +1404,6 @@ export class RetailController {
         `?app_name=pos&delivery_options=2&seller_id=${sellerID}&service_type=${data?.servicetype}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log(response);
           resolve(response);
         })
         .catch((error) => {

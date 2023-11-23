@@ -14,7 +14,6 @@ export class SupportController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', JSON.stringify(error));
           if (error?.statusCode != 204) {
             Toast.show({
               text2: error.msg,
