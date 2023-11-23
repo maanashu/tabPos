@@ -214,8 +214,8 @@ const CartAmountByPay = ({
       // stackBehavior={'replace'}
       handleComponent={() => <View />}
     >
-      <BottomSheetScrollView>
-        <View style={{ flex: 1, paddingHorizontal: ms(10) }}>
+      <BottomSheetScrollView automaticallyAdjustKeyboardInsets>
+        <View style={{ flex: 1, paddingHorizontal: ms(10), paddingBottom: ms(20) }}>
           {Platform.OS === 'ios' && <SafeAreaView />}
           <View style={styles.productHeaderCon}>
             <TouchableOpacity onPress={() => cartAmountByPayCross()}>
