@@ -136,16 +136,16 @@ const styles = StyleSheet.create({
   },
   imageTextView: {
     flexDirection: 'row',
-    paddingHorizontal: SW(16),
+    paddingHorizontal: SW(10),
     alignItems: 'center',
     borderRadius: ms(5),
     backgroundColor: COLORS.washGrey,
-    paddingVertical: SH(14),
+    height: ms(50),
   },
   notesView: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: ms(5),
+    borderRadius: ms(8),
     backgroundColor: COLORS.washGrey,
   },
   input: {
@@ -183,6 +183,15 @@ const styles = StyleSheet.create({
     marginVertical: verticalScale(7),
     backgroundColor: COLORS.inputBorder,
     // borderRadius: 5,
+  },
+  pickerButton: {
+    backgroundColor: COLORS.navy_blue,
+    height: ms(40),
+    marginBottom: ms(10),
+  },
+  pickerButtonText: {
+    color: COLORS.white,
+    fontFamily: Fonts.Regular,
   },
 });
 

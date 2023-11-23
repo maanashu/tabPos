@@ -1,6 +1,9 @@
 import { ApiSupportInventory, ApiUserInventory } from '@/utils/APIinventory';
 import { HttpClient } from './HttpClient';
 import Toast from 'react-native-toast-message';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { goBack } from '@mPOS/navigation/NavigationRef';
+import { strings } from '@/localization';
 
 export class SupportController {
   static async getSupportList() {
@@ -9,7 +12,6 @@ export class SupportController {
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
-          console.log('success', JSON.stringify(response));
         })
         .catch((error) => {
           console.log('error', JSON.stringify(error));
@@ -77,18 +79,12 @@ export class SupportController {
       const body = getBody(data);
       await HttpClient.post(endpoint, body)
         .then((response) => {
-          if (response.msg === 'support created successfully' || response.status === 201) {
-            {
-              data.type === 'support' ? navigate(NAVIGATION.supportRequest) : goBack();
-            }
-            Toast.show({
-              text2: strings.successMessages.ticketSuccess,
-              position: 'bottom',
-              type: 'success_toast',
-              visibilityTime: 1500,
-            });
-          }
-          console.log('ticket success: ' + JSON.stringify(response));
+          Toast.show({
+            text2: 'Ticket raised successfully',
+            position: 'bottom',
+            type: 'success_toast',
+            visibilityTime: 1500,
+          });
 
           resolve(response);
         })

@@ -47,7 +47,11 @@ export function SupportRequest() {
           })}
         </View>
         <Spacer space={ms(15)} />
-        {selectScreen == 1 ? <MySupport /> : <Support />}
+        {selectScreen == 1 ? (
+          <MySupport setScreen={setSelectScreen} />
+        ) : (
+          <Support setScreen={setSelectScreen} />
+        )}
       </View>
     </ScreenWrapper>
   );

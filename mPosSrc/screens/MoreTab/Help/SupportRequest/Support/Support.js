@@ -1,12 +1,20 @@
-import React, { useRef, useState } from 'react';
-import { Dimensions, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  Dimensions,
+  Platform,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { strings } from '@mPOS/localization';
 import { useDispatch, useSelector } from 'react-redux';
 import { Image } from 'react-native';
 import { Images } from '@mPOS/assets';
 import styles from './Support.styles';
-import { addNewTicket } from '@/actions/SupportActions';
+import { addNewTicket, getDepartments } from '@/actions/SupportActions';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SupportTypes';
 import { getSupportData } from '@/selectors/SupportSelector';
@@ -17,18 +25,24 @@ import { COLORS, SH } from '@/theme';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { emailReg } from '@/utils/validators';
 import Toast from 'react-native-toast-message';
+import ImagePicker from 'react-native-image-crop-picker';
+import { ApiSupportInventory } from '@/utils/APIinventory';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import CustomBackdrop from '@mPOS/components/CustomBackdrop';
+import axios from 'axios';
+import { io } from 'socket.io-client';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-export function Support() {
+export function Support({ setScreen }) {
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADD_NEW_TICKET], state));
 
   const actionRef = useRef();
   const dispatch = useDispatch();
-  const SUBJECT = useSelector(getSupportData);
+  const supportData = useSelector(getSupportData);
   const getData = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
-  console.log('jusers: ' + JSON.stringify(getData?.getProfile?.email));
+  console.log('userData=>: ' + JSON.stringify(getUserData?.posLoginData?.uuid));
 
   const profileData = getData?.getProfile;
   const emailID = getData?.getProfile?.email ?? '';
@@ -50,6 +64,26 @@ export function Support() {
   const [notes, setNotes] = useState('');
   const [ticketId, setTicketId] = useState('');
   const [chatHeadId, setChatHeadId] = useState('');
+  // console.log('jusers: ' + subject);
+
+  const socket = io(`https://apichat.jobr.com:8007?userId=${getUserData?.posLoginData?.uuid}`, {
+    path: '/api/v1/connect',
+  });
+
+  useEffect(() => {
+    getSubjectArray();
+    dispatch(getDepartments());
+  }, []);
+
+  const getSubjectArray = () => {
+    if (supportData?.departments?.length > 0) {
+      const arr = [];
+      const get = supportData?.departments?.map((item) => {
+        arr.push({ label: item?.name?.trim(), value: item.id });
+      });
+      setSubject(arr);
+    }
+  };
 
   const suppoprtTicketHandler = () => {
     if (!email) {
@@ -104,17 +138,19 @@ export function Support() {
       };
       dispatch(
         addNewTicket(data, (res) => {
+          setScreen(1);
           setShowVisible(true);
           setTicketId(res?.payload?.id);
           console.log('ticket resp-,', JSON.stringify(res));
           console.log('ticket body-,', JSON.stringify(data));
           const socketData = {
-            sender_id: getUserData?.payload?.uuid,
+            sender_id: getUserData?.posLoginData?.uuid,
             recipient_id: subjectValue.toString(),
             chatHeadType: 'inquiry',
             ticket_id: res?.payload?.id.toString(),
             media_type: 'text',
             content: notes,
+            type: 'support',
           };
           socket.emit('send_message', socketData);
           socket.on('send_message', (message) => {
@@ -126,17 +162,60 @@ export function Support() {
     }
   };
 
-  const openPickerHandler = (index) => {
-    if (index === 0) {
-      // cameraOpenPicker();
-      alert('kdhsd');
-    } else if (index === 1) {
-      alert('kdhsd');
-    }
+  const uploadImage = async (image) => {
+    const formData = new FormData();
+    formData.append('document', {
+      uri: image.path,
+      type: image.mime,
+      name: image.path,
+    });
+    const endpoint = ApiSupportInventory.uploadSupportDoc;
+    await axios({
+      url: endpoint,
+      method: 'POST',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+        'app-name': 'pos',
+      },
+    })
+      .then((resp) => {
+        if (resp?.status === 200) {
+          // doc = resp.data.payload.document;
+          setTicketImage(resp.data.payload.document);
+        }
+      })
+      .catch((error) => console.error(error));
   };
+
+  const galleryOpenPicker = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then((image) => {
+      uploadImage(image);
+      setSupportImage(image.path);
+      actionRef.current.dismiss();
+    });
+  };
+
+  const cameraOpenPicker = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then((image) => {
+      uploadImage(image);
+      setSupportImage(image.path);
+      actionRef.current.dismiss();
+    });
+  };
+
   return (
     <ScreenWrapper>
-      <View style={styles.ticketContainer}>
+      <ScrollView style={styles.ticketContainer} showsVerticalScrollIndicator={false}>
         <Text style={styles.header}>{strings.supportTicket.heading}</Text>
         <Spacer space={SH(8)} />
         <Text style={styles.description}>{strings.supportTicket.subheading}</Text>
@@ -191,7 +270,6 @@ export function Support() {
         />
         <Spacer space={SH(7)} />
         <View style={styles.profileDataCon}>
-          {/* <Text style={styles.nameText}>Name</Text> */}
           <View style={styles.notesView}>
             <TextInput
               value={notes}
@@ -211,11 +289,11 @@ export function Support() {
             supportImage && { height: windowHeight * 0.3, borderWidth: 0 },
           ]}
         >
-          <TouchableOpacity style={styles.uploadView}>
-            {/* <TouchableOpacity style={styles.uploadView} onPress={() => actionRef.current.show()}> */}
+          {/* <TouchableOpacity style={styles.uploadView}> */}
+          <TouchableOpacity style={styles.uploadView} onPress={() => actionRef.current.present()}>
             {supportImage ? (
               <View style={[styles.cameraInput, { zIndex: Platform.OS === 'ios' ? -20 : 0 }]}>
-                <TouchableOpacity onPress={() => actionRef.current.show()}>
+                <TouchableOpacity onPress={() => actionRef.current.present()}>
                   <Image
                     source={{ uri: supportImage }}
                     style={[styles.cameraInput, supportImage && { height: windowHeight * 0.3 }]}
@@ -242,6 +320,8 @@ export function Support() {
           title={strings.supportTicket.button}
           textStyle={styles.selectedText}
         />
+        <Spacer space={SH(30)} />
+
         {/* <ActionSheet
           ref={actionRef}
           title={strings.supportTicket.actionTitle}
@@ -254,7 +334,36 @@ export function Support() {
           destructiveButtonIndex={1}
           onPress={(index) => openPickerHandler(index)}
         /> */}
-      </View>
+        <BottomSheetModal
+          ref={actionRef}
+          snapPoints={['25%']}
+          enableDismissOnClose
+          enablePanDownToClose
+          backdropComponent={CustomBackdrop}
+        >
+          <View
+            style={{
+              backgroundColor: COLORS.white,
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Button
+              title={'Gallery'}
+              style={styles.pickerButton}
+              textStyle={styles.pickerButtonText}
+              onPress={galleryOpenPicker}
+            />
+            <Button
+              title={'Camera'}
+              style={styles.pickerButton}
+              textStyle={styles.pickerButtonText}
+              onPress={cameraOpenPicker}
+            />
+          </View>
+        </BottomSheetModal>
+      </ScrollView>
     </ScreenWrapper>
   );
 }
