@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Spacer, Header, ScreenWrapper } from '@mPOS/components';
 import { styles } from './OldPin.styles';
@@ -12,15 +12,21 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import { ms } from 'react-native-size-matters';
-import { verifyPin } from '@/actions/UserActions';
-import { commonNavigate } from '@common/commonImports';
-import { TYPES } from '@/Types/Types';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { verifyOldPin } from '@/actions/AuthActions';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
+import { CustomButton } from '@mPOS/components/CustomButton';
+import { navigate } from '@mPOS/navigation/NavigationRef';
 
 const CELL_COUNT = 4;
 
-export function OldPin() {
-  const dispatch = useDispatch();
+export function OldPin(props) {
+  const disptach = useDispatch();
+  const getData = useSelector(getAuthData);
+  const profileData = getData;
+  // console.log('prodile dataa', JSON.stringify(profileData));
 
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -28,16 +34,40 @@ export function OldPin() {
     value,
     setValue,
   });
+  const [isLoading, setIsLoading] = useState(false);
+  // const isLoading = useSelector((state) => isLoadingSelector([TYPES.VERIFY_OLD_PIN], state));
 
-  const submit = () => {
-    dispatch(
-      verifyPin(value, (res) => {
-        commonNavigate(NAVIGATION.setPin, {
+  console.log('sadsdas', isLoading);
+  const submit = async () => {
+    if (!value) {
+      Toast.show({
+        text2: strings.validationMessages.enterPin,
+        position: 'bottom',
+        type: 'error_toast',
+        visibilityTime: 2000,
+      });
+      return;
+    }
+    //  else if (value != profileData?.user_profiles?.security_pin) {
+    //   Toast.show({
+    //     text2: 'Old pin does not match',
+    //     position: 'bottom',
+    //     type: 'error_toast',
+    //     visibilityTime: 2000,
+    //   });
+    // }
+    else {
+      setIsLoading(true);
+      const res = await disptach(verifyOldPin(value));
+      console.log('adasda', res);
+      if (res?.status_code == '200') {
+        navigate(NAVIGATION.setPin, {
           key: 'change_pin',
           data: value,
         });
-      })
-    );
+      }
+      setIsLoading(false);
+    }
   };
 
   const renderCell = ({ index }) => {
@@ -50,7 +80,7 @@ export function OldPin() {
     );
   };
 
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.VERIFY_PIN], state));
+  // const isLoading = useSelector((state) => isLoadingSelector([TYPES.VERIFY_PIN], state));
 
   return (
     <ScreenWrapper>
@@ -73,12 +103,13 @@ export function OldPin() {
         />
       </View>
       <View style={{ flex: 1 }} />
-      <Button title={'Next'} onPress={submit} style={{ height: SW(55) }} />
-      {isLoading && (
-        <View style={styles.loaderViewStyle}>
-          <ActivityIndicator color={COLORS.primary} size={'large'} style={styles.loaderViewStyle} />
-        </View>
-      )}
+      <CustomButton
+        pending={isLoading}
+        // onPress={() => navigate(NAVIGATION.reSetPin, { data: 'Pin' })}
+        title={'Next'}
+        onPress={submit}
+        style={{ height: SW(55) }}
+      />
     </ScreenWrapper>
   );
 }

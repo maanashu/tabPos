@@ -90,6 +90,58 @@ export class AuthController {
       });
   }
 
+  static async changePin(bodyParam) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.changePin;
+      const body = bodyParam;
+      console.log('BODY', JSON.stringify(body));
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          console.log('changepinc', response);
+          Toast.show({
+            text2: response.msg,
+            position: 'bottom',
+            type: 'success_toast',
+            visibilityTime: 1500,
+          });
+          resolve(response);
+        })
+        .catch((error) => {
+          console.log('ereoroer', JSON.stringify(error));
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+  static async verifyOldPin(pin) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.verifyOldPin;
+      const body = {
+        security_pin: pin,
+      };
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          console.log('verifyoldpin', response);
+          resolve(response);
+        })
+        .catch((error) => {
+          console.log('error', error);
+          Toast.show({
+            text2: error.msg,
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          reject(error);
+        });
+    });
+  }
+
   static async merchantLogin(data) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.merchantLogin;

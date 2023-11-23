@@ -12,61 +12,69 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { changeOldPin } from '@/actions/UserActions';
+import { errorsSelector } from '@/selectors/ErrorSelectors';
+
+import { getAuthData } from '@/selectors/UserSelectors';
+import { useNavigation } from '@react-navigation/native';
 
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { MPOS_NAVIGATION } from '@common/commonImports';
+import { changePin, logoutFunction } from '@/actions/AuthActions';
 import { TYPES } from '@/Types/Types';
-import { getAuthData } from '@/selectors/AuthSelector';
+import { CustomButton } from '@mPOS/components/CustomButton';
 
 const CELL_COUNT = 4;
 
 export function ReEnterPin(props) {
   const dispatch = useDispatch();
-  const authdata = useSelector(getAuthData);
+  // const authdata = useSelector(getAuthData);
 
   const [value, setValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.CHANGE_OLD_PIN], state));
+  // const isLoading = useSelector((state) => isLoadingSelector([TYPES.CHANGE_OLD_PIN], state));
 
-  const countryCode = props.route && props.route.params && props.route.params.countryCode;
-  const phoneNumber = props.route && props.route.params && props.route.params.phoneNumber;
-  const otp = props.route && props.route.params && props.route.params.otp;
   const newPin = props.route && props.route.params && props.route.params.data;
+  const oldPin = props.route && props.route.params && props.route.params.oldPin;
 
   const submit = () => {
     if (!value) {
       Toast.show({
-        text2: 'Please enter security pin',
+        text2: strings.validationMessages.enterPin,
         position: 'bottom',
         type: 'error_toast',
         visibilityTime: 2000,
       });
     } else if (value != newPin) {
       Toast.show({
-        text2: 'Pin does not match',
+        text2: strings.validationMessages.samePin,
         position: 'bottom',
         type: 'error_toast',
         visibilityTime: 2000,
       });
     } else {
       if (props?.route?.params?.key == 'change_pin') {
+        setIsLoading(true);
         dispatch(
-          changeOldPin({
-            old_pin: authdata?.getProfile?.user_profiles?.security_pin,
-            new_pin: value,
+          changePin({
+            old_pin: parseInt(oldPin),
+            new_pin: parseInt(value),
           })
         )
-          .then(() =>
-            props.navigation.navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.more })
-          )
-          .catch({});
-      } else {
-        // dispatch(forgetPin(phoneNumber, countryCode, otp, value));
+          .then((res) => {
+            console.log(res);
+            setIsLoading(false);
+            if (res.status_code == '200') {
+              dispatch(logoutFunction());
+            }
+          })
+          .catch((error) => {
+            setIsLoading(false);
+          });
       }
     }
   };
@@ -101,7 +109,12 @@ export function ReEnterPin(props) {
       </View>
       <View style={{ flex: 1 }} />
 
-      <Button title={'Next'} pending={isLoading} onPress={submit} style={{ height: SW(55) }} />
+      <CustomButton
+        title={'Next'}
+        pending={isLoading}
+        onPress={submit}
+        style={{ height: SW(55) }}
+      />
     </ScreenWrapper>
   );
 }
