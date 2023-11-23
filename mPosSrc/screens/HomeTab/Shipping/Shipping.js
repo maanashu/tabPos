@@ -39,6 +39,9 @@ import {
 } from '@/actions/ShippingAction';
 import { TYPES } from '@/Types/ShippingOrderTypes';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { getPendingOrders } from '@/actions/DashboardAction';
+import { getOrderData } from '@/actions/AnalyticsAction';
+import { useEffect } from 'react';
 
 export function Shipping() {
   const dispatch = useDispatch();
@@ -49,6 +52,15 @@ export function Shipping() {
   const shippingOrders = getShippingData?.todayShippingStatus?.[0]?.count;
   const shippedOrders = getShippingData?.todayShippingStatus?.[1]?.count;
   const shippingTypeOrders = getShippingData?.todayCurrentStatus;
+
+  const ordersList = getShippingData?.getReviewDef;
+  console.log('SIPPING dataa', JSON.stringify(getShippingData));
+
+  const [userDetail, setUserDetail] = useState(ordersList?.[0] ?? []);
+  const [orderDetail, setOrderDetail] = useState(ordersList?.[0]?.order_details ?? []);
+  const [viewAllOrders, setViewAllOrders] = useState(false);
+  const [openShippingOrders, setOpenShippingOrders] = useState('0');
+  const [getOrderDetail, setGetOrderDetail] = useState('');
 
   const [refreshing, setRefreshing] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState('0');
@@ -61,10 +73,24 @@ export function Shipping() {
       dispatch(getReviewDefault(0));
       dispatch(getGraphOrders());
       dispatch(getShippingOrderstatistics());
+      dispatch(getPendingOrders());
       dispatch(getOrderCount());
     }, [])
   );
 
+  useEffect(() => {
+    setUserDetail(ordersList?.[0] ?? []);
+    setOrderDetail(ordersList?.[0]?.order_details ?? []);
+    dispatch(getOrderData(ordersList?.[0]?.id));
+    // setOrderId(ordersList?.[0]?.id);
+  }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
+
+  useEffect(() => {
+    setUserDetail(ordersList?.[0] ?? []);
+    setOrderDetail(ordersList?.[0]?.order_details ?? []);
+    dispatch(getOrderData(ordersList?.[0]?.id));
+    // setOrderId(ordersList?.[0]?.id);
+  }, [openShippingOrders, viewAllOrders, getShippingData?.getReviewDef]);
   const isShippingOrder = useSelector((state) =>
     isLoadingSelector([TYPES.TODAY_SHIPPING_STATUS, TYPES.TODAY_CURRENT_STATUS], state)
   );
@@ -93,7 +119,7 @@ export function Shipping() {
   const renderOrderItem = ({ item, index }) => {
     const deliveryDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     return (
-      <View style={styles.orderItemViewStyle}>
+      <TouchableOpacity style={styles.orderItemViewStyle}>
         <View style={{ flex: 0.4 }}>
           <Text style={styles.shippingOrderTextStyle}>{`${item?.user_details?.firstname}`}</Text>
 
@@ -138,7 +164,7 @@ export function Shipping() {
         <View style={{ flex: 0.06 }}>
           <Image source={Images.rightArrow} style={styles.rightArrowIconStyle} />
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -229,7 +255,7 @@ export function Shipping() {
         <View style={styles.ordersHeaderStyle}>
           <Text style={styles.orderTextStyle}>{setHeaderText(selectedStatus)}</Text>
 
-          {orders?.length > 0 ? (
+          {ordersList?.length > 0 ? (
             <TouchableOpacity
               style={styles.viewAllButtonStyle}
               onPress={() =>
@@ -247,8 +273,8 @@ export function Shipping() {
 
         <View style={styles.ordersContainer}>
           <FlatList
-            data={orders?.slice(0, 4) ?? []}
-            extraData={orders}
+            data={ordersList?.slice(0, 4) ?? []}
+            extraData={ordersList}
             renderItem={renderOrderItem}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}

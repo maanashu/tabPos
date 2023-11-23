@@ -14,11 +14,14 @@ import {
 } from 'react-native-confirmation-code-field';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { errorsSelector } from '@/selectors/ErrorSelectors';
-import { changeOldPin, forgetPin, TYPES } from '@/actions/UserActions';
+
 import { getAuthData } from '@/selectors/UserSelectors';
 import { useNavigation } from '@react-navigation/native';
 
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { changePin, logoutFunction } from '@/actions/AuthActions';
+import { TYPES } from '@/Types/Types';
+import { CustomButton } from '@mPOS/components/CustomButton';
 
 const CELL_COUNT = 4;
 
@@ -28,6 +31,8 @@ export function ReEnterPin(props) {
   // const navigation = useNavigation();
   // const profileData = getData?.userProfile;
   const [value, setValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -40,40 +45,44 @@ export function ReEnterPin(props) {
   //   isLoadingSelector([TYPES.CHANGE_OLD_PIN], state)
   // );
 
-  const countryCode = props.route && props.route.params && props.route.params.countryCode;
-  const phoneNumber = props.route && props.route.params && props.route.params.phoneNumber;
-  const otp = props.route && props.route.params && props.route.params.otp;
   const newPin = props.route && props.route.params && props.route.params.data;
-  console.log('props', props.navigation);
-
+  const oldPin = props.route && props.route.params && props.route.params.oldPin;
+  console.log('props', props);
+  // const isLoading = useSelector((state) => isLoadingSelector([TYPES.CHANGE_PIN], state));
   const submit = () => {
-    return;
     if (!value) {
       Toast.show({
-        text2: strings.validation.enterPin,
+        text2: strings.validationMessages.enterPin,
         position: 'bottom',
         type: 'error_toast',
         visibilityTime: 2000,
       });
     } else if (value != newPin) {
       Toast.show({
-        text2: strings.validation.samePin,
+        text2: strings.validationMessages.samePin,
         position: 'bottom',
         type: 'error_toast',
         visibilityTime: 2000,
       });
     } else {
       if (props?.route?.params?.key == 'change_pin') {
+        setIsLoading(true);
         dispatch(
-          changeOldPin({
-            old_pin: profileData?.user_profiles?.security_pin,
-            new_pin: value,
+          changePin({
+            old_pin: parseInt(oldPin),
+            new_pin: parseInt(value),
           })
         )
-          .then(() => props.navigation.navigate('homeNav', { screen: 'More' }))
-          .catch({});
-      } else {
-        dispatch(forgetPin(phoneNumber, countryCode, otp, value));
+          .then((res) => {
+            console.log(res);
+            setIsLoading(false);
+            if (res.status_code == '200') {
+              dispatch(logoutFunction());
+            }
+          })
+          .catch((error) => {
+            setIsLoading(false);
+          });
       }
     }
   };
@@ -101,9 +110,9 @@ export function ReEnterPin(props) {
       </View>
       <View style={{ flex: 1 }} />
 
-      <Button
+      <CustomButton
         title={'Next'}
-        // pending={isLoading || isLoadingChangePin}
+        pending={isLoading}
         onPress={submit}
         style={{ height: SW(55) }}
       />

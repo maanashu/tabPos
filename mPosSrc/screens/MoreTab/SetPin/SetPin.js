@@ -36,14 +36,6 @@ export function SetPin(props) {
   });
 
   const submit = () => {
-    navigate(NAVIGATION.reSetPin, {
-      key: 'Pin',
-      data: value,
-      otp: otp,
-      countryCode: countryCode,
-      phoneNumber: phoneNumber,
-    });
-    return;
     if (!value) {
       Toast.show({
         text2: 'Please enter pin',
@@ -51,10 +43,7 @@ export function SetPin(props) {
         type: 'error_toast',
         visibilityTime: 2000,
       });
-    } else if (
-      props?.route?.params?.key == 'change_pin' &&
-      value == profileData?.user_profiles?.security_pin
-    ) {
+    } else if (props?.route?.params?.key == 'change_pin' && value == props?.route?.params?.data) {
       Toast.show({
         text2: 'New pin should be different from current',
         position: 'bottom',
@@ -66,16 +55,28 @@ export function SetPin(props) {
         navigate(NAVIGATION.reSetPin, {
           key: 'change_pin',
           data: value,
-        });
-      } else {
-        navigate(NAVIGATION.reSetPin, {
-          key: 'Pin',
-          data: value,
-          otp: otp,
-          countryCode: countryCode,
-          phoneNumber: phoneNumber,
+          oldPin: props?.route?.params?.data,
         });
       }
+
+      // else {
+      //   // navigate(NAVIGATION.reSetPin, {
+      //   //   key: 'Pin',
+      //   //   data: value,
+      //   //   otp: otp,
+      //   //   countryCode: countryCode,
+      //   //   phoneNumber: phoneNumber,
+      //   // });
+
+      //   navigate(NAVIGATION.reSetPin, {
+      //     key: 'Pin',
+      //     data: value,
+      //     otp: otp,
+      //     countryCode: countryCode,
+      //     phoneNumber: phoneNumber,
+      //   });
+      //   return;
+      // }
     }
   };
   return (

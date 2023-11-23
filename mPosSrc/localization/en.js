@@ -42,6 +42,8 @@ export const en = {
     firstName: 'Please enter first name',
     lastNameerror: 'Please enter last name',
     phoneNotExist: 'This number does not exist',
+    enterPin: 'Please enter pin',
+    samePin: 'Pin not matched',
   },
   login: {
     enterPasscode: 'Enter Passcode',

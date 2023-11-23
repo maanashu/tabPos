@@ -25,6 +25,37 @@ const merchantLoginRequest = () => ({
   type: TYPES.MERCHANT_LOGIN_REQUEST,
   payload: null,
 });
+
+const changePinError = (error) => ({
+  type: TYPES.CHANGE_PIN_ERROR,
+  payload: { error },
+});
+
+const changePinSuccess = (otp) => ({
+  type: TYPES.CHANGE_PIN_SUCCESS,
+  payload: { otp },
+});
+
+const changePinRequest = () => ({
+  type: TYPES.CHANGE_PIN_REQUEST,
+  payload: null,
+});
+
+const verifyOldPinError = (error) => ({
+  type: TYPES.VERIFY_OLD_PIN_ERROR,
+  payload: { error },
+});
+
+const verifyOldSuccess = (otp) => ({
+  type: TYPES.VERIFY_OLD_PIN_SUCCESS,
+  payload: { otp },
+});
+
+const verifyOldRequest = () => ({
+  type: TYPES.VERIFY_OLD_PIN_REQUEST,
+  payload: null,
+});
+
 const merchantLoginError = (error) => ({
   type: TYPES.MERCHANT_LOGIN_ERROR,
   payload: { error },
@@ -110,6 +141,30 @@ export const verifyPhone = (phoneNumber, countryCode) => async (dispatch) => {
     dispatch(verifyPhoneSuccess(res));
   } catch (error) {
     dispatch(verifyPhoneError(error.message));
+  }
+};
+
+export const changePin = (bodyParam) => async (dispatch) => {
+  dispatch(changePinRequest());
+  try {
+    const res = await AuthController.changePin(bodyParam);
+    dispatch(changePinSuccess(res));
+    return res;
+  } catch (error) {
+    dispatch(changePinError(error.message));
+    return res;
+  }
+};
+export const verifyOldPin = (pin) => async (dispatch) => {
+  dispatch(verifyOldRequest());
+  try {
+    const res = await AuthController.verifyOldPin(pin);
+    console.log('asdasdasdadewqw', res);
+    dispatch(verifyOldSuccess(res));
+    return res;
+  } catch (error) {
+    dispatch(verifyOldPinError(error.msg));
+    return error;
   }
 };
 

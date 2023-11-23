@@ -22,6 +22,8 @@ export const posDrawerId = store.getState().cashTracking?.getDrawerSession?.id;
 
 export const ApiUserInventory = {
   verifyPhone: 'user_phones/',
+  changePin: 'users/change-old-pin',
+  verifyOldPin: 'users/verify-pin',
   login: 'users/login/',
   merchantLogin: 'users/merchant/login',
   getProfile: 'users/',
