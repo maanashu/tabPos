@@ -76,7 +76,10 @@ const OrderDetail = ({
         <View style={styles.shippingOrdersViewStyle}>
           <View
             onPress={() => trackOrderHandler(getTrackingInfo)}
-            style={[styles.acceptButtonView, { backgroundColor: COLORS.washGrey, width: ms(140) }]}
+            style={[
+              styles.acceptButtonView,
+              { backgroundColor: COLORS.purple_fade, width: ms(140) },
+            ]}
           >
             <Text style={[styles.acceptTextStyle, { color: COLORS.text }]}>
               {'Cancelled by user'}

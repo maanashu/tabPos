@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(30),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
-    //flex: 0.98,
+    flex: 0.98,
   },
   drawerIconView: {
     flexDirection: 'column',

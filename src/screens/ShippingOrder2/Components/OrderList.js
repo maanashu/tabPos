@@ -7,7 +7,7 @@ import { ms } from 'react-native-size-matters';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import { clock, fedexNew, Fonts, pay, pin, rightIcon } from '@/assets';
+import { arrowLeftUp, clock, fedexNew, Fonts, pay, pin, rightIcon } from '@/assets';
 import moment from 'moment';
 import { useEffect } from 'react';
 
@@ -16,6 +16,7 @@ const OrderList = ({
   onViewAllHandler,
   selectedOrderDetail,
   selectedOrderProducts,
+  setViewAllOrders,
 }) => {
   const getOrdersData = useSelector(getDelivery);
   const ordersList = getOrdersData?.getReviewDef;
@@ -116,7 +117,8 @@ const OrderList = ({
 
   return (
     <View style={styles.orderToReviewView}>
-      <View style={styles.headingRowStyle}>
+      <TouchableOpacity onPress={() => setViewAllOrders(false)} style={styles.headingRowStyle}>
+        <Image source={arrowLeftUp} style={{ width: ms(15), height: ms(15), marginRight: ms(5) }} />
         <Text style={styles.ordersToReviewText}>
           {selectedStatus === '0'
             ? strings.shippingOrder.reviewOrders
@@ -134,7 +136,7 @@ const OrderList = ({
             ? strings.orderStatus.cancelledOrder
             : strings.orderStatus.returnedOrders}
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <FlatList
         data={ordersList}
@@ -154,7 +156,7 @@ export default memo(OrderList);
 const styles = StyleSheet.create({
   orderRowStyle: {
     borderWidth: 1,
-    borderRadius: ms(12),
+    borderRadius: ms(8),
     height: SH(65),
     marginVertical: 10,
     flexDirection: 'row',
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
   },
   distanceTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(11),
+    fontSize: SF(9),
     color: COLORS.dark_grey,
     paddingLeft: 5,
   },
@@ -203,17 +205,17 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: ms(20),
     backgroundColor: COLORS.white,
-    paddingBottom: ms(10),
+    paddingVertical: ms(10),
   },
   headingRowStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: SH(15),
   },
   ordersToReviewText: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
   },

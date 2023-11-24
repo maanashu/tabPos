@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { clock, fedexNew, fedx, Fonts, pay, pin, rightIcon } from '@/assets';
+import { arrowRightTop, clock, fedexNew, fedx, Fonts, pay, pin, rightIcon } from '@/assets';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import moment from 'moment';
 
@@ -126,7 +126,12 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
 
         {ordersList?.length > 0 || selectedStatus === '9' ? (
           <TouchableOpacity onPress={onViewAllHandler} style={styles.viewAllButtonStyle}>
-            <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
+            <Text style={styles.viewallTextStyle}>{strings.reward.seeAll}</Text>
+
+            <Image
+              source={arrowRightTop}
+              style={{ height: ms(13), width: ms(13), tintColor: COLORS.lavenders }}
+            />
           </TouchableOpacity>
         ) : null}
       </View>
@@ -166,7 +171,7 @@ const styles = StyleSheet.create({
   },
   distanceTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(11),
+    fontSize: SF(9),
     color: COLORS.orange_bright,
     paddingLeft: 5,
   },
@@ -222,12 +227,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    backgroundColor: COLORS.darkGray,
+    flexDirection: 'row',
+    // backgroundColor: COLORS.darkGray,
   },
   viewallTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(12),
-    color: COLORS.white,
+    fontSize: SF(14),
+    color: COLORS.lavenders,
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -244,10 +250,11 @@ const styles = StyleSheet.create({
     color: COLORS.navy_blue,
   },
   shippingTypeImage: {
-    width: ms(30),
-    height: ms(30),
+    width: ms(25),
+    height: ms(25),
     resizeMode: 'contain',
     borderRadius: ms(5),
+    marginRight: ms(4),
   },
   rowContainerStyle: {
     flexDirection: 'row',

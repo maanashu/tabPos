@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   leftMainViewStyle: {
     flex: 0.28,
-    marginHorizontal: SH(15),
+    marginRight: SH(15),
     justifyContent: 'space-between',
   },
   todayShippingViewStyle: {
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(20),
+    fontSize: SF(10),
     color: COLORS.dark_grey,
   },
   totalText: {
@@ -381,8 +381,8 @@ const styles = StyleSheet.create({
     height: SH(48),
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5,
-    backgroundColor: COLORS.primary,
+    borderRadius: 100,
+    backgroundColor: COLORS.sky_blue,
     marginLeft: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',

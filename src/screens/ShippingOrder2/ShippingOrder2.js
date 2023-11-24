@@ -216,11 +216,11 @@ export function ShippingOrder2() {
                 <View style={styles.todayShippingViewStyle}>
                   <TodayShippingStatus />
                 </View>
-
+                <Spacer space={SH(20)} />
                 <View style={styles.currentShippingViewStyle}>
                   <CurrentShippingStatus />
                 </View>
-
+                <Spacer space={SH(20)} />
                 <View style={styles.orderConversionViewStyle}>
                   <OrderConversion />
                 </View>
@@ -237,14 +237,17 @@ export function ShippingOrder2() {
               </View>
             </SafeAreaView>
           ) : (
-            <SafeAreaView style={{ flex: 1 }}>
-              <Header {...{ viewAllOrders, setViewAllOrders }} />
+            <SafeAreaView
+              style={{ flex: 1, backgroundColor: COLORS.textInputBackground, width: '100%' }}
+            >
+              {/* <Header {...{ viewAllOrders, setViewAllOrders }} /> */}
 
               <View style={styles.centerViewStyle}>
                 {ordersList?.length > 0 ? (
                   <>
                     <View style={styles.orderListMainView}>
                       <OrderList
+                        setViewAllOrders={setViewAllOrders}
                         selectedStatus={openShippingOrders}
                         onViewAllHandler={onpressViewHandler}
                         selectedOrderDetail={(value) => setUserDetail(value)}

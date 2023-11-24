@@ -237,7 +237,7 @@ const Graph = () => {
     <View style={styles.graphViewStyle}>
       <View>
         <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
-
+        {/* <Spacer space={SH(30)} /> */}
         <View style={[styles.flexRow, { zIndex: 999 }]}>
           <TouchableOpacity
             onPress={() => {
@@ -251,7 +251,7 @@ const Graph = () => {
           >
             <Image
               source={showIncoming ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showIncoming && { tintColor: '#D7DEFF' }]}
+              style={[styles.checkboxIconStyle, showIncoming && { tintColor: COLORS.lavender }]}
             />
             <Text style={[styles.varientTextStyle, { color: COLORS.navy_blue }]}>
               {strings.shippingOrder.incomingOrders}
@@ -384,8 +384,8 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   checkboxIconStyle: {
-    width: SH(24),
-    height: SH(24),
+    width: SH(22),
+    height: SH(22),
     resizeMode: 'contain',
   },
   checkboxViewStyle: {
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
     marginTop: ms(10),
   },
   varientTextStyle: {
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },

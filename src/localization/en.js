@@ -259,6 +259,7 @@ export const en = {
     third: '3',
     rd: 'rd',
     viewAll: 'View all',
+    seeAll: 'See All',
     rewards: 'Rewards',
   },
   settings: {
