@@ -17,6 +17,7 @@ import {
   addToCart,
   addToCartBlue,
   bucket,
+  calendar,
   cross,
   filter,
   holdCart,
@@ -148,6 +149,9 @@ export function MainScreen({
   const [showProductsFrom, setshowProductsFrom] = useState();
   const mainProductArray = getRetailData?.getMainProduct?.data;
   const mainServicesArray = getRetailData?.getMainServices?.data;
+  console.log('mainServicesArray', JSON.stringify(mainServicesArray?.[0]));
+  const servicecCart = getRetailData?.getserviceCart?.appointment_cart_products ?? [];
+
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
     qty: obj.qty,
@@ -176,8 +180,8 @@ export function MainScreen({
 
   const [page, setPage] = useState(1);
 
-  const [productCon, setProductCon] = useState(true);
-  const [serviceCon, setServiceCon] = useState(false);
+  const [productCon, setProductCon] = useState(false);
+  const [serviceCon, setServiceCon] = useState(true);
   const [filterCon, setFilterCon] = useState(false);
   const [serviceFilterCon, setServiceFilterCon] = useState(false);
   const [serviceItemSave, setServiceItemSave] = useState();
@@ -1003,9 +1007,13 @@ export function MainScreen({
                   data={mainServicesArray}
                   extraData={mainServicesArray}
                   renderItem={({ item, index }) => {
+                    const cartMatchService = servicecCart?.map(
+                      (data) => data?.id === item?.product_id
+                    );
+                    console.log('cartMatchService', JSON.stringify(cartMatchService));
                     return (
                       <TouchableOpacity
-                        style={styles.productCon()}
+                        style={styles.serviceCon()}
                         onPress={() => serviceFun(item.id)}
                         activeOpacity={0.7}
                       >
@@ -1014,77 +1022,79 @@ export function MainScreen({
                             source={{
                               uri: item.image,
                             }}
-                            style={styles.categoryshoes}
+                            style={styles.serviceImagemain}
                             resizeMode={FastImage.resizeMode.contain}
                           />
-                          <View style={{ flex: 1 }} />
-                          <View style={styles.availableTimeCon}>
-                            <Text style={styles.availableTime}>Available: Tue @ 2:00 pm </Text>
+                          <View style={styles.imageInnerView}>
+                            <Image
+                              source={plus}
+                              style={[styles.plusButton, { tintColor: COLORS.white }]}
+                            />
                           </View>
                         </View>
-                        <Spacer space={SH(5)} />
-                        <Text numberOfLines={1} style={styles.productDes}>
-                          {item.name}
-                        </Text>
-                        <Spacer space={SH(6)} />
-                        {item.supplies?.[0]?.approx_service_time == null ? (
-                          <Text numberOfLines={1} style={styles.productSubHead}>
-                            Estimated Time Not found
+                        <View style={{ padding: ms(5) }}>
+                          <Text
+                            numberOfLines={1}
+                            style={[styles.productDes, styles.productDesBold]}
+                          >
+                            {item.name}
                           </Text>
-                        ) : (
-                          <Text numberOfLines={1} style={styles.productSubHead}>
-                            Est: {item.supplies?.[0]?.approx_service_time} min
-                          </Text>
-                        )}
-
-                        <Spacer space={SH(6)} />
-                        <View>
-                          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                            {item?.pos_staff?.map((data, index) => (
-                              <Image
-                                key={index}
-                                source={
-                                  { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
-                                }
-                                style={{
-                                  width: ms(15),
-                                  height: ms(15),
-                                  resizeMode: 'contain',
-                                  marginRight: -1,
-                                  borderRadius: 50,
-                                }}
-                              />
-                            ))}
-                          </ScrollView>
-                        </View>
-                        {/* <Image
-                        source={multipleImag}
-                        style={{ width: ms(50), height: ms(15), resizeMode: 'cover' }}
-                      /> */}
-                        <View style={styles.displayflex}>
+                          <Spacer space={SH(6)} />
+                          {item.description && (
+                            <Text numberOfLines={2} style={styles.productDes}>
+                              {item.description}
+                            </Text>
+                          )}
+                          <Spacer space={SH(7)} />
                           <Text numberOfLines={1} style={styles.productPrice}>
                             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
                           </Text>
-                          <View>
-                            <FastImage
-                              source={addToCart}
-                              style={styles.addToCart}
-                              resizeMode="contain"
-                            />
-                            {/* {isProductMatchArray ? (
-                          <View style={styles.productBadge}>
-                            <Text style={styles.productBadgeText}>{cartAddQty}</Text>
+
+                          <Spacer space={SH(7)} />
+                          <View style={styles.serviceTimeCon}>
+                            <Image source={calendar} style={styles.calendarStyle} />
+                            <Text numberOfLines={1} style={styles.serviceTimeText}>
+                              Tomorrow at 10:00hrs
+                            </Text>
                           </View>
-                        ) : null} */}
+                          <Spacer space={SH(7)} />
+                          {item.supplies?.[0]?.approx_service_time == null ? (
+                            <Text numberOfLines={1} style={styles.productDes}>
+                              Estimated Time Not found
+                            </Text>
+                          ) : (
+                            <Text numberOfLines={1} style={styles.productDes}>
+                              Est: {item.supplies?.[0]?.approx_service_time} min
+                            </Text>
+                          )}
+
+                          <Spacer space={SH(6)} />
+                          <View>
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                              {item?.pos_staff?.map((data, index) => (
+                                <Image
+                                  key={index}
+                                  source={
+                                    { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
+                                  }
+                                  style={{
+                                    width: ms(15),
+                                    height: ms(15),
+                                    resizeMode: 'contain',
+                                    marginRight: -1,
+                                    borderRadius: 50,
+                                  }}
+                                />
+                              ))}
+                            </ScrollView>
                           </View>
                         </View>
                       </TouchableOpacity>
                     );
                   }}
-                  keyExtractor={(item, index) => index}
-                  numColumns={7}
+                  keyExtractor={(_, index) => index.toString()}
+                  numColumns={5}
                   contentContainerStyle={{
-                    // flexGrow: 1,
                     justifyContent: 'space-between',
                     zIndex: -99,
                   }}

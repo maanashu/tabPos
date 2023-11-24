@@ -350,10 +350,7 @@ export const styles = StyleSheet.create({
     fontSize: ms(8),
     fontFamily: Fonts.Medium,
   },
-
-  productPrice: {
-    color: COLORS.black,
-    fontSize: SF(12),
+  productDesBold: {
     fontFamily: Fonts.SemiBold,
   },
 
@@ -1398,7 +1395,18 @@ export const styles = StyleSheet.create({
       width: Platform.OS === 'ios' ? ms(85) : ms(95),
       backgroundColor: COLORS.white,
       borderRadius: ms(9),
-      // paddingHorizontal: moderateScale(3),
+      marginTop: verticalScale(7),
+      marginRight: 10,
+      borderWidth: 1,
+      borderColor: COLORS.textInputBackground,
+      ...(qty > 0 && { ...ShadowStyles.shadow }),
+    };
+  },
+  serviceCon: (qty) => {
+    return {
+      width: Platform.OS === 'ios' ? ms(102) : ms(112),
+      backgroundColor: COLORS.white,
+      borderRadius: ms(9),
       marginTop: verticalScale(7),
       marginRight: 10,
       borderWidth: 1,
@@ -1413,6 +1421,13 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: ms(6),
   },
+  serviceImagemain: {
+    // width: Platform.OS === 'ios' ? ms(75) : ms(85),
+    width: '100%',
+    height: ms(60),
+    resizeMode: 'contain',
+    borderRadius: ms(9),
+  },
 
   productSubHead: {
     color: COLORS.lavender,
@@ -1422,6 +1437,26 @@ export const styles = StyleSheet.create({
   productPrice: {
     color: COLORS.navy_blue,
     fontSize: ms(8),
+    fontFamily: Fonts.SemiBold,
+  },
+  serviceTimeCon: {
+    backgroundColor: COLORS.textInputBackground,
+    height: ms(18),
+    borderRadius: ms(12),
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: ms(3),
+  },
+  calendarStyle: {
+    width: ms(10),
+    height: ms(10),
+    resizeMode: 'contain',
+    tintColor: COLORS.light_time,
+    marginHorizontal: ms(3),
+  },
+  serviceTimeText: {
+    color: COLORS.light_time,
+    fontSize: ms(6),
     fontFamily: Fonts.Medium,
   },
   addToCart: {
@@ -2065,12 +2100,10 @@ export const styles = StyleSheet.create({
   },
 
   avalibleServiceCon: {
-    borderWidth: 0.5,
-    marginVertical: ms(3),
-    width: Platform.OS === 'ios' ? windowWidth * 0.095 : windowWidth * 0.1,
-    height: windowHeight * 0.15,
-    borderRadius: 5,
-    borderColor: COLORS.solidGrey,
+    overflow: 'hidden',
+    height: ms(60),
+    borderRadius: ms(9),
+    // borderWidth: 1,
   },
   availableTimeCon: {
     backgroundColor: COLORS.darkGray,
@@ -2519,7 +2552,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     borderRadius: ms(8),
     backgroundColor: COLORS.black,
-    opacity: 0.5,
+    opacity: 0.7,
     position: 'absolute',
     top: 0,
     bottom: 0,
