@@ -38,8 +38,6 @@ export function PosUserDetail(props) {
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
   ];
 
-  console.log('item==>' + JSON.stringify(settings?.staffDetail?.results));
-
   const handleClick = (item) => {};
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.STAFF_DETAIL], state));
 

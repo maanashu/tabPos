@@ -25,9 +25,12 @@ import { FullScreenLoader, Header, ImageView, ScreenWrapper } from '@mPOS/compon
 import { debounce } from 'lodash';
 import {
   cartRun,
+  createBulkcart,
   getBrand,
   getCategory,
   getMainProduct,
+  getMainProductPagination,
+  getMainProductSuccess,
   getOneProduct,
   getSubCategory,
 } from '@/actions/RetailAction';
@@ -36,14 +39,20 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import Modal from 'react-native-modal';
 import ProductFilter from './Components/ProductFilter';
 import { Fonts } from '@/assets';
-import { navigate } from '@mPOS/navigation/NavigationRef';
+import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
 import { MPOS_NAVIGATION } from '@common/commonImports';
+import { getCartLength, getLocalCartArray } from '@/selectors/CartSelector';
+import { addLocalCart, clearLocalCart, updateCartLength } from '@/actions/CartAction';
+import { useIsFocused } from '@react-navigation/native';
 
 export function RetailProducts(props) {
+  const isFocus = useIsFocused();
   const onEndReachedCalledDuringMomentum = useRef(false);
   const getAuth = useSelector(getAuthData);
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
+  const cartData = retailData?.getAllCart;
+  const productCartArray = retailData?.getAllProductCart;
   const productCart = retailData?.getAllCart?.poscart_products ?? [];
   const productCartLength = productCart?.length;
   const productData = retailData?.getMainProduct;
@@ -56,6 +65,11 @@ export function RetailProducts(props) {
   const [productFilterCount, setProductFilterCount] = useState(0);
   const [rootServiceId, setRootServiceId] = useState(null);
   const [subCategorySelectId, setSubCategorySelectId] = useState(null);
+  const LOCAL_CART_ARRAY = useSelector(getLocalCartArray);
+  const [localCartArray, setLocalCartArray] = useState(LOCAL_CART_ARRAY);
+  const [selectedCartItem, setSelectedCartItems] = useState([]);
+  const CART_LENGTH = useSelector(getCartLength);
+  const cartLength = CART_LENGTH;
   const productDetailHanlder = () => {
     productDetailRef.current.present();
   };
@@ -83,7 +97,9 @@ export function RetailProducts(props) {
     // dispatch(getProduct({}, 1));
     dispatch(getMainProduct());
   }, []);
-  const productLoad = useSelector((state) => isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state));
+  const productLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_MAIN_PRODUCT, TYPES.GET_ALL_PRODUCT_PAGINATION], state)
+  );
 
   const productSearchFun = async (search) => {
     if (search?.length > 2) {
@@ -106,12 +122,116 @@ export function RetailProducts(props) {
   };
 
   const onLoadMoreProduct = useCallback(() => {
-    if (!productLoad) {
-      if (productPagination?.currentPage < productPagination?.totalPages) {
-        dispatch(getProduct({}, productPagination?.currentPage + 1));
+    const totalPages = retailData?.getMainProduct?.total_pages;
+    const currentPage = retailData?.getMainProduct?.current_page;
+    if (currentPage < totalPages) {
+      const data = {
+        page: currentPage + 1,
+      };
+      dispatch(getMainProductPagination(data));
+    }
+  }, [retailData]);
+
+  // locally work function
+
+  useEffect(() => {
+    if (isFocus) {
+      if (retailData?.getAllCart?.poscart_products?.length > 0) {
+        const cartmatchId = retailData?.getAllCart?.poscart_products?.map((obj) => ({
+          product_id: obj.product_id,
+          qty: obj.qty,
+          supply_id: obj.supply_id,
+          supply_price_id: obj.supply_price_id,
+          // supply_variant_id: obj?.supply_variant_id,
+          ...(obj.supply_variant_id && { supply_variant_id: obj.supply_variant_id }),
+        }));
+        dispatch(addLocalCart(cartmatchId));
+        setSelectedCartItems(cartmatchId);
+      } else {
+        dispatch(updateCartLength(0));
+        dispatch(clearLocalCart());
+        setSelectedCartItems([]);
       }
     }
-  }, [productPagination]);
+  }, [isFocus, cartData, productCartArray]);
+
+  const cartQtyUpdate = () => {
+    if (retailData?.getAllCart?.poscart_products?.length > 0) {
+      const cartmatchId = retailData?.getAllCart?.poscart_products?.map((obj) => ({
+        product_id: obj.product_id,
+        qty: obj.qty,
+        supply_id: obj.supply_id,
+        supply_price_id: obj.supply_price_id,
+        // supply_variant_id: obj?.supply_variant_id,
+        ...(obj.supply_variant_id && { supply_variant_id: obj.supply_variant_id }),
+      }));
+      dispatch(addLocalCart(cartmatchId));
+      setSelectedCartItems(cartmatchId);
+    }
+  };
+  const checkAttributes = async (item, index, cartQty) => {
+    if (item?.supplies?.[0]?.attributes?.length !== 0) {
+      const res = await dispatch(getOneProduct(sellerID, item.id));
+      if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+        addProductCartRef.current.present();
+      }
+    } else {
+      onClickAddCart(item, index, cartQty);
+    }
+  };
+  const onClickAddCart = (item, index, cartQty, supplyVarientId) => {
+    const mainProductArray = retailData?.getMainProduct;
+
+    const cartArray = selectedCartItem;
+
+    const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
+    const DATA = {
+      product_id: item?.id,
+      qty: 1,
+      supply_id: item?.supplies?.[0]?.id,
+      supply_price_id: item?.supplies?.[0]?.supply_prices[0]?.id,
+    };
+    if (supplyVarientId) {
+      DATA.supply_variant_id = supplyVarientId;
+    }
+    if (existingItemIndex === -1) {
+      cartArray.push(DATA);
+      dispatch(updateCartLength(cartLength + 1));
+    } else {
+      cartArray[existingItemIndex].qty = cartQty + 1;
+    }
+    dispatch(addLocalCart(cartArray));
+
+    setSelectedCartItems(cartArray);
+
+    ///
+    mainProductArray.data[index].cart_qty += 1;
+    dispatch(getMainProductSuccess(mainProductArray));
+
+    //-------------OLD_CODE------------
+    // const data = {
+    //   seller_id: sellerID,
+    //   supplyId: item?.supplies?.[0]?.id,
+    //   supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
+    //   product_id: item?.id,
+    //   service_id: item?.service_id,
+    //   qty: 1,
+    // };
+    // dispatch(addTocart(data));
+  };
+
+  const bulkCart = async () => {
+    if (localCartArray.length > 0) {
+      const dataToSend = {
+        seller_id: sellerID,
+        products: localCartArray,
+      };
+
+      try {
+        dispatch(createBulkcart(dataToSend));
+      } catch (error) {}
+    }
+  };
 
   const renderRootServiceItem = ({ item, index }) => {
     const color = item.id === rootServiceId ? COLORS.primary : COLORS.darkGray;
@@ -160,65 +280,73 @@ export function RetailProducts(props) {
     </TouchableOpacity>
   );
 
-  const renderProductItem = ({ item, index }) => (
-    <TouchableOpacity
-      onPress={async () => {
-        const res = await dispatch(getOneProduct(sellerID, item.id));
-        if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-          addProductCartRef.current.present();
-        }
-      }}
-      style={[styles.productDetailMainView, { marginTop: index === 0 ? ms(0) : ms(5) }]}
-    >
-      <View style={styles.imageDetailView}>
-        {/* <Image source={{ uri: item?.image }} style={styles.productImageStyle} /> */}
-        <ImageView
-          imageUrl={item?.image}
-          style={styles.productImageStyle}
-          imageStyle={{ borderRadius: ms(5) }}
-        />
-        <View style={{ flex: 1, paddingLeft: 10 }}>
-          <Text style={styles.productNameText} numberOfLines={1}>
-            {item?.name}
-          </Text>
-          <Text style={styles.genderTextStyle} numberOfLines={1}>
-            {item?.category?.name}
-          </Text>
-          <Text style={styles.priceTextStyle} numberOfLines={1}>
-            ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-          </Text>
-        </View>
-      </View>
+  const renderProductItem = ({ item, index }) => {
+    const isProductMatchArray = localCartArray?.find((data) => data.product_id === item.id);
+    const cartAddQty = isProductMatchArray?.qty;
 
+    const updatedItem = { ...item };
+    if (cartAddQty !== undefined) {
+      updatedItem.cart_qty = cartAddQty;
+    }
+    return (
       <TouchableOpacity
-        style={styles.addView()}
         onPress={async () => {
           const res = await dispatch(getOneProduct(sellerID, item.id));
           if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
             addProductCartRef.current.present();
           }
         }}
+        style={[styles.productDetailMainView, { marginTop: index === 0 ? ms(0) : ms(5) }]}
       >
-        <Image
-          source={Images.addTitle}
-          resizeMode="contain"
-          style={[
-            styles.addImage,
-            {
-              tintColor: index === 0 ? COLORS.darkBlue : COLORS.dark_grey,
-            },
-          ]}
-        />
-      </TouchableOpacity>
-      {/* {index === 0 ? (
-        <TouchableOpacity style={styles.countView}>
-          <Text style={{ color: COLORS.white }}>{'1'}</Text>
+        <View style={styles.imageDetailView}>
+          {/* <Image source={{ uri: item?.image }} style={styles.productImageStyle} /> */}
+          <ImageView
+            imageUrl={item?.image}
+            style={styles.productImageStyle}
+            imageStyle={{ borderRadius: ms(5) }}
+          />
+          <View style={{ flex: 1, paddingLeft: 10 }}>
+            <Text style={styles.productNameText} numberOfLines={1}>
+              {item?.name}
+            </Text>
+            <Text style={styles.genderTextStyle} numberOfLines={1}>
+              {item?.category?.name}
+            </Text>
+            <Text style={styles.priceTextStyle} numberOfLines={1}>
+              ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+            </Text>
+          </View>
+        </View>
+
+        <TouchableOpacity
+          style={styles.addView()}
+          onPress={async () => {
+            const res = await dispatch(getOneProduct(sellerID, item.id));
+            if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+              addProductCartRef.current.present();
+            }
+          }}
+          // onPress={() => checkAttributes(item, index, cartAddQty)}
+        >
+          <Image
+            source={Images.addTitle}
+            resizeMode="contain"
+            style={[
+              styles.addImage,
+              {
+                tintColor: index === 0 ? COLORS.darkBlue : COLORS.dark_grey,
+              },
+            ]}
+          />
         </TouchableOpacity>
-      ) : (
-        <></>
-      )} */}
-    </TouchableOpacity>
-  );
+        {/* {updatedItem.cart_qty > 0 && (
+          <TouchableOpacity style={styles.countView}>
+            <Text style={styles.countText}>{updatedItem.cart_qty}</Text>
+          </TouchableOpacity>
+        )} */}
+      </TouchableOpacity>
+    );
+  };
 
   const isLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ONE_PRODUCT, TYPES.ADDCART, TYPES.GET_ALL_CART], state)
@@ -228,19 +356,29 @@ export function RetailProducts(props) {
     isLoadingSelector([TYPES.GET_SUB_CATEGORY], state)
   );
 
+  useEffect(() => {
+    if (!isFocus) {
+      dispatch(getMainProduct());
+    }
+  }, [isFocus]);
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
         <View style={{ backgroundColor: COLORS.white }}>
           <Header
             backRequired
+            backFunction={() => {
+              bulkCart();
+              goBack();
+            }}
             title={`Back`}
             cartIcon
             cartHandler={() => {
               dispatch(cartRun('product'));
               navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
             }}
-            cartLength={productCartLength}
+            cartLength={cartLength}
           />
           {categoryLoad ? (
             <View style={[styles.contentContainerStyle, { height: ms(20) }]}>

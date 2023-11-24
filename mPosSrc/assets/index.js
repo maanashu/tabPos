@@ -196,4 +196,6 @@ export const Images = {
   menuDots: require('@mPOS/assets/icons/help/menuDots.png'),
   supportEmail: require('@mPOS/assets/icons/help/supportEmail.png'),
   userProfileIcon: require('@mPOS/assets/icons/help/userProfileIcon.png'),
+  galleryIcon: require('@mPOS/assets/icons/help/galleryIcon.png'),
+  upload: require('@mPOS/assets/icons/help/upload.png'),
 };
