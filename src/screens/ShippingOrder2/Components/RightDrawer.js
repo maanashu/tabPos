@@ -4,9 +4,21 @@ import { View, Image, Text, FlatList, StyleSheet, TouchableOpacity } from 'react
 import { useSelector } from 'react-redux';
 import { ms, verticalScale } from 'react-native-size-matters';
 
-import { Cart, Delivery, Fonts, Group, NoCard, ReturnTruck, task } from '@/assets';
+import {
+  Cart,
+  Delivery,
+  Fonts,
+  Group,
+  NoCard,
+  ReturnTruck,
+  backIcon,
+  revnue,
+  task,
+} from '@/assets';
 import { COLORS, SF, SW } from '@/theme';
 import { getShipping } from '@/selectors/ShippingSelector';
+import { goBack } from '@/navigation/NavigationRef';
+import { Spacer } from '@/components';
 
 const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
   const shippingData = useSelector(getShipping);
@@ -190,6 +202,42 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         renderItem={renderDrawer}
         keyExtractor={(item) => item?.key?.toString()}
       />
+      {/* <Spacer space={ms(10)} />
+      <TouchableOpacity onPress={() => goBack()}>
+        <Image source={backIcon} style={styles.backImageStyle} />
+      </TouchableOpacity>
+
+      <Spacer space={ms(30)} />
+      <TouchableOpacity
+        // disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+        // onPress={() => setselectedScreen('Revenue')}
+        style={[styles.bucketBackgorund]}
+      >
+        <Image source={revnue} style={[styles.sideBarImage]} />
+      </TouchableOpacity>
+
+      <Spacer space={ms(2)} />
+
+      <TouchableOpacity
+        // disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+        // onPress={() => setselectedScreen('Revenue')}
+        style={[styles.bucketBackgorund]}
+      >
+        <Image source={revnue} style={[styles.sideBarImage]} />
+      </TouchableOpacity>
+      <Spacer space={ms(2)} />
+      <TouchableOpacity
+        // disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+        // onPress={() => setselectedScreen('Revenue')}
+        style={[styles.bucketBackgorund]}
+      >
+        <Image source={revnue} style={[styles.sideBarImage]} />
+      </TouchableOpacity>
+
+      <Spacer space={ms(2)} />
+      <TouchableOpacity style={[styles.bucketBackgorund]}>
+        <Image source={revnue} style={[styles.sideBarImage]} />
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -199,10 +247,10 @@ export default memo(RightDrawer);
 const styles = StyleSheet.create({
   rightSideView: {
     backgroundColor: COLORS.white,
-    borderRadius: 10,
+    borderRadius: ms(30),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
-    flex: 0.98,
+    //flex: 0.98,
   },
   drawerIconView: {
     flexDirection: 'column',
@@ -240,5 +288,11 @@ const styles = StyleSheet.create({
     width: ms(18),
     height: ms(18),
     resizeMode: 'contain',
+  },
+  backImageStyle: {
+    width: ms(10),
+    height: ms(10),
+    resizeMode: 'contain',
+    // top: ms(-2),
   },
 });

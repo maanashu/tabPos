@@ -8,7 +8,7 @@ import { ms } from 'react-native-size-matters';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { Fonts, scooter, userImage } from '@/assets';
+import { Fonts, clock, pay, scooter, userImage } from '@/assets';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 import styles from '../ShippingOrder2.styles';
@@ -34,13 +34,13 @@ const OrderDetail = ({
         <View style={styles.shippingOrdersViewStyle}>
           <TouchableOpacity
             onPress={() => declineHandler(userDetail?.id)}
-            style={styles.declineButtonStyle}
+            style={[styles.declineButtonStyle, { width: ms(80), borderRadius: ms(30) }]}
           >
             <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => acceptHandler(userDetail?.id, 3)}
-            style={[styles.acceptButtonView, { width: ms(80) }]}
+            style={[styles.acceptButtonView, { width: ms(80), borderRadius: ms(30) }]}
           >
             <Text style={styles.acceptTextStyle}>{strings.buttonStatus.reviewButton}</Text>
           </TouchableOpacity>
@@ -51,7 +51,10 @@ const OrderDetail = ({
         <View style={styles.shippingOrdersViewStyle}>
           <TouchableOpacity
             onPress={() => printLabelHandler(oneOrderDetail?.getOrderData)}
-            style={[styles.acceptButtonView, { width: ms(170) }]}
+            style={[
+              styles.acceptButtonView,
+              { width: ms(170), backgroundColor: COLORS.sky_blue, borderRadius: ms(30) },
+            ]}
           >
             <Text style={styles.acceptTextStyle}>{strings.buttonStatus.printlabel}</Text>
           </TouchableOpacity>
@@ -87,7 +90,12 @@ const OrderDetail = ({
   return (
     <>
       <View style={styles.orderDetailView}>
-        <View style={[styles.orderDetailViewStyle, { flex: 1 / 2 }]}>
+        <View
+          style={{
+            flexDirection: 'row',
+            margin: ms(8),
+          }}
+        >
           <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.8 }]}>
             <Image
               source={profileImage ? { uri: profileImage } : userImage}
@@ -109,7 +117,7 @@ const OrderDetail = ({
             </View>
           </View>
 
-          <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.3 }]}>
+          <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.4 }]}>
             <Image source={scooter} style={styles.scooterImageStyle} />
 
             <View style={[styles.userNameView, { paddingLeft: 5 }]}>
@@ -123,24 +131,31 @@ const OrderDetail = ({
                 {userDetail?.invoice?.delivery_date ??
                   moment(userDetail?.created_at).format('DD MMM YYYY')}
               </Text>
-              <Text
-                style={{
-                  fontFamily: Fonts.Medium,
-                  fontSize: SF(11),
-                  color: COLORS.dark_grey,
-                }}
-              >
-                {userDetail?.preffered_delivery_start_time
-                  ? userDetail?.preffered_delivery_start_time
-                  : '00.00'}
-                {'-'}{' '}
-                {userDetail?.preffered_delivery_end_time
-                  ? userDetail?.preffered_delivery_end_time
-                  : '00.00'}
-              </Text>
+              <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
+                <Image
+                  source={clock}
+                  style={[styles.pinImageStyle, { tintColor: COLORS.orange_bright }]}
+                />
+                <Text
+                  style={{
+                    fontFamily: Fonts.Medium,
+                    fontSize: SF(11),
+                    color: COLORS.dark_yellow,
+                  }}
+                >
+                  {userDetail?.preffered_delivery_start_time
+                    ? userDetail?.preffered_delivery_start_time
+                    : '00.00'}
+                  {'-'}{' '}
+                  {userDetail?.preffered_delivery_end_time
+                    ? userDetail?.preffered_delivery_end_time
+                    : '00.00'}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
+        <View style={styles.lineCommonStyle}></View>
 
         {/* <View style={styles.orderDetailViewStyle}>
           <View
@@ -212,7 +227,7 @@ const OrderDetail = ({
         </View>
 
         <View style={[styles.orderandPriceView, { flex: 1 }]}>
-          <View style={{ paddingLeft: 15, flex: 0.3 }}>
+          <View style={{ paddingLeft: 15, flex: 0.3, paddingTop: ms(10) }}>
             <View>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                 {strings.shippingOrder.totalItem}
@@ -254,6 +269,23 @@ const OrderDetail = ({
                 </Text>
               </View>
             )}
+            <Spacer space={SH(15)} />
+            <View>
+              <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+                {strings.shippingOrder.paymentMethod}
+              </Text>
+              <View
+                style={[styles.locationViewStyle, { backgroundColor: COLORS.alarm_success_50 }]}
+              >
+                <Image
+                  source={pay}
+                  style={[styles.pinImageStyle, { tintColor: COLORS.success_green }]}
+                />
+                <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+                  {'Cash'}
+                </Text>
+              </View>
+            </View>
           </View>
 
           <View
@@ -263,7 +295,7 @@ const OrderDetail = ({
               borderRadius: 10,
               paddingVertical: 20,
               alignSelf: 'center',
-              backgroundColor: COLORS.textInputBackground,
+              backgroundColor: COLORS.sky_grey,
             }}
           >
             <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
@@ -305,6 +337,8 @@ const OrderDetail = ({
                 </Text>
               </View>
             )}
+
+            <View style={styles.dashedLineStyle}></View>
 
             <View style={styles.orderDetailsView}>
               <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>

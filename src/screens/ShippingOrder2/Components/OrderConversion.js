@@ -18,6 +18,7 @@ const OrderConversion = () => {
   const pieChartData = getOrdersData?.getOrderstatistics?.data;
 
   const series = [
+    //  24, 30, 40, 0,
     pieChartData?.[0]?.count ?? 0,
     pieChartData?.[1]?.count ?? 0,
     pieChartData?.[2]?.count ?? 0,
@@ -29,7 +30,7 @@ const OrderConversion = () => {
     sum += num;
   });
 
-  const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellowTweet, COLORS.primary];
+  const sliceColor = [COLORS.extra_purple_300, COLORS.yellow, COLORS.blur_red, COLORS.primary];
 
   const orderConversionLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_SHIPPING_ORDERS], state)
@@ -62,36 +63,55 @@ const OrderConversion = () => {
         ) : (
           <>
             <View style={styles.ordersRowView}>
-              <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.incomingOrders}</Text>
-              <Text style={styles.countTextStyle}>
-                {`${parseInt(pieChartData?.[0]?.percentage)}%` ?? '0%'}
+              {/* <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.incomingOrders}</Text> */}
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.purple }]}>
+                {strings.shippingOrder.delivered}
               </Text>
+              <View style={[styles.countContainer]}>
+                <View style={styles.deliveredDot}></View>
+                <Text style={[styles.countTextStyle, { color: COLORS.purple }]}>
+                  {`${parseInt(pieChartData?.[0]?.percentage)}%` ?? '0%'}
+                </Text>
+              </View>
             </View>
 
             <View style={styles.ordersRowView}>
-              <Text style={styles.orderTypeTextStyle}>
+              {/* <Text style={styles.orderTypeTextStyle}>
                 {strings.shippingOrder.processingOrders}
+              </Text> */}
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.extra_yellow_800 }]}>
+                {strings.shippingOrder.returned}
               </Text>
-              <Text style={styles.countTextStyle}>
-                {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
-              </Text>
+              <View style={[styles.countContainer, { color: COLORS.light_yellow }]}>
+                <View style={styles.returnedDot}></View>
+                <Text style={[styles.countTextStyle, { color: COLORS.extra_yellow_800 }]}>
+                  {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
+                </Text>
+              </View>
             </View>
 
             <View style={styles.ordersRowView}>
-              <Text style={styles.orderTypeTextStyle}>
+              {/* <Text style={styles.orderTypeTextStyle}>
                 {strings.shippingOrder.readyPickupOrders}
+              </Text> */}
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.alert_red }]}>
+                {strings.shippingOrder.cancelled}
               </Text>
-              <Text style={styles.countTextStyle}>
-                {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
-              </Text>
+
+              <View style={[styles.countContainer, { color: COLORS.light_red }]}>
+                <View style={styles.cancelledDot}></View>
+                <Text style={[styles.countTextStyle, { color: COLORS.alert_red }]}>
+                  {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
+                </Text>
+              </View>
             </View>
 
-            <View style={styles.ordersRowView}>
+            {/* <View style={styles.ordersRowView}>
               <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.completed}</Text>
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[3]?.percentage)}%` ?? '0'}
               </Text>
-            </View>
+            </View> */}
           </>
         )}
         <Spacer space={ms(10)} />
@@ -155,7 +175,37 @@ const styles = StyleSheet.create({
   },
   countTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.textBlue,
+  },
+  countContainer: {
+    backgroundColor: COLORS.extra_purple_50,
+    borderRadius: ms(9),
+    paddingHorizontal: ms(4),
+    paddingVertical: ms(2),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  deliveredDot: {
+    height: ms(6),
+    width: ms(6),
+    backgroundColor: COLORS.medium_purple,
+    borderRadius: ms(3),
+    marginEnd: ms(5),
+  },
+  returnedDot: {
+    height: ms(6),
+    width: ms(6),
+    backgroundColor: COLORS.medium_yellow,
+    borderRadius: ms(3),
+    marginEnd: ms(5),
+  },
+  cancelledDot: {
+    height: ms(6),
+    width: ms(6),
+    backgroundColor: COLORS.blur_red,
+    borderRadius: ms(3),
+    marginEnd: ms(5),
   },
 });

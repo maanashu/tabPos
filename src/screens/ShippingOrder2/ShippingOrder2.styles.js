@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
-    borderRadius: 10,
+    borderRadius: ms(20),
     flex: 1,
   },
   userDetailView: {
@@ -461,6 +461,18 @@ const styles = StyleSheet.create({
     height: '100%',
     alignSelf: 'center',
     borderRadius: 6,
+  },
+  lineCommonStyle: {
+    height: 1,
+    backgroundColor: '#E4E6F2',
+    marginVertical: ms(8),
+    marginHorizontal: ms(10),
+  },
+  dashedLineStyle: {
+    borderTopWidth: 1,
+    borderTopColor: '#7E8AC1',
+    marginTop: ms(10),
+    borderStyle: 'dashed',
   },
 });
 

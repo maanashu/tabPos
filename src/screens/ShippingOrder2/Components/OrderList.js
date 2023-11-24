@@ -7,7 +7,7 @@ import { ms } from 'react-native-size-matters';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
+import { clock, fedexNew, Fonts, pay, pin, rightIcon } from '@/assets';
 import moment from 'moment';
 import { useEffect } from 'react';
 
@@ -36,8 +36,8 @@ const OrderList = ({
       style={[
         styles.orderRowStyle,
         {
-          backgroundColor: item?.id === orderId ? COLORS.textInputBackground : COLORS.transparent,
-          borderColor: item?.id === orderId ? COLORS.primary : COLORS.blue_shade,
+          backgroundColor: item?.id === orderId ? COLORS.transparent : COLORS.transparent,
+          borderColor: item?.id === orderId ? COLORS.light_purple : COLORS.neutral_blue,
         },
       ]}
     >
@@ -56,9 +56,12 @@ const OrderList = ({
 
       <View style={styles.orderDetailStyle}>
         <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={pin} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>
+        <View style={[styles.locationViewStyle, { backgroundColor: COLORS.extra_purple_50 }]}>
+          <Image
+            source={pin}
+            style={[styles.pinImageStyle, { tintColor: COLORS.extra_purple_300 }]}
+          />
+          <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
             {item?.distance ? `${item.distance} miles` : '0'}
           </Text>
         </View>
@@ -70,23 +73,32 @@ const OrderList = ({
             ? `${item?.order_details?.length} Items`
             : `${item?.order_details?.length} Item`}
         </Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={pay} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>{item?.payable_amount ?? '00'}</Text>
+
+        <View style={[styles.locationViewStyle, { backgroundColor: COLORS.alarm_success_50 }]}>
+          <Image source={pay} style={[styles.pinImageStyle, { tintColor: COLORS.success_green }]} />
+          <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+            {item?.payable_amount ?? '00'}
+          </Text>
         </View>
       </View>
 
-      <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
-        <Text style={styles.timeTextStyle}>
-          {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
-        </Text>
-        <View style={styles.locationViewStyle}>
-          <Image source={clock} style={styles.pinImageStyle} />
-          <Text style={styles.distanceTextStyle}>
-            {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
-              item?.preffered_delivery_end_time ?? '00.00'
-            }`}
+      <View style={styles.rowContainerStyle}>
+        <Image source={fedexNew} style={styles.shippingTypeImage} />
+        <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
+          <Text style={styles.timeTextStyle}>
+            {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
           </Text>
+          <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
+            <Image
+              source={clock}
+              style={[styles.pinImageStyle, { tintColor: COLORS.orange_bright }]}
+            />
+            <Text style={[styles.distanceTextStyle, { color: COLORS.dark_yellow }]}>
+              {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
+                item?.preffered_delivery_end_time ?? '00.00'
+              }`}
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -142,13 +154,13 @@ export default memo(OrderList);
 const styles = StyleSheet.create({
   orderRowStyle: {
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: ms(12),
     height: SH(65),
     marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     backgroundColor: COLORS.transparent,
   },
   nameTextStyle: {
@@ -165,6 +177,8 @@ const styles = StyleSheet.create({
   locationViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingVertical: ms(1),
+    borderRadius: 10,
   },
   pinImageStyle: {
     width: SH(16),
@@ -187,7 +201,7 @@ const styles = StyleSheet.create({
   },
   orderToReviewView: {
     flex: 1,
-    borderRadius: 10,
+    borderRadius: ms(20),
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
   },
@@ -229,5 +243,15 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(22),
     color: COLORS.primary,
+  },
+  shippingTypeImage: {
+    width: ms(25),
+    height: ms(25),
+    resizeMode: 'contain',
+    borderRadius: ms(5),
+  },
+  rowContainerStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
