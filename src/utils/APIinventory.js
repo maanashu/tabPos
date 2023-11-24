@@ -65,6 +65,7 @@ export const ApiUserInventory = {
   deviceLogin: USER_URL + 'users/device/login',
   verifyPin: USER_URL + 'users/verify-pin',
   changeOldPin: USER_URL + 'users/change-old-pin',
+  updateUserProfile: 'users/merchant/pos-user',
   departmentList: USER_URL + 'departments',
 };
 
@@ -215,5 +216,6 @@ export const API_URLS_USING_POS_USER_ACCESS_TOKEN = (sellerID) => [
   // USER_URL + ApiUserInventory.getSetting,
   // USER_URL + ApiUserInventory.merchantLogin,
   USER_URL + ApiUserInventory.creatPosUsers,
+  // USER_URL + ApiUserInventory.updateUserProfile,
   // USER_URL + ApiUserInventory.getSetting + `/?app_name=pos&seller_id=${sellerID}`,
 ];

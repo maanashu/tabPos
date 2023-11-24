@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   profileheaderChildView: {
-    width: Platform.OS === 'android' ? ms(105) : ms(83),
+    width: ms(83),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(3),

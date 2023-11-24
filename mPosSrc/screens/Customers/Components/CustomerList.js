@@ -306,7 +306,7 @@ export function CustomerList(props) {
           <View
             style={{
               zIndex: -9,
-              height: Platform.OS === 'android' ? height - ms(260) : height - ms(300),
+              height: Platform.OS === 'android' ? height - ms(225) : height - ms(300),
               backgroundColor: COLORS.white,
               borderBottomLeftRadius: ms(10),
               borderBottomRightRadius: ms(10),
@@ -371,7 +371,7 @@ export function CustomerList(props) {
                                   style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
                                   numberOfLines={1}
                                 >
-                                  {item?.user_details?.current_address?.city},
+                                  {item?.user_details?.current_address?.city}{' '}
                                   {item?.user_details?.current_address?.zipcode}
                                 </Text>
                               ) : (
