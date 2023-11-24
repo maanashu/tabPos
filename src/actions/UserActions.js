@@ -12,7 +12,7 @@ const loginPosUserError = (error) => ({
   type: TYPES.LOGIN_POS_USER_ERROR,
   payload: { error },
 });
-const loginPosUserSuccess = (posLoginData) => ({
+export const loginPosUserSuccess = (posLoginData) => ({
   type: TYPES.LOGIN_POS_USER_SUCCESS,
   payload: { posLoginData },
 });
@@ -87,9 +87,10 @@ export const loginPosUser = (data) => async (dispatch) => {
   dispatch(loginPosUserRequest());
   try {
     const res = await UserController.loginPosUser(data);
-    dispatch(loginPosUserSuccess(res?.payload));
-    dispatch(getSettings());
-    dispatch(getProfile(res?.payload?.id));
+    // dispatch(loginPosUserSuccess(res?.payload));
+    // dispatch(getSettings());
+    // dispatch(getProfile(res?.payload?.id));
+    return res?.payload;
   } catch (error) {
     return dispatch(loginPosUserError(error));
   }

@@ -5,6 +5,7 @@ export const NAVIGATION = {
   setPin: 'SetNewPin',
   reenterPin: 'ReenterPin',
   login: 'Login',
+  twoFactorLogin: 'TwoFactorLogin',
   bottomTab: 'BottomTabNavigator',
   home: 'Home',
   cart: 'Cart',

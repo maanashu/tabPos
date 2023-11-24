@@ -17,7 +17,12 @@ import { FullScreenLoader, Header, Spacer } from '@mPOS/components';
 
 import styles from './styles';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { acceptOrder, getReviewDefault } from '@/actions/ShippingAction';
+import {
+  acceptOrder,
+  getOrderCount,
+  getReviewDefault,
+  getShippingOrderstatistics,
+} from '@/actions/ShippingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/ShippingOrderTypes';
 import ReactNativeModal from 'react-native-modal';
@@ -25,6 +30,7 @@ import StatusDrawer from '../Components/StatusDrawer';
 import { useState } from 'react';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { getShipping } from '@/selectors/ShippingSelector';
+import { getPendingOrders } from '@/actions/DashboardAction';
 
 export function ShippingOrderDetail(props) {
   const mapRef = useRef();
@@ -34,7 +40,7 @@ export function ShippingOrderDetail(props) {
   const ordersData = getOrdersData?.getReviewDef;
 
   const orderData = ordersData[props?.route?.params?.index ?? 0];
-  const orders = orderData;
+  const orders = orderData ?? {};
   const customerDetail = orderData?.user_details;
 
   const getAuth = useSelector(getAuthData);
@@ -98,6 +104,9 @@ export function ShippingOrderDetail(props) {
       index = 9;
     }
     dispatch(getReviewDefault(index));
+    dispatch(getShippingOrderstatistics());
+    dispatch(getPendingOrders());
+    dispatch(getOrderCount());
   };
 
   const isLoading = useSelector((state) =>
@@ -113,7 +122,7 @@ export function ShippingOrderDetail(props) {
         title={strings.profile.header}
         rightIconOnpress={() => setIsStatusDrawer(true)}
       />
-      {Object.keys(orders).length !== 0 && (
+      {Object.keys(orders)?.length !== 0 && (
         <View style={styles.userDetailView}>
           <View style={{ flexDirection: 'row' }}>
             <Image
@@ -202,10 +211,10 @@ export function ShippingOrderDetail(props) {
       ) : null}
 
       <Spacer space={SH(10)} />
-      {Object.keys(orders).length !== 0 && <ProductList {...{ orderData }} />}
+      {Object.keys(orders)?.length !== 0 && <ProductList {...{ orderData }} />}
 
       <Spacer space={SH(20)} />
-      {Object.keys(orders).length !== 0 && <OrderTotal {...{ orderData, onPressAcceptHandler }} />}
+      {Object.keys(orders)?.length !== 0 && <OrderTotal {...{ orderData, onPressAcceptHandler }} />}
       {isLoading ? <FullScreenLoader /> : null}
       {/* {orderLoad ? <FullScreenLoader /> : null} */}
       <ReactNativeModal

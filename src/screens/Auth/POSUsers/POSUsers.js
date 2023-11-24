@@ -67,7 +67,6 @@ export function POSUsers({ navigation }) {
     value,
     setValue,
   });
-
   useEffect(() => {
     // dispatch(getAllPosUsers(sellerID));
     if (isFocused) {
