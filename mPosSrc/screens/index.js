@@ -36,6 +36,8 @@ export { SupportRequest } from '@mPOS/screens/MoreTab/Help/SupportRequest/Suppor
 export { MySupport } from '@mPOS/screens/MoreTab/Help/SupportRequest/MySupport/MySupport';
 export { Support } from '@mPOS/screens/MoreTab/Help/SupportRequest/Support/Support';
 export { SupportChat } from '@mPOS/screens/MoreTab/Help/SupportChat/SupportChat';
+export { Faq } from '@mPOS/screens/MoreTab/Help/Faq/Faq';
+export { FaqAnswers } from '@mPOS/screens/MoreTab/Help/FaqAnswers/FaqAnswers';
 
 //retail products
 export { RetailProducts } from '@mPOS/screens/HomeTab/RetailProducts/RetailProducts';

@@ -18,6 +18,21 @@ const styles = StyleSheet.create({
     height: ms(30),
     width: ms(30),
   },
+  sendContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginLeft: 5,
+    marginVertical: ms(3),
+  },
+  loaderView: {
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+  },
 });
 
 export default styles;

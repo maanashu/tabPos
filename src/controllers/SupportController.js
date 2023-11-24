@@ -139,4 +139,25 @@ export class SupportController {
         });
     });
   }
+
+  static async getFaqList() {
+    return new Promise((resolve, reject) => {
+      const endpoint = ApiSupportInventory.faqList + `?page=1&limit=10`;
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          if (error?.statusCode != 204) {
+            Toast.show({
+              text2: error.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 2000,
+            });
+          }
+          reject(error);
+        });
+    });
+  }
 }

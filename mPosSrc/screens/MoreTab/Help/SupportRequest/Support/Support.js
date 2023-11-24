@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
   Platform,
@@ -31,10 +31,14 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import axios from 'axios';
 import { io } from 'socket.io-client';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
+import { Header } from '@mPOS/components';
+import { goBack } from '@mPOS/navigation/NavigationRef';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 export function Support({ setScreen }) {
+  const route = useRoute();
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADD_NEW_TICKET], state));
 
   const actionRef = useRef();
@@ -42,7 +46,7 @@ export function Support({ setScreen }) {
   const supportData = useSelector(getSupportData);
   const getData = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
-  console.log('userData=>: ' + JSON.stringify(getUserData?.posLoginData?.uuid));
+  console.log('userData=>: ' + JSON.stringify(route?.params?.data));
 
   const profileData = getData?.getProfile;
   const emailID = getData?.getProfile?.email ?? '';
@@ -51,6 +55,7 @@ export function Support({ setScreen }) {
   const [firstName, setFirstName] = useState(capitalizeFirstLetter(username));
   const [email, setEmail] = useState(emailID ?? '');
 
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
   const [textArea, setTextArea] = useState('');
   const [makeOpen, setMakeOpen] = useState(false);
   const [makeValue, setMakeValue] = useState(null);
@@ -69,6 +74,21 @@ export function Support({ setScreen }) {
   const socket = io(`https://apichat.jobr.com:8007?userId=${getUserData?.posLoginData?.uuid}`, {
     path: '/api/v1/connect',
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      socket.on('connect', () => {
+        setIsSocketConnected(true);
+        console.log('Connected');
+      });
+      return () => {
+        socket.on('disconnect', () => {
+          setIsSocketConnected(false);
+        });
+        socket.disconnect();
+      };
+    }, [])
+  );
 
   useEffect(() => {
     getSubjectArray();
@@ -138,19 +158,24 @@ export function Support({ setScreen }) {
       };
       dispatch(
         addNewTicket(data, (res) => {
-          setScreen(1);
+          if (route?.params?.data !== 'Report other issue') {
+            setScreen(1);
+          }
           setShowVisible(true);
           setTicketId(res?.payload?.id);
+          if (route?.params?.data === 'Report other issue') {
+            alert('ok');
+            goBack();
+          }
           console.log('ticket resp-,', JSON.stringify(res));
           console.log('ticket body-,', JSON.stringify(data));
           const socketData = {
             sender_id: getUserData?.posLoginData?.uuid,
-            recipient_id: subjectValue.toString(),
+            // recipient_id: subjectValue.toString(),
             chatHeadType: 'inquiry',
             ticket_id: res?.payload?.id.toString(),
             media_type: 'text',
             content: notes,
-            type: 'support',
           };
           socket.emit('send_message', socketData);
           socket.on('send_message', (message) => {
@@ -215,7 +240,16 @@ export function Support({ setScreen }) {
 
   return (
     <ScreenWrapper>
-      <ScrollView style={styles.ticketContainer} showsVerticalScrollIndicator={false}>
+      {route?.params?.data === 'Report other issue' && (
+        <Header title={route?.params?.data} backRequired />
+      )}
+      <ScrollView
+        style={[
+          styles.ticketContainer,
+          { padding: route?.params?.data === 'Report other issue' ? 20 : 0 },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
         <Text style={styles.header}>{strings.supportTicket.heading}</Text>
         <Spacer space={SH(8)} />
         <Text style={styles.description}>{strings.supportTicket.subheading}</Text>

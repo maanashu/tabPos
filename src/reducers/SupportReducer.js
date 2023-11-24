@@ -4,6 +4,7 @@ const INITIALSTATE = {
   ticketsList: {},
   subjects: [],
   departments: [],
+  faq: [],
 };
 
 export const supportReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -22,6 +23,11 @@ export const supportReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         departments: payload.departments.payload,
+      };
+    case TYPES.GET_FAQlIST_SUCCESS:
+      return {
+        ...state,
+        faq: payload.faq.payload.data,
       };
     default:
       return state;

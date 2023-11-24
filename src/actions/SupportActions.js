@@ -58,6 +58,21 @@ const getAddNewTicketSuccess = (ticket) => ({
   payload: { ticket },
 });
 
+const getFaqListRequest = () => ({
+  type: TYPES.GET_FAQlIST_REQUEST,
+  payload: null,
+});
+
+const getFaqListError = (error) => ({
+  type: TYPES.GET_FAQlIST_ERROR,
+  payload: { error },
+});
+
+const getFaqListSuccess = (faq) => ({
+  type: TYPES.GET_FAQlIST_SUCCESS,
+  payload: { faq },
+});
+
 export const getSubjects = () => async (dispatch) => {
   dispatch(getSubjectsRequest());
   try {
@@ -96,5 +111,15 @@ export const getSupportList = () => async (dispatch) => {
     dispatch(getSupportListSuccess(res));
   } catch (error) {
     dispatch(getSupportListError(error.message));
+  }
+};
+
+export const getFaqList = () => async (dispatch) => {
+  dispatch(getFaqListRequest());
+  try {
+    const res = await SupportController.getFaqList();
+    dispatch(getFaqListSuccess(res));
+  } catch (error) {
+    dispatch(getFaqListError(error.message));
   }
 };

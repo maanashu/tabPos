@@ -1,6 +1,6 @@
 import { COLORS } from '@/theme';
 import React, { useState, useCallback, useEffect } from 'react';
-import { TouchableOpacity, View, Image, Text, Keyboard } from 'react-native';
+import { TouchableOpacity, View, Image, Text, Keyboard, ActivityIndicator } from 'react-native';
 import { GiftedChat, Send, InputToolbar, MessageImage, Bubble } from 'react-native-gifted-chat';
 import Modal from 'react-native-modal';
 import {
@@ -31,7 +31,11 @@ import styles from './SupportChat.styles';
 export const SupportChat = (props) => {
   const dispatch = useDispatch();
   const [isSocketConnected, setIsSocketConnected] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messagesData, setMessages] = useState([]);
+  const [messageHeadId, setMessageHeadId] = useState('');
+  const [recipientId, setRecipientId] = useState();
+  console.log('recedddipt', recipientId);
+
   const [bottomOffset, setbottomOffset] = useState(0);
   const [showView, setShowView] = useState('');
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
@@ -48,33 +52,11 @@ export const SupportChat = (props) => {
   });
   useFocusEffect(
     React.useCallback(() => {
+      setisLoading(true);
       socket.on('connect', () => {
         setIsSocketConnected(true);
         console.log('Connected');
-        socket.emit('get_messages', {
-          id: ticketId.toString(),
-          idtype: 'ticket_id',
-          // id: '652791b827509704e2b0b922',
-          // idtype: 'chathead',
-        });
-        socket.on('get_messages', (message) => {
-          // console.log('getMessagesLog', message?.data?.data?.[0]?.chathead_id);
-          // setMessageHeadId(message?.data?.data?.[0]?.chathead_id);
-          // const arr = message?.data?.data.map(item => {
-          //   return {
-          //     _id: item?._id,
-          //     text: item?.content,
-          //     createdAt: item?.createdAt,
-          //     user: {
-          //       _id: item?.sender_id,
-          //     },
-          //     // recipient_id: item?.recipient_id,
-          //     // sender_id: item?.sender_id,
-          //   };
-          // });
-          console.log('get messg', message?.data?.data);
-          // setMessages(arr);
-        });
+        getMessages();
       });
       return () => {
         socket.on('disconnect', () => {
@@ -85,37 +67,63 @@ export const SupportChat = (props) => {
     }, [])
   );
 
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ]);
-  }, []);
+  const getMessages = () => {
+    socket.emit('get_messages', {
+      id: ticketId.toString(),
+      idtype: 'ticket_id',
+    });
 
-  const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
-  }, []);
+    socket.on('get_messages', (message) => {
+      console.log('messages', message?.data?.data?.[0]?.recipient_id);
+      setRecipientId(message?.data?.data?.[0]?.recipient_id);
+      setMessageHeadId(message?.data?.data?.[0]?.chathead_id);
+      const arr = message?.data?.data.map((item) => {
+        return {
+          _id: item?._id,
+          text: item?.content,
+          createdAt: item?.createdAt,
+          user: {
+            _id: item?.sender_id,
+          },
+        };
+      });
+      setMessages(arr);
+      setisLoading(false);
+    });
+  };
+
+  const onSend = (messages = []) => {
+    const params = {
+      recipient_id: recipientId,
+      media_type: 'text',
+      content: messages[0]?.text,
+      chatHeadType: 'directchat',
+      sender_id: user?.posLoginData?.uuid,
+    };
+    console.log('params: ' + JSON.stringify(params));
+    socket.emit('send_message', params);
+
+    socket.on('send_message', (msg) => {
+      console.log('sending message', msg);
+      setMessageHeadId(msg?.data?.chathead_id);
+    });
+
+    socket.on(`JobrUser_${messageHeadId}_room`, (data) => {
+      console.log('room resp', data);
+      const newMsg = {
+        _id: data?.data?._id,
+        text: data?.data?.content,
+        user: {
+          _id: data?.data?.sender_id,
+        },
+      };
+      setMessages([...messagesData, newMsg]);
+    });
+  };
 
   const renderSend = (props) => {
     return (
-      <Send
-        {...props}
-        containerStyle={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          alignSelf: 'center',
-          marginHorizontal: 5,
-          marginVertical: ms(3),
-        }}
-      >
+      <Send {...props} containerStyle={styles.sendContainer}>
         <Image source={messageSend} resizeMode="stretch" style={styles.messageSend} />
       </Send>
     );
@@ -125,18 +133,20 @@ export const SupportChat = (props) => {
     <ScreenWrapper>
       <Header backRequired title={'Support'} style={{ backgroundColor: COLORS.white }} />
 
+      <View style={styles.loaderView}>
+        {isLoading && <ActivityIndicator color={COLORS.primary} size={'large'} />}
+      </View>
       <GiftedChat
-        messages={messages}
+        messages={messagesData}
         showAvatarForEveryMessage={false}
         renderAvatar={false}
         onSend={(messages) => onSend(messages)}
-        // renderInputToolbar={renderCustomInputToolbar}
         user={{
-          _id: 1,
+          _id: user?.posLoginData?.uuid,
         }}
         alwaysShowSend
         messagesContainerStyle={{
-          // paddingHorizontal: ms(8),
+          paddingHorizontal: ms(8),
           paddingBottom: ms(10),
         }}
         renderSend={renderSend}
