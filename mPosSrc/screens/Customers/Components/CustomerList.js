@@ -220,8 +220,12 @@ export function CustomerList(props) {
 
   const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), [time]);
 
-  const profileClickHandler = (item) => {
-    commonNavigate(MPOS_NAVIGATION.userProfile, { userDetail: item });
+  const profileClickHandler = (item, index) => {
+    commonNavigate(MPOS_NAVIGATION.userProfile, {
+      userDetail: item,
+      data: { customerType, time },
+      index,
+    });
   };
 
   return (
@@ -331,7 +335,7 @@ export function CustomerList(props) {
                       key={index}
                       style={[styles.tableDataCon, { zIndex: -99 }]}
                       activeOpacity={0.7}
-                      onPress={() => profileClickHandler(item)}
+                      onPress={() => profileClickHandler(item, index)}
                       // onPress={profileClickHandler}
                     >
                       <View style={styles.displayFlex}>

@@ -49,12 +49,11 @@ import { useEffect } from 'react';
 import {
   getAcceptMarketing,
   getOrderUser,
+  getUserOrder,
   marketingUpdate,
   updateUserProfile,
 } from '@/actions/CustomersAction';
-import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
 import { useMemo } from 'react';
-import { useCallback } from 'react';
 import moment from 'moment';
 import { Header, ScreenWrapper } from '@mPOS/components';
 import styles from './styles';
@@ -64,21 +63,18 @@ import { commonNavigate, MPOS_NAVIGATION } from '@common/commonImports';
 import Modal from 'react-native-modal';
 import CountryPicker from 'react-native-country-picker-modal';
 import { strings } from '@mPOS/localization';
-import { getUser } from '@/selectors/UserSelectors';
+import Geolocation from '@react-native-community/geolocation';
 
 export function UserProfile(props) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getCustomerData = useSelector(getCustomers);
-  const getUserData = useSelector(getUser);
-  const getPosUser = getUserData?.posLoginData;
-  const posUsers = getAuth?.getAllPosUsersData;
+  const customerArray = getCustomerData?.getUserOrder?.data[props?.route?.params?.index] ?? [];
 
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
   const userDetail = props?.route?.params?.userDetail;
-  const [posStaffId, setPosStaffId] = useState();
-  const [roleId, setRoleId] = useState();
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
@@ -102,16 +98,8 @@ export function UserProfile(props) {
     userDetail?.user_details?.current_address?.custom_address || ''
   );
 
-  const [apt, setApt] = useState(userDetail?.user_details?.current_address?.address_type || '');
-  const [zipCode, setZipCode] = useState(userDetail?.user_details?.zipcode || '');
-
-  const posStaffID = () => {
-    posUsers?.pos_staff?.map((item) => {
-      if (item?.user_id === getPosUser?.id) {
-        return setPosStaffId(item?.id), setRoleId(item?.user?.user_roles[0]?.role_id);
-      }
-    });
-  };
+  const [apt, setApt] = useState(customerArray?.user_details?.current_address?.address_type || '');
+  const [zipCode, setZipCode] = useState(customerArray?.user_details?.zipcode || '');
 
   useEffect(() => {
     const data = {
@@ -119,8 +107,7 @@ export function UserProfile(props) {
       sellerid: userDetail?.seller_details?.id,
     };
     dispatch(getAcceptMarketing(data));
-    posStaffID();
-  }, [posStaffId, roleId]);
+  }, []);
 
   const startIndex = useMemo(
     () => (page - 1) * paginationModalValue + 1,
@@ -128,16 +115,17 @@ export function UserProfile(props) {
   );
 
   const data = {
-    firstName: userDetail?.user_details?.firstname,
-    phoneNumber: userDetail?.user_details?.phone_number,
-    profilePhoto: userDetail?.user_details?.profile_photo,
-    userEmail: userDetail?.user_details?.email,
-    streetAdd: userDetail?.user_details?.current_address?.street_address,
-    city: userDetail?.user_details?.current_address?.city,
-    state: userDetail?.user_details?.current_address?.state,
-    country: userDetail?.user_details?.current_address?.country,
-    postalCode: userDetail?.user_details?.current_address?.zipcode,
+    firstName: customerArray?.user_details?.firstname,
+    phoneNumber: customerArray?.user_details?.phone_number,
+    profilePhoto: customerArray?.user_details?.profile_photo,
+    userEmail: customerArray?.user_details?.email,
+    streetAdd: customerArray?.user_details?.current_address?.street_address,
+    city: customerArray?.user_details?.current_address?.city,
+    state: customerArray?.user_details?.current_address?.state,
+    country: customerArray?.user_details?.current_address?.country,
+    postalCode: customerArray?.user_details?.current_address?.state_code,
   };
+
   useEffect(() => {
     const data = {
       userId: userDetail?.user_id,
@@ -153,6 +141,34 @@ export function UserProfile(props) {
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
   }, [getCustomerData?.getOrderUser?.data]);
+
+  // useEffect(() => {
+  //   const getCityLocation = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `https://maps.googleapis.com/maps/api/geocode/json?address=${data?.city},${data?.state}&key=YOUR_GOOGLE_MAPS_API_KEY`
+  //       );
+  //       if (!response.ok) {
+  //         throw new Error('Error fetching city location');
+  //       }
+
+  //       const responseData = await response.json();
+  //       console.log('ahhasgd', responseData);
+
+  //       if (responseData.status === 'OK' && responseData.results.length > 0) {
+  //         const { lat, lng } = responseData.results[0].geometry.location;
+  //         setLocation({ latitude: lat, longitude: lng });
+  //       } else {
+  //         throw new Error('No results found');
+  //       }
+  //     } catch (error) {
+  //       console.log('first', data?.city);
+  //       console.error('Error:', error.message);
+  //     }
+  //   };
+
+  //   getCityLocation();
+  // }, []);
 
   const isOrderUserLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ORDER_USER], state)
@@ -175,8 +191,9 @@ export function UserProfile(props) {
     { label: 'INDIA', value: 'india' },
     { label: 'AUSTRALIA', value: 'australia' },
   ]);
+
   const [stateOpen, setStateOpen] = useState(false);
-  const [stateValue, setStateValue] = useState(null);
+  const [stateValue, setStateValue] = useState();
   const [stateItems, setStateItems] = useState([
     { label: 'US', value: 'us' },
     { label: 'INDIA', value: 'india' },
@@ -184,28 +201,37 @@ export function UserProfile(props) {
   ]);
 
   const saveHandler = () => {
-    const data = {
-      pos_staff_id: posStaffId,
-      firstname: name,
-      phone_number: phoneNumber,
-      email: emailAddress,
-      role_id: roleId,
-      phone_code: countryCode,
-      custom_address: streetAddress,
+    const id = userDetail?.user_details?.id;
+    const address = {
+      street_address: streetAddress,
       address_type: apt,
       country: value,
       city: value,
       state: stateValue,
-      zipCode: zipCode,
+      zipcode: zipCode,
+      latitude: '37.0902',
+      longitude: '95.7129',
     };
-    dispatch(updateUserProfile(data));
+    const data = {
+      firstname: name,
+      email: emailAddress,
+      current_address: address,
+    };
+    const orderData = {
+      sellerID: sellerID,
+      customerType: props?.route?.params?.data?.customerType,
+      page: page,
+      limit: paginationModalValue,
+      dayWisefilter: props?.route?.params?.data?.time,
+    };
+    dispatch(updateUserProfile(data, id));
+    dispatch(getUserOrder(orderData));
     setShowEditModal(false);
   };
 
   return (
     <ScreenWrapper>
       <Header backRequired title={'Back'} edit editHandler={() => setShowEditModal(true)} />
-
       <View style={styles.profileCon}>
         <Image
           source={

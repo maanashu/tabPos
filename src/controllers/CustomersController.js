@@ -35,7 +35,7 @@ export class CustomersController {
 
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', endpoint);
+          console.log('response', JSON.stringify(response));
 
           resolve(response);
         })
@@ -160,50 +160,32 @@ export class CustomersController {
     });
   }
 
-  static async updateUserProfile(data) {
-    const endpoint = USER_URL + ApiUserInventory.updateUserProfile;
-    const posToken = store.getState().user?.posLoginData?.token;
-    const body = {
-      pos_staff_id: data?.pos_staff_id,
-      firstname: data?.firstname,
-      email: data?.email,
-      role_ids: [data?.role_id],
-      phone_no: data?.phone_number,
-      custom_address: data?.custom_address,
-      address_type: data?.address_type,
-      country: data?.country,
-      city: data?.city,
-      state: data?.state,
-      zipcode: data?.zipCode,
-    };
+  static async updateUserProfile(data, id) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.updateUserProfile + `/${id}`;
+      HttpClient.put(endpoint, data)
+        .then((response) => {
+          console.log('jfdgjdflk', data, id, response?.msg);
+          resolve(response);
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: response?.msg,
+            visibilityTime: 2000,
+          });
+        })
+        .catch((error) => {
+          console.log('error data', data, id);
+          console.log('dfsjdsjflkjsd', error);
 
-    const config = {
-      headers: { Authorization: posToken, 'app-name': 'pos' },
-    };
-
-    try {
-      const response = await axios.put(endpoint, body, config);
-      if (response?.status === 200) {
-        console.log('asgdhasgd', response);
-        Toast.show({
-          position: 'bottom',
-          type: 'success_toast',
-          text2: response?.data?.msg,
-          visibilityTime: 2000,
+          // Toast.show({
+          //   text2: error?.msg,
+          //   position: 'bottom',
+          //   type: 'error_toast',
+          //   visibilityTime: 1500,
+          // });
+          reject(error);
         });
-        return response.data; // Assuming you want to return the response data
-      } else {
-        throw new Error(`Unexpected status code: ${response?.status}`);
-      }
-    } catch (error) {
-      console.log('shdjhas', error?.response?.data);
-      Toast.show({
-        position: 'bottom',
-        type: 'error_toast',
-        text2: errorMessage,
-        visibilityTime: 2000,
-      });
-      throw error; // Re-throw the error to propagate it to the calling function
-    }
+    });
   }
 }
