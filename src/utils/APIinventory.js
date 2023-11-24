@@ -65,11 +65,8 @@ export const ApiUserInventory = {
   deviceLogin: USER_URL + 'users/device/login',
   verifyPin: USER_URL + 'users/verify-pin',
   changeOldPin: USER_URL + 'users/change-old-pin',
-<<<<<<< HEAD
   updateUserProfile: 'users/merchant/pos-user',
-=======
   departmentList: USER_URL + 'departments',
->>>>>>> d_mandeep
 };
 
 export const ApiProductInventory = {
