@@ -5,7 +5,7 @@ import { dropdown2, Fonts } from '@/assets';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useEffect } from 'react';
 
-export function TableDropdown({ placeholder, selected, data }) {
+export function TableDropdown({ placeholder, selected, data, style, containerStyle }) {
   const [statusModalOpen, setStatusModelOpen] = useState(false);
   const [statusModalValue, setStatusModalValue] = useState(null);
   // const [statusItems, setStatusItems] = useState([{ label: 'none', value: 'none' }, ...data]);
@@ -26,8 +26,12 @@ export function TableDropdown({ placeholder, selected, data }) {
       ArrowDownIconComponent={({ style }) => (
         <Image source={dropdown2} style={styles.dropDownIcon} />
       )}
-      style={styles.dropdown}
-      containerStyle={[styles.containerStyle, { zIndex: Platform.OS === 'ios' ? 20 : 2 }]}
+      style={[styles.dropdown, style]}
+      containerStyle={[
+        styles.containerStyle,
+        { zIndex: Platform.OS === 'ios' ? 20 : 99 },
+        containerStyle,
+      ]}
       dropDownContainerStyle={styles.dropDownContainerStyle}
       listItemLabelStyle={styles.listItemLabelStyle}
       labelStyle={styles.labelStyle}
@@ -50,13 +54,13 @@ const styles = StyleSheet.create({
     width: SW(4),
     height: SW(4),
     resizeMode: 'contain',
-    tintColor: COLORS.solidGrey,
+    tintColor: COLORS.navy_blue,
   },
   dropdown: {
     alignSelf: 'center',
     backgroundColor: 'transparent',
     borderColor: 'transparent',
-    zIndex: Platform.OS === 'ios' ? 100 : 0,
+    zIndex: Platform.OS === 'ios' ? 100 : 99,
   },
   containerStyle: {
     width: SW(50),
@@ -64,11 +68,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderRadius: 7,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.navy_blue,
   },
   dropDownContainerStyle: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.navy_blue,
     borderRadius: 7,
     ...ShadowStyles.shadow2,
     backgroundColor: COLORS.white,
@@ -78,10 +82,12 @@ const styles = StyleSheet.create({
   listItemLabelStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
+    color: COLORS.navy_blue,
   },
   labelStyle: {
     fontSize: SF(12),
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
   },
   selectedItemLabelStyle: {
     fontSize: SF(12),
@@ -89,7 +95,7 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: SF(12),
-    fontFamily: Fonts.Regular,
-    color: COLORS.gerySkies,
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
   },
 });

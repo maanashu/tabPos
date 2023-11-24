@@ -2123,7 +2123,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   productText: {
-    fontSize: SF(14),
+    fontSize: ms(7),
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
   },

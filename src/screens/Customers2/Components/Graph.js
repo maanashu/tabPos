@@ -22,145 +22,108 @@ import { LineChart } from 'react-native-chart-kit';
 
 const windowWidth = Dimensions.get('window').width;
 const result = Dimensions.get('window').height - 50;
-const twoEqualView = result / 1.8;
+const twoEqualView = result / 1.7;
 
 import { TYPES } from '@/Types/CustomersTypes';
 
-const Graph = ({ graphDetail }) => {
+const Graph = ({ graphDetail, newCustomerCheck, onlineCustomerCheck, walkCustomerCheck }) => {
   const getDeliveryData = useSelector(getDelivery);
   const [graphData, setGraphData] = useState(graphOptions);
-  const [newCustomerCheck, setNewCustomerCheck] = useState(true);
-  const [onlineCustomerCheck, setOnlineCustomerCheck] = useState(true);
-  const [walkCustomerCheck, setWalkCustomerCheck] = useState(true);
+
   const isLoad = useSelector((state) => isLoadingSelector([TYPES.GET_CUSTOMERS], state));
 
   return (
     <View style={styles.graphViewStyle}>
-      <View style={styles.flexRow}>
-        <TouchableOpacity
-          style={styles.checkboxViewStyle}
-          onPress={() => setWalkCustomerCheck((prev) => !prev)}
+      {isLoad ? (
+        <View style={styles.loaderView}>
+          <ActivityIndicator size={'small'} color={COLORS.primary} />
+        </View>
+      ) : (
+        <ScrollView
+          // style={{ marginTop: ms(10) }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
         >
-          <Image
-            source={walkCustomerCheck ? incomingOrders : blankCheckBox}
-            style={styles.checkboxIconStyle}
-          />
-          <Text style={styles.varientTextStyle}>Wallking customer</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.checkboxViewStyle}
-          onPress={() => setOnlineCustomerCheck((prev) => !prev)}
-        >
-          <Image
-            source={onlineCustomerCheck ? onlinecustomer : blankCheckBox}
-            style={styles.checkboxIconStyle}
-          />
-          <Text style={styles.varientTextStyle}>Online Customers</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.checkboxViewStyle}
-          onPress={() => setNewCustomerCheck((prev) => !prev)}
-        >
-          <Image
-            source={newCustomerCheck ? returnedOrders : blankCheckBox}
-            style={[styles.checkboxIconStyle]}
-          />
-          <Text style={styles.varientTextStyle}>New Customers</Text>
-          {/* returnedOrders */}
-        </TouchableOpacity>
-      </View>
-      <View style={{ marginTop: ms(10) }}>
-        {isLoad ? (
-          <View style={styles.loaderView}>
-            <ActivityIndicator size={'small'} color={COLORS.primary} />
-          </View>
-        ) : (
-          <ScrollView
-            style={{ marginTop: ms(10) }}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          >
-            <LineChart
-              data={{
-                labels: graphDetail?.labels ?? [],
-                datasets:
-                  !newCustomerCheck && !onlineCustomerCheck && !walkCustomerCheck
-                    ? [
-                        {
-                          data: [0],
-                          color: () => `rgba(31, 179, 255, 1)`,
-                          strokeWidth: 3,
-                        },
-                        {
-                          data: [0],
-                          color: () => `rgba(39, 90, 255, 1)`,
-                          strokeWidth: 3,
-                        },
-                        {
-                          data: [0],
-                          color: () => `rgba(252, 186, 48, 1)`,
-                          strokeWidth: 3,
-                        },
-                      ].filter((el) => el)
-                    : [
-                        walkCustomerCheck && {
-                          data: graphDetail?.datasets?.[0]?.data ?? [0],
-                          color: () => `rgba(31, 179, 255, 1)`,
-                          strokeWidth: 3,
-                        },
-                        onlineCustomerCheck && {
-                          data: graphDetail?.datasets?.[1]?.data ?? [0],
-                          color: () => `rgba(39, 90, 255, 1)`,
-                          strokeWidth: 3,
-                        },
-                        newCustomerCheck && {
-                          data: graphDetail?.datasets?.[2]?.data ?? [0],
-                          color: () => `rgba(252, 186, 48, 1)`,
-                          strokeWidth: 3,
-                        },
-                      ].filter((el) => el),
-              }}
-              width={
-                graphDetail?.labels?.length > 20
-                  ? Platform.OS === 'ios'
-                    ? Dimensions.get('window').width * 1.8
-                    : Dimensions.get('window').width * 1.3
-                  : Dimensions.get('window').width * 0.86
-              }
-              height={Platform.OS === 'android' ? 320 : 350}
-              // noOfSections={7}
-              chartConfig={{
-                decimalPlaces: 0,
-                backgroundColor: '#000',
-                backgroundGradientFrom: '#fff',
-                backgroundGradientTo: '#fff',
-                decimalPlaces: 2,
-                horizontalLabelRotation: 45,
-                color: () => `rgba(39, 90, 255, 1)`,
-                labelColor: (opacity = 1) => `rgba(98, 98, 98, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-                propsForBackgroundLines: {
-                  strokeWidth: 1,
-                  stroke: '#CCCCCC',
-                },
-                propsForDots: {
-                  r: '0',
-                  strokeWidth: '2',
-                },
-              }}
-              bezier
-              style={{
-                marginVertical: 8,
+          <LineChart
+            data={{
+              labels: graphDetail?.labels ?? [],
+              datasets:
+                !newCustomerCheck && !onlineCustomerCheck && !walkCustomerCheck
+                  ? [
+                      {
+                        data: [0],
+                        color: () => `rgba(31, 179, 255, 1)`,
+                        strokeWidth: 3,
+                      },
+                      {
+                        data: [0],
+                        color: () => `rgba(39, 90, 255, 1)`,
+                        strokeWidth: 3,
+                      },
+                      {
+                        data: [0],
+                        color: () => `rgba(252, 186, 48, 1)`,
+                        strokeWidth: 3,
+                      },
+                    ].filter((el) => el)
+                  : [
+                      walkCustomerCheck && {
+                        data: graphDetail?.datasets?.[0]?.data ?? [0],
+                        color: () => `rgba(31, 179, 255, 1)`,
+                        strokeWidth: 3,
+                      },
+                      onlineCustomerCheck && {
+                        data: graphDetail?.datasets?.[1]?.data ?? [0],
+                        color: () => `rgba(39, 90, 255, 1)`,
+                        strokeWidth: 3,
+                      },
+                      newCustomerCheck && {
+                        data: graphDetail?.datasets?.[2]?.data ?? [0],
+                        color: () => `rgba(252, 186, 48, 1)`,
+                        strokeWidth: 3,
+                      },
+                    ].filter((el) => el),
+            }}
+            width={
+              graphDetail?.labels?.length > 20
+                ? Platform.OS === 'ios'
+                  ? Dimensions.get('window').width * 1.8
+                  : Dimensions.get('window').width * 1.8
+                : Dimensions.get('window').width * 0.86
+            }
+            height={Platform.OS === 'android' ? ms(330) : ms(350)}
+            // noOfSections={8}
+            chartConfig={{
+              backgroundColor: '#000',
+              backgroundGradientFrom: '#fff',
+              backgroundGradientTo: '#fff',
+              decimalPlaces: 2,
+              horizontalLabelRotation: 45,
+              color: () => `rgba(39, 90, 255, 1)`,
+              labelColor: (opacity = 1) => `rgba(98, 98, 98, ${opacity})`,
+              style: {
                 borderRadius: 16,
-              }}
-              withShadow={false}
-              fromZero
-            />
-          </ScrollView>
-        )}
-      </View>
+              },
+              propsForBackgroundLines: {
+                strokeWidth: 1,
+                stroke: '#CCCCCC',
+              },
+              propsForDots: {
+                r: '0',
+                strokeWidth: '2',
+              },
+            }}
+            bezier
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+            }}
+            withShadow={false}
+            fromZero
+            segments={10}
+          />
+        </ScrollView>
+      )}
     </View>
   );
 };
@@ -170,10 +133,10 @@ export default memo(Graph);
 const styles = StyleSheet.create({
   graphViewStyle: {
     borderRadius: 10,
-    paddingBottom: 30,
+    // paddingBottom: 30,
     height: twoEqualView,
     backgroundColor: COLORS.white,
-    padding: ms(10),
+    // padding: ms(10),
     marginTop: ms(10),
   },
   numberOrdersText: {

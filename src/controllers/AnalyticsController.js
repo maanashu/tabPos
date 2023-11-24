@@ -342,9 +342,7 @@ export class AnalyticsController {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
       const endpoint =
-        ORDER_URL +
-        ApiOrderInventory.getAnalyticOrderGraphs +
-        `?seller_id=${sellerID}&${params}&page=${page}&limit=20`;
+        ORDER_URL + ApiOrderInventory.getAnalyticOrderGraphs + `?seller_id=${sellerID}&${params}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
