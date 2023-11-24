@@ -367,16 +367,18 @@ export function CartServiceScreen({
                                 { flexDirection: 'row', alignItems: 'center' },
                               ]}
                             >
-                              <Image
-                                source={{ uri: data.product_details?.image }}
-                                style={styles.cartItemImage}
-                              />
+                              <View style={styles.cartImageCon}>
+                                <Image
+                                  source={{ uri: data.product_details?.image }}
+                                  style={styles.columbiaMen}
+                                />
+                              </View>
 
                               <View style={{ marginLeft: ms(2) }}>
                                 <Text
                                   style={[
                                     styles.holdCart,
-                                    { color: COLORS.dark_grey, width: SW(40) },
+                                    { color: COLORS.navy_blue, width: SW(40) },
                                   ]}
                                 >
                                   {data.product_details?.name}
@@ -555,7 +557,9 @@ export function CartServiceScreen({
             <View style={{ flex: 1 }}>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
-                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
+                  <Image source={addDiscountPic} style={styles.addDiscountPic()} />
+                  <Text style={[styles.holdCart, { color: COLORS.coffee }]}>Available Offer</Text>
+                  <View></View>
                 </View>
 
                 {availableOfferLoad ? (
@@ -573,15 +577,26 @@ export function CartServiceScreen({
                         key={index}
                         onPress={() => serviceFun(item)}
                       >
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <View style={{ borderRadius: 4 }}>
-                            <Image source={{ uri: item?.image }} style={styles.offerImage} />
-                          </View>
-                          <View style={{ marginLeft: 4 }}>
-                            <Text style={[styles.offerText, [{ width: ms(90) }]]} numberOfLines={1}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            flex: 1,
+                          }}
+                        >
+                          <Image source={{ uri: item?.image }} style={styles.offerImage} />
+
+                          <View style={{ paddingHorizontal: ms(3), flex: 1 }}>
+                            <Text style={styles.offerText} numberOfLines={1}>
                               {item?.name}
                             </Text>
-                            <Text style={styles.offerPrice}>White/S</Text>
+                            <Text
+                              style={[styles.offerText, styles.offerTextYellow]}
+                              numberOfLines={1}
+                            >
+                              Today at 10hrs / Dr. Africa ...
+                            </Text>
+                            <Spacer space={SH(10)} />
                             {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
                             item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
                               <View style={{ flexDirection: 'row' }}>
@@ -601,11 +616,13 @@ export function CartServiceScreen({
                             )}
                           </View>
                         </View>
-                        <Image source={addToCart} style={styles.sideAddToCart} />
+                        <View style={styles.offerImagebackground}>
+                          <Image source={Images.cartIcon} style={styles.sideAddToCart} />
+                        </View>
                       </TouchableOpacity>
                     )}
                     style={{ flex: 1 }}
-                    showsVerticalScrollIndicator={false}
+                    // showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
                     ListEmptyComponent={() => (
                       <View style={styles.noProductText}>
@@ -627,8 +644,8 @@ export function CartServiceScreen({
                   }}
                   disabled={cartServiceData?.length == 0 ? true : false}
                 >
-                  <Image source={addDiscountPic} style={styles.addDiscountPic} />
-                  <Text style={styles.addDiscountText}>Add Discount</Text>
+                  <Image source={addDiscountPic} style={styles.addDiscountPic('discount')} />
+                  <Text style={styles.addDiscountText('discount')}>Add Discount</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.addDiscountCon(true)}
@@ -638,8 +655,8 @@ export function CartServiceScreen({
                   }}
                   disabled={cartServiceData?.length == 0 ? true : false}
                 >
-                  <Image source={notess} style={styles.addDiscountPic} />
-                  <Text style={styles.addDiscountText}>Add Notes</Text>
+                  <Image source={notess} style={styles.addDiscountPic()} />
+                  <Text style={styles.addDiscountText()}>Add Notes</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.discountCon}>
@@ -694,7 +711,7 @@ export function CartServiceScreen({
                   disabled={cartServiceData?.appointment_cart_products?.length > 0 ? false : true}
                 >
                   <Text style={styles.checkoutText}>{strings.posRetail.procedtoCheckout}</Text>
-                  <Image source={checkArrow} style={styles.checkArrow} />
+                  <Image source={Images.arrowLeftUp} style={styles.mainScreenArrow('cart')} />
                 </TouchableOpacity>
               </View>
               {/* <Spacer space={SH(10)} />

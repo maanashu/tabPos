@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cashLabelBold: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_light_blue,
     fontSize: SF(12),
     fontFamily: Fonts.Medium,
   },
@@ -329,7 +329,7 @@ export const styles = StyleSheet.create({
   },
 
   allProduct: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(13),
     fontFamily: Fonts.Medium,
   },
@@ -378,7 +378,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     alignSelf: 'center',
   },
   holdCartPad: {
@@ -406,7 +406,7 @@ export const styles = StyleSheet.create({
   holdCart: {
     color: COLORS.dark_grey,
     fontSize: SF(12),
-    fontFamily: Fonts.Bold,
+    fontFamily: Fonts.Medium,
     paddingHorizontal: moderateScale(3),
   },
 
@@ -414,7 +414,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.dark_grey,
   },
   addNotesBtn: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     alignSelf: 'center',
   },
   nameAddCon: {
@@ -428,12 +428,14 @@ export const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   avaliableOfferCon: {
-    height: windowHeight * 0.05,
+    height: ms(25),
     borderTopEndRadius: ms(6),
     borderTopLeftRadius: ms(6),
     backgroundColor: COLORS.extraYello,
-    justifyContent: 'center',
     paddingHorizontal: moderateScale(5),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 
   addDiscountCon: (addnotes) => {
@@ -449,16 +451,21 @@ export const styles = StyleSheet.create({
       marginRight: ms(2),
     };
   },
-  addDiscountText: {
-    color: COLORS.coffee,
-    fontSize: ms(7.5),
-    fontFamily: Fonts.Medium,
+  addDiscountText: (value) => {
+    return {
+      color: value ? COLORS.coffee : COLORS.navy_blue,
+      fontSize: ms(7.5),
+      fontFamily: Fonts.Medium,
+    };
   },
-  addDiscountPic: {
-    width: SW(5),
-    height: SW(5),
-    resizeMode: 'contain',
-    paddingHorizontal: moderateScale(7),
+  addDiscountPic: (value) => {
+    return {
+      width: ms(10),
+      height: ms(10),
+      resizeMode: 'contain',
+      paddingHorizontal: moderateScale(7),
+      tintColor: value ? COLORS.coffee : COLORS.navy_blue,
+    };
   },
   totalItemCon: {
     borderTopWidth: 1,
@@ -733,7 +740,7 @@ export const styles = StyleSheet.create({
   addCartDetailConHeader2: {
     height: SH(55),
     borderBottomWidth: 1,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
   },
   addCartDetailCon: {
     backgroundColor: 'white',
@@ -745,9 +752,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(13),
   },
   jacketName: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontSize: SH(18),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
   },
   addCartDetailBody: {
     height: windowHeight * 0.82,
@@ -990,7 +997,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   sukNumber: {
-    color: COLORS.darkGray,
+    color: COLORS.lavender,
     fontSize: SF(10),
     fontFamily: Fonts.Regular,
   },
@@ -1184,18 +1191,21 @@ export const styles = StyleSheet.create({
   },
   addNotesCon2: {
     paddingHorizontal: moderateScale(8),
+    borderRadius: ms(15),
   },
   addDiscountConPop: {
     height: windowHeight * 0.55,
   },
   addNotesInput1: {
-    backgroundColor: COLORS.textInputBackground,
-    borderRadius: 5,
-    height: windowHeight * 0.27,
+    backgroundColor: COLORS.white,
+    borderRadius: ms(10),
+    height: ms(140),
     textAlignVertical: 'top',
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     borderWidth: 1,
     paddingHorizontal: moderateScale(10),
+    color: COLORS.navy_blue,
+    fontSize: ms(10),
   },
   addNotes: {
     fontSize: SF(14),
@@ -1297,6 +1307,15 @@ export const styles = StyleSheet.create({
     height: SW(9),
     resizeMode: 'contain',
   },
+  mainScreenArrow: (value) => {
+    return {
+      width: SW(9),
+      height: SW(9),
+      resizeMode: 'contain',
+      transform: [{ rotate: '90deg' }],
+      tintColor: value ? COLORS.sky_blue : COLORS.navy_blue,
+    };
+  },
   crossImage: {
     width: SW(10),
     height: SW(10),
@@ -1376,15 +1395,11 @@ export const styles = StyleSheet.create({
   searchCartInput: {
     width: windowWidth * 0.35,
   },
-  allProduct: {
-    color: COLORS.solid_grey,
-    fontSize: ms(8),
-    fontFamily: Fonts.SemiBold,
-  },
+
   productCount: {
-    color: COLORS.darkGray,
+    color: COLORS.lavender,
     fontSize: SF(14),
-    fontFamily: Fonts.Italic,
+    fontFamily: Fonts.Medium,
   },
   hr: {
     borderWidth: 0.4,
@@ -1465,9 +1480,10 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   sideAddToCart: {
-    width: SW(10),
-    height: SW(10),
+    width: ms(10),
+    height: ms(10),
     resizeMode: 'contain',
+    tintColor: COLORS.extraYellow,
   },
   bucketBadge: {
     borderWidth: 2,
@@ -1496,7 +1512,7 @@ export const styles = StyleSheet.create({
   },
   bucketBadgePrimary: {
     borderColor: COLORS.white,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
   },
   badgetext: {
     color: COLORS.dark_grey,
@@ -1515,8 +1531,8 @@ export const styles = StyleSheet.create({
     height: ms(13),
     borderRadius: ms(10),
     position: 'absolute',
-    right: -5,
-    bottom: -6,
+    right: -9,
+    bottom: -8,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: COLORS.gerySkies,
@@ -1536,8 +1552,18 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.primary,
     backgroundColor: COLORS.white,
   },
+  serviceFilterBadge: {
+    borderWidth: 1,
+    width: ms(10),
+    height: ms(10),
+    borderRadius: ms(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.navy_blue,
+    backgroundColor: COLORS.white,
+  },
   holdBadgePrimary: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     borderColor: COLORS.white,
   },
   holdBadgetext: {
@@ -1706,35 +1732,46 @@ export const styles = StyleSheet.create({
   },
 
   avaliableOferBodyCon: {
-    height: Platform.OS === 'android' ? windowHeight * 0.07 : windowHeight * 0.07,
+    height: ms(45),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: ms(10),
-    paddingVertical: verticalScale(7),
+    alignItems: 'flex-start',
+    padding: ms(7),
+  },
+  offerImagebackground: {
+    width: ms(20),
+    height: ms(20),
+    backgroundColor: COLORS.light_yellow,
+    borderRadius: ms(4),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   offerImage: {
-    width: SW(10),
-    height: SW(10),
+    width: ms(20),
+    height: ms(20),
     resizeMode: 'contain',
-    borderRadius: 100,
+    borderRadius: ms(4),
   },
   offerText: {
-    color: COLORS.dark_grey,
-    fontSize: SF(10),
+    color: COLORS.coffee,
+    fontSize: ms(8),
     fontFamily: Fonts.Medium,
   },
+  offerTextYellow: {
+    color: COLORS.extraYellow,
+  },
   offerPrice: {
-    color: COLORS.darkGray,
-    fontSize: SF(9),
-    fontFamily: Fonts.Regular,
+    color: COLORS.extraYellow,
+    fontSize: ms(8),
+    fontFamily: Fonts.Medium,
   },
   lineTrought: {
     textDecorationLine: 'line-through',
   },
   offerPriceDark: {
-    color: COLORS.dark_grey,
-    fontSize: SF(9),
-    fontFamily: Fonts.SemiBold,
+    color: COLORS.coffee,
+    fontSize: ms(8),
+    fontFamily: Fonts.Medium,
     textDecorationLine: 'none',
   },
   cartListModalView: {

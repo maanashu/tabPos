@@ -88,4 +88,5 @@ export const COLORS = {
   light_green: '#D1FADF',
   navy_light_blue: '#636E9F',
   light_time: '#47B0D6',
+  extraYellow: '#C29613',
 };
