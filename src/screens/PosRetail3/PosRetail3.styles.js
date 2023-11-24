@@ -109,8 +109,9 @@ export const styles = StyleSheet.create({
   _innerContainer: {
     backgroundColor: COLORS.textInputBackground,
     flex: 1,
-    paddingHorizontal: moderateScale(12),
-    paddingVertical: verticalScale(10),
+    borderWidth: 1,
+    // paddingHorizontal: moderateScale(12),
+    // paddingVertical: verticalScale(10),
   },
   _inputMain: {
     marginTop: ms(15),
@@ -2075,15 +2076,19 @@ export const styles = StyleSheet.create({
   //  final payment design css start
   leftCon: {
     backgroundColor: COLORS.white,
-    borderRadius: 8,
-    width: windowWidth * 0.65,
-    height: windowHeight * 0.9,
+    borderRadius: ms(12),
+    flex: 0.7,
+    borderWidth: 1,
+    marginRight: ms(7),
+    // height: windowHeight * 0.9,
   },
   rightCon: {
     backgroundColor: COLORS.white,
-    borderRadius: 8,
-    width: Platform.OS === 'ios' ? windowWidth * 0.23 : windowWidth * 0.25,
-    height: windowHeight * 0.9,
+    borderRadius: ms(12),
+    flex: 0.3,
+    marginRight: ms(7),
+    // width: Platform.OS === 'ios' ? windowWidth * 0.23 : windowWidth * 0.25,
+    // height: windowHeight * 0.9,
   },
   //  final payment design css end
 
