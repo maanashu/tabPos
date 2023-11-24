@@ -20,10 +20,12 @@ import { getSetting } from '@/selectors/SettingSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   configureGoogleCode,
+  configureGoogleCodeMPOS,
   getGoogleCode,
   getSettings,
   upadteApi,
   verifyGoogleCode,
+  verifyGoogleCodeMPOS,
 } from '@/actions/SettingAction';
 import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -42,6 +44,7 @@ import { merchantLoginSuccess } from '@/actions/AuthActions';
 import { styles } from './Security.styles';
 import { ms } from 'react-native-size-matters';
 import { VirtualKeyBoard } from '@mPOS/components/VirtualKeyBoard';
+import { getUser } from '@/selectors/UserSelectors';
 
 export function Security() {
   const dispatch = useDispatch();
@@ -62,9 +65,13 @@ export function Security() {
   const [sixDigit, setSixDigit] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   const [googleAuthicator, setGoogleAuthicator] = useState(googleAuthenticator);
+  const [enableDisable2fa, setEnableDisable2fa] = useState(null);
   const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
   const getAuth = useSelector(getAuthData);
+  const posData = useSelector(getUser);
+  const loginPosUser = posData?.posLoginData;
   const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
+  // console.log('dataaaa', JSON.stringify(getSettingData?.getSetting));
   useEffect(() => {
     if (getSettingData?.getSetting) {
       setGoogleAuthicator(getSettingData?.getSetting?.google_authenticator_status ?? false);
@@ -106,29 +113,45 @@ export function Security() {
       const data = {
         code: value,
       };
-      const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
-      const res = await verificationFunction(data)(dispatch);
-      if (res?.msg === 'Code verified successfully') {
-        setValue('');
+      const authToken = loginPosUser?.token;
+
+      const verificationFunction = googleAuthicator
+        ? verifyGoogleCodeMPOS
+        : configureGoogleCodeMPOS;
+
+      const res = await verificationFunction(data, authToken)(dispatch);
+      if (res?.data?.status_code === 201) {
         const data = {
           app_name: 'pos',
           google_authenticator_status: factorEnable,
         };
+        console.log('UPDATE poopooopop', data);
         dispatch(upadteApi(data));
         dispatch(getSettings());
         setSixDigit(false);
+        setValue('');
       } else if (res === undefined) {
         setValue('');
       }
     }
   };
 
-  const toggleBtnHandler = () => {
+  const toggleBtnHandler = (value) => {
     if (googleAuthicator === false) {
+      // if (value == true) {
+      //   setEnableDisable2fa(false);
+      // } else {
+      //   setEnableDisable2fa(true);
+      // }
       setFactorEnable(true);
       setTwoStepModal(true), dispatch(getGoogleCode());
       setIsDisable(false);
     } else {
+      // if (value == true) {
+      //   setEnableDisable2fa(false);
+      // } else {
+      //   setEnableDisable2fa(true);
+      // }
       setIsDisable(true);
       setSixDigit(true);
       setFactorEnable(false);
@@ -202,7 +225,7 @@ export function Security() {
                       </Text>
                       <TouchableOpacity
                         style={styles.vectorIconCon}
-                        onPress={() => toggleBtnHandler()}
+                        onPress={() => toggleBtnHandler(googleAuthicator)}
                       >
                         <Image
                           source={googleAuthicator ? vector : vectorOff}

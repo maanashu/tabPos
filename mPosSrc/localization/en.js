@@ -20,6 +20,18 @@ export const en = {
     successfullyVerified: 'Successfully verified',
     loginBack: 'Please login back to your email inbox and set your new password',
   },
+  valiadtion: {
+    validPhone: 'Please enter valid phone number',
+    enterPhone: 'Please enter phone number',
+    enterOtp: 'Please enter OTP',
+    validOtp: 'Please enter valid OTP',
+    enterPassCode: 'Please enter passcode',
+    validPasscode: 'Please enter valid passcode',
+    error: 'not found',
+    phoneNotExist: 'This number does not exist',
+    noData: 'No Data',
+    noProduct: 'Product not found',
+  },
   setPin: {
     title: 'Set up PIN',
     subTitle: 'Cancel',
