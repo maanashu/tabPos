@@ -88,4 +88,9 @@ export const COLORS = {
   light_green: '#D1FADF',
   navy_light_blue: '#636E9F',
   light_time: '#47B0D6',
+  extra_yellow_800: '#C29613', //Shipping-Colors
+  extra_purple_300: '#914BEB',
+  extra_purple_50: '#F5EDFF',
+  extra_yellow_600: '#DBAF18',
+  alarm_success_50: '#ECFDF3',
 };

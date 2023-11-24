@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
+import { clock, fedexNew, fedx, Fonts, pay, pin, rightIcon } from '@/assets';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import moment from 'moment';
 
@@ -42,9 +42,12 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
 
         <View style={styles.orderDetailStyle}>
           <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={pin} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>
+          <View style={[styles.locationViewStyle, { backgroundColor: COLORS.extra_purple_50 }]}>
+            <Image
+              source={pin}
+              style={[styles.pinImageStyle, { tintColor: COLORS.extra_purple_300 }]}
+            />
+            <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
               {item?.distance ? `${item.distance} miles` : '0'}
             </Text>
           </View>
@@ -56,23 +59,34 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
               ? `${item?.order_details?.length} Items`
               : `${item?.order_details?.length} Item`}
           </Text>
-          <View style={[styles.locationViewStyle]}>
-            <Image source={pay} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>{item?.payable_amount ?? '00'}</Text>
+          <View style={[styles.locationViewStyle, { backgroundColor: COLORS.alarm_success_50 }]}>
+            <Image
+              source={pay}
+              style={[styles.pinImageStyle, { tintColor: COLORS.success_green }]}
+            />
+            <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+              {item?.payable_amount ?? '00'}
+            </Text>
           </View>
         </View>
 
-        <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
-          <Text style={styles.timeTextStyle}>
-            {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
-          </Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={clock} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>
-              {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
-                item?.preffered_delivery_end_time ?? '00.00'
-              }`}
+        <View style={styles.rowContainerStyle}>
+          <Image source={fedexNew} style={styles.shippingTypeImage} />
+          <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
+            <Text style={styles.timeTextStyle}>
+              {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
             </Text>
+            <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
+              <Image
+                source={clock}
+                style={[styles.pinImageStyle, { tintColor: COLORS.orange_bright }]}
+              />
+              <Text style={[styles.distanceTextStyle, { color: COLORS.dark_yellow }]}>
+                {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
+                  item?.preffered_delivery_end_time ?? '00.00'
+                }`}
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -94,7 +108,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
       <View style={styles.headingRowStyle}>
         <Text style={styles.ordersToReviewText}>
           {selectedStatus === '0'
-            ? strings.shippingOrder.reviewOrders
+            ? strings.shippingOrder.ordersReview
             : selectedStatus === '1'
             ? strings.shippingOrder.acceptedOrders
             : selectedStatus === '2'
@@ -228,5 +242,15 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(22),
     color: COLORS.navy_blue,
+  },
+  shippingTypeImage: {
+    width: ms(30),
+    height: ms(30),
+    resizeMode: 'contain',
+    borderRadius: ms(5),
+  },
+  rowContainerStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
