@@ -16,7 +16,13 @@ import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SW } from '@/theme';
 import { getShipping } from '@/selectors/ShippingSelector';
-import { getOrderCount, getOrders, todayShippingStatus } from '@/actions/ShippingAction';
+import {
+  getOrderCount,
+  getOrders,
+  getReviewDefault,
+  todayShippingStatus,
+} from '@/actions/ShippingAction';
+import { useMemo } from 'react';
 
 const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
   const dispatch = useDispatch();
@@ -24,51 +30,106 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
   const statusCount = getShippingData?.getOrderCount;
   const [selectedStatus, setSelectedStatus] = useState(selectedStatusOrder);
   const { height } = Dimensions.get('window');
-
-  const shippingDrawer = [
-    {
-      key: '0',
-      image: Images.reviewOrders,
-      title: strings.orderStatus.reviewOrders,
-      count: statusCount?.[0]?.count ?? 0,
-    },
-    {
-      key: '3',
-      image: Images.printingLabel,
-      title: strings.orderStatus.printingLabel,
-      count: statusCount?.[3]?.count ?? 0,
-    },
-    {
-      key: '4',
-      image: Images.delivery,
-      title: strings.orderStatus.trackOrders,
-      count: statusCount?.[4]?.count ?? 0,
-    },
-    {
-      key: '5',
-      image: Images.shippingCart,
-      title: strings.orderStatus.delivered,
-      count: statusCount?.[5]?.count ?? 0,
-    },
-    {
-      key: '7,8',
-      image: Images.noCard,
-      title: strings.orderStatus.rejected,
-      count: parseInt(statusCount?.[7]?.count) + parseInt(statusCount?.[8]?.count) ?? 0,
-    },
-    {
-      key: '9',
-      image: Images.returnOrders,
-      title: strings.orderStatus.returned,
-      count: statusCount?.[9]?.count ?? 0,
-    },
-  ];
-
+  const shippingData = useSelector(getShipping);
+  const orderStatusCountData = shippingData?.orderStatus;
+  console.log('mpos', JSON.stringify(orderStatusCountData));
+  // const shippingDrawer = [
+  //   {
+  //     key: '0',
+  //     image: Images.reviewOrders,
+  //     title: strings.orderStatus.reviewOrders,
+  //     count: statusCount?.[0]?.count ?? 0,
+  //   },
+  //   {
+  //     key: '3',
+  //     image: Images.printingLabel,
+  //     title: strings.orderStatus.printingLabel,
+  //     count: statusCount?.[3]?.count ?? 0,
+  //   },
+  //   {
+  //     key: '4',
+  //     image: Images.delivery,
+  //     title: strings.orderStatus.trackOrders,
+  //     count: statusCount?.[4]?.count ?? 0,
+  //   },
+  //   {
+  //     key: '5',
+  //     image: Images.shippingCart,
+  //     title: strings.orderStatus.delivered,
+  //     count: statusCount?.[5]?.count ?? 0,
+  //   },
+  //   {
+  //     key: '7,8',
+  //     image: Images.noCard,
+  //     title: strings.orderStatus.rejected,
+  //     count: parseInt(statusCount?.[7]?.count ?? 0) + parseInt(statusCount?.[8]?.count ?? 0) ?? 0,
+  //   },
+  //   {
+  //     key: '9',
+  //     image: Images.returnOrders,
+  //     title: strings.orderStatus.returned,
+  //     count: statusCount?.[9]?.count ?? 0,
+  //   },
+  // ];
+  const shippingDrawer = useMemo(
+    () => [
+      {
+        key: '0',
+        image: Images.reviewOrders,
+        title: 'Orders to Review',
+        count: orderStatusCountData?.[0]?.count ?? '0',
+      },
+      // {
+      //   key: '1',
+      //   image: drawerdeliveryTruck,
+      //   title: 'Accepted',
+      //   count: orderStatusCountData?.[1]?.count ?? '0',
+      // },
+      // {
+      //   key: '2',
+      //   image: timer,
+      //   title: 'Order Preparing ',
+      //   count: orderStatusCountData?.[2]?.count ?? '0',
+      // },
+      {
+        key: '3',
+        image: Images.printingLabel,
+        title: 'Printing Label',
+        count: orderStatusCountData?.[3]?.count ?? '0',
+      },
+      {
+        key: '4',
+        image: Images.delivery,
+        title: 'Shipped',
+        count: orderStatusCountData?.[4]?.count ?? '0',
+      },
+      {
+        key: '5',
+        image: Images.shippingCart,
+        title: 'Delivered',
+        count: orderStatusCountData?.[6]?.count ?? '0',
+      },
+      {
+        key: '7,8',
+        image: Images.noCard,
+        title: 'Rejected/Cancelled',
+        count: orderStatusCountData?.[6]?.count ?? '0',
+      },
+      {
+        key: '9',
+        image: Images.returnOrders,
+        title: 'Returned',
+        count: orderStatusCountData?.[8]?.count ?? '0',
+      },
+    ],
+    [orderStatusCountData]
+  );
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
       disabled={item?.count > 0 ? false : true}
       onPress={() => {
         dispatch(getOrders(item?.key));
+        dispatch(getReviewDefault(item?.key));
         dispatch(getOrderCount());
         dispatch(todayShippingStatus());
         setSelectedStatus(item?.key);

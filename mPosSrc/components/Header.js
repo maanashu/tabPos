@@ -34,6 +34,7 @@ export function Header({
   cartLength,
   edit,
   editHandler,
+  backFunction,
 }) {
   const maxDate = new Date(2023, 10, 29);
   const [open, setOpen] = useState(false);
@@ -110,10 +111,18 @@ export function Header({
     clearField();
   };
 
+  const handleBackNavi = () => {
+    if (backFunction) {
+      backFunction();
+    } else {
+      goBack();
+    }
+  };
+
   return (
     <View style={styles.container}>
       {backRequired ? (
-        <TouchableOpacity onPress={() => goBack()} style={styles.row}>
+        <TouchableOpacity onPress={handleBackNavi} style={styles.row}>
           <Image source={Images.back} resizeMode="contain" style={styles.backIcon} />
           <Text style={styles.regularTextStyle}>{title}</Text>
         </TouchableOpacity>

@@ -16,6 +16,10 @@ import styles from './styles';
 import StatusDrawer from '../Components/StatusDrawer';
 import { getShipping } from '@/selectors/ShippingSelector';
 import { getOrders, getReviewDefault } from '@/actions/ShippingAction';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { SHIPPING_TYPES } from '@mPOS/Types/ShippingTypes';
+import { getDelivery } from '@/selectors/DeliverySelector';
+import { TYPES } from '@/Types/DeliveringOrderTypes';
 
 export function ShippingOrderList(props) {
   const dispatch = useDispatch();
@@ -27,6 +31,10 @@ export function ShippingOrderList(props) {
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState();
 
+  const getOrdersData = useSelector(getDelivery);
+  const ordersList = getOrdersData?.getReviewDef;
+  const [orderId, setOrderId] = useState(ordersList?.[0]?.id ?? '');
+
   useEffect(() => {
     if (selected) {
       dispatch(getReviewDefault(parseInt(selected)));
@@ -36,7 +44,6 @@ export function ShippingOrderList(props) {
       setSelectedStatus('0');
     }
   }, []);
-
   const renderOrderItem = ({ item, index }) => {
     const shippingDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     return (
@@ -124,7 +131,9 @@ export function ShippingOrderList(props) {
     }
   };
 
-  const isLoading = useSelector((state) => isLoadingSelector([SHIPPING_TYPES.GET_ORDERS], state));
+  const isLoading = useSelector((state) =>
+    isLoadingSelector([SHIPPING_TYPES.GET_ORDERS, TYPES.GET_REVIEW_DEF], state)
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -136,8 +145,8 @@ export function ShippingOrderList(props) {
       />
 
       <FlatList
-        data={orders}
-        extraData={orders}
+        data={ordersList}
+        extraData={ordersList}
         removeClippedSubviews={true}
         renderItem={renderOrderItem}
         showsVerticalScrollIndicator={false}

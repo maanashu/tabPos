@@ -89,7 +89,6 @@ export class CustomersController {
         ORDER_URL + ApiOrderInventory.getCustomer + `?seller_id=${sellerID}&filter=${time}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('adagsjdghjasd', endpoint);
           resolve(response);
         })
         .catch((error) => {
