@@ -7,7 +7,19 @@ import { ms } from 'react-native-size-matters';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import { arrowLeftUp, clock, fedexNew, Fonts, pay, pin, rightIcon } from '@/assets';
+import {
+  arrowLeftUp,
+  arrowRightTop,
+  cashShippingNew,
+  clock,
+  fedexNew,
+  Fonts,
+  pay,
+  pin,
+  pinShippingNew,
+  rightIcon,
+  thunder,
+} from '@/assets';
 import moment from 'moment';
 import { useEffect } from 'react';
 
@@ -58,10 +70,7 @@ const OrderList = ({
       <View style={styles.orderDetailStyle}>
         <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
         <View style={[styles.locationViewStyle, { backgroundColor: COLORS.extra_purple_50 }]}>
-          <Image
-            source={pin}
-            style={[styles.pinImageStyle, { tintColor: COLORS.extra_purple_300 }]}
-          />
+          <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
           <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
             {item?.distance ? `${item.distance} miles` : '0'}
           </Text>
@@ -76,7 +85,7 @@ const OrderList = ({
         </Text>
 
         <View style={[styles.locationViewStyle, { backgroundColor: COLORS.alarm_success_50 }]}>
-          <Image source={pay} style={[styles.pinImageStyle, { tintColor: COLORS.success_green }]} />
+          <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
           <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
             {item?.payable_amount ?? '00'}
           </Text>
@@ -90,10 +99,7 @@ const OrderList = ({
             {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
           </Text>
           <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
-            <Image
-              source={clock}
-              style={[styles.pinImageStyle, { tintColor: COLORS.orange_bright }]}
-            />
+            <Image source={thunder} style={[styles.pinImageStyle]} />
             <Text style={[styles.distanceTextStyle, { color: COLORS.dark_yellow }]}>
               {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
                 item?.preffered_delivery_end_time ?? '00.00'
@@ -104,7 +110,11 @@ const OrderList = ({
       </View>
 
       <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
-        <Image source={rightIcon} style={styles.rightIconStyle} />
+        <Image
+          source={arrowRightTop}
+          style={{ height: ms(13), width: ms(13), tintColor: COLORS.primaryDark }}
+        />
+        {/* <Image source={rightIcon} style={styles.rightIconStyle} /> */}
       </TouchableOpacity>
     </TouchableOpacity>
   );
@@ -161,7 +171,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     paddingHorizontal: 15,
     backgroundColor: COLORS.transparent,
   },

@@ -82,7 +82,7 @@ const OrderConversion = () => {
               <Text style={[styles.orderTypeTextStyle, { color: COLORS.extra_yellow_800 }]}>
                 {strings.shippingOrder.returned}
               </Text>
-              <View style={[styles.countContainer, { color: COLORS.light_yellow }]}>
+              <View style={[styles.countContainer, { backgroundColor: COLORS.light_yellow }]}>
                 <View style={styles.returnedDot}></View>
                 <Text style={[styles.countTextStyle, { color: COLORS.extra_yellow_800 }]}>
                   {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
@@ -98,7 +98,7 @@ const OrderConversion = () => {
                 {strings.shippingOrder.cancelled}
               </Text>
 
-              <View style={[styles.countContainer, { color: COLORS.light_red }]}>
+              <View style={[styles.countContainer, { backgroundColor: COLORS.light_red }]}>
                 <View style={styles.cancelledDot}></View>
                 <Text style={[styles.countTextStyle, { color: COLORS.alert_red }]}>
                   {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
@@ -124,7 +124,7 @@ export default memo(OrderConversion);
 
 const styles = StyleSheet.create({
   orderConvertionView: {
-    borderRadius: 10,
+    borderRadius: ms(16),
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
   },

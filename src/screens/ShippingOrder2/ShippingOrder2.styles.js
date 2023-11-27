@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
   },
 
   totalTextStyle: {
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
     fontSize: scale(5),
-    color: COLORS.solid_grey,
+    color: COLORS.lavender,
     paddingTop: ms(3),
   },
 
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 5,
-    borderColor: COLORS.blue_shade,
+    borderColor: COLORS.sky_grey,
   },
   removeProductImageStyle: {
     width: SH(24),
@@ -370,12 +370,12 @@ const styles = StyleSheet.create({
   itemCountText: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(10),
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
   },
   totalText: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
-    color: COLORS.solid_grey,
+    color: COLORS.textBlue,
   },
   acceptButtonView: {
     height: SH(48),
@@ -473,6 +473,17 @@ const styles = StyleSheet.create({
     borderTopColor: '#7E8AC1',
     marginTop: ms(10),
     borderStyle: 'dashed',
+  },
+  trackOrderIconStyle: {
+    width: ms(18),
+    height: ms(18),
+    resizeMode: 'contain',
+  },
+  checkboxIconStyle: {
+    width: SH(20),
+    height: SH(20),
+    resizeMode: 'contain',
+    marginRight: ms(3),
   },
 });
 
