@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.darkGray,
+    backgroundColor: COLORS.sky_grey,
   },
   verifyContainer: {
     width: windowWidth * 0.4,
@@ -54,5 +54,24 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
+  },
+  profileImage: {
+    width: SH(100),
+    height: SH(100),
+    borderRadius: SH(50),
+    borderWidth: 0.5,
+    borderColor: COLORS.solidGrey,
+  },
+  firstName: {
+    fontSize: SH(16),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.solid_grey,
+  },
+  role: {
+    fontSize: SH(14),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.primary,
+    width: SH(270),
+    textAlign: 'center',
   },
 });

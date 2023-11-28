@@ -24,6 +24,7 @@ export const en = {
   },
   passcode: {
     heading: 'Enter Passcode',
+    subHeading: 'Welcome to JOBR POS',
     success: 'Successfully verified',
     loginBack: 'Please login back to your email inbox and set your new password',
   },
