@@ -413,9 +413,11 @@ export function Customers2() {
                 >
                   <Image
                     source={onlineCustomerCheck ? onlinecustomer : blankCheckBox}
-                    style={styles.checkboxIconStyle}
+                    style={[styles.checkboxIconStyle]}
                   />
-                  <Text style={styles.varientTextStyle}>Online Customers</Text>
+                  <Text style={[styles.varientTextStyle, { color: COLORS.success_green }]}>
+                    Online Customers
+                  </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.checkboxViewStyle}
@@ -425,7 +427,9 @@ export function Customers2() {
                     source={newCustomerCheck ? returnedOrders : blankCheckBox}
                     style={[styles.checkboxIconStyle]}
                   />
-                  <Text style={styles.varientTextStyle}>New Customers</Text>
+                  <Text style={[styles.varientTextStyle, { color: COLORS.yellow }]}>
+                    New Customers
+                  </Text>
                   {/* returnedOrders */}
                 </TouchableOpacity>
               </View>
