@@ -19,6 +19,7 @@ export const VirtualKeyBoard = ({
   isBackButtonDisbaled = false,
   onPressContinueButton = () => {},
   screen,
+  canGoBack = true,
 }) => {
   const KEYBOARD_DATA = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'cross', '0', 'deleteBack'];
   return (
@@ -88,8 +89,15 @@ export const VirtualKeyBoard = ({
                   borderRadius: ms(20),
                   marginHorizontal: 0,
                 }}
-                textStyle={{ fontSize: ms(12), fontFamily: Fonts.Regular }}
-                iconStyle={{ height: ms(15), width: ms(15) }}
+                textStyle={[
+                  { fontSize: ms(12), fontFamily: Fonts.Regular },
+                  !canGoBack && { color: COLORS.graySky },
+                ]}
+                iconStyle={{
+                  height: ms(15),
+                  width: ms(15),
+                  tintColor: !canGoBack ? COLORS.graySky : COLORS.sky_blue,
+                }}
                 icon={Images.arrowLeftUp}
                 title={'Back'}
               />
@@ -100,7 +108,7 @@ export const VirtualKeyBoard = ({
                   width: 'auto',
                   height: ms(35),
                   padding: ms(10),
-                  backgroundColor: COLORS.dark_blue,
+                  backgroundColor: COLORS.navy_blue,
                   borderWidth: 0,
                   borderRadius: ms(20),
                   marginLeft: ms(20),

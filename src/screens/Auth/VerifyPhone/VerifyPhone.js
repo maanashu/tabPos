@@ -116,6 +116,7 @@ export function VerifyPhone() {
           </View>
 
           <VirtualKeyBoard
+            canGoBack={false}
             maxCharLength={10}
             enteredValue={phoneNumber}
             setEnteredValue={setPhoneNumber}
