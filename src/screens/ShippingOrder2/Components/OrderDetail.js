@@ -64,7 +64,8 @@ const OrderDetail = ({
             style={[
               styles.acceptButtonView,
               {
-                width: ms(170),
+                width: '90%',
+                // width: ms(170),
                 backgroundColor: COLORS.sky_blue,
                 borderRadius: ms(30),
                 flexDirection: 'row',
@@ -84,7 +85,7 @@ const OrderDetail = ({
             onPress={() => trackOrderHandler(getTrackingInfo)}
             style={[
               styles.acceptButtonView,
-              { width: ms(140), flexDirection: 'row', justifyContent: 'space-between' },
+              { width: '90%', flexDirection: 'row', justifyContent: 'space-between' },
             ]}
           >
             <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
@@ -155,7 +156,16 @@ const OrderDetail = ({
                 {userDetail?.invoice?.delivery_date ??
                   moment(userDetail?.created_at).format('DD MMM YYYY')}
               </Text>
-              <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
+              <View
+                style={[
+                  styles.locationViewStyle,
+                  {
+                    backgroundColor: COLORS.light_yellow,
+                    paddingVertical: ms(1),
+                    borderRadius: 10,
+                  },
+                ]}
+              >
                 <Image source={thunder} style={[styles.pinImageStyle]} />
                 <Text
                   style={{
@@ -306,7 +316,15 @@ const OrderDetail = ({
                   {strings.shippingOrder.paymentMethod}
                 </Text>
                 <View
-                  style={[styles.locationViewStyle, { backgroundColor: COLORS.alarm_success_50 }]}
+                  style={[
+                    styles.locationViewStyle,
+                    {
+                      backgroundColor: COLORS.alarm_success_50,
+                      width: '50%',
+                      paddingVertical: ms(1),
+                      borderRadius: 10,
+                    },
+                  ]}
                 >
                   <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
                   <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
@@ -319,8 +337,8 @@ const OrderDetail = ({
 
           <View
             style={{
-              flex: 0.6,
-              paddingHorizontal: ms(20),
+              flex: 0.65,
+              paddingHorizontal: ms(10),
               borderRadius: 10,
               paddingVertical: 20,
               alignSelf: 'center',

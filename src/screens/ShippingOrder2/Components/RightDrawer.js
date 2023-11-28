@@ -124,7 +124,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
       {
         key: '4',
         image: trackDelivery,
-        title: 'Shipped',
+        title: 'Track Delivery',
         count: orderStatusCountData?.[4]?.count ?? '0',
       },
       {
@@ -261,7 +261,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
-      disabled={item?.count > 0 ? false : true}
+      // disabled={item?.count > 0 ? false : true}
       style={[styles.drawerIconView]}
       onPress={() => onPressDrawerHandler(item?.key)}
     >
@@ -430,7 +430,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
 
   const renderDrawerFull = ({ item }) => (
     <TouchableOpacity
-      disabled={item?.count > 0 ? false : true}
+      //disabled={item?.count > 0 ? false : true}
       style={[{ marginVertical: ms(2) }]}
       onPress={() => onPressDrawerHandler(item?.key)}
     >

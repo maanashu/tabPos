@@ -52,7 +52,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
           </Text>
         </View>
 
-        <View style={styles.orderDetailStyle}>
+        <View style={[styles.orderDetailStyle, { width: undefined }]}>
           <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
           <View style={[styles.locationViewStyle, { backgroundColor: COLORS.extra_purple_50 }]}>
             <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
@@ -62,7 +62,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
           </View>
         </View>
 
-        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
+        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2, width: undefined }]}>
           <Text style={styles.nameTextStyle}>
             {item?.order_details?.length > 1
               ? `${item?.order_details?.length} Items`
@@ -78,7 +78,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
 
         <View style={styles.rowContainerStyle}>
           <Image source={fedexNew} style={styles.shippingTypeImage} />
-          <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
+          <View style={[styles.orderDetailStyle, { width: undefined }]}>
             <Text style={styles.timeTextStyle}>
               {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
             </Text>
@@ -123,7 +123,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
             : selectedStatus === '3'
             ? 'Printing Labels'
             : selectedStatus === '4'
-            ? strings.orderStatus.shipOrder
+            ? strings.orderStatus.trackingOrders
             : selectedStatus === '5'
             ? strings.orderStatus.deliveryOrder
             : selectedStatus === '7,8'
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(9),
     color: COLORS.orange_bright,
-    paddingLeft: 5,
+    paddingHorizontal: 5,
   },
   locationViewStyle: {
     flexDirection: 'row',
