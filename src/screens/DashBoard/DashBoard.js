@@ -548,28 +548,32 @@ export function DashBoard({ navigation }) {
               </Text>
             </View>
           </View>
-          <Spacer space={SH(10)} />
-          <View style={styles.profileHrRow}></View>
-          <Spacer space={SH(10)} />
+          <Spacer space={SH(24)} />
 
           <View style={styles.sessionCon}>
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={styles.cashLabel}>
+              <Text style={[styles.cashLabel, { color: COLORS.primaryDark }]}>
                 {moment().format('dddd')}
                 {', '}
                 {moment().format('ll')}
               </Text>
-              <Text style={styles.cashLabel}>{moment().format('LTS')}</Text>
+              <Text style={[styles.cashLabel, { color: COLORS.primaryDark }]}>
+                {moment().format('LTS')}
+              </Text>
             </View>
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={styles.cashLabel}>{strings.dashboard.logTime}</Text>
-              <Text style={styles.cashAmount}>
+              <Text style={[styles.cashLabel, { color: COLORS.primaryDark }]}>
+                {strings.dashboard.logTime}
+              </Text>
+              <Text style={[styles.cashAmount, { color: COLORS.primaryDark }]}>
                 {moment(getLoginDeatil?.updated_at).format('LTS')}
               </Text>
             </View>
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={styles.cashLabel}>{strings.dashboard.session}</Text>
-              <Text style={styles.cashAmount}>
+              <Text style={[styles.cashLabel, { color: COLORS.primaryDark }]}>
+                {strings.dashboard.session}
+              </Text>
+              <Text style={[styles.cashAmount, { color: COLORS.primaryDark }]}>
                 {getLoginSessionTime(moment(getLoginDeatil?.updated_at).format('LTS'))}
               </Text>
             </View>
@@ -584,9 +588,9 @@ export function DashBoard({ navigation }) {
             }}
             style={styles.checkoutButton}
           >
-            <View style={styles.displayRow}>
-              <Image source={productReturn} style={styles.lockLight} />
+            <View style={styles.btnInnerContainer}>
               <Text style={styles.checkoutText1}>{strings.dashboard.productReturn}</Text>
+              <Image source={productReturn} style={styles.lockLight} />
             </View>
           </TouchableOpacity>
 
@@ -611,9 +615,9 @@ export function DashBoard({ navigation }) {
               }
             }}
           >
-            <View style={styles.displayRow}>
-              <Image source={lockLight} style={styles.lockLight} />
+            <View style={styles.btnInnerContainer}>
               <Text style={[styles.checkoutText1]}>{strings.dashboard.lockScreen}</Text>
+              <Image source={lockLight} style={styles.lockLight} />
             </View>
           </TouchableOpacity>
 

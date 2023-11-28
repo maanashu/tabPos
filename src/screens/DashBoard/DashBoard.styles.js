@@ -52,6 +52,7 @@ export const styles = StyleSheet.create({
   sessionCon: {
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.26,
+    paddingHorizontal: moderateScale(12),
   },
 
   todaySale: {
@@ -84,21 +85,19 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.26,
   },
   checkoutButton: {
-    // flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.dark_grey,
+    borderColor: COLORS.navy_blue,
     width: windowWidth * 0.26,
 
     height: SW(14),
-    alignSelf: 'center',
-    borderRadius: 5,
+    borderRadius: 30,
     paddingVertical: verticalScale(9),
+    paddingHorizontal: moderateScale(16),
   },
   checkoutText1: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(16),
     fontFamily: Fonts.Regular,
   },
@@ -153,7 +152,7 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.95,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(5),
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.sky_grey,
   },
   inputWraper: {
     backgroundColor: COLORS.textInputBackground,
@@ -854,5 +853,10 @@ export const styles = StyleSheet.create({
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
+  },
+  btnInnerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
