@@ -529,6 +529,7 @@ export const en = {
     cancelledOrders: 'Cancelled Orders',
     ordersReview: 'Orders to Review',
     paymentMethod: 'Payment Method',
+    scanBarCodeShipping: 'Scan Barcode of each item',
   },
   deliveryOrders2: {
     orderStatus: 'Today’s Order Status',
@@ -556,6 +557,8 @@ export const en = {
     prepareButton: 'Ready to Pickup',
     preparedButton: 'Prepared',
     printlabel: 'Print Label',
+    later: 'Later',
+    done: 'Done',
   },
   returnOrder: {
     heading: 'Confirm the Return',

@@ -485,6 +485,32 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginRight: ms(3),
   },
+  rightTopIconStyle: {
+    width: ms(14),
+    height: ms(14),
+    resizeMode: 'contain',
+    marginLeft: 2,
+  },
+  scanButtonStyle: {
+    width: '90%',
+    backgroundColor: COLORS.sky_grey,
+    height: ms(25),
+    borderRadius: ms(15),
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
+  scanIconStyle: {
+    height: ms(15),
+    width: ms(15),
+    resizeMode: 'contain',
+    marginLeft: ms(5),
+  },
+  scanBttnTextStyle: {
+    color: COLORS.navy_blue,
+    fontSize: ms(10),
+  },
 });
 
 export default styles;

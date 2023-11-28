@@ -16,12 +16,16 @@ import {
   dropdown,
   dropdown2,
   fedexNew,
+  filter,
+  filterShippingNew,
   Fonts,
+  packageCancelled,
   pay,
   pin,
   pinShippingNew,
   rightIcon,
   thunder,
+  userSolid,
 } from '@/assets';
 import moment from 'moment';
 import { useEffect } from 'react';
@@ -158,7 +162,7 @@ const OrderList = ({
         >
           <View
             style={{
-              flex: 1,
+              flex: 1.5,
             }}
           >
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
@@ -221,20 +225,14 @@ const OrderList = ({
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
               <View style={styles.shippingTypeImage}></View>
               <View style={[styles.orderDetailStyle, { width: undefined }]}>
-                <Text style={styles.nameTextStyle}>
-                  {'Shipped'}
-                  {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
-                </Text>
-                <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
-                  <Image
-                    source={clock}
-                    style={[styles.pinImageStyle, { tintColor: COLORS.dark_yellow }]}
-                  />
-                  <Text style={[styles.distanceTextStyle, { color: COLORS.dark_yellow }]}>
+                <Text style={styles.nameTextStyle}>{'Cancelled by'}</Text>
+                <View style={[styles.locationViewStyle, { backgroundColor: COLORS.sky_grey }]}>
+                  <Image source={userSolid} style={[styles.pinImageStyle]} />
+                  <Text style={[styles.distanceTextStyle, { color: COLORS.base_gray_600 }]}>
                     {/* {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
                           item?.preffered_delivery_end_time ?? '00.00'
                         }`} */}
-                    {'Yesterday 28,Oct,2023 10:41 am'}
+                    {'User'}
                   </Text>
                 </View>
               </View>
@@ -242,18 +240,17 @@ const OrderList = ({
           </View>
           <View
             style={{
-              flex: 1,
+              flex: 1.5,
             }}
           >
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
               <View style={[styles.orderDetailStyle, { width: undefined }]}>
-                <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
-                <View
-                  style={[styles.locationViewStyle, { backgroundColor: COLORS.extra_purple_50 }]}
-                >
-                  <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
-                  <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
-                    {item?.distance ? `${item.distance} miles` : '0'}
+                <Text style={styles.nameTextStyle}>{'Cancelled at'}</Text>
+                <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_red }]}>
+                  <Image source={packageCancelled} style={[styles.pinImageStyle]} />
+                  <Text style={[styles.distanceTextStyle, { color: COLORS.alert_red }]}>
+                    {/* {item?.distance ? `${item.distance} miles` : '0'} */}
+                    {'21 Oct 23 00:10:35 hrs'}
                   </Text>
                 </View>
               </View>
@@ -261,7 +258,7 @@ const OrderList = ({
           </View>
           <View
             style={{
-              flex: 0.5,
+              flex: 0.3,
             }}
           >
             <TouchableOpacity
@@ -416,26 +413,40 @@ const OrderList = ({
 
   return (
     <View style={styles.orderToReviewView}>
-      <TouchableOpacity onPress={() => setViewAllOrders(false)} style={styles.headingRowStyle}>
-        <Image source={arrowLeftUp} style={{ width: ms(15), height: ms(15), marginRight: ms(5) }} />
-        <Text style={styles.ordersToReviewText}>
-          {selectedStatus === '0'
-            ? strings.shippingOrder.reviewOrders
-            : selectedStatus === '1'
-            ? strings.shippingOrder.acceptedOrders
-            : selectedStatus === '2'
-            ? strings.shippingOrder.prepareOrders
-            : selectedStatus === '3'
-            ? 'Printing Labels'
-            : selectedStatus === '4'
-            ? strings.orderStatus.trackingOrders
-            : selectedStatus === '5'
-            ? strings.orderStatus.deliveryOrder
-            : selectedStatus === '7,8'
-            ? strings.orderStatus.cancelledOrder
-            : strings.orderStatus.returnedOrders}
-        </Text>
-      </TouchableOpacity>
+      <View style={[styles.headingRowStyle, { justifyContent: 'space-between' }]}>
+        <TouchableOpacity
+          style={{ padding: ms(5), flexDirection: 'row', alignItems: 'center' }}
+          onPress={() => setViewAllOrders(false)}
+        >
+          <Image
+            source={arrowLeftUp}
+            style={{ width: ms(15), height: ms(15), marginRight: ms(5) }}
+          />
+          <Text style={styles.ordersToReviewText}>
+            {selectedStatus === '0'
+              ? strings.shippingOrder.reviewOrders
+              : selectedStatus === '1'
+              ? strings.shippingOrder.acceptedOrders
+              : selectedStatus === '2'
+              ? strings.shippingOrder.prepareOrders
+              : selectedStatus === '3'
+              ? 'Printing Labels'
+              : selectedStatus === '4'
+              ? strings.orderStatus.trackingOrders
+              : selectedStatus === '5'
+              ? strings.orderStatus.deliveryOrder
+              : selectedStatus === '7,8'
+              ? strings.orderStatus.cancelledOrder
+              : strings.orderStatus.returnedOrders}
+          </Text>
+        </TouchableOpacity>
+        {selectedStatus >= 4 && (
+          <TouchableOpacity style={[styles.filterButtonStyle]}>
+            <Text style={styles.calenderTextStyle}>Filters</Text>
+            <Image source={filterShippingNew} style={styles.filterIconStyle} />
+          </TouchableOpacity>
+        )}
+      </View>
 
       {selectedStatus < 4 ? (
         <FlatList
@@ -451,7 +462,7 @@ const OrderList = ({
         <View
           style={{
             flex: 1,
-            margin: ms(5),
+            marginHorizontal: ms(5),
           }}
         >
           <TouchableOpacity style={[styles.calendarDropContainer]}>
@@ -489,7 +500,6 @@ const OrderList = ({
 
           <View
             style={{
-              // backgroundColor: '#111',
               flex: 1,
             }}
           >
@@ -506,7 +516,6 @@ const OrderList = ({
           </View>
           <View
             style={{
-              // backgroundColor: 'yellow',
               flex: 1,
             }}
           >
@@ -642,7 +651,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     marginHorizontal: ms(10),
     marginVertical: ms(2),
-    borderRadius: ms(10),
+    borderRadius: ms(8),
     borderColor: COLORS.light_purple,
     borderWidth: 1,
   },
@@ -661,7 +670,7 @@ const styles = StyleSheet.create({
   },
   flatlistHeaderTextStyle: {
     color: COLORS.lavenders,
-    fontSize: ms(8),
+    fontSize: ms(7),
     fontFamily: Fonts.Medium,
     marginHorizontal: ms(10),
   },
@@ -685,5 +694,25 @@ const styles = StyleSheet.create({
     color: COLORS.navy_blue,
     fontSize: ms(8),
     fontFamily: Fonts.Medium,
+  },
+  filterButtonStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    height: ms(20),
+    width: ms(60),
+    paddingHorizontal: ms(2),
+    alignItems: 'center',
+    backgroundColor: COLORS.sky_grey,
+    marginHorizontal: ms(2),
+    marginVertical: ms(2),
+    borderRadius: ms(10),
+    borderColor: COLORS.navy_blue,
+    borderWidth: 0,
+  },
+  filterIconStyle: {
+    height: ms(14),
+    width: ms(14),
+    resizeMode: 'contain',
+    // marginRight: ms(2),
   },
 });
