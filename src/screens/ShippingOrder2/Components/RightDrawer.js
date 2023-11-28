@@ -273,7 +273,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
     <View
       style={[
         styles.bucketBackgorund,
-        showFullSideMenu && { width: ms(100), height: ms(30), borderRadius: 0, marginTop: ms(10) },
+        showFullSideMenu && { width: ms(100), height: ms(30), borderRadius: 0 },
       ]}
     >
       <Spacer space={ms(20)} />
@@ -286,7 +286,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
             alignItems: 'center',
             height: '100%',
             borderRadius: ms(20),
-            width: '90%',
+            width: '100%',
           }}
           onPress={handleShowMenu}
         >
@@ -445,6 +445,9 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         ListHeaderComponent={renderHeaderDrawer}
         renderItem={showFullSideMenu ? renderDrawerFull : renderDrawer}
         keyExtractor={(item) => item?.key?.toString()}
+        contentContainerStyle={{
+          paddingVertical: verticalScale(8),
+        }}
       />
     </View>
   );

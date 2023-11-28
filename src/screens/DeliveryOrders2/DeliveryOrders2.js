@@ -298,6 +298,13 @@ export function DeliveryOrders2({ route }) {
       {showBadge(item)}
     </TouchableOpacity>
   );
+  const fullDrawerPress = (item) => {
+    setOpenShippingOrders(item?.key);
+    dispatch(getReviewDefault(item?.key));
+    setTrackingView(false);
+    dispatch(getOrderCount());
+    dispatch(todayOrders());
+  };
 
   const renderOrderToReview = ({ item }) => {
     const isSelected = viewAllOrder && item?.id === userDetail?.id;
@@ -682,6 +689,7 @@ export function DeliveryOrders2({ route }) {
                   {...{
                     renderDrawer,
                     viewAllOrder,
+                    fullDrawerPress,
                   }}
                 />
               </View>
@@ -772,6 +780,7 @@ export function DeliveryOrders2({ route }) {
                   {...{
                     renderDrawer,
                     viewAllOrder,
+                    fullDrawerPress,
                   }}
                 />
               </View>
@@ -790,12 +799,12 @@ export function DeliveryOrders2({ route }) {
         </SafeAreaView>
       ) : (
         <SafeAreaView style={styles.containerFull}>
-          <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backViewNew}>
+          {/* <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backViewNew}>
             <Image source={backArrow2} style={styles.backImageStyle} />
             <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
               {strings.deliveryOrders.back}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={styles.firstRowStyle}>
             {/* {openShippingOrders === '9' ? (
@@ -836,6 +845,7 @@ export function DeliveryOrders2({ route }) {
                 {...{
                   renderDrawer,
                   viewAllOrder,
+                  fullDrawerPress,
                 }}
               />
             </View>

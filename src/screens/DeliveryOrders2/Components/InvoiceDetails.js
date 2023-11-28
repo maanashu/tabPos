@@ -168,11 +168,13 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
             User ID : #{orderDetail?.user_details?.id ?? '-'}
           </Text>
 
-          <Text style={style._thankyou}>{strings.deliveryOrders2.thanks}</Text>
+          {/* <Text style={style._thankyou}>{strings.deliveryOrders2.thanks}</Text> */}
+          <Image source={logo_full} style={[style.logoFull, { tintColor: COLORS.navy_blue }]} />
 
-          <Image source={{ uri: orderDetail?.invoices?.barcode }} style={style._barCodeImage} />
-
-          <Image source={logo_full} style={style.logoFull} />
+          <Image
+            source={{ uri: orderDetail?.invoices?.barcode }}
+            style={[style._barCodeImage, { tintColor: COLORS.navy_blue }]}
+          />
         </View>
 
         <View style={styles.mapMainView}>
@@ -253,7 +255,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
             style={[
               styles.expandButtonStyle,
               {
-                borderColor: COLORS.dark_grey,
+                borderColor: COLORS.navy_blue,
                 borderWidth: 1,
                 backgroundColor: COLORS.white,
               },
@@ -261,7 +263,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
           >
             <Image source={crossButton} style={styles.rightIconStyle} />
             <Text
-              style={[styles.acceptTextStyle, { color: COLORS.dark_grey, paddingHorizontal: 12 }]}
+              style={[styles.acceptTextStyle, { color: COLORS.navy_blue, paddingHorizontal: 12 }]}
             >
               {strings.deliveryOrders2.close}
             </Text>
@@ -278,13 +280,13 @@ export default memo(InvoiceDetails);
 
 const style = StyleSheet.create({
   storeNameText: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(7),
     textAlign: 'center',
   },
   storeAddressText: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(6),
     textAlign: 'center',
@@ -308,12 +310,12 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   count: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(6.2),
   },
   itemName: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(5),
   },
@@ -322,12 +324,12 @@ const style = StyleSheet.create({
     marginTop: ms(2),
   },
   colorsTitle: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(4.2),
   },
   priceTitle: {
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(6.2),
   },
@@ -339,19 +341,19 @@ const style = StyleSheet.create({
     alignSelf: 'center',
   },
   _substotalTile: {
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(5.5),
     marginTop: ms(5),
   },
   totalPriceLabel: {
     fontSize: ms(6),
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     marginTop: ms(5),
     fontFamily: Fonts.SemiBold,
   },
   _subTotalPrice: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(5.5),
     marginTop: ms(7),
@@ -359,7 +361,7 @@ const style = StyleSheet.create({
   totalPriceText: {
     fontSize: ms(6),
     marginTop: ms(7),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
   },
   _horizontalLine: {
@@ -378,19 +380,19 @@ const style = StyleSheet.create({
   _payTitle: {
     fontSize: ms(7),
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
   },
   _paySubTitle: {
     fontSize: ms(7),
     fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
   },
   _commonPayTitle: {
     alignSelf: 'flex-start',
     marginLeft: ms(15),
     marginTop: ms(3),
     fontSize: ms(7),
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
   },
   _barCodeImage: {
@@ -402,7 +404,7 @@ const style = StyleSheet.create({
   _thankyou: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(11),
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     marginTop: ms(10),
     textAlign: 'center',
   },
