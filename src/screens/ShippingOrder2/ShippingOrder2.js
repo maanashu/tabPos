@@ -17,7 +17,7 @@ import {
   todayCurrentStatus,
   todayShippingStatus,
 } from '@/actions/ShippingAction';
-import { backArrow2, printer } from '@/assets';
+import { backArrow2, incomingMarked, printer } from '@/assets';
 import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
 import Graph from './Components/Graph';
@@ -199,6 +199,7 @@ export function ShippingOrder2() {
       <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
         ${Number(item?.price).toFixed(2)}
       </Text>
+      <Image source={incomingMarked} style={[styles.checkboxIconStyle]} />
     </View>
   );
 

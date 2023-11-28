@@ -12,17 +12,15 @@ import { strings } from '@/localization';
 import { TYPES } from '@/Types/ShippingOrderTypes';
 import { getShipping } from '@/selectors/ShippingSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { ProgressChart } from 'react-native-chart-kit';
 
 const OrderConversion = () => {
   const getOrdersData = useSelector(getShipping);
   const pieChartData = getOrdersData?.getOrderstatistics?.data;
-
   const series = [
-    //  24, 30, 40, 0,
     pieChartData?.[0]?.count ?? 0,
     pieChartData?.[1]?.count ?? 0,
     pieChartData?.[2]?.count ?? 0,
-    pieChartData?.[3]?.count ?? 0,
   ];
 
   let sum = 0;
@@ -30,11 +28,27 @@ const OrderConversion = () => {
     sum += num;
   });
 
-  const sliceColor = [COLORS.extra_purple_300, COLORS.yellow, COLORS.blur_red, COLORS.primary];
+  const sliceColor = [COLORS.blur_red, COLORS.yellow, COLORS.extra_purple_300];
 
   const orderConversionLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_SHIPPING_ORDERS], state)
   );
+
+  const chartConfig = {
+    backgroundGradientFrom: '#fff',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#fff',
+    backgroundGradientToOpacity: 0,
+    color: (opacity = 1) => `rgba(242, 244, 247,${1})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+  };
+
+  const finalData = {
+    data: series,
+    colors: sliceColor,
+  };
 
   return (
     <View style={styles.orderConvertionView}>
@@ -43,15 +57,26 @@ const OrderConversion = () => {
       <Spacer space={ms(15)} />
       <View style={styles.piechartViewStyle}>
         <View>
-          <PieChart
+          {/* <PieChart
             series={sum > 0 ? series : [100]}
             coverRadius={0.7}
             sliceColor={sum > 0 ? sliceColor : [COLORS.light_sky]}
             coverFill={COLORS.white}
             widthAndHeight={140}
+          /> */}
+          <ProgressChart
+            data={finalData}
+            width={ms(70)}
+            height={ms(70)}
+            strokeWidth={ms(4)}
+            radius={ms(18)}
+            chartConfig={chartConfig}
+            hideLegend={true}
+            withCustomBarColorFromData={true}
           />
           <View style={styles.percentageView}>
-            <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text>
+            <Text style={styles.percentageTextStyle}>{'925'}</Text>
+            {/* <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text> */}
           </View>
         </View>
 
@@ -82,7 +107,7 @@ const OrderConversion = () => {
               <Text style={[styles.orderTypeTextStyle, { color: COLORS.extra_yellow_800 }]}>
                 {strings.shippingOrder.returned}
               </Text>
-              <View style={[styles.countContainer, { color: COLORS.light_yellow }]}>
+              <View style={[styles.countContainer, { backgroundColor: COLORS.light_yellow }]}>
                 <View style={styles.returnedDot}></View>
                 <Text style={[styles.countTextStyle, { color: COLORS.extra_yellow_800 }]}>
                   {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
@@ -98,7 +123,7 @@ const OrderConversion = () => {
                 {strings.shippingOrder.cancelled}
               </Text>
 
-              <View style={[styles.countContainer, { color: COLORS.light_red }]}>
+              <View style={[styles.countContainer, { backgroundColor: COLORS.light_red }]}>
                 <View style={styles.cancelledDot}></View>
                 <Text style={[styles.countTextStyle, { color: COLORS.alert_red }]}>
                   {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
@@ -124,7 +149,7 @@ export default memo(OrderConversion);
 
 const styles = StyleSheet.create({
   orderConvertionView: {
-    borderRadius: 10,
+    borderRadius: ms(16),
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
   },

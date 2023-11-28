@@ -547,6 +547,7 @@ export const en = {
     deliveryOrder: 'Delivered Orders',
     cancelledOrder: 'Rejected/ Cancelled Orders',
     returnedOrders: 'Returned Orders',
+    trackingOrders: 'Tracking Orders',
   },
   buttonStatus: {
     readyForShipment: 'Ready to Ship',

@@ -436,6 +436,30 @@ export { default as StepPurple } from '@/assets/new_icon/ic_delivery/StepPurple.
 export { default as StepSky } from '@/assets/new_icon/ic_delivery/StepSky.png';
 export { default as StepPurpleStop } from '@/assets/new_icon/ic_delivery/StepPurpleStop.png';
 export { default as StepSkypStop } from '@/assets/new_icon/ic_delivery/StepSkyStop.png';
+//Shipping New Icons
+export { default as thunder } from '@/assets/new_icon/ic_shipping/thunderShippingNew.png';
+export { default as cashShippingNew } from '@/assets/new_icon/ic_shipping/cashShippingNew.png';
+export { default as pinShippingNew } from '@/assets/new_icon/ic_shipping/pinShippingNew.png';
+export { default as trackOrder } from '@/assets/new_icon/ic_shipping/trackOrderNew.png';
+export { default as printLabel } from '@/assets/new_icon/ic_shipping/printLabelNew.png';
+export { default as incomingMarked } from '@/assets/new_icon/ic_shipping/incomingCheckbox.png';
+export { default as cancelledMarked } from '@/assets/new_icon/ic_shipping/cancelledCheckbox.png';
+export { default as deliveryMarked } from '@/assets/new_icon/ic_shipping/deliveryCheckbox.png';
+export { default as returnedMarked } from '@/assets/new_icon/ic_shipping/returnedCheckbox.png';
+export { default as incomingBlank } from '@/assets/new_icon/ic_shipping/incomingBlank.png';
+export { default as cancelledBlank } from '@/assets/new_icon/ic_shipping/cancelledBlank.png';
+export { default as deliveryBlank } from '@/assets/new_icon/ic_shipping/deliveryBlank.png';
+export { default as returnedBlank } from '@/assets/new_icon/ic_shipping/returnedBlank.png';
+
+//Shipping Drawer Icons
+export { default as ordersReview } from '@/assets/new_icon/ic_shipping/ordersReview.png';
+export { default as orderAccepted } from '@/assets/new_icon/ic_shipping/deliveryCheck.png';
+export { default as orderPrepared } from '@/assets/new_icon/ic_shipping/orderPrepared.png';
+export { default as printingLabelDrawer } from '@/assets/new_icon/ic_shipping/printingLabelDrawer.png';
+export { default as trackDelivery } from '@/assets/new_icon/ic_shipping/trackDelivery.png';
+export { default as deliverySending } from '@/assets/new_icon/ic_shipping/deliverySending.png';
+export { default as deliveryClose } from '@/assets/new_icon/ic_shipping/deliveryClose.png';
+export { default as deliveryBack } from '@/assets/new_icon/ic_shipping/deliveryBack.png';
 
 /* Fonts */
 export const Fonts = {

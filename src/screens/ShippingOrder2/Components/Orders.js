@@ -14,7 +14,19 @@ import { useSelector } from 'react-redux';
 
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { arrowRightTop, clock, fedexNew, fedx, Fonts, pay, pin, rightIcon } from '@/assets';
+import {
+  arrowRightTop,
+  cashShippingNew,
+  clock,
+  fedexNew,
+  fedx,
+  Fonts,
+  pay,
+  pin,
+  pinShippingNew,
+  rightIcon,
+  thunder,
+} from '@/assets';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import moment from 'moment';
 
@@ -40,30 +52,24 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
           </Text>
         </View>
 
-        <View style={styles.orderDetailStyle}>
+        <View style={[styles.orderDetailStyle, { width: undefined }]}>
           <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
           <View style={[styles.locationViewStyle, { backgroundColor: COLORS.extra_purple_50 }]}>
-            <Image
-              source={pin}
-              style={[styles.pinImageStyle, { tintColor: COLORS.extra_purple_300 }]}
-            />
+            <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
             <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
               {item?.distance ? `${item.distance} miles` : '0'}
             </Text>
           </View>
         </View>
 
-        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
+        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2, width: undefined }]}>
           <Text style={styles.nameTextStyle}>
             {item?.order_details?.length > 1
               ? `${item?.order_details?.length} Items`
               : `${item?.order_details?.length} Item`}
           </Text>
           <View style={[styles.locationViewStyle, { backgroundColor: COLORS.alarm_success_50 }]}>
-            <Image
-              source={pay}
-              style={[styles.pinImageStyle, { tintColor: COLORS.success_green }]}
-            />
+            <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
             <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
               {item?.payable_amount ?? '00'}
             </Text>
@@ -72,15 +78,12 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
 
         <View style={styles.rowContainerStyle}>
           <Image source={fedexNew} style={styles.shippingTypeImage} />
-          <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
+          <View style={[styles.orderDetailStyle, { width: undefined }]}>
             <Text style={styles.timeTextStyle}>
               {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
             </Text>
             <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
-              <Image
-                source={clock}
-                style={[styles.pinImageStyle, { tintColor: COLORS.orange_bright }]}
-              />
+              <Image source={thunder} style={[styles.pinImageStyle]} />
               <Text style={[styles.distanceTextStyle, { color: COLORS.dark_yellow }]}>
                 {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
                   item?.preffered_delivery_end_time ?? '00.00'
@@ -91,7 +94,11 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
         </View>
 
         <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
-          <Image source={rightIcon} style={styles.rightIconStyle} />
+          <Image
+            source={arrowRightTop}
+            style={{ height: ms(13), width: ms(13), tintColor: COLORS.primaryDark }}
+          />
+          {/* <Image source={rightIcon} style={styles.rightIconStyle} /> */}
         </TouchableOpacity>
       </TouchableOpacity>
     );
@@ -116,7 +123,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
             : selectedStatus === '3'
             ? 'Printing Labels'
             : selectedStatus === '4'
-            ? strings.orderStatus.shipOrder
+            ? strings.orderStatus.trackingOrders
             : selectedStatus === '5'
             ? strings.orderStatus.deliveryOrder
             : selectedStatus === '7,8'
@@ -173,7 +180,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(9),
     color: COLORS.orange_bright,
-    paddingLeft: 5,
+    paddingHorizontal: 5,
   },
   locationViewStyle: {
     flexDirection: 'row',
@@ -202,7 +209,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderToReviewView: {
-    borderRadius: 10,
+    borderRadius: ms(20),
     backgroundColor: COLORS.white,
     // height: height / 2.35,
     paddingBottom: ms(10),
