@@ -10,7 +10,7 @@ import { getUser } from '@/selectors/UserSelectors';
 
 moment.suppressDeprecationWarnings = true;
 
-export function CustomHeader({ crossHandler, iconShow }) {
+export function CustomHeader({ crossHandler, iconShow, showUserName = true }) {
   const getUserData = useSelector(getUser);
   const getPosUser = getUserData?.posLoginData;
 
@@ -27,25 +27,31 @@ export function CustomHeader({ crossHandler, iconShow }) {
         </View>
 
         {/* <View style={styles._border} /> */}
-        <View style={styles.displayRow}>
-          <Image
-            source={
-              getPosUser?.user_profiles?.profile_photo
-                ? { uri: getPosUser?.user_profiles?.profile_photo }
-                : userImage
-            }
-            style={styles.iconStyle}
-          />
-          <Text style={styles.cashLabelBold}>
-            {getPosUser?.user_profiles?.firstname ?? 'username'}(
-            {getPosUser?.user_roles?.length > 0
-              ? getPosUser?.user_roles?.map((item, index) => item.role?.name)
-              : 'admin'}
-            )
-          </Text>
-        </View>
+        {showUserName ? (
+          <View style={styles.displayRow}>
+            <Image
+              source={
+                getPosUser?.user_profiles?.profile_photo
+                  ? { uri: getPosUser?.user_profiles?.profile_photo }
+                  : userImage
+              }
+              style={styles.iconStyle}
+            />
+            <Text style={styles.cashLabelBold}>
+              {getPosUser?.user_profiles?.firstname ?? 'username'}(
+              {getPosUser?.user_roles?.length > 0
+                ? getPosUser?.user_roles?.map((item, index) => item.role?.name)
+                : 'admin'}
+              )
+            </Text>
+          </View>
+        ) : (
+          <View style={{ flex: 0.5 }} />
+        )}
         {/* <View style={styles._border} /> */}
-        <Text style={styles.cashLabelBold}>POS No. {getUserData?.posLoginData?.pos_number}</Text>
+        {getUserData?.posLoginData?.pos_number && (
+          <Text style={styles.cashLabelBold}>POS No. {getUserData?.posLoginData?.pos_number}</Text>
+        )}
         <View style={styles.walkinCon}>
           <Text style={styles.cashLabelBold}>Walk-In</Text>
         </View>
