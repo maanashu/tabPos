@@ -482,12 +482,18 @@ export function DashBoard({ navigation }) {
           <Text style={styles.cashierName}>
             {`${getPosUser?.user_profiles?.firstname} ${getPosUser?.user_profiles?.lastname}`}
           </Text>
-          <Text style={styles.posCashier}>
-            {getPosUser?.user_roles?.length > 0
-              ? getPosUser?.user_roles?.map((item) => item.role?.name)
-              : 'admin'}
-          </Text>
-          <Text style={styles.cashLabel}>ID : {getPosUser?.user_profiles?.user_id ?? '0'}</Text>
+          <View style={styles.cashierContainer}>
+            <Text style={styles.posCashier}>
+              {getPosUser?.user_roles?.length > 0
+                ? getPosUser?.user_roles?.map((item) => item.role?.name)
+                : 'admin'}
+            </Text>
+            <Spacer horizontal space={12} />
+            <View style={styles.cashierIdContainer}>
+              <View style={styles.idDotStyle} />
+              <Text style={styles.cashLabel}>ID : {getPosUser?.user_profiles?.user_id ?? '0'}</Text>
+            </View>
+          </View>
           <Spacer space={SH(10)} />
           <View style={styles.todaySaleCon}>
             <View style={styles.displayflex}>

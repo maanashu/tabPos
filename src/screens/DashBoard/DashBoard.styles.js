@@ -10,7 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
   },
   displayflex: {
     flexDirection: 'row',
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   cashProfileCon: {
     width: windowWidth * 0.29,
     height: windowHeight * 0.95,
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
     paddingHorizontal: moderateScale(10),
     alignItems: 'center',
   },
@@ -61,8 +61,8 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonRegular,
   },
   cashLabel: {
-    color: COLORS.solid_grey,
-    fontSize: SF(14),
+    color: COLORS.faded_purple,
+    fontSize: SF(12),
     fontFamily: Fonts.Regular,
   },
   saleAmountLable: {
@@ -117,18 +117,37 @@ export const styles = StyleSheet.create({
   },
   cashierName: {
     color: COLORS.solid_grey,
+    fontSize: SF(24),
+    fontFamily: Fonts.SemiBold,
+  },
+  cashierContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  posCashier: {
+    color: COLORS.faded_purple,
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
   },
-  posCashier: {
-    color: COLORS.dark_grey,
-    fontSize: SF(14),
-    fontFamily: Fonts.SemiBold,
+  cashierIdContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F7F9FF',
+    borderRadius: 20,
+    paddingHorizontal: moderateScale(8),
+    paddingVertical: moderateScale(3),
+  },
+  idDotStyle: {
+    backgroundColor: COLORS.sky_blue,
+    width: moderateScale(4),
+    height: moderateScale(4),
+    borderRadius: moderateScale(4 / 2),
+    marginRight: moderateScale(8),
   },
   cashProfilecon: {
-    borderWidth: 4,
+    borderWidth: 6,
     borderRadius: 100,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.white,
   },
   rightOrderCon: {
     width: windowWidth * 0.6,
