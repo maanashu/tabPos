@@ -15,6 +15,7 @@ import {
   clock,
   pay,
   printLabel,
+  scanNew,
   scooter,
   thunder,
   trackOrder,
@@ -231,6 +232,14 @@ const OrderDetail = ({
             </View>
           </View>
         </View>
+        {openShippingOrders == '9' && (
+          <TouchableOpacity style={styles.scanButtonStyle}>
+            <Text style={styles.scanBttnTextStyle}>
+              {strings.shippingOrder.scanBarCodeShipping}
+            </Text>
+            <Image source={scanNew} style={styles.scanIconStyle} />
+          </TouchableOpacity>
+        )}
         <View style={styles.lineCommonStyle}></View>
 
         {/* <View style={styles.orderDetailViewStyle}>
