@@ -48,7 +48,9 @@ export function CustomHeader({ crossHandler, iconShow, showUserName = true }) {
           <View style={{ flex: 0.5 }} />
         )}
         {/* <View style={styles._border} /> */}
-        <Text style={styles.cashLabelBold}>POS No. {getUserData?.posLoginData?.pos_number}</Text>
+        {getUserData?.posLoginData?.pos_number && (
+          <Text style={styles.cashLabelBold}>POS No. {getUserData?.posLoginData?.pos_number}</Text>
+        )}
         <View style={styles.walkinCon}>
           <Text style={styles.cashLabelBold}>Walk-In</Text>
         </View>
