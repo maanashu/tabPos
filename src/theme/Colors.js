@@ -92,4 +92,8 @@ export const COLORS = {
   light_skyblue: '#BFEEFF',
   aqua: '#47B0D6',
   graySky: '#B4BEEB',
+  tip_border: '#D8B9FF',
+  tip_back: '#F5EDFF',
+  tip_blue: '#914BEB',
+  save_yellow: '#FEDF89',
 };

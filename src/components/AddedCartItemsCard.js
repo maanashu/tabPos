@@ -15,7 +15,7 @@ const AddedCartItemsCard = ({ item, index }) => {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.count}>{item?.qty}</Text>
+        <Text style={styles.count}>x {item?.qty}</Text>
         <View style={{ marginLeft: ms(10) }}>
           <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
             {item?.product_details?.name}
@@ -54,8 +54,6 @@ export default AddedCartItemsCard;
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: COLORS.washGrey,
-    borderWidth: 1,
     paddingHorizontal: ms(8),
     height: ms(28),
     borderRadius: ms(5),
@@ -72,14 +70,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   count: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(6.2),
   },
   itemName: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(5),
+    fontSize: ms(6),
   },
   belowSubContainer: {
     flexDirection: 'row',
@@ -87,19 +85,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   colorsTitle: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: ms(4.2),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(6),
   },
   sizeTitle: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: ms(4.2),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(6),
     marginLeft: ms(10),
   },
   priceTitle: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
     fontSize: ms(6),
     // marginLeft: ms(10),
   },

@@ -259,19 +259,19 @@ export function CartServiceScreen({
   }, []);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.homeScreenCon}>
         <CustomHeader
-          iconShow
-          crossHandler={() => {
-            backCartLoad();
-            crossHandler();
+        // iconShow
+        // crossHandler={() => {
+        //   backCartLoad();
+        //   crossHandler();
 
-            // dispatch(getUserDetailSuccess([]));
-          }}
+        //   // dispatch(getUserDetailSuccess([]));
+        // }}
         />
 
-        <View style={styles.displayflex2}>
+        <View style={[styles.displayflex2, { flex: 1 }]}>
           <View style={[styles.itemLIistCon]}>
             <Spacer space={SH(3)} />
             <View style={styles.displayflex}>

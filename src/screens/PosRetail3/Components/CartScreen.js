@@ -284,7 +284,7 @@ export function CartScreen({
   const cartidFrom = useMemo(() => cartData?.id, []);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.homeScreenCon}>
         <CustomHeader
           iconShow
@@ -294,7 +294,7 @@ export function CartScreen({
           }}
         />
 
-        <View style={styles.displayflex2}>
+        <View style={[styles.displayflex2, { flex: 1 }]}>
           <View style={[styles.itemLIistCon]}>
             <Spacer space={SH(3)} />
             <View style={styles.displayflex}>
