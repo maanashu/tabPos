@@ -298,7 +298,8 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
             style={{
               color: COLORS.navy_blue,
               fontSize: SF(14),
-              fontFamily: Fonts.MaisonRegular,
+              fontFamily: Fonts.Medium,
+              marginRight: ms(10),
             }}
           >
             Collapse

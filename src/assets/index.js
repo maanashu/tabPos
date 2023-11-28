@@ -429,6 +429,9 @@ export { default as incomingBlank } from '@/assets/new_icon/ic_shipping/incoming
 export { default as cancelledBlank } from '@/assets/new_icon/ic_shipping/cancelledBlank.png';
 export { default as deliveryBlank } from '@/assets/new_icon/ic_shipping/deliveryBlank.png';
 export { default as returnedBlank } from '@/assets/new_icon/ic_shipping/returnedBlank.png';
+export { default as userSolid } from '@/assets/new_icon/ic_shipping/usersSolid.png';
+export { default as packageCancelled } from '@/assets/new_icon/ic_shipping/packageCancelled.png';
+export { default as filterShippingNew } from '@/assets/new_icon/ic_shipping/filterShippingNew.png';
 
 //Shipping Drawer Icons
 export { default as ordersReview } from '@/assets/new_icon/ic_shipping/ordersReview.png';

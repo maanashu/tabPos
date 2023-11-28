@@ -485,6 +485,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginRight: ms(3),
   },
+  rightTopIconStyle: {
+    width: ms(14),
+    height: ms(14),
+    resizeMode: 'contain',
+    marginLeft: 2,
+  },
 });
 
 export default styles;

@@ -199,7 +199,10 @@ export function ShippingOrder2() {
       <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
         ${Number(item?.price).toFixed(2)}
       </Text>
-      <Image source={incomingMarked} style={[styles.checkboxIconStyle]} />
+
+      {openShippingOrders < 4 && (
+        <Image source={incomingMarked} style={[styles.checkboxIconStyle]} />
+      )}
     </View>
   );
 

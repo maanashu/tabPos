@@ -556,6 +556,8 @@ export const en = {
     prepareButton: 'Ready to Pickup',
     preparedButton: 'Prepared',
     printlabel: 'Print Label',
+    later: 'Later',
+    done: 'Done',
   },
   returnOrder: {
     heading: 'Confirm the Return',

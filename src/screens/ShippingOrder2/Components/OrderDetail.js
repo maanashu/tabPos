@@ -10,6 +10,7 @@ import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import {
   Fonts,
+  arrowRightTop,
   cashShippingNew,
   clock,
   pay,
@@ -44,15 +45,30 @@ const OrderDetail = ({
         <View style={styles.shippingOrdersViewStyle}>
           <TouchableOpacity
             onPress={() => declineHandler(userDetail?.id)}
-            style={[styles.declineButtonStyle, { width: ms(80), borderRadius: ms(30) }]}
+            style={[
+              styles.declineButtonStyle,
+              { width: ms(80), borderRadius: ms(30), borderColor: COLORS.navy_blue },
+            ]}
           >
-            <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
+            <Text style={[styles.declineTextStyle, { color: COLORS.navy_blue }]}>
+              {strings.calender.decline}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => acceptHandler(userDetail?.id, 3)}
-            style={[styles.acceptButtonView, { width: ms(80), borderRadius: ms(30) }]}
+            style={[
+              styles.acceptButtonView,
+              {
+                width: ms(80),
+                borderRadius: ms(30),
+                backgroundColor: COLORS.navy_blue,
+                flexDirection: 'row',
+                justifyContent: 'center',
+              },
+            ]}
           >
             <Text style={styles.acceptTextStyle}>{strings.buttonStatus.reviewButton}</Text>
+            <Image source={arrowRightTop} style={[styles.rightTopIconStyle]} />
           </TouchableOpacity>
         </View>
       );
@@ -98,15 +114,44 @@ const OrderDetail = ({
         <View style={styles.shippingOrdersViewStyle}>
           <View
             onPress={() => trackOrderHandler(getTrackingInfo)}
-            style={[
-              styles.acceptButtonView,
-              { backgroundColor: COLORS.purple_fade, width: ms(140) },
-            ]}
+            style={[styles.acceptButtonView, { backgroundColor: COLORS.purple_fade, width: '90%' }]}
           >
-            <Text style={[styles.acceptTextStyle, { color: COLORS.text }]}>
+            <Text style={[styles.acceptTextStyle, { color: COLORS.sky_grey }]}>
               {'Cancelled by user'}
             </Text>
           </View>
+        </View>
+      );
+    } else if (openShippingOrders === '9') {
+      return (
+        <View style={styles.shippingOrdersViewStyle}>
+          <TouchableOpacity
+            onPress={() => declineHandler(userDetail?.id)}
+            style={[
+              styles.declineButtonStyle,
+              { width: ms(80), borderRadius: ms(30), borderColor: COLORS.navy_blue },
+            ]}
+          >
+            <Text style={[styles.declineTextStyle, { color: COLORS.navy_blue }]}>
+              {strings.buttonStatus.later}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => acceptHandler(userDetail?.id, 3)}
+            style={[
+              styles.acceptButtonView,
+              {
+                width: ms(80),
+                borderRadius: ms(30),
+                backgroundColor: COLORS.navy_blue,
+                flexDirection: 'row',
+                justifyContent: 'center',
+              },
+            ]}
+          >
+            <Text style={styles.acceptTextStyle}>{strings.buttonStatus.done}</Text>
+            <Image source={arrowRightTop} style={[styles.rightTopIconStyle]} />
+          </TouchableOpacity>
         </View>
       );
     }
