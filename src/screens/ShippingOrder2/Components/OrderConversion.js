@@ -12,16 +12,15 @@ import { strings } from '@/localization';
 import { TYPES } from '@/Types/ShippingOrderTypes';
 import { getShipping } from '@/selectors/ShippingSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { ProgressChart } from 'react-native-chart-kit';
 
 const OrderConversion = () => {
   const getOrdersData = useSelector(getShipping);
   const pieChartData = getOrdersData?.getOrderstatistics?.data;
-
   const series = [
     pieChartData?.[0]?.count ?? 0,
     pieChartData?.[1]?.count ?? 0,
     pieChartData?.[2]?.count ?? 0,
-    pieChartData?.[3]?.count ?? 0,
   ];
 
   let sum = 0;
@@ -29,11 +28,27 @@ const OrderConversion = () => {
     sum += num;
   });
 
-  const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellowTweet, COLORS.primary];
+  const sliceColor = [COLORS.blur_red, COLORS.yellow, COLORS.extra_purple_300];
 
   const orderConversionLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_SHIPPING_ORDERS], state)
   );
+
+  const chartConfig = {
+    backgroundGradientFrom: '#fff',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#fff',
+    backgroundGradientToOpacity: 0,
+    color: (opacity = 1) => `rgba(242, 244, 247,${1})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+  };
+
+  const finalData = {
+    data: series,
+    colors: sliceColor,
+  };
 
   return (
     <View style={styles.orderConvertionView}>
@@ -42,15 +57,26 @@ const OrderConversion = () => {
       <Spacer space={ms(15)} />
       <View style={styles.piechartViewStyle}>
         <View>
-          <PieChart
+          {/* <PieChart
             series={sum > 0 ? series : [100]}
             coverRadius={0.7}
             sliceColor={sum > 0 ? sliceColor : [COLORS.light_sky]}
             coverFill={COLORS.white}
             widthAndHeight={140}
+          /> */}
+          <ProgressChart
+            data={finalData}
+            width={ms(70)}
+            height={ms(70)}
+            strokeWidth={ms(4)}
+            radius={ms(18)}
+            chartConfig={chartConfig}
+            hideLegend={true}
+            withCustomBarColorFromData={true}
           />
           <View style={styles.percentageView}>
-            <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text>
+            <Text style={styles.percentageTextStyle}>{'925'}</Text>
+            {/* <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text> */}
           </View>
         </View>
 
@@ -62,36 +88,55 @@ const OrderConversion = () => {
         ) : (
           <>
             <View style={styles.ordersRowView}>
-              <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.incomingOrders}</Text>
-              <Text style={styles.countTextStyle}>
-                {`${parseInt(pieChartData?.[0]?.percentage)}%` ?? '0%'}
+              {/* <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.incomingOrders}</Text> */}
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.purple }]}>
+                {strings.shippingOrder.delivered}
               </Text>
+              <View style={[styles.countContainer]}>
+                <View style={styles.deliveredDot}></View>
+                <Text style={[styles.countTextStyle, { color: COLORS.purple }]}>
+                  {`${parseInt(pieChartData?.[0]?.percentage)}%` ?? '0%'}
+                </Text>
+              </View>
             </View>
 
             <View style={styles.ordersRowView}>
-              <Text style={styles.orderTypeTextStyle}>
+              {/* <Text style={styles.orderTypeTextStyle}>
                 {strings.shippingOrder.processingOrders}
+              </Text> */}
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.extra_yellow_800 }]}>
+                {strings.shippingOrder.returned}
               </Text>
-              <Text style={styles.countTextStyle}>
-                {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
-              </Text>
+              <View style={[styles.countContainer, { backgroundColor: COLORS.light_yellow }]}>
+                <View style={styles.returnedDot}></View>
+                <Text style={[styles.countTextStyle, { color: COLORS.extra_yellow_800 }]}>
+                  {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
+                </Text>
+              </View>
             </View>
 
             <View style={styles.ordersRowView}>
-              <Text style={styles.orderTypeTextStyle}>
+              {/* <Text style={styles.orderTypeTextStyle}>
                 {strings.shippingOrder.readyPickupOrders}
+              </Text> */}
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.alert_red }]}>
+                {strings.shippingOrder.cancelled}
               </Text>
-              <Text style={styles.countTextStyle}>
-                {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
-              </Text>
+
+              <View style={[styles.countContainer, { backgroundColor: COLORS.light_red }]}>
+                <View style={styles.cancelledDot}></View>
+                <Text style={[styles.countTextStyle, { color: COLORS.alert_red }]}>
+                  {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
+                </Text>
+              </View>
             </View>
 
-            <View style={styles.ordersRowView}>
+            {/* <View style={styles.ordersRowView}>
               <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.completed}</Text>
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[3]?.percentage)}%` ?? '0'}
               </Text>
-            </View>
+            </View> */}
           </>
         )}
         <Spacer space={ms(10)} />
@@ -104,7 +149,7 @@ export default memo(OrderConversion);
 
 const styles = StyleSheet.create({
   orderConvertionView: {
-    borderRadius: 10,
+    borderRadius: ms(16),
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
   },
@@ -155,7 +200,37 @@ const styles = StyleSheet.create({
   },
   countTextStyle: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(14),
+    fontSize: SF(12),
     color: COLORS.textBlue,
+  },
+  countContainer: {
+    backgroundColor: COLORS.extra_purple_50,
+    borderRadius: ms(9),
+    paddingHorizontal: ms(4),
+    paddingVertical: ms(2),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  deliveredDot: {
+    height: ms(6),
+    width: ms(6),
+    backgroundColor: COLORS.medium_purple,
+    borderRadius: ms(3),
+    marginEnd: ms(5),
+  },
+  returnedDot: {
+    height: ms(6),
+    width: ms(6),
+    backgroundColor: COLORS.medium_yellow,
+    borderRadius: ms(3),
+    marginEnd: ms(5),
+  },
+  cancelledDot: {
+    height: ms(6),
+    width: ms(6),
+    backgroundColor: COLORS.blur_red,
+    borderRadius: ms(3),
+    marginEnd: ms(5),
   },
 });

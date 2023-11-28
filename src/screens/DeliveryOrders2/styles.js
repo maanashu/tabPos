@@ -17,6 +17,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: ms(10),
     justifyContent: 'space-between',
   },
+  firstRowStyleNew: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingHorizontal: ms(5),
+    height: Dimensions.get('window').width / 1.5,
+    // justifyContent: 'space-around',
+  },
+  centerMainViewStyle: {
+    flex: 0.64,
+    justifyContent: 'space-between',
+    marginRight: 15,
+  },
   shippedOrderText: {
     fontSize: SF(14),
     paddingTop: ms(10),
@@ -57,7 +69,7 @@ const styles = StyleSheet.create({
   },
   orderRowStyle: {
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: ms(10),
     marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -68,7 +80,7 @@ const styles = StyleSheet.create({
   },
   showAllOrdersView: {
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: ms(10),
     marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -82,6 +94,7 @@ const styles = StyleSheet.create({
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
   },
   locationViewStyle: {
     flexDirection: 'row',
@@ -95,7 +108,7 @@ const styles = StyleSheet.create({
   timeTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(12),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
   },
   orderDetailStyle: {
     width: SW(30),
@@ -114,7 +127,7 @@ const styles = StyleSheet.create({
   distanceTextStyle: {
     fontFamily: Fonts.Regular,
     fontSize: SF(9),
-    color: COLORS.dark_grey,
+    color: COLORS.dark_purple,
     paddingLeft: 5,
   },
   shippingOrdersView: {
@@ -154,8 +167,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   sideBarImage: {
-    width: SW(9),
-    height: SW(9),
+    width: SW(14),
+    height: SW(14),
     resizeMode: 'contain',
   },
   shippingDrawerTitleText: {
@@ -207,10 +220,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   orderToReviewView: {
-    borderRadius: 10,
+    borderRadius: ms(10),
     // marginTop: ms(30),
     backgroundColor: COLORS.white,
     height: twoEqualView,
+    marginRight: ms(10),
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -223,18 +237,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: SH(15),
   },
+  headingRowStyleNew: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: SH(15),
+  },
   ordersToReviewText: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SF(18),
     fontFamily: Fonts.MaisonRegular,
   },
   viewallTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(12),
-    color: COLORS.white,
+    fontSize: SF(14),
+    color: COLORS.lavender,
   },
   emptyView: {
-    flex: 1,
+    flex: 0.9,
     alignSelf: 'center',
     height:
       Platform.OS === 'ios'
@@ -246,16 +267,25 @@ const styles = StyleSheet.create({
   noOrdersText: {
     fontFamily: Fonts.SemiBold,
     fontSize: SF(22),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     textAlign: 'center',
   },
+  // viewAllButtonStyle: {
+  //   width: SH(70),
+  //   height: SH(28),
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   borderRadius: 10,
+  //   backgroundColor: COLORS.darkGray,
+  // },
   viewAllButtonStyle: {
     width: SH(70),
     height: SH(28),
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    backgroundColor: COLORS.darkGray,
+    flexDirection: 'row',
+    // backgroundColor: COLORS.darkGray,
   },
   modalStyle: {
     flex: 1,
@@ -293,6 +323,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.gerySkies,
   },
+  backViewNew: {
+    marginTop: 10,
+    marginLeft: 28,
+    width: ms(60),
+    borderRadius: ms(10),
+    height: ms(25),
+    paddingRight: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.navy_blue,
+  },
   backImageStyle: {
     width: SW(8),
     height: SW(8),
@@ -306,12 +348,25 @@ const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
-    borderRadius: 10,
+    borderRadius: ms(10),
     width:
       Platform.OS === 'ios'
-        ? Dimensions.get('window').width * 0.38
+        ? Dimensions.get('window').width * 0.39
         : Dimensions.get('window').width * 0.42,
-    height: Dimensions.get('window').height - 80,
+    height: Dimensions.get('window').height - 60,
+  },
+  maximizeButton: {
+    backgroundColor: COLORS.white,
+    height: ms(45),
+    width: ms(40),
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: ms(80),
+
+    position: 'absolute',
+    right: ms(10),
+    bottom: ms(10),
   },
   userDetailView: {
     flex: 1,
@@ -386,7 +441,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     marginLeft: 10,
     paddingHorizontal: ms(12),
   },
@@ -401,7 +456,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1.5,
-    borderColor: COLORS.primary,
+    borderColor: COLORS.navy_blue,
     borderRadius: 5,
     paddingHorizontal: ms(12),
   },
@@ -409,7 +464,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
   },
   orderDetailsView: {
     paddingHorizontal: 10,
@@ -473,7 +528,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   expandButtonStyle: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     position: 'absolute',
     flexDirection: 'row',
     alignItems: 'center',
@@ -533,7 +588,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   storeDetailView: {
-    width: Dimensions.get('window').width / 3.5,
+    width: '45%',
     marginTop: ms(10),
     backgroundColor: COLORS.white,
     borderRadius: 15,
@@ -576,17 +631,19 @@ const styles = StyleSheet.create({
     color: COLORS.dark_grey,
   },
   mapMainView: {
-    width: Dimensions.get('window').width / 2.2,
+    width: '45%',
     marginTop: ms(10),
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    height: Dimensions.get('window').height - 80,
+    marginHorizontal: ms(10),
+
+    // height: Dimensions.get('window').height - 80,
   },
   jobrTextStyle: {
     fontFamily: Fonts.Bold,
     fontSize: SF(22),
     textAlign: 'center',
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
   },
   mapMarkerStyle: {
     height: ms(30),
@@ -614,6 +671,94 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: ms(6),
     color: COLORS.dark_grey,
+  },
+  ///shipping
+
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: COLORS.textInputBackground,
+    // justifyContent: 'space-around',
+  },
+  containerFull: {
+    flex: 1,
+
+    backgroundColor: COLORS.textInputBackground,
+    // justifyContent: 'space-around',
+  },
+  leftMainViewStyle: {
+    flex: 0.28,
+    marginRight: SH(15),
+    justifyContent: 'space-between',
+  },
+  todayShippingViewStyle: {
+    flex: 0.2,
+  },
+  currentShippingViewStyle: {
+    flex: 0.4,
+    justifyContent: 'center',
+  },
+  orderConversionViewStyle: {
+    flex: 0.5,
+  },
+  centerMainViewStyle: {
+    flex: 0.64,
+    justifyContent: 'space-between',
+    marginRight: 15,
+  },
+  centerMainOrder: {
+    flex: 0.4,
+    justifyContent: 'space-between',
+    marginRight: 15,
+  },
+  centerDividerViewStyle: {
+    flex: 1,
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+  },
+  graphViewStyle: {
+    flex: 0.45,
+  },
+  drawerMainViewStyle: {
+    flex: 0.07,
+    // marginTop: SH(15),
+  },
+  centerViewStyle: {
+    flexDirection: 'row',
+    flex: 1,
+    paddingBottom: ms(10),
+  },
+  orderListMainView: {
+    flex: 0.45,
+    marginTop: SH(15),
+    marginHorizontal: SH(15),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  orderDetailMainView: {
+    flex: 0.47,
+    marginTop: SH(15),
+    marginRight: SH(15),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  emptyOrderView: {
+    flex: 0.92,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  firstRowStyle: {
+    flexDirection: 'row',
+    paddingHorizontal: ms(10),
+    justifyContent: 'space-between',
+  },
+
+  shippingOrdersViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // justifyContent: 'space-between',
   },
 });
 

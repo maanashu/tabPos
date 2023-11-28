@@ -259,6 +259,7 @@ export const en = {
     third: '3',
     rd: 'rd',
     viewAll: 'View all',
+    seeAll: 'See All',
     rewards: 'Rewards',
   },
   settings: {
@@ -520,6 +521,15 @@ export const en = {
     reviewOrders: 'Shipping Orders to Review',
     acceptedOrders: 'Shipping Orders to Prepare',
     prepareOrders: 'Shipping Orders ready to ship',
+    delivered: 'Delivered',
+    returned: 'Returned',
+    cancelled: 'Cancelled',
+    deliveryOrders: 'Delivery Orders',
+    returnedOrders: 'Returned Orders',
+    cancelledOrders: 'Cancelled Orders',
+    ordersReview: 'Orders to Review',
+    paymentMethod: 'Payment Method',
+    scanBarCodeShipping: 'Scan Barcode of each item',
   },
   deliveryOrders2: {
     orderStatus: 'Today’s Order Status',
@@ -538,6 +548,7 @@ export const en = {
     deliveryOrder: 'Delivered Orders',
     cancelledOrder: 'Rejected/ Cancelled Orders',
     returnedOrders: 'Returned Orders',
+    trackingOrders: 'Tracking Orders',
   },
   buttonStatus: {
     readyForShipment: 'Ready to Ship',
@@ -546,6 +557,8 @@ export const en = {
     prepareButton: 'Ready to Pickup',
     preparedButton: 'Prepared',
     printlabel: 'Print Label',
+    later: 'Later',
+    done: 'Done',
   },
   returnOrder: {
     heading: 'Confirm the Return',
