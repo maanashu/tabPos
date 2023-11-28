@@ -15,12 +15,16 @@ import {
   greyRadioArr,
   radioArrBlue,
   movingArrowBlue,
+  BikeFast,
+  SuperFastBike,
+  StepPurpleStop,
+  StepPurple,
 } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, ShadowStyles } from '@/theme';
 
-const ShipmentTracking = ({ orderData, onPressShop }) => {
+const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
   const orderStatus = orderData?.status;
   const shopName = orderData?.seller_details?.organization_name;
   const shopAddress = orderData?.seller_details?.current_address?.street_address;
@@ -44,17 +48,18 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
   const shipmentHeader = (
     <>
       <View style={styles.headerMainView}>
-        <View>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Image source={SuperFastBike} style={{ width: ms(20), height: ms(20) }} />
           <Text style={styles.orderStatusHeading}>{strings.deliveryOrders.orderStatus}</Text>
-          <Text style={styles.currentStatusText}>{currentStatus(orderStatus)}</Text>
+          {/* <Text style={styles.currentStatusText}>{currentStatus(orderStatus)}</Text> */}
         </View>
 
-        <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
+        {/* <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
           <Image source={isHideView ? down : up} style={styles.downArrowStyle} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
-      <View style={styles.bottomLine} />
+      {/* <View style={styles.bottomLine} /> */}
     </>
   );
 
@@ -65,7 +70,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
           {heading === 'Verified' ? (
             <Image
               style={styles.verifiedIconStyle}
-              source={orderStatus === 5 ? fillRadio : blankRadio}
+              source={orderStatus === 5 ? radioArrBlue : greyRadioArr}
             />
           ) : (
             <Image
@@ -189,19 +194,20 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
         <View style={[styles.mainContainer, { bottom: ms(30) }]}>
           <>
             <View style={styles.headerMainView}>
-              <View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image source={SuperFastBike} style={{ width: ms(20), height: ms(20) }} />
                 <Text style={styles.orderStatusHeading}>{strings.deliveryOrders.orderStatus}</Text>
-                <Text style={styles.currentStatusText}>{strings.deliveryOrders.cancelled}</Text>
+                {/* <Text style={styles.currentStatusText}>{strings.deliveryOrders.cancelled}</Text> */}
               </View>
-              <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
+              {/* <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
                 <Image source={isHideView ? down : up} style={styles.downArrowStyle} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
 
             <View style={styles.bottomLine} />
           </>
 
-          {isHideView ? (
+          {isMaximizeStatusView ? (
             <View style={styles.statusViewStyle}>
               {returnStatusView('Return CODE')}
               {returnStatusView('Return to Shop')}
@@ -231,19 +237,20 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
         <View style={[styles.mainContainer, { bottom: ms(30) }]}>
           <>
             <View style={styles.headerMainView}>
-              <View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Image source={SuperFastBike} style={{ width: ms(20), height: ms(20) }} />
                 <Text style={styles.orderStatusHeading}>{strings.deliveryOrders.orderStatus}</Text>
-                <Text style={styles.currentStatusText}>{strings.deliveryOrders.returned}</Text>
+                {/* <Text style={styles.currentStatusText}>{strings.deliveryOrders.returned}</Text> */}
               </View>
 
-              <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
+              {/* <TouchableOpacity onPress={() => setisHideView(!isHideView)} style={styles.arrowView}>
                 <Image source={isHideView ? down : up} style={styles.downArrowStyle} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
 
-            <View style={styles.bottomLine} />
+            {/* <View style={styles.bottomLine} /> */}
           </>
-          {isHideView ? (
+          {isMaximizeStatusView ? (
             <View style={styles.statusViewStyle}>
               {returnStatusView('Return CODE')}
               {returnStatusView('Return to Shop')}
@@ -272,7 +279,7 @@ const ShipmentTracking = ({ orderData, onPressShop }) => {
       ) : (
         <View style={styles.mainContainer}>
           {shipmentHeader}
-          {isHideView ? (
+          {isMaximizeStatusView ? (
             <View style={styles.statusViewStyle}>
               {statusView(
                 strings.settings.verified,
@@ -323,16 +330,16 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     right: ms(10),
-    width: ms(180),
-    borderRadius: ms(7),
+    width: ms(200),
+    borderRadius: ms(10),
     position: 'absolute',
     paddingVertical: ms(15),
-    ...ShadowStyles.shadow2,
+    ...ShadowStyles.shadow1,
     backgroundColor: COLORS.white,
     bottom: Platform.OS === 'android' ? ms(10) : ms(10),
   },
   statusNameText: {
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     marginBottom: ms(3),
     fontFamily: Fonts.SemiBold,
   },
@@ -344,14 +351,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   orderStatusHeading: {
-    fontSize: ms(8),
-    color: COLORS.solid_grey,
+    fontSize: ms(10),
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
+    marginHorizontal: ms(4),
   },
   currentStatusText: {
     fontSize: ms(6),
     marginTop: ms(3),
-    color: COLORS.solid_grey,
+    color: COLORS.lavender,
     fontFamily: Fonts.Regular,
   },
   downArrowStyle: {
@@ -401,7 +409,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
   },
   sellerOtpTextStyle: {
     fontSize: SF(13),

@@ -17,7 +17,19 @@ import { Spacer } from '@/components';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { blankCheckBox, Fonts, mark } from '@/assets';
+import {
+  blankCheckBox,
+  cancelledBlank,
+  cancelledMarked,
+  deliveryBlank,
+  deliveryMarked,
+  Fonts,
+  incomingBlank,
+  incomingMarked,
+  mark,
+  returnedBlank,
+  returnedMarked,
+} from '@/assets';
 import { getShipping } from '@/selectors/ShippingSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
@@ -141,12 +153,13 @@ const Graph = () => {
           Incoming: true,
         });
       }
-      if (type === 'OrderProcessing') {
+      if (type === 'Delivery') {
         setOfThree.push({
           value: values[1] || 0,
           spacing: 10,
           frontColor: value ? COLORS.pink : COLORS.white,
-          OrderProcessing: true,
+          //  OrderProcessing: true,
+          Delivery: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -159,7 +172,8 @@ const Graph = () => {
           value: values[1] || 0,
           spacing: 10,
           frontColor: showProcessing ? COLORS.pink : COLORS.white,
-          OrderProcessing: true,
+          //  OrderProcessing: true,
+          Delivery: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -168,12 +182,13 @@ const Graph = () => {
           },
         });
       }
-      if (type === 'ReadyForPickup') {
+      if (type === 'Returned') {
         setOfThree.push({
           value: values[2] || 0,
           spacing: 10,
           frontColor: value ? COLORS.yellowTweet : COLORS.white,
-          ReadyForPickup: true,
+          // ReadyForPickup: true,
+          Returned: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -186,7 +201,8 @@ const Graph = () => {
           value: values[2] || 0,
           spacing: 10,
           frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
-          ReadyForPickup: true,
+          // ReadyForPickup: true,
+          Returned: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -195,12 +211,13 @@ const Graph = () => {
           },
         });
       }
-      if (type === 'Completed') {
+      if (type === 'Cancelled') {
         setOfThree.push({
           value: values[3] || 0,
           spacing: 10,
           frontColor: value ? COLORS.primary : COLORS.white,
-          Completed: true,
+          // Completed: true,
+          Cancelled: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -213,7 +230,8 @@ const Graph = () => {
           value: values[3] || 0,
           spacing: 10,
           frontColor: showCompleted ? COLORS.primary : COLORS.white,
-          Completed: true,
+          // Completed: true,
+          Cancelled: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -231,7 +249,7 @@ const Graph = () => {
     <View style={styles.graphViewStyle}>
       <View>
         <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
-
+        {/* <Spacer space={SH(30)} /> */}
         <View style={[styles.flexRow, { zIndex: 999 }]}>
           <TouchableOpacity
             onPress={() => {
@@ -244,64 +262,69 @@ const Graph = () => {
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showIncoming ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showIncoming && { tintColor: COLORS.bluish_green }]}
+              source={showIncoming ? incomingMarked : incomingBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.incomingOrders}</Text>
+            <Text style={[styles.varientTextStyle, { color: COLORS.navy_blue }]}>
+              {strings.shippingOrder.incomingOrders}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => {
               setShowProcessing((prevShowProcessing) => {
                 const newState = !prevShowProcessing;
-                onClickCheckBox('OrderProcessing', newState);
+                onClickCheckBox('Delivery', newState);
                 return newState;
               });
             }}
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showProcessing ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showProcessing && { tintColor: COLORS.pink }]}
+              source={showProcessing ? deliveryMarked : deliveryBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.processingOrders}</Text>
+            <Text style={[styles.varientTextStyle, { color: COLORS.purple }]}>
+              {strings.shippingOrder.deliveryOrders}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => {
               setShowReadyToPickup((prevShowReadyToPickup) => {
                 const newState = !prevShowReadyToPickup;
-                onClickCheckBox('ReadyForPickup', newState);
+                onClickCheckBox('Returned', newState);
                 return newState;
               });
             }}
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showReadyToPickup ? mark : blankCheckBox}
-              style={[
-                styles.checkboxIconStyle,
-                showReadyToPickup && { tintColor: COLORS.yellowTweet },
-              ]}
+              source={showReadyToPickup ? returnedMarked : returnedBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.readyPickupOrders}</Text>
+            <Text style={[styles.varientTextStyle, { color: COLORS.extra_yellow_600 }]}>
+              {strings.shippingOrder.returnedOrders}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => {
               setShowCompleted((prevShowCompleted) => {
                 const newState = !prevShowCompleted;
-                onClickCheckBox('Completed', newState);
+                onClickCheckBox('Cancelled', newState);
                 return newState;
               });
             }}
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showCompleted ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showCompleted && { tintColor: COLORS.primary }]}
+              source={showCompleted ? cancelledMarked : cancelledBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.completed}</Text>
+            <Text style={[styles.varientTextStyle, { color: COLORS.alert_red }]}>
+              {strings.shippingOrder.cancelledOrders}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -340,13 +363,13 @@ const styles = StyleSheet.create({
   graphViewStyle: {
     flex: 0.5,
     backgroundColor: COLORS.white,
-    borderRadius: 10,
+    borderRadius: ms(20),
     paddingHorizontal: ms(12),
     paddingBottom: 30,
     marginTop: SH(15),
   },
   numberOrdersText: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
     paddingHorizontal: ms(12),
@@ -373,9 +396,10 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   checkboxIconStyle: {
-    width: SH(24),
-    height: SH(24),
+    width: SH(22),
+    height: SH(22),
     resizeMode: 'contain',
+    marginRight: ms(3),
   },
   checkboxViewStyle: {
     flexDirection: 'row',
@@ -390,7 +414,7 @@ const styles = StyleSheet.create({
     marginTop: ms(10),
   },
   varientTextStyle: {
-    fontSize: SF(11),
+    fontSize: SF(12),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },

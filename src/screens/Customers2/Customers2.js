@@ -23,6 +23,12 @@ import {
   walkinCustomer,
   Fonts,
   crossButton,
+  bellDrawer,
+  searchDrawer,
+  incomingOrders,
+  blankCheckBox,
+  onlinecustomer,
+  returnedOrders,
 } from '@/assets';
 import { DaySelector, InvoiceDetail, ScreenWrapper } from '@/components';
 import { moderateScale, ms } from 'react-native-size-matters';
@@ -53,6 +59,7 @@ import { NAVIGATION } from '@/constants';
 import Modal from 'react-native-modal';
 import CustomerListView from './Components/CustomerListView';
 import { debounce } from 'lodash';
+import { Spacer } from '@mPOS/components';
 
 export function Customers2() {
   const mapRef = useRef(null);
@@ -90,6 +97,9 @@ export function Customers2() {
   const [customerType, setCustomerType] = useState(
     saveCustomeType === undefined ? 'all_customers' : saveCustomeType
   );
+  const [newCustomerCheck, setNewCustomerCheck] = useState(true);
+  const [onlineCustomerCheck, setOnlineCustomerCheck] = useState(true);
+  const [walkCustomerCheck, setWalkCustomerCheck] = useState(true);
 
   const closeHandler = () => {
     setInvoiceDetail(false);
@@ -140,6 +150,7 @@ export function Customers2() {
       id: '1',
       type: 'new_customers',
       cID: 2,
+      color: COLORS.cream_yellow,
     },
     {
       customertype: 'Returning Customers',
@@ -148,6 +159,7 @@ export function Customers2() {
       id: '2',
       type: 'returning_customers',
       cID: 3,
+      color: COLORS.light_purple,
     },
     {
       customertype: 'Online Customers',
@@ -156,6 +168,7 @@ export function Customers2() {
       id: '3',
       type: 'online_customers',
       cID: 4,
+      color: COLORS.light_green,
     },
     {
       customertype: 'Walkin Customers',
@@ -164,6 +177,7 @@ export function Customers2() {
       id: '4',
       type: 'walkin_customers',
       cID: 5,
+      color: COLORS.light_skyblue,
     },
   ];
   const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
@@ -292,19 +306,26 @@ export function Customers2() {
       );
     } else {
       return (
-        <View>
+        <View style={{ flex: 1 }}>
           <View style={styles.headerMainView}>
             <View style={styles.deliveryView}>
-              <Image source={users} style={[styles.truckStyle, { marginLeft: 10 }]} />
-              <Text style={styles.deliveryText}>{strings.customers.users}</Text>
+              <Image source={users} style={[styles.truckStyle]} />
+              <Text style={styles.deliveryText}>{'Total Customers'}</Text>
             </View>
             <View style={styles.deliveryView}>
+              <DaySelector
+                onPresFun={onPresFun}
+                selectId={selectId}
+                setSelectId={setSelectId}
+                setSelectTime={setSelectTime}
+              />
               <TouchableOpacity
                 onPress={() =>
                   navigate(NAVIGATION.notificationsList, { screen: NAVIGATION.customers2 })
                 }
+                style={{ marginHorizontal: ms(10) }}
               >
-                <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
+                <Image source={bellDrawer} style={styles.truckStyle} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.searchView}
@@ -314,8 +335,8 @@ export function Customers2() {
                   setSearchedText('');
                 }}
               >
-                <Image source={search_light} style={styles.searchImage} />
-                <View
+                <Image source={searchDrawer} style={styles.searchImage} />
+                {/* <View
                   style={{
                     height: SH(40),
                     width: SW(70),
@@ -328,7 +349,7 @@ export function Customers2() {
                   >
                     {strings.deliveryOrders.search}
                   </Text>
-                </View>
+                </View> */}
                 {/* <TextInput
                   placeholder={strings.deliveryOrders.search}
                   style={styles.textInputStyles}
@@ -338,60 +359,87 @@ export function Customers2() {
             </View>
           </View>
           <View style={styles.homeBodyCon}>
-            <View style={styles.totalCustomerCon}>
-              <Text style={styles.totalCustomerFirst}>Total Customers</Text>
-              <View>
-                <DaySelector
-                  onPresFun={onPresFun}
-                  selectId={selectId}
-                  setSelectId={setSelectId}
-                  setSelectTime={setSelectTime}
-                />
-              </View>
-            </View>
-
             <View>
               <FlatList
                 data={newCustomerData}
                 extraData={newCustomerData}
                 renderItem={({ item, index }) => {
                   return (
-                    <View style={[styles.custometrCon, styles.flexAlignNew]}>
+                    <View style={[styles.custometrCon, { backgroundColor: item.color }]}>
                       <TouchableOpacity
                         onPress={() => onViewUser(item.cID, item.type, item?.count)}
-                        style={styles.flexAlign}
+                        style={{ alignItems: 'flex-start' }}
                       >
-                        <Image source={item.img} style={styles.newCustomer} />
-                        <View style={{ paddingHorizontal: moderateScale(7) }}>
-                          <Text style={styles.customerCount}>{item.count}</Text>
-                          <Text style={styles.newCustomerHeading}>{item.customertype}</Text>
-                        </View>
+                        <Image source={item.img} style={[styles.newCustomer]} />
+                        <Spacer space={ms(10)} />
+
+                        <Text style={styles.customerCount}>{item.count}</Text>
+                        <Text style={styles.newCustomerHeading}>{item.customertype}</Text>
                       </TouchableOpacity>
                     </View>
                   );
                 }}
                 keyExtractor={(item) => item.id}
                 horizontal
-                contentContainerStyle={styles.contentContainerStyle}
                 scrollEnabled={false}
               />
             </View>
 
-            <View style={[styles.displayFlex, { marginTop: ms(10) }]}>
-              <View>
-                <Text style={styles.totalCusPrimary}>{strings.customers.totalCustomer}</Text>
-                <Text style={styles.totalCustomer}>{totalCustomers ?? '0'}</Text>
-              </View>
+            <View style={[styles.flexAlign, { marginTop: ms(10) }]}>
+              <Text style={styles.totalCusPrimary}>{strings.customers.totalCustomer}</Text>
+              <Text style={styles.totalCustomer}>{totalCustomers ?? '0'}</Text>
               <TouchableOpacity
                 style={styles.viewButtonCon}
                 onPress={() => onViewUser(1, 'all_customers')}
               >
                 <Text style={styles.viewAll}>{strings.reward.viewAll}</Text>
               </TouchableOpacity>
+              <View style={styles.flexRow}>
+                <TouchableOpacity
+                  style={styles.checkboxViewStyle}
+                  onPress={() => setWalkCustomerCheck((prev) => !prev)}
+                >
+                  <Image
+                    source={walkCustomerCheck ? incomingOrders : blankCheckBox}
+                    style={styles.checkboxIconStyle}
+                  />
+                  <Text style={[styles.varientTextStyle, { color: COLORS.aqua }]}>
+                    Wallking customer
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.checkboxViewStyle}
+                  onPress={() => setOnlineCustomerCheck((prev) => !prev)}
+                >
+                  <Image
+                    source={onlineCustomerCheck ? onlinecustomer : blankCheckBox}
+                    style={[styles.checkboxIconStyle]}
+                  />
+                  <Text style={[styles.varientTextStyle, { color: COLORS.success_green }]}>
+                    Online Customers
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.checkboxViewStyle}
+                  onPress={() => setNewCustomerCheck((prev) => !prev)}
+                >
+                  <Image
+                    source={newCustomerCheck ? returnedOrders : blankCheckBox}
+                    style={[styles.checkboxIconStyle]}
+                  />
+                  <Text style={[styles.varientTextStyle, { color: COLORS.yellow }]}>
+                    New Customers
+                  </Text>
+                  {/* returnedOrders */}
+                </TouchableOpacity>
+              </View>
             </View>
-            <View>
-              <Graph graphDetail={getCustomerStatitics?.graphData} />
-            </View>
+            <Graph
+              graphDetail={getCustomerStatitics?.graphData}
+              newCustomerCheck={newCustomerCheck}
+              walkCustomerCheck={walkCustomerCheck}
+              onlineCustomerCheck={onlineCustomerCheck}
+            />
           </View>
         </View>
       );
@@ -399,11 +447,7 @@ export function Customers2() {
   };
   return (
     <ScreenWrapper>
-      <View
-        style={allUsers || userProfile || userDetails ? styles.containerWhite : styles.container}
-      >
-        {bodyView()}
-      </View>
+      <View style={styles.container}>{bodyView()}</View>
       {onLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />

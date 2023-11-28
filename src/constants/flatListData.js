@@ -24,6 +24,10 @@ import {
   printer,
   tax,
   deviceLogo,
+  scanNew,
+  credCard,
+  cashDrawerDevice,
+  printerNew,
 } from '@/assets';
 
 export const newCustomerDataLoader = [
@@ -145,23 +149,23 @@ export const settingLabelData = [
 export const deviceDropDownArray = [
   {
     id: 1,
-    title: 'Add Barcode Scanner',
-    image: dropScan,
+    title: 'Barcode Scanner',
+    image: scanNew,
   },
   {
     id: 2,
     title: 'Card Reader',
-    image: cardReader,
+    image: credCard,
   },
   {
     id: 3,
-    title: 'Cash drawers',
-    image: tray,
+    title: 'Cash Drawers',
+    image: cashDrawerDevice,
   },
   {
     id: 4,
-    title: 'Receipt printers',
-    image: printer,
+    title: 'Receipt Printers',
+    image: printerNew,
   },
 ];
 

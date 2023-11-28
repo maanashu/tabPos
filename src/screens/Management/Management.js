@@ -39,6 +39,24 @@ import {
   lockLight,
   powerAuth,
   userImage,
+  plusDrawer,
+  plus,
+  addMoney,
+  removeMoney,
+  lock,
+  lockDrawer,
+  logOutDrawer,
+  crossDrawer,
+  cross,
+  moneySearch,
+  info,
+  bellDrawer,
+  searchDrawer,
+  arrowUp,
+  arrowDown,
+  arrowUpRound,
+  arrowDownRound,
+  arrowRightTop,
 } from '@/assets';
 import {
   endTrackingSession,
@@ -74,6 +92,7 @@ import WalletInvoice from '../Wallet2/Components/WalletInvoice';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { getUser } from '@/selectors/UserSelectors';
 import { logoutFunction } from '@/actions/AuthActions';
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -196,22 +215,29 @@ export function Management() {
     },
   ];
 
-  const Item = ({ item, onPress, borderColor, color }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.selectAmountCon, { borderColor }]}>
+  const Item = ({ item, onPress, borderColor, color, borderWidth }) => (
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        styles.selectAmountCon,
+        { borderColor, backgroundColor: COLORS.sky_grey, borderRadius: 100, borderWidth },
+      ]}
+    >
       <Text style={[styles.cashDrawerText, { color }]}>${item.title}</Text>
     </TouchableOpacity>
   );
 
   const leaveDataItem = ({ item }) => {
-    const borderColor = item.id === leaveId ? COLORS.primary : COLORS.solidGrey;
-    const color = item.id === leaveId ? COLORS.primary : COLORS.solid_grey;
-
+    const borderColor = item.id === leaveId ? COLORS.navy_blue : null;
+    const color = item.id === leaveId ? COLORS.navy_blue : COLORS.navy_blue;
+    const borderWidth = item.id === leaveId ? 1 : null;
     return (
       <Item
         item={item}
         onPress={() => (setLeaveId(item.id), setLeaveData(item?.title))}
         borderColor={borderColor}
         color={color}
+        borderWidth={borderWidth}
       />
     );
   };
@@ -442,8 +468,8 @@ export function Management() {
           </TouchableOpacity>
         ) : (
           <View style={styles.deliveryView}>
-            <Image source={tray} style={styles.truckStyle} />
-            <Text style={styles.deliveryText}>{strings.management.cashTracking}</Text>
+            <Image source={moneySearch} style={styles.truckStyle} />
+            <Text style={styles.deliveryText}>{strings.management.salesTracking}</Text>
           </View>
         )}
         <View style={styles.deliveryView}>
@@ -454,14 +480,14 @@ export function Management() {
               })
             }
           >
-            <Image source={bell} style={[styles.truckStyle, { right: 25 }]} />
+            <Image source={bellDrawer} style={[styles.truckStyle, { right: 25 }]} />
           </TouchableOpacity>
           <View style={styles.searchView}>
-            <Image source={search_light} style={styles.searchImage} />
+            <Image source={searchDrawer} style={styles.searchImage} />
             <TextInput
-              placeholder={strings.deliveryOrders.search}
+              placeholder={strings.deliveryOrders.searchInHistory}
               style={styles.textInputStyle}
-              placeholderTextColor={COLORS.darkGray}
+              placeholderTextColor={COLORS.navy_blue}
               onChangeText={(text) => {
                 setSku(text);
                 debouncedSearchInvoice(text);
@@ -547,11 +573,11 @@ export function Management() {
   const addCashModal = () => {
     return (
       <Modal transparent isVisible={addCash}>
-        <KeyboardAwareScrollView contentContainerStyle={styles.modalMainView}>
+        <KeyboardAwareScrollView contentContainerStyle={[styles.modalMainView, { width: SW(150) }]}>
           <View
             style={[
               styles.headerView,
-              { backgroundColor: removeCash ? COLORS.black : COLORS.primary },
+              // { backgroundColor: removeCash ? COLORS.black : COLORS.primary },
             ]}
           >
             <View style={{ width: SW(135), alignItems: 'center' }}>
@@ -567,26 +593,37 @@ export function Management() {
               }}
               style={{ width: SW(10) }}
             >
-              <Image
-                source={crossButton}
-                style={[styles.crossIconStyle, { tintColor: COLORS.white }]}
-              />
+              <Image source={crossButton} style={[styles.crossIconStyle, { right: SW(5) }]} />
             </TouchableOpacity>
           </View>
 
-          <Spacer space={SH(20)} />
+          {/* <Spacer space={SH(20)} /> */}
           <View style={styles.countCashView}>
+            <Image
+              source={removeCash ? removeMoney : addMoney}
+              style={[styles.addMoneyStyle, removeCash && { tintColor: COLORS.orange }]}
+            />
+            <Spacer space={SH(20)} />
             <Text style={styles.countCashText}>
-              {removeCash ? strings.management.amountRemoved : strings.management.amountAdded}
+              {removeCash ? strings.management.removeCash : strings.management.addCash}
             </Text>
-
+            <Spacer space={SH(10)} />
+            <Text
+              style={[
+                styles.amountCountedText,
+                { textAlign: 'center', color: COLORS.navy_blue, fontSize: SH(20) },
+              ]}
+            >
+              {strings.management.enterAmount}
+            </Text>
             <Spacer space={SH(20)} />
             <View>
-              <Text style={styles.amountCountedText}>{strings.management.cashAmount}</Text>
+              <Text style={styles.amountCountedText}>{strings.management.enterAmount}</Text>
+              <Spacer space={SH(5)} />
               <TextInput
                 placeholder={strings.management.amount}
                 style={styles.inputStyle}
-                placeholderTextColor={COLORS.solid_grey}
+                placeholderTextColor={COLORS.navy_blue}
                 keyboardType="number-pad"
                 value={addCashInput}
                 onChangeText={setAddCashInput}
@@ -595,22 +632,21 @@ export function Management() {
 
             <Spacer space={SH(20)} />
             <View>
-              <Text style={styles.amountCountedText}>{strings.management.note}</Text>
+              <Text style={styles.amountCountedText}>{strings.management.hintText}</Text>
+              <Spacer space={SH(5)} />
               <TextInput
                 placeholder={strings.management.note}
                 style={styles.noteInputStyle}
-                placeholderTextColor={COLORS.gerySkies}
+                placeholderTextColor={COLORS.navy_blue}
                 value={trackNotes}
                 onChangeText={setTrackNotes}
               />
             </View>
             <Spacer space={SH(20)} />
-            <View>
+            {/* <View>
               <Text style={styles.amountCountedText}>{strings.management.transactionType}</Text>
               <View style={styles.addCashDrop}>
-                {/* <TransactionDropDown 
-                isCashIn={true}
-                selected={addCashValue} /> */}
+               
                 <TextInput
                   editable={false}
                   // placeholder={"Manual Cash In"}
@@ -620,17 +656,20 @@ export function Management() {
                   // onChangeText={setTrackNotes}
                 />
               </View>
-            </View>
+            </View> */}
           </View>
 
           {/* <Spacer space={SH(90)} /> */}
-          <View style={{ flex: 1 }} />
+          {/* <View style={{ flex: 1 }} /> */}
           <Button
             title={strings.management.confirm}
             textStyle={styles.buttonText}
             style={[
               styles.saveButton,
-              { backgroundColor: addCashInput !== '' ? COLORS.primary : COLORS.gerySkies },
+              {
+                backgroundColor: addCashInput !== '' ? COLORS.navy_blue : COLORS.gerySkies,
+                borderRadius: 100,
+              },
             ]}
             // onPress={() => {
             //   setAddCash(false);
@@ -646,11 +685,11 @@ export function Management() {
   const endSessionFunction = () => {
     if (endSession) {
       return (
-        <View style={styles.absoluteZero}>
+        <View style={[styles.absoluteZero]}>
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
+                {/* {strings.management.endCashTrackingSession} */}
               </Text>
             </View>
             <TouchableOpacity
@@ -662,39 +701,57 @@ export function Management() {
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-          <View style={styles.calculatorView}>
+          {/* <View style={styles.calculatorView}>
             <Image source={Calculator} style={styles.calculatorStyle} />
-          </View>
+          </View> */}
 
           <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(60)} />
+            <Spacer space={SH(15)} />
+            <Image source={moneySearch} style={styles.calculatorStyle} />
+            <Spacer space={SH(25)} />
             <View>
               <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
-                {strings.management.countCash}
+                {strings.management.endCashTrackingSession}
               </Text>
-              <Spacer space={SH(20)} />
+              <Spacer space={SH(45)} />
               <View>
                 <Text style={styles.amountCountedText}>{strings.management.enterAmount}</Text>
                 <Spacer space={SH(5)} />
                 <TextInput
                   style={styles.inputStyle}
                   placeholder={strings.management.amount}
-                  placeholderTextColor={COLORS.solid_grey}
+                  placeholderTextColor={COLORS.navy_blue}
                   value={countFirst}
                   onChangeText={setCountFirst}
                   keyboardType="number-pad"
                 />
               </View>
-              <Spacer space={SH(60)} />
+              <Spacer space={SH(80)} />
             </View>
             {/* <View style={{ flex: 1 }} /> */}
-            <Button
-              style={[styles.saveButton, countFirst !== '' && { backgroundColor: COLORS.primary }]}
+            {/* <Button
+              style={[
+                styles.saveButton,
+                {
+                  backgroundColor: countFirst == '' ? COLORS.gerySkies : COLORS.navy_blue,
+                  borderRadius: 100,
+                },
+              ]}
               textStyle={styles.buttonText}
               title={strings.management.next}
               // onPress={() => (setEndSession(false), setCashSummary(true))}
               onPress={countCashFirst}
-            />
+            /> */}
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => {
+                setEndSession(false), setCashSummary(true);
+              }}
+              style={styles.nextButtonEnd}
+            >
+              <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
+              <Image source={arrowRightTop} style={styles.crossImage} />
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -704,7 +761,7 @@ export function Management() {
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
+                {/* {strings.management.endCashTrackingSession} */}
               </Text>
             </View>
             <TouchableOpacity
@@ -716,17 +773,33 @@ export function Management() {
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-          <View style={styles.calculatorView}>
+          {/* <View style={styles.calculatorView}>
             <Image source={CalculatorColor} style={styles.calculatorStyle} />
-          </View>
+          </View> */}
+
           <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(50)} />
+            <Image source={moneySearch} style={styles.calculatorStyle} />
+            <Spacer space={SH(5)} />
+            <Text style={[styles.countCashText, { textAlign: 'center' }]}>
+              {strings.management.endCashTrackingSession}
+            </Text>
+            <Spacer space={SH(40)} />
             <View>
-              <Text style={[styles.countCashText]}>{strings.management.cashSummary}</Text>
+              <Text style={[styles.countCashText, { textAlign: 'left' }]}>
+                {strings.management.cashSummary}
+              </Text>
               <Spacer space={SH(15)} />
-              <Spacer
+              {/* <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
                 backgroundColor={COLORS.gerySkies}
+              /> */}
+              <View
+                style={{
+                  borderColor: COLORS.navy_blue,
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  // height: 1,
+                }}
               />
               <Spacer space={SH(15)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
@@ -737,9 +810,17 @@ export function Management() {
                 </Text>
               </View>
               <Spacer space={SH(12.5)} />
-              <Spacer
+              {/* <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
                 backgroundColor={COLORS.gerySkies}
+              /> */}
+              <View
+                style={{
+                  borderColor: COLORS.navy_blue,
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  // height: 1,
+                }}
               />
               <Spacer space={SH(12.5)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
@@ -751,16 +832,24 @@ export function Management() {
               </View>
 
               <Spacer space={SH(12.5)} />
-              <Spacer
+              {/* <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
                 backgroundColor={COLORS.gerySkies}
+              /> */}
+              <View
+                style={{
+                  borderColor: COLORS.navy_blue,
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  // height: 1,
+                }}
               />
               <Spacer space={SH(12.5)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
                 <Text
                   style={[
                     styles.amountExpect,
-                    { color: discrepancy < 0 ? COLORS.red : COLORS.dark_grey },
+                    { color: discrepancy < 0 ? COLORS.red : COLORS.navy_blue },
                   ]}
                 >
                   {strings.management.discrepancy}
@@ -768,7 +857,7 @@ export function Management() {
                 <Text
                   style={[
                     styles.amountExpect,
-                    { color: discrepancy < 0 ? COLORS.red : COLORS.dark_grey },
+                    { color: discrepancy < 0 ? COLORS.red : COLORS.navy_blue },
                   ]}
                 >
                   {discrepancy < 0 ? '-' : null} {'USD'} $
@@ -777,15 +866,27 @@ export function Management() {
               </View>
             </View>
             <Spacer space={SH(60)} />
-            <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+            {/* <Button
+              style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
               onPress={() => {
                 setCashSummary(false), setEndSelectAmount(true);
                 setCountThird(''), setLeaveId(1), setLeaveData('0');
               }}
-            />
+            /> */}
+
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => {
+                setCashSummary(false), setEndSelectAmount(true);
+                setCountThird(''), setLeaveId(1), setLeaveData('0');
+              }}
+              style={styles.nextButtonEnd}
+            >
+              <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
+              <Image source={arrowRightTop} style={styles.crossImage} />
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -795,23 +896,24 @@ export function Management() {
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
+                {/* {strings.management.endCashTrackingSession} */}
               </Text>
             </View>
             <TouchableOpacity
               onPress={() => {
                 setEndSelectAmount(false), setCashSummary(true);
               }}
-              style={{ width: SW(10) }}
+              style={{ width: SW(12) }}
             >
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
           <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(60)} />
+            <Image source={moneySearch} style={styles.calculatorStyle} />
+            <Spacer space={SH(30)} />
             <View>
-              <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonRegular }]}>
-                {strings.management.selectAmountDra}
+              <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
+                {strings.management.endCashTrackingSession}
               </Text>
               <Spacer space={SH(20)} />
 
@@ -824,16 +926,16 @@ export function Management() {
               />
               <Spacer space={SH(25)} />
               <View>
-                <Text style={styles.amountCountedText}>{strings.management.otherAmount}</Text>
+                {/* <Text style={styles.amountCountedText}>{strings.management.otherAmount}</Text> */}
                 <Spacer space={SH(15)} />
                 <Text style={[styles.amountCountedText, { fontSize: SF(12) }]}>
-                  {strings.management.enterAmount}
+                  {strings.management.otherAmount}
                 </Text>
                 <Spacer space={SH(5)} />
                 <TextInput
                   style={styles.inputStyle}
                   placeholder={strings.management.amount}
-                  placeholderTextColor={COLORS.solid_grey}
+                  placeholderTextColor={COLORS.navy_blue}
                   value={countThird}
                   onChangeText={(countThird) => (setCountThird(countThird), setLeavFun(countThird))}
                   keyboardType="numeric"
@@ -841,14 +943,23 @@ export function Management() {
               </View>
             </View>
             <Spacer space={SH(30)} />
-            <View style={{ flex: 1 }} />
-            <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+            {/* <View style={{ flex: 1 }} /> */}
+            {/* <Button
+              style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
               // onPress={() => (setEndSelectAmount(false), setRemoveUsd(true))}
               onPress={endTrackingHandler}
-            />
+            /> */}
+
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={endTrackingHandler}
+              style={styles.nextButtonEnd}
+            >
+              <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
+              <Image source={arrowRightTop} style={styles.crossImage} />
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -858,7 +969,7 @@ export function Management() {
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
               <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.confirm}
+                {/* {strings.management.confirm} */}
               </Text>
             </View>
             <TouchableOpacity
@@ -875,22 +986,28 @@ export function Management() {
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-          <Spacer space={SH(100)} />
+
+          <Spacer space={SH(30)} />
           <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(60)} />
+            <Image source={info} style={styles.infoStyle} />
+            <Spacer space={SH(25)} />
             <View>
               <Text style={styles.removerDarkText}>
-                Remove USD $ {clickAmount ?? '0'} from drawer
+                Are you sure you want to remove USD $ {clickAmount ?? '0'} from the drawer?
+                {/* Remove USD $ {clickAmount ?? '0'} from drawer */}
               </Text>
               <Spacer space={SH(21)} />
               <Text style={styles.removerDarkTextRegular}>
-                Amount left in drawer: USD ${endBalance?.amount}
+                Amount left in drawer:
+                {/* USD ${endBalance?.amount} */}
               </Text>
+              <Spacer space={SH(40)} />
+              <Text style={styles.removerDarkText}>${endBalance?.amount}</Text>
             </View>
 
             <View style={{ flex: 0.5 }} />
             <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+              style={[styles.saveButton, { backgroundColor: COLORS.orange, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={'Confirm'}
               onPress={() => {
@@ -909,11 +1026,11 @@ export function Management() {
       );
     } else if (cardCoinSummary) {
       return (
-        <View style={styles.absoluteZero}>
+        <View style={{ flex: 1, height: WINDOW_HEIGHT / 1.2 }}>
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {strings.management.endCashTrackingSession}
+              <Text style={[styles.trackingButtonText, { fontSize: SF(0) }]}>
+                {/* {strings.management.endCashTrackingSession} */}
               </Text>
             </View>
             <TouchableOpacity
@@ -926,17 +1043,38 @@ export function Management() {
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-          <View style={styles.calculatorView}>
-            <Image source={CalculatorColor} style={styles.calculatorStyle} />
-          </View>
-          <View style={styles.trackingBodyCon}>
-            <Spacer space={SH(40)} />
-            <View>
-              <Text style={[styles.countCashText]}>{strings.management.cardSummary}</Text>
+          {/* <View style={styles.calculatorView}> */}
+          {/* </View> */}
+          <View style={[styles.trackingBodyCon]}>
+            <Image source={moneySearch} style={styles.calculatorStyle} />
+            <Spacer space={SH(15)} />
+            <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
+              {strings.management.endCashTrackingSession}
+            </Text>
+            <Spacer space={SH(30)} />
+            <View
+              style={{
+                borderWidth: 1,
+                borderRadius: 20,
+                padding: SH(20),
+                borderColor: COLORS.navy_blue,
+              }}
+            >
+              <Text style={[styles.countCashText, { textAlign: 'left' }]}>
+                {strings.management.cardSummary}
+              </Text>
               <Spacer space={SH(15)} />
-              <Spacer
+              {/* <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
                 backgroundColor={COLORS.gerySkies}
+              /> */}
+              <View
+                style={{
+                  borderColor: COLORS.navy_blue,
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  // height: 1,
+                }}
               />
               <Spacer space={SH(15)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
@@ -948,13 +1086,30 @@ export function Management() {
               </View>
               <Spacer space={SH(12.5)} />
             </View>
-            <Spacer space={SH(45)} />
-            <View>
-              <Text style={[styles.countCashText]}>{strings.management.jbrCoinSummary}</Text>
+            <Spacer space={SH(20)} />
+            <View
+              style={{
+                borderWidth: 1,
+                borderRadius: 20,
+                padding: SH(20),
+                borderColor: COLORS.navy_blue,
+              }}
+            >
+              <Text style={[styles.countCashText, { textAlign: 'left' }]}>
+                {strings.management.jbrCoinSummary}
+              </Text>
               <Spacer space={SH(15)} />
-              <Spacer
+              {/* <Spacer
                 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
                 backgroundColor={COLORS.gerySkies}
+              /> */}
+              <View
+                style={{
+                  borderColor: COLORS.navy_blue,
+                  borderStyle: 'dashed',
+                  borderWidth: 0.5,
+                  // height: 1,
+                }}
               />
               <Spacer space={SH(15)} />
               <View style={[styles.displayFlex, { alignItems: 'flex-start' }]}>
@@ -966,9 +1121,9 @@ export function Management() {
               </View>
               <Spacer space={SH(12.5)} />
             </View>
-            <Spacer space={SH(60)} />
-            <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.primary }]}
+            <Spacer space={SH(30)} />
+            {/* <Button
+              style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.confirm}
               onPress={() => {
@@ -978,7 +1133,21 @@ export function Management() {
                 setCashSummary('');
                 setSummaryHistory(true), setHistoryHeader(true);
               }}
-            />
+            /> */}
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => {
+                dispatch(getDrawerSessionById(endBalance?.drawer_id));
+                setCardCoinSummary(false);
+                setEndSession(false);
+                setCashSummary('');
+                setSummaryHistory(true), setHistoryHeader(true);
+              }}
+              style={styles.nextButtonEnd}
+            >
+              <Text style={styles.sessionHistoryTextNew}>{strings.management.confirm}</Text>
+              <Image source={arrowRightTop} style={styles.crossImage} />
+            </TouchableOpacity>
           </View>
         </View>
       );
@@ -1010,6 +1179,7 @@ export function Management() {
           sessionHistoryLoad={sessionHistoryLoad}
           // oneItemSend={setUserHistory}
           setSessionHistoryArray={setSessionHistoryArray}
+          setSessionHistory={setSessionHistory}
         />
       );
     } else if (summaryHistory) {
@@ -1049,14 +1219,14 @@ export function Management() {
                 {historyHeader === true ? (
                   <Text style={styles.summaryText}>
                     {strings.management.summary}{' '}
-                    <Text style={[styles.summaryText, { color: COLORS.primary }]}>
+                    <Text style={[styles.summaryText, { color: COLORS.navy_blue }]}>
                       {moment(historyById?.created_at).format('LL')}
                     </Text>
                   </Text>
                 ) : (
                   <Text style={styles.summaryText}>
                     {strings.management.summary}{' '}
-                    <Text style={[styles.summaryText, { color: COLORS.primary }]}>
+                    <Text style={[styles.summaryText, { color: COLORS.navy_blue }]}>
                       {moment(userHistory?.created_at).format('LL')}
                     </Text>
                   </Text>
@@ -1090,56 +1260,86 @@ export function Management() {
       );
     } else if (viewSession) {
       return (
-        <View>
+        <View
+          style={{
+            borderWidth: 0.5,
+            borderColor: COLORS.navy_blue,
+            borderRadius: 20,
+            width: WINDOW_WIDTH - 190,
+            alignSelf: 'center',
+          }}
+        >
           <View style={styles.sessionMainView}>
             <View style={styles.sessionView}>
-              <View>
-                <Text style={styles.cashDrawerText}>{strings.management.cashDrawer}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.cashDrawerText}>{strings.management.batch}</Text>
 
-                <Text style={styles.drawerIdText}>
+                <Text
+                  style={[
+                    styles.drawerIdText,
+                    { left: SW(20), color: COLORS.purple, fontFamily: Fonts.Regular },
+                  ]}
+                >
                   {strings.management.drawerID} {SessionData?.id}
                 </Text>
               </View>
 
-              <Text style={[styles.drawerIdText, { top: 2 }]}>
-                {moment(SessionData?.createDate).format('dddd, MMMM Do YYYY | h:mm a')}
-              </Text>
+              <View style={{ backgroundColor: 'white', padding: SH(10), borderRadius: 100 }}>
+                <Text
+                  style={[
+                    styles.drawerIdText,
+                    {
+                      top: 2,
+                    },
+                  ]}
+                >
+                  {moment(SessionData?.createDate).format('dddd, MMMM Do YYYY | h:mm a')}
+                </Text>
+              </View>
             </View>
 
             <Spacer space={SH(10)} />
             <View>
               <View>
-                <Text style={styles.usdText}>
+                <Text style={styles.usdTextNew}>
                   {strings.management.usd}
                   {Number(SessionData?.cashBalance)?.toFixed(2)}
                 </Text>
               </View>
+              <Spacer space={SH(15)} />
               <Text
-                style={[styles.cashDrawerText, { fontFamily: Fonts.Regular, textAlign: 'center' }]}
+                style={[
+                  styles.cashDrawerTextNew,
+                  { fontFamily: Fonts.Regular, textAlign: 'center' },
+                ]}
               >
                 {strings.management.expected}
               </Text>
             </View>
 
             <Spacer space={SH(25)} />
-            <View style={[styles.buttonView, { flexDirection: 'row' }]}>
-              <TouchableOpacity
-                activeOpacity={0.5}
-                onPress={() => {
-                  setAddCash(true), setRemoveCash(false), setdifferentState(true);
-                }}
-                style={styles.addCashView}
-              >
-                <Text style={styles.sessionHistoryText}>{strings.management.addCash}</Text>
-              </TouchableOpacity>
+            <View style={[styles.buttonView, { flexDirection: 'row', justifyContent: 'center' }]}>
               <TouchableOpacity
                 activeOpacity={0.5}
                 onPress={() => {
                   setAddCash(true), setRemoveCash(true);
                 }}
-                style={styles.removeCashView}
+                style={styles.removeCashViewNew}
               >
-                <Text style={styles.cashDrawerText}>{strings.management.removeCash}</Text>
+                <Text style={styles.cashDrawerNew}>{strings.management.removeCash}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => {
+                  setAddCash(true), setRemoveCash(false), setdifferentState(true);
+                }}
+                style={styles.addCashViewNew}
+              >
+                <Text style={styles.sessionHistoryTextNew}>{strings.management.addCash}</Text>
+                {/* <Image
+                  source={plus}
+                  style={{ height: SH(30), width: SW(30), resizeMode: 'contain' }}
+                /> */}
               </TouchableOpacity>
             </View>
             <Spacer space={SH(35)} />
@@ -1148,7 +1348,7 @@ export function Management() {
           <Spacer space={SH(20)} />
           <View style={styles.buttonView}>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.cashPaymentsText}>{strings.management.cashPayments}</Text>
+              <Text style={styles.cashPaymentsNew}>{strings.management.cashPayments}</Text>
               <Text>{''}</Text>
             </View>
 
@@ -1163,7 +1363,7 @@ export function Management() {
                       {strings.management.totalCashIn}
                     </Text>
                     <Image
-                      source={viewCashInArray ? up : down}
+                      source={viewCashInArray ? arrowUpRound : arrowDownRound}
                       resizeMode="contain"
                       style={{ height: ms(12), width: ms(12), marginLeft: ms(5) }}
                     />
@@ -1175,59 +1375,6 @@ export function Management() {
                 </TouchableOpacity>
                 {viewCashInArray && (
                   <>
-                    {/* {cashInArray?.map((item, index) => (
-                      <View key={index}>
-                        <TouchableOpacity
-                          style={styles.paymentBodyCon}
-                          onPress={() => toggleExpansion(index)}
-                        >
-                          <View style={styles.flexAlign}>
-                            <Text style={styles.paymentBodyText}>{item.transaction_type}</Text>
-                            <Image
-                              source={dropdown}
-                              resizeMode="contain"
-                              style={
-                                expandedItems[index]
-                                  ? styles.activeDropDownPayment
-                                  : styles.dropDownPayment
-                              }
-                            />
-                          </View>
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {item.amount}
-                          </Text>
-                        </TouchableOpacity>
-                        {expandedItems[index] && (
-                          <View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                          </View>
-                        )}
-                      </View>
-                    ))} */}
                     <TouchableOpacity
                       style={styles.paymentBodyCon}
                       onPress={() => setSalesExpandedView((prev) => !prev)}
@@ -1235,7 +1382,7 @@ export function Management() {
                       <View style={styles.flexAlign}>
                         <Text style={styles.paymentBodyText}>{'Sales'}</Text>
                         <Image
-                          source={dropdown}
+                          source={arrowDown}
                           resizeMode="contain"
                           style={
                             salesExpandedView
@@ -1286,7 +1433,7 @@ export function Management() {
                       <View style={styles.flexAlign}>
                         <Text style={styles.paymentBodyText}>{'Manual'}</Text>
                         <Image
-                          source={dropdown}
+                          source={arrowDown}
                           resizeMode="contain"
                           style={
                             manualInExpandedView
@@ -1329,157 +1476,6 @@ export function Management() {
                         </View>
                       </View>
                     )}
-
-                    {/* <TouchableOpacity
-                      style={styles.paymentBodyCon}
-                      onPress={() => setDelieveryFeeInExpandedView((prev) => !prev)}
-                    >
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Delivery Fees'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          style={
-                            delieveryFeeInExpandedView
-                              ? styles.activeDropDownPayment
-                              : styles.dropDownPayment
-                          }
-                          // style={styles.dropDownPayment}
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashIn?.delivery_fees?.total}
-                      </Text>
-                    </TouchableOpacity>
-                    {delieveryFeeInExpandedView && (
-                      <View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.delivery_fees?.cash}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.delivery_fees?.card}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.delivery_fees?.jobr_coin}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-
-                    <TouchableOpacity
-                      style={styles.paymentBodyCon}
-                      onPress={() => setShippingFeeInExpandedView((prev) => !prev)}
-                    >
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Shipping Fees'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          style={
-                            shippingFeeInExpandedView
-                              ? styles.activeDropDownPayment
-                              : styles.dropDownPayment
-                          }
-                          // style={styles.dropDownPayment}
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashIn?.shipping_fees?.total}
-                      </Text>
-                    </TouchableOpacity>
-                    {shippingFeeInExpandedView && (
-                      <View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.shipping_fees?.cash}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.shipping_fees?.card}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashIn?.shipping_fees?.jobr_coin}
-                          </Text>
-                        </View>
-                      </View>
-                    )} */}
-
-                    {/* <View
-                      style={styles.paymentBodyCon}
-                      // onPress={() => toggleExpansion(index)}
-                    >
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Manual'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          // style={
-                          //   expandedItems[index]
-                          //     ? styles.activeDropDownPayment
-                          //     : styles.dropDownPayment
-                          // }
-                          style={styles.dropDownPayment}
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashIn?.manual}
-                      </Text>
-                    </View> */}
-                    {/* <View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                            <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                              <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                              <Text style={styles.paymentBodyText}>
-                                {strings.management.usd}
-                                {item.amount}
-                              </Text>
-                            </View>
-                          </View> */}
                   </>
                 )}
                 <TouchableOpacity
@@ -1491,7 +1487,7 @@ export function Management() {
                       {strings.management.totalCashOut}
                     </Text>
                     <Image
-                      source={viewCashOutArray ? up : down}
+                      source={viewCashOutArray ? arrowUpRound : arrowDownRound}
                       resizeMode="contain"
                       style={{ height: ms(12), width: ms(12), marginLeft: ms(5) }}
                     />
@@ -1510,7 +1506,7 @@ export function Management() {
                       <View style={styles.flexAlign}>
                         <Text style={styles.paymentBodyText}>{'Refund'}</Text>
                         <Image
-                          source={dropdown}
+                          source={arrowDown}
                           resizeMode="contain"
                           style={
                             salesOutExpandedView
@@ -1552,24 +1548,6 @@ export function Management() {
                         </View>
                       </View>
                     )}
-                    {/* <TouchableOpacity style={styles.paymentBodyCon}>
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Manual'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          style={
-                            salesOutExpandedView
-                              ? styles.activeDropDownPayment
-                              : styles.dropDownPayment
-                          }
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashOut?.manual}
-                      </Text>
-                    </TouchableOpacity> */}
                   </>
                 )}
 
@@ -1582,7 +1560,7 @@ export function Management() {
                       <View style={styles.flexAlign}>
                         <Text style={styles.paymentBodyText}>{'Manual'}</Text>
                         <Image
-                          source={dropdown}
+                          source={arrowDown}
                           resizeMode="contain"
                           style={
                             manualOutExpandedView
@@ -1626,115 +1604,19 @@ export function Management() {
                     )}
                   </>
                 )}
-                {/* 
-                {viewCashOutArray && (
-                  <>
-                    <TouchableOpacity
-                      style={styles.paymentBodyCon}
-                      onPress={() => setDelieveryFeeOutExpandedView((prev) => !prev)}
-                    >
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Delivery Fees'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          style={
-                            delieveryFeeOutExpandedView
-                              ? styles.activeDropDownPayment
-                              : styles.dropDownPayment
-                          }
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashOut?.delivery_fees?.total.toFixed(2)}
-                      </Text>
-                    </TouchableOpacity>
-                    {delieveryFeeOutExpandedView && (
-                      <View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
 
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.delivery_fees?.cash.toFixed(2)}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.delivery_fees?.card.toFixed(2)}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.delivery_fees?.jobr_coin.toFixed(2)}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                  </>
-                )}
-
-                {viewCashOutArray && (
-                  <>
-                    <TouchableOpacity
-                      style={styles.paymentBodyCon}
-                      onPress={() => setShippingFeeOutExpandedView((prev) => !prev)}
-                    >
-                      <View style={styles.flexAlign}>
-                        <Text style={styles.paymentBodyText}>{'Shipping Fees'}</Text>
-                        <Image
-                          source={dropdown}
-                          resizeMode="contain"
-                          style={
-                            shippingFeeOutExpandedView
-                              ? styles.activeDropDownPayment
-                              : styles.dropDownPayment
-                          }
-                        />
-                      </View>
-                      <Text style={styles.paymentBodyText}>
-                        {strings.management.usd}
-                        {cashOut?.shipping_fees?.total}
-                      </Text>
-                    </TouchableOpacity>
-                    {shippingFeeOutExpandedView && (
-                      <View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Cash'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.shipping_fees?.cash}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'Card'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.shipping_fees?.card}
-                          </Text>
-                        </View>
-                        <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
-                          <Text style={styles.paymentBodyText}>{'JBR Coin'}</Text>
-
-                          <Text style={styles.paymentBodyText}>
-                            {strings.management.usd}
-                            {cashOut?.shipping_fees?.jobr_coin}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                  </>
-                )} */}
-                <View style={[styles.paymentOptionsView, { borderBottomWidth: 0 }]}>
+                <View
+                  style={[
+                    styles.paymentOptionsView,
+                    {
+                      borderRadius: 100,
+                      backgroundColor: COLORS.sky_grey,
+                      paddingHorizontal: SH(20),
+                      alignItems: 'center',
+                      // width: '100%',
+                    },
+                  ]}
+                >
                   <Text style={styles.cashDrawerText}>{strings.management.netPayment}</Text>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
@@ -1747,18 +1629,42 @@ export function Management() {
           </View>
 
           {/* <Spacer space={SH(40)} /> */}
-          <View style={{ flex: 1 }} />
-          <Button
+          {/* <View style={{ flex: 1.5 }} /> */}
+          {/* <Button
             onPress={() => {
               //  setEndSession(true),
               //  setCountFirst('');
               setViewSession(false);
               setCloseBatch(true);
             }}
-            style={styles.buttonStyle}
-            textStyle={[styles.cashDrawerText, { color: COLORS.red }]}
-            title={strings.management.endSession}
-          />
+            style={[
+              styles.buttonStyle,
+              {
+                backgroundColor: COLORS.navy_blue,
+                borderRadius: 100,
+                width: SW(100),
+                alignSelf: 'flex-end',
+                marginHorizontal: SW(5),
+                height: SH(60),
+                width: SW(70),
+                bottom: -20,
+              },
+            ]}
+            textStyle={[styles.cashDrawerText, { color: COLORS.white }]}
+            title={strings.management.closeBatch}
+          /> */}
+
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              setViewSession(false);
+              setCloseBatch(true);
+            }}
+            style={styles.closeBatchButton}
+          >
+            <Text style={styles.sessionHistoryTextNew}>{strings.management.closeBatch}</Text>
+            <Image source={crossDrawer} style={styles.crossImage} />
+          </TouchableOpacity>
           <Spacer space={SH(40)} />
         </View>
       );
@@ -1775,7 +1681,7 @@ export function Management() {
             <Image source={backArrow} style={styles.backButtonArrow} />
             <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
           </TouchableOpacity>
-          <Spacer space={SH(50)} />
+          {/* <Spacer space={SH(50)} /> */}
           <View
             style={{
               flexDirection: 'row',
@@ -1806,14 +1712,17 @@ export function Management() {
               {
                 padding: ms(30),
                 width: '100%',
-                backgroundColor: COLORS.white,
-                borderWidth: 0.5,
-                borderColor: COLORS.gerySkies,
+                backgroundColor: COLORS.sky_grey,
+                // borderWidth: 0.5,
+                // borderColor: COLORS.gerySkies,
+                borderRadius: 100,
+                paddingVertical: SH(15),
               },
             ]}
           >
-            <View>
+            <View style={{ alignSelf: 'center', flexDirection: 'row' }}>
               <Text style={styles.cashDrawerText}>{strings.management.batch}</Text>
+              {/* <Text style={styles.cashDrawerText}>{strings.management.batch}</Text> */}
             </View>
             <TouchableOpacity
               onPress={() => {
@@ -1821,11 +1730,20 @@ export function Management() {
               }}
               style={styles.closeBatchButtonView}
             >
-              <Text style={styles.closeBatchButtonText}>{strings.management.closeBatch}</Text>
+              <View style={styles.displayRow}>
+                <Text style={styles.closeBatchButtonText}>{strings.management.closeBatch}</Text>
+
+                <Image source={cross} style={[styles.cross]} />
+              </View>
             </TouchableOpacity>
           </View>
           <Spacer space={SH(30)} />
-          <View style={[styles.cashDrawerView, { padding: ms(30), width: '100%' }]}>
+          <View
+            style={[
+              styles.cashDrawerView,
+              { padding: ms(40), width: '100%', borderRadius: 40, paddingVertical: 30 },
+            ]}
+          >
             <View>
               <Text style={styles.loggedInAsText}>{strings.management.loggedInAs}</Text>
               <Spacer space={SH(30)} />
@@ -1855,7 +1773,7 @@ export function Management() {
                 </View>
               </View>
             </View>
-            <View>
+            <View style={{ flexDirection: 'row' }}>
               <Spacer space={SH(30)} />
               <TouchableOpacity
                 style={styles.lockScreenButton}
@@ -1877,15 +1795,20 @@ export function Management() {
                 }}
               >
                 <View style={styles.displayRow}>
-                  <Image source={lockLight} style={styles.lockLight} />
                   <Text style={styles.checkoutText1}>{strings.dashboard.lockScreen}</Text>
+                  <Image source={lockDrawer} style={[styles.lockLight]} />
                 </View>
               </TouchableOpacity>
               <Spacer space={SH(15)} />
-              <TouchableOpacity style={styles.lockScreenButton} onPress={() => logoutHandler()}>
+              <TouchableOpacity
+                style={[styles.lockScreenButton, { backgroundColor: COLORS.navy_blue }]}
+                onPress={() => logoutHandler()}
+              >
                 <View style={styles.displayRow}>
-                  <Image source={powerAuth} style={styles.lockLight} />
-                  <Text style={styles.checkoutText1}>{strings.posUsersList.logOut}</Text>
+                  <Text style={[styles.checkoutText1, { color: COLORS.white }]}>
+                    {strings.posUsersList.logOut}
+                  </Text>
+                  <Image source={logOutDrawer} style={[styles.lockLight]} />
                 </View>
               </TouchableOpacity>
             </View>
@@ -1897,8 +1820,8 @@ export function Management() {
         <View>
           {drawerActivity?.length === 0 ? (
             <View style={styles.cashDrawerView}>
-              <View>
-                <Text style={styles.cashDrawerText}>{strings.management.cashDrawer}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.cashDrawerText}>{strings.management.batch}</Text>
                 <Text style={styles.drawerIdText}>
                   {strings.management.drawerID} {SessionData?.id}
                 </Text>
@@ -1916,9 +1839,14 @@ export function Management() {
             </View>
           ) : (
             <View style={styles.cashDrawerView}>
-              <View>
-                <Text style={styles.cashDrawerText}>{strings.management.cashDrawer}</Text>
-                <Text style={styles.drawerIdText}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={styles.cashDrawerText}>{strings.management.batch}</Text>
+                <Text style={styles.drawerIdPurple}>
                   {strings.management.drawerID} {SessionData?.id}
                 </Text>
               </View>
@@ -1930,7 +1858,8 @@ export function Management() {
                 style={styles.viewSessionButtonView}
               >
                 <Text style={styles.viewSessionButtonText}>
-                  {strings.management.viewSession.toUpperCase()}
+                  {/* {strings.management.viewSession.toUpperCase()} */}
+                  {strings.management.viewSession}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -1951,7 +1880,8 @@ export function Management() {
                   style={styles.trackingButtonView}
                 >
                   <Text style={styles.trackingButtonText}>
-                    {strings.management.session.toUpperCase()}
+                    {/* {strings.management.session.toUpperCase()} */}
+                    {strings.management.session}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -2033,7 +1963,8 @@ export function Management() {
         </>
       ) : (
         <View style={styles.container}>
-          {summaryHistory || closeBatch ? null : customHeader()}
+          <Spacer space={SH(5)} />
+          {summaryHistory || closeBatch || sessionHistory ? null : customHeader()}
           {contentFunction()}
           {trackinSessionModal()}
           {addCashModal()}

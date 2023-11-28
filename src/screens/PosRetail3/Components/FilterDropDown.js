@@ -138,12 +138,13 @@ export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue, 
           value={search}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchCategory}
+          placeholderTextColor={COLORS.navy_blue}
           onChangeText={(search) => categorySearch(search)}
         />
 
         {isOrderLoading ? (
           <View style={{ paddingVertical: ms(10) }}>
-            <ActivityIndicator color={COLORS.primary} size={'small'} />
+            <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
           </View>
         ) : (
           <FlatList
@@ -208,12 +209,13 @@ export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue, 
           value={searchSubCategory}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchSubCategory}
+          placeholderTextColor={COLORS.navy_blue}
           onChangeText={(search) => subCategorySearch(search)}
         />
 
         {isOrderLoading ? (
           <View style={{ paddingVertical: ms(10) }}>
-            <ActivityIndicator color={COLORS.primary} size={'small'} />
+            <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
           </View>
         ) : (
           <FlatList
@@ -275,12 +277,13 @@ export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue, 
           value={searchBrand}
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchBrand}
+          placeholderTextColor={COLORS.navy_blue}
           onChangeText={(search) => brandSearch(search)}
         />
 
         {isOrderLoading ? (
           <View style={{ paddingVertical: ms(10) }}>
-            <ActivityIndicator color={COLORS.primary} size={'small'} />
+            <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
           </View>
         ) : (
           <FlatList
@@ -432,7 +435,7 @@ export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue, 
             style={
               multipleArrayLength === false && backfilterValue == 0
                 ? styles.clearFilterText
-                : [styles.clearFilterText, { color: COLORS.solid_grey }]
+                : [styles.clearFilterText, { color: COLORS.navy_blue }]
             }
           >
             Clear Filter
@@ -442,7 +445,7 @@ export const FilterDropDown = ({ sellerid, productFilterCount, backfilterValue, 
           style={
             multipleArrayLength === false && backfilterValue == 0
               ? styles.ApplyButton
-              : [styles.ApplyButton, { backgroundColor: COLORS.primary }]
+              : [styles.ApplyButton, { backgroundColor: COLORS.navy_blue }]
           }
           disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
           onPress={() => {
@@ -471,8 +474,8 @@ const styles = StyleSheet.create({
   },
   itemNameTextStyle: {
     fontSize: SF(14),
-    color: COLORS.solid_grey,
-    fontFamily: Fonts.Regular,
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
   },
   categoryViewStyle: {
     flexDirection: 'row',
@@ -487,14 +490,14 @@ const styles = StyleSheet.create({
     marginVertical: ms(8),
     height: ms(30),
     borderRadius: 8,
-    borderColor: COLORS.solidGrey,
-    fontFamily: Fonts.Italic,
+    borderColor: COLORS.navy_blue,
     paddingLeft: 10,
+    color: COLORS.navy_blue,
   },
   noDataText: {
     fontFamily: Fonts.Regular,
     textAlign: 'center',
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
   },
   dropdowMainView: {
     backgroundColor: COLORS.white,
@@ -528,7 +531,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   clearFilterButtonDark: {
-    borderColor: COLORS.solid_grey,
+    borderColor: COLORS.navy_blue,
   },
   clearFilterText: {
     color: COLORS.gerySkies,

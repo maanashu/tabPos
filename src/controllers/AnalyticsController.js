@@ -314,11 +314,13 @@ export class AnalyticsController {
     });
   }
 
-  static async getAnalyticStatistics(sellerID, data) {
+  static async getAnalyticStatistics(sellerID, data, page) {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getAnalyticStatistics + `?seller_id=${sellerID}&${params}`;
+        ORDER_URL +
+        ApiOrderInventory.getAnalyticStatistics +
+        `?seller_id=${sellerID}&${params}&page=${page}&limit=20`;
 
       HttpClient.get(endpoint)
         .then((response) => {
@@ -336,7 +338,7 @@ export class AnalyticsController {
     });
   }
 
-  static async getAnalyticOrderGraphs(sellerID, data) {
+  static async getAnalyticOrderGraphs(sellerID, data, page) {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
       const endpoint =
@@ -366,12 +368,12 @@ export class AnalyticsController {
     });
   }
 
-  static async getTotalInventory(sellerID, data) {
+  static async getTotalInventory(sellerID, data, page) {
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
       const endpoint = `${
         ORDER_URL + ApiOrderInventory.getTotalInventory
-      }?seller_id=${sellerID}&${params}&page=1&limit=20`;
+      }?seller_id=${sellerID}&${params}&page=${page}&limit=20`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

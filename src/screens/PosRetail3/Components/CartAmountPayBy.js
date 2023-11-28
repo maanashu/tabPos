@@ -28,6 +28,7 @@ import {
   barcode,
   dropdown,
   logo_full,
+  emailInvoice,
 } from '@/assets';
 import moment from 'moment';
 import { COLORS, SF, SH } from '@/theme';
@@ -67,6 +68,7 @@ import { DATA } from '@/constants/flatListData';
 import { getUser } from '@/selectors/UserSelectors';
 import { getSetting } from '@/selectors/SettingSelector';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { CustomHeader } from './CustomHeader';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -100,19 +102,19 @@ export const CartAmountPayBy = ({
   if (Object.keys(getSettingData?.getSetting).length > 0) {
     paymentMethodData.push(
       {
-        title: 'Cash',
+        title: 'cash',
         icon: moneyIcon,
         status: getSettingData.getSetting.accept_cash_payment,
         id: 1,
       },
       {
-        title: 'JBR Coin',
+        title: 'jobr coin',
         icon: qrCodeIcon,
         status: true,
         id: 2,
       },
       {
-        title: 'Card',
+        title: 'debit/credit',
         icon: cardPayment,
         status: getSettingData.getSetting.accept_card_payment,
         id: 3,
@@ -127,9 +129,9 @@ export const CartAmountPayBy = ({
     });
   }
 
-  const receiptData = [{ title: 'No e-recipe', icon: cardPayment }];
+  const receiptData = [{ title: 'No, thanks', icon: cardPayment }];
   if (getSettingData?.getSetting?.invoice_email_send_status) {
-    receiptData.unshift({ title: 'Email', icon: cardPayment });
+    receiptData.unshift({ title: 'E-mail', icon: cardPayment });
   }
   if (getSettingData?.getSetting?.invoice_sms_send_status) {
     receiptData.unshift({ title: 'SMS', icon: cardPayment });
@@ -177,6 +179,33 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
+  const invoiceData = [
+    {
+      title: 'Payment Option',
+      data: 'Cash',
+      id: 1,
+    },
+    {
+      title: 'Date',
+      data: moment().format('ddd') + ' ' + moment().subtract(10, 'days').calendar(),
+      id: 2,
+    },
+    {
+      title: 'Mode',
+      data: 'Walk-In',
+      id: 3,
+    },
+    {
+      title: 'POS No.',
+      data: getUserData?.posLoginData?.pos_number,
+      id: 4,
+    },
+    {
+      title: 'User ID',
+      data: getUserData?.posLoginData?.id,
+      id: 5,
+    },
+  ];
 
   // useEffect(() => {
   //   dispatch(getAllCart());
@@ -203,7 +232,7 @@ export const CartAmountPayBy = ({
       percent: getTips?.second_tips ?? '20',
     },
     { title: getTips?.third_tips ?? 22, icon: cardPayment, percent: getTips?.third_tips ?? '22' },
-    { title: '', icon: cardPayment, percent: 'No Tips' },
+    { title: '0.00', icon: cardPayment, percent: 'No, thanks' },
   ];
 
   function formatTime(seconds) {
@@ -356,7 +385,7 @@ export const CartAmountPayBy = ({
     if (index === 0) {
       return `$${totalPayAmount()}`;
     } else if (index === 1) {
-      return `JBR ${(totalPayAmount() * 100).toFixed(0)}`;
+      return `J ${(totalPayAmount() * 100).toFixed(0)}`;
     } else {
       return `$${totalPayAmount()}`;
     }
@@ -500,42 +529,42 @@ export const CartAmountPayBy = ({
 
   return (
     <SafeAreaView style={styles._innerContainer}>
-      <View style={styles.displayflex}>
+      <CustomHeader
+      // iconShow
+      // crossHandler={() => {
+      //   setShowCart(false);
+      // }}
+      />
+      <View style={[styles.displayflex, { flex: 1 }]}>
         <View style={styles.leftCon}>
-          <View style={styles.selectTipsHeader}>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <BackButton
-                onPress={onPressBack}
-                title={'Back'}
-                style={{
-                  top: ms(10),
-                  left: ms(10),
-                  backgroundColor: 'transparent',
-                }}
-              />
-              <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={styles._dollarSymbol}>$</Text>
-                <Text style={styles._amount}>
-                  {cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
-                </Text>
-              </View>
-            </View>
+          <View style={{ height: ms(25) }}>
+            <BackButton
+              onPress={onPressBack}
+              title={'Back'}
+              style={{
+                // top: ms(10),
+                // left: ms(10),
+                backgroundColor: 'transparent',
+              }}
+            />
           </View>
+
           <View style={{ flex: 1, paddingHorizontal: ms(18) }}>
             <View style={{ marginTop: ms(10) }}>
-              <Text style={styles.selectTips}>Select Tips</Text>
+              <Text style={styles.selectTips}>
+                1. Did we do it well?, Give us a{' '}
+                <Text style={{ fontFamily: Fonts.SemiBold }}>tip.</Text>{' '}
+              </Text>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 {TIPS_DATA.map((item, index) => (
                   <TouchableOpacity
                     onPress={() => {
-                      // onPressPaymentMethod({ method: item.title, index: index }),
                       const tipAmount = calculatePercentageValue(
                         cartData?.amount?.products_price,
                         item.title
                       );
                       {
-                        item.percent === 'No Tips'
+                        item.percent === 'No, thanks'
                           ? setSelectedTipAmount('0.00')
                           : setSelectedTipAmount(tipAmount);
                       }
@@ -543,41 +572,23 @@ export const CartAmountPayBy = ({
                       setSelectedTipIndex(index);
                     }}
                     key={index}
-                    style={[
-                      styles._payBYBoxContainerTip,
-                      {
-                        borderWidth: 1,
-                        borderColor: selectedTipIndex === index ? COLORS.primary : COLORS.solidGrey,
-                      },
-                    ]}
+                    style={styles._payBYBoxContainerTip(selectedTipIndex, index)}
                   >
-                    <Text
-                      style={[
-                        styles._payByMethodTip,
-                        {
-                          color: selectedTipIndex === index ? COLORS.primary : COLORS.solid_grey,
-                        },
-                      ]}
-                    >
+                    <Text style={styles._payByMethodTip(selectedTipIndex, index)}>
                       {item.percent}
-                      {item.percent === 'No Tips' ? '' : '%'}
+                      {item.percent === 'No, thanks' ? '' : '%'}
                     </Text>
-                    {index !== 3 && (
-                      <Text
-                        style={[
-                          styles._payByAmountTip,
-                          {
-                            color: selectedTipIndex === index ? COLORS.primary : COLORS.solid_grey,
-                          },
-                        ]}
-                      >
-                        {'$'}
-                        {calculatePercentageValue(cartData?.amount?.products_price, item.title)}
-                      </Text>
-                    )}
+                    {/* {index !== 3 && ( */}
+                    <Text style={styles._payByAmountTip(selectedTipIndex, index)}>
+                      {'$'}
+                      {calculatePercentageValue(cartData?.amount?.products_price, item.title)}
+                    </Text>
+                    {/* )} */}
                   </TouchableOpacity>
                 ))}
               </View>
+              <Spacer space={SH(10)} />
+              <View style={[styles._horizontalLine, { width: '100%' }]} />
             </View>
             {selectedTipIndex !== null ? (
               <View
@@ -585,104 +596,70 @@ export const CartAmountPayBy = ({
                   marginTop: ms(7),
                 }}
               >
-                <Text style={styles.selectTips}>Select Payment Method</Text>
+                <Text style={styles.selectTips}>
+                  2. What is your{' '}
+                  <Text style={{ fontFamily: Fonts.SemiBold }}>Payment Method?</Text>{' '}
+                </Text>
                 <View
                   style={{
                     flexDirection: 'row',
-
-                    //  justifyContent: filteredPaymentMethods.length > 2 ? 'space-evenly' : null,
                   }}
                 >
                   {filteredPaymentMethods.map((item, index) => (
                     <TouchableOpacity
                       onPress={() => {
-                        // index==1 && onPressPaymentMethod({ method: item.title, index: index })
                         setSelectedPaymentId(item.id);
                         setSelectedPaymentIndex(index);
                         setSelectedRecipeIndex(null);
                         setSelectedPaymentMethod(item.title);
                       }}
                       key={index}
-                      style={[
-                        styles._payBYBoxContainer,
-                        {
-                          borderWidth: 1,
-                          borderColor:
-                            selectedPaymentIndex === index ? COLORS.primary : COLORS.solidGrey,
-                        },
-                      ]}
+                      style={styles._payBYBoxContainer(selectedPaymentIndex, index)}
                     >
-                      {index == 1 ? (
-                        <View
-                          style={[
-                            styles.saveView,
-                            {
-                              backgroundColor:
-                                selectedPaymentIndex === index
-                                  ? COLORS.blue_shade
-                                  : COLORS.textInputBackground,
-                            },
-                          ]}
-                        >
-                          <Text
-                            style={
-                              selectedPaymentIndex === index
-                                ? styles.saveText1dark
-                                : styles.saveText1
-                            }
-                          >
-                            Save 1%
-                          </Text>
-                        </View>
-                      ) : (
-                        <View style={[styles.saveView, { backgroundColor: COLORS.white }]}></View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Image
+                          source={item.icon}
+                          style={styles._payByIcon(selectedPaymentIndex, index)}
+                        />
+                        <Text style={styles._payByMethod(selectedPaymentIndex, index)}>
+                          {item.title}
+                        </Text>
+                      </View>
+
+                      <View style={{ flex: 1 }} />
+                      {index === 2 && (
+                        <Text style={styles._payByMethod(selectedPaymentIndex, index)}>
+                          5464 6487 7484 93034
+                        </Text>
                       )}
-                      <Text
-                        style={[
-                          styles._payByTitle,
-                          {
-                            color:
-                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
-                          },
-                        ]}
+                      <Spacer space={SH(10)} />
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
                       >
-                        Pay By
-                      </Text>
-                      <Text
-                        style={[
-                          styles._payByMethod,
-                          {
-                            color:
-                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
-                          },
-                        ]}
-                      >
-                        {item.title}
-                      </Text>
-                      <Text
-                        style={[
-                          styles._payByAmount,
-                          {
-                            color:
-                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
-                          },
-                        ]}
-                      >
-                        {totalAmountByPaymentMethod(index)}
-                      </Text>
-                      <Image
-                        source={item.icon}
-                        style={[
-                          styles._payByIcon,
-                          {
-                            tintColor:
-                              selectedPaymentIndex === index ? COLORS.primary : COLORS.solid_grey,
-                          },
-                        ]}
-                      />
+                        <Text style={styles._payByAmount(selectedPaymentIndex, index)}>
+                          {totalAmountByPaymentMethod(index)}
+                        </Text>
+                        {index == 1 && (
+                          <View style={styles.saveView}>
+                            <Text style={styles.saveText1}>Save 15%</Text>
+                          </View>
+                        )}
+                      </View>
                     </TouchableOpacity>
                   ))}
                 </View>
+                <Spacer space={SH(10)} />
+                <View style={[styles._horizontalLine, { width: '100%' }]} />
               </View>
             ) : (
               <View style={styles._payBYBoxContainerEmpty} />
@@ -693,49 +670,39 @@ export const CartAmountPayBy = ({
                   marginTop: ms(7),
                 }}
               >
-                <Text style={styles.selectTips}>E-Recipe</Text>
+                <Text style={styles.selectTips}>
+                  3. Select how you want to receive your{' '}
+                  <Text style={{ fontFamily: Fonts.SemiBold }}>e-receipt.</Text>
+                </Text>
                 <View
                   style={{
                     flexDirection: 'row',
-                    //  justifyContent: 'space-between'
+                    justifyContent: 'center',
                   }}
                 >
                   {receiptData.map((item, index) => (
                     <TouchableOpacity
                       onPress={() => {
-                        // onPressPaymentMethod({ method: item.title, index: index }),
                         setSelectedRecipeIndex(index);
                         setSelectedRecipeMethod(item.title);
                         if (item.title == 'SMS') {
                           setPhonePopVisible(true);
-                          // setPhoneNumber('');
-                          //getTipPress();
-                        } else if (item.title == 'Email') {
+                        } else if (item.title == 'E-mail') {
                           setEmailModal(true);
                           //getTipPress();
-                        } else if (item.title == 'No e-recipe') {
+                        } else if (item.title == 'No, thanks') {
                           getTipPress(), payNowHandler(), payNowByphone(selectedTipAmount);
                         }
                       }}
                       key={index}
-                      style={[
-                        styles._payBYBoxContainerReceipe,
-                        {
-                          borderWidth: 1,
-                          borderColor:
-                            selectedRecipeIndex === index ? COLORS.primary : COLORS.solidGrey,
-                        },
-                      ]}
+                      style={styles._payBYBoxContainerReceipe(selectedRecipeIndex, index)}
                     >
-                      <Text
-                        style={[
-                          styles._payByMethodReceipe,
-                          {
-                            color:
-                              selectedRecipeIndex === index ? COLORS.primary : COLORS.solid_grey,
-                          },
-                        ]}
-                      >
+                      <Image
+                        source={emailInvoice}
+                        style={styles.recipeIcon(selectedRecipeIndex, index)}
+                      />
+                      <Spacer space={SH(10)} />
+                      <Text style={styles._payByMethodReceipe(selectedRecipeIndex, index)}>
                         {item.title}
                       </Text>
                     </TouchableOpacity>
@@ -762,7 +729,7 @@ export const CartAmountPayBy = ({
                     <View style={styles.jbrContainer}>
                       <Text style={styles.jbrText}>JBR</Text>
                       <Text style={styles.savePercent}>
-                        {jobrSavePercent(cartData?.amount?.total_amount ?? '0.00', 1)}
+                        {jobrSavePercent(cartData?.amount?.total_amount ?? '0.00', 15)}
                       </Text>
                     </View>
                   </View>
@@ -773,15 +740,18 @@ export const CartAmountPayBy = ({
         </View>
 
         <View style={styles.rightCon}>
-          <View style={[{ height: '100%', alignItems: 'center' }]}>
-            <Text style={styles._kSubCenterContainer}>
-              {merchantDetails?.user_profiles?.organization_name}
-            </Text>
-            <Text
-              style={styles._kAddress}
-            >{`${merchantDetails?.user_profiles?.current_address?.street_address}, ${merchantDetails?.user_profiles?.current_address?.city}, ${merchantDetails?.user_profiles?.current_address?.state}, ${merchantDetails?.user_profiles?.current_address?.country}, ${merchantDetails?.user_profiles?.current_address?.zipcode}`}</Text>
-            <Text style={styles._kNumber}>{merchantDetails?.user_profiles?.full_phone_number}</Text>
-
+          <View style={[{ height: '100%' }]}>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={styles._kSubCenterContainer}>
+                {merchantDetails?.user_profiles?.organization_name}
+              </Text>
+              <Text
+                style={styles._kAddress}
+              >{`${merchantDetails?.user_profiles?.current_address?.street_address}, ${merchantDetails?.user_profiles?.current_address?.city}, ${merchantDetails?.user_profiles?.current_address?.state}, ${merchantDetails?.user_profiles?.current_address?.country}, ${merchantDetails?.user_profiles?.current_address?.zipcode}`}</Text>
+              <Text style={styles._kNumber}>
+                {merchantDetails?.user_profiles?.full_phone_number}
+              </Text>
+            </View>
             <View style={styles._flatListContainer}>
               <FlatList
                 data={
@@ -793,66 +763,66 @@ export const CartAmountPayBy = ({
                 renderItem={({ item, index }) => <AddedCartItemsCard item={item} index={index} />}
               />
             </View>
-
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Sub-Total</Text>
-              <Text style={styles._subTotalPrice}>
-                ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
-              </Text>
+            <View style={{ width: '90%', alignSelf: 'center', flexDirection: 'row' }}>
+              <FlatList
+                data={invoiceData}
+                numColumns={3}
+                renderItem={({ item, index }) => (
+                  <View
+                    style={{
+                      width: ms(58),
+                      height: ms(30),
+                      justifyContent: 'space-between',
+                      marginTop: ms(15),
+                    }}
+                  >
+                    <Text style={styles._payTitle}>{item.title}</Text>
+                    <Spacer space={SH(7)} />
+                    <Text style={styles._paySubTitle}>{item.data}</Text>
+                  </View>
+                )}
+              />
             </View>
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Discount</Text>
-              <Text style={styles._subTotalPrice}>
-                {formattedReturnPrice(cartData?.amount?.discount)}
-              </Text>
+            <Spacer space={SH(10)} />
+            <View style={[styles._horizontalLine, { width: '100%', borderStyle: 'dashed' }]} />
+            <Spacer space={SH(15)} />
+            <View style={{ width: '85%', alignSelf: 'center' }}>
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Sub-Total</Text>
+                <Text style={styles._payTitle}>
+                  ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
+                </Text>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Discount</Text>
+                <Text style={styles._payTitle}>
+                  {formattedReturnPrice(cartData?.amount?.discount)}
+                </Text>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Total Taxes</Text>
+                <Text style={styles._payTitle}>${cartData?.amount?.tax.toFixed(2) ?? '0.00'}</Text>
+              </View>
+              <Spacer space={SH(15)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
+                  Total
+                </Text>
+                <View style={styles.totalView}>
+                  <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
+                    ${totalPayAmount() ?? '0.00'}
+                  </Text>
+                </View>
+              </View>
+              <Spacer space={SH(15)} />
+              <Image source={logo_full} style={styles.logoFull} />
+              <Image
+                source={{ uri: cartData?.barcode } ?? barcode}
+                style={[styles._barCodeImage, { alignSelf: 'center' }]}
+              />
             </View>
-
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Total Taxes</Text>
-              <Text style={styles._subTotalPrice}>
-                ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
-              </Text>
-            </View>
-            {/* <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Tips</Text>
-              <Text style={styles._subTotalPrice}>${tipAmount}</Text>
-            </View> */}
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text
-                style={[styles._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
-              >
-                Total
-              </Text>
-              <Text
-                style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
-              >
-                ${totalPayAmount() ?? '0.00'}
-              </Text>
-            </View>
-            <View style={styles._horizontalLine} />
-            <View style={[styles._horizontalLine, { height: ms(2), marginTop: ms(15) }]} />
-
-            <View style={styles._paymentTitleContainer}>
-              <Text style={styles._payTitle}>Payment option: </Text>
-              <Text style={styles._paySubTitle}>{'Cash'}</Text>
-            </View>
-            <Text style={styles._commonPayTitle}>
-              {moment().format('ddd DD MMM, YYYY')} {moment().format('hh:mm A')}
-            </Text>
-            <Text style={styles._commonPayTitle}>Walk-In</Text>
-            {/* <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text> */}
-            <Text style={styles._commonPayTitle}>
-              POS No. {getUserData?.posLoginData?.pos_number}
-            </Text>
-            <Text style={styles._commonPayTitle}>User ID : ****128</Text>
-            <Spacer space={SH(5)} />
-            <Text style={styles._thankyou}>Thank You</Text>
-            <Image source={{ uri: cartData?.barcode } ?? barcode} style={styles._barCodeImage} />
-            <Image source={logo_full} style={styles.logoFull} />
           </View>
         </View>
       </View>

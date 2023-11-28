@@ -8,7 +8,19 @@ import { ms } from 'react-native-size-matters';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { Fonts, scooter, userImage } from '@/assets';
+import {
+  Fonts,
+  arrowRightTop,
+  cashShippingNew,
+  clock,
+  pay,
+  printLabel,
+  scanNew,
+  scooter,
+  thunder,
+  trackOrder,
+  userImage,
+} from '@/assets';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 import styles from '../ShippingOrder2.styles';
@@ -34,15 +46,30 @@ const OrderDetail = ({
         <View style={styles.shippingOrdersViewStyle}>
           <TouchableOpacity
             onPress={() => declineHandler(userDetail?.id)}
-            style={styles.declineButtonStyle}
+            style={[
+              styles.declineButtonStyle,
+              { width: ms(80), borderRadius: ms(30), borderColor: COLORS.navy_blue },
+            ]}
           >
-            <Text style={styles.declineTextStyle}>{strings.calender.decline}</Text>
+            <Text style={[styles.declineTextStyle, { color: COLORS.navy_blue }]}>
+              {strings.calender.decline}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => acceptHandler(userDetail?.id, 3)}
-            style={[styles.acceptButtonView, { width: ms(80) }]}
+            style={[
+              styles.acceptButtonView,
+              {
+                width: ms(80),
+                borderRadius: ms(30),
+                backgroundColor: COLORS.navy_blue,
+                flexDirection: 'row',
+                justifyContent: 'center',
+              },
+            ]}
           >
             <Text style={styles.acceptTextStyle}>{strings.buttonStatus.reviewButton}</Text>
+            <Image source={arrowRightTop} style={[styles.rightTopIconStyle]} />
           </TouchableOpacity>
         </View>
       );
@@ -51,9 +78,20 @@ const OrderDetail = ({
         <View style={styles.shippingOrdersViewStyle}>
           <TouchableOpacity
             onPress={() => printLabelHandler(oneOrderDetail?.getOrderData)}
-            style={[styles.acceptButtonView, { width: ms(170) }]}
+            style={[
+              styles.acceptButtonView,
+              {
+                width: '90%',
+                // width: ms(170),
+                backgroundColor: COLORS.sky_blue,
+                borderRadius: ms(30),
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              },
+            ]}
           >
             <Text style={styles.acceptTextStyle}>{strings.buttonStatus.printlabel}</Text>
+            <Image source={printLabel} style={[styles.trackOrderIconStyle]} />
           </TouchableOpacity>
         </View>
       );
@@ -62,9 +100,13 @@ const OrderDetail = ({
         <View style={styles.shippingOrdersViewStyle}>
           <TouchableOpacity
             onPress={() => trackOrderHandler(getTrackingInfo)}
-            style={[styles.acceptButtonView, { width: ms(140) }]}
+            style={[
+              styles.acceptButtonView,
+              { width: '90%', flexDirection: 'row', justifyContent: 'space-between' },
+            ]}
           >
             <Text style={styles.acceptTextStyle}>{'Track order'}</Text>
+            <Image source={trackOrder} style={[styles.trackOrderIconStyle]} />
           </TouchableOpacity>
         </View>
       );
@@ -73,12 +115,44 @@ const OrderDetail = ({
         <View style={styles.shippingOrdersViewStyle}>
           <View
             onPress={() => trackOrderHandler(getTrackingInfo)}
-            style={[styles.acceptButtonView, { backgroundColor: COLORS.washGrey, width: ms(140) }]}
+            style={[styles.acceptButtonView, { backgroundColor: COLORS.purple_fade, width: '90%' }]}
           >
-            <Text style={[styles.acceptTextStyle, { color: COLORS.text }]}>
+            <Text style={[styles.acceptTextStyle, { color: COLORS.sky_grey }]}>
               {'Cancelled by user'}
             </Text>
           </View>
+        </View>
+      );
+    } else if (openShippingOrders === '9') {
+      return (
+        <View style={styles.shippingOrdersViewStyle}>
+          <TouchableOpacity
+            onPress={() => declineHandler(userDetail?.id)}
+            style={[
+              styles.declineButtonStyle,
+              { width: ms(80), borderRadius: ms(30), borderColor: COLORS.navy_blue },
+            ]}
+          >
+            <Text style={[styles.declineTextStyle, { color: COLORS.navy_blue }]}>
+              {strings.buttonStatus.later}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => acceptHandler(userDetail?.id, 3)}
+            style={[
+              styles.acceptButtonView,
+              {
+                width: ms(80),
+                borderRadius: ms(30),
+                backgroundColor: COLORS.navy_blue,
+                flexDirection: 'row',
+                justifyContent: 'center',
+              },
+            ]}
+          >
+            <Text style={styles.acceptTextStyle}>{strings.buttonStatus.done}</Text>
+            <Image source={arrowRightTop} style={[styles.rightTopIconStyle]} />
+          </TouchableOpacity>
         </View>
       );
     }
@@ -87,7 +161,12 @@ const OrderDetail = ({
   return (
     <>
       <View style={styles.orderDetailView}>
-        <View style={[styles.orderDetailViewStyle, { flex: 1 / 2 }]}>
+        <View
+          style={{
+            flexDirection: 'row',
+            margin: ms(8),
+          }}
+        >
           <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.8 }]}>
             <Image
               source={profileImage ? { uri: profileImage } : userImage}
@@ -109,7 +188,7 @@ const OrderDetail = ({
             </View>
           </View>
 
-          <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.3 }]}>
+          <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.4 }]}>
             <Image source={scooter} style={styles.scooterImageStyle} />
 
             <View style={[styles.userNameView, { paddingLeft: 5 }]}>
@@ -123,24 +202,45 @@ const OrderDetail = ({
                 {userDetail?.invoice?.delivery_date ??
                   moment(userDetail?.created_at).format('DD MMM YYYY')}
               </Text>
-              <Text
-                style={{
-                  fontFamily: Fonts.Medium,
-                  fontSize: SF(11),
-                  color: COLORS.dark_grey,
-                }}
+              <View
+                style={[
+                  styles.locationViewStyle,
+                  {
+                    backgroundColor: COLORS.light_yellow,
+                    paddingVertical: ms(1),
+                    borderRadius: 10,
+                  },
+                ]}
               >
-                {userDetail?.preffered_delivery_start_time
-                  ? userDetail?.preffered_delivery_start_time
-                  : '00.00'}
-                {'-'}{' '}
-                {userDetail?.preffered_delivery_end_time
-                  ? userDetail?.preffered_delivery_end_time
-                  : '00.00'}
-              </Text>
+                <Image source={thunder} style={[styles.pinImageStyle]} />
+                <Text
+                  style={{
+                    fontFamily: Fonts.Medium,
+                    fontSize: SF(11),
+                    color: COLORS.dark_yellow,
+                  }}
+                >
+                  {userDetail?.preffered_delivery_start_time
+                    ? userDetail?.preffered_delivery_start_time
+                    : '00.00'}
+                  {'-'}{' '}
+                  {userDetail?.preffered_delivery_end_time
+                    ? userDetail?.preffered_delivery_end_time
+                    : '00.00'}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
+        {openShippingOrders == '9' && (
+          <TouchableOpacity style={styles.scanButtonStyle}>
+            <Text style={styles.scanBttnTextStyle}>
+              {strings.shippingOrder.scanBarCodeShipping}
+            </Text>
+            <Image source={scanNew} style={styles.scanIconStyle} />
+          </TouchableOpacity>
+        )}
+        <View style={styles.lineCommonStyle}></View>
 
         {/* <View style={styles.orderDetailViewStyle}>
           <View
@@ -212,13 +312,16 @@ const OrderDetail = ({
         </View>
 
         <View style={[styles.orderandPriceView, { flex: 1 }]}>
-          <View style={{ paddingLeft: 15, flex: 0.3 }}>
+          <View style={{ paddingLeft: 15, flex: 0.3, paddingTop: ms(10) }}>
             <View>
               <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                 {strings.shippingOrder.totalItem}
               </Text>
               <Text style={styles.itemCountText}>{userDetail?.total_items}</Text>
             </View>
+            <View
+              style={[styles.lineCommonStyle, { marginHorizontal: ms(2), marginVertical: ms(2) }]}
+            />
 
             <Spacer space={SH(15)} />
             <View>
@@ -231,6 +334,9 @@ const OrderDetail = ({
                   : moment(userDetail?.created_at).format('DD/MM/YYYY')}
               </Text>
             </View>
+            <View
+              style={[styles.lineCommonStyle, { marginHorizontal: ms(2), marginVertical: ms(2) }]}
+            />
 
             <Spacer space={SH(15)} />
             <View>
@@ -239,45 +345,74 @@ const OrderDetail = ({
               </Text>
               <Text style={styles.itemCountText}>{`#${userDetail?.id}`}</Text>
             </View>
-
+            <View
+              style={[styles.lineCommonStyle, { marginHorizontal: ms(2), marginVertical: ms(2) }]}
+            />
             <Spacer space={SH(15)} />
+
             {openShippingOrders > '3' && (
               <View>
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'Tracking ID'}</Text>
                 <Text
                   style={[
                     styles.invoiceText,
-                    { fontFamily: Fonts.SemiBold, color: COLORS.solid_grey },
+                    { fontFamily: Fonts.SemiBold, color: COLORS.navy_blue },
                   ]}
                 >
                   {getTrackingInfo?.track_id}
                 </Text>
               </View>
             )}
+            <Spacer space={SH(15)} />
+            {openShippingOrders <= '3' && (
+              <View>
+                <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+                  {strings.shippingOrder.paymentMethod}
+                </Text>
+                <View
+                  style={[
+                    styles.locationViewStyle,
+                    {
+                      backgroundColor: COLORS.alarm_success_50,
+                      width: '50%',
+                      paddingVertical: ms(1),
+                      borderRadius: 10,
+                    },
+                  ]}
+                >
+                  <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
+                  <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+                    {'Cash'}
+                  </Text>
+                </View>
+              </View>
+            )}
           </View>
 
           <View
             style={{
-              flex: 0.6,
-              paddingHorizontal: ms(20),
+              flex: 0.65,
+              paddingHorizontal: ms(10),
               borderRadius: 10,
               paddingVertical: 20,
               alignSelf: 'center',
-              backgroundColor: COLORS.textInputBackground,
+              backgroundColor: COLORS.sky_grey,
             }}
           >
             <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
-              <Text style={[styles.invoiceText, { color: COLORS.solid_grey }]}>
+              <Text style={[styles.invoiceText, { color: COLORS.lavender }]}>
                 {strings.deliveryOrders.subTotal}
               </Text>
-              <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+              <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
                 ${Number(userDetail?.actual_amount)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
 
             <View style={styles.orderDetailsView}>
-              <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
-              <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+              <Text style={[styles.invoiceText, { color: COLORS.lavender }]}>
+                {strings.deliveryOrders.discount}
+              </Text>
+              <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
                 {/* ${userDetail?.discount ? userDetail?.discount : '0'} */}$
                 {/* {Number(userDetail?.discount)?.toFixed(2) ?? '0.00'} */}
                 {formattedReturnPriceWithoutSign(userDetail?.discount)}
@@ -285,26 +420,34 @@ const OrderDetail = ({
             </View>
 
             <View style={styles.orderDetailsView}>
-              <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
-              <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+              <Text style={[styles.invoiceText, { color: COLORS.lavender }]}>
+                {strings.deliveryOrders.tips}
+              </Text>
+              <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
                 ${Number(userDetail?.tips)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
 
             <View style={styles.orderDetailsView}>
-              <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
-              <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+              <Text style={[styles.invoiceText, { color: COLORS.lavender }]}>
+                {strings.deliveryOrders.tax}
+              </Text>
+              <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
                 ${Number(userDetail?.tax)?.toFixed(2) ?? '0.00'}
               </Text>
             </View>
             {userDetail?.shipping_charge !== '0' && (
               <View style={styles.orderDetailsView}>
-                <Text style={styles.invoiceText}>{strings.deliveryOrders.shippingCharges}</Text>
-                <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+                <Text style={[styles.invoiceText, { color: COLORS.lavender }]}>
+                  {strings.deliveryOrders.shippingCharges}
+                </Text>
+                <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
                   ${Number(userDetail?.shipping_charge)?.toFixed(2)}
                 </Text>
               </View>
             )}
+
+            <View style={styles.dashedLineStyle}></View>
 
             <View style={styles.orderDetailsView}>
               <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>

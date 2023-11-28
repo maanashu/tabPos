@@ -1563,12 +1563,12 @@ export class RetailController {
         start_time: data?.startTime,
         end_time: data?.endTime,
       };
-
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
+          console.log(error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',

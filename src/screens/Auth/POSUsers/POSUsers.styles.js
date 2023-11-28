@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 10,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.sky_grey,
   },
   containerSix: {
     flex: 1,
@@ -35,6 +35,8 @@ export const styles = StyleSheet.create({
     width: SH(100),
     height: SH(100),
     borderRadius: SH(50),
+    borderWidth: 0.5,
+    borderColor: COLORS.solidGrey,
   },
   firstName: {
     fontSize: SH(16),
@@ -54,14 +56,14 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   posUserCon: {
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     alignItems: 'center',
     marginVertical: SH(25),
     marginHorizontal: SH(15),
-    padding: SH(10),
+    paddingHorizontal: SH(24),
+    paddingVertical: SH(30),
     width: Platform.OS === 'ios' ? ms(140) : ms(190),
-    height: ms(190),
-    borderRadius: 15,
+    borderRadius: 30,
   },
   posLoginHeader: {
     color: COLORS.black,

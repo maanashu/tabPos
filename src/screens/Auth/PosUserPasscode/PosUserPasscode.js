@@ -16,7 +16,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SH } from '@/theme';
 import { TYPES } from '@/Types/Types';
 import { Spacer } from '@/components';
-import { crossButton } from '@/assets';
+import { crossButton, userImage } from '@/assets';
 import { strings } from '@/localization';
 import { digits } from '@/utils/validators';
 import { goBack } from '@/navigation/NavigationRef';
@@ -93,18 +93,33 @@ export function PosUserPasscode({ route }) {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.container}>
+        <Text style={styles.subHeading} numberOfLines={1}>
+          {strings.passcode.subHeading}
+        </Text>
+        <Spacer space={SH(12)} />
         <View style={styles.verifyContainer}>
-          <Spacer space={SH(20)} />
-          <TouchableOpacity
-            style={{ alignSelf: 'flex-end', paddingRight: moderateScale(10) }}
-            onPress={() => goBack()}
-          >
-            <Image source={crossButton} style={styles.cross} />
-          </TouchableOpacity>
+          <Spacer space={SH(16)} />
 
-          <Text style={styles.subHeading}>{strings.passcode.heading}</Text>
+          <Image
+            source={
+              posuser.user?.user_profiles?.profile_photo
+                ? { uri: posuser.user?.user_profiles?.profile_photo }
+                : userImage
+            }
+            style={styles.profileImage}
+          />
 
-          <Spacer space={SH(25)} />
+          <Spacer space={SH(10)} />
+          <Text style={styles.firstName} numberOfLines={1}>
+            {`${posuser.user?.user_profiles?.firstname} ${posuser.user?.user_profiles?.lastname} `}
+          </Text>
+          <Spacer space={SH(6)} />
+          <Text style={styles.role} numberOfLines={1}>
+            {posuser.user?.user_roles?.length > 0
+              ? posuser.user?.user_roles?.map((item) => item.role?.name)
+              : 'admin'}
+          </Text>
+          <Spacer space={SH(16)} />
 
           <CodeField
             ref={ref}

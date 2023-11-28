@@ -17,6 +17,7 @@ import {
   addToCart,
   addToCartBlue,
   bucket,
+  calendar,
   cross,
   filter,
   holdCart,
@@ -148,6 +149,9 @@ export function MainScreen({
   const [showProductsFrom, setshowProductsFrom] = useState();
   const mainProductArray = getRetailData?.getMainProduct?.data;
   const mainServicesArray = getRetailData?.getMainServices?.data;
+  console.log('mainServicesArray', JSON.stringify(mainServicesArray?.[0]));
+  const servicecCart = getRetailData?.getserviceCart?.appointment_cart_products ?? [];
+
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
     qty: obj.qty,
@@ -173,9 +177,7 @@ export function MainScreen({
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userAdd, setUserAdd] = useState('');
-
   const [page, setPage] = useState(1);
-
   const [productCon, setProductCon] = useState(true);
   const [serviceCon, setServiceCon] = useState(false);
   const [filterCon, setFilterCon] = useState(false);
@@ -556,52 +558,60 @@ export function MainScreen({
     return (
       <TouchableOpacity
         key={index}
-        style={styles.productCon}
-        onPress={() => productFun(item.id, index, item)}
+        style={styles.productCon(updatedItem?.cart_qty)}
+        // onPress={() => productFun(item.id, index, item)}
         activeOpacity={0.7}
+        onPress={() => checkAttributes(item, index, cartAddQty)}
       >
-        <FastImage
-          source={{
-            uri: item.image,
-            priority: FastImage.priority.normal,
-          }}
-          style={styles.categoryshoes}
-          resizeMode={FastImage.resizeMode.contain}
-        />
-        <Spacer space={SH(10)} />
-        <Text numberOfLines={1} style={styles.productDes}>
-          {item.name}
-        </Text>
-        <Spacer space={SH(6)} />
-        <Text numberOfLines={1} style={styles.productSubHead}>
-          {item.sub_category?.name}
-        </Text>
-        <Spacer space={SH(6)} />
-        <TouchableOpacity style={styles.displayflex}>
+        <View style={styles.imageBackground}>
+          <FastImage
+            source={{
+              uri: item.image,
+              priority: FastImage.priority.normal,
+            }}
+            style={styles.categoryshoes}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+          {updatedItem?.cart_qty > 0 && (
+            <View style={styles.imageInnerView}>
+              <Image source={plus} style={[styles.plusButton, { tintColor: COLORS.white }]} />
+            </View>
+          )}
+        </View>
+
+        <View style={{ padding: ms(5) }}>
+          <Spacer space={SH(6)} />
+          <Text numberOfLines={1} style={styles.productDes}>
+            {item.name}
+          </Text>
+          <Spacer space={SH(6)} />
+          <Text numberOfLines={1} style={styles.productSubHead}>
+            {item.sub_category?.name}
+          </Text>
+          <Spacer space={SH(6)} />
           <Text numberOfLines={1} style={styles.productPrice}>
             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
           </Text>
+          <Spacer space={SH(10)} />
 
-          <TouchableOpacity
-            // activeOpacity={1}
-            onPress={
-              () => checkAttributes(item, index, cartAddQty)
-              // onClickAddCart(item, index, cartAddQty)
-            }
-          >
-            <FastImage
-              source={isProductMatchArray ? addToCartBlue : addToCart}
-              style={styles.addToCart}
-              resizeMode={FastImage.resizeMode.contain}
-            />
+          {/* <TouchableOpacity
+              onPress={
+                () => checkAttributes(item, index, cartAddQty)
+              }
+            >
+              <FastImage
+                source={isProductMatchArray ? addToCartBlue : addToCart}
+                style={styles.addToCart}
+                resizeMode={FastImage.resizeMode.contain}
+              />
 
-            {updatedItem.cart_qty > 0 && (
-              <View style={styles.productBadge}>
-                <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-        </TouchableOpacity>
+              {updatedItem.cart_qty > 0 && (
+                <View style={styles.productBadge}>
+                  <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
+                </View>
+              )}
+            </TouchableOpacity> */}
+        </View>
       </TouchableOpacity>
     );
   };
@@ -731,7 +741,7 @@ export function MainScreen({
             </Text>
           </View>
         ) : (
-          <View style={styles.displayflex2}>
+          <View style={[styles.displayflex2, { flex: 1 }]}>
             <View style={styles.productView}>
               <View
                 style={{
@@ -770,7 +780,7 @@ export function MainScreen({
                         style={styles.sideBarsearchInput}
                         value={search}
                         onChangeText={(search) => onChangeFun(search)}
-                        placeholderTextColor={COLORS.gerySkies}
+                        placeholderTextColor={COLORS.lavender}
                       />
 
                       {search?.length > 0 ? (
@@ -802,7 +812,7 @@ export function MainScreen({
                         style={styles.sideBarsearchInput}
                         value={serviceSearch}
                         onChangeText={(serviceSearch) => onServiceFind(serviceSearch)}
-                        placeholderTextColor={COLORS.gerySkies}
+                        placeholderTextColor={COLORS.lavender}
                       />
                       {serviceSearch?.length > 0 ? (
                         <TouchableOpacity
@@ -855,14 +865,7 @@ export function MainScreen({
                     {productCon && getMerchantService?.is_product_exist === true ? (
                       <View>
                         <TouchableOpacity
-                          style={
-                            filterCon
-                              ? [
-                                  styles.prouductAndServiceCon,
-                                  { backgroundColor: COLORS.navy_blue },
-                                ]
-                              : styles.prouductAndServiceCon
-                          }
+                          style={styles.prouductAndServiceCon}
                           onPress={filterHandler}
                         >
                           <Text
@@ -874,21 +877,19 @@ export function MainScreen({
                           >
                             {'Filter'}
                           </Text>
-                          <View>
-                            <Image
-                              source={Images.filterIcon}
-                              style={
-                                filterCon
-                                  ? [styles.productImageStyle, { tintColor: COLORS.primary }]
-                                  : styles.productImageStyle
-                              }
-                            />
-                            {productFilter > 0 ? (
-                              <View style={styles.filterBadge}>
-                                <Text style={styles.filterBadgeText}>{productFilter}</Text>
-                              </View>
-                            ) : null}
-                          </View>
+                          <Image
+                            source={Images.filterIcon}
+                            style={
+                              filterCon
+                                ? [styles.productImageStyle, { tintColor: COLORS.navy_blue }]
+                                : styles.productImageStyle
+                            }
+                          />
+                          {productFilter > 0 ? (
+                            <View style={styles.serviceFilterBadge}>
+                              <Text style={styles.filterBadgeText}>{productFilter}</Text>
+                            </View>
+                          ) : null}
                         </TouchableOpacity>
                         {filterCon ? (
                           // <View style={styles.categoryFilterCon}>
@@ -922,27 +923,25 @@ export function MainScreen({
                           <Text
                             style={
                               serviceFilterCon
-                                ? [styles.productText, { color: COLORS.primary }]
+                                ? [styles.productText, { color: COLORS.navy_blue }]
                                 : styles.productText
                             }
                           >
                             {'Filter'}
                           </Text>
-                          <View>
-                            <Image
-                              source={Images.filterIcon}
-                              style={
-                                serviceFilterCon
-                                  ? [styles.productImageStyle, { tintColor: COLORS.primary }]
-                                  : styles.productImageStyle
-                              }
-                            />
-                            {serviceFilter > 0 ? (
-                              <View style={styles.filterBadge}>
-                                <Text style={styles.filterBadgeText}>{serviceFilter}</Text>
-                              </View>
-                            ) : null}
-                          </View>
+                          <Image
+                            source={Images.filterIcon}
+                            style={
+                              serviceFilterCon
+                                ? [styles.productImageStyle, { tintColor: COLORS.primary }]
+                                : styles.productImageStyle
+                            }
+                          />
+                          {serviceFilter > 0 ? (
+                            <View style={styles.serviceFilterBadge}>
+                              <Text style={styles.filterBadgeText}>{serviceFilter}</Text>
+                            </View>
+                          ) : null}
                         </TouchableOpacity>
                         {serviceFilterCon ? (
                           // <View style={styles.categoryFilterCon}>
@@ -970,7 +969,8 @@ export function MainScreen({
                   extraData={mainProductArray}
                   renderItem={renderItem}
                   keyExtractor={(_, index) => index.toString()}
-                  numColumns={7}
+                  numColumns={6}
+                  key={6 + 'prds'}
                   contentContainerStyle={{
                     justifyContent: 'space-between',
                     marginTop: isLoadingMore ? -50 : 0,
@@ -984,7 +984,6 @@ export function MainScreen({
                   onMomentumScrollEnd={() => {
                     if (onEndReachedCalledDuringMomentum.current) {
                       onLoadMoreProduct();
-                      // debouncedLoadMoreProduct(); // LOAD MORE DATA
                       onEndReachedCalledDuringMomentum.current = false;
                     }
                   }}
@@ -1002,9 +1001,12 @@ export function MainScreen({
                   data={mainServicesArray}
                   extraData={mainServicesArray}
                   renderItem={({ item, index }) => {
+                    const cartMatchService = servicecCart?.find(
+                      (data) => data?.product_id === item?.id
+                    );
                     return (
                       <TouchableOpacity
-                        style={styles.productCon}
+                        style={styles.serviceCon(cartMatchService?.qty)}
                         onPress={() => serviceFun(item.id)}
                         activeOpacity={0.7}
                       >
@@ -1013,77 +1015,82 @@ export function MainScreen({
                             source={{
                               uri: item.image,
                             }}
-                            style={styles.categoryshoes}
+                            style={styles.serviceImagemain}
                             resizeMode={FastImage.resizeMode.contain}
                           />
-                          <View style={{ flex: 1 }} />
-                          <View style={styles.availableTimeCon}>
-                            <Text style={styles.availableTime}>Available: Tue @ 2:00 pm </Text>
-                          </View>
-                        </View>
-                        <Spacer space={SH(5)} />
-                        <Text numberOfLines={1} style={styles.productDes}>
-                          {item.name}
-                        </Text>
-                        <Spacer space={SH(6)} />
-                        {item.supplies?.[0]?.approx_service_time == null ? (
-                          <Text numberOfLines={1} style={styles.productSubHead}>
-                            Estimated Time Not found
-                          </Text>
-                        ) : (
-                          <Text numberOfLines={1} style={styles.productSubHead}>
-                            Est: {item.supplies?.[0]?.approx_service_time} min
-                          </Text>
-                        )}
-
-                        <Spacer space={SH(6)} />
-                        <View>
-                          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                            {item?.pos_staff?.map((data, index) => (
+                          {cartMatchService?.qty > 0 && (
+                            <View style={styles.imageInnerView}>
                               <Image
-                                key={index}
-                                source={
-                                  { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
-                                }
-                                style={{
-                                  width: ms(15),
-                                  height: ms(15),
-                                  resizeMode: 'contain',
-                                  marginRight: -1,
-                                  borderRadius: 50,
-                                }}
+                                source={plus}
+                                style={[styles.plusButton, { tintColor: COLORS.white }]}
                               />
-                            ))}
-                          </ScrollView>
+                            </View>
+                          )}
                         </View>
-                        {/* <Image
-                        source={multipleImag}
-                        style={{ width: ms(50), height: ms(15), resizeMode: 'cover' }}
-                      /> */}
-                        <View style={styles.displayflex}>
+                        <View style={{ padding: ms(5) }}>
+                          <Text
+                            numberOfLines={1}
+                            style={[styles.productDes, styles.productDesBold]}
+                          >
+                            {item.name}
+                          </Text>
+                          <Spacer space={SH(6)} />
+                          {item.description && (
+                            <Text numberOfLines={2} style={styles.productDes}>
+                              {item.description}
+                            </Text>
+                          )}
+                          <Spacer space={SH(7)} />
                           <Text numberOfLines={1} style={styles.productPrice}>
                             ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
                           </Text>
-                          <View>
-                            <FastImage
-                              source={addToCart}
-                              style={styles.addToCart}
-                              resizeMode="contain"
-                            />
-                            {/* {isProductMatchArray ? (
-                          <View style={styles.productBadge}>
-                            <Text style={styles.productBadgeText}>{cartAddQty}</Text>
+
+                          <Spacer space={SH(7)} />
+                          <View style={styles.serviceTimeCon}>
+                            <Image source={calendar} style={styles.calendarStyle} />
+                            <Text numberOfLines={1} style={styles.serviceTimeText}>
+                              Tomorrow at 10:00hrs
+                            </Text>
                           </View>
-                        ) : null} */}
+                          <Spacer space={SH(7)} />
+                          {item.supplies?.[0]?.approx_service_time == null ? (
+                            <Text numberOfLines={1} style={styles.productDes}>
+                              Estimated Time Not found
+                            </Text>
+                          ) : (
+                            <Text numberOfLines={1} style={styles.productDes}>
+                              Est: {item.supplies?.[0]?.approx_service_time} min
+                            </Text>
+                          )}
+
+                          <Spacer space={SH(6)} />
+                          <View>
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                              {item?.pos_staff?.map((data, index) => (
+                                <Image
+                                  key={index}
+                                  source={
+                                    { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
+                                  }
+                                  style={{
+                                    width: ms(15),
+                                    height: ms(15),
+                                    resizeMode: 'contain',
+                                    marginRight: -1,
+                                    borderRadius: 50,
+                                  }}
+                                />
+                              ))}
+                            </ScrollView>
                           </View>
                         </View>
                       </TouchableOpacity>
                     );
                   }}
-                  keyExtractor={(item, index) => index}
-                  numColumns={7}
+                  key={5 + 'prds'}
+                  keyExtractor={(_, index) => index.toString()}
+                  numColumns={5}
                   contentContainerStyle={{
-                    // flexGrow: 1,
                     justifyContent: 'space-between',
                     zIndex: -99,
                   }}
@@ -1114,7 +1121,7 @@ export function MainScreen({
                       source={Images.cartIcon}
                       style={
                         cartLength > 0
-                          ? [styles.sideBarImage, { tintColor: COLORS.primary }]
+                          ? [styles.sideBarImage, { tintColor: COLORS.navy_blue }]
                           : styles.sideBarImage
                       }
                     />
@@ -1171,7 +1178,7 @@ export function MainScreen({
                       source={Images.holdCart}
                       style={
                         holdProductArray?.length > 0
-                          ? [styles.sideBarImage, { tintColor: COLORS.primary }]
+                          ? [styles.sideBarImage, { tintColor: COLORS.navy_blue }]
                           : styles.sideBarImage
                       }
                     />
@@ -1203,20 +1210,9 @@ export function MainScreen({
                       cartScreenHandler();
                     }, 200);
                   }}
-                  style={
-                    cartLength > 0
-                      ? [styles.bucketBackgorund, { backgroundColor: COLORS.primary }]
-                      : styles.bucketBackgorund
-                  }
+                  style={styles.bucketBackgorund}
                 >
-                  <Image
-                    source={sideArrow}
-                    style={
-                      cartLength > 0
-                        ? [styles.sideBarImage, { tintColor: COLORS.white }]
-                        : styles.sideBarImage
-                    }
-                  />
+                  <Image source={Images.arrowLeftUp} style={styles.mainScreenArrow()} />
                 </TouchableOpacity>
               </View>
             ) : (
@@ -1231,7 +1227,7 @@ export function MainScreen({
                       source={Images.cartIcon}
                       style={
                         serviceCartLength > 0
-                          ? [styles.sideBarImage, { tintColor: COLORS.primary }]
+                          ? [styles.sideBarImage, { tintColor: COLORS.navy_blue }]
                           : styles.sideBarImage
                       }
                     />
@@ -1317,20 +1313,9 @@ export function MainScreen({
                 <TouchableOpacity
                   disabled={serviceCartLength > 0 ? false : true}
                   onPress={cartServiceScreenHandler}
-                  style={
-                    serviceCartLength > 0
-                      ? [styles.bucketBackgorund, { backgroundColor: COLORS.primary }]
-                      : styles.bucketBackgorund
-                  }
+                  style={styles.bucketBackgorund}
                 >
-                  <Image
-                    source={sideArrow}
-                    style={
-                      serviceCartLength > 0
-                        ? [styles.sideBarImage, { tintColor: COLORS.white }]
-                        : styles.sideBarImage
-                    }
-                  />
+                  <Image source={Images.arrowLeftUp} style={styles.mainScreenArrow()} />
                 </TouchableOpacity>
               </View>
             )}
@@ -1346,7 +1331,7 @@ export function MainScreen({
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
         backdropOpacity={0.9}
-        backdropColor={COLORS.white}
+        backdropColor={COLORS.row_grey}
       >
         {cartModal ? (
           <CartListModal
@@ -1387,7 +1372,7 @@ export function MainScreen({
         isVisible={serviceCartModal || numPadModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        backdropOpacity={0.4}
+        backdropOpacity={0.6}
       >
         {serviceCartModal ? (
           <ServiceCartListModal

@@ -23,7 +23,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 const windowWidth = Dimensions.get('window').width;
 const result = Dimensions.get('window').height - 50;
-const twoEqualView = result / 2;
+const twoEqualView = result / 2.09;
 
 const Graph = () => {
   const getDeliveryData = useSelector(getDelivery);
@@ -87,7 +87,7 @@ const Graph = () => {
       setOfThree.push({
         value: values[3] || 0,
         spacing: 10,
-        frontColor: COLORS.primary,
+        frontColor: COLORS.navy_blue,
         Completed: true,
         labelTextStyle: {
           color: COLORS.darkGray,
@@ -198,7 +198,7 @@ const Graph = () => {
         setOfThree.push({
           value: values[3] || 0,
           spacing: 10,
-          frontColor: value ? COLORS.primary : COLORS.white,
+          frontColor: value ? COLORS.navy_blue : COLORS.white,
           Completed: true,
           labelTextStyle: {
             color: COLORS.darkGray,
@@ -211,7 +211,7 @@ const Graph = () => {
         setOfThree.push({
           value: values[3] || 0,
           spacing: 10,
-          frontColor: showCompleted ? COLORS.primary : COLORS.white,
+          frontColor: showCompleted ? COLORS.navy_blue : COLORS.white,
           Completed: true,
           labelTextStyle: {
             color: COLORS.darkGray,
@@ -244,9 +244,11 @@ const Graph = () => {
           >
             <Image
               source={showIncoming ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showIncoming && { tintColor: COLORS.bluish_green }]}
+              style={[styles.checkboxIconStyle, showIncoming && { tintColor: COLORS.lavender }]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.incomingOrders}</Text>
+            <Text style={[styles.varientTextStyle, { tintColor: COLORS.navy_blue }]}>
+              {strings.shippingOrder.incomingOrders}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -261,9 +263,11 @@ const Graph = () => {
           >
             <Image
               source={showProcessing ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showProcessing && { tintColor: COLORS.pink }]}
+              style={[styles.checkboxIconStyle, showProcessing && { tintColor: '#F5EDFF' }]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.processingOrders}</Text>
+            <Text style={[styles.varientTextStyle, { tintColor: COLORS.purple }]}>
+              {strings.shippingOrder.processingOrders}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -278,12 +282,11 @@ const Graph = () => {
           >
             <Image
               source={showReadyToPickup ? mark : blankCheckBox}
-              style={[
-                styles.checkboxIconStyle,
-                showReadyToPickup && { tintColor: COLORS.yellowTweet },
-              ]}
+              style={[styles.checkboxIconStyle, showReadyToPickup && { tintColor: '#FFF7D7' }]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.readyPickupOrders}</Text>
+            <Text style={[styles.varientTextStyle, { tintColor: COLORS.extra_yellow_600 }]}>
+              {strings.shippingOrder.readyPickupOrders}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -298,9 +301,11 @@ const Graph = () => {
           >
             <Image
               source={showCompleted ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showCompleted && { tintColor: COLORS.primary }]}
+              style={[styles.checkboxIconStyle, showCompleted && { tintColor: '#FEE4E2' }]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.completed}</Text>
+            <Text style={[styles.varientTextStyle, { tintColor: COLORS.alert_red }]}>
+              {strings.shippingOrder.completed}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -309,7 +314,7 @@ const Graph = () => {
 
       {isGraphOrder ? (
         <View style={styles.loaderView}>
-          <ActivityIndicator size={'small'} color={COLORS.primary} />
+          <ActivityIndicator size={'small'} color={COLORS.navy_blue} />
         </View>
       ) : (
         <View style={{ zIndex: -999 }}>
@@ -337,7 +342,7 @@ export default memo(Graph);
 
 const styles = StyleSheet.create({
   graphViewStyle: {
-    borderRadius: 10,
+    borderRadius: ms(10),
     paddingBottom: 30,
     height: twoEqualView,
     paddingHorizontal: 20,

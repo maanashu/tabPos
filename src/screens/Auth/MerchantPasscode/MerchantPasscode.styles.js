@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-import { moderateScale, scale } from 'react-native-size-matters';
+import { moderateScale, ms, scale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
 import { COLORS, SF, SH, ShadowStyles } from '@/theme';
@@ -13,26 +13,29 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.sky_grey,
   },
   verifyContainer: {
     width: windowWidth * 0.4,
     height: windowHeight * 0.82,
     borderColor: 'grey',
     alignSelf: 'center',
-    borderRadius: 15,
+    borderRadius: 40,
     alignItems: 'center',
     backgroundColor: COLORS.white,
     ...ShadowStyles.shadow2,
   },
   heading: {
-    fontSize: SF(24),
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.MaisonBold,
+    fontSize: SF(30),
+    textAlign: 'center',
+    lineHeight: ms(22),
+    letterSpacing: ms(-0.6),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.MaisonRegular,
   },
   subHeading: {
     fontSize: SF(16),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_light_blue,
     fontFamily: Fonts.Regular,
   },
   alignSelfCenter: {

@@ -5,26 +5,24 @@ import {
   CodeField,
   useBlurOnFulfill,
   useClearByFocusCell,
-  Cursor,
-  MaskSymbol,
-  isLastFilledCell,
 } from 'react-native-confirmation-code-field';
 import { useDispatch, useSelector } from 'react-redux';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-import { SH } from '@/theme';
 import { TYPES } from '@/Types/Types';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { NAVIGATION } from '@/constants';
+import { SH } from '@/theme';
 import { digits } from '@/utils/validators';
+import { ms } from 'react-native-size-matters';
 import { navigate } from '@/navigation/NavigationRef';
 import { merchantLogin } from '@/actions/AuthActions';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-
 import { styles } from '@/screens/Auth/MerchantPasscode/MerchantPasscode.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CELL_COUNT = 4;
 
@@ -32,6 +30,7 @@ export function MerchantPasscode({ route }) {
   const dispatch = useDispatch();
   const getData = useSelector(getAuthData);
   const [value, setValue] = useState('');
+
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -73,6 +72,7 @@ export function MerchantPasscode({ route }) {
         country_code: country_code,
         pin: value,
       };
+      storeSuccessFlag();
       const res = await merchantLogin(data)(dispatch);
       if (res?.type === 'MERCHANT_LOGIN_ERROR') {
         setValue('');
@@ -82,6 +82,13 @@ export function MerchantPasscode({ route }) {
       }
     }
   };
+
+  const storeSuccessFlag = async (value) => {
+    try {
+      await AsyncStorage.setItem('success-flag', 'true');
+    } catch (e) {}
+  };
+
   const renderCell = ({ index }) => {
     const displaySymbol = value[index] ? '*' : '';
 
@@ -102,7 +109,7 @@ export function MerchantPasscode({ route }) {
         <View style={styles.verifyContainer}>
           <Spacer space={SH(25)} />
 
-          <Text style={styles.heading}>{strings.verifyOtp.heading}</Text>
+          <Text style={styles.heading}>Verify your phone {'\n'} number</Text>
           <Spacer space={SH(10)} />
           <Text style={styles.subHeading}>{strings.passcode.heading}</Text>
 
@@ -121,6 +128,9 @@ export function MerchantPasscode({ route }) {
           />
 
           <VirtualKeyBoard
+            FLCntStyle={{
+              alignItems: 'center',
+            }}
             maxCharLength={4}
             enteredValue={value}
             setEnteredValue={setValue}

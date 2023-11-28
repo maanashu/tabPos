@@ -45,6 +45,7 @@ export const NAVIGATION = {
   staffSettings: 'StaffSettings',
   posUserDetail: 'PosUserDetail',
   legal: 'Legal',
+  batchManagement: 'Management',
   policies: 'Policies',
   notificationSettings: 'NotificationSettings',
   batchManagement: 'Management',

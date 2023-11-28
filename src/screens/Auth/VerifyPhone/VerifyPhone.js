@@ -116,11 +116,13 @@ export function VerifyPhone() {
           </View>
 
           <VirtualKeyBoard
+            canGoBack={false}
             maxCharLength={10}
             enteredValue={phoneNumber}
             setEnteredValue={setPhoneNumber}
             isButtonLoading={isLoading}
             onPressContinueButton={verifyPhoneHandler}
+            isBackButtonDisbaled={true}
           />
         </View>
       </View>

@@ -5,11 +5,12 @@ import { Fonts } from '@/assets';
 import { COLORS } from '@/theme';
 import { Image } from 'react-native';
 import { leftBack } from '@/assets';
+import { Images } from '@/assets/new_icon';
 
 const BackButton = ({ style, title, titleStyle, onPress = () => {} }) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
-      <Image source={leftBack} style={styles.backIcon} />
+      <Image source={Images.arrowLeftUp} style={styles.backIcon} />
       <Text style={[styles.backTitle, titleStyle]}>{title}</Text>
     </TouchableOpacity>
   );
@@ -31,14 +32,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   backIcon: {
-    height: ms(10),
-    width: ms(10),
+    height: ms(12),
+    width: ms(12),
     resizeMode: 'contain',
     marginRight: ms(3),
+    tintColor: COLORS.navy_blue,
   },
   backTitle: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(8),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(9),
   },
 });

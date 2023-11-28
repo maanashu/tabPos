@@ -4,7 +4,7 @@ import { strings } from '@/localization';
 import { SH, SW } from '@/theme';
 import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
-import { vector, vectorOff } from '@/assets';
+import { newToggleOff, toggleOnNavyBlue, vector, vectorOff } from '@/assets';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
 import { upadteApi } from '@/actions/SettingAction';
 import { useDispatch, useSelector } from 'react-redux';
@@ -83,20 +83,24 @@ export function Notification() {
     <View style={styles.flexRow}>
       <Text style={styles.notificationName}>{item.name}</Text>
       <TouchableOpacity onPress={() => handleToggle(index)}>
-        <Image source={item.isSelected ? vector : vectorOff} style={styles.toggleSecurity} />
+        <Image
+          source={item.isSelected ? toggleOnNavyBlue : newToggleOff}
+          style={styles.toggleSecurity}
+        />
       </TouchableOpacity>
     </View>
   );
 
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(8) }]}>
+      <View style={[styles.flexRow, { height: SW(8), paddingHorizontal: moderateScale(10) }]}>
         <Text style={styles.HeaderLabelText}>{strings.settings.notification}</Text>
       </View>
-      <Spacer space={SH(20)} />
+      <Spacer space={SH(5)} />
       <View style={styles.notificationMainCon}>
         <View style={{ paddingHorizontal: moderateScale(10) }}>
           <View style={styles.horizontalRow} />
+          <Spacer space={SH(5)} />
           <FlatList
             data={appNotificationArray}
             ItemSeparatorComponent={() => <View style={{ marginVertical: verticalScale(3) }} />}

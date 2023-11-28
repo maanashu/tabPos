@@ -13,6 +13,9 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { CustomHeader } from './CustomHeader';
+import { Spacer } from '@/components';
+import { SH } from '@/theme';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -32,6 +35,33 @@ export const FinalPaymentScreen = ({
   const reatilData = useSelector(getRetail);
   const orderInvoice =
     cartType == 'Product' ? reatilData?.createOrder : reatilData?.createServiceOrder;
+  const invoiceData = [
+    {
+      title: 'Payment Option',
+      data: 'Cash',
+      id: 1,
+    },
+    {
+      title: 'Date',
+      data: moment().format('ddd') + ' ' + moment().subtract(10, 'days').calendar(),
+      id: 2,
+    },
+    {
+      title: 'Mode',
+      data: 'Walk-In',
+      id: 3,
+    },
+    {
+      title: 'POS No.',
+      data: getUserData?.posLoginData?.pos_number,
+      id: 4,
+    },
+    {
+      title: 'User ID',
+      data: getUserData?.posLoginData?.id,
+      id: 5,
+    },
+  ];
 
   const cartProducts =
     cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
@@ -61,7 +91,8 @@ export const FinalPaymentScreen = ({
 
   return (
     <SafeAreaView style={styles._innerContainer}>
-      <View style={styles.displayflex}>
+      <CustomHeader />
+      <View style={[styles.displayflex, { flex: 1 }]}>
         <View style={styles.leftCon}>
           <View style={[styles._topContainer]}>
             <BackButton
@@ -126,69 +157,71 @@ export const FinalPaymentScreen = ({
               />
             </View>
 
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Sub-Total</Text>
-              <Text style={styles._subTotalPrice}>
-                ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
-              </Text>
+            <View style={{ width: '90%', alignSelf: 'center', flexDirection: 'row' }}>
+              <FlatList
+                data={invoiceData}
+                numColumns={3}
+                renderItem={({ item, index }) => (
+                  <View
+                    style={{
+                      width: ms(58),
+                      height: ms(30),
+                      justifyContent: 'space-between',
+                      marginTop: ms(15),
+                    }}
+                  >
+                    <Text style={styles._payTitle}>{item.title}</Text>
+                    <Spacer space={SH(7)} />
+                    <Text style={styles._paySubTitle}>{item.data}</Text>
+                  </View>
+                )}
+              />
             </View>
-
-            <View style={styles._horizontalLine} />
-            {/* <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Shipping Charge</Text>
-              <Text style={styles._subTotalPrice}>$0.00</Text>
-            </View> */}
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Discount</Text>
-              <Text style={styles._subTotalPrice}>
-                {formattedReturnPrice(cartData?.amount?.discount)}
-              </Text>
+            <Spacer space={SH(10)} />
+            <View style={[styles._horizontalLine, { width: '100%', borderStyle: 'dashed' }]} />
+            <Spacer space={SH(15)} />
+            <View style={{ width: '85%', alignSelf: 'center' }}>
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Sub-Total</Text>
+                <Text style={styles._payTitle}>
+                  ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
+                </Text>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Discount</Text>
+                <Text style={styles._payTitle}>
+                  {formattedReturnPrice(cartData?.amount?.discount)}
+                </Text>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Tips</Text>
+                <Text style={styles._payTitle}>${tipamount.toFixed(2)}</Text>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Total Taxes</Text>
+                <Text style={styles._payTitle}>${cartData?.amount?.tax.toFixed(2) ?? '0.00'}</Text>
+              </View>
+              <Spacer space={SH(15)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
+                  Total
+                </Text>
+                <View style={styles.totalView}>
+                  <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
+                    ${totalPayAmount() ?? '0.00'}
+                  </Text>
+                </View>
+              </View>
+              <Spacer space={SH(15)} />
+              <Image source={logo_full} style={styles.logoFull} />
+              <Image
+                source={{ uri: cartData?.barcode } ?? barcode}
+                style={[styles._barCodeImage, { alignSelf: 'center' }]}
+              />
             </View>
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Tips</Text>
-              <Text style={styles._subTotalPrice}>${tipamount.toFixed(2)}</Text>
-            </View>
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Total Taxes</Text>
-              <Text style={styles._subTotalPrice}>
-                ${cartData?.amount?.tax?.toFixed(2) ?? '0.00'}
-              </Text>
-            </View>
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text
-                style={[styles._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
-              >
-                Total
-              </Text>
-              <Text
-                style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
-              >
-                {/* ${totalPayAmount()} */}${cartData?.amount?.total_amount?.toFixed(2) ?? '0.00'}
-              </Text>
-            </View>
-            {/* <View style={styles._horizontalLine} /> */}
-            <View style={[styles._horizontalLine, { height: ms(1), marginTop: ms(5) }]} />
-
-            <View style={styles._paymentTitleContainer}>
-              <Text style={styles._payTitle}>Payment option: </Text>
-              <Text style={styles._paySubTitle}>{payDetail?.modeOfPayment}</Text>
-            </View>
-            <Text style={styles._commonPayTitle}>
-              {moment(cartData?.created_at).format('llll')}
-            </Text>
-            <Text style={styles._commonPayTitle}>Walk-In</Text>
-
-            <Text style={styles._commonPayTitle}>
-              POS No. {getUserData?.posLoginData?.pos_number}
-            </Text>
-            <Text style={styles._commonPayTitle}>User ID : ****128</Text>
-
-            <Text style={styles._thankyou}>Thank You</Text>
-            <Image source={{ uri: orderInvoice?.invoices?.barcode }} style={styles._barCodeImage} />
-            <Image source={logo_full} style={styles.logoFull} />
           </View>
         </View>
       </View>

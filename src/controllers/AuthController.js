@@ -154,20 +154,19 @@ export class AuthController {
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response.status_code === 200) {
-            Toast.show({
-              type: 'success_toast',
-              text2: strings.successMessages.loginSuccess,
-              position: 'bottom',
-              visibilityTime: 1500,
-            });
+            //   Toast.show({
+            //     type: 'success_toast',
+            //     text2: strings.successMessages.loginSuccess,
+            //     position: 'bottom',
+            //     visibilityTime: 1500,
             resolve(response);
           } else {
-            Toast.show({
-              text2: response.msg,
-              position: 'bottom',
-              type: 'success_toast',
-              visibilityTime: 1500,
-            });
+            //   Toast.show({
+            //     text2: response.msg,
+            //     position: 'bottom',
+            //     type: 'success_toast',
+            //     visibilityTime: 1500,
+            //   });
           }
         })
         .catch((error) => {

@@ -47,7 +47,7 @@ export default memo(TodayShippingStatus);
 
 const styles = StyleSheet.create({
   shippingStatusViewStyle: {
-    borderRadius: 10,
+    borderRadius: ms(16),
     marginTop: SH(15),
     paddingVertical: ms(12),
     alignItems: 'flex-start',
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   shippingStatusText: {
     fontSize: SF(16),
     paddingLeft: ms(15),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
   },
   loaderViewStyle: {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     fontSize: SF(14),
     paddingTop: ms(10),
     paddingLeft: ms(15),
-    color: COLORS.solid_grey,
+    color: COLORS.textBlue,
     fontFamily: Fonts.Regular,
   },
 });

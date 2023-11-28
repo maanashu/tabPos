@@ -20,9 +20,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-import { COLORS, SH } from '@/theme';
+import { COLORS, Fonts, SH } from '@/theme';
 import { TYPES } from '@/Types/Types';
-import { crossButton } from '@/assets';
+import { crossButton, verifyGreen } from '@/assets';
 import { NAVIGATION } from '@/constants';
 import { strings } from '@/localization';
 import { digits } from '@/utils/validators';
@@ -39,6 +39,9 @@ import { styles } from './POSUsers.styles';
 import { useRef } from 'react';
 import { useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
+import ReactNativeModal from 'react-native-modal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CustomHeader } from '@/screens/PosRetail3/Components';
 
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
@@ -63,10 +66,29 @@ export function POSUsers({ navigation }) {
   const [sixDigit, setSixDigit] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
   const [isLoadingBottom, setIsLoadingBottom] = useState(false);
+  const [isSucessModalVis, setIsSuccessModalVis] = useState(false);
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
+
+  const getSuccessFlag = async () => {
+    try {
+      const successFlag = await AsyncStorage.getItem('success-flag');
+      if (successFlag) {
+        setIsSuccessModalVis(true);
+        setTimeout(() => {
+          setIsSuccessModalVis(false);
+        }, 3000);
+        await AsyncStorage.removeItem('success-flag');
+      }
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getSuccessFlag();
+  }, []);
+
   useEffect(() => {
     // dispatch(getAllPosUsers(sellerID));
     if (isFocused) {
@@ -246,6 +268,7 @@ export function POSUsers({ navigation }) {
               <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
             </TouchableOpacity>
           </View>
+          <CustomHeader showUserName={false} />
 
           {getPosUserLoading ? (
             <View style={{ marginTop: 50 }}>
@@ -262,12 +285,21 @@ export function POSUsers({ navigation }) {
               extraData={posUserArray}
               scrollEnabled={true}
               contentContainerStyle={{ flexGrow: 1 }}
-              style={{ height: '100%' }}
+              style={{
+                height: '100%',
+                marginHorizontal: SH(40),
+              }}
               renderItem={({ item }) => {
                 return (
-                  <View style={styles.posUserCon}>
-                    <Spacer space={SH(10)} />
-
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate(NAVIGATION.posUserPasscode, {
+                        posuser: item,
+                        from: 'loginInitial',
+                      })
+                    }
+                    style={styles.posUserCon}
+                  >
                     <Image
                       source={
                         item.user?.user_profiles?.profile_photo
@@ -277,18 +309,21 @@ export function POSUsers({ navigation }) {
                       style={styles.profileImage}
                     />
 
+                    <Spacer space={SH(10)} />
                     <Text style={styles.firstName} numberOfLines={1}>
                       {`${item.user?.user_profiles?.firstname} ${item.user?.user_profiles?.lastname} `}
                     </Text>
+                    <Spacer space={SH(6)} />
                     <Text style={styles.role} numberOfLines={1}>
                       {item.user?.user_roles?.length > 0
                         ? item.user?.user_roles?.map((item) => item.role?.name)
                         : 'admin'}
                     </Text>
 
+                    <Spacer space={SH(24)} />
                     {item.user?.api_tokens.length > 0 && (
                       <>
-                        <Text style={[styles.dateTime, { marginTop: SH(10) }]}>
+                        <Text style={[styles.dateTime]}>
                           {moment(item.user?.api_tokens[0].updated_at).format('dddd, DD MMM YYYY')}
                         </Text>
                         <Text style={styles.dateTime}>
@@ -296,20 +331,7 @@ export function POSUsers({ navigation }) {
                         </Text>
                       </>
                     )}
-
-                    <View style={{ flex: 1 }} />
-
-                    <TouchableOpacity
-                      style={styles.arrowButonCon}
-                      onPress={() =>
-                        navigation.navigate(NAVIGATION.loginIntial, {
-                          posuserdata: item,
-                        })
-                      }
-                    >
-                      <Image source={checkArrow} style={styles.arrowImage} />
-                    </TouchableOpacity>
-                  </View>
+                  </TouchableOpacity>
                 );
               }}
               ListFooterComponent={renderStaffFooter}
@@ -373,6 +395,48 @@ export function POSUsers({ navigation }) {
           )}
         </View>
       )}
+      <ReactNativeModal
+        isVisible={isSucessModalVis}
+        backdropColor={COLORS.sky_grey}
+        backdropOpacity={1}
+        style={{
+          backgroundColor: COLORS.sky_grey,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <View
+          style={{
+            width: ms(250),
+            height: ms(200),
+            borderRadius: ms(40),
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: COLORS.white,
+          }}
+        >
+          <Image
+            style={{
+              width: ms(40),
+              height: ms(40),
+              marginBottom: ms(15),
+              resizeMode: 'contain',
+            }}
+            source={verifyGreen}
+          />
+          <Text
+            style={{
+              color: COLORS.navy_blue,
+              textAlign: 'center',
+              fontFamily: Fonts.Regular,
+              fontSize: ms(22, 0.3),
+              width: ms(150),
+            }}
+          >
+            Successfully verified
+          </Text>
+        </View>
+      </ReactNativeModal>
     </ScreenWrapper>
   );
 }

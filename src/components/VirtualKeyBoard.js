@@ -6,14 +6,20 @@ import { Button } from './Button';
 import { COLORS, SF, SH } from '@/theme';
 import { Fonts } from '@/assets';
 import { goBack } from '@/navigation/NavigationRef';
+import { ms } from 'react-native-size-matters';
+import { ButtonIcon } from './ButtonIcon';
+import { Images } from '@/assets/new_icon';
 
 export const VirtualKeyBoard = ({
+  FLCntStyle,
   maxCharLength,
   enteredValue,
   setEnteredValue,
   isButtonLoading,
+  isBackButtonDisbaled = false,
   onPressContinueButton = () => {},
   screen,
+  canGoBack = true,
 }) => {
   const KEYBOARD_DATA = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'cross', '0', 'deleteBack'];
   return (
@@ -23,9 +29,12 @@ export const VirtualKeyBoard = ({
         scrollEnabled={false}
         showsVerticalScrollIndicator={false}
         keyExtractor={(_, index) => index.toString()}
-        contentContainerStyle={{
-          alignItems: 'center',
-        }}
+        contentContainerStyle={[
+          {
+            alignItems: 'center',
+          },
+          FLCntStyle,
+        ]}
         numColumns={3}
         renderItem={({ item, index }) => (
           <KeyPadButton
@@ -50,7 +59,7 @@ export const VirtualKeyBoard = ({
         )}
         ListFooterComponent={() => (
           <View style={screen === 'passcode' ? styles.buttonViewStyle : styles.continueMainView}>
-            {screen === 'passcode' && (
+            {/* {screen === 'passcode' && (
               <Button
                 onPress={() => goBack()}
                 textStyle={[styles.buttonText, { color: COLORS.dark_grey }]}
@@ -65,9 +74,55 @@ export const VirtualKeyBoard = ({
                   },
                 ]}
               />
-            )}
+            )} */}
 
-            <Button
+            <View style={{ flexDirection: 'row' }}>
+              <ButtonIcon
+                disabled={isBackButtonDisbaled}
+                onPress={() => goBack()}
+                style={{
+                  width: 'auto',
+                  height: ms(35),
+                  padding: ms(10),
+                  backgroundColor: '#F5F6FC',
+                  borderWidth: 0,
+                  borderRadius: ms(20),
+                  marginHorizontal: 0,
+                }}
+                textStyle={[
+                  { fontSize: ms(12), fontFamily: Fonts.Regular },
+                  !canGoBack && { color: COLORS.graySky },
+                ]}
+                iconStyle={{
+                  height: ms(15),
+                  width: ms(15),
+                  tintColor: !canGoBack ? COLORS.graySky : COLORS.sky_blue,
+                }}
+                icon={Images.arrowLeftUp}
+                title={'Back'}
+              />
+              <ButtonIcon
+                pending={isButtonLoading}
+                iconPostion="right"
+                style={{
+                  width: 'auto',
+                  height: ms(35),
+                  padding: ms(10),
+                  backgroundColor: COLORS.navy_blue,
+                  borderWidth: 0,
+                  borderRadius: ms(20),
+                  marginLeft: ms(20),
+                  marginHorizontal: 0,
+                }}
+                textStyle={{ fontSize: ms(12), fontFamily: Fonts.Regular, color: COLORS.white }}
+                iconStyle={{ height: ms(15), width: ms(15), transform: [{ rotate: '90deg' }] }}
+                icon={Images.arrowLeftUp}
+                onPress={onPressContinueButton}
+                title={'Next'}
+              />
+            </View>
+
+            {/* <Button
               pending={isButtonLoading}
               onPress={onPressContinueButton}
               title={strings.verifyPhone.button}
@@ -93,7 +148,7 @@ export const VirtualKeyBoard = ({
                       { color: screen === 'passcode' ? COLORS.white : COLORS.darkGray },
                     ]
               }
-            />
+            /> */}
           </View>
         )}
       />
@@ -112,7 +167,7 @@ const styles = StyleSheet.create({
   buttonViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     width: windowWidth / 3.1,
   },
   button: {
