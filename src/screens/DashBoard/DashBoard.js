@@ -513,7 +513,7 @@ export function DashBoard({ navigation }) {
                     <Text style={{ color: COLORS.white }}>Your Session</Text>
                   </TouchableOpacity> */}
             </View>
-            <Spacer space={SH(4)} backgroundColor={COLORS.textInputBackground} />
+            <Spacer space={SH(6)} />
             <View style={[styles.displayflex, styles.paddingV]}>
               <Text style={styles.cashLabel}>{strings.dashboard.cashSaleAmount}</Text>
               <Text style={styles.cashAmount}>
@@ -534,7 +534,7 @@ export function DashBoard({ navigation }) {
           <Spacer space={SH(10)} />
           <View style={styles.todaySaleCon}>
             <Text style={styles.todaySale}>{strings.dashboard.cashDrawer}</Text>
-            <Spacer space={SH(4)} backgroundColor={COLORS.textInputBackground} />
+            <Spacer space={SH(6)} />
             <View style={[styles.displayflex, styles.paddingV]}>
               <Text style={styles.cashLabel}>{strings.dashboard.openBal}</Text>
               <Text style={styles.cashAmount}>

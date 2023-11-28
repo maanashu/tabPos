@@ -43,12 +43,11 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
   },
   todaySaleCon: {
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: COLORS.solidGrey,
+    borderRadius: 15,
     width: windowWidth * 0.26,
     paddingHorizontal: moderateScale(10),
     paddingVertical: verticalScale(5),
+    backgroundColor: COLORS.white,
   },
   sessionCon: {
     borderColor: COLORS.solidGrey,
@@ -56,25 +55,25 @@ export const styles = StyleSheet.create({
   },
 
   todaySale: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SF(18),
     fontFamily: Fonts.MaisonRegular,
   },
   cashLabel: {
-    color: COLORS.faded_purple,
-    fontSize: SF(12),
+    color: COLORS.darkGreen,
+    fontSize: SF(14),
     fontFamily: Fonts.Regular,
   },
   saleAmountLable: {
-    color: COLORS.solid_grey,
+    color: COLORS.darkGreen,
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
     width: windowWidth * 0.13,
   },
   cashAmount: {
-    color: COLORS.solid_grey,
+    color: COLORS.darkGreen,
     fontSize: SF(14),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Regular,
   },
   paddingV: {
     paddingVertical: verticalScale(2.5),
