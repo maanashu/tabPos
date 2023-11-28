@@ -293,8 +293,9 @@ export function POSUsers({ navigation }) {
                 return (
                   <TouchableOpacity
                     onPress={() =>
-                      navigation.navigate(NAVIGATION.loginIntial, {
-                        posuserdata: item,
+                      navigation.navigate(NAVIGATION.posUserPasscode, {
+                        posuser: item,
+                        from: 'loginInitial',
                       })
                     }
                     style={styles.posUserCon}
