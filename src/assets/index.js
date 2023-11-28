@@ -415,6 +415,28 @@ export { default as totalCostIcon } from '@/assets/new_icon/ic_analytic/totalCos
 export { default as totalOrder } from '@/assets/new_icon/ic_analytic/totalOrder.png';
 export { default as verifyGreen } from '@/assets/new_icon/Auth_icons/verify_green.png';
 
+// Delivery  New ICON
+export { default as BikeFast } from '@/assets/new_icon/ic_delivery/bikefast.png';
+export { default as Market } from '@/assets/new_icon/ic_delivery/market.png';
+export { default as BikeNormal } from '@/assets/new_icon/ic_delivery/bikeNormal.png';
+export { default as BikeMedium } from '@/assets/new_icon/ic_delivery/bikeMedium.png';
+export { default as RightReturn } from '@/assets/new_icon/ic_delivery/rightReturn.png';
+export { default as CrossRight } from '@/assets/new_icon/ic_delivery/crossRight.png';
+export { default as TiltRight } from '@/assets/new_icon/ic_delivery/tiltRight.png';
+export { default as BikeRight } from '@/assets/new_icon/ic_delivery/bikeRight.png';
+export { default as ClockRight } from '@/assets/new_icon/ic_delivery/clockRight.png';
+export { default as PickupRight } from '@/assets/new_icon/ic_delivery/pickupRight.png';
+export { default as TickRight } from '@/assets/new_icon/ic_delivery/tickRight.png';
+export { default as ArrowLeft } from '@/assets/new_icon/ic_delivery/ArrowLeft.png';
+export { default as Maximize } from '@/assets/new_icon/ic_delivery/maximize.png';
+export { default as Minimize } from '@/assets/new_icon/ic_delivery/minimize.png';
+export { default as RightSide } from '@/assets/new_icon/ic_delivery/rightSide.png';
+export { default as SuperFastBike } from '@/assets/new_icon/ic_delivery/superFastBike.png';
+export { default as StepPurple } from '@/assets/new_icon/ic_delivery/StepPurple.png';
+export { default as StepSky } from '@/assets/new_icon/ic_delivery/StepSky.png';
+export { default as StepPurpleStop } from '@/assets/new_icon/ic_delivery/StepPurpleStop.png';
+export { default as StepSkypStop } from '@/assets/new_icon/ic_delivery/StepSkyStop.png';
+
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',

@@ -62,7 +62,7 @@ const OrderConvertion = () => {
           </View>
         ) : (
           <>
-            <View style={styles.ordersRowView}>
+            {/* <View style={styles.ordersRowView}>
               <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.incomingOrders}</Text>
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[0]?.percentage)}%` ?? '0%'}
@@ -95,6 +95,50 @@ const OrderConvertion = () => {
               <Text style={styles.countTextStyle}>
                 {`${parseInt(pieChartData?.[3]?.percentage)}%` ?? '0'}
               </Text>
+            </View> */}
+
+            <View style={styles.ordersRowView}>
+              {/* <Text style={styles.orderTypeTextStyle}>{strings.shippingOrder.incomingOrders}</Text> */}
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.purple }]}>
+                {strings.shippingOrder.delivered}
+              </Text>
+              <View style={[styles.countContainer]}>
+                <View style={styles.deliveredDot}></View>
+                <Text style={[styles.countTextStyle, { color: COLORS.purple }]}>
+                  {`${parseInt(pieChartData?.[0]?.percentage)}%` ?? '0%'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.ordersRowView}>
+              {/* <Text style={styles.orderTypeTextStyle}>
+                {strings.shippingOrder.processingOrders}
+              </Text> */}
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.extra_yellow_800 }]}>
+                {strings.shippingOrder.returned}
+              </Text>
+              <View style={[styles.countContainer, { color: COLORS.light_yellow }]}>
+                <View style={styles.returnedDot}></View>
+                <Text style={[styles.countTextStyle, { color: COLORS.extra_yellow_800 }]}>
+                  {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.ordersRowView}>
+              {/* <Text style={styles.orderTypeTextStyle}>
+                {strings.shippingOrder.readyPickupOrders}
+              </Text> */}
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.alert_red }]}>
+                {strings.shippingOrder.cancelled}
+              </Text>
+
+              <View style={[styles.countContainer, { color: COLORS.light_red }]}>
+                <View style={styles.cancelledDot}></View>
+                <Text style={[styles.countTextStyle, { color: COLORS.alert_red }]}>
+                  {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
+                </Text>
+              </View>
             </View>
           </>
         )}
@@ -107,16 +151,17 @@ export default memo(OrderConvertion);
 
 const styles = StyleSheet.create({
   orderConvertionView: {
-    flex: 1.6,
-    borderRadius: 10,
+    flex: 1.4,
+    borderRadius: ms(10),
     paddingBottom: ms(10),
     backgroundColor: COLORS.white,
+    // marginBottom: ms(30),
   },
   orderTextStyle: {
     paddingTop: ms(9),
     fontSize: scale(7),
     paddingLeft: ms(12),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.MaisonBold,
   },
   piechartViewStyle: {

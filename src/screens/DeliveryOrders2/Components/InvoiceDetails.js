@@ -60,7 +60,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
 
   return (
     <ScrollView style={{ flex: 1 }}>
-      <View style={styles.firstRowStyle}>
+      <View style={styles.firstRowStyleNew}>
         <View style={styles.storeDetailView}>
           <Text style={style.storeNameText}>
             {`${orderDetail?.seller_details?.organization_name}` ?? '-'}

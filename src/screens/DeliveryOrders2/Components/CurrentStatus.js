@@ -8,7 +8,16 @@ import { COLORS } from '@/theme';
 import { strings } from '@/localization';
 import { todayOrders } from '@/actions/DeliveryAction';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import { expressType, Fonts, oneHourType, twoHourType } from '@/assets';
+import {
+  BikeFast,
+  BikeMedium,
+  BikeNormal,
+  expressType,
+  Fonts,
+  Market,
+  oneHourType,
+  twoHourType,
+} from '@/assets';
 
 const CurrentStatus = () => {
   const dispatch = useDispatch();
@@ -21,23 +30,30 @@ const CurrentStatus = () => {
     const deliveryTypes = [
       {
         key: '1',
-        image: expressType,
+        image: BikeFast,
         delivery_type_title:
           getDeliveryData?.deliveringOrder?.[0]?.delivery_type_title ?? 'Express Delivery',
         count: getDeliveryData?.deliveringOrder?.[0]?.count ?? 0,
       },
       {
         key: '2',
-        image: oneHourType,
+        image: BikeMedium,
         delivery_type_title:
           getDeliveryData?.deliveringOrder?.[1]?.delivery_type_title ?? '1 hour delivery window',
         count: getDeliveryData?.deliveringOrder?.[1]?.count ?? 0,
       },
       {
         key: '3',
-        image: twoHourType,
+        image: BikeNormal,
         delivery_type_title:
           getDeliveryData?.deliveringOrder?.[2]?.delivery_type_title ?? '2 hour delivery window',
+        count: getDeliveryData?.deliveringOrder?.[2]?.count ?? 0,
+      },
+      {
+        key: '4',
+        image: Market,
+        delivery_type_title: 'Customer Pickups',
+        // getDeliveryData?.deliveringOrder?.[2]?.delivery_type_title ?? '2 hour delivery window',
         count: getDeliveryData?.deliveringOrder?.[2]?.count ?? 0,
       },
     ];
@@ -75,28 +91,28 @@ export default memo(CurrentStatus);
 
 const styles = StyleSheet.create({
   currentStatusView: {
-    flex: 1,
+    flex: 1.8,
     paddingTop: 15,
-    borderRadius: 10,
+    borderRadius: ms(10),
     paddingBottom: ms(5),
     backgroundColor: COLORS.white,
   },
   currentStatusText: {
     fontSize: scale(6),
-    color: COLORS.text,
+    color: COLORS.navy_blue,
     paddingLeft: ms(12),
     fontFamily: Fonts.SemiBold,
   },
   itemMainViewStyle: {
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 10,
     alignItems: 'center',
     flexDirection: 'row',
     marginVertical: ms(3),
     paddingVertical: ms(5),
     marginHorizontal: ms(12),
     paddingHorizontal: ms(8),
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.extra_purple_300,
     backgroundColor: COLORS.white,
   },
   deliveryTypeImage: {
@@ -111,13 +127,13 @@ const styles = StyleSheet.create({
   },
   deliveryTypeText: {
     fontSize: scale(4),
-    color: COLORS.darkGray,
+    color: COLORS.dark_purple,
     fontFamily: Fonts.SemiBold,
   },
   totalTextStyle: {
     paddingTop: ms(3),
     fontSize: scale(4),
-    color: COLORS.solid_grey,
+    color: COLORS.faded_lavendar,
     fontFamily: Fonts.SemiBold,
   },
 });

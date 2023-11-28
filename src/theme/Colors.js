@@ -94,4 +94,6 @@ export const COLORS = {
   extra_yellow_600: '#DBAF18',
   alarm_success_50: '#ECFDF3',
   purple_fade: '#9BA8E3',
+  dark_purple: '#552099',
+  faded_lavendar: '#D8B9FF',
 };

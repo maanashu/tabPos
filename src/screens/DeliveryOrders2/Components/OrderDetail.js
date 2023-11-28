@@ -30,6 +30,7 @@ const OrderDetail = ({
   changeMapState,
   mapRef,
   onPressShop,
+  isMaximizeStatusView,
 }) => {
   const detailView = () => {
     if (
@@ -271,7 +272,11 @@ const OrderDetail = ({
             <Text style={[styles.acceptTextStyle, { paddingHorizontal: 12 }]}>{'Expand'}</Text>
           </TouchableOpacity>
 
-          <ShipmentTracking orderData={userDetail} onPressShop={onPressShop} />
+          <ShipmentTracking
+            orderData={userDetail}
+            onPressShop={onPressShop}
+            isMaximizeStatusView={isMaximizeStatusView}
+          />
 
           <TouchableOpacity
             onPress={() =>

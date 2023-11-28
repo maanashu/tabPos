@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
-import { View, FlatList, Dimensions, StyleSheet } from 'react-native';
+import { View, FlatList, Dimensions, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import { useSelector } from 'react-redux';
-import { verticalScale } from 'react-native-size-matters';
+import { ms, verticalScale } from 'react-native-size-matters';
 
 import {
   task,
@@ -12,6 +12,15 @@ import {
   deliveryDriver,
   deliveryShipping,
   deliveryorderProducts,
+  RightReturn,
+  CrossRight,
+  TiltRight,
+  BikeRight,
+  ClockRight,
+  PickupRight,
+  TickRight,
+  RightSide,
+  Maximize,
 } from '@/assets';
 import { COLORS } from '@/theme';
 import { strings } from '@/localization';
@@ -25,53 +34,61 @@ const RightSideBar = ({ renderDrawer, viewAllOrder }) => {
   const deliveryDrawer = [
     {
       key: '0',
-      image: task,
+      image: TickRight,
       title: strings.orderStatus.reviewOrders,
       count: getDeliveryData?.getOrderCount?.[0]?.count ?? 0,
+      tintColor: COLORS.lavender,
     },
     {
       key: '1',
-      image: deliveryorderProducts,
+      image: RightSide,
       title: strings.calender.approved,
       count: getDeliveryData?.getOrderCount?.[1]?.count ?? 0,
+      tintColor: COLORS.navy_blue,
     },
     {
       key: '2',
-      image: timer,
+      image: ClockRight,
       title: strings.deliveryOrders.orderPrepare,
       count: getDeliveryData?.getOrderCount?.[2]?.count ?? 0,
+      tintColor: COLORS.navy_blue,
     },
     {
       key: '3',
-      image: deliveryDriver,
+      image: BikeRight,
       title: strings.deliveryOrders.readyToPickup,
       count: getDeliveryData?.getOrderCount?.[3]?.count ?? 0,
+      tintColor: COLORS.navy_blue,
     },
     {
       key: '4',
-      image: deliveryShipping,
+      image: PickupRight,
       title: strings.deliveryOrders2.pickedUp,
       count: getDeliveryData?.getOrderCount?.[4]?.count ?? 0,
+      tintColor: COLORS.navy_blue,
     },
     {
       key: '5',
-      image: deliveryorderProducts,
+      image: TiltRight,
       title: strings.deliveryOrders.delivered,
       count: getDeliveryData?.getOrderCount?.[5]?.count ?? 0,
+      tintColor: COLORS.purple,
     },
     {
       key: '7,8',
-      image: NoCard,
+      image: CrossRight,
       title: strings.deliveryOrders.rejected,
       count:
         parseInt(getDeliveryData?.getOrderCount?.[7]?.count) +
           parseInt(getDeliveryData?.getOrderCount?.[8]?.count) ?? 0,
+      tintColor: COLORS.bright_red,
     },
     {
       key: '9',
-      image: returnShipping,
+      image: RightReturn,
       title: strings.deliveryOrders2.returned,
       count: getDeliveryData?.getOrderCount?.[9]?.count ?? 0,
+      tintColor: COLORS.orange_bright,
     },
   ];
 
@@ -79,9 +96,9 @@ const RightSideBar = ({ renderDrawer, viewAllOrder }) => {
     <View
       style={[
         styles.rightSideView,
-        {
-          height: viewAllOrder ? height - 80 : height - 35,
-        },
+        // {
+        //   height: viewAllOrder ? height - 80 : height - 50,
+        // },
       ]}
     >
       <FlatList
@@ -90,9 +107,9 @@ const RightSideBar = ({ renderDrawer, viewAllOrder }) => {
         renderItem={renderDrawer}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.key.toString()}
-        contentContainerStyle={{
-          height: viewAllOrder ? height - 80 : height - 35,
-        }}
+        // contentContainerStyle={{
+        //   height: viewAllOrder ? height - 80 : height - 35,
+        // }}
       />
     </View>
   );
@@ -102,7 +119,7 @@ export default memo(RightSideBar);
 
 const styles = StyleSheet.create({
   rightSideView: {
-    borderRadius: 10,
+    borderRadius: ms(30),
     alignItems: 'center',
     width: width * 0.06,
     backgroundColor: COLORS.white,
