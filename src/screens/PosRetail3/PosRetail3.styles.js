@@ -54,13 +54,13 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   _totalAmountTitle: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(17),
   },
   _dollarSymbol: {
     fontSize: ms(17),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
     marginTop: ms(2),
   },
@@ -71,23 +71,26 @@ export const styles = StyleSheet.create({
     marginBottom: ms(1),
   },
   _amount: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(25),
   },
   _bottomContainer: {
     marginTop: ms(10),
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     borderWidth: 1,
-    borderRadius: ms(8),
+    borderRadius: ms(9),
+    marginTop: ms(50),
   },
   _selectTips: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(12),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
+    alignSelf: 'center',
   },
   _boxView: {
     height: ms(110),
+    // flexGrow: 1,
     width: Platform.OS === 'ios' ? ms(103) : ms(110),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
@@ -97,9 +100,9 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
   },
   _usdText: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(10),
+    fontSize: ms(11),
   },
   _tipsPercent: {
     color: COLORS.solid_grey,
@@ -110,8 +113,6 @@ export const styles = StyleSheet.create({
   _innerContainer: {
     backgroundColor: COLORS.textInputBackground,
     flex: 1,
-    // paddingHorizontal: moderateScale(12),
-    // paddingVertical: verticalScale(10),
   },
   _inputMain: {
     marginTop: ms(15),
@@ -150,12 +151,12 @@ export const styles = StyleSheet.create({
   _inputOtherAmount: {
     flexGrow: 1,
     marginTop: ms(10),
-    width: Platform.OS === 'android' ? ms(380) : ms(329),
     height: ms(40),
-    borderRadius: ms(3),
-    borderColor: COLORS.solidGrey,
+    borderRadius: ms(20),
+    borderColor: COLORS.light_purple,
     borderWidth: 1,
     paddingHorizontal: ms(10),
+    fontSize: ms(10),
   },
   _tipsButton: {
     height: ms(40),
@@ -1081,7 +1082,7 @@ export const styles = StyleSheet.create({
     marginLeft: ms(15),
     marginTop: ms(3),
     fontSize: ms(7),
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
   },
   boldInvoice: {
@@ -1162,14 +1163,9 @@ export const styles = StyleSheet.create({
     marginTop: ms(15),
     height: 1,
     width: '50%',
-    backgroundColor: COLORS.silver_solid,
+    backgroundColor: COLORS.light_purple,
   },
-  _cashRemainText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(15),
-    color: COLORS.solid_grey,
-    marginTop: ms(10),
-  },
+
   _printButton: {
     width: '30%',
     height: ms(26),
@@ -1314,20 +1310,19 @@ export const styles = StyleSheet.create({
   },
   productView: {
     backgroundColor: Colors.white,
-    borderTopLeftRadius: 10,
-    borderTopEndRadius: 10,
-    width: Platform.OS === 'android' ? windowWidth * 0.82 : windowWidth * 0.8,
-    height: windowHeight * 0.88,
+    borderRadius: ms(12),
+    flex: 0.99,
     paddingTop: verticalScale(6),
     paddingHorizontal: moderateScale(10),
+    marginRight: ms(7),
   },
   rightSideView: {
     backgroundColor: Colors.white,
     borderRadius: ms(30),
-    width: windowWidth * 0.06,
-    height: windowHeight * 0.88,
+    flex: 0.09,
     paddingVertical: verticalScale(15),
     alignItems: 'center',
+    marginRight: ms(7),
   },
   sideBarImage: {
     width: SW(9),
@@ -1733,7 +1728,7 @@ export const styles = StyleSheet.create({
   _cashRemainText: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(15),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     marginTop: ms(10),
   },
   _printButton: {
@@ -2109,7 +2104,6 @@ export const styles = StyleSheet.create({
     borderRadius: ms(12),
     flex: 0.7,
     marginRight: ms(7),
-    // height: windowHeight * 0.9,
   },
   rightCon: {
     backgroundColor: COLORS.white,

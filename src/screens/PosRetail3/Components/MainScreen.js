@@ -741,7 +741,7 @@ export function MainScreen({
             </Text>
           </View>
         ) : (
-          <View style={styles.displayflex2}>
+          <View style={[styles.displayflex2, { flex: 1 }]}>
             <View style={styles.productView}>
               <View
                 style={{

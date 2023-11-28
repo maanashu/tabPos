@@ -25,6 +25,7 @@ import { number } from 'prop-types';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { CustomHeader } from '../CustomHeader';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -57,6 +58,34 @@ export const PayByCash = ({
 
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
   const customer = getuserDetailByNo?.[0];
+
+  const invoiceData = [
+    {
+      title: 'Payment Option',
+      data: 'Cash',
+      id: 1,
+    },
+    {
+      title: 'Date',
+      data: moment().format('ddd') + ' ' + moment().subtract(10, 'days').calendar(),
+      id: 2,
+    },
+    {
+      title: 'Mode',
+      data: 'Walk-In',
+      id: 3,
+    },
+    {
+      title: 'POS No.',
+      data: getUserData?.posLoginData?.pos_number,
+      id: 4,
+    },
+    {
+      title: 'User ID',
+      data: getUserData?.posLoginData?.id,
+      id: 5,
+    },
+  ];
 
   const saveCartData = { ...getRetailData };
   const valueTen = '10.00';
@@ -101,7 +130,7 @@ export const PayByCash = ({
     }
   };
   const renderItem = ({ item }) => {
-    const borderColor = item.id === selectedId ? COLORS.primary : COLORS.transparentBlue;
+    const borderColor = item.id === selectedId ? COLORS.navy_blue : COLORS.transparentBlue;
 
     return (
       <Item
@@ -124,7 +153,7 @@ export const PayByCash = ({
         onPress={onPress}
       >
         <Text style={styles._usdText}>$</Text>
-        <Text style={[styles._usdText, { color: COLORS.primary }]}> {formattedNumber}</Text>
+        <Text style={[styles._usdText, { color: COLORS.navy_blue }]}> {formattedNumber}</Text>
       </TouchableOpacity>
     );
   };
@@ -166,35 +195,35 @@ export const PayByCash = ({
 
   return (
     <SafeAreaView style={styles._innerContainer}>
-      <View style={styles.displayflex}>
-        <View style={styles.leftCon}>
-          <View style={[styles._topContainer]}>
-            <BackButton
-              onPress={onPressBack}
-              title={'Back'}
-              style={{
-                top: ms(10),
-                left: ms(-10),
-                backgroundColor: 'transparent',
-              }}
-            />
-          </View>
+      <CustomHeader />
+
+      <View style={[styles.displayflex, { flex: 1 }]}>
+        <View style={[styles.leftCon, { height: '100%' }]}>
+          <BackButton
+            onPress={onPressBack}
+            title={'Back'}
+            style={{
+              // top: ms(10),
+              // left: ms(10),
+              backgroundColor: 'transparent',
+            }}
+          />
 
           <View
             style={{
-              marginTop: ms(20),
-              paddingHorizontal: Platform.OS === 'ios' ? ms(30) : ms(70),
+              marginTop: ms(40),
+              paddingHorizontal: ms(20),
             }}
           >
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Text style={styles._totalAmountTitle}>Total Payable Amount:</Text>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={styles._dollarSymbol}>$</Text>
                 <Text style={styles._amount}>{totalPayAmount()}</Text>
               </View>
-            </View>
+            </View> */}
             <View style={styles._bottomContainer}>
-              <View style={{ margin: ms(10), alignItems: 'center' }}>
+              <View style={{ margin: ms(10) }}>
                 <Text style={styles._selectTips}>Received Amount</Text>
 
                 <View
@@ -224,6 +253,7 @@ export const PayByCash = ({
                   style={styles._inputOtherAmount}
                   value={amount}
                   onChangeText={setAmount}
+                  placeholderTextColor={COLORS.navy_blue}
                 />
 
                 {/* <View style={[styles._inputMain, { borderWidth: 1 }]}>
@@ -237,10 +267,10 @@ export const PayByCash = ({
                   title={'Continue'}
                   style={{
                     height: ms(40),
-                    width: '98%',
+                    width: '100%',
                     marginTop: ms(10),
                     backgroundColor:
-                      amount || selectedId ? COLORS.primary : COLORS.textInputBackground,
+                      amount || selectedId ? COLORS.navy_blue : COLORS.textInputBackground,
                   }}
                   textStyle={{
                     fontFamily: Fonts.SemiBold,
@@ -273,74 +303,67 @@ export const PayByCash = ({
                 renderItem={({ item, index }) => <AddedCartItemsCard item={item} index={index} />}
               />
             </View>
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Sub-Total</Text>
-              <Text style={styles._subTotalPrice}>
-                ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
-              </Text>
-            </View>
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Discount</Text>
-              <Text style={styles._subTotalPrice}>
-                {formattedReturnPrice(cartData?.amount?.discount)}
-              </Text>
-            </View>
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Tips</Text>
-              <Text style={styles._subTotalPrice}>
-                ${cartData?.amount?.tip?.toFixed(2) ?? '0.00'}
-              </Text>
-            </View>
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Total Taxes</Text>
-              <Text style={styles._subTotalPrice}>
-                ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
-              </Text>
-            </View>
-            {/* <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._substotalTile}>Tips</Text>
-              <Text style={styles._subTotalPrice}>${tipAmount}</Text>
-            </View> */}
-            <View style={styles._horizontalLine} />
-            <View style={styles._subTotalContainer}>
-              <Text
-                style={[styles._substotalTile, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
-              >
-                Total
-              </Text>
-              <Text
-                style={[styles._subTotalPrice, { fontSize: ms(6), fontFamily: Fonts.SemiBold }]}
-              >
-                {/* ${totalPayAmount() ?? '0.00'} */}$
-                {cartData?.amount?.total_amount?.toFixed(2) ?? '0.00'}
-              </Text>
-            </View>
-            <View style={styles._horizontalLine} />
-            <View style={[styles._horizontalLine, { height: ms(2), marginTop: ms(15) }]} />
 
-            <View style={styles._paymentTitleContainer}>
-              <Text style={styles._payTitle}>Payment option: </Text>
-              <Text style={styles._paySubTitle}>{'Cash'}</Text>
+            <View style={{ width: '90%', alignSelf: 'center', flexDirection: 'row' }}>
+              <FlatList
+                data={invoiceData}
+                numColumns={3}
+                renderItem={({ item, index }) => (
+                  <View
+                    style={{
+                      width: ms(58),
+                      height: ms(30),
+                      justifyContent: 'space-between',
+                      marginTop: ms(15),
+                    }}
+                  >
+                    <Text style={styles._payTitle}>{item.title}</Text>
+                    <Spacer space={SH(7)} />
+                    <Text style={styles._paySubTitle}>{item.data}</Text>
+                  </View>
+                )}
+              />
             </View>
-            <Text style={styles._commonPayTitle}>
-              {moment().format('ddd DD MMM, YYYY')} {moment().format('hh:mm A')}
-            </Text>
-            <Text style={styles._commonPayTitle}>Walk-In</Text>
-            {/* <Text style={styles._commonPayTitle}>Invoice No. # 3467589</Text> */}
-            <Text style={styles._commonPayTitle}>
-              POS No. {getUserData?.posLoginData?.pos_number}
-            </Text>
-            <Text style={styles._commonPayTitle}>User ID : ****128</Text>
-            <Spacer space={SH(5)} />
-            <Text style={styles._thankyou}>Thank You</Text>
-            {/* <Image source={barcode} style={styles._barCodeImage} />
-            <Text style={styles._barCode}>ABC-abc-1234</Text> */}
-            <Image source={{ uri: cartData?.barcode } ?? barcode} style={styles._barCodeImage} />
-            <Image source={logo_full} style={styles.logoFull} />
+            <Spacer space={SH(10)} />
+            <View style={[styles._horizontalLine, { width: '100%', borderStyle: 'dashed' }]} />
+            <Spacer space={SH(15)} />
+            <View style={{ width: '85%', alignSelf: 'center' }}>
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Sub-Total</Text>
+                <Text style={styles._payTitle}>
+                  ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
+                </Text>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Discount</Text>
+                <Text style={styles._payTitle}>
+                  {formattedReturnPrice(cartData?.amount?.discount)}
+                </Text>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Total Taxes</Text>
+                <Text style={styles._payTitle}>${cartData?.amount?.tax.toFixed(2) ?? '0.00'}</Text>
+              </View>
+              <Spacer space={SH(15)} />
+              <View style={styles._subTotalContainer}>
+                <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
+                  Total
+                </Text>
+                <View style={styles.totalView}>
+                  <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
+                    ${totalPayAmount() ?? '0.00'}
+                  </Text>
+                </View>
+              </View>
+              <Spacer space={SH(15)} />
+              <Image source={logo_full} style={styles.logoFull} />
+              <Image
+                source={{ uri: cartData?.barcode } ?? barcode}
+                style={[styles._barCodeImage, { alignSelf: 'center' }]}
+              />
+            </View>
           </View>
         </View>
       </View>

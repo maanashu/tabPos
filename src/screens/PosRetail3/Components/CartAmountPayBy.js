@@ -201,7 +201,7 @@ export const CartAmountPayBy = ({
       id: 4,
     },
     {
-      title: 'User UD',
+      title: 'User ID',
       data: getUserData?.posLoginData?.id,
       id: 5,
     },
