@@ -496,7 +496,8 @@ const OrderList = ({
               flexDirection: 'row',
               alignItems: 'center',
               marginHorizontal: ms(8),
-              marginVertical: ms(2),
+              marginTop: ms(6),
+              marginBottom: ms(2),
             }}
           >
             <View style={{ flex: 1 }}>
@@ -690,7 +691,7 @@ const styles = StyleSheet.create({
   },
   tableHeaderTextStyle: {
     color: COLORS.lavender,
-    fontSize: ms(8),
+    fontSize: ms(7),
     fontFamily: Fonts.Medium,
   },
   orderRowStyleNew: {
