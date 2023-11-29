@@ -437,6 +437,13 @@ export { default as StepPurple } from '@/assets/new_icon/ic_delivery/StepPurple.
 export { default as StepSky } from '@/assets/new_icon/ic_delivery/StepSky.png';
 export { default as StepPurpleStop } from '@/assets/new_icon/ic_delivery/StepPurpleStop.png';
 export { default as StepSkypStop } from '@/assets/new_icon/ic_delivery/StepSkyStop.png';
+export { default as Divider } from '@/assets/new_icon/ic_delivery/Div.png';
+export { default as Sun } from '@/assets/new_icon/ic_delivery/Sun.png';
+export { default as GAuth } from '@/assets/new_icon/ic_delivery/GAuth.png';
+export { default as CloudDonwload } from '@/assets/new_icon/ic_delivery/CloudDownload.png';
+
+export { default as Qr } from '@/assets/new_icon/ic_delivery/Qr.png';
+
 //Shipping New Icons
 export { default as thunder } from '@/assets/new_icon/ic_shipping/thunderShippingNew.png';
 export { default as cashShippingNew } from '@/assets/new_icon/ic_shipping/cashShippingNew.png';

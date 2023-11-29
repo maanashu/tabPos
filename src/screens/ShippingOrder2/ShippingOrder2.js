@@ -22,6 +22,7 @@ import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
 import Graph from './Components/Graph';
 import Header from './Components/Header';
+import { default as NewHeader } from '@/components/Header';
 import { strings } from '@/localization';
 import Orders from './Components/Orders';
 import OrderList from './Components/OrderList';
@@ -214,6 +215,8 @@ export function ShippingOrder2() {
     <>
       {!openWebView ? (
         <>
+          <Spacer space={SH(15)} />
+          <NewHeader />
           {!viewAllOrders ? (
             <SafeAreaView style={styles.container}>
               <View style={styles.leftMainViewStyle}>
