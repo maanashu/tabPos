@@ -511,6 +511,15 @@ const styles = StyleSheet.create({
     color: COLORS.navy_blue,
     fontSize: ms(10),
   },
+  calendarModalView: {
+    backgroundColor: COLORS.white,
+    width: width * 0.6,
+    height: height - SW(30),
+    alignSelf: 'center',
+    paddingVertical: SH(10),
+    paddingHorizontal: SW(5),
+    borderRadius: SW(5),
+  },
 });
 
 export default styles;

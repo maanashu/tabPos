@@ -19,6 +19,7 @@ import {
   filter,
   filterShippingNew,
   Fonts,
+  newCalendarIcon,
   packageCancelled,
   pay,
   pin,
@@ -36,10 +37,14 @@ const OrderList = ({
   selectedOrderDetail,
   selectedOrderProducts,
   setViewAllOrders,
+  onPressCalendar,
+  selectedDate,
+  setCalendarDate,
 }) => {
   const getOrdersData = useSelector(getDelivery);
   const ordersList = getOrdersData?.getReviewDef;
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id ?? '');
+  const todayDate = moment();
 
   useEffect(() => {
     setOrderId(ordersList?.[0]?.id ?? '');
@@ -412,7 +417,10 @@ const OrderList = ({
       <View style={[styles.headingRowStyle, { justifyContent: 'space-between' }]}>
         <TouchableOpacity
           style={{ padding: ms(5), flexDirection: 'row', alignItems: 'center' }}
-          onPress={() => setViewAllOrders(false)}
+          onPress={() => {
+            setCalendarDate(moment());
+            setViewAllOrders(false);
+          }}
         >
           <Image
             source={arrowLeftUp}
@@ -461,10 +469,17 @@ const OrderList = ({
             marginHorizontal: ms(5),
           }}
         >
-          <TouchableOpacity style={[styles.calendarDropContainer]}>
+          <TouchableOpacity
+            onPress={() => onPressCalendar(true)}
+            style={[styles.calendarDropContainer]}
+          >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image source={calendar} style={styles.calenderImage} />
-              <Text style={styles.calenderTextStyle}>Today</Text>
+              <Image source={newCalendarIcon} style={styles.calenderImage} />
+              <Text style={styles.calenderTextStyle}>
+                {selectedDate?.format('DD MMM YYYY') == todayDate.format('DD MMM YYYY')
+                  ? 'Today'
+                  : selectedDate?.format('DD MMM YYYY')}
+              </Text>
             </View>
             <Image
               source={dropdown2}
@@ -481,16 +496,19 @@ const OrderList = ({
               flexDirection: 'row',
               alignItems: 'center',
               marginHorizontal: ms(8),
+              marginVertical: ms(2),
             }}
           >
             <View style={{ flex: 1 }}>
               <Text style={styles.tableHeaderTextStyle}>#</Text>
             </View>
             <View style={{ flex: 2 }}>
-              <Text style={styles.tableHeaderTextStyle}>Client/Items</Text>
+              <Text style={styles.tableHeaderTextStyle}>{strings.shippingOrder.client_items}</Text>
             </View>
             <View style={{ flex: 3 }}>
-              <Text style={styles.tableHeaderTextStyle}>Delivery Type/Shipped Time</Text>
+              <Text style={styles.tableHeaderTextStyle}>
+                {strings.shippingOrder.deliveryType_shippedType}
+              </Text>
             </View>
           </View>
 

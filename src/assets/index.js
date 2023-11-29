@@ -454,6 +454,7 @@ export { default as returnedBlank } from '@/assets/new_icon/ic_shipping/returned
 export { default as userSolid } from '@/assets/new_icon/ic_shipping/usersSolid.png';
 export { default as packageCancelled } from '@/assets/new_icon/ic_shipping/packageCancelled.png';
 export { default as filterShippingNew } from '@/assets/new_icon/ic_shipping/filterShippingNew.png';
+export { default as newCalendarIcon } from '@/assets/new_icon/ic_shipping/newCalendarIcon.png';
 
 //Shipping Drawer Icons
 export { default as ordersReview } from '@/assets/new_icon/ic_shipping/ordersReview.png';

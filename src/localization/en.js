@@ -531,6 +531,8 @@ export const en = {
     ordersReview: 'Orders to Review',
     paymentMethod: 'Payment Method',
     scanBarCodeShipping: 'Scan Barcode of each item',
+    deliveryType_shippedType: 'Delivery Type/Shipped Time',
+    client_items: 'Client/Items',
   },
   deliveryOrders2: {
     orderStatus: 'Today’s Order Status',
