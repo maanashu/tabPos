@@ -1497,9 +1497,10 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Medium,
   },
   addToCart: {
-    width: ms(28),
-    height: ms(28),
+    width: ms(10),
+    height: ms(10),
     resizeMode: 'contain',
+    tintColor: COLORS.extraYellow,
   },
   sideAddToCart: {
     width: ms(10),
@@ -1525,12 +1526,12 @@ export const styles = StyleSheet.create({
     height: ms(10),
     borderRadius: ms(10),
     position: 'absolute',
-    right: 0,
-    top: 0,
+    right: -5,
+    top: -5,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: COLORS.dark_grey,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
   },
   bucketBadgePrimary: {
     borderColor: COLORS.white,
