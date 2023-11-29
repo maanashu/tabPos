@@ -39,6 +39,7 @@ export class DashboardController {
       const body = {
         seller_id: sellerID,
       };
+      console.log('12333', endpoint);
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
