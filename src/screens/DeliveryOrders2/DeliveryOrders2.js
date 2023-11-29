@@ -29,7 +29,9 @@ import { Spacer } from '@/components';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
-import Header from './Components/Header';
+// import Header from './Components/Header';
+import { default as NewHeader } from '@/components/Header';
+
 import OrderDetail from './Components/OrderDetail';
 import OrderReview from './Components/OrderReview';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
@@ -62,6 +64,7 @@ import {
 } from '@/assets';
 
 import styles from './styles';
+import Header from './Components/Header';
 
 export function DeliveryOrders2({ route }) {
   var screen;
@@ -178,14 +181,14 @@ export function DeliveryOrders2({ route }) {
               },
             ]}
           />
-          <View
+          {/* <View
             style={[
               styles.bucketBadge,
               { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
             ]}
           >
             <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
-          </View>
+          </View> */}
         </View>
       );
     } else if (item?.title === 'Rejected/Cancelled') {
@@ -203,11 +206,11 @@ export function DeliveryOrders2({ route }) {
               },
             ]}
           />
-          <View
+          {/* <View
             style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
           >
             <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
-          </View>
+          </View> */}
         </View>
       );
     } else if (item?.title === 'Returned') {
@@ -225,7 +228,7 @@ export function DeliveryOrders2({ route }) {
               },
             ]}
           />
-          <View
+          {/* <View
             style={[
               styles.bucketBadge,
               {
@@ -235,7 +238,7 @@ export function DeliveryOrders2({ route }) {
             ]}
           >
             <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
-          </View>
+          </View> */}
         </View>
       );
     } else {
@@ -257,7 +260,7 @@ export function DeliveryOrders2({ route }) {
               },
             ]}
           />
-          <View
+          {/* <View
             style={[
               styles.bucketBadge,
               {
@@ -275,7 +278,7 @@ export function DeliveryOrders2({ route }) {
             >
               {item?.count ?? 0}
             </Text>
-          </View>
+          </View> */}
         </View>
       );
     }
@@ -591,11 +594,13 @@ export function DeliveryOrders2({ route }) {
   return (
     <>
       {!trackingView ? (
-        <SafeAreaView style={styles.container}>
+        <>
           {/* <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
 
           <Spacer space={SH(20)} /> */}
-
+          <Spacer space={SH(15)} backgroundColor={COLORS.textInputBackground} />
+          <NewHeader />
+          <Spacer space={SH(5)} backgroundColor={COLORS.textInputBackground} />
           {viewAllOrder ? (
             <SafeAreaView style={styles.container}>
               <>
@@ -608,7 +613,7 @@ export function DeliveryOrders2({ route }) {
                     <View
                       style={[
                         styles.orderToReviewView,
-                        { height: Dimensions.get('window').height - 60, paddingBottom: ms(10) },
+                        { height: Dimensions.get('window').height - 110, paddingBottom: ms(10) },
                       ]}
                     >
                       <FlatList
@@ -796,7 +801,7 @@ export function DeliveryOrders2({ route }) {
               />
             </View>
           ) : null}
-        </SafeAreaView>
+        </>
       ) : (
         <SafeAreaView style={styles.containerFull}>
           {/* <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backViewNew}>

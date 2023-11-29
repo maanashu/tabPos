@@ -93,6 +93,7 @@ import { getDashboard } from '@/selectors/DashboardSelector';
 import { getUser } from '@/selectors/UserSelectors';
 import { logoutFunction } from '@/actions/AuthActions';
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@gorhom/bottom-sheet';
+import Header from '@/components/Header';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -1906,6 +1907,8 @@ export function Management() {
 
   return (
     <ScreenWrapper>
+      <Header />
+
       {showInvoice ? (
         <>
           <View style={styles.headerMainView}>

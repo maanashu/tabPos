@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     color: COLORS.lavender,
   },
   emptyView: {
-    flex: 0.9,
+    flex: 1,
     alignSelf: 'center',
     height:
       Platform.OS === 'ios'
@@ -263,6 +263,9 @@ const styles = StyleSheet.create({
         : Dimensions.get('window').height / 2.8,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    top: '20%',
+    left: '40%',
   },
   noOrdersText: {
     fontFamily: Fonts.SemiBold,
@@ -353,7 +356,7 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios'
         ? Dimensions.get('window').width * 0.39
         : Dimensions.get('window').width * 0.42,
-    height: Dimensions.get('window').height - 60,
+    height: Dimensions.get('window').height - 110,
   },
   maximizeButton: {
     backgroundColor: COLORS.white,
