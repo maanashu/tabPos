@@ -46,7 +46,6 @@ export function Support({ setScreen }) {
   const supportData = useSelector(getSupportData);
   const getData = useSelector(getAuthData);
   const getUserData = useSelector(getUser);
-  console.log('userData=>: ' + JSON.stringify(route?.params?.data));
 
   const profileData = getData?.getProfile;
   const emailID = getData?.getProfile?.email ?? '';

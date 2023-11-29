@@ -1137,19 +1137,21 @@ export class RetailController {
   static async createBulkCart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
+      console.log(data);
       HttpClient.post(endpoint, data)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          // Toast.show({
-          //   position: 'bottom',
-          //   type: 'error_toast',
-
-          //   text2: error.msg,
-          //   text2: error?.msg,
-          //   visibilityTime: 2000,
-          // });
+          error?.msg &&
+            Toast.show({
+              position: 'bottom',
+              type: 'error_toast',
+              text2: error.msg,
+              text2: error?.msg,
+              visibilityTime: 2000,
+            });
           reject(error);
         });
     });
