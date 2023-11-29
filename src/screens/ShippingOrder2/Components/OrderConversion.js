@@ -28,7 +28,7 @@ const OrderConversion = () => {
     sum += num;
   });
 
-  const sliceColor = [COLORS.blur_red, COLORS.yellow, COLORS.extra_purple_300];
+  const sliceColor = [COLORS.blur_red, COLORS.yellow, COLORS.tip_blue];
 
   const orderConversionLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_SHIPPING_ORDERS], state)
@@ -104,12 +104,12 @@ const OrderConversion = () => {
               {/* <Text style={styles.orderTypeTextStyle}>
                 {strings.shippingOrder.processingOrders}
               </Text> */}
-              <Text style={[styles.orderTypeTextStyle, { color: COLORS.extra_yellow_800 }]}>
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.extraYellow }]}>
                 {strings.shippingOrder.returned}
               </Text>
               <View style={[styles.countContainer, { backgroundColor: COLORS.light_yellow }]}>
                 <View style={styles.returnedDot}></View>
-                <Text style={[styles.countTextStyle, { color: COLORS.extra_yellow_800 }]}>
+                <Text style={[styles.countTextStyle, { color: COLORS.extraYellow }]}>
                   {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
                 </Text>
               </View>
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     color: COLORS.textBlue,
   },
   countContainer: {
-    backgroundColor: COLORS.extra_purple_50,
+    backgroundColor: COLORS.tip_back,
     borderRadius: ms(9),
     paddingHorizontal: ms(4),
     paddingVertical: ms(2),

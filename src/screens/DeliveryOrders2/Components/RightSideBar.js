@@ -164,7 +164,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
             }}
           >
             <Text style={[styles.iconTitleFull, { color: COLORS.purple }]}>{item?.title}</Text>
-            <View style={[styles.countContainer, { backgroundColor: COLORS.extra_purple_50 }]}>
+            <View style={[styles.countContainer, { backgroundColor: COLORS.tip_back }]}>
               <View style={[styles.dotStyle, { backgroundColor: COLORS.medium_purple }]}></View>
               <Text style={[styles.countTextStyle, { color: COLORS.purple }]}>{item?.count}</Text>
             </View>
@@ -217,12 +217,10 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               padding: ms(2),
             }}
           >
-            <Text style={[styles.iconTitleFull, { color: COLORS.extra_yellow_800 }]}>
-              {item?.title}
-            </Text>
+            <Text style={[styles.iconTitleFull, { color: COLORS.extraYellow }]}>{item?.title}</Text>
             <View style={[styles.countContainer, { backgroundColor: COLORS.light_yellow }]}>
               <View style={[styles.dotStyle, { backgroundColor: COLORS.medium_yellow }]}></View>
-              <Text style={[styles.countTextStyle, { color: COLORS.extra_yellow_800 }]}>
+              <Text style={[styles.countTextStyle, { color: COLORS.extraYellow }]}>
                 {item?.count}
               </Text>
             </View>

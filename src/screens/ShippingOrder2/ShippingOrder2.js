@@ -42,6 +42,9 @@ import CurrentShippingStatus from './Components/CurrentShippingStatus';
 import styles from './ShippingOrder2.styles';
 import { getPendingOrders } from '@/actions/DashboardAction';
 import { getOrderstatistics } from '@mPOS/actions/ShippingActions';
+import Modal from 'react-native-modal';
+import CalendarPickerModal from '@/components/CalendarPickerModal';
+import moment from 'moment';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -60,6 +63,9 @@ export function ShippingOrder2() {
   const [openWebView, setOpenWebView] = useState(false);
   const [showLabelPdf, setShowLabelPdf] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
+  const [showMiniCalendar, setshowMiniCalendar] = useState(false);
+  const [calendarDate, setCalendarDate] = useState(moment());
+  const maxDate = new Date(2030, 6, 3);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -254,6 +260,9 @@ export function ShippingOrder2() {
                   <>
                     <View style={styles.orderListMainView}>
                       <OrderList
+                        setCalendarDate={setCalendarDate}
+                        selectedDate={calendarDate}
+                        onPressCalendar={setshowMiniCalendar}
                         setViewAllOrders={setViewAllOrders}
                         selectedStatus={openShippingOrders}
                         onViewAllHandler={onpressViewHandler}
@@ -287,6 +296,29 @@ export function ShippingOrder2() {
                   <RightDrawer {...{ onPressDrawerHandler, openShippingOrders }} />
                 </View>
               </View>
+              <Modal
+                isVisible={showMiniCalendar}
+                statusBarTranslucent
+                animationIn={'slideInRight'}
+                animationInTiming={600}
+                animationOutTiming={300}
+              >
+                <View style={styles.calendarModalView}>
+                  <CalendarPickerModal
+                    allowRangeSelection={false}
+                    maxDate={maxDate}
+                    selectedStartDate={calendarDate}
+                    onPress={() => setshowMiniCalendar(false)}
+                    onSelectedDate={(date) => {
+                      setCalendarDate(moment(date));
+                      setshowMiniCalendar(false);
+                    }}
+                    onCancelPress={() => {
+                      setshowMiniCalendar(false);
+                    }}
+                  />
+                </View>
+              </Modal>
             </SafeAreaView>
           )}
         </>

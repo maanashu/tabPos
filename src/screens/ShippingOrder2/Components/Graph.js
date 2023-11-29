@@ -32,6 +32,7 @@ import {
 } from '@/assets';
 import { getShipping } from '@/selectors/ShippingSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { LineChart } from 'react-native-chart-kit';
 
 const { width } = Dimensions.get('window');
 
@@ -43,6 +44,23 @@ const Graph = () => {
   const [showProcessing, setShowProcessing] = useState(true);
   const [showReadyToPickup, setShowReadyToPickup] = useState(true);
   const [showCompleted, setShowCompleted] = useState(true);
+  const month = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const d = new Date();
+  const CurrentMonth = month[d.getUTCMonth()];
 
   useEffect(() => {
     convertData();
@@ -248,7 +266,7 @@ const Graph = () => {
   return (
     <View style={styles.graphViewStyle}>
       <View>
-        <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
+        {/* <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text> */}
         {/* <Spacer space={SH(30)} /> */}
         <View style={[styles.flexRow, { zIndex: 999 }]}>
           <TouchableOpacity
@@ -337,7 +355,7 @@ const Graph = () => {
         </View>
       ) : (
         <View style={{ zIndex: -999 }}>
-          <BarChart
+          {/* <BarChart
             data={modifyData}
             noOfSections={7}
             roundedTop
@@ -350,7 +368,91 @@ const Graph = () => {
             width={width * 0.48}
             barWidth={SW(3.5)}
             yAxisTextStyle={styles.yAxisTextStyle}
+          /> */}
+          <Text
+            style={{
+              position: 'absolute',
+              bottom: ms(95),
+              left: ms(-20),
+              zIndex: 1,
+              transform: [{ rotate: '270deg' }],
+              color: COLORS.lavender,
+              fontSize: ms(6),
+              fontFamily: Fonts.Regular,
+            }}
+          >
+            {strings.deliveryOrders.orderNumber}
+          </Text>
+
+          <LineChart
+            withDots={false}
+            withVerticalLines={false}
+            data={{
+              labels: ['Jan', 'Mar', 'May', 'Jul', 'Sept', 'Nov', 'Dec'],
+              datasets: [
+                {
+                  data: [800, 810, 900, 810, 860, 890, 810],
+                  color: () => `rgba(70, 89, 181, 1)`,
+                  strokeWidth: 3,
+                },
+                {
+                  data: [500, 600, 550, 590, 630, 650, 700],
+                  color: () => `rgba(114, 51, 194, 1)`,
+                  strokeWidth: 3,
+                },
+                {
+                  data: [400, 450, 470, 420, 410, 480, 500],
+                  color: () => `rgba(240, 192, 26, 1)`,
+                  strokeWidth: 3,
+                },
+                {
+                  data: [100, 220, 190, 260, 240, 340, 370],
+                  color: () => `rgba(240, 68, 56, 1)`,
+                  strokeWidth: 3,
+                },
+              ].filter((el) => el),
+            }}
+            width={width * 0.5}
+            height={ms(160)}
+            // noOfSections={8}
+            chartConfig={{
+              backgroundColor: '#000',
+              backgroundGradientFrom: '#fff',
+              // backgroundGradientTo: '#f3edf7',
+              backgroundGradientTo: '#fff',
+              decimalPlaces: 0,
+              // horizontalLabelRotation: 45,
+              color: () => `rgba(39, 90, 255, 1)`,
+              labelColor: (opacity = 1) => `rgba(126, 138, 193, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              propsForBackgroundLines: {
+                stroke: COLORS.sky_grey,
+                strokeDasharray: '', // solid background lines with no dashes
+              },
+            }}
+            bezier
+            style={{
+              marginVertical: 8,
+              // borderRadius: 16,
+            }}
+            withShadow={false}
+            fromZero
+            segments={5}
           />
+          <Text
+            style={{
+              position: 'absolute',
+              bottom: 10,
+              left: width * 0.22,
+              color: COLORS.lavender,
+              fontSize: ms(6),
+              fontFamily: Fonts.Regular,
+            }}
+          >
+            {CurrentMonth}
+          </Text>
         </View>
       )}
     </View>

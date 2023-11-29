@@ -96,13 +96,13 @@ export const COLORS = {
   tip_back: '#F5EDFF',
   tip_blue: '#914BEB',
   save_yellow: '#FEDF89',
-  extra_yellow_800: '#C29613', //Shipping-Colors
-  extra_purple_300: '#914BEB',
-  extra_purple_50: '#F5EDFF',
+  // extra_yellow_800: '#C29613', //Shipping-Colors
+  // extra_purple_300: '#914BEB',
+  // extra_purple_50: '#F5EDFF',
   extra_yellow_600: '#DBAF18',
   alarm_success_50: '#ECFDF3',
   purple_fade: '#9BA8E3',
   dark_purple: '#552099',
-  faded_lavendar: '#D8B9FF',
+  // faded_lavendar: '#D8B9FF',
   base_gray_600: '#535E68',
 };
