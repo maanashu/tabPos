@@ -126,7 +126,7 @@ export function MainScreen({
   );
   return (
     <View>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: ms(65) }}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: ms(70) }}>
         {getPosUser?.user_roles?.length > 0 ? (
           <View>
             <HomeGraph

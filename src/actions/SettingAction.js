@@ -460,11 +460,33 @@ export const verifyGoogleCode = (data) => async (dispatch) => {
     return error;
   }
 };
+export const verifyGoogleCodeMPOS = (data, authToken) => async (dispatch) => {
+  dispatch(verifyGoogleCodeRequest());
+  try {
+    const res = await SettingController.verifyGoogleCodeMPOS(data, authToken);
+    dispatch(verifyGoogleCodeSuccess(res));
+    return res;
+  } catch (error) {
+    dispatch(verifyGoogleCodeError(error.message));
+    return error;
+  }
+};
 
 export const configureGoogleCode = (data) => async (dispatch) => {
   dispatch(configureGoogleCodeRequest());
   try {
     const res = await SettingController.configureGoogleCode(data);
+    dispatch(configureGoogleCodeSuccess(res));
+    return res;
+  } catch (error) {
+    dispatch(configureGoogleCodeError(error.message));
+    return error;
+  }
+};
+export const configureGoogleCodeMPOS = (data, authToken) => async (dispatch) => {
+  dispatch(configureGoogleCodeRequest());
+  try {
+    const res = await SettingController.configureGoogleCodeMPOS(data, authToken);
     dispatch(configureGoogleCodeSuccess(res));
     return res;
   } catch (error) {

@@ -26,6 +26,10 @@ import {
   userImage,
   Fonts,
   crossButton,
+  users,
+  searchDrawer,
+  bellDrawer,
+  calendarDrawer,
 } from '@/assets';
 import { DaySelector, Spacer, TableDropdown } from '@/components';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -81,7 +85,7 @@ const AllUsers = ({
   const [date, setDate] = useState();
   const [formatedDate, setFormatedDate] = useState();
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
-  const [paginationModalValue, setPaginationModalValue] = useState(10);
+  const [paginationModalValue, setPaginationModalValue] = useState('10');
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
   const [ind, setInd] = useState();
@@ -211,8 +215,9 @@ const AllUsers = ({
   ];
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
-    const color = item.id === selectedId ? COLORS.white : COLORS.dark_grey;
+    const backgroundColor = item.id === selectedId ? COLORS.navy_blue : COLORS.white;
+    const color = item.id === selectedId ? COLORS.white : COLORS.navy_blue;
+    const borderColor = item.id === selectId ? COLORS.transparent : COLORS.light_purple;
 
     return (
       <Item
@@ -222,12 +227,16 @@ const AllUsers = ({
         }}
         backgroundColor={backgroundColor}
         color={color}
+        borderColor={borderColor}
       />
     );
   };
 
-  const Item = ({ item, onPress, backgroundColor, color }) => (
-    <TouchableOpacity style={[styles.horizontalCustomerCon, { backgroundColor }]} onPress={onPress}>
+  const Item = ({ item, onPress, backgroundColor, color, borderColor }) => (
+    <TouchableOpacity
+      style={[styles.horizontalCustomerCon, { backgroundColor, borderColor, borderWidth: 1 }]}
+      onPress={onPress}
+    >
       <Text style={[styles.horizCustomerText, { color }]}>{item.name}</Text>
     </TouchableOpacity>
   );
@@ -257,18 +266,34 @@ const AllUsers = ({
     <View style={{ flex: 1 }}>
       <View style={styles.headerMainView}>
         <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
-          <Image source={leftBack} style={styles.backIcon} />
-          <Text style={styles.backTitle}>{'Back'}</Text>
+          {/* <Image source={leftBack} style={styles.backIcon} /> */}
+          <View style={styles.deliveryView}>
+            <Image
+              source={users}
+              style={[
+                styles.truckStyle,
+                { height: ms(20), width: ms(20), tintColor: COLORS.navy_blue },
+              ]}
+            />
+            <Text style={styles.deliveryText}>{'Users'}</Text>
+          </View>
         </TouchableOpacity>
         <View style={styles.deliveryView}>
+          <DaySelector
+            onPresFun={onPresFun}
+            selectId={selectId}
+            setSelectId={setSelectId}
+            setSelectTime={setSelectTime}
+          />
           <TouchableOpacity
             onPress={() =>
               navigate(NAVIGATION.notificationsList, {
                 screen: NAVIGATION.customers2,
               })
             }
+            style={{ marginHorizontal: ms(10) }}
           >
-            <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
+            <Image source={bellDrawer} style={[styles.truckStyle]} />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.searchView}
@@ -278,52 +303,16 @@ const AllUsers = ({
               setSearchedText('');
             }}
           >
-            <Image source={search_light} style={styles.searchImage} />
-            <View
-              style={{
-                height: SH(40),
-                width: SW(70),
-                paddingLeft: 5,
-                justifyContent: 'center',
-              }}
-            >
-              <Text style={{ color: COLORS.darkGray, fontSize: ms(10), fontFamily: Fonts.Regular }}>
-                {strings.deliveryOrders.search}
-              </Text>
-            </View>
-            {/* <TextInput
-                  placeholder={strings.deliveryOrders.search}
-                  style={styles.textInputStyles}
-                  placeholderTextColor={COLORS.darkGray}
-                /> */}
+            <Image source={searchDrawer} style={styles.searchImage} />
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{ paddingHorizontal: ms(10), flexDirection: 'row', alignItems: 'center' }}>
-        <FlatList
-          data={dummyCustomerData}
-          extraData={dummyCustomerData}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        />
 
-        <View>
-          <DaySelector
-            onPresFun={onPresFun}
-            selectId={selectId}
-            setSelectId={setSelectId}
-            setSelectTime={setSelectTime}
-          />
-        </View>
-      </View>
-      <Spacer space={SH(10)} />
-      {/* Date and Area section */}
-      <View style={styles.orderTypeCon}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {/* Date and Area section */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
-            style={[styles.datePickerCon, { borderWidth: 1 }]}
+            style={[styles.datePickerCon, { borderWidth: 1, borderColor: COLORS.navy_blue }]}
             onPress={() => {
               if (!dateformat) {
                 const dates = moment(new Date()).format('MM/DD/YYY');
@@ -332,7 +321,7 @@ const AllUsers = ({
               setShow(!show);
             }}
           >
-            <Image source={calendar1} style={styles.calendarStyle} />
+            <Image source={calendarDrawer} style={styles.calendarStyle} />
             <TextInput
               value={date}
               returnKeyType={'done'}
@@ -340,8 +329,8 @@ const AllUsers = ({
               autoCapitalize={'none'}
               editable={false}
               placeholder="Date"
-              placeholderTextColor={COLORS.gerySkies}
-              style={[styles.txtInput, { padding: 0, margin: 0 }]}
+              placeholderTextColor={COLORS.navy_blue}
+              style={[styles.txtInput, { padding: 0, marginLeft: ms(2) }]}
             />
           </TouchableOpacity>
 
@@ -377,133 +366,207 @@ const AllUsers = ({
               />
             </View>
           </Modal>
-          <View style={{ marginHorizontal: moderateScale(10) }}>
-            <TableDropdown selected={onchangeValue} placeholder="Area" data={areaSelector?.[0]} />
+          <View style={{}}>
+            <TableDropdown
+              selected={onchangeValue}
+              placeholder="Area"
+              data={areaSelector?.[0]}
+              containerStyle={{ width: ms(70), borderRadius: ms(5) }}
+            />
+          </View>
+        </View>
+
+        {/*Calendar pagination section */}
+        <View
+          style={[styles.jbrTypeCon, { opacity: payloadLength === 0 ? 0.4 : 1 }]}
+          pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
+        >
+          <View style={styles.paginationEnd}>
+            <Text style={[styles.paginationCount]}>{strings.customers.showResult}</Text>
+            <View style={{ marginHorizontal: moderateScale(10) }}>
+              <DropDownPicker
+                ArrowUpIconComponent={({ style }) => (
+                  <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                )}
+                ArrowDownIconComponent={({ style }) => (
+                  <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                )}
+                style={styles.dropdown}
+                containerStyle={[
+                  styles.containerStylePagination,
+                  { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+                ]}
+                dropDownContainerStyle={styles.dropDownContainerStyle}
+                listItemLabelStyle={styles.listItemLabelStyle}
+                labelStyle={styles.labelStyle}
+                selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                open={paginationModalOpen}
+                value={paginationModalValue}
+                items={paginationModalItems}
+                setOpen={() => setPaginationModalOpen(!paginationModalOpen)}
+                setValue={setPaginationModalValue}
+                setItems={setPaginationModalItems}
+                placeholder="10"
+                placeholderStyle={styles.placeholderStylePagination}
+                // onSelectItem={item => selectedNo(item.value)}
+              />
+            </View>
+            <TouchableOpacity
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
+                },
+              ]}
+              onPress={paginationDechandler}
+              disabled={paginationData?.currentPage == 1 ? true : false}
+            >
+              <Image
+                source={Union}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor: paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+            <View
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
+                },
+              ]}
+            >
+              <Image
+                source={mask}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor: paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                  },
+                ]}
+              />
+            </View>
+            <View
+              style={{
+                width: ms(60),
+                marginRight: ms(7),
+              }}
+            >
+              {isCustomerLoad ? (
+                <ActivityIndicator size="small" color={COLORS.navy_blue} />
+              ) : (
+                <Text
+                  style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}
+                >
+                  {startIndex} - {startIndex + (customerArray?.length - 1)} of{' '}
+                  {paginationData?.total}
+                </Text>
+              )}
+            </View>
+            <View
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.sky_grey
+                      : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.transparent
+                      : COLORS.light_purple,
+                },
+              ]}
+            >
+              <Image
+                source={maskRight}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor:
+                      paginationData?.currentPage == paginationData?.totalPages
+                        ? COLORS.graySky
+                        : COLORS.navy_blue,
+                  },
+                ]}
+              />
+            </View>
+            <TouchableOpacity
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.sky_grey
+                      : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.transparent
+                      : COLORS.light_purple,
+                },
+              ]}
+              onPress={paginationInchandler}
+              disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
+            >
+              <Image
+                source={unionRight}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor:
+                      paginationData?.currentPage == paginationData?.totalPages
+                        ? COLORS.graySky
+                        : COLORS.navy_blue,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
 
-      {/*Calendar pagination section */}
+      <Spacer space={ms(20)} />
+
       <View
-        style={[styles.jbrTypeCon, { zIndex: -1, opacity: payloadLength === 0 ? 0.4 : 1 }]}
-        pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
+        style={{
+          paddingHorizontal: ms(10),
+          flexDirection: 'row',
+          alignItems: 'center',
+          zIndex: -1,
+        }}
       >
-        <View style={styles.paginationEnd}>
-          <Text style={[styles.paginationCount, { fontSize: 12 }]}>
-            {strings.customers.showResult}
-          </Text>
-          <View style={{ marginHorizontal: moderateScale(10) }}>
-            <DropDownPicker
-              ArrowUpIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIconPagination} />
-              )}
-              ArrowDownIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIconPagination} />
-              )}
-              style={styles.dropdown}
-              containerStyle={[
-                styles.containerStylePagination,
-                { zIndex: Platform.OS === 'ios' ? 20 : 1 },
-              ]}
-              dropDownContainerStyle={styles.dropDownContainerStyle}
-              listItemLabelStyle={styles.listItemLabelStyle}
-              labelStyle={styles.labelStyle}
-              selectedItemLabelStyle={styles.selectedItemLabelStyle}
-              open={paginationModalOpen}
-              value={paginationModalValue}
-              items={paginationModalItems}
-              setOpen={() => setPaginationModalOpen(!paginationModalOpen)}
-              setValue={setPaginationModalValue}
-              setItems={setPaginationModalItems}
-              placeholder="10"
-              placeholderStyle={styles.placeholderStylePagination}
-              // onSelectItem={item => selectedNo(item.value)}
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.unionCon,
-              {
-                backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
-              },
-            ]}
-            onPress={paginationDechandler}
-            disabled={paginationData?.currentPage == 1 ? true : false}
-          >
-            <Image
-              source={Union}
-              style={[
-                styles.unionStyle,
-                {
-                  tintColor:
-                    paginationData?.currentPage == 1 ? COLORS.gerySkies : COLORS.solid_grey,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-          <View style={styles.unionCon}>
-            <Image source={mask} style={styles.unionStyle} />
-          </View>
-          <View
-            style={{
-              width: ms(70),
-            }}
-          >
-            {isCustomerLoad ? (
-              <ActivityIndicator size="small" />
-            ) : (
-              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
-                {startIndex} - {startIndex + (customerArray?.length - 1)} of {paginationData?.total}
-              </Text>
-            )}
-          </View>
-          <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
-            <Image
-              source={maskRight}
-              style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.unionCon,
-              {
-                backgroundColor:
-                  paginationData?.currentPage == paginationData?.totalPages
-                    ? COLORS.washGrey
-                    : COLORS.white,
-              },
-            ]}
-            onPress={paginationInchandler}
-            disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
-          >
-            <Image
-              source={unionRight}
-              style={[
-                styles.unionStyle,
-                {
-                  tintColor:
-                    paginationData?.currentPage == paginationData?.totalPages
-                      ? COLORS.gerySkies
-                      : COLORS.solid_grey,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-        </View>
+        <FlatList
+          data={dummyCustomerData}
+          extraData={dummyCustomerData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
       </View>
+
+      <Spacer space={SH(10)} />
 
       <View style={{ zIndex: -9 }}>
         <Table>
-          <View
-            style={[
-              styles.tableDataHeaderCon,
-              { borderTopWidth: 1, borderColor: COLORS.solidGrey },
-            ]}
-          >
+          <View style={[styles.tableDataHeaderCon]}>
             <View style={styles.displayFlex}>
               <View style={styles.tableHeaderLeft}>
                 <Text style={styles.tableTextHeaFirst}>#</Text>
-                <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>Name</Text>
+                <Text style={[styles.tableTextHea, { marginLeft: ms(30) }]}>Name</Text>
               </View>
               <View style={styles.tableHeaderRight}>
                 <View style={styles.tableHeaderRightInner}>
@@ -522,7 +585,7 @@ const AllUsers = ({
             <ScrollView showsVerticalScrollIndicator={false}>
               {isCustomerLoad ? (
                 <View style={{ marginTop: 100 }}>
-                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                  <ActivityIndicator size="large" color={COLORS.navy_blue} />
                 </View>
               ) : customerArray?.length === 0 ? (
                 <View style={{ marginTop: 80 }}>
@@ -549,7 +612,7 @@ const AllUsers = ({
                             : paginationModalValue} */}
                             {currentIndex}
                           </Text>
-                          <View style={[styles.flexAlign, { marginLeft: 10 }]}>
+                          <View style={[styles.flexAlign, { marginLeft: ms(10) }]}>
                             <Image
                               source={
                                 item?.user_details?.profile_photo == null ||
@@ -568,7 +631,7 @@ const AllUsers = ({
                               </Text>
                               {item?.user_details ? (
                                 <Text
-                                  style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
+                                  style={[styles.tableTextDataAdd, { color: COLORS.purple }]}
                                   numberOfLines={1}
                                 >
                                   {item?.user_details?.current_address?.city},
@@ -594,7 +657,7 @@ const AllUsers = ({
                           <View style={styles.tableHeaderRightInner}>
                             <Text style={styles.tableTextData} numberOfLines={1}>
                               {'$'}
-                              {item?.life_time_spent}
+                              {item?.life_time_spent?.toFixed(2)}
                             </Text>
                           </View>
                         </View>

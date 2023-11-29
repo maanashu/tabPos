@@ -2,6 +2,7 @@ import { USER_URL, ApiUserInventory } from '@/utils/APIinventory';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { HttpClient } from './HttpClient';
 import { store } from '@/store';
+import axios from 'axios';
 
 export class SettingController {
   static async getSetting() {
@@ -288,6 +289,57 @@ export class SettingController {
               visibilityTime: 1500,
             });
           }
+          reject(error);
+        });
+    });
+  }
+
+  static async configureGoogleCodeMPOS(data, authToken) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.configureGoogleCode;
+      const headers = {
+        Authorization: authToken,
+        'app-name': 'pos',
+      };
+      axios
+        .post(endpoint, data, { headers })
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // if (error?.msg === 'Invalid code.') {
+          Toast.show({
+            text2: 'Token Code Expire',
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          // }
+          reject(error);
+        });
+    });
+  }
+  static async verifyGoogleCodeMPOS(data, authToken) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.verifyGoogleCode;
+      const headers = {
+        Authorization: authToken,
+        'app-name': 'pos',
+      };
+      axios
+        .post(endpoint, data, { headers })
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          // if (error?.msg === 'Invalid code.') {
+          Toast.show({
+            text2: 'Token Code Expire',
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
+          // }
 
           reject(error);
         });

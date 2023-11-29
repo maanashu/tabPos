@@ -509,7 +509,6 @@ export class RetailController {
   static async updateServiceCartQty(data, cartId) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.updateServiceCartQty + `/${cartId}`;
-
       HttpClient.put(endpoint, data)
         .then((response) => {
           resolve(response);
@@ -1398,21 +1397,23 @@ export class RetailController {
 
   static async getAvailableOffer(data) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.availableOffer +
-        `?app_name=pos&delivery_options=2&page=1&limit=10&seller_id=${data?.seller_id}&service_type=${data?.servicetype}`;
+        `?app_name=pos&delivery_options=2&seller_id=${sellerID}&service_type=${data?.servicetype}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          // Toast.show({
-          //   text2: error?.msg,
-          //   position: 'bottom',
-          //   type: 'error_toast',
-          //   visibilityTime: 1500,
-          // });
+          error?.statusCode === 204 &&
+            Toast.show({
+              text2: 'Offer Not Found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
           reject(error);
         });
     });
@@ -1562,8 +1563,6 @@ export class RetailController {
         start_time: data?.startTime,
         end_time: data?.endTime,
       };
-      console.log('endpoint', endpoint);
-      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);

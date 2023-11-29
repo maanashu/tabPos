@@ -22,11 +22,22 @@ export { Cart } from '@mPOS/screens/Cart/Cart';
 // Customers
 export { Transactions } from '@mPOS/screens/Customers/Transactions';
 export { TransactionList } from '@mPOS/screens/Customers/TransactionList/TransactionList';
+export { Customers } from '@mPOS/screens/Customers/Customers';
+export { CustomerList } from '@mPOS/screens/Customers/Components/CustomerList';
+export { UserProfile } from '@mPOS/screens/Customers/Components/UserProfile';
 
 // more
 export { More } from '@mPOS/screens/MoreTab/More/More';
 export { Profile } from '@mPOS/screens/MoreTab/Profile/Profile';
 export { ProfileQRCode } from '@mPOS/screens/MoreTab/ProfileQRCode/ProfileQRCode';
+export { FaceId } from '@mPOS/screens/MoreTab/FaceId/FaceId';
+export { HelpCenter } from '@mPOS/screens/MoreTab/Help/HelpCenter/HelpCenter';
+export { SupportRequest } from '@mPOS/screens/MoreTab/Help/SupportRequest/SupportRequest';
+export { MySupport } from '@mPOS/screens/MoreTab/Help/SupportRequest/MySupport/MySupport';
+export { Support } from '@mPOS/screens/MoreTab/Help/SupportRequest/Support/Support';
+export { SupportChat } from '@mPOS/screens/MoreTab/Help/SupportChat/SupportChat';
+export { Faq } from '@mPOS/screens/MoreTab/Help/Faq/Faq';
+export { FaqAnswers } from '@mPOS/screens/MoreTab/Help/FaqAnswers/FaqAnswers';
 
 //retail products
 export { RetailProducts } from '@mPOS/screens/HomeTab/RetailProducts/RetailProducts';

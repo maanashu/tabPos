@@ -29,9 +29,11 @@ import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import {
   changeStatusProductCart,
   changeStatusServiceCart,
+  clearServiceAllCart,
   getAllCart,
   getAllProductCart,
   getAllServiceCart,
+  getAvailableOffer,
   getServiceCart,
   getServiceCartSuccess,
   getTip,
@@ -50,6 +52,10 @@ import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { updateServiceCartLength } from '@/actions/CartAction';
 import { getServiceCartLength } from '@/selectors/CartSelector';
 import { ReactNativeModal } from 'react-native-modal';
+import AvailableOffer from './AvailableOffer';
+import { AddServiceCartModal } from '@mPOS/screens/HomeTab/Services/AddServiceCart';
+import AddServiceCart from '@mPOS/screens/HomeTab/RetailServices/Components/AddServiceCart';
+import moment from 'moment';
 
 export function ServiceCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -57,6 +63,8 @@ export function ServiceCart({ cartChangeHandler }) {
   const retailData = useSelector(getRetail);
   const serviceCartData = retailData?.getserviceCart;
   const payByCashRef = useRef(null);
+  const availableOfferRef = useRef(null);
+  const addServiceCartRef = useRef(null);
   const jbrCoinRef = useRef(null);
   const finalPaymentRef = useRef(null);
   const cartAmountByPayRef = useRef(null);
@@ -85,13 +93,26 @@ export function ServiceCart({ cartChangeHandler }) {
         TYPES.ATTACH_SERVICE_CUSTOMER,
         TYPES.CHANGE_STATUS_SERVICE_CART,
         TYPES.CLEAR_SERVICE_ALL_CART,
+        TYPES.CUSTOM_SERVICE_ADD,
+        TYPES.GET_AVAILABLE_OFFER,
+        TYPES.GET_AVAILABLE_OFFER,
       ],
       state
     )
   );
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return () => ;
+  //   }, [])
+  // );
+
   useEffect(() => {
     dispatch(getServiceCart());
     dispatch(getAllServiceCart());
+    if (!isFocused) {
+      backCartLoad();
+    }
   }, [isFocused]);
 
   // const payNowHandler = useCallback(() => {
@@ -203,45 +224,39 @@ export function ServiceCart({ cartChangeHandler }) {
   }
   const removeOneCartHandler = (index) => {
     var arr = retailData?.getserviceCart;
-    const product = arr?.appointment_cart_products[index];
-    const productPrice = product?.product_details?.supply?.supply_prices?.selling_price;
-    if (product?.qty > 0) {
-      // arr.amount.total_amount -= productPrice * product.qty;
-      arr.amount.products_price -= productPrice * product.qty;
-      arr.appointment_cart_products.splice(index, 1);
+    if (arr?.appointment_cart_products.length == 1 && index == 0) {
+      dispatch(clearServiceAllCart());
+    } else {
+      const product = arr?.appointment_cart_products[index];
+      const productPrice = product?.product_details?.supply?.supply_prices?.selling_price;
+      if (product?.qty > 0) {
+        // arr.amount.total_amount -= productPrice * product.qty;
+        arr.amount.products_price -= productPrice * product.qty;
+        arr.appointment_cart_products.splice(index, 1);
+      }
+      const totalAmount = arr.amount.products_price;
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      arr.amount.tax = parseFloat(TAX);
+      arr.amount.total_amount = arr.amount.products_price + arr.amount.tax;
+
+      var DATA = {
+        payload: arr,
+      };
+      dispatch(updateServiceCartLength(CART_LENGTH - 1));
+      dispatch(getServiceCartSuccess(DATA));
     }
-    const totalAmount = arr.amount.products_price;
-    const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-    arr.amount.tax = parseFloat(TAX);
-    arr.amount.total_amount = arr.amount.products_price + arr.amount.tax;
-
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(updateServiceCartLength(CART_LENGTH - 1));
-    dispatch(getServiceCartSuccess(DATA));
   };
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     return () => {
-  //       backCartLoad();
-  //       alert('jkl');
-  //     };
-  //   }, [])
-  // );
-  useEffect(() => {
-    // if (isFocused) {
-    return () => {
-      backCartLoad();
-    };
-    // }
-  }, [isFocused]);
 
   return (
     <View style={styles.container}>
       <View style={[styles.cartScreenHeader]}>
-        <TouchableOpacity style={styles.serviceCart} onPress={cartChangeHandler}>
+        <TouchableOpacity
+          style={styles.serviceCart}
+          onPress={() => {
+            backCartLoad();
+            cartChangeHandler();
+          }}
+        >
           <Text style={styles.serviceCartText}>{'Product Cart'}</Text>
         </TouchableOpacity>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -255,7 +270,10 @@ export function ServiceCart({ cartChangeHandler }) {
           >
             <TouchableOpacity
               style={styles.headerImagecCon}
-              onPress={() => setProductCustomerAdd((prev) => !prev)}
+              onPress={() => {
+                backCartLoad();
+                setProductCustomerAdd((prev) => !prev);
+              }}
             >
               <Image source={Images.addCustomerIcon} style={styles.headerImage} />
             </TouchableOpacity>
@@ -270,7 +288,10 @@ export function ServiceCart({ cartChangeHandler }) {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.headerImagecCon}
-              onPress={() => setAddDiscount((prev) => !prev)}
+              onPress={() => {
+                backCartLoad();
+                setAddDiscount((prev) => !prev);
+              }}
             >
               <Image source={Images.discountOutline} style={styles.headerImage} />
             </TouchableOpacity>
@@ -281,7 +302,13 @@ export function ServiceCart({ cartChangeHandler }) {
               <Image source={Images.ClearEraser} style={styles.headerImage} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.headerImagecCon} onPress={cartStatusHandler}>
+          <TouchableOpacity
+            style={styles.headerImagecCon}
+            onPress={() => {
+              backCartLoad();
+              cartStatusHandler();
+            }}
+          >
             <Image source={Images.pause} style={styles.holdImage(holdServiceArray)} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -311,27 +338,39 @@ export function ServiceCart({ cartChangeHandler }) {
             showsVerticalScrollIndicator={false}
             data={serviceCartData?.appointment_cart_products}
             extraData={serviceCartData?.appointment_cart_products}
-            keyExtractor={(_, index) => index.toString()}
+            keyExtractor={(data, index) => data?.item?.id}
             renderItem={(data, ind) => {
-              const productSize = data?.item?.product_details?.supply?.attributes?.filter(
-                (item) => item?.name === 'Size'
-              );
-              const productColor = data?.item?.product_details?.supply?.attributes?.filter(
-                (item) => item?.name === 'Color'
-              );
               return (
-                <View style={styles.cartProductCon}>
+                <View style={styles.cartProductCon} key={data?.item?.index}>
                   <View style={[styles.disPlayFlex]}>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Image
                         source={{ uri: data?.item?.product_details?.image }}
                         style={{ width: ms(35), height: ms(35) }}
                       />
-                      <View style={{ marginLeft: ms(10) }}>
+                      <View style={{ marginLeft: ms(10), flex: 0.9 }}>
                         <Text style={styles.cartProductName} numberOfLines={1}>
                           {data?.item?.product_details?.name}
                         </Text>
-                        <View
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
+                            {data?.item?.pos_user_details?.user?.user_profiles?.firstname}
+                          </Text>
+                          <Text style={styles.verticalRow}>{'|'}</Text>
+                          <Text style={[styles.sukNumber, styles.timeitalic]}>
+                            {moment(data?.item?.date).format('LL')} @
+                            {data?.item?.start_time + '-' + data?.item?.start_time}
+                          </Text>
+                        </View>
+                        <Spacer space={SH(2)} />
+                        {data?.item?.product_details?.supply?.approx_service_time == null ? (
+                          <Text style={styles.sukNumber}>Estimated Time Not found</Text>
+                        ) : (
+                          <Text style={styles.sukNumber}>
+                            Est: {data?.item?.product_details?.supply?.approx_service_time} min
+                          </Text>
+                        )}
+                        {/* <View
                           style={{
                             flexDirection: 'row',
                             alignItems: 'center',
@@ -341,7 +380,7 @@ export function ServiceCart({ cartChangeHandler }) {
                           <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
                             ${data?.item?.product_details?.supply?.supply_prices?.selling_price}
                           </Text>
-                        </View>
+                        </View> */}
                       </View>
                     </View>
                     <View
@@ -352,6 +391,7 @@ export function ServiceCart({ cartChangeHandler }) {
                     >
                       <TouchableOpacity
                         onPress={() => {
+                          backCartLoad();
                           setPriceChange((prev) => !prev);
                           setCartProduct(data?.item);
                         }}
@@ -403,7 +443,20 @@ export function ServiceCart({ cartChangeHandler }) {
             alignSelf: 'center',
           }}
         >
-          <TouchableOpacity style={styles.availablOffercon}>
+          <TouchableOpacity
+            style={styles.availablOffercon}
+            onPress={() => {
+              backCartLoad();
+              const data = {
+                servicetype: 'service',
+              };
+              dispatch(
+                getAvailableOffer(data, () => {
+                  availableOfferRef?.current?.present();
+                })
+              );
+            }}
+          >
             <Text style={styles.avaliableofferText}>{strings.cart.availablOffer}</Text>
           </TouchableOpacity>
           <Spacer space={SH(10)} />
@@ -428,9 +481,14 @@ export function ServiceCart({ cartChangeHandler }) {
           </View>
           <Spacer space={SH(8)} />
           <View style={styles.disPlayFlex}>
-            <Text style={styles.subTotal}>{`Discount ${
-              serviceCartData?.discount_flag === 'percentage' ? '(%)' : ''
-            } `}</Text>
+            <Text style={styles.subTotal}>
+              {'Discount'}{' '}
+              <Text style={[styles.subTotal, { fontFamily: Fonts.Regular }]}>
+                {serviceCartData?.discount_flag === 'percentage'
+                  ? `(${serviceCartData?.discount_value}%)`
+                  : ''}
+              </Text>
+            </Text>
             <Text style={[styles.subTotalBold, { color: COLORS.red }]}>
               {formattedReturnPrice(serviceCartData?.amount?.discount)}
             </Text>
@@ -458,7 +516,10 @@ export function ServiceCart({ cartChangeHandler }) {
                 opacity: serviceCartData?.appointment_cart_products?.length > 0 ? 1 : 0.7,
               },
             ]}
-            onPress={payNowHandler}
+            onPress={() => {
+              backCartLoad();
+              payNowHandler();
+            }}
             disabled={serviceCartData?.appointment_cart_products?.length > 0 ? false : true}
           >
             <Text style={styles.payNowText}>{strings.cart.payNow}</Text>
@@ -526,6 +587,15 @@ export function ServiceCart({ cartChangeHandler }) {
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
 
       {/* <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} /> */}
+
+      <AvailableOffer
+        availableOfferRef={availableOfferRef}
+        serviceCartOpen={() => {
+          addServiceCartRef?.current?.present();
+        }}
+      />
+      <AddServiceCart {...{ addServiceCartRef }} />
+      {/* serviceDetailHanlder */}
       {isLoading ? <FullScreenLoader /> : null}
     </View>
   );

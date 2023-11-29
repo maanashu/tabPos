@@ -8,18 +8,21 @@ import { useState } from 'react';
 import { cartRun } from '@/actions/RetailAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
+import { useEffect } from 'react';
 
 export function Cart() {
   const dispatch = useDispatch();
 
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
-  console.log('presentCart', presentCart, showCart);
   const [showCart, setShowCart] = useState(presentCart === 'service' ? true : false);
+  useEffect(() => {
+    setShowCart(presentCart === 'service' ? true : false);
+  }, []);
 
   return (
     <ScreenWrapper style={styles.container}>
-      {showCart && presentCart === 'service' ? (
+      {presentCart === 'service' ? (
         <ServiceCart
           cartChangeHandler={() => {
             setShowCart(false);

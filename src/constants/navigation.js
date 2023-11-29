@@ -34,4 +34,5 @@ export const NAVIGATION = {
   weeklyTransaction: 'WeeklyTransaction',
   productRefund: 'ProductRefund',
   paymentSelection: 'PaymentSelection',
+  oldPin: 'OldPin',
 };

@@ -1,4 +1,5 @@
 import { AuthController } from '@/controllers/AuthController';
+import { store } from '@/store';
 import { TYPES } from '@/Types/Types';
 
 const verifyPhoneRequest = () => ({
@@ -25,6 +26,37 @@ const merchantLoginRequest = () => ({
   type: TYPES.MERCHANT_LOGIN_REQUEST,
   payload: null,
 });
+
+const changePinError = (error) => ({
+  type: TYPES.CHANGE_PIN_ERROR,
+  payload: { error },
+});
+
+const changePinSuccess = (otp) => ({
+  type: TYPES.CHANGE_PIN_SUCCESS,
+  payload: { otp },
+});
+
+const changePinRequest = () => ({
+  type: TYPES.CHANGE_PIN_REQUEST,
+  payload: null,
+});
+
+const verifyOldPinError = (error) => ({
+  type: TYPES.VERIFY_OLD_PIN_ERROR,
+  payload: { error },
+});
+
+const verifyOldSuccess = (otp) => ({
+  type: TYPES.VERIFY_OLD_PIN_SUCCESS,
+  payload: { otp },
+});
+
+const verifyOldRequest = () => ({
+  type: TYPES.VERIFY_OLD_PIN_REQUEST,
+  payload: null,
+});
+
 const merchantLoginError = (error) => ({
   type: TYPES.MERCHANT_LOGIN_ERROR,
   payload: { error },
@@ -113,6 +145,30 @@ export const verifyPhone = (phoneNumber, countryCode) => async (dispatch) => {
   }
 };
 
+export const changePin = (bodyParam) => async (dispatch) => {
+  dispatch(changePinRequest());
+  try {
+    const res = await AuthController.changePin(bodyParam);
+    dispatch(changePinSuccess(res));
+    return res;
+  } catch (error) {
+    dispatch(changePinError(error.message));
+    return res;
+  }
+};
+export const verifyOldPin = (pin) => async (dispatch) => {
+  dispatch(verifyOldRequest());
+  try {
+    const res = await AuthController.verifyOldPin(pin);
+    console.log('asdasdasdadewqw', res);
+    dispatch(verifyOldSuccess(res));
+    return res;
+  } catch (error) {
+    dispatch(verifyOldPinError(error.msg));
+    return error;
+  }
+};
+
 export const merchantLogin = (data) => async (dispatch) => {
   dispatch(merchantLoginRequest());
   try {
@@ -126,7 +182,8 @@ export const merchantLogin = (data) => async (dispatch) => {
 export const getProfile = (id) => async (dispatch) => {
   dispatch(getProfileRequest());
   try {
-    const res = await AuthController.getProfile(id);
+    let user = store.getState().user?.posLoginData?.id;
+    const res = await AuthController.getProfile(id || user);
     dispatch(getProfileSuccess(res));
   } catch (error) {
     dispatch(getProfileError(error.message));

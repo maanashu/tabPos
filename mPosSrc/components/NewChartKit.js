@@ -89,9 +89,9 @@ export function NewChartKit({
           width={
             Platform.OS === 'android'
               ? Dimensions.get('window').width * 0.8
-              : Dimensions.get('window').width * 0.26
+              : Dimensions.get('window').width * 0.85
           }
-          height={Platform.OS === 'android' ? ms(180) : SH(160)}
+          height={ms(180)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -115,7 +115,7 @@ export function NewChartKit({
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? ms(10) : SW(-8),
+            marginLeft: Platform.OS === 'android' ? ms(-15) : ms(5),
             marginTop: ms(10),
           }}
           withShadow={false}
@@ -146,9 +146,9 @@ export function NewChartKit({
           width={
             Platform.OS === 'android'
               ? Dimensions.get('window').width * 0.9
-              : Dimensions.get('window').width * 0.26
+              : Dimensions.get('window').width * 0.98
           }
-          height={Platform.OS === 'android' ? ms(180) : SH(165)}
+          height={ms(180)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -172,7 +172,7 @@ export function NewChartKit({
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? ms(-15) : SW(-8),
+            marginLeft: Platform.OS === 'android' ? ms(-15) : ms(-20),
             marginTop: ms(10),
           }}
           withShadow={false}
@@ -195,9 +195,9 @@ export function NewChartKit({
           width={
             Platform.OS === 'android'
               ? Dimensions.get('window').width * 0.9
-              : Dimensions.get('window').width * 0.26
+              : Dimensions.get('window').width * 0.98
           }
-          height={Platform.OS === 'android' ? ms(180) : SH(165)}
+          height={ms(180)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -221,7 +221,7 @@ export function NewChartKit({
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? ms(-15) : SW(-8),
+            marginLeft: Platform.OS === 'android' ? ms(-15) : ms(-20),
             paddingVertical: 0,
             marginTop: ms(10),
           }}

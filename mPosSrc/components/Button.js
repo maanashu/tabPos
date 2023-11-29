@@ -31,8 +31,7 @@ export function Button({
   const { colors } = useTheme();
   return pending ? (
     <TouchableOpacity style={[styles.button, { borderColor: colors.border }, style]} {...rest}>
-      <ActivityIndicator animating={true} color={COLORS.primary} size={'large'} />
-      <Text style={[styles.buttonTextStyle, textStyle]}>{title}</Text>
+      <ActivityIndicator animating={true} color={COLORS.white} size={'small'} />
     </TouchableOpacity>
   ) : (
     <TouchableOpacity style={[styles.button, { borderColor: colors.border }, style]} {...rest}>

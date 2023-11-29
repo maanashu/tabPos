@@ -66,7 +66,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
   }, [getCustomerData?.getOrderUser?.data]);
 
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
-  const [paginationModalValue, setPaginationModalValue] = useState(10);
+  const [paginationModalValue, setPaginationModalValue] = useState('10');
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
   const [selectedYearData, setselectedYearData] = useState(null);
@@ -87,7 +87,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
   useEffect(() => {
     const data = {
       userid: userDetail?.user_details?.id,
-      sellerid: userDetail?.seller_details?.id,
+      sellerid: sellerID,
     };
     dispatch(getAcceptMarketing(data));
   }, []);
@@ -95,14 +95,14 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
   const toggleHandler = async () => {
     const data = {
       user_id: userDetail?.user_details?.id.toString(),
-      seller_id: userDetail?.seller_details?.id.toString(),
+      seller_id: sellerID.toString(),
       accept: Object.keys(marketingData)?.length == 0 ? true : marketingData?.accept ? false : true,
     };
     const res = await dispatch(marketingUpdate(data));
     if (res?.type === 'GET_MARKETINGUPDATE_SUCCESS') {
       const data = {
         userid: userDetail?.user_details?.id,
-        sellerid: userDetail?.seller_details?.id,
+        sellerid: sellerID,
       };
       dispatch(getAcceptMarketing(data));
     }
@@ -272,9 +272,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
         pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
       >
         <View style={styles.paginationEnd}>
-          <Text style={[styles.paginationCount, { fontSize: 12 }]}>
-            {strings.customers.showResult}
-          </Text>
+          <Text style={[styles.paginationCount]}>{strings.customers.showResult}</Text>
           <View style={{ marginHorizontal: moderateScale(10) }}>
             <DropDownPicker
               ArrowUpIconComponent={({ style }) => (
@@ -307,7 +305,10 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             style={[
               styles.unionCon,
               {
-                backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
+                backgroundColor: paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                borderWidth: 1,
+                borderColor:
+                  paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
               },
             ]}
             onPress={paginationDechandler}
@@ -318,18 +319,36 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
               style={[
                 styles.unionStyle,
                 {
-                  tintColor:
-                    paginationData?.currentPage == 1 ? COLORS.gerySkies : COLORS.solid_grey,
+                  tintColor: paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
                 },
               ]}
             />
           </TouchableOpacity>
-          <View style={styles.unionCon}>
-            <Image source={mask} style={styles.unionStyle} />
+          <View
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor: paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                borderWidth: 1,
+                borderColor:
+                  paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
+              },
+            ]}
+          >
+            <Image
+              source={mask}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor: paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                },
+              ]}
+            />
           </View>
           <View
             style={{
-              width: ms(70),
+              width: ms(60),
+              marginRight: ms(7),
             }}
           >
             {isOrderUserLoading ? (
@@ -341,10 +360,33 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             )}
           </View>
 
-          <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
+          <View
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor:
+                  paginationData?.currentPage == paginationData?.totalPages
+                    ? COLORS.sky_grey
+                    : COLORS.white,
+                borderWidth: 1,
+                borderColor:
+                  paginationData?.currentPage == paginationData?.totalPages
+                    ? COLORS.transparent
+                    : COLORS.light_purple,
+              },
+            ]}
+          >
             <Image
               source={maskRight}
-              style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.graySky
+                      : COLORS.navy_blue,
+                },
+              ]}
             />
           </View>
           <TouchableOpacity
@@ -353,8 +395,13 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
               {
                 backgroundColor:
                   paginationData?.currentPage == paginationData?.totalPages
-                    ? COLORS.washGrey
+                    ? COLORS.sky_grey
                     : COLORS.white,
+                borderWidth: 1,
+                borderColor:
+                  paginationData?.currentPage == paginationData?.totalPages
+                    ? COLORS.transparent
+                    : COLORS.light_purple,
               },
             ]}
             onPress={paginationInchandler}
@@ -367,8 +414,8 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                 {
                   tintColor:
                     paginationData?.currentPage == paginationData?.totalPages
-                      ? COLORS.gerySkies
-                      : COLORS.solid_grey,
+                      ? COLORS.graySky
+                      : COLORS.navy_blue,
                 },
               ]}
             />

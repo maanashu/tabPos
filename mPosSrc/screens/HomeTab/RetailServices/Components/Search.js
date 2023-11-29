@@ -6,7 +6,7 @@ import { strings } from '@mPOS/localization';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts } from '@/theme';
 
-const Search = ({ value, onChangeText, filterHandler, selectFilterCount }) => {
+const Search = ({ value, onChangeText, filterHandler, selectFilterCount, crossHandler }) => {
   return (
     <View style={styles.searchView}>
       <View style={styles.searchMainView}>
@@ -19,6 +19,14 @@ const Search = ({ value, onChangeText, filterHandler, selectFilterCount }) => {
           onChangeText={onChangeText}
           placeholderTextColor={COLORS.gerySkies}
         />
+        {/* {value?.length > 0 && (
+          <TouchableOpacity style={{ marginRight: ms(5) }} onPress={crossHandler}>
+            <Image
+              source={Images.cross}
+              style={[styles.crossImageStyle, { tintColor: COLORS.red }]}
+            />
+          </TouchableOpacity>
+        )} */}
       </View>
 
       <TouchableOpacity
@@ -80,12 +88,14 @@ const styles = StyleSheet.create({
   },
   searchTextInputStyle: {
     height: ms(40),
-    width: ms(240),
+    // width: ms(240),
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
     fontFamily: Fonts.Italic,
     fontSize: ms(12),
+    flex: 1,
+    paddingLeft: ms(5),
   },
   scannerViewStyle: {
     borderRadius: 7,
@@ -117,5 +127,10 @@ const styles = StyleSheet.create({
   filterCountText: {
     fontSize: ms(9),
     fontFamily: Fonts.Regular,
+  },
+  crossImageStyle: {
+    width: ms(25),
+    height: ms(25),
+    resizeMode: 'contain',
   },
 });

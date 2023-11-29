@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { View, TouchableOpacity, Image, Text, Platform, Dimensions } from 'react-native';
-import { ScreenWrapper, Spacer } from '@mPOS/components';
+import { Header, ScreenWrapper, Spacer } from '@mPOS/components';
 
 import {
   profit,
@@ -47,6 +47,7 @@ import {
   getTotalInventory,
   getTotalOrder,
 } from '@/actions/AnalyticsAction';
+import { commonNavigate, MPOS_NAVIGATION } from '@common/commonImports';
 
 export function Analytics() {
   const mapRef = useRef(null);
@@ -202,6 +203,21 @@ export function Analytics() {
     setOrderId(orderId);
     setInvoiceDetail(true);
   };
+  const showTransDetail = () => {
+    if (startDate && endDate) {
+      commonNavigate(MPOS_NAVIGATION.transactionList, {
+        start_date: startDate,
+        end_date: endDate,
+        transactionType: 'all',
+      });
+    } else {
+      commonNavigate(MPOS_NAVIGATION.transactionList, {
+        filter_by: timeValue,
+        transactionType: 'all',
+      });
+    }
+  };
+
   const headerTitle =
     selectedScreen === 'MainScreen'
       ? 'Back'
@@ -276,16 +292,7 @@ export function Analytics() {
         }}
       />
     ),
-    ['TotalPosOrder']: (
-      <TotalPosOrder
-        onPressReview={(item) => {
-          setWeeklyTrasaction(true);
-          setDate(item);
-          setAppName('pos');
-          setDeliveryOption();
-        }}
-      />
-    ),
+    ['TotalPosOrder']: <TotalPosOrder onPressReview={(item) => showTransDetail()} />,
     ['TotalInventory']: <TotalInventory />,
   };
   const closeHandler = () => {
@@ -366,11 +373,6 @@ export function Analytics() {
                   ArrowDownIconComponent={({ style }) => (
                     <Image source={Images.dropdown} style={styles.dropDownIcon} />
                   )}
-                  style={styles.dropdown}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 100 : 2 },
-                  ]}
                   open={channels}
                   value={channelValue}
                   items={channelItem}
@@ -385,6 +387,15 @@ export function Analytics() {
                   }}
                   zIndex={2000}
                   zIndexInverse={2000}
+                  containerStyle={styles.containerStyle}
+                  style={styles.dropdown}
+                  arrowIconStyle={styles.arrowIconStyle}
+                  textStyle={{
+                    color: COLORS.white,
+                    fontFamily: Fonts.SemiBold,
+                    fontSize: ms(12),
+                  }}
+                  listItemLabelStyle={{ color: COLORS.black, fontFamily: Fonts.Regular }}
                 />
               </View>
               <View style={[styles.calendarView, { marginHorizontal: ms(5) }]}>
@@ -392,11 +403,11 @@ export function Analytics() {
                   ArrowDownIconComponent={({ style }) => (
                     <Image source={Images.dropdown} style={styles.dropDownIcon} />
                   )}
-                  style={[styles.dropdown]}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { zIndex: Platform.OS === 'ios' ? 100 : 2, width: ms(90) },
-                  ]}
+                  // style={[styles.dropdown]}
+                  // containerStyle={[
+                  //   styles.containerStyle,
+                  //   { zIndex: Platform.OS === 'ios' ? 100 : 2, width: ms(90) },
+                  // ]}
                   open={time}
                   value={timeValue}
                   items={timeItem}
@@ -415,6 +426,15 @@ export function Analytics() {
                   }}
                   zIndex={2000}
                   zIndexInverse={2000}
+                  containerStyle={styles.containerStyle}
+                  style={styles.dropdown}
+                  arrowIconStyle={styles.arrowIconStyle}
+                  textStyle={{
+                    color: COLORS.white,
+                    fontFamily: Fonts.SemiBold,
+                    fontSize: ms(12),
+                  }}
+                  listItemLabelStyle={{ color: COLORS.black, fontFamily: Fonts.Regular }}
                 />
               </View>
             </View>

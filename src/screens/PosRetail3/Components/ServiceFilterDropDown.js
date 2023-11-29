@@ -183,10 +183,11 @@ export const ServiceFilterDropDown = ({
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchCategory}
           onChangeText={(search) => serviceCategorySearch(search)}
+          placeholderTextColor={COLORS.navy_blue}
         />
         {isOrderLoading ? (
           <View style={{ paddingVertical: ms(10) }}>
-            <ActivityIndicator color={COLORS.primary} size={'small'} />
+            <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
           </View>
         ) : (
           <FlatList
@@ -250,11 +251,12 @@ export const ServiceFilterDropDown = ({
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchSubCategory}
           onChangeText={(search) => serviceSubCategorySearch(search)}
+          placeholderTextColor={COLORS.navy_blue}
         />
 
         {isOrderLoading ? (
           <View style={{ paddingVertical: ms(10) }}>
-            <ActivityIndicator color={COLORS.primary} size={'small'} />
+            <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
           </View>
         ) : (
           <FlatList
@@ -317,11 +319,12 @@ export const ServiceFilterDropDown = ({
           style={styles.textInputStyle}
           placeholder={strings.posRetail.searchStaff}
           onChangeText={(search) => brandSearch(search)}
+          placeholderTextColor={COLORS.navy_blue}
         />
 
         {isOrderLoading ? (
           <View style={{ paddingVertical: ms(10) }}>
-            <ActivityIndicator color={COLORS.primary} size={'small'} />
+            <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
           </View>
         ) : (
           <FlatList
@@ -478,7 +481,7 @@ export const ServiceFilterDropDown = ({
             style={
               multipleArrayLength === false && backfilterValue == 0
                 ? styles.clearFilterText
-                : [styles.clearFilterText, { color: COLORS.solid_grey }]
+                : [styles.clearFilterText, { color: COLORS.navy_blue }]
             }
           >
             Clear Filter
@@ -488,7 +491,7 @@ export const ServiceFilterDropDown = ({
           style={
             multipleArrayLength === false && backfilterValue == 0
               ? styles.ApplyButton
-              : [styles.ApplyButton, { backgroundColor: COLORS.primary }]
+              : [styles.ApplyButton, { backgroundColor: COLORS.navy_blue }]
           }
           disabled={multipleArrayLength === false && backfilterValue == 0 ? true : false}
           onPress={() => {
@@ -517,8 +520,8 @@ const styles = StyleSheet.create({
   },
   itemNameTextStyle: {
     fontSize: SF(14),
-    color: COLORS.solid_grey,
-    fontFamily: Fonts.Regular,
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
   },
   categoryViewStyle: {
     flexDirection: 'row',
@@ -533,14 +536,14 @@ const styles = StyleSheet.create({
     marginVertical: ms(8),
     height: ms(30),
     borderRadius: 8,
-    borderColor: COLORS.solidGrey,
-    fontFamily: Fonts.Italic,
+    borderColor: COLORS.navy_blue,
     paddingLeft: 10,
+    color: COLORS.navy_blue,
   },
   noDataText: {
     fontFamily: Fonts.Regular,
     textAlign: 'center',
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
   },
   dropdowMainView: {
     backgroundColor: COLORS.white,
@@ -593,6 +596,6 @@ const styles = StyleSheet.create({
     fontSize: ms(8),
   },
   clearFilterButtonDark: {
-    borderColor: COLORS.solid_grey,
+    borderColor: COLORS.navy_blue,
   },
 });

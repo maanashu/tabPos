@@ -608,6 +608,7 @@ export function PosRetail3() {
                   value={notes}
                   placeholder="Add Notes"
                   multiline={true}
+                  placeholderTextColor={COLORS.light_purple}
                 />
                 <Spacer space={SH(15)} />
                 <TouchableOpacity style={styles.addDiscountcon} onPress={() => saveNotesHandler()}>
@@ -681,6 +682,7 @@ export function PosRetail3() {
                   value={serviceNotes}
                   placeholder="Add Notes"
                   multiline={true}
+                  placeholderTextColor={COLORS.light_purple}
                 />
                 <Spacer space={SH(15)} />
                 <TouchableOpacity

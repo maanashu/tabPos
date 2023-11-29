@@ -41,6 +41,7 @@ import { useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CustomHeader } from '@/screens/PosRetail3/Components';
 
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
@@ -267,6 +268,7 @@ export function POSUsers({ navigation }) {
               <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
             </TouchableOpacity>
           </View>
+          <CustomHeader showUserName={false} />
 
           {getPosUserLoading ? (
             <View style={{ marginTop: 50 }}>
@@ -283,12 +285,21 @@ export function POSUsers({ navigation }) {
               extraData={posUserArray}
               scrollEnabled={true}
               contentContainerStyle={{ flexGrow: 1 }}
-              style={{ height: '100%' }}
+              style={{
+                height: '100%',
+                marginHorizontal: SH(40),
+              }}
               renderItem={({ item }) => {
                 return (
-                  <View style={styles.posUserCon}>
-                    <Spacer space={SH(10)} />
-
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate(NAVIGATION.posUserPasscode, {
+                        posuser: item,
+                        from: 'loginInitial',
+                      })
+                    }
+                    style={styles.posUserCon}
+                  >
                     <Image
                       source={
                         item.user?.user_profiles?.profile_photo
@@ -298,18 +309,21 @@ export function POSUsers({ navigation }) {
                       style={styles.profileImage}
                     />
 
+                    <Spacer space={SH(10)} />
                     <Text style={styles.firstName} numberOfLines={1}>
                       {`${item.user?.user_profiles?.firstname} ${item.user?.user_profiles?.lastname} `}
                     </Text>
+                    <Spacer space={SH(6)} />
                     <Text style={styles.role} numberOfLines={1}>
                       {item.user?.user_roles?.length > 0
                         ? item.user?.user_roles?.map((item) => item.role?.name)
                         : 'admin'}
                     </Text>
 
+                    <Spacer space={SH(24)} />
                     {item.user?.api_tokens.length > 0 && (
                       <>
-                        <Text style={[styles.dateTime, { marginTop: SH(10) }]}>
+                        <Text style={[styles.dateTime]}>
                           {moment(item.user?.api_tokens[0].updated_at).format('dddd, DD MMM YYYY')}
                         </Text>
                         <Text style={styles.dateTime}>
@@ -317,20 +331,7 @@ export function POSUsers({ navigation }) {
                         </Text>
                       </>
                     )}
-
-                    <View style={{ flex: 1 }} />
-
-                    <TouchableOpacity
-                      style={styles.arrowButonCon}
-                      onPress={() =>
-                        navigation.navigate(NAVIGATION.loginIntial, {
-                          posuserdata: item,
-                        })
-                      }
-                    >
-                      <Image source={checkArrow} style={styles.arrowImage} />
-                    </TouchableOpacity>
-                  </View>
+                  </TouchableOpacity>
                 );
               }}
               ListFooterComponent={renderStaffFooter}

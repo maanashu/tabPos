@@ -34,10 +34,10 @@ const INITIALSTATE = {
   timeSlots: [],
   timeSlotInterval: null,
   getAllServiceCart: [],
-  availableOffer: [],
+  availableOffer: {},
   createOrder: {},
   createServiceOrder: {},
-  availableOffer: [],
+  availableOffer: {},
   cartFrom: 'product',
 };
 
@@ -378,7 +378,7 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
     case TYPES.GET_AVAILABLE_OFFER_RESET:
       return {
         ...state,
-        availableOffer: [],
+        availableOffer: {},
       };
 
     case TYPES.UPDATE_CART_BY_TIP_SUCCESS:

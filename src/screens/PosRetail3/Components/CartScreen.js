@@ -83,7 +83,7 @@ export function CartScreen({
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
-  const availableOfferArray = getRetailData?.availableOffer;
+  const availableOfferArray = getRetailData?.availableOffer?.data;
   const [cartSearch, setCartSearch] = useState('');
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
@@ -284,7 +284,7 @@ export function CartScreen({
   const cartidFrom = useMemo(() => cartData?.id, []);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.homeScreenCon}>
         <CustomHeader
           iconShow
@@ -294,7 +294,7 @@ export function CartScreen({
           }}
         />
 
-        <View style={styles.displayflex2}>
+        <View style={[styles.displayflex2, { flex: 1 }]}>
           <View style={[styles.itemLIistCon]}>
             <Spacer space={SH(3)} />
             <View style={styles.displayflex}>
@@ -564,7 +564,9 @@ export function CartScreen({
             <View style={{ flex: 1 }}>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
-                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Available Offer</Text>
+                  <Image source={addDiscountPic} style={styles.addDiscountPic()} />
+                  <Text style={[styles.holdCart, { color: COLORS.coffee }]}>Available Offer</Text>
+                  <View></View>
                 </View>
                 {availableOfferLoad ? (
                   <View style={{ marginTop: ms(30) }}>
@@ -572,8 +574,8 @@ export function CartScreen({
                   </View>
                 ) : (
                   <FlatList
-                    data={availableOfferArray}
-                    extraData={availableOfferArray}
+                    data={availableOfferArray ?? []}
+                    extraData={availableOfferArray ?? []}
                     renderItem={({ item, index }) => {
                       return (
                         <TouchableOpacity
@@ -581,22 +583,27 @@ export function CartScreen({
                           key={index}
                           onPress={() => productFun(item, index)}
                         >
-                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <View style={{ borderRadius: 4 }}>
-                              <Image source={{ uri: item?.image }} style={styles.offerImage} />
-                            </View>
-                            <View style={{ marginLeft: 4 }}>
-                              <Text style={[styles.offerText, { width: ms(90) }]} numberOfLines={1}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                            <Image source={{ uri: item?.image }} style={styles.offerImage} />
+
+                            <View style={{ paddingHorizontal: ms(3), flex: 1 }}>
+                              <Text style={styles.offerText} numberOfLines={1}>
                                 {item?.name}
                               </Text>
-                              <Text style={styles.offerPrice}>White/S</Text>
+                              <Text
+                                style={[styles.offerText, styles.offerTextYellow]}
+                                numberOfLines={1}
+                              >
+                                Yellow / M
+                              </Text>
+                              <Spacer space={SH(10)} />
                               {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
                               item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
                                 <View style={{ flexDirection: 'row' }}>
                                   <Text style={[styles.offerPrice, styles.lineTrought]}>
                                     ${item?.supplies?.[0]?.supply_prices?.[0]?.actual_price}
                                   </Text>
-                                  <Text style={styles.offerPriceDark}>
+                                  <Text style={[styles.offerPriceDark, { marginLeft: ms(3) }]}>
                                     ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
                                   </Text>
                                 </View>
@@ -609,7 +616,9 @@ export function CartScreen({
                               )}
                             </View>
                           </View>
-                          <Image source={addToCart} style={styles.sideAddToCart} />
+                          <View style={styles.offerImagebackground}>
+                            <Image source={Images.cartIcon} style={styles.sideAddToCart} />
+                          </View>
                         </TouchableOpacity>
                       );
                     }}
@@ -639,8 +648,8 @@ export function CartScreen({
                   }}
                   disabled={cartData?.poscart_products?.length > 0 ? false : true}
                 >
-                  <Image source={addDiscountPic} style={styles.addDiscountPic} />
-                  <Text style={styles.addDiscountText}>Add Discount</Text>
+                  <Image source={addDiscountPic} style={styles.addDiscountPic('discount')} />
+                  <Text style={styles.addDiscountText('discount')}>Add Discount</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.addDiscountCon('addnotes')}
@@ -650,8 +659,8 @@ export function CartScreen({
                   }}
                   disabled={cartData?.poscart_products?.length > 0 ? false : true}
                 >
-                  <Image source={notess} style={styles.addDiscountPic} />
-                  <Text style={styles.addDiscountText}>Add Notes</Text>
+                  <Image source={notess} style={styles.addDiscountPic()} />
+                  <Text style={styles.addDiscountText()}>Add Notes</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.discountCon}>
@@ -705,7 +714,8 @@ export function CartScreen({
                   disabled={cartData?.poscart_products?.length > 0 ? false : true}
                 >
                   <Text style={styles.checkoutText}>{strings.posRetail.procedtoCheckout}</Text>
-                  <Image source={checkArrow} style={styles.checkArrow} />
+                  {/* <Image source={checkArrow} style={styles.checkArrow} /> */}
+                  <Image source={Images.arrowLeftUp} style={styles.mainScreenArrow('cart')} />
                 </TouchableOpacity>
               </View>
             </View>

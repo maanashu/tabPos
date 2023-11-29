@@ -290,7 +290,7 @@ export function Transactions() {
           <FlatList
             data={paymentOptions}
             renderItem={renderPaymentTypes}
-            scrollEnabled={false}
+            scrollEnabled={true}
             showsVerticalScrollIndicator={false}
           />
         </View>

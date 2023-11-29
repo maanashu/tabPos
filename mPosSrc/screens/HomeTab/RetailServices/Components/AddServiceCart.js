@@ -260,9 +260,20 @@ const AddServiceCart = ({ addServiceCartRef, serviceDetailHanlder }) => {
           <View style={styles.productCartBody}>
             <View style={styles.flexDirectionRow}>
               <Text style={styles.headerText}>{itemData?.name}</Text>
-              <Text style={styles.amount}>
+              {itemData?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+              itemData?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+                <Text style={styles.amount}>
+                  ${itemData?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                </Text>
+              ) : (
+                <Text style={styles.amount}>
+                  ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                </Text>
+              )}
+
+              {/* <Text style={styles.amount}>
                 ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-              </Text>
+              </Text> */}
             </View>
             <Spacer space={ms(2)} />
             {itemData?.supplies?.[0]?.approx_service_time == null ? (

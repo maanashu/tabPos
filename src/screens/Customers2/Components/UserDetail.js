@@ -110,7 +110,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
   useEffect(() => {
     const data = {
       userid: userDetail?.user_details?.id,
-      sellerid: userDetail?.seller_details?.id,
+      sellerid: sellerID,
     };
     dispatch(getAcceptMarketing(data));
   }, []);
@@ -118,14 +118,14 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
   const toggleHandler = async () => {
     const data = {
       user_id: userDetail?.user_details?.id.toString(),
-      seller_id: userDetail?.seller_details?.id.toString(),
+      seller_id: sellerID,
       accept: Object.keys(marketingData)?.length == 0 ? true : marketingData?.accept ? false : true,
     };
     const res = await dispatch(marketingUpdate(data));
     if (res?.type === 'GET_MARKETINGUPDATE_SUCCESS') {
       const data = {
         userid: userDetail?.user_details?.id,
-        sellerid: userDetail?.seller_details?.id,
+        sellerid: sellerID,
       };
       dispatch(getAcceptMarketing(data));
     }

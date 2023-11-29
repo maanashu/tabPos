@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    // flex: 1,
   },
   displayRow: {
     flexDirection: 'row',
@@ -33,7 +34,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cashLabelBold: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_light_blue,
     fontSize: SF(12),
     fontFamily: Fonts.Medium,
   },
@@ -53,13 +54,13 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   _totalAmountTitle: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(17),
   },
   _dollarSymbol: {
     fontSize: ms(17),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
     marginTop: ms(2),
   },
@@ -70,23 +71,26 @@ export const styles = StyleSheet.create({
     marginBottom: ms(1),
   },
   _amount: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(25),
   },
   _bottomContainer: {
     marginTop: ms(10),
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     borderWidth: 1,
-    borderRadius: ms(8),
+    borderRadius: ms(9),
+    marginTop: ms(50),
   },
   _selectTips: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(12),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
+    alignSelf: 'center',
   },
   _boxView: {
     height: ms(110),
+    // flexGrow: 1,
     width: Platform.OS === 'ios' ? ms(103) : ms(110),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
@@ -96,9 +100,9 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
   },
   _usdText: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(10),
+    fontSize: ms(11),
   },
   _tipsPercent: {
     color: COLORS.solid_grey,
@@ -109,8 +113,6 @@ export const styles = StyleSheet.create({
   _innerContainer: {
     backgroundColor: COLORS.textInputBackground,
     flex: 1,
-    paddingHorizontal: moderateScale(12),
-    paddingVertical: verticalScale(10),
   },
   _inputMain: {
     marginTop: ms(15),
@@ -149,12 +151,12 @@ export const styles = StyleSheet.create({
   _inputOtherAmount: {
     flexGrow: 1,
     marginTop: ms(10),
-    width: Platform.OS === 'android' ? ms(380) : ms(329),
     height: ms(40),
-    borderRadius: ms(3),
-    borderColor: COLORS.solidGrey,
+    borderRadius: ms(20),
+    borderColor: COLORS.light_purple,
     borderWidth: 1,
     paddingHorizontal: ms(10),
+    fontSize: ms(10),
   },
   _tipsButton: {
     height: ms(40),
@@ -199,18 +201,17 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: ms(20),
   },
-  _payBYBoxContainer: {
-    borderColor: COLORS.solidGrey,
-    borderWidth: 1,
-    height: ms(125),
-    width: Platform.OS === 'ios' ? ms(122) : ms(157),
-    marginHorizontal: ms(3),
-    borderRadius: ms(6),
-    // justifyContent: 'center',
-    alignItems: 'center',
-    padding: ms(10),
-    justifyContent: 'center',
-    alignSelf: 'center',
+  _payBYBoxContainer: (selectedPaymentIndex, index) => {
+    return {
+      borderColor: selectedPaymentIndex === index ? COLORS.success_green : COLORS.light_purple,
+      borderWidth: 1,
+      height: ms(90),
+      width: Platform.OS === 'ios' ? ms(125) : ms(157),
+      marginHorizontal: ms(4),
+      borderRadius: ms(9),
+      padding: ms(6),
+      backgroundColor: selectedPaymentIndex === index ? COLORS.success_green : COLORS.sky_grey,
+    };
   },
   _payBYBoxContainerEmpty: {
     height: ms(125),
@@ -225,23 +226,28 @@ export const styles = StyleSheet.create({
     fontSize: ms(9),
     marginBottom: ms(3),
   },
-  _payByMethod: {
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
-    fontSize: ms(14),
-    marginTop: ms(1),
+  _payByMethod: (selectedPaymentIndex, index) => {
+    return {
+      fontFamily: Fonts.Medium,
+      color: selectedPaymentIndex === index ? COLORS.white : COLORS.torquoise,
+      fontSize: ms(9),
+    };
   },
-  _payByAmount: {
-    fontFamily: Fonts.Regular,
-    color: COLORS.solid_grey,
-    fontSize: ms(10),
-    marginTop: ms(2),
+  _payByAmount: (selectedPaymentIndex, index) => {
+    return {
+      fontFamily: Fonts.Medium,
+      color: selectedPaymentIndex === index ? COLORS.white : COLORS.navy_blue,
+      fontSize: ms(10),
+      marginTop: ms(2),
+    };
   },
-  _payByIcon: {
-    height: ms(22),
-    width: ms(22),
-    resizeMode: 'contain',
-    marginTop: ms(8),
+  _payByIcon: (selectedPaymentIndex, index) => {
+    return {
+      height: ms(18),
+      width: ms(18),
+      resizeMode: 'contain',
+      tintColor: selectedPaymentIndex === index ? COLORS.white : COLORS.navy_blue,
+    };
   },
   _bottomCardView: {
     position: 'absolute',
@@ -300,19 +306,23 @@ export const styles = StyleSheet.create({
   itemLIistCon: {
     // width: windowWidth * 0.67,
     flex: 0.7,
-    height: windowHeight * 0.88,
+    // height: windowHeight * 0.88,
     backgroundColor: COLORS.white,
     borderRadius: ms(12),
     paddingHorizontal: moderateScale(8),
     paddingTop: verticalScale(8),
+
+    marginRight: ms(7),
   },
   rightSideCon: {
     backgroundColor: COLORS.white,
     flex: 0.3,
-    height: windowHeight * 0.87,
+    // height: windowHeight * 0.87,
     padding: ms(8),
     borderRadius: ms(12),
-    marginLeft: ms(10),
+
+    marginRight: ms(7),
+    // marginLeft: ms(10),
   },
 
   categoryMenu: {
@@ -329,7 +339,7 @@ export const styles = StyleSheet.create({
   },
 
   allProduct: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(13),
     fontFamily: Fonts.Medium,
   },
@@ -378,7 +388,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     alignSelf: 'center',
   },
   holdCartPad: {
@@ -406,7 +416,7 @@ export const styles = StyleSheet.create({
   holdCart: {
     color: COLORS.dark_grey,
     fontSize: SF(12),
-    fontFamily: Fonts.Bold,
+    fontFamily: Fonts.Medium,
     paddingHorizontal: moderateScale(3),
   },
 
@@ -414,7 +424,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.dark_grey,
   },
   addNotesBtn: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     alignSelf: 'center',
   },
   nameAddCon: {
@@ -428,12 +438,14 @@ export const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   avaliableOfferCon: {
-    height: windowHeight * 0.05,
+    height: ms(25),
     borderTopEndRadius: ms(6),
     borderTopLeftRadius: ms(6),
     backgroundColor: COLORS.extraYello,
-    justifyContent: 'center',
     paddingHorizontal: moderateScale(5),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 
   addDiscountCon: (addnotes) => {
@@ -449,16 +461,21 @@ export const styles = StyleSheet.create({
       marginRight: ms(2),
     };
   },
-  addDiscountText: {
-    color: COLORS.coffee,
-    fontSize: ms(7.5),
-    fontFamily: Fonts.Medium,
+  addDiscountText: (value) => {
+    return {
+      color: value ? COLORS.coffee : COLORS.navy_blue,
+      fontSize: ms(7.5),
+      fontFamily: Fonts.Medium,
+    };
   },
-  addDiscountPic: {
-    width: SW(5),
-    height: SW(5),
-    resizeMode: 'contain',
-    paddingHorizontal: moderateScale(7),
+  addDiscountPic: (value) => {
+    return {
+      width: ms(10),
+      height: ms(10),
+      resizeMode: 'contain',
+      paddingHorizontal: moderateScale(7),
+      tintColor: value ? COLORS.coffee : COLORS.navy_blue,
+    };
   },
   totalItemCon: {
     borderTopWidth: 1,
@@ -733,7 +750,7 @@ export const styles = StyleSheet.create({
   addCartDetailConHeader2: {
     height: SH(55),
     borderBottomWidth: 1,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
   },
   addCartDetailCon: {
     backgroundColor: 'white',
@@ -745,9 +762,9 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(13),
   },
   jacketName: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontSize: SH(18),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
   },
   addCartDetailBody: {
     height: windowHeight * 0.82,
@@ -990,7 +1007,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   sukNumber: {
-    color: COLORS.darkGray,
+    color: COLORS.lavender,
     fontSize: SF(10),
     fontFamily: Fonts.Regular,
   },
@@ -1015,7 +1032,14 @@ export const styles = StyleSheet.create({
   _subTotalContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '80%',
+    // width: '80%',
+  },
+  totalView: {
+    backgroundColor: COLORS.textInputBackground,
+    height: ms(25),
+    paddingHorizontal: ms(10),
+    justifyContent: 'center',
+    borderRadius: ms(12),
   },
   _substotalTile: {
     color: COLORS.black,
@@ -1030,10 +1054,11 @@ export const styles = StyleSheet.create({
     marginTop: ms(4),
   },
   _horizontalLine: {
-    height: ms(1),
+    // height: ms(1),
+    borderWidth: 0.5,
     width: '90%',
     marginTop: ms(4),
-    backgroundColor: COLORS.textInputBackground,
+    borderColor: COLORS.light_purple,
   },
 
   _paymentTitleContainer: {
@@ -1044,20 +1069,20 @@ export const styles = StyleSheet.create({
   },
   _payTitle: {
     fontSize: ms(7),
-    fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
   },
   _paySubTitle: {
     fontSize: ms(7),
     fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
   },
   _commonPayTitle: {
     alignSelf: 'flex-start',
     marginLeft: ms(15),
     marginTop: ms(3),
     fontSize: ms(7),
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
   },
   boldInvoice: {
@@ -1093,31 +1118,41 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   _kSubCenterContainer: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(7),
+    fontSize: ms(8),
     marginTop: ms(5),
   },
   _kAddress: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: ms(6),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(7),
     marginTop: ms(5),
     paddingHorizontal: ms(5),
+    textAlign: 'center',
   },
   _kNumber: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: ms(6),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(7),
     marginTop: ms(3),
   },
-  _flatListContainer: { height: ms(100), width: '100%', marginTop: ms(5) },
+  _flatListContainer: {
+    // height: ms(100),
+    width: '100%',
+    marginTop: ms(5),
+    flex: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: COLORS.light_purple,
+  },
+
   _barCode: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(10),
     color: COLORS.dark_grey,
   },
-  _barCodeImage: { height: ms(25), width: '70%', marginTop: ms(5) },
+  _barCodeImage: { height: ms(25), width: '70%', marginTop: ms(2) },
   _thankyou: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(11),
@@ -1128,14 +1163,9 @@ export const styles = StyleSheet.create({
     marginTop: ms(15),
     height: 1,
     width: '50%',
-    backgroundColor: COLORS.silver_solid,
+    backgroundColor: COLORS.light_purple,
   },
-  _cashRemainText: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(15),
-    color: COLORS.solid_grey,
-    marginTop: ms(10),
-  },
+
   _printButton: {
     width: '30%',
     height: ms(26),
@@ -1184,18 +1214,21 @@ export const styles = StyleSheet.create({
   },
   addNotesCon2: {
     paddingHorizontal: moderateScale(8),
+    borderRadius: ms(15),
   },
   addDiscountConPop: {
     height: windowHeight * 0.55,
   },
   addNotesInput1: {
-    backgroundColor: COLORS.textInputBackground,
-    borderRadius: 5,
-    height: windowHeight * 0.27,
+    backgroundColor: COLORS.white,
+    borderRadius: ms(10),
+    height: ms(140),
     textAlignVertical: 'top',
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     borderWidth: 1,
     paddingHorizontal: moderateScale(10),
+    color: COLORS.navy_blue,
+    fontSize: ms(10),
   },
   addNotes: {
     fontSize: SF(14),
@@ -1271,31 +1304,39 @@ export const styles = StyleSheet.create({
   },
 
   homeScreenCon: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: COLORS.textInputBackground,
-    paddingHorizontal: Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
+    // paddingHorizontal: Platform.OS === 'android' ? moderateScale(12) : moderateScale(12),
   },
   productView: {
     backgroundColor: Colors.white,
-    borderTopLeftRadius: 10,
-    borderTopEndRadius: 10,
-    width: Platform.OS === 'android' ? windowWidth * 0.82 : windowWidth * 0.8,
-    height: windowHeight * 0.88,
+    borderRadius: ms(12),
+    flex: 0.99,
     paddingTop: verticalScale(6),
     paddingHorizontal: moderateScale(10),
+    marginRight: ms(7),
   },
   rightSideView: {
     backgroundColor: Colors.white,
     borderRadius: ms(30),
-    width: windowWidth * 0.06,
-    height: windowHeight * 0.88,
+    flex: 0.09,
     paddingVertical: verticalScale(15),
     alignItems: 'center',
+    marginRight: ms(7),
   },
   sideBarImage: {
     width: SW(9),
     height: SW(9),
     resizeMode: 'contain',
+  },
+  mainScreenArrow: (value) => {
+    return {
+      width: SW(9),
+      height: SW(9),
+      resizeMode: 'contain',
+      transform: [{ rotate: '90deg' }],
+      tintColor: value ? COLORS.sky_blue : COLORS.navy_blue,
+    };
   },
   crossImage: {
     width: SW(10),
@@ -1376,15 +1417,11 @@ export const styles = StyleSheet.create({
   searchCartInput: {
     width: windowWidth * 0.35,
   },
-  allProduct: {
-    color: COLORS.solid_grey,
-    fontSize: ms(8),
-    fontFamily: Fonts.SemiBold,
-  },
+
   productCount: {
-    color: COLORS.darkGray,
+    color: COLORS.lavender,
     fontSize: SF(14),
-    fontFamily: Fonts.Italic,
+    fontFamily: Fonts.Medium,
   },
   hr: {
     borderWidth: 0.4,
@@ -1465,9 +1502,10 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   sideAddToCart: {
-    width: SW(10),
-    height: SW(10),
+    width: ms(10),
+    height: ms(10),
     resizeMode: 'contain',
+    tintColor: COLORS.extraYellow,
   },
   bucketBadge: {
     borderWidth: 2,
@@ -1496,7 +1534,7 @@ export const styles = StyleSheet.create({
   },
   bucketBadgePrimary: {
     borderColor: COLORS.white,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
   },
   badgetext: {
     color: COLORS.dark_grey,
@@ -1515,8 +1553,8 @@ export const styles = StyleSheet.create({
     height: ms(13),
     borderRadius: ms(10),
     position: 'absolute',
-    right: -5,
-    bottom: -6,
+    right: -9,
+    bottom: -8,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: COLORS.gerySkies,
@@ -1536,8 +1574,18 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.primary,
     backgroundColor: COLORS.white,
   },
+  serviceFilterBadge: {
+    borderWidth: 1,
+    width: ms(10),
+    height: ms(10),
+    borderRadius: ms(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: COLORS.navy_blue,
+    backgroundColor: COLORS.white,
+  },
   holdBadgePrimary: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     borderColor: COLORS.white,
   },
   holdBadgetext: {
@@ -1555,41 +1603,59 @@ export const styles = StyleSheet.create({
   //NEW DESIGN
 
   //Tip
-  _payBYBoxContainerTip: {
-    borderColor: COLORS.solidGrey,
-    borderWidth: 1,
-    height: ms(50),
-    width: Platform.OS === 'ios' ? ms(90) : ms(116),
-    marginHorizontal: ms(3),
-    borderRadius: ms(6),
-    justifyContent: 'center',
-    alignItems: 'center',
+  _payBYBoxContainerTip: (selectedTipIndex, index) => {
+    return {
+      borderColor: selectedTipIndex === index ? COLORS.tip_blue : COLORS.tip_border,
+      borderWidth: 1,
+      height: ms(60),
+      width: Platform.OS === 'ios' ? ms(90) : ms(116),
+      marginHorizontal: ms(3),
+      borderRadius: ms(10),
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: selectedTipIndex === index ? COLORS.tip_blue : COLORS.tip_back,
+    };
   },
 
-  _payByAmountTip: {
-    fontFamily: Fonts.Regular,
-    color: COLORS.solid_grey,
-    fontSize: ms(9),
-    marginTop: ms(4),
+  _payByAmountTip: (selectedTipIndex, index) => {
+    return {
+      fontFamily: Fonts.Regular,
+      color: selectedTipIndex === index ? COLORS.white : COLORS.purple,
+      fontSize: ms(8),
+      marginTop: ms(4),
+    };
   },
-  _payByMethodTip: {
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
-    fontSize: ms(12),
-    marginTop: ms(4),
+  _payByMethodTip: (selectedTipIndex, index) => {
+    return {
+      fontFamily: Fonts.SemiBold,
+      color: selectedTipIndex === index ? COLORS.white : COLORS.purple,
+      fontSize: ms(13),
+      marginTop: ms(4),
+    };
   },
 
   //Recipe
 
-  _payBYBoxContainerReceipe: {
-    borderColor: COLORS.solidGrey,
-    borderWidth: 1,
-    height: ms(45),
-    width: Platform.OS === 'ios' ? ms(122) : ms(157),
-    margin: ms(3),
-    borderRadius: ms(6),
-    justifyContent: 'center',
-    alignItems: 'center',
+  _payBYBoxContainerReceipe: (selectedRecipeIndex, index) => {
+    return {
+      borderColor: COLORS.faded_yellow,
+      borderWidth: 1,
+      height: ms(60),
+      width: Platform.OS === 'ios' ? ms(100) : ms(135),
+      margin: ms(3),
+      borderRadius: ms(9),
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: selectedRecipeIndex === index ? COLORS.orange_bright : COLORS.light_yellow,
+    };
+  },
+  recipeIcon: (selectedRecipeIndex, index) => {
+    return {
+      height: ms(18),
+      width: ms(18),
+      resizeMode: 'contain',
+      // tintColor: selectedRecipeIndex === index ? COLORS.white : COLORS.redish_brown,
+    };
   },
   _payBYBoxContainerReceipeEmpty: {
     height: ms(50),
@@ -1604,35 +1670,33 @@ export const styles = StyleSheet.create({
     fontSize: ms(9),
     marginTop: ms(4),
   },
-  _payByMethodReceipe: {
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
-    fontSize: ms(12),
-    // marginTop: ms(4),
+  _payByMethodReceipe: (selectedRecipeIndex, index) => {
+    return {
+      fontFamily: Fonts.Medium,
+      color: selectedRecipeIndex === index ? COLORS.white : COLORS.redish_brown,
+      fontSize: ms(10),
+    };
   },
   selectTips: {
     fontSize: ms(11),
-    margin: ms(3),
-    fontFamily: Fonts.Regular,
-    color: COLORS.gerySkies,
+    margin: ms(10),
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
+    alignSelf: 'center',
   },
   saveView: {
-    backgroundColor: '#F5F6F7',
-    height: ms(15),
-    width: ms(80),
+    backgroundColor: COLORS.save_yellow,
+    height: ms(18),
+    width: ms(60),
     margin: ms(3),
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
+    borderRadius: ms(9),
   },
   saveText1: {
     fontSize: ms(8),
     fontFamily: Fonts.SemiBold,
-  },
-  saveText1dark: {
-    color: COLORS.primary,
-    fontSize: ms(8),
-    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
   },
   _kCenterContainer: {
     height: '100%',
@@ -1642,19 +1706,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.textInputBackground,
     alignItems: 'center',
   },
-  _kSubCenterContainer: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(7),
-    marginTop: ms(5),
-  },
-  _kNumber: {
-    color: COLORS.dark_grey,
-    fontFamily: Fonts.Regular,
-    fontSize: ms(6),
-    marginTop: ms(3),
-  },
-  _flatListContainer: { height: ms(100), width: '100%', marginTop: ms(5) },
+
   _barCode: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(10),
@@ -1676,7 +1728,7 @@ export const styles = StyleSheet.create({
   _cashRemainText: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(15),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     marginTop: ms(10),
   },
   _printButton: {
@@ -1706,35 +1758,46 @@ export const styles = StyleSheet.create({
   },
 
   avaliableOferBodyCon: {
-    height: Platform.OS === 'android' ? windowHeight * 0.07 : windowHeight * 0.07,
+    height: ms(45),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: ms(10),
-    paddingVertical: verticalScale(7),
+    alignItems: 'flex-start',
+    padding: ms(7),
+  },
+  offerImagebackground: {
+    width: ms(20),
+    height: ms(20),
+    backgroundColor: COLORS.light_yellow,
+    borderRadius: ms(4),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   offerImage: {
-    width: SW(10),
-    height: SW(10),
+    width: ms(20),
+    height: ms(20),
     resizeMode: 'contain',
-    borderRadius: 100,
+    borderRadius: ms(4),
   },
   offerText: {
-    color: COLORS.dark_grey,
-    fontSize: SF(10),
+    color: COLORS.coffee,
+    fontSize: ms(8),
     fontFamily: Fonts.Medium,
   },
+  offerTextYellow: {
+    color: COLORS.extraYellow,
+  },
   offerPrice: {
-    color: COLORS.darkGray,
-    fontSize: SF(9),
-    fontFamily: Fonts.Regular,
+    color: COLORS.extraYellow,
+    fontSize: ms(8),
+    fontFamily: Fonts.Medium,
   },
   lineTrought: {
     textDecorationLine: 'line-through',
   },
   offerPriceDark: {
-    color: COLORS.dark_grey,
-    fontSize: SF(9),
-    fontFamily: Fonts.SemiBold,
+    color: COLORS.coffee,
+    fontSize: ms(8),
+    fontFamily: Fonts.Medium,
     textDecorationLine: 'none',
   },
   cartListModalView: {
@@ -2038,23 +2101,24 @@ export const styles = StyleSheet.create({
   //  final payment design css start
   leftCon: {
     backgroundColor: COLORS.white,
-    borderRadius: 8,
-    width: windowWidth * 0.65,
-    height: windowHeight * 0.9,
+    borderRadius: ms(12),
+    flex: 0.7,
+    marginRight: ms(7),
   },
   rightCon: {
     backgroundColor: COLORS.white,
-    borderRadius: 8,
-    width: Platform.OS === 'ios' ? windowWidth * 0.23 : windowWidth * 0.25,
-    height: windowHeight * 0.9,
+    borderRadius: ms(12),
+    flex: 0.3,
+    marginRight: ms(7),
+    paddingVertical: ms(8),
   },
   //  final payment design css end
 
   selectTipsHeader: {
-    backgroundColor: COLORS.blue_shade,
     borderTopLeftRadius: 8,
     borderTopEndRadius: 8,
     paddingVertical: verticalScale(6),
+    borderWidth: 1,
   },
 
   // jbrcoin modal popup
@@ -2086,7 +2150,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   productText: {
-    fontSize: SF(14),
+    fontSize: ms(7),
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
   },
@@ -2400,7 +2464,8 @@ export const styles = StyleSheet.create({
     width: ms(90),
     height: ms(30),
     resizeMode: 'contain',
-    marginTop: ms(2),
+    tintColor: COLORS.navy_blue,
+    alignSelf: 'center',
   },
 
   dropDownIcon: {
