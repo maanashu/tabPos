@@ -54,7 +54,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
 
         <View style={[styles.orderDetailStyle, { width: undefined }]}>
           <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
-          <View style={[styles.locationViewStyle, { backgroundColor: COLORS.extra_purple_50 }]}>
+          <View style={[styles.locationViewStyle, { backgroundColor: COLORS.tip_back }]}>
             <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
             <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
               {item?.distance ? `${item.distance} miles` : '0'}

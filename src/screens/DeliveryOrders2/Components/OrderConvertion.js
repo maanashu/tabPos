@@ -114,12 +114,12 @@ const OrderConvertion = () => {
               {/* <Text style={styles.orderTypeTextStyle}>
                 {strings.shippingOrder.processingOrders}
               </Text> */}
-              <Text style={[styles.orderTypeTextStyle, { color: COLORS.extra_yellow_800 }]}>
+              <Text style={[styles.orderTypeTextStyle, { color: COLORS.extraYellow }]}>
                 {strings.shippingOrder.returned}
               </Text>
               <View style={[styles.countContainer, { color: COLORS.light_yellow }]}>
                 <View style={styles.returnedDot}></View>
-                <Text style={[styles.countTextStyle, { color: COLORS.extra_yellow_800 }]}>
+                <Text style={[styles.countTextStyle, { color: COLORS.extraYellow }]}>
                   {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
                 </Text>
               </View>

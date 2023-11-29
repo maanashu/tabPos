@@ -44,6 +44,23 @@ const Graph = () => {
   const [showProcessing, setShowProcessing] = useState(true);
   const [showReadyToPickup, setShowReadyToPickup] = useState(true);
   const [showCompleted, setShowCompleted] = useState(true);
+  const month = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const d = new Date();
+  const CurrentMonth = month[d.getUTCMonth()];
 
   useEffect(() => {
     convertData();
@@ -249,7 +266,7 @@ const Graph = () => {
   return (
     <View style={styles.graphViewStyle}>
       <View>
-        <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
+        {/* <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text> */}
         {/* <Spacer space={SH(30)} /> */}
         <View style={[styles.flexRow, { zIndex: 999 }]}>
           <TouchableOpacity
@@ -352,6 +369,21 @@ const Graph = () => {
             barWidth={SW(3.5)}
             yAxisTextStyle={styles.yAxisTextStyle}
           /> */}
+          <Text
+            style={{
+              position: 'absolute',
+              bottom: ms(95),
+              left: ms(-20),
+              zIndex: 1,
+              transform: [{ rotate: '270deg' }],
+              color: COLORS.lavender,
+              fontSize: ms(6),
+              fontFamily: Fonts.Regular,
+            }}
+          >
+            {strings.deliveryOrders.orderNumber}
+          </Text>
+
           <LineChart
             withDots={false}
             withVerticalLines={false}
@@ -409,6 +441,18 @@ const Graph = () => {
             fromZero
             segments={5}
           />
+          <Text
+            style={{
+              position: 'absolute',
+              bottom: 10,
+              left: width * 0.22,
+              color: COLORS.lavender,
+              fontSize: ms(6),
+              fontFamily: Fonts.Regular,
+            }}
+          >
+            {CurrentMonth}
+          </Text>
         </View>
       )}
     </View>

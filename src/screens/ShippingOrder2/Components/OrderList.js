@@ -77,7 +77,7 @@ const OrderList = ({
       <View style={styles.rowContainerStyle}>
         <View style={[styles.orderDetailStyle, { paddingHorizontal: 2, width: undefined }]}>
           <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
-          <View style={[styles.locationViewStyle, { backgroundColor: COLORS.extra_purple_50 }]}>
+          <View style={[styles.locationViewStyle, { backgroundColor: COLORS.tip_back }]}>
             <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
             <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
               {item?.distance ? `${item.distance} miles` : '0'}
@@ -168,9 +168,7 @@ const OrderList = ({
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
               <View style={[styles.orderDetailStyle, { width: undefined }]}>
                 <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
-                <View
-                  style={[styles.locationViewStyle, { backgroundColor: COLORS.extra_purple_50 }]}
-                >
+                <View style={[styles.locationViewStyle, { backgroundColor: COLORS.tip_back }]}>
                   <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
                   <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
                     {item?.distance ? `${item.distance} miles` : '0'}
@@ -316,9 +314,7 @@ const OrderList = ({
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
               <View style={[styles.orderDetailStyle, { width: undefined }]}>
                 <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
-                <View
-                  style={[styles.locationViewStyle, { backgroundColor: COLORS.extra_purple_50 }]}
-                >
+                <View style={[styles.locationViewStyle, { backgroundColor: COLORS.tip_back }]}>
                   <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
                   <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
                     {item?.distance ? `${item.distance} miles` : '0'}

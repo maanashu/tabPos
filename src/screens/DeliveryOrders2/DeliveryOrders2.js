@@ -359,13 +359,10 @@ export function DeliveryOrders2({ route }) {
           <View
             style={[
               styles.locationViewStyle,
-              { backgroundColor: COLORS.extra_purple_50, borderRadius: 100 },
+              { backgroundColor: COLORS.tip_back, borderRadius: 100 },
             ]}
           >
-            <Image
-              source={pin}
-              style={[styles.pinImageStyle, { tintColor: COLORS.extra_purple_300 }]}
-            />
+            <Image source={pin} style={[styles.pinImageStyle, { tintColor: COLORS.tip_blue }]} />
             <Text style={styles.distanceTextStyle}>
               {item?.distance ? `${item.distance} miles` : '0'}
             </Text>

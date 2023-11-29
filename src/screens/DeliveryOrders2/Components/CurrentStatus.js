@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     paddingVertical: ms(5),
     marginHorizontal: ms(12),
     paddingHorizontal: ms(8),
-    borderColor: COLORS.extra_purple_300,
+    borderColor: COLORS.tip_blue,
     backgroundColor: COLORS.white,
   },
   deliveryTypeImage: {
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   totalTextStyle: {
     paddingTop: ms(3),
     fontSize: scale(4),
-    color: COLORS.faded_lavendar,
+    color: COLORS.tip_border,
     fontFamily: Fonts.SemiBold,
   },
 });
