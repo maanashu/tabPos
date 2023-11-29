@@ -66,7 +66,7 @@ export function DrawerNavigator(props) {
       contentContainerStyle={styles.contentContainerStyle}
       bounces={false}
     >
-      <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+      <ScrollView showsVerticalScrollIndicator={false} bounces={false} style={{ width: SW(25) }}>
         <DrawerItem
           label={''}
           pressColor={COLORS.transparent}

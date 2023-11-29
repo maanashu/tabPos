@@ -31,6 +31,7 @@ import {
   getMainServices,
   getOneProduct,
   getOneService,
+  getServiceCart,
   getServiceCategory,
   getServiceSubCategory,
   getSubCategory,
@@ -88,6 +89,7 @@ export function RetailServices(props) {
       seller_id: sellerID,
     };
     dispatch(getAllPosUsers(data));
+    dispatch(getServiceCart());
   }, []);
 
   useEffect(() => {

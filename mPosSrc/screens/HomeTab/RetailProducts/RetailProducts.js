@@ -26,6 +26,7 @@ import { debounce } from 'lodash';
 import {
   cartRun,
   createBulkcart,
+  getAllCart,
   getBrand,
   getCategory,
   getMainProduct,
@@ -100,6 +101,7 @@ export function RetailProducts(props) {
     dispatch(getCategory(sellerID));
     dispatch(getSubCategory(sellerID));
     dispatch(getBrand(sellerID));
+    dispatch(getAllCart());
   }, []);
   useEffect(() => {
     // dispatch(getProduct({}, 1));
