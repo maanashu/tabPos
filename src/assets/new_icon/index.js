@@ -13,4 +13,13 @@ export const Images = {
   emailBlueIcon: require('@/assets/new_icon/Settings/email_blue_icon.png'),
   phoneMsgIcon: require('@/assets/new_icon/Settings/phone_message.png'),
   printerIcon: require('@/assets/new_icon/Settings/printer_icon.png'),
+  deliveryHandIcon: require('@/assets/new_icon/Settings/delivery_hand.png'),
+  planeIcon: require('@/assets/new_icon/Settings/plane.png'),
+  postMotorIcon: require('@/assets/new_icon/Settings/post_motor.png'),
+  marketplaceIcon: require('@/assets/new_icon/Settings/marketplace_outline.png'),
+  plusCircleIcon: require('@/assets/new_icon/Settings/plus_circle_outline.png'),
+  arrowUpRightIcon: require('@/assets/new_icon/Settings/arrow_right_up.png'),
+  usersOutlineIcon: require('@/assets/new_icon/Settings/users_outline.png'),
+  languageIcon: require('@/assets/new_icon/Settings/language_icon.png'),
+  calendarIcon: require('@/assets/new_icon/Settings/calendar_outline.png'),
 };
