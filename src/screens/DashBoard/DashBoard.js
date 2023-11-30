@@ -34,6 +34,15 @@ import {
   productReturn,
   userImage,
   scanSearch,
+  boxIcon,
+  lockIcon,
+  marketplaceIcon,
+  cartBlueIcon,
+  searchBlueIcon,
+  locationSolidIcon,
+  moneySolidIcon,
+  timeBlueIcon,
+  arrowRightIcon,
 } from '@/assets';
 import {
   addSellingSelection,
@@ -183,15 +192,15 @@ export function DashBoard({ navigation }) {
   const STARTSELLING = [
     {
       id: 1,
-      heading: 'START SELLING',
+      heading: 'Start Selling',
       subHeading: 'Scan/Search',
-      image: sellingBucket,
+      image: marketplaceIcon,
     },
     {
       id: 2,
-      heading: 'ONLINE ORDERS ',
+      heading: 'Online Orders',
       subHeading: onLineOrder + ' ' + 'Orders',
-      image: onlineMan,
+      image: cartBlueIcon,
     },
   ];
 
@@ -317,37 +326,45 @@ export function DashBoard({ navigation }) {
           {item?.user_details?.firstname ?? 'userName'}
         </Text>
         <View style={styles.timeView}>
-          <Image source={pin} style={styles.pinIcon} />
-          <Text style={styles.timeText}>{item?.distance ? item?.distance : '0miles'} miles</Text>
+          <Image source={locationSolidIcon} style={styles.pinIcon} />
+          <Text style={[styles.timeText, { color: COLORS.purple }]}>
+            {item?.distance ? item?.distance : '0miles'} miles
+          </Text>
         </View>
       </View>
 
       <View style={{ width: SW(25) }}>
         <Text style={styles.nameText}>{item?.order_details?.length} items</Text>
         <View style={styles.timeView}>
-          <Image source={pay} style={styles.pinIcon} />
-          <Text style={styles.timeText}>${item.payable_amount ? item.payable_amount : '0'}</Text>
+          <Image source={moneySolidIcon} style={styles.pinIcon} />
+          <Text style={[styles.timeText, { color: COLORS.success_green }]}>
+            ${item.payable_amount ? item.payable_amount : '0'}
+          </Text>
         </View>
       </View>
-      <View style={{ width: SW(50) }}>
-        <Text style={[styles.nameText, styles.nameTextBold]} numberOfLines={1}>
-          {item?.delivery_details?.title}
+      <View style={{ minWidth: SW(50), maxWidth: SW(70) }}>
+        <Text style={styles.nameText}>
+          {item?.preffered_delivery_start_time} - {item?.preffered_delivery_end_time}
         </Text>
         <View style={styles.timeView}>
-          <Image source={clock} style={styles.pinIcon} />
-          <Text style={styles.timeText}>
-            {item?.preffered_delivery_start_time} - {item?.preffered_delivery_end_time}
+          <Image source={timeBlueIcon} style={styles.pinIcon} />
+          <Text
+            style={[styles.timeText, styles.nameTextBold, { color: COLORS.light_time }]}
+            numberOfLines={1}
+          >
+            {item?.delivery_details?.title}
           </Text>
         </View>
       </View>
+      <Image source={arrowRightIcon} style={styles.arrowIcon} />
       <View style={styles.rightIconStyle1}>
-        <View style={styles.timeView}>
-          <Text style={[styles.nameTextBold, styles.timeSec]}>
-            {item.estimated_preparation_time === null
+        <View style={[styles.timeView, { paddingTop: 0 }]}>
+          <Text style={[styles.nameTextBold, { color: COLORS.textBlue }]}>
+            {'00:00:00'}
+            {/* {item.estimated_preparation_time === null
               ? '00:00:00'
-              : orderTime(item.estimated_preparation_time)}
+              : orderTime(item.estimated_preparation_time)} */}
           </Text>
-          <Image source={rightIcon} style={styles.pinIcon} />
         </View>
       </View>
     </TouchableOpacity>
@@ -590,7 +607,7 @@ export function DashBoard({ navigation }) {
           >
             <View style={styles.btnInnerContainer}>
               <Text style={styles.checkoutText1}>{strings.dashboard.productReturn}</Text>
-              <Image source={productReturn} style={styles.lockLight} />
+              <Image source={boxIcon} style={styles.lockLight} />
             </View>
           </TouchableOpacity>
 
@@ -617,7 +634,7 @@ export function DashBoard({ navigation }) {
           >
             <View style={styles.btnInnerContainer}>
               <Text style={[styles.checkoutText1]}>{strings.dashboard.lockScreen}</Text>
-              <Image source={lockLight} style={styles.lockLight} />
+              <Image source={lockIcon} style={styles.lockLight} />
             </View>
           </TouchableOpacity>
 
@@ -669,20 +686,43 @@ export function DashBoard({ navigation }) {
 
           <View style={styles.displayflex}>
             {STARTSELLING.map((item, index) => (
-              <View style={styles.storeCardCon} key={index}>
+              <TouchableOpacity
+                onPress={() => startSellingHandler(item.id)}
+                style={[
+                  styles.storeCardCon,
+                  { backgroundColor: index === 0 ? COLORS.navy_blue : COLORS.solid_grey },
+                ]}
+                key={index}
+              >
                 <Image source={item.image} style={styles.sellingBucket} />
                 <Spacer space={SH(8)} />
                 <Text style={styles.startSelling}>{item.heading}</Text>
-                <Spacer space={SH(4)} />
-                <Text style={styles.scanSer}>{item.subHeading}</Text>
                 <Spacer space={SH(12)} />
-                <TouchableOpacity
+                {index === 0 ? (
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={searchBlueIcon} style={styles.searchIconInCard} />
+                    <Text style={styles.searchTxtStyle}>Scan / Search</Text>
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderColor: COLORS.sky_blue,
+                      borderRadius: 30,
+                      paddingVertical: SH(4),
+                      paddingHorizontal: SW(3),
+                    }}
+                  >
+                    <Text style={styles.searchTxtStyle}>New Orders</Text>
+                  </View>
+                )}
+                {/* <TouchableOpacity
                   style={styles.arrowBtnCon}
-                  onPress={() => startSellingHandler(item.id)}
+                  
                 >
                   <Image source={sellingArrow} style={styles.sellingArrow} />
-                </TouchableOpacity>
-              </View>
+                </TouchableOpacity> */}
+              </TouchableOpacity>
             ))}
           </View>
           <Spacer space={SH(20)} />
