@@ -229,13 +229,12 @@ export const getStoreLocation = () => async (dispatch) => {
   }
 };
 
-export const updateUserProfile = (data) => async (dispatch) => {
+export const updateUserProfile = (data, id) => async (dispatch) => {
   dispatch(updateUserProfileRequest());
   try {
-    const res = await CustomersController.updateUserProfile(data);
+    const res = await CustomersController.updateUserProfile(data, id);
     dispatch(updateUserProfileSuccess(res?.payload));
     // dispatch(getUserOrder());
-    alert('data');
   } catch (error) {
     dispatch(updateUserProfileError(error.message));
   }
