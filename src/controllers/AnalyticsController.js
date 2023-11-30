@@ -320,7 +320,7 @@ export class AnalyticsController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getAnalyticStatistics +
-        `?seller_id=${sellerID}&${params}&page=${page}&limit=20`;
+        `?seller_id=${sellerID}&${params}&page=${page}&limit=10`;
 
       HttpClient.get(endpoint)
         .then((response) => {

@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   totalProductCon: {
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
-    width: Platform.OS === 'android' ? windowWidth * 0.268 : windowWidth * 0.27,
+    width: Platform.OS === 'android' ? windowWidth * 0.268 : windowWidth * 0.264,
     height: Platform.OS === 'android' ? windowHeight * 0.29 : windowHeight * 0.28,
     resizeMode: 'contain',
     // ...ShadowStyles.shadow2,
@@ -351,7 +351,7 @@ export const styles = StyleSheet.create({
     // backgroundColor: COLORS.white,
     width:
       Platform.OS === 'ios'
-        ? Dimensions.get('window').width - ms(105)
+        ? Dimensions.get('window').width - ms(150)
         : Dimensions.get('window').width - ms(175),
     // width:
     //   Platform.OS === 'ios'
@@ -362,7 +362,7 @@ export const styles = StyleSheet.create({
     zIndex: -99,
     width:
       Platform.OS === 'ios'
-        ? Dimensions.get('window').width - ms(105)
+        ? Dimensions.get('window').width - ms(150)
         : Dimensions.get('window').width - ms(175),
 
     // width:
@@ -373,7 +373,7 @@ export const styles = StyleSheet.create({
   mainListContainer: {
     zIndex: -99,
     // backgroundColor: COLORS.white,
-    height: Platform.OS === 'ios' ? ms(255) : ms(288),
+    height: Platform.OS === 'ios' ? ms(300) : ms(288),
     borderBottomRightRadius: ms(10),
     borderBottomLeftRadius: ms(10),
   },

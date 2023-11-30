@@ -213,7 +213,7 @@ export function Analytics2() {
         endDated={endDated}
       />
     ),
-    ['TotalProfit']: <TotalProfit />,
+    ['TotalProfit']: <TotalProfit sellerID={sellerID} data={data} />,
     ['Revenue']: <Revenue />,
     ['TotalCost']: <TotalCost />,
     ['TotalDeliveryOrders']: (

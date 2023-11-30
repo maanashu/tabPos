@@ -62,7 +62,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function Revenue() {
+export function Revenue({ sellerID, data }) {
   const dispatch = useDispatch();
 
   const getAnalyticsData = useSelector(getAnalytics);
@@ -290,8 +290,9 @@ export function Revenue() {
                   <FlatList
                     style={styles.listStyle}
                     data={analyticStatistics?.orderData?.data}
+                    extraData={analyticStatistics?.orderData?.data}
                     renderItem={getRevenueList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
                     // bounces={false}

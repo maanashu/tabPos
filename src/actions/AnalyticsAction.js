@@ -482,8 +482,8 @@ export const getSellerProductDetails = (sellerID) => async (dispatch) => {
 };
 
 export const getAnalyticStatistics = (sellerID, data, page, callback) => async (dispatch) => {
-  const analyticsGraph = store.getState()?.analytics?.getAnalyticStatistics;
   dispatch(getAnalyticStatisticsRequest());
+  const analyticsGraph = store.getState()?.analytics?.getAnalyticStatistics;
   try {
     const res = await AnalyticsController.getAnalyticStatistics(sellerID, data, page);
     const prevAnalyticsGraph = { ...analyticsGraph };
@@ -495,6 +495,8 @@ export const getAnalyticStatistics = (sellerID, data, page, callback) => async (
       prevAnalyticsGraph.orderData.data = prevAnalyticsGraph?.orderData.data?.concat(
         res?.payload?.orderData?.data
       );
+      console.log('first', prevAnalyticsGraph);
+
       dispatch(getAnalyticStatisticsSuccess(prevAnalyticsGraph));
     } else {
       dispatch(getAnalyticStatisticsSuccess(res?.payload));
@@ -526,9 +528,9 @@ export const getTotalOrder = (sellerID, data) => async (dispatch) => {
 };
 
 export const getTotalInventory = (sellerID, data, page, callback) => async (dispatch) => {
+  dispatch(getTotalInventoryRequest());
   const inventory = store.getState()?.analytics?.getTotalInventory;
 
-  dispatch(getTotalInventoryRequest());
   try {
     const res = await AnalyticsController.getTotalInventory(sellerID, data, page);
     const prevInventory = { ...inventory };
