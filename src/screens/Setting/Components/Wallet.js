@@ -70,7 +70,7 @@ export function Wallet() {
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={wallet} style={styles.securityLogo} />
             <View style={styles.twoStepVerifiCon}>
-              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
+              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold, fontSize: SF(18) }]}>
                 {strings.wallet.payJBR}
               </Text>
               <Text style={styles.systemPos}>{strings.wallet.system}</Text>
@@ -95,7 +95,7 @@ export function Wallet() {
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={walletConfigCash} style={styles.securityLogo} />
             <View style={styles.twoStepVerifiCon}>
-              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
+              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold, fontSize: SF(18) }]}>
                 {strings.wallet.payCash}
               </Text>
               <Text style={styles.systemPos}>{strings.wallet.systemPOS}</Text>
@@ -112,7 +112,9 @@ export function Wallet() {
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={walletConfigCard} style={styles.securityLogo} />
             <View style={styles.twoStepVerifiCon}>
-              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>Pay by Card</Text>
+              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold, fontSize: SF(18) }]}>
+                Pay by Card
+              </Text>
               <Text style={styles.systemPos}>{strings.wallet.systemPOS}</Text>
               <Spacer space={SH(5)} />
               <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
