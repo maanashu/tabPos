@@ -9,30 +9,23 @@ import {
 } from 'react-native';
 import React from 'react';
 import { ms } from 'react-native-size-matters';
-import BackButton from '../../../components/BackButton';
-import { Fonts, barcode, logo_full, clothes, minus, plus } from '@/assets';
+import { Fonts, clothes, minus, plus } from '@/assets';
 import moment from 'moment';
-import AddedCartItemsCard from '../../../components/AddedCartItemsCard';
-import { useFocusEffect } from '@react-navigation/native';
-import { clearServiceAllCart, getServiceCart } from '@/actions/RetailAction';
-import { useDispatch, useSelector } from 'react-redux';
-import { getRetail } from '@/selectors/RetailSelectors';
-import { getAuthData } from '@/selectors/AuthSelector';
-import { getUser } from '@/selectors/UserSelectors';
-import { formattedReturnPrice } from '@/utils/GlobalMethods';
+
 import { CustomHeader } from './CustomHeader';
-import { Spacer } from '@/components';
 import { COLORS, SH } from '@/theme';
 import { Images } from '@/assets/new_icon';
 import { useState } from 'react';
-import { width } from '@/theme/ScalerDimensions';
-import { Col } from 'react-native-table-component';
+import { useEffect } from 'react';
 
 moment.suppressDeprecationWarnings = true;
 
-export const AddProductScreen = () => {
+export const AddProductScreen = ({ backHandler }) => {
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
+  useEffect(() => {
+    alert('only Ui , not functionality implemented');
+  }, []);
 
   const ColorItem = ({ item, onPress, backgroundColor, style }) => (
     <TouchableOpacity
@@ -118,7 +111,7 @@ export const AddProductScreen = () => {
         <View style={styles.leftCon}>
           <View style={{ marginTop: ms(10), flex: 1 }}>
             <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity onPress={() => alert('in progress')}>
+              <TouchableOpacity onPress={() => backHandler()}>
                 <Image source={Images.arrowLeftUp} style={styles.leftIcon} />
               </TouchableOpacity>
               <View style={{ marginLeft: ms(7) }}>
@@ -279,8 +272,56 @@ export const AddProductScreen = () => {
 
             <View style={{ marginTop: ms(20), flex: 1 }}>
               <Text style={styles.addNewProduct}>{'Stock on hand'}</Text>
-              <View style={styles.stockOnHandCon}></View>
-              <View>
+              <View style={styles.stockOnHandCon}>
+                <View>
+                  <FlatList
+                    data={[1, 2, 3, 4, 5, 6, 7]}
+                    horizontal
+                    keyExtractor={(item) => item.id}
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({ item, index }) => {
+                      return (
+                        <View style={styles.stockProduct} key={index}>
+                          <Image source={clothes} style={styles.productImage} />
+                          <View style={styles.colorNameView}>
+                            <Text style={styles.storeText}>{'Yellow'}</Text>
+                          </View>
+                        </View>
+                      );
+                    }}
+                    contentContainerStyle={{
+                      // flex: 1,
+                      justifyContent: 'space-between',
+                      marginTop: ms(10),
+                    }}
+                  />
+                </View>
+
+                <View style={styles.notifySection}>
+                  <View style={styles.notifyBodyCon}>
+                    <Text style={styles.storeText}>{'Sizes'}</Text>
+                    <Text style={styles.storeText}>{'S'}</Text>
+                    <Text style={styles.storeText}>{'M'}</Text>
+                    <Text style={styles.storeText}>{'XL'}</Text>
+                    <Text style={styles.storeText}>{'XXl'}</Text>
+                  </View>
+                  <View style={styles.notifyBodyCon}>
+                    <Text style={styles.storeText}>{'Stock'}</Text>
+                    <Text style={styles.storeText}>{'10'}</Text>
+                    <Text style={styles.storeText}>{'3'}</Text>
+                    <Text style={styles.storeText}>{'6'}</Text>
+                    <Text style={styles.storeText}>{'8'}</Text>
+                  </View>
+                  <View style={styles.notifyBodyCon}>
+                    <Text style={styles.storeText}>{'Notify'}</Text>
+                    <Image source={Images.notify} style={styles.bellIcon} />
+                    <Image source={Images.notify} style={styles.bellIcon} />
+                    <Image source={Images.notify} style={styles.bellIcon} />
+                    <Image source={Images.notify} style={styles.bellIcon} />
+                  </View>
+                </View>
+              </View>
+              <View style={{ marginTop: ms(10) }}>
                 <Text style={styles.addNewProduct}>{'Availability'}</Text>
                 <FlatList
                   data={availblityArray}
@@ -470,9 +511,9 @@ export const styles = StyleSheet.create({
     height: ms(14),
     backgroundColor: COLORS.textInputBackground,
     borderRadius: ms(10),
-    justifyContent: 'flex-start',
     paddingHorizontal: ms(8),
     flexDirection: 'row',
+    alignItems: 'center',
   },
   skudetailText: {
     fontSize: ms(8),
@@ -503,6 +544,11 @@ export const styles = StyleSheet.create({
     height: ms(14),
     resizeMode: 'contain',
   },
+  bellIcon: {
+    width: ms(20),
+    height: ms(20),
+    resizeMode: 'contain',
+  },
   toggleIcon: {
     width: ms(20),
     height: ms(20),
@@ -513,5 +559,47 @@ export const styles = StyleSheet.create({
     fontSize: ms(9),
     color: COLORS.navy_blue,
     fontFamily: Fonts.Medium,
+  },
+  stockProduct: {
+    width: ms(60),
+    height: ms(70),
+    borderWidth: 3,
+    borderRadius: ms(12),
+    backgroundColor: COLORS.textInputBackground,
+    // justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: ms(2),
+    marginLeft: ms(10),
+  },
+  colorNameView: {
+    height: ms(20),
+    backgroundColor: COLORS.light_yellow,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: ms(57),
+    // flexShrink: 1,
+    borderWidth: 3,
+    borderColor: COLORS.light_yellow,
+    borderBottomEndRadius: ms(12),
+    borderBottomLeftRadius: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  notifySection: {
+    borderWidth: 1,
+    height: ms(100),
+    width: ms(120),
+    borderRadius: ms(12),
+    margin: ms(10),
+    borderColor: COLORS.light_purple,
+    flexDirection: 'row',
+  },
+  notifyBodyCon: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: ms(5),
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
 });

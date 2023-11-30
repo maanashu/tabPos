@@ -11,6 +11,7 @@ export const Images = {
   shipping: require('@/assets/new_icon/retail_con/shipping.png'),
   toggleOff: require('@/assets/new_icon/retail_con/toggleOff.png'),
   delivery: require('@/assets/new_icon/retail_con/delivery.png'),
+  notify: require('@/assets/new_icon/retail_con/notify.png'),
   clearCart: require('@/assets/new_icon/retail_con/clearCart.png'),
   addNotesIcon: require('@/assets/new_icon/retail_con/addNotesIcon.png'),
   holdCart: require('@/assets/new_icon/retail_con/holdCart.png'),
