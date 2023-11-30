@@ -427,9 +427,7 @@ export { default as locationSolidIcon } from '@/assets/new_icon/dashboard/locati
 export { default as moneySolidIcon } from '@/assets/new_icon/dashboard/money_solid.png';
 export { default as timeBlueIcon } from '@/assets/new_icon/dashboard/time_blue.png';
 export { default as arrowRightIcon } from '@/assets/new_icon/dashboard/Arrow_Right.png';
-export { default as emailBlueIcon } from '@/assets/new_icon/dashboard/email_blue_icon.png';
-export { default as phoneMsgIcon } from '@/assets/new_icon/dashboard/phone_message.png';
-export { default as printerIcon } from '@/assets/new_icon/dashboard/printer_icon.png';
+
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',

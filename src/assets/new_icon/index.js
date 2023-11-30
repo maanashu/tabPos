@@ -10,4 +10,7 @@ export const Images = {
   addNotesIcon: require('@/assets/new_icon/retail_con/addNotesIcon.png'),
   holdCart: require('@/assets/new_icon/retail_con/holdCart.png'),
   arrowLeftUp: require('@/assets/new_icon/Auth_icons/ArrowLeftUp.png'),
+  emailBlueIcon: require('@/assets/new_icon/Settings/email_blue_icon.png'),
+  phoneMsgIcon: require('@/assets/new_icon/Settings/phone_message.png'),
+  printerIcon: require('@/assets/new_icon/Settings/printer_icon.png'),
 };
