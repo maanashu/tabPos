@@ -16,8 +16,6 @@ export const styles = StyleSheet.create({
   displayflex: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    // flex: 1,
   },
   displayRow: {
     flexDirection: 'row',
@@ -32,6 +30,7 @@ export const styles = StyleSheet.create({
   searchScreenHeader: {
     height: SH(60),
     justifyContent: 'center',
+    paddingHorizontal: ms(12),
   },
   cashLabelBold: {
     color: COLORS.navy_light_blue,
@@ -207,6 +206,8 @@ export const styles = StyleSheet.create({
       borderWidth: 1,
       height: ms(90),
       width: Platform.OS === 'ios' ? ms(125) : ms(157),
+      flexShrink: 1,
+      flex: 1,
       marginHorizontal: ms(4),
       borderRadius: ms(9),
       padding: ms(6),
@@ -1429,7 +1430,11 @@ export const styles = StyleSheet.create({
   },
   productCon: (qty) => {
     return {
-      width: Platform.OS === 'ios' ? ms(85) : ms(95),
+      maxWidth: Platform.OS === 'ios' ? ms(85) : ms(95),
+      flexShrink: 1,
+      flex: 1,
+      // flexBasis: Platform.OS === 'ios' ? ms(85) : ms(95),
+      // flexShrink: 1,
       backgroundColor: COLORS.white,
       borderRadius: ms(9),
       marginTop: verticalScale(7),
@@ -1610,6 +1615,8 @@ export const styles = StyleSheet.create({
       borderWidth: 1,
       height: ms(60),
       width: Platform.OS === 'ios' ? ms(90) : ms(116),
+      flexShrink: 1,
+      flex: 1,
       marginHorizontal: ms(3),
       borderRadius: ms(10),
       justifyContent: 'center',
@@ -1643,6 +1650,8 @@ export const styles = StyleSheet.create({
       borderWidth: 1,
       height: ms(60),
       width: Platform.OS === 'ios' ? ms(100) : ms(135),
+      flexShrink: 1,
+      flex: 1,
       margin: ms(3),
       borderRadius: ms(9),
       justifyContent: 'center',

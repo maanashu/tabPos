@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View } from '
 import { AddDiscountToCart, ScreenWrapper, Spacer } from '@/components';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
+  AddProductScreen,
   CartAmountPayBy,
   CartAmountTips,
   CartScreen,
@@ -60,6 +61,7 @@ export function PosRetail3() {
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
+  // const [selectedScreen, setselectedScreen] = useState('AddProductScreen');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
@@ -82,6 +84,7 @@ export function PosRetail3() {
   useFocusEffect(
     React.useCallback(() => {
       return () => setselectedScreen('MainScreen');
+      // return () => setselectedScreen('AddProductScreen');
     }, [])
   );
 
@@ -396,6 +399,7 @@ export function PosRetail3() {
         }}
         cartServiceScreenHandler={() => setselectedScreen('CartServiceScreen')}
         activeCategory={activeScreen}
+        addProductscreenShow={() => setselectedScreen('AddProductScreen')}
       />
     ),
     ['CartScreen']: (
@@ -534,6 +538,7 @@ export function PosRetail3() {
         cartType={fromWhichCart}
       />
     ),
+    ['AddProductScreen']: <AddProductScreen backHandler={() => setselectedScreen('MainScreen')} />,
   };
 
   const screenChangeView = () => {

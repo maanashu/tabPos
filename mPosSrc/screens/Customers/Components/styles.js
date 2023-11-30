@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.input_bg,
     color: COLORS.black,
     fontSize: SF(14),
-    fontFamily: Fonts.Italic,
+    fontFamily: Fonts.Regular,
     flex: 1,
   },
   continueBtnCon: {

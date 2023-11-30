@@ -339,6 +339,7 @@ export const en = {
       'If you haven’t already, create a shipping zone in the region(s) you’re liable in. Then, find the region in this list and select it to manage its tax settings. If you’re unsure about where you’re liable, check with a tax professional.',
     taxes: 'Taxes',
     active: 'Active',
+    activateStr: 'Activate',
     selectHead: 'Select your Operating Country',
     country: 'Country',
     cancel: 'Cancel',
