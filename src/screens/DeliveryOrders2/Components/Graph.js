@@ -17,7 +17,19 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { Fonts, blankCheckBox, mark } from '@/assets';
+import {
+  Fonts,
+  blankCheckBox,
+  mark,
+  incomingMarked,
+  incomingBlank,
+  deliveryMarked,
+  deliveryBlank,
+  returnedMarked,
+  returnedBlank,
+  cancelledMarked,
+  cancelledBlank,
+} from '@/assets';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
@@ -243,10 +255,10 @@ const Graph = () => {
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showIncoming ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showIncoming && { tintColor: COLORS.lavender }]}
+              source={showIncoming ? incomingMarked : incomingBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={[styles.varientTextStyle, { tintColor: COLORS.navy_blue }]}>
+            <Text style={[styles.varientTextStyle, { color: COLORS.navy_blue }]}>
               {strings.shippingOrder.incomingOrders}
             </Text>
           </TouchableOpacity>
@@ -262,10 +274,10 @@ const Graph = () => {
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showProcessing ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showProcessing && { tintColor: '#F5EDFF' }]}
+              source={showProcessing ? deliveryMarked : deliveryBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={[styles.varientTextStyle, { tintColor: COLORS.purple }]}>
+            <Text style={[styles.varientTextStyle, { color: COLORS.purple }]}>
               {strings.shippingOrder.processingOrders}
             </Text>
           </TouchableOpacity>
@@ -281,10 +293,10 @@ const Graph = () => {
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showReadyToPickup ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showReadyToPickup && { tintColor: '#FFF7D7' }]}
+              source={showReadyToPickup ? returnedMarked : returnedBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={[styles.varientTextStyle, { tintColor: COLORS.extra_yellow_600 }]}>
+            <Text style={[styles.varientTextStyle, { color: COLORS.extra_yellow_600 }]}>
               {strings.shippingOrder.readyPickupOrders}
             </Text>
           </TouchableOpacity>
@@ -300,10 +312,10 @@ const Graph = () => {
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showCompleted ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showCompleted && { tintColor: '#FEE4E2' }]}
+              source={showCompleted ? cancelledMarked : cancelledBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={[styles.varientTextStyle, { tintColor: COLORS.alert_red }]}>
+            <Text style={[styles.varientTextStyle, { color: COLORS.alert_red }]}>
               {strings.shippingOrder.completed}
             </Text>
           </TouchableOpacity>
@@ -353,7 +365,7 @@ const styles = StyleSheet.create({
     fontSize: SF(16),
     paddingTop: ms(10),
     paddingHorizontal: 20,
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
   },
   flexRow: {
@@ -374,12 +386,13 @@ const styles = StyleSheet.create({
   },
   varientTextStyle: {
     fontSize: SF(11),
-    color: COLORS.darkGray,
+    // color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
+    marginLeft: ms(6),
   },
   checkboxIconStyle: {
-    width: SH(24),
-    height: SH(24),
+    width: SH(18),
+    height: SH(18),
     resizeMode: 'contain',
   },
   checkboxViewStyle: {

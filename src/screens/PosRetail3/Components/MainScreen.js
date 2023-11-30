@@ -90,6 +90,7 @@ export function MainScreen({
   productArray,
   cartServiceScreenHandler,
   activeCategory,
+  addProductscreenShow,
 }) {
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -149,7 +150,6 @@ export function MainScreen({
   const [showProductsFrom, setshowProductsFrom] = useState();
   const mainProductArray = getRetailData?.getMainProduct?.data;
   const mainServicesArray = getRetailData?.getMainServices?.data;
-  console.log('mainServicesArray', JSON.stringify(mainServicesArray?.[0]));
   const servicecCart = getRetailData?.getserviceCart?.appointment_cart_products ?? [];
 
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
@@ -395,6 +395,7 @@ export function MainScreen({
   }, [cartLength]);
   const checkAttributes = async (item, index, cartQty) => {
     if (item?.supplies?.[0]?.attributes?.length !== 0) {
+      bulkCart();
       const res = await dispatch(getOneProduct(sellerID, item?.id));
       if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
         setSelectedItemQty(item?.cart_qty);
@@ -504,9 +505,10 @@ export function MainScreen({
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setSelectedItemQty(updatedItem?.cart_qty);
       setSelectedItem(item);
-      setAddCartModal(true);
+      // setAddCartModal(true);
       setProductIndex(index);
       setProductItem(item);
+      addProductscreenShow();
     }
   };
 
@@ -559,9 +561,9 @@ export function MainScreen({
       <TouchableOpacity
         key={index}
         style={styles.productCon(updatedItem?.cart_qty)}
-        // onPress={() => productFun(item.id, index, item)}
+        onPress={() => productFun(item.id, index, item)}
         activeOpacity={0.7}
-        onPress={() => checkAttributes(item, index, cartAddQty)}
+        // onPress={() => checkAttributes(item, index, cartAddQty)}
       >
         <View style={styles.imageBackground}>
           <FastImage
@@ -589,18 +591,18 @@ export function MainScreen({
             {item.sub_category?.name}
           </Text>
           <Spacer space={SH(6)} />
-          <Text numberOfLines={1} style={styles.productPrice}>
-            ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-          </Text>
-          <Spacer space={SH(10)} />
-
-          {/* <TouchableOpacity
-              onPress={
-                () => checkAttributes(item, index, cartAddQty)
-              }
+          <View
+            style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
+          >
+            <Text numberOfLines={1} style={styles.productPrice}>
+              ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+            </Text>
+            <TouchableOpacity
+              onPress={() => checkAttributes(item, index, cartAddQty)}
+              style={styles.offerImagebackground}
             >
               <FastImage
-                source={isProductMatchArray ? addToCartBlue : addToCart}
+                source={Images.cartIcon}
                 style={styles.addToCart}
                 resizeMode={FastImage.resizeMode.contain}
               />
@@ -610,7 +612,11 @@ export function MainScreen({
                   <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
                 </View>
               )}
-            </TouchableOpacity> */}
+              {/* isProductMatchArray */}
+            </TouchableOpacity>
+          </View>
+
+          <Spacer space={SH(10)} />
         </View>
       </TouchableOpacity>
     );

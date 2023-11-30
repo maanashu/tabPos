@@ -26,6 +26,7 @@ import { debounce } from 'lodash';
 import {
   cartRun,
   createBulkcart,
+  getAllCart,
   getBrand,
   getCategory,
   getMainProduct,
@@ -70,6 +71,14 @@ export function RetailProducts(props) {
   const [selectedCartItem, setSelectedCartItems] = useState([]);
   const CART_LENGTH = useSelector(getCartLength);
   const cartLength = CART_LENGTH;
+  const [selectedItem, setSelectedItem] = useState();
+  const [productIndex, setProductIndex] = useState(0);
+  const [selectedItemQty, setSelectedItemQty] = useState();
+  const [productItem, setProductItem] = useState(null);
+  useEffect(() => {
+    setLocalCartArray(LOCAL_CART_ARRAY);
+  }, [LOCAL_CART_ARRAY]);
+
   const productDetailHanlder = () => {
     productDetailRef.current.present();
   };
@@ -92,6 +101,7 @@ export function RetailProducts(props) {
     dispatch(getCategory(sellerID));
     dispatch(getSubCategory(sellerID));
     dispatch(getBrand(sellerID));
+    dispatch(getAllCart());
   }, []);
   useEffect(() => {
     // dispatch(getProduct({}, 1));
@@ -171,9 +181,14 @@ export function RetailProducts(props) {
   };
   const checkAttributes = async (item, index, cartQty) => {
     if (item?.supplies?.[0]?.attributes?.length !== 0) {
+      bulkCart();
       const res = await dispatch(getOneProduct(sellerID, item.id));
       if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
         addProductCartRef.current.present();
+        setSelectedItemQty(item?.cart_qty);
+        setSelectedItem(item);
+        setProductIndex(index);
+        setProductItem(item);
       }
     } else {
       onClickAddCart(item, index, cartQty);
@@ -181,9 +196,7 @@ export function RetailProducts(props) {
   };
   const onClickAddCart = (item, index, cartQty, supplyVarientId) => {
     const mainProductArray = retailData?.getMainProduct;
-
     const cartArray = selectedCartItem;
-
     const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
     const DATA = {
       product_id: item?.id,
@@ -204,20 +217,8 @@ export function RetailProducts(props) {
 
     setSelectedCartItems(cartArray);
 
-    ///
     mainProductArray.data[index].cart_qty += 1;
     dispatch(getMainProductSuccess(mainProductArray));
-
-    //-------------OLD_CODE------------
-    // const data = {
-    //   seller_id: sellerID,
-    //   supplyId: item?.supplies?.[0]?.id,
-    //   supplyPriceID: item?.supplies?.[0]?.supply_prices[0]?.id,
-    //   product_id: item?.id,
-    //   service_id: item?.service_id,
-    //   qty: 1,
-    // };
-    // dispatch(addTocart(data));
   };
 
   const bulkCart = async () => {
@@ -226,7 +227,6 @@ export function RetailProducts(props) {
         seller_id: sellerID,
         products: localCartArray,
       };
-
       try {
         dispatch(createBulkcart(dataToSend));
       } catch (error) {}
@@ -294,6 +294,10 @@ export function RetailProducts(props) {
           const res = await dispatch(getOneProduct(sellerID, item.id));
           if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
             addProductCartRef.current.present();
+            setSelectedItemQty(updatedItem?.cart_qty);
+            setSelectedItem(item);
+            setProductIndex(index);
+            setProductItem(item);
           }
         }}
         style={[styles.productDetailMainView, { marginTop: index === 0 ? ms(0) : ms(5) }]}
@@ -320,13 +324,13 @@ export function RetailProducts(props) {
 
         <TouchableOpacity
           style={styles.addView()}
-          onPress={async () => {
-            const res = await dispatch(getOneProduct(sellerID, item.id));
-            if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-              addProductCartRef.current.present();
-            }
-          }}
-          // onPress={() => checkAttributes(item, index, cartAddQty)}
+          // onPress={async () => {
+          //   const res = await dispatch(getOneProduct(sellerID, item.id));
+          //   if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+          //     addProductCartRef.current.present();
+          //   }
+          // }}
+          onPress={() => checkAttributes(item, index, cartAddQty)}
         >
           <Image
             source={Images.addTitle}
@@ -339,11 +343,11 @@ export function RetailProducts(props) {
             ]}
           />
         </TouchableOpacity>
-        {/* {updatedItem.cart_qty > 0 && (
+        {updatedItem.cart_qty > 0 && (
           <TouchableOpacity style={styles.countView}>
             <Text style={styles.countText}>{updatedItem.cart_qty}</Text>
           </TouchableOpacity>
-        )} */}
+        )}
       </TouchableOpacity>
     );
   };
@@ -362,6 +366,32 @@ export function RetailProducts(props) {
     }
   }, [isFocus]);
 
+  const onClickAddCartModal = (item, index, cartQty) => {
+    const mainProductArray = retailData?.getMainProduct;
+
+    const cartArray = selectedCartItem;
+
+    const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
+
+    const DATA = {
+      product_id: item?.id,
+      qty: cartQty,
+      supply_id: item?.supplies?.[0]?.id,
+      supply_price_id: item?.supplies?.[0]?.supply_prices[0]?.id,
+    };
+    if (existingItemIndex === -1) {
+      cartArray.push(DATA);
+      dispatch(updateCartLength(cartLength + 1));
+    } else {
+      cartArray[existingItemIndex].qty = cartQty;
+    }
+    setSelectedCartItems(cartArray);
+    dispatch(addLocalCart(cartArray));
+    ///
+    mainProductArray.data[index].cart_qty = cartQty;
+    dispatch(getMainProductSuccess(mainProductArray));
+  };
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
@@ -375,6 +405,7 @@ export function RetailProducts(props) {
             title={`Back`}
             cartIcon
             cartHandler={() => {
+              bulkCart();
               dispatch(cartRun('product'));
               navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
             }}
@@ -462,7 +493,18 @@ export function RetailProducts(props) {
           )}
         />
 
-        <AddProductCart {...{ addProductCartRef, productDetailHanlder }} />
+        <AddProductCart
+          {...{
+            addProductCartRef,
+            productDetailHanlder,
+            onClickAddCartModal,
+            selectedItem,
+            productIndex,
+            productItem,
+          }}
+          cartQty={selectedItemQty}
+          addToLocalCart={onClickAddCart}
+        />
         <ProductDetails {...{ productDetailRef, bothSheetClose }} />
         <Modal
           style={{ margin: 0 }}

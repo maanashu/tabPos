@@ -17,7 +17,7 @@ import { getPendingOrders } from '@/actions/DashboardAction';
 import { ms } from 'react-native-size-matters';
 
 const result = Dimensions.get('window').height - 50;
-const twoEqualView = result / 2;
+const twoEqualView = result / 2.2;
 
 const OrderReview = ({
   renderOrderToReview,

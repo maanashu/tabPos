@@ -42,6 +42,7 @@ import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CustomHeader } from '@/screens/PosRetail3/Components';
+import CustomHeaderPOSUsers from '../components/CustomHeaderPOSUsers';
 
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
@@ -268,7 +269,7 @@ export function POSUsers({ navigation }) {
               <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
             </TouchableOpacity>
           </View>
-          <CustomHeader showUserName={false} />
+          <CustomHeaderPOSUsers showUserName={false} />
 
           {getPosUserLoading ? (
             <View style={{ marginTop: 50 }}>

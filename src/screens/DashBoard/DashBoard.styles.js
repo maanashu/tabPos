@@ -10,7 +10,7 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
   },
   displayflex: {
     flexDirection: 'row',
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   cashProfileCon: {
     width: windowWidth * 0.29,
     height: windowHeight * 0.95,
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
     paddingHorizontal: moderateScale(10),
     alignItems: 'center',
   },
@@ -43,38 +43,38 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
   },
   todaySaleCon: {
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: COLORS.solidGrey,
+    borderRadius: 15,
     width: windowWidth * 0.26,
     paddingHorizontal: moderateScale(10),
     paddingVertical: verticalScale(5),
+    backgroundColor: COLORS.white,
   },
   sessionCon: {
     borderColor: COLORS.solidGrey,
     width: windowWidth * 0.26,
+    paddingHorizontal: moderateScale(12),
   },
 
   todaySale: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SF(18),
     fontFamily: Fonts.MaisonRegular,
   },
   cashLabel: {
-    color: COLORS.solid_grey,
+    color: COLORS.darkGreen,
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
   },
   saleAmountLable: {
-    color: COLORS.solid_grey,
+    color: COLORS.darkGreen,
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
     width: windowWidth * 0.13,
   },
   cashAmount: {
-    color: COLORS.solid_grey,
+    color: COLORS.darkGreen,
     fontSize: SF(14),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Regular,
   },
   paddingV: {
     paddingVertical: verticalScale(2.5),
@@ -85,21 +85,19 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.26,
   },
   checkoutButton: {
-    // flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: COLORS.white,
     borderWidth: 1,
-    borderColor: COLORS.dark_grey,
+    borderColor: COLORS.navy_blue,
     width: windowWidth * 0.26,
 
     height: SW(14),
-    alignSelf: 'center',
-    borderRadius: 5,
+    borderRadius: 30,
     paddingVertical: verticalScale(9),
+    paddingHorizontal: moderateScale(16),
   },
   checkoutText1: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(16),
     fontFamily: Fonts.Regular,
   },
@@ -110,32 +108,51 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(6),
   },
   lockLight: {
-    width: SW(6),
-    height: SW(6),
+    width: SW(10),
+    height: SW(10),
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(10),
   },
   cashierName: {
     color: COLORS.solid_grey,
+    fontSize: SF(24),
+    fontFamily: Fonts.SemiBold,
+  },
+  cashierContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  posCashier: {
+    color: COLORS.faded_purple,
     fontSize: SF(16),
     fontFamily: Fonts.SemiBold,
   },
-  posCashier: {
-    color: COLORS.dark_grey,
-    fontSize: SF(14),
-    fontFamily: Fonts.SemiBold,
+  cashierIdContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F7F9FF',
+    borderRadius: 20,
+    paddingHorizontal: moderateScale(8),
+    paddingVertical: moderateScale(3),
+  },
+  idDotStyle: {
+    backgroundColor: COLORS.sky_blue,
+    width: moderateScale(4),
+    height: moderateScale(4),
+    borderRadius: moderateScale(4 / 2),
+    marginRight: moderateScale(8),
   },
   cashProfilecon: {
-    borderWidth: 4,
+    borderWidth: 6,
     borderRadius: 100,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.white,
   },
   rightOrderCon: {
     width: windowWidth * 0.6,
     height: windowHeight * 0.95,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(5),
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.sky_grey,
   },
   inputWraper: {
     backgroundColor: COLORS.textInputBackground,
@@ -190,10 +207,9 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   storeCardCon: {
-    width: SW(110),
+    width: SW(100),
     height: SW(65),
-    borderRadius: 15,
-    backgroundColor: COLORS.white,
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
     ...ShadowStyles.shadow2,
@@ -202,7 +218,17 @@ export const styles = StyleSheet.create({
     width: SW(16),
     height: SW(16),
     resizeMode: 'contain',
-    tintColor: COLORS.dark_grey,
+  },
+  searchIconInCard: {
+    width: SW(8),
+    height: SW(8),
+    resizeMode: 'contain',
+    marginRight: SW(2),
+  },
+  searchTxtStyle: {
+    color: COLORS.sky_blue,
+    fontSize: SF(12),
+    fontFamily: Fonts.MaisonRegular,
   },
   sellingArrow: {
     width: SW(10),
@@ -211,7 +237,7 @@ export const styles = StyleSheet.create({
     tintColor: COLORS.primary,
   },
   startSelling: {
-    color: COLORS.solid_grey,
+    color: COLORS.white,
     fontSize: SF(22),
     fontFamily: Fonts.MaisonRegular,
   },
@@ -252,11 +278,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: SW(2),
     borderColor: COLORS.orderStatusBackground,
-    borderRadius: 5,
-    paddingVertical: 6,
-    paddingLeft: SW(5),
+    borderRadius: 16,
+    paddingLeft: SW(8),
+    paddingVertical: SH(12),
     justifyContent: 'space-between',
-    alignItems: 'center',
     backgroundColor: COLORS.white,
   },
   nameText: {
@@ -274,16 +299,25 @@ export const styles = StyleSheet.create({
   timeView: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 1,
+    paddingTop: SH(8),
   },
   pinIcon: {
-    width: SW(5),
-    height: SW(8),
+    width: SW(6),
+    height: SW(6),
     resizeMode: 'contain',
+    marginRight: SW(1),
+  },
+  arrowIcon: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+    alignSelf: 'center',
   },
   rightIconStyle1: {
-    width: SW(35),
+    // width: SW(35),
     justifyContent: 'center',
+    marginRight: SW(8),
+    alignSelf: 'center',
   },
   hashNumber: {
     fontFamily: Fonts.Medium,
@@ -836,5 +870,10 @@ export const styles = StyleSheet.create({
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
+  },
+  btnInnerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
