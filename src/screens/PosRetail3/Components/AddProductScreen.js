@@ -17,15 +17,30 @@ import { COLORS, SH } from '@/theme';
 import { Images } from '@/assets/new_icon';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
 
 moment.suppressDeprecationWarnings = true;
 
 export const AddProductScreen = ({ backHandler }) => {
+  const dispatch = useDispatch();
+  const getRetailData = useSelector(getRetail);
+  const productDetail = getRetailData?.getOneProduct?.product_detail;
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
-  useEffect(() => {
-    alert('only Ui , not functionality implemented');
-  }, []);
+
+  // avaiblity option
+  let deliveryOption =
+    getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options?.split(',');
+  let deliveryOptionImage = deliveryOption?.find((item) => {
+    return item === '1';
+  });
+  let inStoreImage = deliveryOption.find((item) => {
+    return item === '3';
+  });
+  let shippingImage = deliveryOption.find((item) => {
+    return item === '4';
+  });
 
   const ColorItem = ({ item, onPress, backgroundColor, style }) => (
     <TouchableOpacity
@@ -56,26 +71,26 @@ export const AddProductScreen = ({ backHandler }) => {
     </TouchableOpacity>
   );
 
-  const productDetail = [
+  const productDetailArray = [
     {
       id: 1,
       key: 'SKU',
-      value: '23322334',
+      value: productDetail?.sku,
     },
     {
       id: 2,
       key: 'Barcode',
-      value: '75885845',
+      value: productDetail?.barcode,
     },
     {
       id: 3,
       key: 'Unit Type',
-      value: 'Piece',
+      value: productDetail?.type,
     },
     {
       id: 4,
       key: 'Unit Weight',
-      value: '800g',
+      value: productDetail?.weight + ' ' + productDetail?.weight_unit,
     },
     {
       id: 5,
@@ -87,19 +102,19 @@ export const AddProductScreen = ({ backHandler }) => {
     {
       id: 1,
       image: Images.storeIcon,
-      toggle: Images.toggleOff,
+      toggle: inStoreImage === 3 ? Images.toggleOn : Images.toggleOff,
       name: 'Store',
     },
     {
       id: 2,
       image: Images.delivery,
-      toggle: Images.toggleOff,
+      toggle: deliveryOptionImage === '1' ? Images.toggleOn : Images.toggleOff,
       name: 'Delivery',
     },
     {
       id: 3,
       image: Images.shipping,
-      toggle: Images.toggleOff,
+      toggle: shippingImage === '4' ? Images.toggleOn : Images.toggleOff,
       name: 'Shipping',
     },
   ];
@@ -254,7 +269,7 @@ export const AddProductScreen = ({ backHandler }) => {
           <View style={{ marginTop: ms(10), flex: 1 }}>
             <Text style={styles.addNewProduct}>{'Product details'}</Text>
             <View style={{ marginTop: ms(15) }}>
-              {productDetail?.map((item, index) => (
+              {productDetailArray?.map((item, index) => (
                 <View
                   style={[
                     styles.skuDetailcon,

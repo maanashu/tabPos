@@ -10,6 +10,7 @@ export const Images = {
   storeIcon: require('@/assets/new_icon/retail_con/storeIcon.png'),
   shipping: require('@/assets/new_icon/retail_con/shipping.png'),
   toggleOff: require('@/assets/new_icon/retail_con/toggleOff.png'),
+  toggleOn: require('@/assets/new_icon/retail_con/toggleOn.png'),
   delivery: require('@/assets/new_icon/retail_con/delivery.png'),
   notify: require('@/assets/new_icon/retail_con/notify.png'),
   clearCart: require('@/assets/new_icon/retail_con/clearCart.png'),
