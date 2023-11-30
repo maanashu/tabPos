@@ -415,6 +415,8 @@ export { default as totalCostIcon } from '@/assets/new_icon/ic_analytic/totalCos
 export { default as totalOrder } from '@/assets/new_icon/ic_analytic/totalOrder.png';
 export { default as verifyGreen } from '@/assets/new_icon/Auth_icons/verify_green.png';
 export { default as deliveryIcon } from '@/assets/new_icon/ic_analytic/delivery.png';
+export { default as newLogo } from '@/assets/new_icon/Auth_icons/Logo.png';
+export { default as sunIcon } from '@/assets/new_icon/Auth_icons/Sun.png';
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',
