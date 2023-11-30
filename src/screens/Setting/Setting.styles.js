@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   },
   dispalyRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
   upgradePlanView: {
     flexDirection: 'row',
@@ -99,13 +99,13 @@ export const styles = StyleSheet.create({
 
   // setting security css start
   securityMainCon: {
-    borderWidth: 2,
-    borderColor: COLORS.sky_blue,
+    // borderWidth: 2,
+    // borderColor: COLORS.sky_blue,
     borderRadius: 20,
     // height: windowHeight * 0.33,
-    paddingVertical: ms(15),
-    paddingHorizontal: ms(20),
-    marginHorizontal: ms(15),
+    // paddingVertical: ms(15),
+    // paddingHorizontal: ms(20),
+    // marginHorizontal: ms(15),
   },
   securityStaffMainCon: {
     // borderWidth: 1,
@@ -121,15 +121,15 @@ export const styles = StyleSheet.create({
   },
   securityBodyCon: {
     // flex: 1,
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
+    // borderWidth: 1,
+    // borderColor: COLORS.solidGrey,
     borderRadius: 10,
-    padding: 15,
+    // padding: 15,
   },
   securityLogo: {
     width: SW(8),
     height: SW(8),
-    top: SH(-6),
+    // top: SH(-6),
   },
   twoStepVerifiCon: {
     flex: 1,
@@ -150,15 +150,20 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.lavender,
   },
+  activateTaxLabel: {
+    fontSize: SF(14),
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
+  },
   twoStepMemberCon: {
     borderWidth: 1,
     borderColor: COLORS.light_purple,
     borderRadius: SH(20),
     paddingHorizontal: moderateScale(12),
-    paddingVertical: verticalScale(4),
     marginVertical: verticalScale(3),
-    height: SH(100),
+    height: SH(70),
     justifyContent: 'center',
+    backgroundColor: COLORS.sky_grey,
   },
   locationsView: {
     borderRadius: SH(20),
@@ -176,10 +181,10 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.38,
   },
   teamMember: {
-    width: SW(10),
-    height: SW(10),
+    width: SW(8),
+    height: SW(8),
     resizeMode: 'contain',
-    borderRadius: 100,
+    marginRight: SW(8),
   },
   locationPinStyle: {
     width: ms(15),
@@ -205,7 +210,7 @@ export const styles = StyleSheet.create({
   },
   marginLeft: {
     // marginLeft: moderateScale(8),
-    flex: 1,
+    flex: 0.8,
   },
   confirmModalView: {
     width: windowWidth * 0.32,
