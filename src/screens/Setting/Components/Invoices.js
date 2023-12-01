@@ -10,12 +10,14 @@ import {
   emailS,
   invoice2,
   invoiceFrame,
+  newToggleOff,
   phoneMsgIcon,
   printInvoice,
   printS,
   printerIcon,
   smsInvoice,
   smsS,
+  toggleOnNavyBlue,
   vector,
   vectorOff,
 } from '@/assets';
@@ -78,7 +80,7 @@ export function Invoices() {
                 <Spacer space={SH(10)} />
                 <Text style={styles.securitysubhead}>{strings.settings.invoiveSubHeading}</Text>
                 <Spacer space={SH(20)} />
-                <View style={styles.twoStepMemberCon}>
+                <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
                       <Image source={phoneMsgIcon} style={styles.teamMember} />
@@ -92,11 +94,14 @@ export function Invoices() {
                       </View>
                     </View>
                     <TouchableOpacity style={styles.vectorIconCon} onPress={() => clickHandler(1)}>
-                      <Image source={sms ? vector : vectorOff} style={styles.toggleSecurity} />
+                      <Image
+                        source={sms ? toggleOnNavyBlue : newToggleOff}
+                        style={styles.toggleSecurity}
+                      />
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={styles.twoStepMemberCon}>
+                <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
                       <Image source={emailBlueIcon} style={styles.teamMember} />
@@ -110,11 +115,14 @@ export function Invoices() {
                       </View>
                     </View>
                     <TouchableOpacity style={styles.vectorIconCon} onPress={() => clickHandler(2)}>
-                      <Image source={email ? vector : vectorOff} style={styles.toggleSecurity} />
+                      <Image
+                        source={email ? toggleOnNavyBlue : newToggleOff}
+                        style={styles.toggleSecurity}
+                      />
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={styles.twoStepMemberCon}>
+                <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
                       <Image source={printerIcon} style={styles.teamMember} />
@@ -128,7 +136,10 @@ export function Invoices() {
                       </View>
                     </View>
                     <TouchableOpacity style={styles.vectorIconCon} onPress={() => clickHandler(3)}>
-                      <Image source={print ? vector : vectorOff} style={styles.toggleSecurity} />
+                      <Image
+                        source={print ? toggleOnNavyBlue : newToggleOff}
+                        style={styles.toggleSecurity}
+                      />
                     </TouchableOpacity>
                   </View>
                 </View>

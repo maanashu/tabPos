@@ -34,6 +34,9 @@ import {
   vectorOff,
   EyeHide,
   EyeShow,
+  arrowRightTop,
+  plus,
+  arrowLeftUp,
 } from '@/assets';
 import CountryPicker from 'react-native-country-picker-modal';
 import { Table } from 'react-native-table-component';
@@ -62,6 +65,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
 import { useCallback } from 'react';
 import { RefreshControl } from 'react-native';
+import { HorizontalLine } from '@mPOS/components';
 const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
@@ -112,6 +116,52 @@ export function Staff() {
   const words = originalemployementType?.split('_');
   const capitalizedWords = words?.map((word) => word?.charAt?.(0).toUpperCase() + word?.slice?.(1));
   const finalEmploymentType = capitalizedWords?.join(' ');
+
+  const ratesArray = [
+    {
+      id: 1,
+      title: 'Hour rate',
+      data: ` JBR ${staffDetailData?.pos_staff_detail?.hourly_rate ?? '0'}/h`,
+    },
+    {
+      id: 2,
+      title: 'Over time rate',
+      data: ` JBR ${staffDetailData?.pos_staff_detail?.overtime_rate ?? '0'}/h`,
+    },
+    {
+      id: 3,
+      title: 'Payment Cycle',
+      data:
+        staffDetailData?.pos_staff_detail?.payment_cycle?.charAt?.(0)?.toUpperCase() +
+          staffDetailData?.pos_staff_detail?.payment_cycle?.slice?.(1) ?? '-----',
+    },
+    {
+      id: 4,
+      title: 'Billing',
+      data:
+        staffDetailData?.pos_staff_detail?.billing_type?.charAt?.(0)?.toUpperCase() +
+          staffDetailData?.pos_staff_detail?.billing_type?.slice?.(1) ?? '-----',
+    },
+  ];
+  const cycleArray = [
+    {
+      id: 1,
+      title: 'Current Billing Cycle',
+      data: `${staffDetailData?.pos_staff_detail?.current_billing_cycle?.start || '__'} - ${
+        staffDetailData?.pos_staff_detail?.current_billing_cycle?.start || '__'
+      }`,
+    },
+    {
+      id: 2,
+      title: 'Time Tracked',
+      data: `JBR ${Number(staffDetailData?.pos_staff_detail?.time_tracked)?.toFixed(2)}/h`,
+    },
+    {
+      id: 3,
+      title: 'Weekly Tracking Limit',
+      data: staffDetailData?.pos_staff_detail?.weekly_time_tracking_limit,
+    },
+  ];
 
   var posUsersRole = [];
   if (userRoles?.posUserRole?.roles?.length > 0 && userRoles?.posUserRole !== null) {
@@ -193,7 +243,7 @@ export function Staff() {
   };
   const userRenderItem = ({ item }) => (
     <TouchableOpacity
-      style={styles.twoStepMemberCon}
+      style={styles.staffItemContainer}
       onPress={() => {
         staffDetailhandler(item?.user?.id, item?.id);
         setData(item);
@@ -226,7 +276,7 @@ export function Staff() {
             </Text>
           </View>
         </View>
-        <Image source={rightBack} style={[styles.arrowStyle, { alignSelf: 'center' }]} />
+        <Image source={arrowRightTop} style={[styles.arrowStyle, { alignSelf: 'center' }]} />
       </View>
     </TouchableOpacity>
   );
@@ -276,16 +326,17 @@ export function Staff() {
       return (
         <View>
           <TouchableOpacity
-            style={styles.backButtonCon}
+            style={styles.staffBackButton}
             onPress={() => {
               setExpandView(false);
               setStaffDetail(false);
             }}
           >
-            <Image source={backArrow} style={styles.backButtonArrow} />
-            <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
+            <Image source={arrowLeftUp} style={styles.backButtonArrow} />
+            <Text style={styles.backTextStyle}>{strings.posSale.staffDetails}</Text>
           </TouchableOpacity>
           <Spacer space={SH(20)} />
+
           <View style={styles.staffScrollableArea}>
             <ScrollView
               contentContainerStyle={{ flex: 1 }}
@@ -365,62 +416,39 @@ export function Staff() {
                 </View>
               </View>
               <Spacer space={SH(14)} />
-              <View style={{ borderWidth: 1, borderColor: COLORS.solidGrey }} />
-              <Spacer space={SH(10)} />
-              <View style={styles.hourcontainer}>
-                <View style={styles.hourRateBodyCon}>
-                  <Text style={styles.joinDateDark}>Hour rate</Text>
-                  <Text style={styles.hourRateLigh}>
-                    JBR {staffDetailData?.pos_staff_detail?.hourly_rate ?? '0'}/h
-                  </Text>
-                </View>
-                <View style={styles.hourRateBodyCon}>
-                  <Text style={styles.joinDateDark}>Over time rate</Text>
-                  <Text style={styles.hourRateLigh}>
-                    JBR {staffDetailData?.pos_staff_detail?.overtime_rate ?? '0'}/h
-                  </Text>
-                </View>
-                <View style={styles.hourRateBodyCon}>
-                  <Text style={styles.joinDateDark}>Payment Cycle</Text>
-                  <Text style={styles.hourRateLigh}>
-                    {/* {staffDetailData?.payment_cycle?.toLocaleUpperCase()} */}
-                    {staffDetailData?.pos_staff_detail?.payment_cycle?.charAt?.(0)?.toUpperCase() +
-                      staffDetailData?.pos_staff_detail?.payment_cycle?.slice?.(1) ?? '-----'}
-                  </Text>
-                </View>
-                <View style={styles.hourRateBodyCon}>
-                  <Text style={styles.joinDateDark}>Billing</Text>
-                  <Text style={styles.hourRateLigh}>
-                    {staffDetailData?.pos_staff_detail?.billing_type?.charAt?.(0)?.toUpperCase() +
-                      staffDetailData?.pos_staff_detail?.billing_type?.slice?.(1) ?? '-----'}
-                  </Text>
-                </View>
-              </View>
-              <Spacer space={SH(14)} />
-              <View style={{ borderWidth: 1, borderColor: COLORS.solidGrey }} />
-              <Spacer space={SH(10)} />
-              <View style={styles.billingCycleCon}>
-                <View style={styles.hourcontainer}>
-                  <View style={styles.hourRateBodyCon}>
-                    <Text style={styles.joinDateDark}>Current Billing Cycle</Text>
-                    <Text style={styles.hourRateLigh}>
-                      {staffDetailData?.pos_staff_detail?.current_billing_cycle?.start} -{' '}
-                      {staffDetailData?.pos_staff_detail?.current_billing_cycle?.start}
-                    </Text>
-                  </View>
-                  <View style={styles.hourRateBodyCon}>
-                    <Text style={styles.joinDateDark}>Time Tracked</Text>
-                    <Text style={styles.hourRateLigh}>
-                      JBR {Number(staffDetailData?.pos_staff_detail?.time_tracked)?.toFixed(2)}/h
-                    </Text>
-                  </View>
-                  <View style={styles.hourRateBodyCon}>
-                    <Text style={styles.joinDateDark}>Weekly Tracking Limit</Text>
-                    <Text style={styles.hourRateLigh}>
-                      {staffDetailData?.pos_staff_detail?.weekly_time_tracking_limit}
-                    </Text>
-                  </View>
-                </View>
+              <View>
+                <FlatList
+                  data={ratesArray}
+                  numColumns={4}
+                  renderItem={({ item }) => {
+                    return (
+                      <View style={styles.hourlyRateView}>
+                        <Text style={styles.joinDateDark}>{item?.title}</Text>
+                        <HorizontalLine
+                          style={{ marginBottom: 10, marginTop: 10, width: '100%' }}
+                        />
+                        <Text style={styles.hourRateLigh}>{item?.data}</Text>
+                      </View>
+                    );
+                  }}
+                />
+                <Spacer space={SH(10)} />
+
+                <FlatList
+                  data={cycleArray}
+                  numColumns={4}
+                  renderItem={({ item }) => {
+                    return (
+                      <View style={[styles.hourlyRateView, { width: windowWidth * 0.19 }]}>
+                        <Text style={styles.joinDateDark}>{item?.title}</Text>
+                        <HorizontalLine
+                          style={{ marginBottom: 10, marginTop: 10, width: '100%' }}
+                        />
+                        <Text style={styles.hourRateLigh}>{item?.data}</Text>
+                      </View>
+                    );
+                  }}
+                />
               </View>
               <Spacer space={SH(20)} />
               <View style={styles.tableMainConatiner}>
@@ -665,27 +693,13 @@ export function Staff() {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <View style={[styles.flexRow, { height: SW(8) }]}>
-            <Text style={styles.HeaderLabelText}>{strings.settings.staff}</Text>
-
-            {posRole !== 'admin' ? (
-              <TouchableOpacity
-                style={styles.addNewButtonCon}
-                onPress={() => setStaffModal(!staffModal)}
-                activeOpacity={0.3}
-              >
-                <Image source={addIcon} style={styles.addIcon} />
-                <Text style={styles.addNew}>{strings.settings.addStaff}</Text>
-              </TouchableOpacity>
-            ) : null}
-          </View>
-          <Spacer space={SH(20)} />
-          <View
-            style={{ borderWidth: 1, borderColor: COLORS.solidGrey, flex: 1, borderRadius: 10 }}
-          >
+          <View style={{ flex: 1 }}>
             <View style={styles.securityStaffMainCon}>
               <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-                <Image source={staffImage} style={styles.securityLogo} />
+                <Image
+                  source={staffImage}
+                  style={[styles.securityLogo, { tintColor: COLORS.navy_blue }]}
+                />
                 <View style={styles.twoStepVerifiCon}>
                   <Text style={styles.twoStepText}>{strings.Staff.staffList}</Text>
                   <Spacer space={SH(8)} />
@@ -717,6 +731,39 @@ export function Staff() {
                     }
                     showsVerticalScrollIndicator={false}
                   />
+
+                  <TouchableOpacity
+                    style={[styles.rowAligned, { marginLeft: SW(15) }]}
+                    onPress={() => setStaffModal(!staffModal)}
+                  >
+                    <View
+                      style={{
+                        borderWidth: 2,
+                        height: 32,
+                        width: 32,
+                        borderRadius: 32,
+                        borderColor: COLORS.navy_blue,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Image
+                        source={plus}
+                        resizeMode="contain"
+                        style={{ height: 25, width: 25, tintColor: COLORS.navy_blue }}
+                      />
+                    </View>
+                    <Spacer horizontal space={SW(5)} />
+                    <Text
+                      style={{
+                        fontFamily: Fonts.Regular,
+                        fontSize: ms(10),
+                        color: COLORS.navy_blue,
+                      }}
+                    >
+                      {'Add Staff'}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             </View>

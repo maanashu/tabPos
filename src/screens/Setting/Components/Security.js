@@ -67,6 +67,7 @@ export function Security() {
   const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
   const getAuth = useSelector(getAuthData);
   const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
+
   useEffect(() => {
     if (getSettingData?.getSetting) {
       setGoogleAuthicator(getSettingData?.getSetting?.google_authenticator_status ?? false);
@@ -194,27 +195,32 @@ export function Security() {
             <Spacer space={SH(10)} />
             <Text style={styles.securitysubhead}>{strings.settings.securitysubhead}</Text>
             <Spacer space={SH(20)} />
-            <View style={styles.twoStepMemberCon}>
-              <View style={styles.flexRow}>
-                <View style={styles.marginLeft}>
-                  <View style={styles.flexRow}>
-                    <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-                      {strings.settings.teamMemeber}
-                    </Text>
-                    <TouchableOpacity
-                      style={styles.vectorIconCon}
-                      onPress={() => toggleBtnHandler()}
-                    >
-                      <Image
-                        source={googleAuthicator ? vector : vectorOff}
-                        style={styles.toggleSecurity}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
-                    {strings.settings.memeberEnable}
-                  </Text>
-                </View>
+            <View
+              style={[
+                styles.twoStepMemberCon,
+                { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+              ]}
+            >
+              <View>
+                <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                  {strings.settings.teamMemeber}
+                </Text>
+                <Spacer space={SH(5)} />
+
+                <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
+                  {strings.settings.memeberEnable}
+                </Text>
+              </View>
+              <View>
+                <TouchableOpacity
+                  style={[styles.vectorIconCon, { alignSelf: 'flex-end' }]}
+                  onPress={() => toggleBtnHandler()}
+                >
+                  <Image
+                    source={googleAuthicator ? vector : vectorOff}
+                    style={styles.toggleSecurity}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </View>

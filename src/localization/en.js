@@ -94,6 +94,7 @@ export const en = {
     alreadyInsystem: 'Already in system',
   },
   posSale: {
+    staffDetails: 'Staff Details',
     onlyx: 'x',
     paymenttdone: 'Payment Done!',
     category: 'Category',

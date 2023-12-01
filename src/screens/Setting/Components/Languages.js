@@ -5,22 +5,16 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import { View, Text, Image, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
-import { COUNTRYNAME } from '@/constants/flatListData';
 import {
-  addFrame,
   addIcon,
-  frame,
-  frameBox,
   languImage,
-  locationIcon,
-  spain,
-  vector,
-  vectorOff,
   XImage,
   checkboxSecBlue,
   checkedCheckboxSquare,
   checkbox,
   squareBlank,
+  toggleOnNavyBlue,
+  newToggleOff,
 } from '@/assets';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -182,7 +176,10 @@ export function Languages() {
             style={styles.vectorIconCon}
             onPress={() => onToggleLanguage(item, index)}
           >
-            <Image source={item.status ? vector : vectorOff} style={styles.toggleSecurity} />
+            <Image
+              source={item.status ? toggleOnNavyBlue : newToggleOff}
+              style={styles.toggleSecurity}
+            />
           </TouchableOpacity>
         </View>
       </View>

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Spacer } from '@/components';
-import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH } from '@/theme';
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
-import { activeCircle, ellipse } from '@/assets';
-import { LEGALDATA, policyLabelData } from '@/constants/flatListData';
+import { activeCircle } from '@/assets';
 import Modal from 'react-native-modal';
-import { moderateVerticalScale, ms } from 'react-native-size-matters';
+import { moderateVerticalScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';

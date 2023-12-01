@@ -24,7 +24,7 @@ export function Location() {
 
   const locationRenderItem = ({ item, index }) => (
     <View style={styles.locationsView} key={index}>
-      <View style={[styles.flexRow, { alignItems: 'flex-start' }]}>
+      <View style={[styles.flexRow, { alignItems: 'flex-start', justifyContent: 'flex-start' }]}>
         <Image source={locationRoundNew} style={styles.locationPinStyle} />
         <View style={styles.marginLeft}>
           <Text style={[styles.twoStepText, { fontSize: SF(15), fontFamily: Fonts.SemiBold }]}>
