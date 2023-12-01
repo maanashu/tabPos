@@ -92,6 +92,7 @@ export function MainScreen({
   cartServiceScreenHandler,
   activeCategory,
   addProductscreenShow,
+  addServiceScreenShow,
 }) {
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -519,7 +520,9 @@ export function MainScreen({
   const serviceFun = async (serviceId) => {
     const res = await dispatch(getOneService(sellerID, serviceId));
     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-      setAddServiceCartModal(true);
+      // setAddServiceCartModal(true);
+      addServiceScreenShow();
+      // console.log('dfghjkl;');
     }
   };
 
