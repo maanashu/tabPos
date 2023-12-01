@@ -495,7 +495,6 @@ export const getAnalyticStatistics = (sellerID, data, page, callback) => async (
       prevAnalyticsGraph.orderData.data = prevAnalyticsGraph?.orderData.data?.concat(
         res?.payload?.orderData?.data
       );
-      console.log('first', prevAnalyticsGraph);
 
       dispatch(getAnalyticStatisticsSuccess(prevAnalyticsGraph));
     } else {

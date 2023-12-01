@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -28,7 +28,6 @@ import { ms } from 'react-native-size-matters';
 import { COLORS } from '@/theme';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { useRef } from 'react';
 import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
 import { useDebouncedCallback } from 'use-lodash-debounce';
 
@@ -67,6 +66,7 @@ export function Revenue({ sellerID, data }) {
 
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
+  const onEndReachedCalledDuringMomentum = useRef(false);
 
   const interval = 1;
   const maxLabel = 31;
@@ -79,7 +79,6 @@ export function Revenue({ sellerID, data }) {
     isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
   );
 
-  const onEndReachedCalledDuringMomentum = useRef(false);
   const paginationData = {
     total: analyticStatistics?.orderData?.total,
     totalPages: analyticStatistics?.orderData?.total_pages,
@@ -277,11 +276,12 @@ export function Revenue({ sellerID, data }) {
             </DataTable.Header>
 
             <View style={styles.mainListContainer}>
-              {revenueStatisticsLoader ? (
+              {/* {revenueStatisticsLoader ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
                 </View>
-              ) : analyticStatistics?.orderData?.data?.length === 0 ? (
+              ) :  */}
+              {analyticStatistics?.orderData?.data?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
