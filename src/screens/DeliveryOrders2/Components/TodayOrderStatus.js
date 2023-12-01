@@ -14,7 +14,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 const TodayOrderStatus = () => {
   const getDeliveryData = useSelector(getDelivery);
   const todayOrderStatusData = getDeliveryData?.todayOrderStatus;
-
+  console.log('ASdasdas', todayOrderStatusData);
   const orderStatusLoading = useSelector((state) =>
     isLoadingSelector([TYPES.TODAY_ORDER_STATUS], state)
   );
@@ -31,9 +31,18 @@ const TodayOrderStatus = () => {
             <ActivityIndicator color={COLORS.primary} size={'small'} />
           </View>
         ) : (
-          <Text style={[styles.todayOrderText, { paddingVertical: ms(12) }]}>
-            {todayOrderStatusData?.[0]?.count ?? '0'}
-          </Text>
+          <Text style={[styles.todayOrderText]}>{todayOrderStatusData?.[0]?.count ?? '0'}</Text>
+        )}
+      </View>
+      <View style={styles.todayOrdersViewStyle}>
+        <Text style={styles.todayOrderText}>{strings.deliveryOrders2.pickupOrders}</Text>
+
+        {orderStatusLoading ? (
+          <View style={styles.loaderView}>
+            <ActivityIndicator color={COLORS.primary} size={'small'} />
+          </View>
+        ) : (
+          <Text style={[styles.todayOrderText]}>{todayOrderStatusData?.[1]?.count ?? '0'}</Text>
         )}
       </View>
     </View>
@@ -69,6 +78,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width / 6,
     alignItems: 'center',
     justifyContent: 'space-between',
+    flex: 1,
   },
   todayOrderText: {
     fontSize: SF(14),

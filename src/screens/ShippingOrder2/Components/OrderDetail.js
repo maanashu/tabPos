@@ -13,6 +13,7 @@ import {
   arrowRightTop,
   cashShippingNew,
   clock,
+  fedexNew,
   pay,
   printLabel,
   scanNew,
@@ -188,19 +189,38 @@ const OrderDetail = ({
             </View>
           </View>
 
-          <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.4 }]}>
-            <Image source={scooter} style={styles.scooterImageStyle} />
+          <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.5 }]}>
+            {/* <Image source={scooter} style={styles.scooterImageStyle} /> */}
+            <Image
+              source={
+                userDetail?.shipping_details?.image
+                  ? { uri: userDetail?.shipping_details?.image }
+                  : fedexNew
+              }
+              style={[
+                styles.scooterImageStyle,
+                {
+                  height: ms(25),
+                  width: ms(25),
+                  resizeMode: 'contain',
+                  borderRadius: ms(5),
+                  borderColor: COLORS.sky_grey,
+                  borderWidth: 1,
+                },
+              ]}
+            />
 
             <View style={[styles.userNameView, { paddingLeft: 5 }]}>
               <Text
                 style={{
-                  fontFamily: Fonts.Bold,
-                  fontSize: SF(14),
-                  color: COLORS.primary,
+                  fontFamily: Fonts.Medium,
+                  fontSize: SF(10),
+                  color: COLORS.textBlue,
                 }}
               >
-                {userDetail?.invoice?.delivery_date ??
-                  moment(userDetail?.created_at).format('DD MMM YYYY')}
+                {userDetail?.shipping_details?.title}
+                {/* {userDetail?.invoice?.delivery_date ??
+                  moment(userDetail?.created_at).format('DD MMM YYYY')} */}
               </Text>
               <View
                 style={[
@@ -232,14 +252,14 @@ const OrderDetail = ({
             </View>
           </View>
         </View>
-        {openShippingOrders == '9' && (
+        {/* {openShippingOrders == '9' && (
           <TouchableOpacity style={styles.scanButtonStyle}>
             <Text style={styles.scanBttnTextStyle}>
               {strings.shippingOrder.scanBarCodeShipping}
             </Text>
             <Image source={scanNew} style={styles.scanIconStyle} />
           </TouchableOpacity>
-        )}
+        )} */}
         <View style={styles.lineCommonStyle}></View>
 
         {/* <View style={styles.orderDetailViewStyle}>
@@ -348,10 +368,11 @@ const OrderDetail = ({
             <View
               style={[styles.lineCommonStyle, { marginHorizontal: ms(2), marginVertical: ms(2) }]}
             />
-            <Spacer space={SH(15)} />
+            {/* <Spacer space={SH(15)} /> */}
 
             {openShippingOrders > '3' && (
               <View>
+                <Spacer space={SH(15)} />
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'Tracking ID'}</Text>
                 <Text
                   style={[
@@ -363,9 +384,10 @@ const OrderDetail = ({
                 </Text>
               </View>
             )}
-            <Spacer space={SH(15)} />
+            {/* <Spacer space={SH(15)} /> */}
             {openShippingOrders <= '3' && (
               <View>
+                <Spacer space={SH(15)} />
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                   {strings.shippingOrder.paymentMethod}
                 </Text>

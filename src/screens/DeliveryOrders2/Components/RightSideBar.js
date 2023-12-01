@@ -258,7 +258,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
 
   const renderDrawerFull = ({ item }) => (
     <TouchableOpacity
-      //disabled={item?.count > 0 ? false : true}
+      disabled={item?.count > 0 ? false : true}
       style={[{ marginVertical: ms(2) }]}
       onPress={() =>
         // onPressDrawerHandler(item?.key)

@@ -17,6 +17,12 @@ import { ProgressChart } from 'react-native-chart-kit';
 const OrderConversion = () => {
   const getOrdersData = useSelector(getShipping);
   const pieChartData = getOrdersData?.getOrderstatistics?.data;
+  const NewSeries = [
+    pieChartData?.[0]?.percentage / 100 ?? 0.0,
+    pieChartData?.[1]?.percentage / 100 ?? 0.0,
+    pieChartData?.[2]?.percentage / 100 ?? 0.0,
+  ];
+
   const series = [
     pieChartData?.[0]?.count ?? 0,
     pieChartData?.[1]?.count ?? 0,
@@ -46,7 +52,7 @@ const OrderConversion = () => {
   };
 
   const finalData = {
-    data: series,
+    data: NewSeries,
     colors: sliceColor,
   };
 
@@ -75,7 +81,7 @@ const OrderConversion = () => {
             withCustomBarColorFromData={true}
           />
           <View style={styles.percentageView}>
-            <Text style={styles.percentageTextStyle}>{'925'}</Text>
+            <Text style={styles.percentageTextStyle}>{sum}</Text>
             {/* <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text> */}
           </View>
         </View>

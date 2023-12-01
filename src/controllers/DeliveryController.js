@@ -40,6 +40,7 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
+      // console.log(endpoint, 'ORDERS____________________URL');
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -198,7 +199,7 @@ export class DeliveryController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.graphOrders +
-        `?seller_id=${sellerID}&filter=week&delivery_option=1`;
+        `?seller_id=${sellerID}&filter=year&delivery_option=1`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
