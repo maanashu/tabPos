@@ -22,6 +22,7 @@ import { getSetting } from '@/selectors/SettingSelector';
 import { addLanguage, upadteApi } from '@/actions/SettingAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useCallback } from 'react';
+import { Images } from '@/assets/new_icon';
 
 // const addLanguage = [
 //   {
@@ -159,14 +160,14 @@ export function Languages() {
   };
 
   const languageRenderItem = ({ item, index }) => (
-    <View style={styles.twoStepMemberCon}>
+    <View style={[styles.twoStepMemberCon, { backgroundColor: COLORS.white }]}>
       <View style={styles.flexRow}>
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-          <View style={styles.flagCon}>
-            <Image source={{ uri: item.image }} style={[styles.toggleSecurity, { margin: 3 }]} />
-          </View>
+          <Image source={{ uri: item.image }} style={[styles.toggleSecurity, { marginRight: 3 }]} />
           <View style={styles.twoStepVerifiCon}>
-            <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>{item.name}</Text>
+            <Text style={[styles.twoStepText, { fontSize: SF(14), marginBottom: SH(4) }]}>
+              {item.name}
+            </Text>
             <Text style={[styles.securitysubhead, { fontSize: SF(12) }]} numberOfLines={1}>
               Default
             </Text>
@@ -250,7 +251,10 @@ export function Languages() {
       <Spacer space={SH(20)} />
       <View style={styles.securityMainCon}>
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-          <Image source={languImage} style={styles.securityLogo} />
+          <Image
+            source={Images.languageIcon}
+            style={[styles.securityLogo, { tintColor: COLORS.navy_blue }]}
+          />
           <View style={styles.twoStepVerifiCon}>
             <Text style={styles.twoStepText}>{strings.Languages.Publishedlanguages}</Text>
             <Spacer space={SH(10)} />

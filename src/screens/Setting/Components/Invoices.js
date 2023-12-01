@@ -5,7 +5,6 @@ import { SF, SH, SW } from '@/theme';
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import {
-  emailBlueIcon,
   emailInvoice,
   emailS,
   invoice2,
@@ -14,7 +13,6 @@ import {
   phoneMsgIcon,
   printInvoice,
   printS,
-  printerIcon,
   smsInvoice,
   smsS,
   toggleOnNavyBlue,
@@ -24,6 +22,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
 import { upadteApi } from '@/actions/SettingAction';
+import { Images } from '@/assets/new_icon';
 
 export function Invoices() {
   const dispatch = useDispatch();
@@ -83,7 +82,7 @@ export function Invoices() {
                 <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
-                      <Image source={phoneMsgIcon} style={styles.teamMember} />
+                      <Image source={Images.phoneMsgIcon} style={styles.teamMember} />
                       <View style={styles.marginLeft}>
                         <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                           {strings.settings.smshead}
@@ -104,7 +103,7 @@ export function Invoices() {
                 <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
-                      <Image source={emailBlueIcon} style={styles.teamMember} />
+                      <Image source={Images.emailBlueIcon} style={styles.teamMember} />
                       <View style={styles.marginLeft}>
                         <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                           {strings.settings.emailHead}
@@ -125,7 +124,7 @@ export function Invoices() {
                 <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
-                      <Image source={printerIcon} style={styles.teamMember} />
+                      <Image source={Images.printerIcon} style={styles.teamMember} />
                       <View style={styles.marginLeft}>
                         <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                           {strings.settings.printHead}
