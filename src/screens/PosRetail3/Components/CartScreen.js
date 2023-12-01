@@ -83,7 +83,7 @@ export function CartScreen({
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
-  const availableOfferArray = getRetailData?.availableOffer;
+  const availableOfferArray = getRetailData?.availableOffer?.data;
   const [cartSearch, setCartSearch] = useState('');
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
@@ -284,7 +284,7 @@ export function CartScreen({
   const cartidFrom = useMemo(() => cartData?.id, []);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.homeScreenCon}>
         <CustomHeader
           iconShow
@@ -294,7 +294,7 @@ export function CartScreen({
           }}
         />
 
-        <View style={styles.displayflex2}>
+        <View style={[styles.displayflex2, { flex: 1 }]}>
           <View style={[styles.itemLIistCon]}>
             <Spacer space={SH(3)} />
             <View style={styles.displayflex}>
@@ -574,8 +574,8 @@ export function CartScreen({
                   </View>
                 ) : (
                   <FlatList
-                    data={availableOfferArray}
-                    extraData={availableOfferArray}
+                    data={availableOfferArray ?? []}
+                    extraData={availableOfferArray ?? []}
                     renderItem={({ item, index }) => {
                       return (
                         <TouchableOpacity

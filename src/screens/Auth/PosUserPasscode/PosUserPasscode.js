@@ -16,7 +16,7 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { SH } from '@/theme';
 import { TYPES } from '@/Types/Types';
 import { Spacer } from '@/components';
-import { crossButton } from '@/assets';
+import { crossButton, userImage } from '@/assets';
 import { strings } from '@/localization';
 import { digits } from '@/utils/validators';
 import { goBack } from '@/navigation/NavigationRef';

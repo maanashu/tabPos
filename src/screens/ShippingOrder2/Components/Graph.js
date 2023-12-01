@@ -17,9 +17,22 @@ import { Spacer } from '@/components';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
-import { blankCheckBox, Fonts, mark } from '@/assets';
+import {
+  blankCheckBox,
+  cancelledBlank,
+  cancelledMarked,
+  deliveryBlank,
+  deliveryMarked,
+  Fonts,
+  incomingBlank,
+  incomingMarked,
+  mark,
+  returnedBlank,
+  returnedMarked,
+} from '@/assets';
 import { getShipping } from '@/selectors/ShippingSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { LineChart } from 'react-native-chart-kit';
 
 const { width } = Dimensions.get('window');
 
@@ -31,6 +44,23 @@ const Graph = () => {
   const [showProcessing, setShowProcessing] = useState(true);
   const [showReadyToPickup, setShowReadyToPickup] = useState(true);
   const [showCompleted, setShowCompleted] = useState(true);
+  const month = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const d = new Date();
+  const CurrentMonth = month[d.getUTCMonth()];
 
   useEffect(() => {
     convertData();
@@ -141,12 +171,13 @@ const Graph = () => {
           Incoming: true,
         });
       }
-      if (type === 'OrderProcessing') {
+      if (type === 'Delivery') {
         setOfThree.push({
           value: values[1] || 0,
           spacing: 10,
           frontColor: value ? COLORS.pink : COLORS.white,
-          OrderProcessing: true,
+          //  OrderProcessing: true,
+          Delivery: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -159,7 +190,8 @@ const Graph = () => {
           value: values[1] || 0,
           spacing: 10,
           frontColor: showProcessing ? COLORS.pink : COLORS.white,
-          OrderProcessing: true,
+          //  OrderProcessing: true,
+          Delivery: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -168,12 +200,13 @@ const Graph = () => {
           },
         });
       }
-      if (type === 'ReadyForPickup') {
+      if (type === 'Returned') {
         setOfThree.push({
           value: values[2] || 0,
           spacing: 10,
           frontColor: value ? COLORS.yellowTweet : COLORS.white,
-          ReadyForPickup: true,
+          // ReadyForPickup: true,
+          Returned: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -186,7 +219,8 @@ const Graph = () => {
           value: values[2] || 0,
           spacing: 10,
           frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
-          ReadyForPickup: true,
+          // ReadyForPickup: true,
+          Returned: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -195,12 +229,13 @@ const Graph = () => {
           },
         });
       }
-      if (type === 'Completed') {
+      if (type === 'Cancelled') {
         setOfThree.push({
           value: values[3] || 0,
           spacing: 10,
           frontColor: value ? COLORS.primary : COLORS.white,
-          Completed: true,
+          // Completed: true,
+          Cancelled: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -213,7 +248,8 @@ const Graph = () => {
           value: values[3] || 0,
           spacing: 10,
           frontColor: showCompleted ? COLORS.primary : COLORS.white,
-          Completed: true,
+          // Completed: true,
+          Cancelled: true,
           labelTextStyle: {
             color: COLORS.darkGray,
             fontSize: 9,
@@ -230,8 +266,8 @@ const Graph = () => {
   return (
     <View style={styles.graphViewStyle}>
       <View>
-        <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
-
+        {/* <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text> */}
+        {/* <Spacer space={SH(30)} /> */}
         <View style={[styles.flexRow, { zIndex: 999 }]}>
           <TouchableOpacity
             onPress={() => {
@@ -244,64 +280,69 @@ const Graph = () => {
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showIncoming ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showIncoming && { tintColor: COLORS.bluish_green }]}
+              source={showIncoming ? incomingMarked : incomingBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.incomingOrders}</Text>
+            <Text style={[styles.varientTextStyle, { color: COLORS.navy_blue }]}>
+              {strings.shippingOrder.incomingOrders}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => {
               setShowProcessing((prevShowProcessing) => {
                 const newState = !prevShowProcessing;
-                onClickCheckBox('OrderProcessing', newState);
+                onClickCheckBox('Delivery', newState);
                 return newState;
               });
             }}
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showProcessing ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showProcessing && { tintColor: COLORS.pink }]}
+              source={showProcessing ? deliveryMarked : deliveryBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.processingOrders}</Text>
+            <Text style={[styles.varientTextStyle, { color: COLORS.purple }]}>
+              {strings.shippingOrder.deliveryOrders}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => {
               setShowReadyToPickup((prevShowReadyToPickup) => {
                 const newState = !prevShowReadyToPickup;
-                onClickCheckBox('ReadyForPickup', newState);
+                onClickCheckBox('Returned', newState);
                 return newState;
               });
             }}
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showReadyToPickup ? mark : blankCheckBox}
-              style={[
-                styles.checkboxIconStyle,
-                showReadyToPickup && { tintColor: COLORS.yellowTweet },
-              ]}
+              source={showReadyToPickup ? returnedMarked : returnedBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.readyPickupOrders}</Text>
+            <Text style={[styles.varientTextStyle, { color: COLORS.extra_yellow_600 }]}>
+              {strings.shippingOrder.returnedOrders}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => {
               setShowCompleted((prevShowCompleted) => {
                 const newState = !prevShowCompleted;
-                onClickCheckBox('Completed', newState);
+                onClickCheckBox('Cancelled', newState);
                 return newState;
               });
             }}
             style={styles.checkboxViewStyle}
           >
             <Image
-              source={showCompleted ? mark : blankCheckBox}
-              style={[styles.checkboxIconStyle, showCompleted && { tintColor: COLORS.primary }]}
+              source={showCompleted ? cancelledMarked : cancelledBlank}
+              style={[styles.checkboxIconStyle]}
             />
-            <Text style={styles.varientTextStyle}>{strings.shippingOrder.completed}</Text>
+            <Text style={[styles.varientTextStyle, { color: COLORS.alert_red }]}>
+              {strings.shippingOrder.cancelledOrders}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -314,7 +355,7 @@ const Graph = () => {
         </View>
       ) : (
         <View style={{ zIndex: -999 }}>
-          <BarChart
+          {/* <BarChart
             data={modifyData}
             noOfSections={7}
             roundedTop
@@ -327,7 +368,91 @@ const Graph = () => {
             width={width * 0.48}
             barWidth={SW(3.5)}
             yAxisTextStyle={styles.yAxisTextStyle}
+          /> */}
+          <Text
+            style={{
+              position: 'absolute',
+              bottom: ms(95),
+              left: ms(-20),
+              zIndex: 1,
+              transform: [{ rotate: '270deg' }],
+              color: COLORS.lavender,
+              fontSize: ms(6),
+              fontFamily: Fonts.Regular,
+            }}
+          >
+            {strings.deliveryOrders.orderNumber}
+          </Text>
+
+          <LineChart
+            withDots={false}
+            withVerticalLines={false}
+            data={{
+              labels: ['Jan', 'Mar', 'May', 'Jul', 'Sept', 'Nov', 'Dec'],
+              datasets: [
+                {
+                  data: [800, 810, 900, 810, 860, 890, 810],
+                  color: () => `rgba(70, 89, 181, 1)`,
+                  strokeWidth: 3,
+                },
+                {
+                  data: [500, 600, 550, 590, 630, 650, 700],
+                  color: () => `rgba(114, 51, 194, 1)`,
+                  strokeWidth: 3,
+                },
+                {
+                  data: [400, 450, 470, 420, 410, 480, 500],
+                  color: () => `rgba(240, 192, 26, 1)`,
+                  strokeWidth: 3,
+                },
+                {
+                  data: [100, 220, 190, 260, 240, 340, 370],
+                  color: () => `rgba(240, 68, 56, 1)`,
+                  strokeWidth: 3,
+                },
+              ].filter((el) => el),
+            }}
+            width={width * 0.5}
+            height={ms(160)}
+            // noOfSections={8}
+            chartConfig={{
+              backgroundColor: '#000',
+              backgroundGradientFrom: '#fff',
+              // backgroundGradientTo: '#f3edf7',
+              backgroundGradientTo: '#fff',
+              decimalPlaces: 0,
+              // horizontalLabelRotation: 45,
+              color: () => `rgba(39, 90, 255, 1)`,
+              labelColor: (opacity = 1) => `rgba(126, 138, 193, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              propsForBackgroundLines: {
+                stroke: COLORS.sky_grey,
+                strokeDasharray: '', // solid background lines with no dashes
+              },
+            }}
+            bezier
+            style={{
+              marginVertical: 8,
+              // borderRadius: 16,
+            }}
+            withShadow={false}
+            fromZero
+            segments={5}
           />
+          <Text
+            style={{
+              position: 'absolute',
+              bottom: 10,
+              left: width * 0.22,
+              color: COLORS.lavender,
+              fontSize: ms(6),
+              fontFamily: Fonts.Regular,
+            }}
+          >
+            {CurrentMonth}
+          </Text>
         </View>
       )}
     </View>
@@ -340,7 +465,7 @@ const styles = StyleSheet.create({
   graphViewStyle: {
     flex: 0.5,
     backgroundColor: COLORS.white,
-    borderRadius: 10,
+    borderRadius: ms(20),
     paddingHorizontal: ms(12),
     paddingBottom: 30,
     marginTop: SH(15),
@@ -373,9 +498,10 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   checkboxIconStyle: {
-    width: SH(24),
-    height: SH(24),
+    width: SH(22),
+    height: SH(22),
     resizeMode: 'contain',
+    marginRight: ms(3),
   },
   checkboxViewStyle: {
     flexDirection: 'row',
@@ -390,7 +516,7 @@ const styles = StyleSheet.create({
     marginTop: ms(10),
   },
   varientTextStyle: {
-    fontSize: SF(11),
+    fontSize: SF(12),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },

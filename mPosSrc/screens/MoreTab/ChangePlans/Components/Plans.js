@@ -12,7 +12,7 @@ const Plans = ({ data }) => {
             <View style={styles.innerCircle}></View>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.planIncludedText}>{item?.appName}</Text>
+            <Text style={styles.planIncludedText}>{`JOBR ${item.toUpperCase()}`}</Text>
           </View>
         </View>
       </>

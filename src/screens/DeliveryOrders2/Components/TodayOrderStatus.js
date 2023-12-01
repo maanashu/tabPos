@@ -44,16 +44,17 @@ export default memo(TodayOrderStatus);
 
 const styles = StyleSheet.create({
   orderStatusViewStyle: {
-    borderRadius: 10,
+    borderRadius: ms(10),
     paddingVertical: ms(8),
     alignItems: 'flex-start',
     width: Dimensions.get('window').width / 4,
     backgroundColor: COLORS.white,
+    flex: 1,
   },
   orderStatusText: {
     fontSize: SF(16),
     paddingLeft: ms(15),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
   },
   loaderView: {

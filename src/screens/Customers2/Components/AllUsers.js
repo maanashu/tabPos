@@ -85,7 +85,7 @@ const AllUsers = ({
   const [date, setDate] = useState();
   const [formatedDate, setFormatedDate] = useState();
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
-  const [paginationModalValue, setPaginationModalValue] = useState(10);
+  const [paginationModalValue, setPaginationModalValue] = useState('10');
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
   const [page, setPage] = useState(1);
   const [ind, setInd] = useState();
@@ -215,8 +215,9 @@ const AllUsers = ({
   ];
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? COLORS.primary : COLORS.textInputBackground;
-    const color = item.id === selectedId ? COLORS.white : COLORS.dark_grey;
+    const backgroundColor = item.id === selectedId ? COLORS.navy_blue : COLORS.white;
+    const color = item.id === selectedId ? COLORS.white : COLORS.navy_blue;
+    const borderColor = item.id === selectId ? COLORS.transparent : COLORS.light_purple;
 
     return (
       <Item
@@ -226,12 +227,16 @@ const AllUsers = ({
         }}
         backgroundColor={backgroundColor}
         color={color}
+        borderColor={borderColor}
       />
     );
   };
 
-  const Item = ({ item, onPress, backgroundColor, color }) => (
-    <TouchableOpacity style={[styles.horizontalCustomerCon, { backgroundColor }]} onPress={onPress}>
+  const Item = ({ item, onPress, backgroundColor, color, borderColor }) => (
+    <TouchableOpacity
+      style={[styles.horizontalCustomerCon, { backgroundColor, borderColor, borderWidth: 1 }]}
+      onPress={onPress}
+    >
       <Text style={[styles.horizCustomerText, { color }]}>{item.name}</Text>
     </TouchableOpacity>
   );
@@ -261,9 +266,15 @@ const AllUsers = ({
     <View style={{ flex: 1 }}>
       <View style={styles.headerMainView}>
         <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
-          <Image source={leftBack} style={styles.backIcon} />
+          {/* <Image source={leftBack} style={styles.backIcon} /> */}
           <View style={styles.deliveryView}>
-            <Image source={users} style={[styles.truckStyle]} />
+            <Image
+              source={users}
+              style={[
+                styles.truckStyle,
+                { height: ms(20), width: ms(20), tintColor: COLORS.navy_blue },
+              ]}
+            />
             <Text style={styles.deliveryText}>{'Users'}</Text>
           </View>
         </TouchableOpacity>
@@ -301,7 +312,7 @@ const AllUsers = ({
         {/* Date and Area section */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
-            style={[styles.datePickerCon, { borderWidth: 1 }]}
+            style={[styles.datePickerCon, { borderWidth: 1, borderColor: COLORS.navy_blue }]}
             onPress={() => {
               if (!dateformat) {
                 const dates = moment(new Date()).format('MM/DD/YYY');
@@ -318,7 +329,7 @@ const AllUsers = ({
               autoCapitalize={'none'}
               editable={false}
               placeholder="Date"
-              placeholderTextColor={COLORS.gerySkies}
+              placeholderTextColor={COLORS.navy_blue}
               style={[styles.txtInput, { padding: 0, marginLeft: ms(2) }]}
             />
           </TouchableOpacity>
@@ -406,6 +417,9 @@ const AllUsers = ({
                 {
                   backgroundColor:
                     paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
                 },
               ]}
               onPress={paginationDechandler}
@@ -421,16 +435,36 @@ const AllUsers = ({
                 ]}
               />
             </TouchableOpacity>
-            <View style={styles.unionCon}>
-              <Image source={mask} style={[styles.unionStyle, { tintColor: COLORS.graySky }]} />
+            <View
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
+                },
+              ]}
+            >
+              <Image
+                source={mask}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor: paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                  },
+                ]}
+              />
             </View>
             <View
               style={{
-                width: ms(70),
+                width: ms(60),
+                marginRight: ms(7),
               }}
             >
               {isCustomerLoad ? (
-                <ActivityIndicator size="small" />
+                <ActivityIndicator size="small" color={COLORS.navy_blue} />
               ) : (
                 <Text
                   style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}
@@ -440,10 +474,33 @@ const AllUsers = ({
                 </Text>
               )}
             </View>
-            <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
+            <View
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.sky_grey
+                      : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.transparent
+                      : COLORS.light_purple,
+                },
+              ]}
+            >
               <Image
                 source={maskRight}
-                style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor:
+                      paginationData?.currentPage == paginationData?.totalPages
+                        ? COLORS.graySky
+                        : COLORS.navy_blue,
+                  },
+                ]}
               />
             </View>
             <TouchableOpacity
@@ -454,11 +511,11 @@ const AllUsers = ({
                     paginationData?.currentPage == paginationData?.totalPages
                       ? COLORS.sky_grey
                       : COLORS.white,
+                  borderWidth: 1,
                   borderColor:
                     paginationData?.currentPage == paginationData?.totalPages
-                      ? COLORS.white
-                      : COLORS.white,
-                  borderWidth: 1,
+                      ? COLORS.transparent
+                      : COLORS.light_purple,
                 },
               ]}
               onPress={paginationInchandler}
@@ -471,7 +528,7 @@ const AllUsers = ({
                   {
                     tintColor:
                       paginationData?.currentPage == paginationData?.totalPages
-                        ? COLORS.navy_blue
+                        ? COLORS.graySky
                         : COLORS.navy_blue,
                   },
                 ]}
@@ -505,16 +562,11 @@ const AllUsers = ({
 
       <View style={{ zIndex: -9 }}>
         <Table>
-          <View
-            style={[
-              styles.tableDataHeaderCon,
-              { borderTopWidth: 1, borderColor: COLORS.solidGrey },
-            ]}
-          >
+          <View style={[styles.tableDataHeaderCon]}>
             <View style={styles.displayFlex}>
               <View style={styles.tableHeaderLeft}>
                 <Text style={styles.tableTextHeaFirst}>#</Text>
-                <Text style={[styles.tableTextHea, { marginLeft: 30 }]}>Name</Text>
+                <Text style={[styles.tableTextHea, { marginLeft: ms(30) }]}>Name</Text>
               </View>
               <View style={styles.tableHeaderRight}>
                 <View style={styles.tableHeaderRightInner}>
@@ -533,7 +585,7 @@ const AllUsers = ({
             <ScrollView showsVerticalScrollIndicator={false}>
               {isCustomerLoad ? (
                 <View style={{ marginTop: 100 }}>
-                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                  <ActivityIndicator size="large" color={COLORS.navy_blue} />
                 </View>
               ) : customerArray?.length === 0 ? (
                 <View style={{ marginTop: 80 }}>
@@ -560,7 +612,7 @@ const AllUsers = ({
                             : paginationModalValue} */}
                             {currentIndex}
                           </Text>
-                          <View style={[styles.flexAlign, { marginLeft: 10 }]}>
+                          <View style={[styles.flexAlign, { marginLeft: ms(10) }]}>
                             <Image
                               source={
                                 item?.user_details?.profile_photo == null ||
@@ -579,7 +631,7 @@ const AllUsers = ({
                               </Text>
                               {item?.user_details ? (
                                 <Text
-                                  style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
+                                  style={[styles.tableTextDataAdd, { color: COLORS.purple }]}
                                   numberOfLines={1}
                                 >
                                   {item?.user_details?.current_address?.city},
@@ -605,7 +657,7 @@ const AllUsers = ({
                           <View style={styles.tableHeaderRightInner}>
                             <Text style={styles.tableTextData} numberOfLines={1}>
                               {'$'}
-                              {item?.life_time_spent}
+                              {item?.life_time_spent?.toFixed(2)}
                             </Text>
                           </View>
                         </View>

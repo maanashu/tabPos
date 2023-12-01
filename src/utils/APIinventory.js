@@ -8,7 +8,7 @@ import { store } from '@/store';
 import { useEffect } from 'react';
 
 export const USER_URL = 'https://apiuserservice.jobr.com/api/v1/';
-// export const SUPPORT_URL = 'https://apisupport.jobr.com/api/v1/';
+const SUPPORT_URL = 'https://apisupport.jobr.com/api/v1/';
 export const ORDER_URL = 'https://apiorder.jobr.com:8004/api/v1/';
 export const PRODUCT_URL = 'https://apiproductmgmt.jobr.com/api/v1/';
 export const WALLET_URL = 'https://apiwallet.jobr.com/api/v1/';
@@ -22,6 +22,8 @@ export const posDrawerId = store.getState().cashTracking?.getDrawerSession?.id;
 
 export const ApiUserInventory = {
   verifyPhone: 'user_phones/',
+  changePin: 'users/change-old-pin',
+  verifyOldPin: 'users/verify-pin',
   login: 'users/login/',
   merchantLogin: 'users/merchant/login',
   getProfile: 'users/',
@@ -58,6 +60,13 @@ export const ApiUserInventory = {
   getPosDetailWeekly: 'pos_staff_salary/get-data-basis-of-week',
   staffRequest: 'pos_staff_salary/request-payment',
   getStaffTransaction: 'pos_staff_salary/pos/paid-salary-details',
+  deviceRegister: USER_URL + 'users/device/register',
+  deviceUnRegister: USER_URL + 'users/device/un-register',
+  deviceLogin: USER_URL + 'users/device/login',
+  verifyPin: USER_URL + 'users/verify-pin',
+  changeOldPin: USER_URL + 'users/change-old-pin',
+  updateUserProfile: 'users/merchant/pos-user',
+  departmentList: USER_URL + 'departments',
 };
 
 export const ApiProductInventory = {
@@ -177,6 +186,15 @@ export const ApiChatInverntory = {
   getMessages: USER_URL + `messageheads/`,
   getMessageHeads: `messageheads`,
 };
+export const ApiSupportInventory = {
+  subjectList: SUPPORT_URL + 'subjects',
+  uploadSupportDoc: SUPPORT_URL + 'supports/document',
+  addTicket: SUPPORT_URL + 'supports',
+  supportList: SUPPORT_URL + 'supports/user',
+  faqList: SUPPORT_URL + 'faqs',
+  getAllSupportCommments: SUPPORT_URL + 'support_comments',
+  getAllCommentbySupportId: SUPPORT_URL + 'support_comments/support/',
+};
 
 export const ApiRewards = {
   getRewardGraph: `rewards/pos/graph`,
@@ -198,5 +216,6 @@ export const API_URLS_USING_POS_USER_ACCESS_TOKEN = (sellerID) => [
   // USER_URL + ApiUserInventory.getSetting,
   // USER_URL + ApiUserInventory.merchantLogin,
   USER_URL + ApiUserInventory.creatPosUsers,
+  // USER_URL + ApiUserInventory.updateUserProfile,
   // USER_URL + ApiUserInventory.getSetting + `/?app_name=pos&seller_id=${sellerID}`,
 ];

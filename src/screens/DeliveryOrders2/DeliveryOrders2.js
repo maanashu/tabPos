@@ -29,7 +29,9 @@ import { Spacer } from '@/components';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
-import Header from './Components/Header';
+// import Header from './Components/Header';
+import { default as NewHeader } from '@/components/Header';
+
 import OrderDetail from './Components/OrderDetail';
 import OrderReview from './Components/OrderReview';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
@@ -48,9 +50,21 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import ReturnConfirmation from './Components/ReturnConfirmation';
 import ReturnedOrderDetail from './Components/ReturnedOrderDetail';
-import { pay, pin, clock, rightIcon, backArrow2, Fonts } from '@/assets';
+import {
+  pay,
+  pin,
+  clock,
+  rightIcon,
+  backArrow2,
+  Fonts,
+  arrowRightTop,
+  arrowLeftUp,
+  Maximize,
+  Minimize,
+} from '@/assets';
 
 import styles from './styles';
+import Header from './Components/Header';
 
 export function DeliveryOrders2({ route }) {
   var screen;
@@ -99,6 +113,7 @@ export function DeliveryOrders2({ route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
   const [changeViewToRecheck, setChangeViewToRecheck] = useState();
+  const [isMaximizeStatusView, SetIsMaximizeStatusView] = useState(false);
 
   useEffect(() => {
     if (ORDER_DATA) {
@@ -162,18 +177,18 @@ export function DeliveryOrders2({ route }) {
             style={[
               styles.sideBarImage,
               {
-                tintColor: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray,
+                tintColor: openShippingOrders === item?.key ? COLORS.primary : item.tintColor,
               },
             ]}
           />
-          <View
+          {/* <View
             style={[
               styles.bucketBadge,
               { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
             ]}
           >
             <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
-          </View>
+          </View> */}
         </View>
       );
     } else if (item?.title === 'Rejected/Cancelled') {
@@ -187,15 +202,15 @@ export function DeliveryOrders2({ route }) {
                 tintColor:
                   item?.title === 'Rejected/Cancelled' && openShippingOrders === item?.key
                     ? COLORS.pink
-                    : COLORS.darkGray,
+                    : item.tintColor,
               },
             ]}
           />
-          <View
+          {/* <View
             style={[styles.bucketBadge, { backgroundColor: COLORS.pink, borderColor: COLORS.pink }]}
           >
             <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
-          </View>
+          </View> */}
         </View>
       );
     } else if (item?.title === 'Returned') {
@@ -209,11 +224,11 @@ export function DeliveryOrders2({ route }) {
                 tintColor:
                   item?.title === 'Returned' && openShippingOrders === item?.key
                     ? COLORS.yellowTweet
-                    : COLORS.darkGray,
+                    : item.tintColor,
               },
             ]}
           />
-          <View
+          {/* <View
             style={[
               styles.bucketBadge,
               {
@@ -223,7 +238,7 @@ export function DeliveryOrders2({ route }) {
             ]}
           >
             <Text style={[styles.badgetext, { color: COLORS.white }]}>{item?.count ?? 0}</Text>
-          </View>
+          </View> */}
         </View>
       );
     } else {
@@ -241,16 +256,16 @@ export function DeliveryOrders2({ route }) {
                     ? COLORS.pink
                     : item?.title === 'Returned' && openShippingOrders === item?.key
                     ? COLORS.yellowTweet
-                    : COLORS.darkGray,
+                    : item.tintColor,
               },
             ]}
           />
-          <View
+          {/* <View
             style={[
               styles.bucketBadge,
               {
                 backgroundColor: COLORS.white,
-                borderColor: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray,
+                borderColor: openShippingOrders === item?.key ? COLORS.primary : item.tintColor,
                 borderWidth: 2,
               },
             ]}
@@ -258,12 +273,12 @@ export function DeliveryOrders2({ route }) {
             <Text
               style={[
                 styles.badgetext,
-                { color: openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray },
+                { color: openShippingOrders === item?.key ? COLORS.primary : item.tintColor },
               ]}
             >
               {item?.count ?? 0}
             </Text>
-          </View>
+          </View> */}
         </View>
       );
     }
@@ -286,6 +301,13 @@ export function DeliveryOrders2({ route }) {
       {showBadge(item)}
     </TouchableOpacity>
   );
+  const fullDrawerPress = (item) => {
+    setOpenShippingOrders(item?.key);
+    dispatch(getReviewDefault(item?.key));
+    setTrackingView(false);
+    dispatch(getOrderCount());
+    dispatch(todayOrders());
+  };
 
   const renderOrderToReview = ({ item }) => {
     const isSelected = viewAllOrder && item?.id === userDetail?.id;
@@ -317,8 +339,8 @@ export function DeliveryOrders2({ route }) {
         style={[
           viewAllOrder ? styles.showAllOrdersView : styles.orderRowStyle,
           {
-            backgroundColor: isSelected ? COLORS.textInputBackground : COLORS.transparent,
-            borderColor: isSelected ? COLORS.primary : COLORS.blue_shade,
+            backgroundColor: isSelected ? COLORS.transparent : COLORS.transparent,
+            borderColor: isSelected ? COLORS.blue2 : COLORS.neutral_blue,
           },
         ]}
       >
@@ -337,8 +359,13 @@ export function DeliveryOrders2({ route }) {
 
         <View style={styles.orderDetailStyle}>
           <Text style={styles.nameTextStyle}>{item?.user_details?.firstname || 'user name'}</Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={pin} style={styles.pinImageStyle} />
+          <View
+            style={[
+              styles.locationViewStyle,
+              { backgroundColor: COLORS.tip_back, borderRadius: 100 },
+            ]}
+          >
+            <Image source={pin} style={[styles.pinImageStyle, { tintColor: COLORS.tip_blue }]} />
             <Text style={styles.distanceTextStyle}>
               {item?.distance ? `${item.distance} miles` : '0'}
             </Text>
@@ -351,17 +378,29 @@ export function DeliveryOrders2({ route }) {
               ? `${orderDetails.length} Items`
               : `${orderDetails.length} Item`}
           </Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={pay} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>{item?.payable_amount || '00'}</Text>
+          <View
+            style={[
+              styles.locationViewStyle,
+              { backgroundColor: COLORS.alarm_success_50, borderRadius: 100 },
+            ]}
+          >
+            <Image
+              source={pay}
+              style={[styles.pinImageStyle, { tintColor: COLORS.success_green }]}
+            />
+            <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+              {item?.payable_amount || '00'}
+            </Text>
           </View>
         </View>
 
         <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
           <Text style={styles.timeTextStyle}>{deliveryDate}</Text>
           <View style={styles.locationViewStyle}>
-            <Image source={clock} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>{formattedTime}</Text>
+            <Image source={clock} style={[styles.pinImageStyle, { tintColor: COLORS.navy_blue }]} />
+            <Text style={[styles.distanceTextStyle, { color: COLORS.navy_blue }]}>
+              {formattedTime}
+            </Text>
           </View>
         </View>
 
@@ -369,7 +408,7 @@ export function DeliveryOrders2({ route }) {
           onPress={handleExpandPress}
           style={[styles.orderDetailStyle, { width: SH(24) }]}
         >
-          <Image source={rightIcon} style={styles.rightIconStyle} />
+          <Image source={arrowRightTop} style={styles.rightIconStyle} />
         </TouchableOpacity>
       </TouchableOpacity>
     );
@@ -381,7 +420,12 @@ export function DeliveryOrders2({ route }) {
 
       {getDeliveryData?.getReviewDef?.length > 0 ? (
         <TouchableOpacity onPress={() => setViewAllOrder(true)} style={styles.viewAllButtonStyle}>
-          <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
+          <Text style={styles.viewallTextStyle}>{strings.reward.seeAll}</Text>
+
+          <Image
+            source={arrowRightTop}
+            style={{ height: ms(13), width: ms(13), tintColor: COLORS.lavenders }}
+          />
         </TouchableOpacity>
       ) : (
         <View />
@@ -530,24 +574,43 @@ export function DeliveryOrders2({ route }) {
     setIsReturnModalVisible(true);
     setTrackingView(false);
   };
-
+  const showMaxButton = (data) => {
+    if (data?.status === 3 || data?.status === 5 || data?.status === 7 || data?.status === 9)
+      return (
+        <TouchableOpacity
+          onPress={() => SetIsMaximizeStatusView(!isMaximizeStatusView)}
+          style={styles.maximizeButton}
+        >
+          <Image
+            source={isMaximizeStatusView ? Minimize : Maximize}
+            style={{ height: ms(22), width: ms(22) }}
+          />
+        </TouchableOpacity>
+      );
+  };
   return (
     <>
       {!trackingView ? (
-        <SafeAreaView style={styles.container}>
-          <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
+        <>
+          {/* <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
 
-          <Spacer space={SH(20)} />
-
+          <Spacer space={SH(20)} /> */}
+          <Spacer space={SH(15)} backgroundColor={COLORS.textInputBackground} />
+          <NewHeader />
+          <Spacer space={SH(5)} backgroundColor={COLORS.textInputBackground} />
           {viewAllOrder ? (
-            <SafeAreaView style={styles.firstRowStyle}>
+            <SafeAreaView style={styles.container}>
               <>
+                {getDeliveryData?.getReviewDef?.length == 0 && (
+                  <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
+                )}
                 {getDeliveryData?.getReviewDef?.length > 0 ? (
                   <>
+                    {/* <View style={styles.orderListMainView}> */}
                     <View
                       style={[
                         styles.orderToReviewView,
-                        { height: Dimensions.get('window').height - 80, paddingBottom: ms(10) },
+                        { height: Dimensions.get('window').height - 110, paddingBottom: ms(10) },
                       ]}
                     >
                       <FlatList
@@ -555,19 +618,27 @@ export function DeliveryOrders2({ route }) {
                         showsVerticalScrollIndicator={false}
                         data={getDeliveryData?.getReviewDef ?? []}
                         ListHeaderComponent={() => (
-                          <View style={styles.headingRowStyle}>
+                          <TouchableOpacity
+                            onPress={() => setViewAllOrder(false)}
+                            style={styles.headingRowStyleNew}
+                          >
+                            <Image
+                              source={arrowLeftUp}
+                              style={{ width: ms(15), height: ms(15), marginRight: ms(5) }}
+                            />
                             <Text style={styles.ordersToReviewText}>
                               {getHeaderText(openShippingOrders)}
                             </Text>
-                          </View>
+                          </TouchableOpacity>
                         )}
                         refreshControl={
                           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                         }
                         contentContainerStyle={styles.contentContainerStyle}
                       />
+                      {/* </View> */}
                     </View>
-
+                    {/* <View style={styles.orderDetailMainView}> */}
                     {changeViewToRecheck ? (
                       <ReturnedOrderDetail
                         orderDetail={singleOrderDetail}
@@ -591,9 +662,11 @@ export function DeliveryOrders2({ route }) {
                           changeMapState,
                           mapRef,
                           onPressShop,
+                          isMaximizeStatusView,
                         }}
                       />
                     )}
+                    {/* </View> */}
                   </>
                 ) : (
                   <View style={styles.emptyView}>
@@ -602,32 +675,97 @@ export function DeliveryOrders2({ route }) {
                 )}
               </>
 
-              <RightSideBar
-                {...{
-                  renderDrawer,
-                  viewAllOrder,
-                }}
-              />
+              <View
+                style={[
+                  styles.drawerMainViewStyle,
+
+                  {
+                    marginLeft: ms(12),
+                    justifyContent: 'space-between',
+                    position: 'absolute',
+                    right: ms(10),
+                  },
+                ]}
+              >
+                <RightSideBar
+                  {...{
+                    renderDrawer,
+                    viewAllOrder,
+                    fullDrawerPress,
+                  }}
+                />
+              </View>
+              {showMaxButton(userDetail)}
             </SafeAreaView>
           ) : (
-            <SafeAreaView style={styles.firstRowStyle}>
-              <View>
-                <TodayOrderStatus />
+            // <SafeAreaView style={styles.firstRowStyle}>
+            //   <View>
+            //     <TodayOrderStatus />
 
-                <Spacer space={ms(10)} />
+            //     <Spacer space={ms(10)} />
 
-                <CurrentStatus />
+            //     <CurrentStatus />
 
-                <Spacer space={ms(10)} />
+            //     <Spacer space={ms(10)} />
 
-                <OrderConvertion />
+            //     <OrderConvertion />
+            //   </View>
+
+            //   {/* <View
+            //   // style={{ height: Dimensions.get('window').height - 150 }}
+            //   >
+            //     <Graph />
+
+            //     <Spacer space={SH(15)} />
+
+            //     <OrderReview
+            //       {...{
+            //         renderOrderToReview,
+            //         emptyComponent,
+            //         headerComponent,
+            //         getDeliveryData,
+            //         isOrderLoading,
+            //       }}
+            //     />
+            //   </View> */}
+            //   <View style={styles.centerMainViewStyle}>
+            //     <Graph />
+
+            //     <OrderReview
+            //       {...{
+            //         renderOrderToReview,
+            //         emptyComponent,
+            //         headerComponent,
+            //         getDeliveryData,
+            //         isOrderLoading,
+            //       }}
+            //     />
+            //   </View>
+
+            //   <RightSideBar
+            //     {...{
+            //       renderDrawer,
+            //       viewAllOrder,
+            //     }}
+            //   />
+            // </SafeAreaView>
+            <SafeAreaView style={styles.container}>
+              <View style={styles.leftMainViewStyle}>
+                <View style={styles.todayShippingViewStyle}>
+                  <TodayOrderStatus />
+                </View>
+                <Spacer space={SH(20)} />
+                <View style={styles.currentShippingViewStyle}>
+                  <CurrentStatus />
+                </View>
+                <Spacer space={SH(20)} />
+                <View style={styles.orderConversionViewStyle}>
+                  <OrderConvertion />
+                </View>
               </View>
 
-              <View style={{ height: Dimensions.get('window').height - 80 }}>
+              <View style={styles.centerMainViewStyle}>
                 <Graph />
-
-                <Spacer space={SH(15)} />
-
                 <OrderReview
                   {...{
                     renderOrderToReview,
@@ -639,12 +777,15 @@ export function DeliveryOrders2({ route }) {
                 />
               </View>
 
-              <RightSideBar
-                {...{
-                  renderDrawer,
-                  viewAllOrder,
-                }}
-              />
+              <View style={styles.drawerMainViewStyle}>
+                <RightSideBar
+                  {...{
+                    renderDrawer,
+                    viewAllOrder,
+                    fullDrawerPress,
+                  }}
+                />
+              </View>
             </SafeAreaView>
           )}
 
@@ -657,15 +798,15 @@ export function DeliveryOrders2({ route }) {
               />
             </View>
           ) : null}
-        </SafeAreaView>
+        </>
       ) : (
-        <SafeAreaView style={styles.container}>
-          <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backView}>
+        <SafeAreaView style={styles.containerFull}>
+          {/* <TouchableOpacity onPress={() => setTrackingView(false)} style={styles.backViewNew}>
             <Image source={backArrow2} style={styles.backImageStyle} />
             <Text style={[styles.currentStatusText, { paddingLeft: 0 }]}>
               {strings.deliveryOrders.back}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={styles.firstRowStyle}>
             {/* {openShippingOrders === '9' ? (
@@ -689,12 +830,27 @@ export function DeliveryOrders2({ route }) {
               orderData={singleOrderDetail}
             />
             {/* )} */}
-            <RightSideBar
+            {/* <RightSideBar
               {...{
                 renderDrawer,
                 viewAllOrder,
               }}
-            />
+            /> */}
+            <View
+              style={{
+                justifyContent: 'space-between',
+                position: 'absolute',
+                right: ms(10),
+              }}
+            >
+              <RightSideBar
+                {...{
+                  renderDrawer,
+                  viewAllOrder,
+                  fullDrawerPress,
+                }}
+              />
+            </View>
           </View>
         </SafeAreaView>
       )}

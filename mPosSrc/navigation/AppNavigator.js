@@ -33,14 +33,35 @@ import {
   RetailServices,
   Policies,
   NotificationSettings,
+  Customers,
+  CustomerList,
   Plans,
   ChangePlans,
+  UserProfile,
+  FaceId,
+  HelpCenter,
+  SupportRequest,
+  MySupport,
+  Support,
+  SupportChat,
+  Faq,
+  FaqAnswers,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
 import { TrackOrder } from '@mPOS/screens/HomeTab/Shipping/TrackOrder/TrackOrder';
 import { Invoice } from '@mPOS/components';
 import { Management } from '@mPOS/screens/MoreTab/BatchManagement/Management';
+import { Legal } from '@mPOS/screens/MoreTab/Settings/Legal/Legal';
+import { ShippingPickup } from '@mPOS/screens/MoreTab/ShipingPickup/ShippingPickup';
+import { TermsConditions } from '@mPOS/screens/MoreTab/TermsConditions/TermsConditions';
+import { PrivacyPolicy } from '@mPOS/screens/MoreTab/PrivacyPolicy/PrivacyPolicy';
+import { Security } from '@mPOS/screens/MoreTab/BatchManagement/Security/Security';
+import NotificationsList from '@mPOS/screens/MoreTab/Notifications/NotificationList';
+import { PinId } from '@mPOS/screens/MoreTab/PinId/PinId';
+import { OldPin } from '@mPOS/screens/MoreTab/OldPin/OldPin';
+import { SetPin } from '@mPOS/screens/MoreTab/SetPin/SetPin';
+import { ReEnterPin } from '@mPOS/screens/MoreTab/ReEnterPin/ReEnterPin';
 
 const Stack = createNativeStackNavigator();
 
@@ -221,6 +242,11 @@ export function AppNavigator(navigation) {
         component={PosUserDetail}
       />
       <Stack.Screen
+        name={MPOS_NAVIGATION.legal}
+        options={{ headerShown: false }}
+        component={Legal}
+      />
+      <Stack.Screen
         name={MPOS_NAVIGATION.policies}
         options={{ headerShown: false }}
         component={Policies}
@@ -236,14 +262,110 @@ export function AppNavigator(navigation) {
         component={Management}
       />
       <Stack.Screen
+        name={MPOS_NAVIGATION.customers}
+        options={{ headerShown: false }}
+        component={Customers}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.pinId}
+        options={{ headerShown: false }}
+        component={PinId}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.oldPin}
+        options={{ headerShown: false }}
+        component={OldPin}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.setPin}
+        options={{ headerShown: false }}
+        component={SetPin}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.reSetPin}
+        options={{ headerShown: false }}
+        component={ReEnterPin}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.customerList}
+        options={{ headerShown: false }}
+        component={CustomerList}
+      />
+      <Stack.Screen
         name={MPOS_NAVIGATION.plans}
         options={{ headerShown: false }}
         component={Plans}
       />
       <Stack.Screen
+        name={MPOS_NAVIGATION.security}
+        options={{ headerShown: false }}
+        component={Security}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.notificationList}
+        options={{ headerShown: false }}
+        component={NotificationsList}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.shippingPickup}
+        options={{ headerShown: false }}
+        component={ShippingPickup}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.termsCondition}
+        options={{ headerShown: false }}
+        component={TermsConditions}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.privacyPolicy}
+        options={{ headerShown: false }}
+        component={PrivacyPolicy}
+      />
+      <Stack.Screen
         name={MPOS_NAVIGATION.changePlans}
         options={{ headerShown: false }}
         component={ChangePlans}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.userProfile}
+        options={{ headerShown: false }}
+        component={UserProfile}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.faceId}
+        options={{ headerShown: false }}
+        component={FaceId}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.helpCenter}
+        options={{ headerShown: false }}
+        component={HelpCenter}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.supportRequest}
+        options={{ headerShown: false }}
+        component={SupportRequest}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.mySupport}
+        options={{ headerShown: false }}
+        component={MySupport}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.support}
+        options={{ headerShown: false }}
+        component={Support}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.supportChat}
+        options={{ headerShown: false }}
+        component={SupportChat}
+      />
+      <Stack.Screen name={MPOS_NAVIGATION.faq} options={{ headerShown: false }} component={Faq} />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.faqAnswers}
+        options={{ headerShown: false }}
+        component={FaqAnswers}
       />
     </Stack.Navigator>
   );

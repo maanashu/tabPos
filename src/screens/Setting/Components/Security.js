@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator, Linking } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import {
   checkArrow,
   checkboxSec,
+  CloudDonwload,
   crossButton,
+  GAuth,
   googleAuth,
+  Qr,
   securityLogo,
   teamMember,
   twoStepVerification,
@@ -39,6 +42,8 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { digits } from '@/utils/validators';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { merchantLoginSuccess } from '@/actions/AuthActions';
+import { ms } from 'react-native-size-matters';
+import { Platform } from 'react-native';
 
 export function Security() {
   const dispatch = useDispatch();
@@ -218,8 +223,8 @@ export function Security() {
 
       <Modal animationType="fade" transparent={true} isVisible={twoStepModal || googleAuthScan}>
         {googleAuthScan ? (
-          <View style={styles.modalMainView}>
-            <View style={styles.modalHeaderCon}>
+          <View style={styles.modalMainViewNew}>
+            {/* <View style={styles.modalHeaderCon}>
               <View style={styles.flexRow}>
                 <Text style={[styles.twoStepText, { fontSize: SF(20) }]}>
                   {strings.settings.enableSecurity}
@@ -263,11 +268,37 @@ export function Security() {
                   style={[styles.checkArrow, { tintColor: COLORS.white }]}
                 />
               </TouchableOpacity>
+            </View> */}
+            <TouchableOpacity
+              style={styles.crossButtonCon}
+              onPress={() => {
+                setTwoStepModal(true), setGoogleAuthScan(false);
+              }}
+            >
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
+            <View style={{ flex: 1 }}>
+              <View style={styles.firstBox}>
+                <Image source={GAuth} style={{ width: ms(30), height: ms(30) }} />
+                <Text style={[styles.twoStepText, { textAlign: 'center' }]}>
+                  {strings.settings.enableSecurityNew}
+                </Text>
+                <Text style={[styles.firstDownloader, { textAlign: 'center' }]}>
+                  {strings.settings.securityStep2}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.firstBox}>
+              {qrCodeLoad ? (
+                <ActivityIndicator size="large" color={COLORS.primary} />
+              ) : (
+                <Image source={{ uri: googleCode?.qrCode }} style={styles.scurityScan} />
+              )}
             </View>
           </View>
         ) : (
           <View style={styles.modalMainView}>
-            <View style={styles.modalHeaderCon}>
+            {/* <View style={styles.modalHeaderCon}>
               <View style={styles.flexRow}>
                 <Text style={[styles.twoStepText, { fontSize: SF(20) }]}>
                   {strings.settings.enableSecurity}
@@ -343,6 +374,54 @@ export function Security() {
                 </TouchableOpacity>
                 <Spacer space={SH(35)} />
               </View>
+            </View> */}
+
+            <View style={styles.firstBox}>
+              {/* <TouchableOpacity
+                style={styles.crossButtonCon}
+                onPress={() => setTwoStepModal(false)}
+              >
+                <Image source={crossButton} style={styles.crossButton} />
+              </TouchableOpacity> */}
+              {/* <Spacer space={SH(20)} /> */}
+              <Image source={GAuth} style={{ width: ms(30), height: ms(30) }} />
+              {/* <Spacer space={SH(20)} /> */}
+              <Text style={styles.twoStepText}>{strings.settings.enableSecurityNew}</Text>
+              {/* <Spacer space={SH(20)} /> */}
+              <Text style={styles.firstDownloader}>
+                {strings.settings.securityStep1 + `\n`}
+                <Text style={styles.primaryClr}>Google Play Store </Text>
+                or the <Text style={styles.primaryClr}>iOS App Store</Text>
+              </Text>
+            </View>
+            <View style={styles.secondBox}>
+              <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL(
+                    Platform.OS == 'ios'
+                      ? 'https://apps.apple.com/au/app/google-authenticator/id388497605'
+                      : 'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=US'
+                  )
+                }
+              >
+                <Image source={CloudDonwload} style={{ width: ms(30), height: ms(30) }} />
+              </TouchableOpacity>
+              <Text style={styles.downloadText}>{strings.settings.donwloadGoogleAuth}</Text>
+            </View>
+
+            <View style={styles.thirdBox}>
+              <TouchableOpacity onPress={() => setTwoStepModal(false)} style={styles.firstButton}>
+                <Text style={styles.buttonText}>{strings.settings.doLater}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => (setGoogleAuthStart(false), setGoogleAuthScan(true))}
+                style={styles.secondButton}
+              >
+                <Text style={[styles.buttonText, { color: COLORS.white }]}>
+                  {strings.settings.activate}
+                </Text>
+                <Image source={Qr} style={{ width: ms(15), height: ms(15), marginLeft: ms(4) }} />
+              </TouchableOpacity>
             </View>
           </View>
         )}

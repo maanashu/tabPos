@@ -83,7 +83,8 @@ export function CartServiceScreen({
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
   const [serviceItemSave, setServiceItemSave] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const availableOfferArray = getRetailData?.availableOffer;
+  const availableOfferArray = getRetailData?.availableOffer?.data;
+
   const [cartSearch, setCartSearch] = useState('');
   const [offerId, setOfferId] = useState();
   const CART_LENGTH = useSelector(getServiceCartLength);
@@ -259,19 +260,19 @@ export function CartServiceScreen({
   }, []);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.homeScreenCon}>
         <CustomHeader
-          iconShow
-          crossHandler={() => {
-            backCartLoad();
-            crossHandler();
+        // iconShow
+        // crossHandler={() => {
+        //   backCartLoad();
+        //   crossHandler();
 
-            // dispatch(getUserDetailSuccess([]));
-          }}
+        //   // dispatch(getUserDetailSuccess([]));
+        // }}
         />
 
-        <View style={styles.displayflex2}>
+        <View style={[styles.displayflex2, { flex: 1 }]}>
           <View style={[styles.itemLIistCon]}>
             <Spacer space={SH(3)} />
             <View style={styles.displayflex}>
@@ -568,8 +569,8 @@ export function CartServiceScreen({
                   </View>
                 ) : (
                   <FlatList
-                    data={availableOfferArray}
-                    extraData={availableOfferArray}
+                    data={availableOfferArray || []}
+                    extraData={availableOfferArray || []}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
                       <TouchableOpacity

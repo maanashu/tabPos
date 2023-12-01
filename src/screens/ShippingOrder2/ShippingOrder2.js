@@ -17,11 +17,12 @@ import {
   todayCurrentStatus,
   todayShippingStatus,
 } from '@/actions/ShippingAction';
-import { backArrow2, printer } from '@/assets';
+import { backArrow2, incomingMarked, printer } from '@/assets';
 import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
 import Graph from './Components/Graph';
 import Header from './Components/Header';
+import { default as NewHeader } from '@/components/Header';
 import { strings } from '@/localization';
 import Orders from './Components/Orders';
 import OrderList from './Components/OrderList';
@@ -41,6 +42,9 @@ import CurrentShippingStatus from './Components/CurrentShippingStatus';
 import styles from './ShippingOrder2.styles';
 import { getPendingOrders } from '@/actions/DashboardAction';
 import { getOrderstatistics } from '@mPOS/actions/ShippingActions';
+import Modal from 'react-native-modal';
+import CalendarPickerModal from '@/components/CalendarPickerModal';
+import moment from 'moment';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -59,6 +63,9 @@ export function ShippingOrder2() {
   const [openWebView, setOpenWebView] = useState(false);
   const [showLabelPdf, setShowLabelPdf] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
+  const [showMiniCalendar, setshowMiniCalendar] = useState(false);
+  const [calendarDate, setCalendarDate] = useState(moment());
+  const maxDate = new Date(2030, 6, 3);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -199,6 +206,10 @@ export function ShippingOrder2() {
       <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
         ${Number(item?.price).toFixed(2)}
       </Text>
+
+      {openShippingOrders < 4 && (
+        <Image source={incomingMarked} style={[styles.checkboxIconStyle]} />
+      )}
     </View>
   );
 
@@ -210,17 +221,19 @@ export function ShippingOrder2() {
     <>
       {!openWebView ? (
         <>
+          <Spacer space={SH(15)} />
+          <NewHeader />
           {!viewAllOrders ? (
             <SafeAreaView style={styles.container}>
               <View style={styles.leftMainViewStyle}>
                 <View style={styles.todayShippingViewStyle}>
                   <TodayShippingStatus />
                 </View>
-
+                <Spacer space={SH(20)} />
                 <View style={styles.currentShippingViewStyle}>
                   <CurrentShippingStatus />
                 </View>
-
+                <Spacer space={SH(20)} />
                 <View style={styles.orderConversionViewStyle}>
                   <OrderConversion />
                 </View>
@@ -237,14 +250,20 @@ export function ShippingOrder2() {
               </View>
             </SafeAreaView>
           ) : (
-            <SafeAreaView style={{ flex: 1 }}>
-              <Header {...{ viewAllOrders, setViewAllOrders }} />
+            <SafeAreaView
+              style={{ flex: 1, backgroundColor: COLORS.textInputBackground, width: '100%' }}
+            >
+              {/* <Header {...{ viewAllOrders, setViewAllOrders }} /> */}
 
               <View style={styles.centerViewStyle}>
                 {ordersList?.length > 0 ? (
                   <>
                     <View style={styles.orderListMainView}>
                       <OrderList
+                        setCalendarDate={setCalendarDate}
+                        selectedDate={calendarDate}
+                        onPressCalendar={setshowMiniCalendar}
+                        setViewAllOrders={setViewAllOrders}
                         selectedStatus={openShippingOrders}
                         onViewAllHandler={onpressViewHandler}
                         selectedOrderDetail={(value) => setUserDetail(value)}
@@ -277,6 +296,29 @@ export function ShippingOrder2() {
                   <RightDrawer {...{ onPressDrawerHandler, openShippingOrders }} />
                 </View>
               </View>
+              <Modal
+                isVisible={showMiniCalendar}
+                statusBarTranslucent
+                animationIn={'slideInRight'}
+                animationInTiming={600}
+                animationOutTiming={300}
+              >
+                <View style={styles.calendarModalView}>
+                  <CalendarPickerModal
+                    allowRangeSelection={false}
+                    maxDate={maxDate}
+                    selectedStartDate={calendarDate}
+                    onPress={() => setshowMiniCalendar(false)}
+                    onSelectedDate={(date) => {
+                      setCalendarDate(moment(date));
+                      setshowMiniCalendar(false);
+                    }}
+                    onCancelPress={() => {
+                      setshowMiniCalendar(false);
+                    }}
+                  />
+                </View>
+              </Modal>
             </SafeAreaView>
           )}
         </>

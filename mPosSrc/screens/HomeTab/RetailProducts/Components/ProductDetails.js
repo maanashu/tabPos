@@ -108,8 +108,10 @@ const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
                 imageStyle={{ borderRadius: ms(5) }}
               />
               <View style={{ marginLeft: ms(10) }}>
-                <Text style={styles.detailHeaderText}>{productDetail?.name}</Text>
-                <Text style={styles.categoryText}>
+                <Text style={[styles.detailHeaderText, { width: ms(270) }]}>
+                  {productDetail?.name}
+                </Text>
+                <Text style={[styles.categoryText, { width: ms(270) }]}>
                   {productDetail?.category?.name} {'>'} {productDetail?.sub_category?.name}
                 </Text>
                 <Text style={styles.detailDescription}>{withoutSpecialCharsAndSpaces}</Text>

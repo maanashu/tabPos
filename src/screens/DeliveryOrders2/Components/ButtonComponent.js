@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
-import { Fonts } from '@/assets';
+import { Fonts, PickupRight } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import { TYPES } from '@/Types/AnalyticsTypes';
@@ -42,6 +42,7 @@ const ButtonComponent = ({ selected, orderData, declineHandler, acceptHandler, t
               ? strings.buttonStatus.prepareButton
               : ''}
           </Text>
+          <Image source={PickupRight} style={styles.pickUpButtonStyle} />
         </TouchableOpacity>
       )}
 
@@ -99,18 +100,26 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
   },
   acceptButtonView: {
-    height: SH(48),
+    height: SH(45),
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5,
-    backgroundColor: COLORS.primary,
+    borderRadius: ms(100),
+    backgroundColor: COLORS.sky_blue,
     marginLeft: 10,
     paddingHorizontal: ms(12),
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
   },
   acceptTextStyle: {
     textAlign: 'center',
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
     color: COLORS.white,
+  },
+  pickUpButtonStyle: {
+    height: ms(24),
+    width: ms(24),
+    tintColor: COLORS.white,
   },
 });

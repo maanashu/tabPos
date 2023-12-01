@@ -1,5 +1,6 @@
 import { CustomersController } from '@/controllers';
 import { TYPES } from '@/Types/CustomersTypes';
+import { commonNavigate, MPOS_NAVIGATION } from '@common/commonImports';
 
 const getUserOrderRequest = () => ({
   type: TYPES.GET_USER_ORDER_REQUEST,
@@ -113,6 +114,19 @@ const getStoreLocationReset = () => ({
   payload: null,
 });
 
+const updateUserProfileRequest = () => ({
+  type: TYPES.UPDATE_USER_PROFILE_REQUEST,
+  payload: null,
+});
+const updateUserProfileSuccess = (getStoreLocation) => ({
+  type: TYPES.UPDATE_USER_PROFILE_SUCCESS,
+  payload: { getStoreLocation },
+});
+const updateUserProfileError = (error) => ({
+  type: TYPES.UPDATE_USER_PROFILE_ERROR,
+  payload: { error },
+});
+
 export const getUserOrder = (data, callback) => async (dispatch) => {
   dispatch(getUserOrderRequest());
   try {
@@ -212,5 +226,17 @@ export const getStoreLocation = () => async (dispatch) => {
       dispatch(getStoreLocationReset());
     }
     dispatch(getStoreLocationError(error.message));
+  }
+};
+
+export const updateUserProfile = (data) => async (dispatch) => {
+  dispatch(updateUserProfileRequest());
+  try {
+    const res = await CustomersController.updateUserProfile(data);
+    dispatch(updateUserProfileSuccess(res?.payload));
+    // dispatch(getUserOrder());
+    alert('data');
+  } catch (error) {
+    dispatch(updateUserProfileError(error.message));
   }
 };

@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   },
   leftMainViewStyle: {
     flex: 0.28,
-    marginHorizontal: SH(15),
+    marginRight: SH(15),
     justifyContent: 'space-between',
   },
   todayShippingViewStyle: {
@@ -90,9 +90,9 @@ const styles = StyleSheet.create({
   },
 
   totalTextStyle: {
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
     fontSize: scale(5),
-    color: COLORS.solid_grey,
+    color: COLORS.lavender,
     paddingTop: ms(3),
   },
 
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
-    borderRadius: 10,
+    borderRadius: ms(20),
     flex: 1,
   },
   userDetailView: {
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     paddingHorizontal: 5,
-    borderColor: COLORS.blue_shade,
+    borderColor: COLORS.sky_grey,
   },
   removeProductImageStyle: {
     width: SH(24),
@@ -369,20 +369,20 @@ const styles = StyleSheet.create({
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(20),
-    color: COLORS.dark_grey,
+    fontSize: SF(10),
+    color: COLORS.navy_blue,
   },
   totalText: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
-    color: COLORS.solid_grey,
+    color: COLORS.textBlue,
   },
   acceptButtonView: {
     height: SH(48),
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 5,
-    backgroundColor: COLORS.primary,
+    borderRadius: 100,
+    backgroundColor: COLORS.sky_blue,
     marginLeft: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',
@@ -461,6 +461,64 @@ const styles = StyleSheet.create({
     height: '100%',
     alignSelf: 'center',
     borderRadius: 6,
+  },
+  lineCommonStyle: {
+    height: 1,
+    backgroundColor: '#E4E6F2',
+    marginVertical: ms(8),
+    marginHorizontal: ms(10),
+  },
+  dashedLineStyle: {
+    borderTopWidth: 1,
+    borderTopColor: '#7E8AC1',
+    marginTop: ms(10),
+    borderStyle: 'dashed',
+  },
+  trackOrderIconStyle: {
+    width: ms(18),
+    height: ms(18),
+    resizeMode: 'contain',
+  },
+  checkboxIconStyle: {
+    width: SH(20),
+    height: SH(20),
+    resizeMode: 'contain',
+    marginRight: ms(3),
+  },
+  rightTopIconStyle: {
+    width: ms(14),
+    height: ms(14),
+    resizeMode: 'contain',
+    marginLeft: 2,
+  },
+  scanButtonStyle: {
+    width: '90%',
+    backgroundColor: COLORS.sky_grey,
+    height: ms(25),
+    borderRadius: ms(15),
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
+  scanIconStyle: {
+    height: ms(15),
+    width: ms(15),
+    resizeMode: 'contain',
+    marginLeft: ms(5),
+  },
+  scanBttnTextStyle: {
+    color: COLORS.navy_blue,
+    fontSize: ms(10),
+  },
+  calendarModalView: {
+    backgroundColor: COLORS.white,
+    width: width * 0.6,
+    height: height - SW(30),
+    alignSelf: 'center',
+    paddingVertical: SH(10),
+    paddingHorizontal: SW(5),
+    borderRadius: SW(5),
   },
 });
 

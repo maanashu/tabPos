@@ -27,6 +27,7 @@ import { getUser } from '@mPOS/selectors/UserSelectors';
 import { getAuthData } from '@mPOS/selectors/AuthSelector';
 import { acccessAndConfirmation, essential, moreApp, tagLine } from '@mPOS/constants/enums';
 import { logoutFunction } from '@/actions/AuthActions';
+import { store } from '@/store';
 
 export function More() {
   const dispatch = useDispatch();
@@ -34,6 +35,8 @@ export function More() {
   const posData = useSelector(getUser);
   const loginPosUser = posData?.posLoginData;
   const merchantData = authData?.merchantLoginData;
+
+  // console.log('profuile get', authData?.getProfile);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.rowCard}>
@@ -61,14 +64,41 @@ export function More() {
     ]);
   };
   const tagLineHandler = (item, index) => {
+    if (item?.navigation) {
+      commonNavigate(item?.navigation);
+    } else {
+      alert('In Progress');
+    }
+  };
+
+  const acccessAndConfirmationHandler = (item, index) => {
+    if (item?.navigation) {
+      commonNavigate(item?.navigation);
+    }
+  };
+  const essentialHandler = (item, index) => {
     if (index === 0) {
-      return navigate(MPOS_NAVIGATION.batchManagement);
+      return navigate(MPOS_NAVIGATION.security);
     } else if (index === 1) {
       return alert('In progress');
     } else if (index === 2) {
-      return alert('In progress');
+      return navigate(MPOS_NAVIGATION.plans);
     } else if (index === 3) {
-      return navigate(MPOS_NAVIGATION.analytics);
+      return navigate(MPOS_NAVIGATION.shippingPickup);
+    } else if (index === 4) {
+      return alert('In progress');
+      // return navigate(MPOS_NAVIGATION.analytics);
+    }
+  };
+  const moreAppHandler = (item, index) => {
+    if (index === 0) {
+      return alert('In progress');
+    } else if (index === 1) {
+      return navigate(MPOS_NAVIGATION.termsCondition);
+    } else if (index === 2) {
+      return navigate(MPOS_NAVIGATION.privacyPolicy);
+    } else if (index === 3) {
+      return alert('In progress');
     }
   };
   return (
@@ -78,7 +108,9 @@ export function More() {
           <Text style={styles.storeName} numberOfLines={1}>
             {merchantData?.user?.user_profiles?.organization_name}
           </Text>
-          <Image source={Images.bell} style={styles.bell} />
+          <TouchableOpacity onPress={() => navigate(MPOS_NAVIGATION.notificationList)}>
+            <Image source={Images.bell} style={styles.bell} />
+          </TouchableOpacity>
         </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -133,7 +165,7 @@ export function More() {
             </View>
           </View>
           {/* tag line section */}
-          <View style={[styles.moreProfileSection, { height: ms(210) }]}>
+          <View style={[styles.moreProfileSection, { height: ms(235) }]}>
             <Text style={styles.profileName}>{strings.more.tagLine}</Text>
             {tagLine?.map((item, index) => (
               <TouchableOpacity onPress={() => tagLineHandler(item, index)} key={index}>
@@ -153,7 +185,10 @@ export function More() {
           <View style={[styles.moreProfileSection, { height: ms(128) }]}>
             <Text style={styles.profileName}>{strings.more.accesConfirmation}</Text>
             {acccessAndConfirmation?.map((item, index) => (
-              <TouchableOpacity onPress={() => alert('In progress')} key={index}>
+              <TouchableOpacity
+                onPress={() => acccessAndConfirmationHandler(item, index)}
+                key={index}
+              >
                 <View style={styles.moreTabRow} />
                 <View style={styles.disPlayCenter}>
                   <View style={styles.rowCenter}>
@@ -175,7 +210,7 @@ export function More() {
                   if (item?.navigation) {
                     commonNavigate(item?.navigation);
                   } else {
-                    alert('In Progress');
+                    essentialHandler(item, index);
                   }
                 }}
                 key={index}
@@ -201,7 +236,7 @@ export function More() {
                   if (item?.navigation) {
                     commonNavigate(item?.navigation);
                   } else {
-                    alert('In Progress');
+                    moreAppHandler(item, index);
                   }
                 }}
                 key={index}

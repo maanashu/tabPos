@@ -45,6 +45,7 @@ export function OrderList(props) {
               : MPOS_NAVIGATION.orderDetail,
             {
               data: item,
+              index: index,
             }
           )
         }

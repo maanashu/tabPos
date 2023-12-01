@@ -8,11 +8,23 @@ import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearAllCart, clearServiceAllCart } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
+import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
 
 function ClearCart({ cartClose }) {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
+
+  const clearCart = () => {
+    cartClose();
+    if (presentCart === 'product') {
+      dispatch(clearAllCart());
+      dispatch(clearLocalCart());
+      dispatch(updateCartLength(0));
+    } else {
+      dispatch(clearServiceAllCart());
+    }
+  };
 
   return (
     <View style={styles.addDiscountcon}>
@@ -36,13 +48,7 @@ function ClearCart({ cartClose }) {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.clearButtonStyle}
-            onPress={() => {
-              dispatch(presentCart === 'product' ? clearAllCart() : clearServiceAllCart());
-              cartClose();
-            }}
-          >
+          <TouchableOpacity style={styles.clearButtonStyle} onPress={clearCart}>
             <Text style={[styles.counterText, { color: COLORS.red }]}>{strings.cart.clear}</Text>
           </TouchableOpacity>
         </View>

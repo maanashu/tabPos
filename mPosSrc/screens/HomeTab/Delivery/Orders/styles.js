@@ -189,9 +189,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   productImageStyle: {
-    width: SW(50),
-    height: SW(50),
-    resizeMode: 'contain',
+    width: ms(50),
+    height: ms(50),
+    resizeMode: 'cover',
   },
   productQtyPriceText: {
     fontSize: SF(12),

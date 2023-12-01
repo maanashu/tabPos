@@ -14,7 +14,19 @@ import { useSelector } from 'react-redux';
 
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
-import { clock, Fonts, pay, pin, rightIcon } from '@/assets';
+import {
+  arrowRightTop,
+  cashShippingNew,
+  clock,
+  fedexNew,
+  fedx,
+  Fonts,
+  pay,
+  pin,
+  pinShippingNew,
+  rightIcon,
+  thunder,
+} from '@/assets';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import moment from 'moment';
 
@@ -40,44 +52,53 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
           </Text>
         </View>
 
-        <View style={styles.orderDetailStyle}>
+        <View style={[styles.orderDetailStyle, { width: undefined }]}>
           <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={pin} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>
+          <View style={[styles.locationViewStyle, { backgroundColor: COLORS.tip_back }]}>
+            <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
+            <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
               {item?.distance ? `${item.distance} miles` : '0'}
             </Text>
           </View>
         </View>
 
-        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
+        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2, width: undefined }]}>
           <Text style={styles.nameTextStyle}>
             {item?.order_details?.length > 1
               ? `${item?.order_details?.length} Items`
               : `${item?.order_details?.length} Item`}
           </Text>
-          <View style={[styles.locationViewStyle]}>
-            <Image source={pay} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>{item?.payable_amount ?? '00'}</Text>
-          </View>
-        </View>
-
-        <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
-          <Text style={styles.timeTextStyle}>
-            {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
-          </Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={clock} style={styles.pinImageStyle} />
-            <Text style={styles.distanceTextStyle}>
-              {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
-                item?.preffered_delivery_end_time ?? '00.00'
-              }`}
+          <View style={[styles.locationViewStyle, { backgroundColor: COLORS.alarm_success_50 }]}>
+            <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
+            <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+              {item?.payable_amount ?? '00'}
             </Text>
           </View>
         </View>
 
+        <View style={styles.rowContainerStyle}>
+          <Image source={fedexNew} style={styles.shippingTypeImage} />
+          <View style={[styles.orderDetailStyle, { width: undefined }]}>
+            <Text style={styles.timeTextStyle}>
+              {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
+            </Text>
+            <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
+              <Image source={thunder} style={[styles.pinImageStyle]} />
+              <Text style={[styles.distanceTextStyle, { color: COLORS.dark_yellow }]}>
+                {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
+                  item?.preffered_delivery_end_time ?? '00.00'
+                }`}
+              </Text>
+            </View>
+          </View>
+        </View>
+
         <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
-          <Image source={rightIcon} style={styles.rightIconStyle} />
+          <Image
+            source={arrowRightTop}
+            style={{ height: ms(13), width: ms(13), tintColor: COLORS.primaryDark }}
+          />
+          {/* <Image source={rightIcon} style={styles.rightIconStyle} /> */}
         </TouchableOpacity>
       </TouchableOpacity>
     );
@@ -94,7 +115,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
       <View style={styles.headingRowStyle}>
         <Text style={styles.ordersToReviewText}>
           {selectedStatus === '0'
-            ? strings.shippingOrder.reviewOrders
+            ? strings.shippingOrder.ordersReview
             : selectedStatus === '1'
             ? strings.shippingOrder.acceptedOrders
             : selectedStatus === '2'
@@ -102,7 +123,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
             : selectedStatus === '3'
             ? 'Printing Labels'
             : selectedStatus === '4'
-            ? strings.orderStatus.shipOrder
+            ? strings.orderStatus.trackingOrders
             : selectedStatus === '5'
             ? strings.orderStatus.deliveryOrder
             : selectedStatus === '7,8'
@@ -112,7 +133,12 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
 
         {ordersList?.length > 0 || selectedStatus === '9' ? (
           <TouchableOpacity onPress={onViewAllHandler} style={styles.viewAllButtonStyle}>
-            <Text style={styles.viewallTextStyle}>{strings.reward.viewAll}</Text>
+            <Text style={styles.viewallTextStyle}>{strings.reward.seeAll}</Text>
+
+            <Image
+              source={arrowRightTop}
+              style={{ height: ms(13), width: ms(13), tintColor: COLORS.lavenders }}
+            />
           </TouchableOpacity>
         ) : null}
       </View>
@@ -152,9 +178,9 @@ const styles = StyleSheet.create({
   },
   distanceTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(11),
+    fontSize: SF(9),
     color: COLORS.orange_bright,
-    paddingLeft: 5,
+    paddingHorizontal: 5,
   },
   locationViewStyle: {
     flexDirection: 'row',
@@ -183,7 +209,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderToReviewView: {
-    borderRadius: 10,
+    borderRadius: ms(20),
     backgroundColor: COLORS.white,
     // height: height / 2.35,
     paddingBottom: ms(10),
@@ -208,12 +234,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    backgroundColor: COLORS.darkGray,
+    flexDirection: 'row',
+    // backgroundColor: COLORS.darkGray,
   },
   viewallTextStyle: {
     fontFamily: Fonts.Regular,
-    fontSize: SF(12),
-    color: COLORS.white,
+    fontSize: SF(14),
+    color: COLORS.lavenders,
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -228,5 +255,16 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(22),
     color: COLORS.navy_blue,
+  },
+  shippingTypeImage: {
+    width: ms(25),
+    height: ms(25),
+    resizeMode: 'contain',
+    borderRadius: ms(5),
+    marginRight: ms(4),
+  },
+  rowContainerStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

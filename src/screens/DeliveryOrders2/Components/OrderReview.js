@@ -14,9 +14,10 @@ import { COLORS } from '@/theme';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getReviewDefault } from '@/actions/DeliveryAction';
 import { getPendingOrders } from '@/actions/DashboardAction';
+import { ms } from 'react-native-size-matters';
 
 const result = Dimensions.get('window').height - 50;
-const twoEqualView = result / 2;
+const twoEqualView = result / 2.2;
 
 const OrderReview = ({
   renderOrderToReview,
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   orderToReviewView: {
-    borderRadius: 10,
+    borderRadius: ms(10),
     height: twoEqualView,
     backgroundColor: COLORS.white,
   },

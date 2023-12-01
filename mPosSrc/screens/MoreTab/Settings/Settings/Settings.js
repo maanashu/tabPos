@@ -39,7 +39,13 @@ export function Settings() {
       navigation: MPOS_NAVIGATION.staffSettings,
     },
     { id: 6, title: strings?.settings?.language, image: Images.language, subTitle: 'Defaults' },
-    { id: 7, title: strings?.settings?.legal, image: Images.work, subTitle: 'Defaults' },
+    {
+      id: 7,
+      title: strings?.settings?.legal,
+      image: Images.work,
+      subTitle: 'Defaults',
+      navigation: MPOS_NAVIGATION.legal,
+    },
     {
       id: 8,
       title: strings?.settings?.policies,

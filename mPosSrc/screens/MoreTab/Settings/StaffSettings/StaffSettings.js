@@ -25,7 +25,6 @@ export function StaffSettings() {
     dispatch(getStaffDetail(item?.id));
     commonNavigate(MPOS_NAVIGATION.posUserDetail, item);
   };
-  // console.log('pos', getAuth?.getAllPosUsersData?.pos_staff?.[2]);
   useEffect(() => {
     const data = {
       page: 1,
@@ -34,7 +33,6 @@ export function StaffSettings() {
     };
     dispatch(getAllPosUsers(data));
   }, []);
-  // console.log('seller', sellerID);
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_POS_USERS], state));
 
   const renderPosUsers = ({ item }) => {
