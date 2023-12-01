@@ -38,6 +38,7 @@ import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import {
+  addProductFrom,
   changeStatusProductCart,
   clearAllCart,
   getAllCartSuccess,
@@ -73,6 +74,7 @@ export function CartScreen({
   addNotesHandler,
   addDiscountHandler,
   getScreen,
+  addProductscreenShow,
 }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
@@ -167,10 +169,12 @@ export function CartScreen({
     // setOfferId(item?.id);
     const res = await dispatch(getOneProduct(sellerID, item?.id));
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-      setAddCartModal(true);
+      // setAddCartModal(true);
       setProductIndex(index);
       setProductItem(item);
       setSelectedItem(item);
+      addProductscreenShow();
+      dispatch(addProductFrom('cart'));
     }
   };
 

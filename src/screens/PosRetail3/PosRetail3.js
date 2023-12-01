@@ -414,6 +414,7 @@ export function PosRetail3() {
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
         getScreen={(value) => getScreenFunction(value)}
+        addProductscreenShow={() => setselectedScreen('AddProductScreen')}
       />
     ),
 
@@ -538,7 +539,15 @@ export function PosRetail3() {
         cartType={fromWhichCart}
       />
     ),
-    ['AddProductScreen']: <AddProductScreen backHandler={() => setselectedScreen('MainScreen')} />,
+    ['AddProductScreen']: (
+      <AddProductScreen
+        backHandler={() =>
+          getRetailData?.addProductFrom == 'main'
+            ? setselectedScreen('MainScreen')
+            : setselectedScreen('CartScreen')
+        }
+      />
+    ),
   };
 
   const screenChangeView = () => {

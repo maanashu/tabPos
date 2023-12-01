@@ -63,6 +63,7 @@ import {
   getMainProductPagination,
   getAllCart,
   getAllCartReset,
+  addProductFrom,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -400,9 +401,11 @@ export function MainScreen({
       if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
         setSelectedItemQty(item?.cart_qty);
         setSelectedItem(item);
-        setAddCartModal(true);
+        // setAddCartModal(true);
         setProductIndex(index);
         setProductItem(item);
+        addProductscreenShow();
+        dispatch(addProductFrom('main'));
       }
     } else {
       onClickAddCart(item, index, cartQty);
@@ -509,6 +512,7 @@ export function MainScreen({
       setProductIndex(index);
       setProductItem(item);
       addProductscreenShow();
+      dispatch(addProductFrom('main'));
     }
   };
 

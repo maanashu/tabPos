@@ -1,4 +1,6 @@
+import React from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   SafeAreaView,
@@ -7,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+
 import { ms } from 'react-native-size-matters';
 import { Fonts, clothes, minus, plus } from '@/assets';
 import moment from 'moment';
@@ -16,12 +18,14 @@ import { CustomHeader } from './CustomHeader';
 import { COLORS, SH } from '@/theme';
 import { Images } from '@/assets/new_icon';
 import { useState } from 'react';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { addTocart } from '@/actions/RetailAction';
+import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
 import { CustomErrorToast } from '@mPOS/components/Toast';
+import { FullScreenLoader } from '@mPOS/components';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -52,6 +56,10 @@ export const AddProductScreen = ({ backHandler }) => {
   let shippingImage = deliveryOption.find((item) => {
     return item === '4';
   });
+
+  const isChecksSuppliesVariant = useSelector((state) =>
+    isLoadingSelector([TYPES.CHECK_SUPPLIES_VARIANT], state)
+  );
 
   const addToCartHandler = async () => {
     if (productDetail?.supplies?.[0]?.attributes?.length === 0) {
@@ -104,12 +112,13 @@ export const AddProductScreen = ({ backHandler }) => {
           supplyPriceID: productDetail?.supplies?.[0]?.supply_prices[0]?.id,
           supplyVariantId: res?.payload?.id,
         };
+        console.log('Data', Data);
         if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
           // setAddToCartLoader(true);
 
           const res = await dispatch(addTocart(Data));
           if (res?.msg !== 'Wrong supply variant choosen.') {
-            crossHandler();
+            backHandler();
             // openFrom === 'main' &&
             //   addToLocalCart(selectedItem, productIndex, count, Data?.supplyVariantId);
           } else {
@@ -318,7 +327,11 @@ export const AddProductScreen = ({ backHandler }) => {
                 <Image source={plus} style={styles.plusSign} />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.addButtonCon} onPress={addToCartHandler}>
+            <TouchableOpacity
+              style={styles.addButtonCon}
+              onPress={addToCartHandler}
+              disabled={isChecksSuppliesVariant ? true : false}
+            >
               <Text style={[styles.productName, { fontSize: ms(10), color: COLORS.white }]}>
                 {'Add item'}
               </Text>
@@ -326,6 +339,11 @@ export const AddProductScreen = ({ backHandler }) => {
                 source={Images.cartIcon}
                 style={[styles.plusSign, { tintColor: COLORS.sky_blue, marginLeft: ms(4) }]}
               />
+              {isChecksSuppliesVariant && (
+                <View style={{ marginLeft: ms(10) }}>
+                  <ActivityIndicator size="small" color={COLORS.sky_blue} />
+                </View>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -426,6 +444,7 @@ export const AddProductScreen = ({ backHandler }) => {
           </View>
         </View>
       </View>
+      {/* <FullScreenLoader /> */}
     </SafeAreaView>
   );
 };
