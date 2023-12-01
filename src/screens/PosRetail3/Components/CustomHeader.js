@@ -50,13 +50,13 @@ export function CustomHeader({ crossHandler, iconShow }) {
           <Text style={styles.cashLabelBold}>Walk-In</Text>
         </View>
 
-        {iconShow ? (
+        {/* {iconShow ? (
           <TouchableOpacity onPress={crossHandler}>
             <Image source={crossButton} style={styles.crossBg} />
           </TouchableOpacity>
         ) : (
           <View></View>
-        )}
+        )} */}
       </View>
     </View>
   );

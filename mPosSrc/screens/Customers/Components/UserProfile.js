@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useRef } from 'react';
 import {
   View,
   Text,
@@ -37,24 +37,14 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getCustomers } from '@/selectors/CustomersSelector';
-import { DELIVERY_MODE, PAGINATION_DATA, months } from '@/constants/enums';
-
-const result = Dimensions.get('window').height - 50;
-const twoEqualView = result / 1.8;
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
 import { TYPES } from '@/Types/CustomersTypes';
 import { useEffect } from 'react';
-import {
-  getAcceptMarketing,
-  getOrderUser,
-  marketingUpdate,
-  updateUserProfile,
-} from '@/actions/CustomersAction';
-import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
+import { getOrderUser, getUserOrder, updateUserProfile } from '@/actions/CustomersAction';
 import { useMemo } from 'react';
-import { useCallback } from 'react';
 import moment from 'moment';
 import { Header, ScreenWrapper } from '@mPOS/components';
 import styles from './styles';
@@ -64,25 +54,25 @@ import { commonNavigate, MPOS_NAVIGATION } from '@common/commonImports';
 import Modal from 'react-native-modal';
 import CountryPicker from 'react-native-country-picker-modal';
 import { strings } from '@mPOS/localization';
-import { getUser } from '@/selectors/UserSelectors';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export function UserProfile(props) {
   const dispatch = useDispatch();
+  const ref = useRef(null);
+
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getCustomerData = useSelector(getCustomers);
-  const getUserData = useSelector(getUser);
-  const getPosUser = getUserData?.posLoginData;
-  const posUsers = getAuth?.getAllPosUsersData;
-
+  const customerArray = getCustomerData?.getUserOrder?.data[props?.route?.params?.index] ?? [];
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
   const userDetail = props?.route?.params?.userDetail;
-  const [posStaffId, setPosStaffId] = useState();
-  const [roleId, setRoleId] = useState();
+  const user_details = customerArray?.user_details;
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
   }, [getCustomerData?.getOrderUser?.data]);
+
+  const [editId, setEditId] = useState(user_details?.current_address?.address_id || '');
 
   const [paginationModalValue, setPaginationModalValue] = useState(20);
   const [page, setPage] = useState(1);
@@ -90,37 +80,23 @@ export function UserProfile(props) {
   const [monthSelect, setMonthSelect] = useState('none');
   const [showEditModal, setShowEditModal] = useState(false);
   const [flag, setFlag] = useState('US');
-  const [phoneNumber, setPhoneNumber] = useState(
-    userDetail?.user_details?.current_address?.phone_no || ''
-  );
-  const [countryCode, setCountryCode] = useState(
-    userDetail?.user_details?.current_address?.phone_code || '+1'
-  );
-  const [name, setName] = useState(userDetail?.user_details?.firstname || '');
-  const [emailAddress, setEmailAddress] = useState(userDetail?.user_details?.email || '');
+  const [phoneNumber, setPhoneNumber] = useState(user_details?.current_address?.phone_no || '');
+  const [countryCode, setCountryCode] = useState(user_details?.current_address?.phone_code || '+1');
+  const [name, setName] = useState(user_details?.firstname || '');
+  const [emailAddress, setEmailAddress] = useState(user_details?.email || '');
   const [streetAddress, setStreetAddress] = useState(
-    userDetail?.user_details?.current_address?.custom_address || ''
+    editId ? user_details?.current_address?.custom_address : ''
   );
-
-  const [apt, setApt] = useState(userDetail?.user_details?.current_address?.address_type || '');
-  const [zipCode, setZipCode] = useState(userDetail?.user_details?.zipcode || '');
-
-  const posStaffID = () => {
-    posUsers?.pos_staff?.map((item) => {
-      if (item?.user_id === getPosUser?.id) {
-        return setPosStaffId(item?.id), setRoleId(item?.user?.user_roles[0]?.role_id);
-      }
-    });
-  };
-
-  useEffect(() => {
-    const data = {
-      userid: userDetail?.user_details?.id,
-      sellerid: userDetail?.seller_details?.id,
-    };
-    dispatch(getAcceptMarketing(data));
-    posStaffID();
-  }, [posStaffId, roleId]);
+  const [apt, setApt] = useState(user_details?.current_address?.address_type || '');
+  const [zipCode, setZipCode] = useState(editId ? user_details?.zipcode : '');
+  const [city, setCity] = useState(editId ? user_details?.current_address?.city : '');
+  const [latitude, setLatitude] = useState(editId ? user_details?.current_address?.latitude : null);
+  const [longitude, setLongitude] = useState(
+    editId ? user_details?.current_address?.longitude : null
+  );
+  const [state, setState] = useState(editId ? user_details?.current_address?.state : '');
+  const [country, setCountry] = useState(editId ? user_details?.current_address?.country : '');
+  const [placeId, setPlaceId] = useState('');
 
   const startIndex = useMemo(
     () => (page - 1) * paginationModalValue + 1,
@@ -128,15 +104,15 @@ export function UserProfile(props) {
   );
 
   const data = {
-    firstName: userDetail?.user_details?.firstname,
-    phoneNumber: userDetail?.user_details?.phone_number,
-    profilePhoto: userDetail?.user_details?.profile_photo,
-    userEmail: userDetail?.user_details?.email,
-    streetAdd: userDetail?.user_details?.current_address?.street_address,
-    city: userDetail?.user_details?.current_address?.city,
-    state: userDetail?.user_details?.current_address?.state,
-    country: userDetail?.user_details?.current_address?.country,
-    postalCode: userDetail?.user_details?.current_address?.zipcode,
+    firstName: user_details?.firstname,
+    phoneNumber: user_details?.phone_number,
+    profilePhoto: user_details?.profile_photo,
+    userEmail: user_details?.email,
+    streetAdd: user_details?.current_address?.custom_address,
+    city: user_details?.current_address?.city,
+    state: user_details?.current_address?.state,
+    country: user_details?.current_address?.country,
+    postalCode: user_details?.current_address?.zipcode,
   };
   useEffect(() => {
     const data = {
@@ -168,38 +144,68 @@ export function UserProfile(props) {
     }
   };
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(userDetail?.user_details?.current_address?.country || null);
-  const [items, setItems] = useState([
-    { label: 'US', value: 'us' },
-    { label: 'INDIA', value: 'india' },
-    { label: 'AUSTRALIA', value: 'australia' },
-  ]);
-  const [stateOpen, setStateOpen] = useState(false);
-  const [stateValue, setStateValue] = useState(null);
-  const [stateItems, setStateItems] = useState([
-    { label: 'US', value: 'us' },
-    { label: 'INDIA', value: 'india' },
-    { label: 'AUSTRALIA', value: 'australia' },
-  ]);
+  useEffect(() => {
+    if (user_details?.current_address?.custom_address) {
+      ref.current?.setAddressText(streetAddress);
+    }
+  }, []);
 
   const saveHandler = () => {
+    const id = user_details?.id;
     const data = {
-      pos_staff_id: posStaffId,
       firstname: name,
-      phone_number: phoneNumber,
       email: emailAddress,
-      role_id: roleId,
-      phone_code: countryCode,
-      custom_address: streetAddress,
-      address_type: apt,
-      country: value,
-      city: value,
-      state: stateValue,
-      zipCode: zipCode,
+      current_address: {
+        street_address: streetAddress,
+        address_type: apt,
+        country: country,
+        city: city,
+        state: state,
+        zipcode: zipCode,
+        latitude,
+        longitude,
+      },
+      address_id: editId,
     };
-    dispatch(updateUserProfile(data));
+    const orderData = {
+      sellerID: sellerID,
+      customerType: props?.route?.params?.data?.customerType,
+      page: page,
+      limit: paginationModalValue,
+      dayWisefilter: props?.route?.params?.data?.time,
+    };
+    dispatch(updateUserProfile(data, id));
+    dispatch(getUserOrder(orderData));
     setShowEditModal(false);
+  };
+
+  const getAddress = (data, details, place_id = null) => {
+    const addressDetails = details?.address_components;
+    const { lat, lng } = details?.geometry?.location;
+    setLatitude(lat);
+    setLongitude(lng);
+    setPlaceId(place_id ? place_id : data.place_id);
+    for (var i = 0; i < addressDetails.length; i++) {
+      if (addressDetails[i].types[0] == 'country') {
+        setCountry(addressDetails?.[i]?.long_name);
+      }
+
+      if (addressDetails[i].types[0] == 'postal_code') {
+        setZipCode(addressDetails?.[i]?.long_name);
+      }
+
+      if (addressDetails[i].types[0] == 'administrative_area_level_1') {
+        setState(addressDetails?.[i]?.long_name);
+      }
+
+      if (
+        addressDetails[i].types[0] == 'administrative_area_level_2' ||
+        addressDetails[i].types[0] == 'administrative_area_level_3' ||
+        addressDetails[i].types[0] == 'locality'
+      ) {
+        setCity(addressDetails?.[i]?.long_name);
+      }
+    }
   };
 
   return (
@@ -396,21 +402,28 @@ export function UserProfile(props) {
       </View>
 
       <Modal isVisible={showEditModal}>
-        <KeyboardAvoidingView style={{ flex: 1, justifyContent: 'center' }}>
+        <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps={'handled'}
+          style={{
+            flex: 1,
+            marginVertical: ms(20),
+          }}
+        >
           <View
             style={{
               marginHorizontal: ms(10),
-              // marginVertical: ms(60),
+              // marginVertical: ms(30),
               backgroundColor: 'white',
               borderRadius: ms(10),
               paddingHorizontal: ms(20),
               paddingVertical: ms(30),
-              minHeight: '70%',
+              // minHeight: '70%',
               // justifyContent: 'center',
             }}
           >
             <TouchableOpacity
-              style={{ position: 'absolute', top: ms(10), right: ms(7) }}
+              style={{ position: 'absolute', top: ms(8), right: ms(7) }}
               onPress={() => setShowEditModal(false)}
             >
               <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
@@ -419,7 +432,6 @@ export function UserProfile(props) {
 
             <View style={styles.textInputView}>
               <TextInput
-                maxLength={15}
                 returnKeyType={'done'}
                 keyboardType={'default'}
                 value={name.trim()}
@@ -467,7 +479,6 @@ export function UserProfile(props) {
 
             <View style={styles.textInputView}>
               <TextInput
-                maxLength={15}
                 returnKeyType={'done'}
                 keyboardType={'default'}
                 value={emailAddress}
@@ -481,10 +492,38 @@ export function UserProfile(props) {
               />
             </View>
             <Text style={styles.phoneText}>{'Street Address'}</Text>
+            <GooglePlacesAutocomplete
+              ref={ref}
+              fetchDetails
+              autoFocus={false}
+              listViewDisplayed={true}
+              returnKeyType={'search'}
+              placeholder={'Street Address'}
+              enablePoweredByContainer={false}
+              query={{
+                language: 'en',
+                type: 'address',
+                key: GOOGLE_MAP.API_KEYS,
+              }}
+              onPress={(data, details) => {
+                setStreetAddress(data.structured_formatting.main_text);
+                getAddress(data, details);
+              }}
+              styles={{
+                container: styles.placesContainerStyle,
+                textInput: styles.textInputView,
+                textInputContainer: styles.textInputContainer,
+                predefinedPlacesDescription: styles.predefinedStyles,
+              }}
+              textInputProps={{
+                editable: true,
+                value: streetAddress,
+                onChange: (text) => setStreetAddress(text),
+              }}
+            />
 
-            <View style={styles.textInputView}>
+            {/* <View style={styles.textInputView}>
               <TextInput
-                maxLength={15}
                 returnKeyType={'done'}
                 keyboardType={'default'}
                 value={streetAddress}
@@ -496,12 +535,11 @@ export function UserProfile(props) {
                 placeholderTextColor={COLORS.darkGray}
                 // showSoftInputOnFocus={false}
               />
-            </View>
+            </View> */}
             <Text style={styles.phoneText}>{'Apartment/Suite'}</Text>
 
             <View style={styles.textInputView}>
               <TextInput
-                maxLength={15}
                 returnKeyType={'done'}
                 keyboardType={'default'}
                 value={apt}
@@ -518,76 +556,63 @@ export function UserProfile(props) {
             <View style={{ flexDirection: 'row' }}>
               <View style={{ flex: 1 }}>
                 <Text style={{ marginBottom: ms(8) }}>{'Country'}</Text>
-                <DropDownPicker
-                  open={open}
-                  value={value}
-                  items={items}
-                  setOpen={setOpen}
-                  setValue={setValue}
-                  setItems={setItems}
-                  containerStyle={styles.dropDownContainerStyle}
-                  style={styles.dropdownStyle}
-                  arrowIconStyle={styles.arrowIconStyle}
-                  textStyle={{
-                    color: COLORS.black,
-                    fontFamily: Fonts.Regular,
-                    fontSize: ms(10),
+                <TextInput
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={country}
+                  onChangeText={(text) => {
+                    setCountry(text);
                   }}
-                  listItemLabelStyle={{ color: COLORS.black }}
-                  zIndex={999}
-                  placeholder={userDetail?.user_details?.current_address?.country || 'Country'}
+                  style={[
+                    styles.textInputContainer,
+                    { backgroundColor: COLORS.textInputBackground, paddingHorizontal: ms(10) },
+                  ]}
+                  placeholder={'Country'}
+                  placeholderTextColor={COLORS.darkGray}
+                  // showSoftInputOnFocus={false}
                 />
               </View>
               <View style={{ flex: 1, marginLeft: ms(10) }}>
                 <Text style={{ marginBottom: ms(8) }}>{'State'}</Text>
-                <DropDownPicker
-                  open={stateOpen}
-                  value={stateValue}
-                  items={stateItems}
-                  setOpen={setStateOpen}
-                  setValue={setStateValue}
-                  setItems={setStateItems}
-                  containerStyle={styles.dropDownContainerStyle}
-                  style={styles.dropdownStyle}
-                  arrowIconStyle={styles.arrowIconStyle}
-                  textStyle={{
-                    color: COLORS.black,
-                    fontFamily: Fonts.Regular,
-                    fontSize: ms(10),
+                <TextInput
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={state}
+                  onChangeText={(text) => {
+                    setState(text);
                   }}
-                  listItemLabelStyle={{ color: COLORS.black }}
-                  zIndex={999}
-                  placeholder={userDetail?.user_details?.current_address?.state || 'State'}
+                  style={[
+                    styles.textInputContainer,
+                    { backgroundColor: COLORS.textInputBackground, paddingHorizontal: ms(10) },
+                  ]}
+                  placeholder={'State'}
+                  placeholderTextColor={COLORS.darkGray}
+                  // showSoftInputOnFocus={false}
                 />
               </View>
             </View>
             <View style={{ flexDirection: 'row', marginVertical: ms(8) }}>
               <View style={{ flex: 1 }}>
                 <Text style={{ marginBottom: ms(8) }}>{'City'}</Text>
-                <DropDownPicker
-                  open={open}
-                  value={value}
-                  items={items}
-                  setOpen={setOpen}
-                  setValue={setValue}
-                  setItems={setItems}
-                  containerStyle={styles.dropDownContainerStyle}
-                  style={styles.dropdownStyle}
-                  arrowIconStyle={styles.arrowIconStyle}
-                  textStyle={{
-                    color: COLORS.black,
-                    fontFamily: Fonts.Regular,
-                    fontSize: ms(10),
+                <TextInput
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={city}
+                  onChangeText={(text) => {
+                    setCity(text);
                   }}
-                  listItemLabelStyle={{ color: COLORS.black }}
-                  zIndex={999}
-                  placeholder={userDetail?.user_details?.current_address?.city || 'City'}
+                  style={[
+                    styles.textInputContainer,
+                    { backgroundColor: COLORS.textInputBackground, paddingHorizontal: ms(10) },
+                  ]}
+                  placeholder={'City'}
+                  placeholderTextColor={COLORS.darkGray}
+                  // showSoftInputOnFocus={false}
                 />
               </View>
               <View style={{ flex: 1, marginLeft: ms(10) }}>
                 <Text style={{ marginBottom: ms(8) }}>{'Zip Code'}</Text>
                 <TextInput
-                  maxLength={15}
                   returnKeyType={'done'}
                   keyboardType={'default'}
                   value={zipCode}
@@ -618,7 +643,7 @@ export function UserProfile(props) {
               </TouchableOpacity>
             </View>
           </View>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
       </Modal>
     </ScreenWrapper>
   );

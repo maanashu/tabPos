@@ -90,6 +90,7 @@ export function MainScreen({
   productArray,
   cartServiceScreenHandler,
   activeCategory,
+  addProductscreenShow,
 }) {
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -504,9 +505,10 @@ export function MainScreen({
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setSelectedItemQty(updatedItem?.cart_qty);
       setSelectedItem(item);
-      setAddCartModal(true);
+      // setAddCartModal(true);
       setProductIndex(index);
       setProductItem(item);
+      addProductscreenShow();
     }
   };
 

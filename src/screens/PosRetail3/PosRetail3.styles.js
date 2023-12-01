@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
   searchScreenHeader: {
     height: SH(60),
     justifyContent: 'center',
+    paddingHorizontal: ms(12),
   },
   cashLabelBold: {
     color: COLORS.navy_light_blue,
