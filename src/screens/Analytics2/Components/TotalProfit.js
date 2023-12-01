@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -22,12 +22,14 @@ import {
 } from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { COLORS } from '@/theme';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
+import { useDebouncedCallback } from 'use-lodash-debounce';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -59,19 +61,38 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalProfit() {
+export function TotalProfit({ sellerID, data }) {
+  const dispatch = useDispatch();
+
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
-  const interval = 1;
-  const maxLabel = 31;
-  const daysLength = 31;
-
-  const dataLabelsProfit = analyticStatistics?.profit?.graph_data?.labels;
-  const labelsProfit = generateLabels(dataLabelsProfit, interval, maxLabel, daysLength);
+  const onEndReachedCalledDuringMomentum = useRef(false);
 
   const profitStatisticsLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
   );
+  const paginationData = {
+    total: analyticStatistics?.orderData?.total,
+    totalPages: analyticStatistics?.orderData?.total_pages,
+    perPage: analyticStatistics?.orderData?.per_page,
+    currentPage: analyticStatistics?.orderData?.current_page,
+  };
+
+  const onLoadMoreProfit = useCallback(() => {
+    if (!profitStatisticsLoader) {
+      if (paginationData?.currentPage < paginationData?.totalPages) {
+        dispatch(getAnalyticStatistics(sellerID, data, paginationData?.currentPage + 1));
+      }
+    }
+  }, [paginationData]);
+
+  const debouncedLoadMoreProfit = useDebouncedCallback(onLoadMoreProfit, 300);
+
+  const renderFooter = () => {
+    return profitStatisticsLoader ? (
+      <ActivityIndicator size="large" color={COLORS.navy_blue} />
+    ) : null;
+  };
 
   const getProfitList = ({ item, index }) => (
     <DataTable.Row
@@ -274,11 +295,12 @@ export function TotalProfit() {
                 { height: Platform.OS === 'ios' ? ms(245) : ms(288) },
               ]}
             >
-              {profitStatisticsLoader ? (
+              {/* {profitStatisticsLoader ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
                 </View>
-              ) : analyticStatistics?.orderData?.data?.length === 0 ? (
+              ) : */}
+              {analyticStatistics?.orderData?.data?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
@@ -287,11 +309,24 @@ export function TotalProfit() {
                   <FlatList
                     style={styles.listStyle}
                     data={analyticStatistics?.orderData?.data}
+                    extraData={analyticStatistics?.orderData?.data}
                     renderItem={getProfitList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
-                    bounces={false}
+                    // bounces={false}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                    onMomentumScrollBegin={() => {}}
+                    onMomentumScrollEnd={() => {
+                      if (onEndReachedCalledDuringMomentum.current) {
+                        // onLoadMoreProduct();
+                        debouncedLoadMoreProfit();
+                        onEndReachedCalledDuringMomentum.current = false;
+                      }
+                    }}
+                    removeClippedSubviews={true}
+                    ListFooterComponent={renderFooter}
                   />
                 </View>
               )}

@@ -301,7 +301,7 @@ export function TotalProductSold({ sellerID, data }) {
                 </View>
               ) :  */}
 
-              {soldProduct?.totalProductSoldList?.length === 0 ? (
+              {soldProduct?.totalProductSoldList?.data?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
