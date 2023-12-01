@@ -265,6 +265,8 @@ export const en = {
     rewards: 'Rewards',
   },
   settings: {
+    activeInMarket: "Active in the markets they've been added to and visible to customers.",
+    agreements: 'Agreements',
     security: 'Security',
     twoStepVerifiCon: '2-step verification',
     softwareUpdate: 'Software updates',

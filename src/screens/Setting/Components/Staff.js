@@ -37,6 +37,8 @@ import {
   arrowRightTop,
   plus,
   arrowLeftUp,
+  toggleOnNavyBlue,
+  newToggleOff,
 } from '@/assets';
 import CountryPicker from 'react-native-country-picker-modal';
 import { Table } from 'react-native-table-component';
@@ -1001,51 +1003,31 @@ export function Staff() {
         animationOut={'slideOutDown'}
         transparent={true}
         isVisible={staffModal}
+        onBackdropPress={() => onCloseModal()}
       >
         {!isColorModal ? (
           <View pointerEvents={isLoading ? 'none' : 'auto'} style={[styles.addStaffModalCon]}>
-            <View style={styles.addCartConHeader}>
-              <TouchableOpacity onPress={() => onCloseModal()}>
-                <Image source={crossButton} style={styles.crossBg} />
-              </TouchableOpacity>
-
-              <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity style={styles.continueBtnCon} onPress={() => onCloseModal()}>
-                  <Text style={styles.detailBtnCon}>Discard</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.addToCartCon} onPress={createPosUserHandler}>
-                  {isLoading ? (
-                    <ActivityIndicator animating={true} size={'large'} color={COLORS.white} />
-                  ) : (
-                    <Text style={styles.addTocartText}>Send</Text>
-                  )}
-                </TouchableOpacity>
-              </View>
-            </View>
-
             <KeyboardAwareScrollView
               keyboardShouldPersistTaps={'always'}
               contentContainerStyle={{ padding: SW(10) }}
             >
               <View style={{ justifyContent: 'space-between' }}>
-                <Text style={styles.phoneText}>{'Name'}</Text>
+                <Text style={styles.phoneText}>{'Full Name'}</Text>
 
-                <View style={styles.textInputView}>
-                  <TextInput
-                    maxLength={15}
-                    returnKeyType={'done'}
-                    keyboardType={'default'}
-                    value={name.trim()}
-                    onChangeText={(text) => {
-                      setName(text);
-                    }}
-                    style={styles.textInputContainer}
-                    placeholder={'Name'}
-                    placeholderTextColor={COLORS.darkGray}
-                    // showSoftInputOnFocus={false}
-                  />
-                </View>
-                <Spacer space={SW(10)} />
+                <TextInput
+                  maxLength={15}
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={name.trim()}
+                  onChangeText={(text) => {
+                    setName(text);
+                  }}
+                  style={styles.nameInputContainer}
+                  placeholder={'Name'}
+                  placeholderTextColor={COLORS.darkGray}
+                  // showSoftInputOnFocus={false}
+                />
+                {/* <Spacer space={SW(10)} /> */}
                 <Text style={styles.phoneText}>{'Phone Number'}</Text>
                 <View style={styles.textInputView}>
                   <CountryPicker
@@ -1080,7 +1062,7 @@ export function Staff() {
                     // showSoftInputOnFocus={false}
                   />
                 </View>
-                <Spacer space={SW(10)} />
+                {/* <Spacer space={SW(10)} /> */}
                 <Text style={styles.phoneText}>{'One Time Password'}</Text>
                 <View style={[styles.textInputView, { flexDirection: 'row' }]}>
                   <TextInput
@@ -1107,7 +1089,6 @@ export function Staff() {
                     />
                   </TouchableOpacity>
                 </View>
-                <Spacer space={SW(10)} />
                 <Text style={styles.phoneText}>{'Email Address'}</Text>
                 <View style={styles.textInputView}>
                   <TextInput
@@ -1123,24 +1104,29 @@ export function Staff() {
                     // showSoftInputOnFocus={false}
                   />
                 </View>
-                <Spacer space={SW(10)} />
-                <View style={[styles.textInputView, { marginTop: 0 }]}>
+                <Text style={styles.phoneText}>{'Role'}</Text>
+                <View style={[styles.textInputView]}>
                   <DropDownPicker
                     placeholder="Select Role"
                     containerStyle={{
-                      height: SH(35),
+                      height: SH(40),
                       borderWidth: 0,
                       justifyContent: 'center',
                       borderRadius: 7,
                       marginTop: SW(2),
-                      borderColor: COLORS.textInputBackground,
-                      backgroundColor: COLORS.textInputBackground,
+                      zIndex: 9999,
                     }}
                     style={{
                       borderColor: COLORS.textInputBackground,
+                      backgroundColor: COLORS.white,
+                      borderWidth: 0,
+                      zIndex: 9999,
+                    }}
+                    listItemContainerStyle={{
+                      zIndex: 9999,
                       backgroundColor: COLORS.textInputBackground,
                     }}
-                    dropDownDirection="TOP"
+                    dropDownDirection="BOTTOM"
                     // dropdownPosition={'top'}
                     open={open}
                     value={value}
@@ -1153,7 +1139,10 @@ export function Staff() {
 
                 <Spacer space={SW(10)} />
                 <View
-                  style={[styles.textInputView, { marginTop: 0, justifyContent: 'space-around' }]}
+                  style={[
+                    styles.textInputView,
+                    { marginTop: 0, justifyContent: 'space-around', zIndex: -999 },
+                  ]}
                 >
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text>Staff Member</Text>
@@ -1161,7 +1150,10 @@ export function Staff() {
                       style={styles.vectorIconCon}
                       onPress={() => setIsStaff(!isStaff)}
                     >
-                      <Image source={isStaff ? vector : vectorOff} style={styles.toggleSecurity} />
+                      <Image
+                        source={isStaff ? toggleOnNavyBlue : newToggleOff}
+                        style={styles.toggleSecurity}
+                      />
                     </TouchableOpacity>
                   </View>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -1185,6 +1177,21 @@ export function Staff() {
                   </View>
                 </View>
                 <Spacer space={SW(20)} />
+
+                <View style={{ justifyContent: 'flex-end', flex: 1 }}>
+                  <View style={styles.rowJustified}>
+                    <TouchableOpacity style={styles.cancelButton} onPress={() => onCloseModal()}>
+                      <Text style={styles.detailBtnCon}>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.saveButton} onPress={createPosUserHandler}>
+                      {isLoading ? (
+                        <ActivityIndicator animating={true} size={'large'} color={COLORS.white} />
+                      ) : (
+                        <Text style={styles.addTocartText}>Save</Text>
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </KeyboardAwareScrollView>
           </View>
