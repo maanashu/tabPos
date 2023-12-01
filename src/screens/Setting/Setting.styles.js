@@ -735,8 +735,8 @@ export const styles = StyleSheet.create({
   },
   selectHead: {
     fontSize: SF(18),
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.solid_grey,
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
   },
   cntryCrossButton: {
     width: SW(7),
@@ -1053,8 +1053,8 @@ export const styles = StyleSheet.create({
 
   legalViewStyle: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 10,
+    borderColor: COLORS.light_purple,
+    borderRadius: 15,
     paddingVertical: moderateScale(10),
     paddingHorizontal: moderateScale(5),
     // justifyContent: 'center',
@@ -1067,12 +1067,12 @@ export const styles = StyleSheet.create({
   },
   legalView: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    padding: moderateScale(10),
+    borderColor: COLORS.light_purple,
+    padding: moderateScale(5),
     marginBottom: 5,
     marginHorizontal: ms(1),
-    height: windowHeight * 0.25,
-    borderRadius: 10,
+    height: windowHeight * 0.225,
+    borderRadius: 15,
   },
   circlImageStyle: {
     width: SW(3),
@@ -1084,7 +1084,7 @@ export const styles = StyleSheet.create({
   },
   activeTextStyle: {
     fontSize: SF(11),
-    fontFamily: Fonts.MaisonBold,
+    fontFamily: Fonts.Medium,
     color: COLORS.green,
     marginLeft: SW(2),
   },
@@ -1095,22 +1095,22 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     marginLeft: SW(2),
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    color: COLORS.lavender,
   },
   dateViewStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: SW(2),
+    alignItems: 'center',
   },
   activebuttonStyle: {
-    width: SW(24),
-    height: SW(8),
-    borderWidth: 1,
-    borderColor: COLORS.green,
-    borderRadius: 5,
+    width: SW(23),
+    height: SW(7),
+    borderRadius: 30,
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: COLORS.light_green,
   },
   redActiveButton: {
     width: SW(27),

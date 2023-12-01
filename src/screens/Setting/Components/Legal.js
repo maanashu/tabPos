@@ -4,7 +4,7 @@ import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { View, Text, Image, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
-import { activeCircle, devices, ellipse } from '@/assets';
+import { activeCircle, calendar, calendarDrawer, devices, ellipse } from '@/assets';
 import { LEGALDATA } from '@/constants/flatListData';
 import Modal from 'react-native-modal';
 import { moderateVerticalScale } from 'react-native-size-matters';
@@ -44,12 +44,9 @@ export function Legal() {
       }}
     >
       <View style={styles.dateViewStyle}>
-        <View>
-          <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>Publish Date:</Text>
-          <Text style={[styles.securitysubhead, { fontSize: SF(10) }]}>
-            {moment(item?.created_at).format('MMM D, YYYY h:mm A')}
-          </Text>
-        </View>
+        <Text style={[styles.securitysubhead, { fontSize: SF(12), color: COLORS.navy_blue }]}>
+          Published
+        </Text>
         {item.is_active ? (
           <View style={styles.activebuttonStyle}>
             <Image source={activeCircle} style={[styles.circlImageStyle]} />
@@ -63,18 +60,30 @@ export function Legal() {
         )}
       </View>
       <Spacer space={SH(5)} />
+
+      <View style={styles.rowAligned}>
+        <Image
+          source={calendarDrawer}
+          resizeMode="contain"
+          style={{ height: 20, width: 20, marginRight: 8, marginLeft: 7 }}
+        />
+
+        <Text style={[styles.securitysubhead, { fontSize: SF(10) }]}>
+          {moment(item?.created_at).format('MMM D, YYYY h:mm A')}
+        </Text>
+      </View>
+      <Spacer space={SH(5)} />
       <View style={{ alignItems: 'center' }}>
         <View style={styles.legalView}>
           <Text style={[styles.selectHead, { fontSize: SF(14) }]}>{item?.title}</Text>
-          <Spacer space={SH(3)} />
+          <Spacer space={SH(5)} />
           <Text numberOfLines={10} style={styles.securitysubhead}>
-            {/* {item.intro} */}
             {removeHtmlTag(item?.content)}
           </Text>
         </View>
       </View>
       <Spacer space={SH(5)} />
-      <Text style={styles.updateTextStyle}>Last update date:</Text>
+      <Text style={[styles.updateTextStyle, { color: COLORS.navy_blue }]}>Last update date:</Text>
       <Text style={styles.updateTextStyle}>
         {/* {item.date} */}
         {moment(item?.updated_at).format('MMM D, YYYY h:mm A')}
