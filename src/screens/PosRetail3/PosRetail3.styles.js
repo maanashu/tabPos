@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
   displayflex: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   displayRow: {
     flexDirection: 'row',

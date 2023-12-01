@@ -517,12 +517,12 @@ export function MainScreen({
     }
   };
 
-  const serviceFun = async (serviceId) => {
+  const serviceFun = async (serviceId, index) => {
     const res = await dispatch(getOneService(sellerID, serviceId));
     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-      // setAddServiceCartModal(true);
-      addServiceScreenShow();
-      // console.log('dfghjkl;');
+      index == 0 || index == 1
+        ? addServiceScreenShow()
+        : (alert('new service add ui only first and second service'), setAddServiceCartModal(true));
     }
   };
 
@@ -1020,7 +1020,7 @@ export function MainScreen({
                     return (
                       <TouchableOpacity
                         style={styles.serviceCon(cartMatchService?.qty)}
-                        onPress={() => serviceFun(item.id)}
+                        onPress={() => serviceFun(item.id, index)}
                         activeOpacity={0.7}
                       >
                         <View style={styles.avalibleServiceCon}>

@@ -57,7 +57,7 @@ export const AddServiceScreen = ({ backHandler }) => {
   const [posUserId, setposUserId] = useState(itemData?.pos_staff?.[0]?.user?.unique_uuid);
 
   useEffect(() => {
-    alert('only ui, functionality pending');
+    alert('only ui, functionality in progress');
   }, []);
 
   useEffect(() => {
