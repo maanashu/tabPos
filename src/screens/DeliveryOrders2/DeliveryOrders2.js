@@ -107,6 +107,7 @@ export function DeliveryOrders2({ route }) {
   };
 
   const [openShippingOrders, setOpenShippingOrders] = useState(ORDER_DATA?.status ?? '0');
+
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? []);
   const [isBack, setIsBack] = useState();
   const [selectedProductId, setSelectedProductId] = useState();
@@ -647,29 +648,31 @@ export function DeliveryOrders2({ route }) {
                                 </TouchableOpacity>
                               )}
                             </View>
-                            <TouchableOpacity
-                              onPress={() => setshowMiniCalendar(true)}
-                              style={[styles.calendarDropContainer]}
-                            >
-                              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <Image source={newCalendarIcon} style={styles.calenderImage} />
-                                <Text style={styles.calenderTextStyle}>
-                                  {calendarDate?.format('DD MMM YYYY') ==
-                                  todayDate.format('DD MMM YYYY')
-                                    ? 'Today'
-                                    : calendarDate?.format('DD MMM YYYY')}
-                                </Text>
-                              </View>
-                              <Image
-                                source={dropdown2}
-                                style={{
-                                  height: ms(10),
-                                  width: ms(10),
-                                  tintColor: COLORS.lavender,
-                                  resizeMode: 'contain',
-                                }}
-                              />
-                            </TouchableOpacity>
+                            {openShippingOrders == '7,8' && (
+                              <TouchableOpacity
+                                onPress={() => setshowMiniCalendar(true)}
+                                style={[styles.calendarDropContainer]}
+                              >
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                  <Image source={newCalendarIcon} style={styles.calenderImage} />
+                                  <Text style={styles.calenderTextStyle}>
+                                    {calendarDate?.format('DD MMM YYYY') ==
+                                    todayDate.format('DD MMM YYYY')
+                                      ? 'Today'
+                                      : calendarDate?.format('DD MMM YYYY')}
+                                  </Text>
+                                </View>
+                                <Image
+                                  source={dropdown2}
+                                  style={{
+                                    height: ms(10),
+                                    width: ms(10),
+                                    tintColor: COLORS.lavender,
+                                    resizeMode: 'contain',
+                                  }}
+                                />
+                              </TouchableOpacity>
+                            )}
                           </>
                         )}
                         refreshControl={

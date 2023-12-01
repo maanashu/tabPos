@@ -33,6 +33,7 @@ import {
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { LineChart } from 'react-native-chart-kit';
+import moment from 'moment';
 
 const windowWidth = Dimensions.get('window').width;
 const result = Dimensions.get('window').height - 50;
@@ -301,7 +302,7 @@ const Graph = () => {
       <View>
         <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
 
-        <View style={[styles.flexRow, { zIndex: 999 }]}>
+        <View style={[styles.flexRow, { zIndex: 999, marginTop: ms(20) }]}>
           <TouchableOpacity
             onPress={() => {
               setShowIncoming((prevShowIncoming) => {
@@ -402,6 +403,7 @@ const Graph = () => {
             width={windowWidth * 0.49}
             barWidth={SW(3.5)}
           /> */}
+
           {graphData && (
             <LineChart
               withDots={false}
@@ -430,6 +432,7 @@ const Graph = () => {
               bezier
               style={{
                 marginVertical: 8,
+
                 // borderRadius: 16,
               }}
               withShadow={false}
@@ -437,6 +440,7 @@ const Graph = () => {
               segments={5}
             />
           )}
+          <Text style={styles.monthStyle}>{moment().format('MMMM')}</Text>
         </View>
       )}
     </View>
@@ -455,11 +459,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   numberOrdersText: {
-    fontSize: SF(16),
+    fontSize: SF(12),
     paddingTop: ms(10),
     paddingHorizontal: 20,
-    color: COLORS.navy_blue,
-    fontFamily: Fonts.SemiBold,
+    color: COLORS.lavender,
+    fontFamily: Fonts.Regular,
+    transform: [{ rotate: '-90deg' }],
+    position: 'absolute',
+    left: ms(-50),
+    top: ms(100),
   },
   flexRow: {
     flexDirection: 'row',
@@ -493,5 +501,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 20,
+  },
+  monthStyle: {
+    textAlign: 'center',
+    marginTop: ms(-10),
+    fontSize: ms(8),
+    color: COLORS.lavender,
   },
 });
