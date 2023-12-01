@@ -37,7 +37,7 @@ export function Location() {
   );
   return (
     <View style={{ flex: 1 }}>
-      <Spacer space={SH(30)} />
+      {/* <Spacer space={SH(30)} /> */}
       <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
         <Image source={devices} style={styles.securityLogo} />
         <View style={styles.twoStepVerifiCon}>

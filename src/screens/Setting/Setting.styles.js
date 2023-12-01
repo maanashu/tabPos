@@ -3,6 +3,7 @@ import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
 import { verticalScale, moderateScale, scale, ms } from 'react-native-size-matters';
+import { height } from '@/theme/ScalerDimensions';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -194,11 +195,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   locationsView: {
-    borderRadius: SH(20),
+    borderRadius: 15,
     paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(4),
     marginVertical: verticalScale(3),
-    height: SH(90),
+    height: height * 0.075,
     backgroundColor: COLORS.sky_grey,
     justifyContent: 'center',
   },
@@ -752,12 +753,12 @@ export const styles = StyleSheet.create({
   },
   countryNameCon: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    height: SW(14),
-    borderRadius: 5,
+    // height: SW(14),
+    borderRadius: 20,
     paddingLeft: moderateScale(10),
     justifyContent: 'center',
-    marginBottom: 5,
+    marginBottom: 8,
+    paddingVertical: 15,
   },
   blankCircle: {
     width: SW(7),
@@ -774,7 +775,7 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
-    marginHorizontal: moderateScale(10),
+    marginRight: moderateScale(10),
   },
   cancelbuttonCon: {
     width: SW(28),
@@ -1033,8 +1034,8 @@ export const styles = StyleSheet.create({
   },
   container1: {
     backgroundColor: 'white',
-    borderRadius: 15,
-    width: windowWidth * 0.45,
+    borderRadius: 20,
+    width: windowWidth * 0.35,
     height: windowHeight * 0.6,
     alignSelf: 'center',
     position: 'absolute',

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Spacer } from '@/components';
 import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { View, Text, Image, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
@@ -15,6 +15,9 @@ import {
   squareBlank,
   toggleOnNavyBlue,
   newToggleOff,
+  devices,
+  plus,
+  langu,
 } from '@/assets';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +25,7 @@ import { getSetting } from '@/selectors/SettingSelector';
 import { addLanguage, upadteApi } from '@/actions/SettingAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useCallback } from 'react';
+import { ms } from 'react-native-size-matters';
 
 // const addLanguage = [
 //   {
@@ -141,16 +145,15 @@ export function Languages() {
       // />
       <TouchableOpacity
         onPress={() => onSelectLanguage(item, index)}
-        style={styles.countryNameCon}
-        // onPress={onPress}
-        // activeOpacity={1}
+        style={[
+          styles.countryNameCon,
+          {
+            borderColor: item.status ? COLORS.navy_blue : COLORS.light_purple,
+            backgroundColor: item.status ? COLORS.sky_grey : COLORS.white,
+          },
+        ]}
       >
-        <View style={styles.dispalyRow}>
-          <Image
-            source={item.status ? checkedCheckboxSquare : squareBlank}
-            style={[styles.blankCircle]}
-          />
-          {/* <Image source={frameBox} style={[styles.blankCircle, { tintColor }]} /> */}
+        <View style={[styles.rowAligned, { paddingVertical: 0 }]}>
           <Image source={{ uri: item?.image }} style={styles.usaFlag} />
           <Text style={[styles.selectHead, { fontSize: SF(14) }]}>{item.name}</Text>
         </View>
@@ -159,7 +162,12 @@ export function Languages() {
   };
 
   const languageRenderItem = ({ item, index }) => (
-    <View style={styles.twoStepMemberCon}>
+    <View
+      style={[
+        styles.twoStepMemberCon,
+        { borderColor: COLORS.light_purple, backgroundColor: 'transparent', borderWidth: 1 },
+      ]}
+    >
       <View style={styles.flexRow}>
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
           <View style={styles.flagCon}>
@@ -232,7 +240,7 @@ export function Languages() {
 
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(8), alignSelf: 'flex-end' }]}>
+      {/* <View style={[styles.flexRow, { height: SW(8), alignSelf: 'flex-end' }]}>
         <View style={{ zIndex: 99 }}>
           <TouchableOpacity
             style={[styles.addNewButtonCon, { position: null, right: 0 }]}
@@ -247,10 +255,10 @@ export function Languages() {
           </TouchableOpacity>
         </View>
       </View>
-      <Spacer space={SH(20)} />
+      <Spacer space={SH(20)} /> */}
       <View style={styles.securityMainCon}>
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-          <Image source={languImage} style={styles.securityLogo} />
+          <Image source={devices} style={styles.securityLogo} />
           <View style={styles.twoStepVerifiCon}>
             <Text style={styles.twoStepText}>{strings.Languages.Publishedlanguages}</Text>
             <Spacer space={SH(10)} />
@@ -266,30 +274,83 @@ export function Languages() {
         </View>
       </View>
 
+      <Spacer space={SH(10)} />
+      <TouchableOpacity
+        style={[styles.rowAligned, { marginLeft: SW(15) }]}
+        onPress={() => setShowModal(true)}
+      >
+        <View
+          style={{
+            borderWidth: 2,
+            height: 32,
+            width: 32,
+            borderRadius: 32,
+            borderColor: COLORS.navy_blue,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Image
+            source={plus}
+            resizeMode="contain"
+            style={{ height: 25, width: 25, tintColor: COLORS.navy_blue }}
+          />
+        </View>
+        <Spacer horizontal space={SW(5)} />
+        <Text
+          style={{
+            fontFamily: Fonts.Regular,
+            fontSize: ms(10),
+            color: COLORS.navy_blue,
+          }}
+        >
+          {'Add Language'}
+        </Text>
+      </TouchableOpacity>
       <Modal animationType="slide" transparent={true} isVisible={ShowModal}>
         <View style={styles.container1}>
-          <View style={styles.modalViewStyle}>
+          {/* <View style={styles.modalViewStyle}>
             <Text style={[styles.twoStepText, { fontSize: SF(22) }]}>
               {strings.Languages.addLanguage}
             </Text>
             <TouchableOpacity onPress={() => setShowModal(false)}>
               <Image source={XImage} style={styles.toggleSecurity} />
             </TouchableOpacity>
-          </View>
-          <Spacer space={SH(22)} />
+          </View> */}
+          <Spacer space={SH(30)} />
+          <Image source={langu} style={{ alignSelf: 'center', height: ms(30), width: ms(30) }} />
+          <Text
+            style={{
+              fontFamily: Fonts.Medium,
+              fontSize: ms(12),
+              color: COLORS.navy_blue,
+              textAlign: 'center',
+              marginTop: 8,
+            }}
+          >
+            Add a language
+          </Text>
+          <Text
+            style={{
+              fontFamily: Fonts.Regular,
+              fontSize: ms(8),
+              color: COLORS.navy_blue,
+              textAlign: 'center',
+              marginTop: 10,
+            }}
+          >
+            Select one or more languages to add
+          </Text>
           <View style={{ paddingHorizontal: SW(10), paddingBottom: SW(10) }}>
-            <Text style={styles.securitysubhead}>
-              {strings.Languages.languagesName + ' (' + languageList.length + ')'}
-            </Text>
             <Spacer space={SH(15)} />
 
             <View style={styles.countrySelectCon}>
-              {/* {renderLanguages()} */}
               <FlatList
                 data={languageList}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
                 extraData={languageList}
+                showsVerticalScrollIndicator={false}
               />
             </View>
             <Spacer space={SH(30)} />
