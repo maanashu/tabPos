@@ -207,9 +207,9 @@ export function ShippingOrder2() {
         ${Number(item?.price).toFixed(2)}
       </Text>
 
-      {openShippingOrders < 4 && (
+      {/* {openShippingOrders < 4 && (
         <Image source={incomingMarked} style={[styles.checkboxIconStyle]} />
-      )}
+      )} */}
     </View>
   );
 
