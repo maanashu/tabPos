@@ -62,6 +62,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
 import { useCallback } from 'react';
 import { RefreshControl } from 'react-native';
+import { Images } from '@/assets/new_icon';
 const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
@@ -191,45 +192,68 @@ export function Staff() {
       // }
     }
   };
-  const userRenderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.twoStepMemberCon}
-      onPress={() => {
-        staffDetailhandler(item?.user?.id, item?.id);
-        setData(item);
-      }}
-    >
-      <View style={styles.flexRow}>
-        <View style={styles.dispalyRow}>
-          <Image
-            source={
-              item.user?.user_profiles?.profile_photo
-                ? { uri: item.user?.user_profiles?.profile_photo }
-                : userImage
-            }
-            style={styles.teamMember}
-          />
-          <View style={styles.marginLeft}>
-            <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-              {`${
-                item.user?.user_profiles?.firstname == null
-                  ? ''
-                  : item.user?.user_profiles?.firstname
-              } ${
-                item.user?.user_profiles?.lastname == null ? '' : item.user?.user_profiles?.lastname
-              }`}
-            </Text>
-            <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
-              {item?.user?.user_roles?.length > 0
-                ? item?.user?.user_roles?.map((item, index) => item.role?.name)
-                : 'Admin'}
-            </Text>
+  const userRenderItem = ({ item, index }) => {
+    const isLastItem = posUserArray?.length === index + 1;
+    return (
+      <View>
+        <TouchableOpacity
+          style={styles.twoStepMemberCon}
+          onPress={() => {
+            staffDetailhandler(item?.user?.id, item?.id);
+            setData(item);
+          }}
+        >
+          <View style={styles.flexRow}>
+            <View style={styles.dispalyRow}>
+              <Image
+                source={
+                  item.user?.user_profiles?.profile_photo
+                    ? { uri: item.user?.user_profiles?.profile_photo }
+                    : userImage
+                }
+                style={styles.teamMember}
+              />
+              <View style={styles.marginLeft}>
+                <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                  {`${
+                    item.user?.user_profiles?.firstname == null
+                      ? ''
+                      : item.user?.user_profiles?.firstname
+                  } ${
+                    item.user?.user_profiles?.lastname == null
+                      ? ''
+                      : item.user?.user_profiles?.lastname
+                  }`}
+                </Text>
+                <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
+                  {item?.user?.user_roles?.length > 0
+                    ? item?.user?.user_roles?.map((item, index) => item.role?.name)
+                    : 'Admin'}
+                </Text>
+              </View>
+            </View>
+            <Image
+              source={Images.arrowUpRightIcon}
+              style={[
+                styles.arrowStyle,
+                { alignSelf: 'flex-start', width: SW(8), height: SW(8), tintColor: undefined },
+              ]}
+            />
           </View>
-        </View>
-        <Image source={rightBack} style={[styles.arrowStyle, { alignSelf: 'center' }]} />
+        </TouchableOpacity>
+        {isLastItem && (
+          <TouchableOpacity
+            onPress={() => setStaffModal(!staffModal)}
+            activeOpacity={0.3}
+            style={styles.addStaffContainer}
+          >
+            <Image source={Images.plusCircleIcon} style={styles.plusIconStyle} />
+            <Text style={styles.addNew1}>{strings.settings.addStaff}</Text>
+          </TouchableOpacity>
+        )}
       </View>
-    </TouchableOpacity>
-  );
+    );
+  };
   const renderStaffFooter = useCallback(
     () => (
       <View
@@ -665,7 +689,7 @@ export function Staff() {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <View style={[styles.flexRow, { height: SW(8) }]}>
+          {/* <View style={[styles.flexRow, { height: SW(8) }]}>
             <Text style={styles.HeaderLabelText}>{strings.settings.staff}</Text>
 
             {posRole !== 'admin' ? (
@@ -678,14 +702,12 @@ export function Staff() {
                 <Text style={styles.addNew}>{strings.settings.addStaff}</Text>
               </TouchableOpacity>
             ) : null}
-          </View>
-          <Spacer space={SH(20)} />
-          <View
-            style={{ borderWidth: 1, borderColor: COLORS.solidGrey, flex: 1, borderRadius: 10 }}
-          >
+          </View> */}
+          {/* <Spacer space={SH(20)} /> */}
+          <View style={{ flex: 1 }}>
             <View style={styles.securityStaffMainCon}>
               <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-                <Image source={staffImage} style={styles.securityLogo} />
+                <Image source={Images.usersOutlineIcon} style={styles.securityLogo} />
                 <View style={styles.twoStepVerifiCon}>
                   <Text style={styles.twoStepText}>{strings.Staff.staffList}</Text>
                   <Spacer space={SH(8)} />

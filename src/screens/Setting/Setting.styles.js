@@ -112,7 +112,7 @@ export const styles = StyleSheet.create({
     // borderColor: COLORS.solidGrey,
 
     // height: windowHeight * 0.5,
-    padding: 15,
+    // padding: 15,
     flex: 0.9,
     // alignItems: 'center',
   },
@@ -145,6 +145,12 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
   },
+  dateContainer: {
+    flexDirection: 'row',
+    marginLeft: SW(2),
+    marginTop: SH(6),
+    marginBottom: SH(8),
+  },
   securitysubhead: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
@@ -164,6 +170,13 @@ export const styles = StyleSheet.create({
     height: SH(70),
     justifyContent: 'center',
     backgroundColor: COLORS.sky_grey,
+  },
+  addStaffContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(12),
+    marginVertical: verticalScale(3),
+    backgroundColor: COLORS.white,
   },
   locationsView: {
     borderRadius: SH(20),
@@ -388,6 +401,12 @@ export const styles = StyleSheet.create({
     width: SW(6),
     height: SW(6),
     resizeMode: 'contain',
+  },
+  addNew1: {
+    color: COLORS.navy_blue,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    marginLeft: SW(6),
   },
   addNew: {
     color: COLORS.white,
@@ -1010,13 +1029,13 @@ export const styles = StyleSheet.create({
   legalViewStyle: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    borderRadius: 5,
+    borderRadius: 10,
     paddingVertical: moderateScale(10),
     paddingHorizontal: moderateScale(5),
     // justifyContent: 'center',
     marginBottom: 5,
     width: SW(80),
-    height: windowHeight * 0.4,
+    height: windowHeight * 0.41,
     marginTop: SW(4),
     marginHorizontal: SW(1.9),
     // marginLeft: SW(4),
@@ -1024,11 +1043,17 @@ export const styles = StyleSheet.create({
   legalView: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    borderRadius: 5,
+    borderRadius: 10,
     padding: moderateScale(10),
     marginBottom: 5,
     width: SW(70),
     height: windowHeight * 0.25,
+  },
+  calendarImageStyle: {
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+    marginRight: SW(2),
   },
   circlImageStyle: {
     width: SW(3),
@@ -1063,14 +1088,16 @@ export const styles = StyleSheet.create({
     height: SW(8),
     borderWidth: 1,
     borderColor: COLORS.green,
-    borderRadius: 5,
+    borderRadius: 30,
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: COLORS.soft_green,
   },
   redActiveButton: {
     width: SW(27),
     borderColor: COLORS.red,
+    backgroundColor: COLORS.soft_red,
   },
   legalModalCon: {
     backgroundColor: 'white',
@@ -1138,6 +1165,11 @@ export const styles = StyleSheet.create({
     height: SW(5),
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
+  },
+  plusIconStyle: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
   },
   arrowStyle2: {
     width: SW(5),
@@ -1394,7 +1426,7 @@ export const styles = StyleSheet.create({
   systemPos: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
-    fontSize: SF(14),
+    fontSize: SF(13),
   },
   shippingBodyCon: {
     height: windowHeight * 0.83,
