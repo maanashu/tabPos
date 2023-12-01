@@ -410,11 +410,11 @@ export const styles = StyleSheet.create({
   },
   editButtonCon: {
     borderWidth: 1,
-    borderColor: COLORS.primary,
+    borderColor: COLORS.navy_blue,
     borderRadius: 7,
   },
   editButtonText: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: SF(12),
     paddingHorizontal: moderateScale(7),
@@ -464,7 +464,7 @@ export const styles = StyleSheet.create({
   },
   pointCon: {
     borderWidth: 1,
-    borderColor: COLORS.primary,
+    borderColor: COLORS.navy_blue,
     borderRadius: 7,
     height: ms(28),
     width: SW(70),
