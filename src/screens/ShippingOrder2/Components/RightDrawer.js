@@ -37,6 +37,8 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
   const orderStatusCountData = shippingData?.orderStatus;
   const [showFullSideMenu, setShowFullSideMenu] = useState(false);
 
+  // console.log(JSON.stringify(orderStatusCountData), 'order drawer backend values');
+
   // const statusCount = useMemo(
   //   () => [
   //     {
@@ -131,7 +133,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         key: '5',
         image: deliverySending,
         title: 'Delivered',
-        count: orderStatusCountData?.[6]?.count ?? '0',
+        count: orderStatusCountData?.[5]?.count ?? '0',
       },
       {
         key: '7,8',
@@ -143,7 +145,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         key: '9',
         image: deliveryBack,
         title: 'Returned',
-        count: orderStatusCountData?.[8]?.count ?? '0',
+        count: orderStatusCountData?.[7]?.count ?? '0',
       },
     ],
     [orderStatusCountData]
@@ -261,7 +263,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
 
   const renderDrawer = ({ item }) => (
     <TouchableOpacity
-      // disabled={item?.count > 0 ? false : true}
+      disabled={item?.count > 0 ? false : true}
       style={[styles.drawerIconView]}
       onPress={() => onPressDrawerHandler(item?.key)}
     >
@@ -429,9 +431,12 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
 
   const renderDrawerFull = ({ item }) => (
     <TouchableOpacity
-      //disabled={item?.count > 0 ? false : true}
+      disabled={item?.count > 0 ? false : true}
       style={[{ marginVertical: ms(2) }]}
-      onPress={() => onPressDrawerHandler(item?.key)}
+      onPress={() => {
+        onPressDrawerHandler(item?.key);
+        setShowFullSideMenu(false);
+      }}
     >
       {showBadgeFull(item)}
     </TouchableOpacity>

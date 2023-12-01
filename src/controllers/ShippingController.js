@@ -27,11 +27,26 @@ export class ShippingController {
 
   static async getReviewDefault(status) {
     return new Promise((resolve, reject) => {
+      // const needRecent = status >= 4 ? true : false;
+      // const isTracking = status == '4' ? true : false;
+      // console.log(needRecent, 'NeeddReceneteee', isTracking, 'ISTrackinnngggggg');
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=4`;
+
+      // const endpoint =
+      //   ORDER_URL +
+      //   ApiOrderInventory.getOrders +
+      //   `?status=${status}&seller_id=${sellerID}&delivery_option=4&need_recent=${needRecent}&page=1&limit=20&is_tracking=${isTracking}&start_date=2023-11-25&end_date=2023-12-01&filter_by=year`;
+
+      // const endpoint =
+      //   ORDER_URL +
+      //   ApiOrderInventory.getOrders +
+      //   `?status=${status}&seller_id=${sellerID}&delivery_option=4&need_recent=${needRecent}&page=1&limit=20&is_tracking=${isTracking}`;
+
+      // console.log(endpoint, 'shipping-orders URL-----------');
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -231,7 +246,7 @@ export class ShippingController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.graphOrders +
-        `?seller_id=${sellerId}&filter=week&delivery_option=4`;
+        `?seller_id=${sellerId}&filter=year&delivery_option=4`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -254,7 +269,7 @@ export class ShippingController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderstatistics +
-        `?seller_id=${sellerID}&filter=week&delivery_option=4`;
+        `?seller_id=${sellerID}&filter=year&delivery_option=4`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

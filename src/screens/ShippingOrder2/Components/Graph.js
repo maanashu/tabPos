@@ -291,33 +291,10 @@ const Graph = () => {
   };
 
   function transformData(apiData) {
-    const monthLabels = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sept',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    const fakeData = [
-      [800, 810, 900, 810, 860, 890, 810],
-      [500, 600, 550, 590, 630, 650, 700],
-      [400, 450, 470, 420, 410, 480, 500],
-      [100, 220, 190, 260, 240, 340, 370],
-    ];
-
     const transformedData = {
-      labels: apiData.labels,
-      //labels: monthLabels,
-      datasets: apiData.datasets.map((dataset, index) => ({
-        // data: fakeData[index],
-        data: [...dataset.data], // Replace this with your dataset values
+      labels: apiData?.labels,
+      datasets: apiData?.datasets?.map((dataset, index) => ({
+        data: [...dataset?.data],
         color: () => {
           switch (index) {
             case 0:

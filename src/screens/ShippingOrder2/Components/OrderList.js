@@ -46,6 +46,8 @@ const OrderList = ({
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id ?? '');
   const todayDate = moment();
 
+  // console.log(JSON.stringify(ordersList), 'LISTINg');
+
   useEffect(() => {
     setOrderId(ordersList?.[0]?.id ?? '');
   }, [getOrdersData?.getReviewDef]);
@@ -109,10 +111,14 @@ const OrderList = ({
       </View>
 
       <View style={styles.rowContainerStyle}>
-        <Image source={fedexNew} style={styles.shippingTypeImage} />
+        <Image
+          source={item?.shipping_details?.image ? { uri: item?.shipping_details?.image } : fedexNew}
+          style={[styles.shippingTypeImage, { margin: 2 }]}
+        />
         <View style={[styles.orderDetailStyle, { width: undefined }]}>
-          <Text style={styles.timeTextStyle}>
-            {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
+          <Text style={[styles.nameTextStyle]}>
+            {item?.shipping_details?.title}
+            {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
           </Text>
           <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
             <Image source={thunder} style={[styles.pinImageStyle]} />
@@ -209,10 +215,16 @@ const OrderList = ({
             }}
           >
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <Image source={fedexNew} style={styles.shippingTypeImage} />
+              <Image
+                source={
+                  item?.shipping_details?.image ? { uri: item?.shipping_details?.image } : fedexNew
+                }
+                style={[styles.shippingTypeImage, { margin: 2 }]}
+              />
               <View style={[styles.orderDetailStyle, { width: undefined }]}>
                 <Text style={styles.nameTextStyle}>
-                  {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
+                  {item?.shipping_details?.title}
+                  {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
                 </Text>
                 <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
                   <Image source={thunder} style={[styles.pinImageStyle]} />
@@ -355,10 +367,16 @@ const OrderList = ({
             }}
           >
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <Image source={fedexNew} style={styles.shippingTypeImage} />
+              <Image
+                source={
+                  item?.shipping_details?.image ? { uri: item?.shipping_details?.image } : fedexNew
+                }
+                style={[styles.shippingTypeImage, { margin: 2 }]}
+              />
               <View style={[styles.orderDetailStyle, { width: undefined }]}>
                 <Text style={styles.nameTextStyle}>
-                  {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')}
+                  {item?.shipping_details?.title}
+                  {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
                 </Text>
                 <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
                   <Image source={thunder} style={[styles.pinImageStyle]} />
@@ -651,6 +669,8 @@ const styles = StyleSheet.create({
     height: ms(25),
     resizeMode: 'contain',
     borderRadius: ms(5),
+    borderColor: COLORS.sky_grey,
+    borderWidth: 1,
   },
   rowContainerStyle: {
     flexDirection: 'row',
