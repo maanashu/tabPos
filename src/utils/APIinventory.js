@@ -122,7 +122,9 @@ export const ApiOrderInventory = {
   getTotalSale: 'orders/pos/transaction-count',
   shippingGraph: 'orders/pos/statistics/orders',
   deliveringOrder: 'orders/pos/delivering-orders/count',
-  getOrderstatistics: 'orders/pos/orders/statistics',
+  // getOrderstatistics: 'orders/pos/orders/statistics',
+
+  getOrderstatistics: 'orders/pos/orders/conversion/statistics', //New UI
   getOrderTypeList: 'orders/pos/orders',
   getOrderData: 'orders/pos',
   onLineOrders: 'orders/pos/seller/online-orders',
