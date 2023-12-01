@@ -56,7 +56,7 @@ export const newCustomerDataLoader = [
 export const settingLabelData = [
   {
     id: 1,
-    name: 'security',
+    name: 'Security',
     subhead: 'Not updated',
     image: security,
   },
@@ -86,7 +86,7 @@ export const settingLabelData = [
   },
   {
     id: 6,
-    name: 'Invoice',
+    name: 'Receipts',
     subhead: 'Defaults',
     image: invoiceSett,
   },

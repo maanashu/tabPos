@@ -9,6 +9,9 @@ import {
   walletConfigCard,
   Fonts,
   addIcon,
+  toggleOnNavyBlue,
+  newToggleOff,
+  devices,
 } from '@/assets';
 import { SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
@@ -63,62 +66,72 @@ export function Wallet() {
 
   return (
     <View>
-      <Text style={styles.HeaderLabelText}>{strings.wallet.config}</Text>
+      <View style={styles.rowAligned}>
+        <Image source={devices} resizeMode="stretch" style={styles.devicesLogo} />
+
+        <Text style={styles.HeaderLabelText}>{strings.wallet.config}</Text>
+      </View>
+
       <Spacer space={SH(20)} />
       <View style={styles.walletConfigMain}>
-        <View style={[styles.viewStyle, { zIndex: -9 }]}>
+        <View style={[styles.walletItemBackground, { zIndex: -9 }]}>
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={wallet} style={styles.securityLogo} />
             <View style={styles.twoStepVerifiCon}>
-              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
+              <Text style={[styles.walletHeading, { fontFamily: Fonts.SemiBold }]}>
                 {strings.wallet.payJBR}
               </Text>
-              <Text style={styles.systemPos}>{strings.wallet.system}</Text>
+              <Text style={styles.posSystem}>{strings.wallet.system}</Text>
               <Text style={styles.securitysubhead}>{strings.wallet.dafaultPayment}</Text>
               <Spacer space={SH(10)} />
               <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
             </View>
 
-            {/* <TouchableOpacity
-              style={styles.vectorIconCon}
-              onPress={() => jbrCoinOnPress(1)}
-            >
+            <TouchableOpacity style={styles.vectorIconCon} onPress={() => jbrCoinOnPress(1)}>
               <Image
-                source={jbrCoin ? vector : vectorOff}
+                source={jbrCoin ? toggleOnNavyBlue : newToggleOff}
                 style={styles.toggleSecurity}
               />
-            </TouchableOpacity> */}
-          </View>
-        </View>
-
-        <View style={[styles.viewStyle, { zIndex: -9 }]}>
-          <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-            <Image source={walletConfigCash} style={styles.securityLogo} />
-            <View style={styles.twoStepVerifiCon}>
-              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
-                {strings.wallet.payCash}
-              </Text>
-              <Text style={styles.systemPos}>{strings.wallet.systemPOS}</Text>
-              <Spacer space={SH(5)} />
-              <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
-            </View>
-            <TouchableOpacity style={styles.vectorIconCon} onPress={() => jbrCoinOnPress(2)}>
-              <Image source={data?.cash ? vector : vectorOff} style={styles.toggleSecurity} />
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={[styles.viewStyle, { zIndex: -9 }]}>
+        <View style={[styles.walletItemBackground, { zIndex: -9 }]}>
+          <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
+            <Image source={walletConfigCash} style={styles.securityLogo} />
+            <View style={styles.twoStepVerifiCon}>
+              <Text style={[styles.walletHeading, { fontFamily: Fonts.SemiBold }]}>
+                {strings.wallet.payCash}
+              </Text>
+              <Text style={styles.posSystem}>{strings.wallet.systemPOS}</Text>
+              <Spacer space={SH(5)} />
+              <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
+            </View>
+            <TouchableOpacity style={styles.vectorIconCon} onPress={() => jbrCoinOnPress(2)}>
+              <Image
+                source={data?.cash ? toggleOnNavyBlue : newToggleOff}
+                style={styles.toggleSecurity}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={[styles.walletItemBackground, { zIndex: -9 }]}>
           <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
             <Image source={walletConfigCard} style={styles.securityLogo} />
             <View style={styles.twoStepVerifiCon}>
-              <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>Pay by Card</Text>
-              <Text style={styles.systemPos}>{strings.wallet.systemPOS}</Text>
+              <Text style={[styles.walletHeading, { fontFamily: Fonts.SemiBold }]}>
+                Pay by Card
+              </Text>
+              <Text style={styles.posSystem}>{strings.wallet.systemPOS}</Text>
               <Spacer space={SH(5)} />
               <Text style={styles.securitysubhead}>{strings.wallet.shopifyPayments}</Text>
             </View>
             <TouchableOpacity style={styles.vectorIconCon} onPress={() => jbrCoinOnPress(3)}>
-              <Image source={data?.card ? vector : vectorOff} style={styles.toggleSecurity} />
+              <Image
+                source={data?.card ? toggleOnNavyBlue : newToggleOff}
+                style={styles.toggleSecurity}
+              />
             </TouchableOpacity>
           </View>
         </View>

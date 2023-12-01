@@ -4,7 +4,7 @@ import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { View, Text, Image, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
-import { activeCircle, ellipse } from '@/assets';
+import { activeCircle, devices, ellipse } from '@/assets';
 import { LEGALDATA } from '@/constants/flatListData';
 import Modal from 'react-native-modal';
 import { moderateVerticalScale } from 'react-native-size-matters';
@@ -89,7 +89,17 @@ export function Legal() {
   };
   return (
     <View>
-      <Text style={styles.HeaderLabelText}>Legal</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Image source={devices} resizeMode="stretch" style={styles.devicesLogo} />
+        <View style={{ flex: 1 }}>
+          <Text style={styles.HeaderLabelText}>{strings.settings.agreements}</Text>
+          <Spacer space={SH(5)} />
+
+          <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
+            {strings.settings.activeInMarket}
+          </Text>
+        </View>
+      </View>
       <Spacer space={SH(20)} />
       <FlatList
         numColumns={3}
