@@ -248,7 +248,7 @@ export function Plans() {
 
   const renderPlanView = useCallback(
     () => (
-      <View>
+      <View style={{}}>
         <View style={styles.rowAligned}>
           <Image source={checkCircle} resizeMode="contain" style={{ height: 24, width: 24 }} />
           <Spacer horizontal space={ms(10)} />
@@ -383,9 +383,8 @@ export function Plans() {
 
       {planModal ? (
         <View>
-          <View style={[styles.flexRow, { paddingHorizontal: moderateScale(20) }]}>
-            <Text>{null}</Text>
-            <Text style={[styles.HeaderLabelText, { fontSize: ms(12) }]}>
+          <View style={{}}>
+            <Text style={[styles.HeaderLabelText, { fontSize: ms(12), textAlign: 'center' }]}>
               {strings.settings.planFit}
             </Text>
 

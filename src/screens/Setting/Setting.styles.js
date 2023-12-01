@@ -299,7 +299,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     right: ms(8),
-    top: ms(8),
   },
   modalDataCon: {
     width: windowWidth * 0.38,
@@ -626,7 +625,7 @@ export const styles = StyleSheet.create({
   },
   basicContainer: (item) => {
     return {
-      width: windowWidth * 0.2,
+      width: windowWidth * 0.18,
       borderRadius: 10,
       backgroundColor: COLORS.white,
       padding: 12,

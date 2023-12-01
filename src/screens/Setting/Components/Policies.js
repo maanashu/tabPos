@@ -3,7 +3,7 @@ import { Spacer } from '@/components';
 import { COLORS, SF, SH } from '@/theme';
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
-import { activeCircle } from '@/assets';
+import { activeCircle, arrowLeftUp, devices } from '@/assets';
 import Modal from 'react-native-modal';
 import { moderateVerticalScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
@@ -12,6 +12,9 @@ import { getSetting } from '@/selectors/SettingSelector';
 import { getSettings } from '@/actions/SettingAction';
 import moment from 'moment';
 import { ScrollView } from 'react-native-gesture-handler';
+import RenderHTML from 'react-native-render-html';
+import { width } from '@/theme/ScalerDimensions';
+import { strings } from '@/localization';
 
 export function Policies() {
   const isFocused = useIsFocused();
@@ -87,51 +90,45 @@ export function Policies() {
   };
   return (
     <View>
-      <Text style={styles.HeaderLabelText}>Policies</Text>
-      <Spacer space={SH(20)} />
-      <FlatList
-        numColumns={3}
-        data={policyArray}
-        extraData={policyArray}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
-      <Modal animationType="slide" transparent={true} isVisible={legalModal}>
-        <View style={styles.legalModalCon}>
-          <View style={{ paddingHorizontal: moderateVerticalScale(12) }}>
-            <Spacer space={SH(10)} />
-            <Text style={styles.refundPolicy}>{data?.title}</Text>
-            <Spacer space={SH(10)} />
-            {/* <Text style={[styles.refundPolicy, { fontSize: SF(13) }]}>
-              {strings.settings.introduction}
-            </Text>
+      {legalModal ? (
+        <>
+          <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center' }}
+            onPress={() => {
+              setLegalModal(false);
+            }}
+          >
+            <Image source={arrowLeftUp} resizeMode="stretch" style={styles.devicesLogo} />
+            <Text style={styles.HeaderLabelText}>{data.title}</Text>
             <Spacer space={SH(5)} />
-            <Text style={[styles.refundPolicyRegular, { fontSize: SF(13) }]}>{data?.intro}</Text>
-            <Spacer space={SH(10)} />
-            <Text style={[styles.refundPolicy, { fontSize: SF(13) }]}>
-              Intellectual Property Rights
-            </Text>
-            <Spacer space={SH(5)} />
-            <Text style={[styles.refundPolicyRegular, { fontSize: SF(13) }]}>
-              {data?.property_rights}
-            </Text>
-            <Spacer space={SH(10)} />
-            <Text style={[styles.refundPolicy, { fontSize: SF(13) }]}>Restrictions</Text>
-            <Spacer space={SH(5)} /> */}
-            <ScrollView>
-              <Text style={[styles.refundPolicyRegular, { fontSize: SF(13) }]}>
-                {removeHtmlTag(data?.content)}
+          </TouchableOpacity>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <RenderHTML contentWidth={width} source={{ html: data?.content }} />
+          </ScrollView>
+        </>
+      ) : (
+        <>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image source={devices} resizeMode="stretch" style={styles.devicesLogo} />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.HeaderLabelText}>{strings.settings.policies}</Text>
+              <Spacer space={SH(5)} />
+
+              <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>
+                {strings.settings.activeInMarket}
               </Text>
-            </ScrollView>
+            </View>
           </View>
-          <View style={{ flex: 1 }} />
-          <View style={styles.closeCon}>
-            <TouchableOpacity style={styles.closeButtonCon} onPress={() => setLegalModal(false)}>
-              <Text style={styles.Close}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+          <Spacer space={SH(20)} />
+          <FlatList
+            numColumns={3}
+            data={policyArray}
+            extraData={policyArray}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </>
+      )}
     </View>
   );
 }
