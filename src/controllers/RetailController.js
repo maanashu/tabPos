@@ -901,11 +901,14 @@ export class RetailController {
         PRODUCT_URL +
         ApiProductInventory.getProduct +
         `/${serviceId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

@@ -60,67 +60,67 @@ const Graph = () => {
 
   const isGraphOrder = useSelector((state) => isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state));
 
-  // const convertData = () => {
-  //   const DATA = getDeliveryData?.graphOrders;
-  //   const barData = DATA?.labels?.flatMap((day, index) => {
-  //     const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
-  //     const setOfThree = [];
-  //     setOfThree.push({
-  //       value: values[0] || 0,
-  //       spacing: 10,
-  //       label: day,
-  //       labelWidth: 90,
-  //       labelTextStyle: {
-  //         color: COLORS.darkGray,
-  //         fontSize: 9,
-  //         marginLeft: ms(10),
-  //         fontFamily: Fonts.Regular,
-  //       },
-  //       frontColor: COLORS.bluish_green,
-  //       initialSpace: 0,
-  //       Incoming: true,
-  //     });
-  //     setOfThree.push({
-  //       value: values[1] || 0,
-  //       spacing: 10,
-  //       frontColor: COLORS.pink,
-  //       OrderProcessing: true,
-  //       labelTextStyle: {
-  //         color: COLORS.darkGray,
-  //         fontSize: 9,
-  //         marginLeft: ms(10),
-  //         fontFamily: Fonts.Regular,
-  //       },
-  //     });
-  //     setOfThree.push({
-  //       value: values[2] || 0,
-  //       spacing: 10,
-  //       frontColor: COLORS.yellowTweet,
-  //       ReadyForPickup: true,
-  //       labelTextStyle: {
-  //         color: COLORS.darkGray,
-  //         fontSize: 9,
-  //         marginLeft: ms(10),
-  //         fontFamily: Fonts.Regular,
-  //       },
-  //     });
-  //     setOfThree.push({
-  //       value: values[3] || 0,
-  //       spacing: 10,
-  //       frontColor: COLORS.navy_blue,
-  //       Completed: true,
-  //       labelTextStyle: {
-  //         color: COLORS.darkGray,
-  //         fontSize: 9,
-  //         marginLeft: ms(10),
-  //         fontFamily: Fonts.Regular,
-  //       },
-  //     });
+  const convertData = () => {
+    const DATA = getDeliveryData?.graphOrders;
+    const barData = DATA?.labels?.flatMap((day, index) => {
+      const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
+      const setOfThree = [];
+      setOfThree.push({
+        value: values[0] || 0,
+        spacing: 10,
+        label: day,
+        labelWidth: 90,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+        frontColor: COLORS.bluish_green,
+        initialSpace: 0,
+        Incoming: true,
+      });
+      setOfThree.push({
+        value: values[1] || 0,
+        spacing: 10,
+        frontColor: COLORS.pink,
+        OrderProcessing: true,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+      });
+      setOfThree.push({
+        value: values[2] || 0,
+        spacing: 10,
+        frontColor: COLORS.yellowTweet,
+        ReadyForPickup: true,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+      });
+      setOfThree.push({
+        value: values[3] || 0,
+        spacing: 10,
+        frontColor: COLORS.navy_blue,
+        Completed: true,
+        labelTextStyle: {
+          color: COLORS.darkGray,
+          fontSize: 9,
+          marginLeft: ms(10),
+          fontFamily: Fonts.Regular,
+        },
+      });
 
-  //     return setOfThree;
-  //   });
-  //   setModifyData(barData);
-  // };
+      return setOfThree;
+    });
+    setModifyData(barData);
+  };
 
   function transformData(apiData) {
     const transformedData = {
@@ -151,133 +151,131 @@ const Graph = () => {
   const buildDataLineGraph = () => {
     const DATA = getDeliveryData?.graphOrders;
     const transformed = transformData(DATA);
-
-    console.log('API--transformed', JSON.stringify(transformed));
-
     setgraphData(transformed);
   };
   const onClickCheckBox = (type, value) => {
-    // const DATA = getDeliveryData?.graphOrders;
-    // const barData = DATA?.labels?.flatMap((day, index) => {
-    //   const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
-    //   const setOfThree = [];
-    //   if (type === 'Incoming') {
-    //     setOfThree.push({
-    //       value: values[0] || 0,
-    //       spacing: 10,
-    //       label: day,
-    //       labelWidth: 80,
-    //       labelTextStyle: {
-    //         color: COLORS.darkGray,
-    //         fontSize: 9,
-    //         marginLeft: ms(10),
-    //         fontFamily: Fonts.Regular,
-    //       },
-    //       frontColor: value ? COLORS.bluish_green : COLORS.white,
-    //       initialSpace: 0,
-    //       Incoming: true,
-    //     });
-    //   } else {
-    //     setOfThree.push({
-    //       value: values[0] || 0,
-    //       spacing: 10,
-    //       label: day,
-    //       labelWidth: 60,
-    //       labelTextStyle: {
-    //         color: COLORS.darkGray,
-    //         fontSize: 9,
-    //         marginLeft: ms(10),
-    //         fontFamily: Fonts.Regular,
-    //       },
-    //       frontColor: showIncoming ? COLORS.bluish_green : COLORS.white,
-    //       initialSpace: 0,
-    //       Incoming: true,
-    //     });
-    //   }
-    //   if (type === 'OrderProcessing') {
-    //     setOfThree.push({
-    //       value: values[1] || 0,
-    //       spacing: 10,
-    //       frontColor: value ? COLORS.pink : COLORS.white,
-    //       OrderProcessing: true,
-    //       labelTextStyle: {
-    //         color: COLORS.darkGray,
-    //         fontSize: 9,
-    //         marginLeft: ms(10),
-    //         fontFamily: Fonts.Regular,
-    //       },
-    //     });
-    //   } else {
-    //     setOfThree.push({
-    //       value: values[1] || 0,
-    //       spacing: 10,
-    //       frontColor: showProcessing ? COLORS.pink : COLORS.white,
-    //       OrderProcessing: true,
-    //       labelTextStyle: {
-    //         color: COLORS.darkGray,
-    //         fontSize: 9,
-    //         marginLeft: ms(10),
-    //         fontFamily: Fonts.Regular,
-    //       },
-    //     });
-    //   }
-    //   if (type === 'ReadyForPickup') {
-    //     setOfThree.push({
-    //       value: values[2] || 0,
-    //       spacing: 10,
-    //       frontColor: value ? COLORS.yellowTweet : COLORS.white,
-    //       ReadyForPickup: true,
-    //       labelTextStyle: {
-    //         color: COLORS.darkGray,
-    //         fontSize: 9,
-    //         marginLeft: ms(10),
-    //         fontFamily: Fonts.Regular,
-    //       },
-    //     });
-    //   } else {
-    //     setOfThree.push({
-    //       value: values[2] || 0,
-    //       spacing: 10,
-    //       frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
-    //       ReadyForPickup: true,
-    //       labelTextStyle: {
-    //         color: COLORS.darkGray,
-    //         fontSize: 9,
-    //         marginLeft: ms(10),
-    //         fontFamily: Fonts.Regular,
-    //       },
-    //     });
-    //   }
-    //   if (type === 'Completed') {
-    //     setOfThree.push({
-    //       value: values[3] || 0,
-    //       spacing: 10,
-    //       frontColor: value ? COLORS.navy_blue : COLORS.white,
-    //       Completed: true,
-    //       labelTextStyle: {
-    //         color: COLORS.darkGray,
-    //         fontSize: 9,
-    //         marginLeft: ms(10),
-    //         fontFamily: Fonts.Regular,
-    //       },
-    //     });
-    //   } else {
-    //     setOfThree.push({
-    //       value: values[3] || 0,
-    //       spacing: 10,
-    //       frontColor: showCompleted ? COLORS.navy_blue : COLORS.white,
-    //       Completed: true,
-    //       labelTextStyle: {
-    //         color: COLORS.darkGray,
-    //         fontSize: 9,
-    //         marginLeft: ms(10),
-    //         fontFamily: Fonts.Regular,
-    //       },
-    //     });
-    //   }
-    //   return setOfThree;
-    // });
-    // setModifyData(barData);
+    const DATA = getDeliveryData?.graphOrders;
+    const barData = DATA?.labels?.flatMap((day, index) => {
+      const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
+      const setOfThree = [];
+      if (type === 'Incoming') {
+        setOfThree.push({
+          value: values[0] || 0,
+          spacing: 10,
+          label: day,
+          labelWidth: 80,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+          frontColor: value ? COLORS.bluish_green : COLORS.white,
+          initialSpace: 0,
+          Incoming: true,
+        });
+      } else {
+        setOfThree.push({
+          value: values[0] || 0,
+          spacing: 10,
+          label: day,
+          labelWidth: 60,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+          frontColor: showIncoming ? COLORS.bluish_green : COLORS.white,
+          initialSpace: 0,
+          Incoming: true,
+        });
+      }
+      if (type === 'OrderProcessing') {
+        setOfThree.push({
+          value: values[1] || 0,
+          spacing: 10,
+          frontColor: value ? COLORS.pink : COLORS.white,
+          OrderProcessing: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      } else {
+        setOfThree.push({
+          value: values[1] || 0,
+          spacing: 10,
+          frontColor: showProcessing ? COLORS.pink : COLORS.white,
+          OrderProcessing: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      }
+      if (type === 'ReadyForPickup') {
+        setOfThree.push({
+          value: values[2] || 0,
+          spacing: 10,
+          frontColor: value ? COLORS.yellowTweet : COLORS.white,
+          ReadyForPickup: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      } else {
+        setOfThree.push({
+          value: values[2] || 0,
+          spacing: 10,
+          frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
+          ReadyForPickup: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      }
+      if (type === 'Completed') {
+        setOfThree.push({
+          value: values[3] || 0,
+          spacing: 10,
+          frontColor: value ? COLORS.navy_blue : COLORS.white,
+          Completed: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      } else {
+        setOfThree.push({
+          value: values[3] || 0,
+          spacing: 10,
+          frontColor: showCompleted ? COLORS.navy_blue : COLORS.white,
+          Completed: true,
+          labelTextStyle: {
+            color: COLORS.darkGray,
+            fontSize: 9,
+            marginLeft: ms(10),
+            fontFamily: Fonts.Regular,
+          },
+        });
+      }
+      return setOfThree;
+    });
+    setModifyData(barData);
+    return;
     if (type == 'Incoming') {
       const updateOpacity = value ? 1 : 0;
       const newColorFunction = () => `rgba(70, 89, 181, ${updateOpacity})`;
@@ -416,7 +414,7 @@ const Graph = () => {
             <LineChart
               withDots={false}
               withVerticalLines={false}
-              data={graphData}
+              data={graphData ?? {}}
               width={windowWidth * 0.5}
               height={ms(160)}
               // noOfSections={8}
@@ -448,7 +446,64 @@ const Graph = () => {
               segments={5}
             />
           )}
-          <Text style={styles.monthStyle}>{moment().format('MMMM')}</Text>
+          {/* <LineChart
+            withDots={false}
+            withVerticalLines={false}
+            data={{
+              labels: ['Jan', 'Mar', 'May', 'Jul', 'Sept', 'Nov', 'Dec'],
+              datasets: [
+                {
+                  data: [800, 810, 900, 810, 860, 890, 810],
+                  color: () => `rgba(70, 89, 181, 1)`,
+                  strokeWidth: 3,
+                },
+                {
+                  data: [500, 600, 550, 590, 630, 650, 700],
+                  color: () => `rgba(114, 51, 194, 1)`,
+                  strokeWidth: 3,
+                },
+                {
+                  data: [400, 450, 470, 420, 410, 480, 500],
+                  color: () => `rgba(240, 192, 26, 1)`,
+                  strokeWidth: 3,
+                },
+                {
+                  data: [100, 220, 190, 260, 240, 340, 370],
+                  color: () => `rgba(240, 68, 56, 1)`,
+                  strokeWidth: 3,
+                },
+              ].filter((el) => el),
+            }}
+            width={windowWidth * 0.5}
+            height={ms(160)}
+            // noOfSections={8}
+            chartConfig={{
+              backgroundColor: '#000',
+              backgroundGradientFrom: '#fff',
+              // backgroundGradientTo: '#f3edf7',
+              backgroundGradientTo: '#fff',
+              decimalPlaces: 0,
+              // horizontalLabelRotation: 45,
+              color: () => `rgba(39, 90, 255, 1)`,
+              labelColor: (opacity = 1) => `rgba(126, 138, 193, ${opacity})`,
+              style: {
+                borderRadius: 16,
+              },
+              propsForBackgroundLines: {
+                stroke: COLORS.sky_grey,
+                strokeDasharray: '', // solid background lines with no dashes
+              },
+            }}
+            bezier
+            style={{
+              marginVertical: 8,
+              // borderRadius: 16,
+            }}
+            withShadow={false}
+            fromZero
+            segments={5}
+          />
+          <Text style={styles.monthStyle}>{moment().format('MMMM')}</Text> */}
         </View>
       )}
     </View>
@@ -468,10 +523,11 @@ const styles = StyleSheet.create({
   },
   numberOrdersText: {
     fontSize: SF(12),
-    paddingTop: ms(10),
+    paddingTop: ms(16),
     paddingHorizontal: 20,
     color: COLORS.lavender,
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.Bold,
+
     transform: [{ rotate: '-90deg' }],
     position: 'absolute',
     left: ms(-50),

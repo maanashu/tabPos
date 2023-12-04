@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
 import { addressUpdateById, deleteAddressById, getShippingPickup } from '@/actions/SettingAction';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { Images } from '@/assets/new_icon';
 
 export function Shipping() {
   const isFocused = useIsFocused();
@@ -70,7 +71,7 @@ export function Shipping() {
           {/* local pickup address */}
           <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={localImage} style={styles.securityLogo} />
+              <Image source={Images.marketplaceIcon} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <Text style={styles.twoStepText}>{strings.shipping.local}</Text>
@@ -154,7 +155,7 @@ export function Shipping() {
           {/*jobrdelivery address */}
           <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={jobrDelivery} style={styles.securityLogo} />
+              <Image source={Images.postMotorIcon} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <Text style={styles.twoStepText}>{strings.shipping.jobrDelivery}</Text>
@@ -237,7 +238,7 @@ export function Shipping() {
           {/*local drop off address */}
           <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={dropOff} style={styles.securityLogo} />
+              <Image source={Images.deliveryHandIcon} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <Text style={styles.twoStepText}>{strings.shipping.localOff}</Text>
@@ -321,7 +322,7 @@ export function Shipping() {
           {/*shipping address */}
           <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={shippingPlain} style={styles.securityLogo} />
+              <Image source={Images.planeIcon} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <Text style={styles.twoStepText}>{strings.shipping.shippingText}</Text>

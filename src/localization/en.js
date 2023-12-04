@@ -94,6 +94,7 @@ export const en = {
     alreadyInsystem: 'Already in system',
   },
   posSale: {
+    staffDetails: 'Staff Details',
     onlyx: 'x',
     paymenttdone: 'Payment Done!',
     category: 'Category',
@@ -264,6 +265,8 @@ export const en = {
     rewards: 'Rewards',
   },
   settings: {
+    activeInMarket: "Active in the markets they've been added to and visible to customers.",
+    agreements: 'Agreements',
     security: 'Security',
     twoStepVerifiCon: '2-step verification',
     softwareUpdate: 'Software updates',
@@ -339,6 +342,7 @@ export const en = {
       'If you haven’t already, create a shipping zone in the region(s) you’re liable in. Then, find the region in this list and select it to manage its tax settings. If you’re unsure about where you’re liable, check with a tax professional.',
     taxes: 'Taxes',
     active: 'Active',
+    activateStr: 'Activate',
     selectHead: 'Select your Operating Country',
     country: 'Country',
     cancel: 'Cancel',

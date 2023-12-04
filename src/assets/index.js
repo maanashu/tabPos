@@ -416,6 +416,20 @@ export { default as totalOrder } from '@/assets/new_icon/ic_analytic/totalOrder.
 export { default as verifyGreen } from '@/assets/new_icon/Auth_icons/verify_green.png';
 export { default as deliveryIcon } from '@/assets/new_icon/ic_analytic/delivery.png';
 
+// home screen new icons
+export { default as newLogo } from '@/assets/new_icon/Auth_icons/Logo.png';
+export { default as sunIcon } from '@/assets/new_icon/Auth_icons/Sun.png';
+export { default as boxIcon } from '@/assets/new_icon/dashboard/box.png';
+export { default as lockIcon } from '@/assets/new_icon/dashboard/lock.png';
+export { default as cartBlueIcon } from '@/assets/new_icon/dashboard/cart_blue.png';
+export { default as marketplaceIcon } from '@/assets/new_icon/dashboard/marketplace.png';
+export { default as ringingIcon } from '@/assets/new_icon/dashboard/ringing.png';
+export { default as searchBlueIcon } from '@/assets/new_icon/dashboard/search_blue.png';
+export { default as locationSolidIcon } from '@/assets/new_icon/dashboard/location_solid.png';
+export { default as moneySolidIcon } from '@/assets/new_icon/dashboard/money_solid.png';
+export { default as timeBlueIcon } from '@/assets/new_icon/dashboard/time_blue.png';
+export { default as arrowRightIcon } from '@/assets/new_icon/dashboard/Arrow_Right.png';
+
 // Delivery  New ICON
 export { default as BikeFast } from '@/assets/new_icon/ic_delivery/bikefast.png';
 export { default as Market } from '@/assets/new_icon/ic_delivery/market.png';

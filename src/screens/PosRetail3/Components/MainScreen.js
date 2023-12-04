@@ -63,6 +63,7 @@ import {
   getMainProductPagination,
   getAllCart,
   getAllCartReset,
+  addProductFrom,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -90,6 +91,8 @@ export function MainScreen({
   productArray,
   cartServiceScreenHandler,
   activeCategory,
+  addProductscreenShow,
+  addServiceScreenShow,
 }) {
   const dispatch = useDispatch();
   const isFocus = useIsFocused();
@@ -399,9 +402,11 @@ export function MainScreen({
       if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
         setSelectedItemQty(item?.cart_qty);
         setSelectedItem(item);
-        setAddCartModal(true);
+        // setAddCartModal(true);
         setProductIndex(index);
         setProductItem(item);
+        addProductscreenShow();
+        dispatch(addProductFrom('main'));
       }
     } else {
       onClickAddCart(item, index, cartQty);
@@ -504,16 +509,20 @@ export function MainScreen({
     if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
       setSelectedItemQty(updatedItem?.cart_qty);
       setSelectedItem(item);
-      setAddCartModal(true);
+      // setAddCartModal(true);
       setProductIndex(index);
       setProductItem(item);
+      addProductscreenShow();
+      dispatch(addProductFrom('main'));
     }
   };
 
-  const serviceFun = async (serviceId) => {
+  const serviceFun = async (serviceId, index) => {
     const res = await dispatch(getOneService(sellerID, serviceId));
     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-      setAddServiceCartModal(true);
+      index == 0 || index == 1
+        ? addServiceScreenShow()
+        : (alert('new service add ui only first and second service'), setAddServiceCartModal(true));
     }
   };
 
@@ -1011,7 +1020,7 @@ export function MainScreen({
                     return (
                       <TouchableOpacity
                         style={styles.serviceCon(cartMatchService?.qty)}
-                        onPress={() => serviceFun(item.id)}
+                        onPress={() => serviceFun(item.id, index)}
                         activeOpacity={0.7}
                       >
                         <View style={styles.avalibleServiceCon}>

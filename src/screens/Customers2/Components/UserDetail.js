@@ -26,6 +26,7 @@ import {
   email,
   Phone_light,
   location,
+  arrowLeftUp,
 } from '@/assets';
 import { Spacer, TableDropdown } from '@/components';
 import { COLORS, SF, SH } from '@/theme';
@@ -49,6 +50,7 @@ import { getAcceptMarketing, getOrderUser, marketingUpdate } from '@/actions/Cus
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
+const windowWidth = Dimensions.get('window').width;
 
 const UserDetail = ({ backHandler, userDetail, orderId }) => {
   const isFocused = useIsFocused();
@@ -85,7 +87,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
     phoneNumber: userDetail?.user_details?.phone_number,
     profilePhoto: userDetail?.user_details?.profile_photo,
     userEmail: userDetail?.user_details?.email,
-    streetAdd: userDetail?.user_details?.current_address?.street_address,
+    streetAdd: userDetail?.user_details?.current_address?.custom_address,
     city: userDetail?.user_details?.current_address?.city,
     state: userDetail?.user_details?.current_address?.state,
     country: userDetail?.user_details?.current_address?.country,
@@ -159,9 +161,9 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={[styles.headerMainView, styles.headerMianViewbottomRow]}>
+      <View style={[styles.headerMainView]}>
         <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
-          <Image source={leftBack} style={styles.backIconProfile} />
+          <Image source={arrowLeftUp} style={styles.backIconProfile} />
           <Text style={[styles.deliveryText, { fontSize: ms(10) }]}>{'User details'}</Text>
         </TouchableOpacity>
         {/* <View style={styles.editButtonCon}>
@@ -170,65 +172,82 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
       </View>
 
       <View style={styles.profileCon}>
-        <View style={[styles.displayFlex, { paddingHorizontal: moderateScale(10) }]}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image
-              source={
-                data?.profilePhoto === null || data?.profilePhoto === ''
-                  ? userImage
-                  : { uri: data?.profilePhoto }
-              }
-              style={styles.lovingStyle}
-            />
-            <View style={{ paddingHorizontal: moderateScale(10) }}>
-              <Text style={styles.angelaText}>{data?.firstName}</Text>
-              <Spacer space={SH(5)} />
-              <View style={styles.flexAlign}>
-                <Image source={Phone_light} style={styles.Phonelight} />
-                <Text style={styles.adressText}>{data?.phoneNumber}</Text>
-              </View>
-              <Spacer space={SH(5)} />
-              <View style={styles.flexAlign}>
-                <Image source={email} style={styles.Phonelight} />
-                <Text style={styles.adressText}>{data?.userEmail}</Text>
-              </View>
-              <Spacer space={SH(5)} />
-              <View style={styles.flexAlign}>
-                <Image source={location} style={styles.Phonelight} />
-                {userDetail?.user_details?.current_address ? (
-                  <Text style={styles.adressText} numberOfLines={1}>
-                    {data?.streetAdd}, {data?.city}, {data?.state}, {data?.country},
-                    {data?.postalCode}
-                  </Text>
-                ) : null}
-              </View>
+        <View style={{ flexDirection: 'row', flex: 1.8, alignItems: 'center' }}>
+          <Image
+            source={
+              data?.profilePhoto == null || data?.profilePhoto == ''
+                ? userImage
+                : { uri: data?.profilePhoto }
+            }
+            style={styles.lovingStyle}
+          />
+          <View style={{ paddingHorizontal: moderateScale(10) }}>
+            <Text style={styles.angelaText}>{data?.firstName}</Text>
+            <Spacer space={SH(5)} />
+            <View style={styles.flexAlign}>
+              <Image source={location} style={styles.Phonelight} />
+              {userDetail?.user_details?.current_address ? (
+                <Text style={[styles.adressText, { width: windowWidth * 0.25 }]} numberOfLines={1}>
+                  {data?.streetAdd} {data?.city} {data?.state} {data?.country}
+                  {data?.postalCode}
+                </Text>
+              ) : null}
             </View>
           </View>
-          <View>
-            <View style={styles.pointCon}>
-              <View style={styles.flexAlign}>
-                <Image source={reward2} style={styles.rewardStyle} />
-                <Text style={styles.pointText}>{strings.customers.point}</Text>
-              </View>
+        </View>
+
+        <View style={{ flex: 1 }}>
+          <Spacer space={SH(5)} />
+          <View style={styles.flexAlign}>
+            <Image source={Phone_light} style={styles.Phonelight} />
+            <Text style={styles.adressText}>{data?.phoneNumber}</Text>
+          </View>
+          <Spacer space={SH(10)} />
+          <View style={styles.flexAlign}>
+            <Image source={email} style={styles.Phonelight} />
+            <Text style={styles.adressText}>{data?.userEmail}</Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: 'flex-end',
+            marginTop: ms(5),
+          }}
+        >
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: COLORS.orange,
+              borderRadius: ms(15),
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              paddingHorizontal: ms(10),
+              paddingVertical: ms(2),
+              backgroundColor: COLORS.cream_yellow,
+            }}
+          >
+            <View style={styles.flexAlign}>
+              <Image source={reward2} style={styles.rewardStyle} />
+              <Text style={styles.pointText}>{strings.customers.point}</Text>
             </View>
-            <Spacer space={SH(10)} />
-            <View style={[styles.pointCon, styles.acceptCon]}>
-              <View style={styles.flexAlign}>
-                <TouchableOpacity style={styles.toggleBtnCon} onPress={toggleHandler}>
-                  <Image
-                    source={toggle}
-                    style={
-                      Object.keys(marketingData)?.length == 0
-                        ? styles.toggleBtnStyle2
-                        : marketingData?.accept == true
-                        ? styles.toggleBtnStyle
-                        : styles.toggleBtnStyle2
-                    }
-                    // style={styles.toggleBtnStyle2}
-                  />
-                </TouchableOpacity>
-                <Text style={styles.acceptMarketText}>{strings.customers.acceptMarket}</Text>
-              </View>
+          </View>
+          <Spacer space={SH(5)} />
+          <View style={[styles.acceptCon]}>
+            <View style={styles.flexAlign}>
+              <TouchableOpacity style={styles.toggleBtnCon} onPress={toggleHandler}>
+                <Image
+                  source={toggle}
+                  style={
+                    Object.keys(marketingData)?.length == 0
+                      ? styles.toggleBtnStyle2
+                      : marketingData?.accept == true
+                      ? styles.toggleBtnStyle
+                      : styles.toggleBtnStyle2
+                  }
+                />
+              </TouchableOpacity>
+              <Text style={styles.acceptMarketText}>{strings.customers.acceptMarket}</Text>
             </View>
           </View>
         </View>
@@ -247,124 +266,175 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
               data={storeLocationArray?.[0]}
             />
           </>
-        </View>
-      </View>
-      <View
-        style={[styles.jbrTypeCon, { zIndex: -1, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
-        pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
-      >
-        <View style={styles.paginationEnd}>
-          <Text style={[styles.paginationCount, { fontSize: 12 }]}>
-            {strings.customers.showResult}
-          </Text>
-          <View style={{ marginHorizontal: moderateScale(10) }}>
-            <DropDownPicker
-              ArrowUpIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIconPagination} />
-              )}
-              ArrowDownIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIconPagination} />
-              )}
-              style={styles.dropdown}
-              containerStyle={[
-                styles.containerStylePagination,
-                { zIndex: Platform.OS === 'ios' ? 20 : 1 },
-              ]}
-              dropDownContainerStyle={styles.dropDownContainerStyle}
-              listItemLabelStyle={styles.listItemLabelStyle}
-              labelStyle={styles.labelStyle}
-              selectedItemLabelStyle={styles.selectedItemLabelStyle}
-              open={paginationModalOpen}
-              value={paginationModalValue}
-              items={paginationModalItems}
-              setOpen={() => setPaginationModalOpen(!paginationModalOpen)}
-              setValue={setPaginationModalValue}
-              setItems={setPaginationModalItems}
-              placeholder="10"
-              placeholderStyle={styles.placeholderStylePagination}
-              // onSelectItem={item => selectedNo(item.value)}
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.unionCon,
-              {
-                backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
-              },
-            ]}
-            onPress={paginationDechandler}
-            disabled={paginationData?.currentPage == 1 ? true : false}
-          >
-            <Image
-              source={Union}
-              style={[
-                styles.unionStyle,
-                {
-                  tintColor:
-                    paginationData?.currentPage == 1 ? COLORS.gerySkies : COLORS.solid_grey,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-          <View style={styles.unionCon}>
-            <Image source={mask} style={styles.unionStyle} />
-          </View>
+
           <View
-            style={{
-              width: ms(70),
-            }}
+            style={[styles.jbrTypeCon, { zIndex: -1, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
+            pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
           >
-            {isOrderUserLoading ? (
-              <ActivityIndicator size="small" />
-            ) : (
-              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
-                {startIndex} - {startIndex + (ordersByUser?.length - 1)} of {paginationData?.total}
-              </Text>
-            )}
+            <View style={styles.paginationEnd}>
+              <Text style={[styles.paginationCount]}>{strings.customers.showResult}</Text>
+              <View style={{ marginHorizontal: moderateScale(10) }}>
+                <DropDownPicker
+                  ArrowUpIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                  )}
+                  ArrowDownIconComponent={({ style }) => (
+                    <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                  )}
+                  style={styles.dropdown}
+                  containerStyle={[
+                    styles.containerStylePagination,
+                    { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+                  ]}
+                  dropDownContainerStyle={styles.dropDownContainerStyle}
+                  listItemLabelStyle={styles.listItemLabelStyle}
+                  labelStyle={styles.labelStyle}
+                  selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                  open={paginationModalOpen}
+                  value={paginationModalValue}
+                  items={paginationModalItems}
+                  setOpen={() => setPaginationModalOpen(!paginationModalOpen)}
+                  setValue={setPaginationModalValue}
+                  setItems={setPaginationModalItems}
+                  placeholder="10"
+                  placeholderStyle={styles.placeholderStylePagination}
+                  // onSelectItem={item => selectedNo(item.value)}
+                />
+              </View>
+              <TouchableOpacity
+                style={[
+                  styles.unionCon,
+                  {
+                    backgroundColor:
+                      paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                    borderWidth: 1,
+                    borderColor:
+                      paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
+                  },
+                ]}
+                onPress={paginationDechandler}
+                disabled={paginationData?.currentPage == 1 ? true : false}
+              >
+                <Image
+                  source={Union}
+                  style={[
+                    styles.unionStyle,
+                    {
+                      tintColor:
+                        paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+              <View
+                style={[
+                  styles.unionCon,
+                  {
+                    backgroundColor:
+                      paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                    borderWidth: 1,
+                    borderColor:
+                      paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
+                  },
+                ]}
+              >
+                <Image
+                  source={mask}
+                  style={[
+                    styles.unionStyle,
+                    {
+                      tintColor:
+                        paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                    },
+                  ]}
+                />
+              </View>
+              <View
+                style={{
+                  width: ms(60),
+                  marginRight: ms(7),
+                }}
+              >
+                {isOrderUserLoading ? (
+                  <ActivityIndicator size="small" />
+                ) : (
+                  <Text
+                    style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}
+                  >
+                    {startIndex} - {startIndex + (ordersByUser?.length - 1)} of{' '}
+                    {paginationData?.total}
+                  </Text>
+                )}
+              </View>
+
+              <View
+                style={[
+                  styles.unionCon,
+                  {
+                    backgroundColor:
+                      paginationData?.currentPage == paginationData?.totalPages
+                        ? COLORS.sky_grey
+                        : COLORS.white,
+                    borderWidth: 1,
+                    borderColor:
+                      paginationData?.currentPage == paginationData?.totalPages
+                        ? COLORS.transparent
+                        : COLORS.light_purple,
+                  },
+                ]}
+              >
+                <Image
+                  source={maskRight}
+                  style={[
+                    styles.unionStyle,
+                    {
+                      tintColor:
+                        paginationData?.currentPage == paginationData?.totalPages
+                          ? COLORS.graySky
+                          : COLORS.navy_blue,
+                    },
+                  ]}
+                />
+              </View>
+              <TouchableOpacity
+                style={[
+                  styles.unionCon,
+                  {
+                    backgroundColor:
+                      paginationData?.currentPage == paginationData?.totalPages
+                        ? COLORS.sky_grey
+                        : COLORS.white,
+                    borderWidth: 1,
+                    borderColor:
+                      paginationData?.currentPage == paginationData?.totalPages
+                        ? COLORS.transparent
+                        : COLORS.light_purple,
+                  },
+                ]}
+                onPress={paginationInchandler}
+                disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
+              >
+                <Image
+                  source={unionRight}
+                  style={[
+                    styles.unionStyle,
+                    {
+                      tintColor:
+                        paginationData?.currentPage == paginationData?.totalPages
+                          ? COLORS.graySky
+                          : COLORS.navy_blue,
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={[styles.unionCon, { backgroundColor: COLORS.washGrey }]}>
-            <Image
-              source={maskRight}
-              style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.unionCon,
-              {
-                backgroundColor:
-                  paginationData?.currentPage == paginationData?.totalPages
-                    ? COLORS.washGrey
-                    : COLORS.white,
-              },
-            ]}
-            onPress={paginationInchandler}
-            disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
-          >
-            <Image
-              source={unionRight}
-              style={[
-                styles.unionStyle,
-                {
-                  tintColor:
-                    paginationData?.currentPage == paginationData?.totalPages
-                      ? COLORS.gerySkies
-                      : COLORS.solid_grey,
-                },
-              ]}
-            />
-          </TouchableOpacity>
         </View>
       </View>
 
       <View style={{ zIndex: -9 }}>
         <Table>
-          <View
-            style={[
-              styles.tableDataHeaderCon,
-              { borderTopWidth: 1, borderColor: COLORS.solidGrey },
-            ]}
-          >
+          <View style={[styles.tableDataHeaderCon]}>
             <View style={styles.profileheaderUnderView}>
               <View style={[styles.profilDetailChildView, { alignItems: 'flex-start' }]}>
                 <View style={{ flexDirection: 'row' }}>
@@ -405,7 +475,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
             </View>
           </View>
 
-          <View style={{ height: Platform.OS === 'android' ? ms(230) : ms(240) }}>
+          <View style={{ height: Platform.OS === 'android' ? ms(290) : ms(240) }}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
               {/* {
               isOrderUserLoading ? (
@@ -469,7 +539,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
                                   DELIVERY_MODE[item?.delivery_option] === 'Delivery' ||
                                   DELIVERY_MODE[item?.delivery_option] === 'Shipping'
                                     ? COLORS.marshmallow
-                                    : COLORS.lightGreen,
+                                    : COLORS.navy_blue,
                               },
                             ]}
                           >

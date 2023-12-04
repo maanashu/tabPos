@@ -37,7 +37,7 @@ import {
   vector,
   vectorOff,
 } from '@/assets';
-import { moderateScale } from 'react-native-size-matters';
+import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
@@ -689,12 +689,29 @@ export function Taxes() {
                 <View>
                   <Text style={styles.securitysubhead}>{strings.settings.taxSubHead}</Text>
                   <Spacer space={SH(20)} />
-                  <Button
-                    onPress={activeBtnHandler}
-                    title={strings.settings.active}
-                    textStyle={styles.selectedText}
-                    style={styles.submitButtons}
-                  />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderWidth: 1,
+                      borderColor: COLORS.light_purple,
+                      borderRadius: 16,
+                      paddingHorizontal: SW(8),
+                      paddingVertical: SH(8),
+                    }}
+                  >
+                    <Text style={styles.activateTaxLabel}>Active Tax Payer Information</Text>
+                    <Button
+                      onPress={activeBtnHandler}
+                      title={strings.settings.activateStr}
+                      textStyle={styles.selectedText}
+                      style={[
+                        styles.submitButtons,
+                        { borderRadius: 30, backgroundColor: '#263682' },
+                      ]}
+                    />
+                  </View>
                 </View>
               </View>
             </View>
@@ -953,10 +970,10 @@ export function Taxes() {
 
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(8) }]}>
+      {/* <View style={[styles.flexRow, { height: SW(8) }]}>
         <Text style={styles.HeaderLabelText}>{strings.settings.taxes}</Text>
       </View>
-      <Spacer space={SH(20)} />
+      <Spacer space={SH(20)} /> */}
 
       <View>{verifiedAreaFun()}</View>
 

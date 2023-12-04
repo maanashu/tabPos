@@ -152,6 +152,7 @@ export class DashboardController {
   static async posLoginDetail() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.posLoginDetail;
+      console.log('--------------', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
