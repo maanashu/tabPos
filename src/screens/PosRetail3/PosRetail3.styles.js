@@ -2289,11 +2289,10 @@ export const styles = StyleSheet.create({
 
   // custom product add modal css start
   headerConCustomProduct: {
-    borderBottomWidth: 1,
-    height: ms(40),
+    height: ms(35),
     borderColor: COLORS.solidGrey,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     paddingHorizontal: ms(12),
   },
@@ -2515,10 +2514,10 @@ export const styles = StyleSheet.create({
   },
   searchCustomerCon: {
     borderWidth: 1,
-    height: windowHeight * 0.07,
-    borderRadius: 10,
-    borderColor: COLORS.solidGrey,
-    paddingHorizontal: SW(2),
+    height: ms(35),
+    borderRadius: ms(17),
+    borderColor: COLORS.input_border,
+    paddingHorizontal: ms(4),
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -2532,7 +2531,7 @@ export const styles = StyleSheet.create({
   },
   searchCustomerInput: {
     flex: 1,
-    fontFamily: Fonts.Italic,
+    fontFamily: Fonts.Medium,
     fontSize: SF(12),
     color: COLORS.solid_grey,
   },
@@ -2635,5 +2634,57 @@ export const styles = StyleSheet.create({
     left: 0,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  addCustomerCon: {
+    width: ms(260),
+    // height: ms(280),
+    backgroundColor: COLORS.white,
+    alignSelf: 'center',
+    borderRadius: ms(15),
+  },
+  addcustomerIcon: {
+    width: SW(20),
+    height: ms(20),
+    resizeMode: 'contain',
+    tintColor: COLORS.lavender,
+  },
+  addcustomerIcon: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(12),
+    color: COLORS.navy_blue,
+  },
+  createOne: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(10),
+    color: COLORS.faded_purple,
+  },
+  cancelButtonCon: {
+    height: ms(38),
+    flex: 0.4,
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: ms(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addToCartButtonCon: {
+    height: ms(38),
+    flex: 0.55,
+    backgroundColor: COLORS.navy_blue,
+    borderRadius: ms(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  cancelText: {
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
+    fontSize: ms(10),
+  },
+  plusIconAdd: {
+    width: ms(17),
+    height: ms(17),
+    resizeMode: 'contain',
+    marginLeft: ms(5),
   },
 });

@@ -753,7 +753,6 @@ export function CartScreen({
         <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="product" />
         {/* </KeyboardAvoidingView> */}
       </Modal>
-
       <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
         <NewCustomerAdd crossHandler={closeCustomerAddModal} cartid={cartidFrom} />
       </Modal>

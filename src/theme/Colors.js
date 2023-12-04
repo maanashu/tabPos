@@ -106,4 +106,5 @@ export const COLORS = {
   dark_purple: '#552099',
   // faded_lavendar: '#D8B9FF',
   base_gray_600: '#535E68',
+  input_border: '#E4E6F2',
 };
