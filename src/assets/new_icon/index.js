@@ -16,4 +16,8 @@ export const Images = {
   addNotesIcon: require('@/assets/new_icon/retail_con/addNotesIcon.png'),
   holdCart: require('@/assets/new_icon/retail_con/holdCart.png'),
   arrowLeftUp: require('@/assets/new_icon/Auth_icons/ArrowLeftUp.png'),
+  bikeDelivery: require('@/assets/new_icon/ic_settings/bikeDelivery.png'),
+  localDropOff: require('@/assets/new_icon/ic_settings/localDropOff.png'),
+  localPickup: require('@/assets/new_icon/ic_settings/localPickup.png'),
+  Plane: require('@/assets/new_icon/ic_settings/Plane.png'),
 };

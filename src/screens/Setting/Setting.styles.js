@@ -3,7 +3,7 @@ import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
 import { verticalScale, moderateScale, scale, ms } from 'react-native-size-matters';
-import { height } from '@/theme/ScalerDimensions';
+import { height, width } from '@/theme/ScalerDimensions';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -104,13 +104,11 @@ export const styles = StyleSheet.create({
 
   // setting security css start
   securityMainCon: {
-    // borderWidth: 2,
-    // borderColor: COLORS.sky_blue,
+    borderColor: COLORS.light_purple,
     borderRadius: 20,
-    // height: windowHeight * 0.33,
-    // paddingVertical: ms(15),
-    // paddingHorizontal: ms(20),
-    // marginHorizontal: ms(15),
+    paddingVertical: ms(15),
+    borderWidth: 1,
+    paddingHorizontal: ms(15),
   },
   securityStaffMainCon: {
     // borderWidth: 1,
@@ -143,6 +141,11 @@ export const styles = StyleSheet.create({
   twoStepText: {
     fontSize: SF(24),
     fontFamily: Fonts.MaisonBold,
+    color: COLORS.navy_blue,
+  },
+  shippingHeadingText: {
+    fontSize: SF(20),
+    fontFamily: Fonts.Medium,
     color: COLORS.navy_blue,
   },
   walletHeading: {
@@ -778,21 +781,26 @@ export const styles = StyleSheet.create({
     marginRight: moderateScale(10),
   },
   cancelbuttonCon: {
-    width: SW(28),
-    height: SW(12),
-    backgroundColor: COLORS.washGrey,
-    borderRadius: 5,
+    width: width * 0.127,
+    height: height * 0.05,
+    backgroundColor: COLORS.sky_grey,
+    borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 20,
   },
   nextbuttonCon: {
-    backgroundColor: COLORS.primary,
+    width: width * 0.127,
+    height: height * 0.05,
+    backgroundColor: COLORS.navy_blue,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   cancel: {
-    fontSize: SF(14),
+    fontSize: ms(9),
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
   },
   next: {
     color: COLORS.white,
@@ -1035,7 +1043,7 @@ export const styles = StyleSheet.create({
   container1: {
     backgroundColor: 'white',
     borderRadius: 20,
-    width: windowWidth * 0.35,
+    width: windowWidth * 0.33,
     height: windowHeight * 0.6,
     alignSelf: 'center',
     position: 'absolute',

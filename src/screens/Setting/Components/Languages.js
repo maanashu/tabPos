@@ -2,22 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Button, Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
-import { View, Text, Image, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import Modal from 'react-native-modal';
 import {
-  addIcon,
-  languImage,
-  XImage,
   checkboxSecBlue,
-  checkedCheckboxSquare,
   checkbox,
-  squareBlank,
   toggleOnNavyBlue,
   newToggleOff,
   devices,
   plus,
   langu,
+  arrowRightTop,
 } from '@/assets';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +22,7 @@ import { addLanguage, upadteApi } from '@/actions/SettingAction';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
+import { width } from '@/theme/ScalerDimensions';
 
 // const addLanguage = [
 //   {
@@ -354,19 +351,26 @@ export function Languages() {
               />
             </View>
             <Spacer space={SH(30)} />
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
               <Button
                 onPress={() => setShowModal(false)}
                 title={strings.Languages.cancel}
                 textStyle={styles.cancel}
                 style={styles.cancelbuttonCon}
               />
-              <Button
-                onPress={() => onAddLanguage()}
-                title={strings.Languages.add}
-                textStyle={[styles.cancel, { color: COLORS.white }]}
-                style={[styles.cancelbuttonCon, styles.nextbuttonCon]}
-              />
+
+              <TouchableOpacity style={styles.nextbuttonCon} onPress={() => onAddLanguage()}>
+                <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(9), color: COLORS.white }}>
+                  Add
+                </Text>
+                <Spacer horizontal space={width * 0.002} />
+                <Image source={arrowRightTop} style={{ height: 27, width: 27 }} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
