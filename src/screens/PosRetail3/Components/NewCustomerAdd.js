@@ -134,7 +134,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
             style={[styles.crossButton, { tintColor: COLORS.navy_blue }]}
           />
         </TouchableOpacity>
-        {userLength == 0 && detailArea ? (
+        {/* {userLength == 0 && detailArea ? (
           <TouchableOpacity
             style={[styles.addToCartCon, styles.newCutomersaveCon]}
             onPress={() => saveAndAddCustomer()}
@@ -148,7 +148,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
           >
             <Text style={styles.addTocartText}>Save</Text>
           </TouchableOpacity>
-        ) : null}
+        ) : null} */}
       </View>
       <View style={{ alignItems: 'center' }}>
         <Image source={Images.addCustomer} style={styles.addcustomerIcon} />
@@ -213,7 +213,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
 
         <Spacer space={SH(7)} />
         {userDetalLoader ? (
-          <View style={{ marginTop: ms(50) }}>
+          <View style={{ marginTop: ms(20) }}>
             <ActivityIndicator size="small" color={COLORS.primary} />
           </View>
         ) : (
@@ -268,7 +268,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                         onChangeText={setDefaultPhoneNumber}
                         style={styles.textInputContainer}
                         placeholder={strings.verifyPhone.placeHolderText}
-                        placeholderTextColor={COLORS.gerySkies}
+                        placeholderTextColor={COLORS.navy_blue}
                         editable={false}
                         // showSoftInputOnFocus={false}
                       />
@@ -284,32 +284,11 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                 </View>
               ) : (
                 <View>
-                  <Spacer space={SH(20)} />
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <View style={{ width: ms(140) }}>
-                      <Text style={styles.customerDarkLabel}>{strings.retail.firstName}</Text>
-                      <Text style={styles.customerLightdata}>
-                        {getuserDetailByNo?.user_profile?.firstname}
-                      </Text>
-                    </View>
-                    <View style={{ width: ms(140) }}>
-                      <Text style={styles.customerDarkLabel}>{strings.retail.lastName}</Text>
-                      <Text style={styles.customerLightdata}>
-                        {getuserDetailByNo?.user_profile?.lastname}
-                      </Text>
-                    </View>
-                  </View>
                   <Spacer space={SH(18)} />
                   <View>
                     <Text style={styles.customerDarkLabel}>{strings.retail.phoneNumber}</Text>
                     <View
-                      style={{ flexDirection: 'row', alignItems: 'center' }}
+                      style={{ flexDirection: 'row', alignItems: 'center', marginTop: ms(7) }}
                       pointerEvents="none"
                     >
                       <CountryPicker
@@ -344,11 +323,32 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                       {getuserDetailByNo?.user_profile.user?.email}
                     </Text>
                   </View>
+                  <Spacer space={SH(20)} />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <View style={{ width: ms(140) }}>
+                      <Text style={styles.customerDarkLabel}>{strings.retail.firstName}</Text>
+                      <Text style={styles.customerLightdata}>
+                        {getuserDetailByNo?.user_profile?.firstname}
+                      </Text>
+                    </View>
+                    <View style={{ width: ms(140) }}>
+                      <Text style={styles.customerDarkLabel}>{strings.retail.lastName}</Text>
+                      <Text style={styles.customerLightdata}>
+                        {getuserDetailByNo?.user_profile?.lastname}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
               )
             ) : userLength == 0 && !detailArea ? null : (
               <View>
-                <Text style={styles.newCusAdd}>{strings.retail.phoneNumber}</Text>
+                {/* <Text style={styles.newCusAdd}>{strings.retail.phoneNumber}</Text>
                 <View style={styles.phoneCodeNewCustomerView}>
                   <CountryPicker
                     onSelect={(code) => {
@@ -379,13 +379,13 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                     placeholderTextColor={COLORS.gerySkies}
                     // showSoftInputOnFocus={false}
                   />
-                </View>
+                </View> */}
                 <Spacer space={SH(12)} />
                 <Text style={styles.newCusAdd}>{strings.retail.emailAdd}</Text>
                 <TextInput
                   placeholder="Email Here"
                   style={styles.phoneCodeNewCustomerView}
-                  placeholderTextColor={COLORS.row_grey}
+                  placeholderTextColor={COLORS.lavender}
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -399,23 +399,23 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <View>
+                  <View style={{ flex: 1 }}>
                     <Text style={styles.newCusAdd}>{strings.retail.firstName}</Text>
                     <TextInput
                       placeholder={strings.retail.name}
-                      style={styles.newFirstName}
-                      placeholderTextColor={COLORS.row_grey}
+                      style={[styles.newFirstName, { marginRight: ms(6) }]}
+                      placeholderTextColor={COLORS.lavender}
                       value={firstName}
                       onChangeText={setFirstName}
                     />
                   </View>
 
-                  <View>
+                  <View style={{ flex: 1 }}>
                     <Text style={styles.newCusAdd}>{strings.retail.lastName}</Text>
                     <TextInput
                       placeholder={strings.retail.name}
                       style={styles.newFirstName}
-                      placeholderTextColor={COLORS.row_grey}
+                      placeholderTextColor={COLORS.lavender}
                       value={lastName}
                       onChangeText={setLastName}
                     />
@@ -435,15 +435,25 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
           paddingHorizontal: ms(10),
         }}
       >
-        <TouchableOpacity style={styles.cancelButtonCon}>
+        <TouchableOpacity style={styles.cancelButtonCon} onPress={crossHandler}>
           <Text style={styles.cancelText}>{'Cancel'}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.addToCartButtonCon}>
-          <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add To Cart'}</Text>
+        <TouchableOpacity
+          style={styles.addToCartButtonCon}
+          disabled={userDetalLoader ? true : false}
+          onPress={() =>
+            userLength == 0 && detailArea
+              ? saveAndAddCustomer()
+              : userLength > 0 && detailArea
+              ? saveCustomer()
+              : alert('Something went wrong')
+          }
+        >
+          <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add Costumer'}</Text>
           <Image source={Images.addProduct} style={styles.plusIconAdd} />
         </TouchableOpacity>
       </View>
-      <Spacer space={SH(10)} />
+      <Spacer space={SH(15)} />
     </KeyboardAwareScrollView>
   );
 });

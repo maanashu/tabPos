@@ -86,7 +86,7 @@ export const en = {
     DisTitle: 'Discount Title',
     eRecipeEmail: `e-recipe will send\nto your email`,
     phoneNumber: 'Phone Number',
-    emailAdd: 'Email Address',
+    emailAdd: 'E-mail Address',
     name: 'Name',
     firstName: 'First Name',
     lastName: 'Last Name',
