@@ -48,9 +48,14 @@ const Graph = () => {
   const [showReadyToPickup, setShowReadyToPickup] = useState(true);
   const [showCompleted, setShowCompleted] = useState(true);
   const [graphData, setgraphData] = useState(null);
+
   useEffect(() => {
-    // convertData();
-    buildDataLineGraph();
+    //convertData();
+    const value = getDeliveryData?.graphOrders;
+    const isEmpty = value && Object?.keys?.(value)?.length === 0;
+    if (!isEmpty) {
+      buildDataLineGraph();
+    }
   }, [getDeliveryData?.graphOrders]);
 
   const isGraphOrder = useSelector((state) => isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state));
@@ -146,6 +151,9 @@ const Graph = () => {
   const buildDataLineGraph = () => {
     const DATA = getDeliveryData?.graphOrders;
     const transformed = transformData(DATA);
+
+    console.log('API--transformed', JSON.stringify(transformed));
+
     setgraphData(transformed);
   };
   const onClickCheckBox = (type, value) => {
