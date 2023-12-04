@@ -57,8 +57,8 @@ const ButtonComponent = ({ selected, orderData, declineHandler, acceptHandler, t
       )}
 
       {selected === '7,8' && orderStatus === 7 && (
-        <View style={[styles.acceptButtonView, { backgroundColor: COLORS.solidGrey }]}>
-          <Text style={[styles.acceptTextStyle, { color: COLORS.darkGray }]}>
+        <View style={[styles.acceptButtonView, { backgroundColor: COLORS.purple_fade }]}>
+          <Text style={[styles.acceptTextStyle, { color: COLORS.white }]}>
             {'Cancelled by User'}
           </Text>
         </View>

@@ -6,6 +6,7 @@ import { ms } from 'react-native-size-matters';
 
 import { COLORS, SF, SH } from '@/theme';
 import { Fonts, scooter, userImage } from '@/assets';
+import { capitalizeFirstLetter } from '@/utils/GlobalMethods';
 
 const CustomerDetails = ({ orderDetail }) => {
   const userDetails = orderDetail?.user_details;
@@ -20,7 +21,9 @@ const CustomerDetails = ({ orderDetail }) => {
 
         <View style={styles.userNameView}>
           <Text style={styles.totalTextStyle}>
-            {`${userDetails?.firstname} ${userDetails?.lastname}`}
+            {`${capitalizeFirstLetter(userDetails?.firstname)} ${capitalizeFirstLetter(
+              userDetails?.lastname
+            )}`}
           </Text>
 
           <Text style={styles.badgetext}>
@@ -61,13 +64,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     marginHorizontal: 10,
-    paddingVertical: 30,
+    paddingVertical: 10,
     borderRadius: 10,
     marginTop: ms(10),
-    backgroundColor: COLORS.textInputBackground,
+    borderBottomWidth: 0.3,
+    borderBottomColor: COLORS.light_grey,
+    // backgroundColor: COLORS.textInputBackground,
   },
   locationViewStyle: {
     flex: 1,
+
     flexDirection: 'row',
     alignItems: 'center',
   },

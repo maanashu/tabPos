@@ -90,7 +90,7 @@ export const en = {
     name: 'Name',
     firstName: 'First Name',
     lastName: 'Last Name',
-    customerNotSystem: 'Customer not in system',
+    customerNotSystem: 'This phone is not registered in the database',
     alreadyInsystem: 'Already in system',
   },
   posSale: {

@@ -213,9 +213,9 @@ export function Analytics2() {
         endDated={endDated}
       />
     ),
-    ['TotalProfit']: <TotalProfit />,
-    ['Revenue']: <Revenue />,
-    ['TotalCost']: <TotalCost />,
+    ['TotalProfit']: <TotalProfit sellerID={sellerID} data={data} />,
+    ['Revenue']: <Revenue sellerID={sellerID} data={data} />,
+    ['TotalCost']: <TotalCost sellerID={sellerID} data={data} />,
     ['TotalDeliveryOrders']: (
       <TotalDeliveryOrders
         onPressReview={(item) => {
@@ -257,7 +257,7 @@ export function Analytics2() {
         }}
       />
     ),
-    ['TotalInventory']: <TotalInventory />,
+    ['TotalInventory']: <TotalInventory sellerID={sellerID} data={data} />,
   };
   const closeHandler = () => {
     setFromInvoice(true);

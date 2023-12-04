@@ -1,4 +1,6 @@
+import React from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   SafeAreaView,
@@ -7,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+
 import { ms } from 'react-native-size-matters';
 import { Fonts, clothes, minus, plus } from '@/assets';
 import moment from 'moment';
@@ -16,23 +18,126 @@ import { CustomHeader } from './CustomHeader';
 import { COLORS, SH } from '@/theme';
 import { Images } from '@/assets/new_icon';
 import { useState } from 'react';
-import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
+import { CustomErrorToast } from '@mPOS/components/Toast';
+import { FullScreenLoader } from '@mPOS/components';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 moment.suppressDeprecationWarnings = true;
 
 export const AddProductScreen = ({ backHandler }) => {
+  const dispatch = useDispatch();
+  const getRetailData = useSelector(getRetail);
+  const getAuth = useSelector(getAuthData);
+  const productDetail = getRetailData?.getOneProduct?.product_detail;
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
-  useEffect(() => {
-    alert('only Ui , not functionality implemented');
-  }, []);
+  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+
+  const sizeAndColorArray = productDetail?.supplies?.[0]?.attributes;
+  const sizeArray = sizeAndColorArray?.filter((item) => item.name === 'Size');
+  const colorArray = sizeAndColorArray?.filter((item) => item.name === 'Color');
+  const attrsArr = productDetail?.supplies[0]?.attributes;
+  const [count, setCount] = useState(1);
+
+  // avaiblity option
+  let deliveryOption =
+    getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options?.split(',');
+  let deliveryOptionImage = deliveryOption?.find((item) => {
+    return item === '1';
+  });
+  let inStoreImage = deliveryOption.find((item) => {
+    return item === '3';
+  });
+  let shippingImage = deliveryOption.find((item) => {
+    return item === '4';
+  });
+
+  const isChecksSuppliesVariant = useSelector((state) =>
+    isLoadingSelector([TYPES.CHECK_SUPPLIES_VARIANT], state)
+  );
+
+  const addToCartHandler = async () => {
+    if (productDetail?.supplies?.[0]?.attributes?.length === 0) {
+      // openFrom === 'main' && onClickAddCartModal(selectedItem, productIndex, count);
+
+      const data = {
+        seller_id: sellerID,
+        service_id: productDetail?.service_id,
+        product_id: productDetail?.id,
+        qty: count,
+        supplyId: productDetail?.supplies?.[0]?.id,
+        supplyPriceID: productDetail?.supplies?.[0]?.supply_prices[0]?.id,
+        // offerId: offerId,
+      };
+      console.log('data', data);
+      // openFrom === 'main' && addToLocalCart(productItem, productIndex, count);
+      dispatch(addTocart(data));
+      backHandler();
+    } else {
+      if (colorArray?.length >= 1 && colorId === null) {
+        CustomErrorToast({ message: 'Please select the Color' });
+      } else if (sizeArray?.length >= 1 && sizeId === null) {
+        CustomErrorToast({ message: 'Please select the Size' });
+      } else {
+        const attrIds = [
+          { order: attrsArr.findIndex((attr) => attr?.name?.toLowerCase() === 'size'), id: sizeId },
+          {
+            order: attrsArr.findIndex((attr) => attr?.name?.toLowerCase() === 'color'),
+            id: colorId,
+          },
+        ];
+
+        const data = {
+          colorAndSizeId: attrIds
+            .sort((a, b) => a.order - b.order)
+            .filter((ele) => ele.order != -1)
+            .map((el) => el.id)
+            .join(),
+          supplyId: productDetail?.supplies?.[0]?.id,
+        };
+
+        const res = await dispatch(checkSuppliedVariant(data));
+        // openFrom === 'main' && onClickAddCartModal(selectedItem, productIndex, count);
+        const Data = {
+          seller_id: sellerID,
+          service_id: productDetail?.service_id,
+          product_id: productDetail?.id,
+          qty: count,
+          supplyId: productDetail?.supplies?.[0]?.id,
+          supplyPriceID: productDetail?.supplies?.[0]?.supply_prices[0]?.id,
+          supplyVariantId: res?.payload?.id,
+        };
+        console.log('Data', Data);
+        if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
+          // setAddToCartLoader(true);
+
+          const res = await dispatch(addTocart(Data));
+          if (res?.msg !== 'Wrong supply variant choosen.') {
+            backHandler();
+            // openFrom === 'main' &&
+            //   addToLocalCart(selectedItem, productIndex, count, Data?.supplyVariantId);
+          } else {
+            // setAddToCartLoader(false);
+            alert('Wrong supply variant choosen.');
+          }
+
+          // crossHandler();
+        }
+      }
+    }
+  };
 
   const ColorItem = ({ item, onPress, backgroundColor, style }) => (
     <TouchableOpacity
       style={[
         styles.selectColorItem,
         {
-          backgroundColor,
+          backgroundColor: item?.name,
           width: style ? ms(50) : ms(15),
           borderColor: style ? COLORS.light_purple : 'transparent',
           height: style ? ms(18) : ms(15),
@@ -52,30 +157,30 @@ export const AddProductScreen = ({ backHandler }) => {
       ]}
       onPress={onPress}
     >
-      <Text style={[styles.sizeText, { color }]}>M</Text>
+      <Text style={[styles.sizeText, { color }]}>{item.name}</Text>
     </TouchableOpacity>
   );
 
-  const productDetail = [
+  const productDetailArray = [
     {
       id: 1,
       key: 'SKU',
-      value: '23322334',
+      value: productDetail?.sku,
     },
     {
       id: 2,
       key: 'Barcode',
-      value: '75885845',
+      value: productDetail?.barcode,
     },
     {
       id: 3,
       key: 'Unit Type',
-      value: 'Piece',
+      value: productDetail?.type,
     },
     {
       id: 4,
       key: 'Unit Weight',
-      value: '800g',
+      value: productDetail?.weight + ' ' + productDetail?.weight_unit,
     },
     {
       id: 5,
@@ -87,19 +192,19 @@ export const AddProductScreen = ({ backHandler }) => {
     {
       id: 1,
       image: Images.storeIcon,
-      toggle: Images.toggleOff,
+      toggle: inStoreImage === 3 ? Images.toggleOn : Images.toggleOff,
       name: 'Store',
     },
     {
       id: 2,
       image: Images.delivery,
-      toggle: Images.toggleOff,
+      toggle: deliveryOptionImage === '1' ? Images.toggleOn : Images.toggleOff,
       name: 'Delivery',
     },
     {
       id: 3,
       image: Images.shipping,
-      toggle: Images.toggleOff,
+      toggle: shippingImage === '4' ? Images.toggleOn : Images.toggleOff,
       name: 'Shipping',
     },
   ];
@@ -120,126 +225,113 @@ export const AddProductScreen = ({ backHandler }) => {
               </View>
             </View>
             <View style={styles.imagebackground}>
-              <Image source={clothes} style={styles.productImage} />
+              <Image source={{ uri: productDetail?.image }} style={styles.productImage} />
               <View style={styles.roundScrollbackground}>
                 <Image source={Images.aroundCircule} style={styles.aroundCircule} />
               </View>
             </View>
             <View style={{ alignItems: 'center', marginTop: ms(10) }}>
-              <Text style={styles.productName}>{'lightweight stylish casual daypack '}</Text>
+              <Text style={styles.productName} numberOfLines={2}>
+                {productDetail?.name}
+              </Text>
               <View style={styles.skuCon}>
                 <View style={styles.dot} />
-                <Text style={styles.skuText}>{'SKU 0199 - 3221'}</Text>
+                <Text style={styles.skuText}>{productDetail?.sku}</Text>
               </View>
-              <Text style={styles.productName}>{'$90'}</Text>
+              {productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+              productDetail?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+                <Text style={styles.productName}>
+                  ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                </Text>
+              ) : (
+                <Text style={styles.productName}>
+                  ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                </Text>
+              )}
             </View>
-            <View style={{ marginTop: ms(5) }}>
-              <Text style={[styles.productName, { fontSize: ms(10) }]}>{'Color'}</Text>
-              <FlatList
-                data={[
-                  {
-                    id: 1,
-                  },
-                  { id: 2 },
-                  { id: 3 },
-                  { id: 4 },
-                  { id: 5 },
-                  { id: 6 },
-                  { id: 7 },
-                  { id: 8 },
-                  { id: 9 },
-                  { id: 10 },
-                ]}
-                extraData={[
-                  {
-                    id: 1,
-                  },
-                  { id: 2 },
-                  { id: 3 },
-                ]}
-                horizontal
-                keyExtractor={(item) => item.id}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item, index }) => {
-                  const backgroundColor = item.id === colorId ? COLORS.navy_blue : COLORS.navy_blue;
-                  const style = item.id === colorId ? true : false;
-                  return (
-                    <ColorItem
-                      item={item}
-                      onPress={() => {
-                        setColorId(colorId === item.id ? null : item.id);
-                      }}
-                      backgroundColor={backgroundColor}
-                      style={style}
-                    />
-                  );
-                }}
-                contentContainerStyle={{
-                  marginVertical: ms(6),
-                  alignItems: 'center',
-                }}
-              />
-            </View>
-            <View style={{ marginTop: ms(15) }}>
-              <Text style={[styles.productName, { fontSize: ms(10) }]}>{'Size'}</Text>
-              <FlatList
-                data={[
-                  {
-                    id: 1,
-                  },
-                  { id: 2 },
-                  { id: 3 },
-                  { id: 4 },
-                  { id: 5 },
-                  { id: 6 },
-                  { id: 7 },
-                  { id: 8 },
-                  { id: 9 },
-                  { id: 10 },
-                ]}
-                extraData={[
-                  {
-                    id: 1,
-                  },
-                  { id: 2 },
-                  { id: 3 },
-                ]}
-                horizontal
-                keyExtractor={(item) => item.id}
-                showsHorizontalScrollIndicator={false}
-                renderItem={({ item, index }) => {
-                  const backgroundColor = item.id === sizeId ? COLORS.navy_blue : 'transparent';
-                  const color = item.id === sizeId ? COLORS.white : COLORS.navy_blue;
+            {colorArray?.[0]?.values?.length > 0 && (
+              <View style={{ marginTop: ms(5) }}>
+                <Text style={[styles.productName, { fontSize: ms(10) }]}>{'Color'}</Text>
+                <FlatList
+                  data={colorArray?.[0]?.values}
+                  extraData={colorArray?.[0]?.values}
+                  horizontal
+                  keyExtractor={(item) => item.id}
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({ item, index }) => {
+                    const backgroundColor =
+                      item.id === colorId ? COLORS.navy_blue : COLORS.navy_blue;
+                    const style = item.id === colorId ? true : false;
+                    return (
+                      <ColorItem
+                        item={item}
+                        onPress={() => {
+                          setColorId(colorId === item.id ? null : item.id);
+                        }}
+                        backgroundColor={backgroundColor}
+                        style={style}
+                      />
+                    );
+                  }}
+                  contentContainerStyle={{
+                    marginVertical: ms(6),
+                    alignItems: 'center',
+                  }}
+                />
+              </View>
+            )}
+            {sizeArray?.[0]?.values?.length > 0 && (
+              <View style={{ marginTop: ms(15) }}>
+                <Text style={[styles.productName, { fontSize: ms(10) }]}>{'Size'}</Text>
+                <FlatList
+                  data={sizeArray?.[0]?.values}
+                  extraData={sizeArray?.[0]?.values}
+                  horizontal
+                  keyExtractor={(item) => item.id}
+                  showsHorizontalScrollIndicator={false}
+                  renderItem={({ item, index }) => {
+                    const backgroundColor = item.id === sizeId ? COLORS.navy_blue : 'transparent';
+                    const color = item.id === sizeId ? COLORS.white : COLORS.navy_blue;
 
-                  return (
-                    <SizeItem
-                      item={item}
-                      onPress={() => {
-                        setSizeId(sizeId === item.id ? null : item.id);
-                      }}
-                      backgroundColor={backgroundColor}
-                      color={color}
-                    />
-                  );
-                }}
-                contentContainerStyle={{
-                  marginVertical: ms(6),
-                  alignItems: 'center',
-                }}
-              />
-            </View>
+                    return (
+                      <SizeItem
+                        item={item}
+                        onPress={() => {
+                          setSizeId(sizeId === item.id ? null : item.id);
+                        }}
+                        backgroundColor={backgroundColor}
+                        color={color}
+                      />
+                    );
+                  }}
+                  contentContainerStyle={{
+                    marginVertical: ms(6),
+                    alignItems: 'center',
+                  }}
+                />
+              </View>
+            )}
+
             <View style={styles.counterCon}>
-              <TouchableOpacity style={styles.bodycounter}>
+              <TouchableOpacity
+                style={styles.bodycounter}
+                onPress={() => setCount(count - 1)}
+                disabled={count == 1 ? true : false}
+              >
                 <Image source={minus} style={styles.plusSign} />
               </TouchableOpacity>
               <View style={[styles.bodycounter, styles.bodycounterWidth]}>
-                <Text style={[styles.productName, { fontSize: ms(10) }]}>{'1'}</Text>
+                <Text style={[styles.productName, { fontSize: ms(10) }]}>{count}</Text>
               </View>
-              <TouchableOpacity style={styles.bodycounter}>
+              <TouchableOpacity style={styles.bodycounter} onPress={() => setCount(count + 1)}>
                 <Image source={plus} style={styles.plusSign} />
               </TouchableOpacity>
             </View>
-            <View style={styles.addButtonCon}>
+            <TouchableOpacity
+              style={styles.addButtonCon}
+              onPress={addToCartHandler}
+              disabled={isChecksSuppliesVariant ? true : false}
+            >
               <Text style={[styles.productName, { fontSize: ms(10), color: COLORS.white }]}>
                 {'Add item'}
               </Text>
@@ -247,14 +339,19 @@ export const AddProductScreen = ({ backHandler }) => {
                 source={Images.cartIcon}
                 style={[styles.plusSign, { tintColor: COLORS.sky_blue, marginLeft: ms(4) }]}
               />
-            </View>
+              {isChecksSuppliesVariant && (
+                <View style={{ marginLeft: ms(10) }}>
+                  <ActivityIndicator size="small" color={COLORS.sky_blue} />
+                </View>
+              )}
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.rightCon}>
           <View style={{ marginTop: ms(10), flex: 1 }}>
             <Text style={styles.addNewProduct}>{'Product details'}</Text>
             <View style={{ marginTop: ms(15) }}>
-              {productDetail?.map((item, index) => (
+              {productDetailArray?.map((item, index) => (
                 <View
                   style={[
                     styles.skuDetailcon,
@@ -347,6 +444,7 @@ export const AddProductScreen = ({ backHandler }) => {
           </View>
         </View>
       </View>
+      {/* <FullScreenLoader /> */}
     </SafeAreaView>
   );
 };

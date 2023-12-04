@@ -53,7 +53,7 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalInventory() {
+export function TotalInventory({ sellerID, data }) {
   const dispatch = useDispatch();
 
   const getAnalyticsData = useSelector(getAnalytics);
@@ -302,11 +302,12 @@ export function TotalInventory() {
               </DataTable.Title>
             </DataTable.Header>
             <View style={styles.mainListContainer}>
-              {isInventoryLoading ? (
+              {/* {isInventoryLoading ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
                 </View>
-              ) : totalInventory?.inventory_list?.data === undefined ? (
+              ) : */}
+              {totalInventory?.inventory_list?.data === undefined ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>

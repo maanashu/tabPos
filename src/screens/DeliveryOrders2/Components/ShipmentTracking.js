@@ -19,6 +19,10 @@ import {
   SuperFastBike,
   StepPurpleStop,
   StepPurple,
+  StepSkypStop,
+  Divider,
+  StepYellow,
+  StepCross,
 } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
@@ -63,20 +67,25 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
     </>
   );
 
-  const statusView = (heading, stepCompleted, date, status) => (
+  const statusView = (heading, stepCompleted, date, status, icon) => (
     <>
       <View style={styles.statusMainView}>
         <View style={{ alignItems: 'center' }}>
           {heading === 'Verified' ? (
-            <Image
-              style={styles.verifiedIconStyle}
-              source={orderStatus === 5 ? radioArrBlue : greyRadioArr}
-            />
+            <>
+              <Image
+                style={styles.verifiedIconStyle}
+                source={orderStatus === 5 ? icon : StepPurple}
+              />
+              <Image style={styles.dividerStyle} source={Divider} />
+            </>
           ) : (
-            <Image
-              style={styles.statusIconStyle}
-              source={stepCompleted ? radioArrBlue : greyRadioArr}
-            />
+            <>
+              <Image style={styles.statusIconStyle} source={stepCompleted ? icon : greyRadioArr} />
+              {heading !== strings.deliveryOrders.orderAccepted && (
+                <Image style={styles.dividerStyle} source={Divider} />
+              )}
+            </>
           )}
         </View>
 
@@ -104,35 +113,41 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
     </>
   );
 
-  const returnStatusView = (heading) => (
+  const returnStatusView = (heading, icon) => (
     <View style={styles.statusMainView}>
       <View style={{ alignItems: 'center' }}>
         {heading === 'Return CODE' ? (
-          <Image style={styles.verifiedIconStyle} source={orderStatus ? fillRadio : blankRadio} />
+          <>
+            <Image style={styles.verifiedIconStyle} source={orderStatus ? icon : blankRadio} />
+            <Image style={styles.dividerStyle} source={Divider} />
+          </>
         ) : heading === strings.deliveryOrders.cancelled ? (
           <>
-            <Image
-              style={[styles.statusIconStyle, { width: ms(10), height: ms(15) }]}
-              source={movingArrowBlue}
-            />
-            <Image
+            <Image style={[styles.statusIconStyle]} source={icon} />
+            {/* <Image
               style={[styles.verifiedIconStyle, { width: ms(15), height: ms(7) }]}
-              source={cancleIc}
-            />
+              source={icon}
+            /> */}
+            <Image style={styles.dividerStyle} source={Divider} />
           </>
         ) : heading === strings.deliveryOrders.pickup ? (
-          <Image
-            style={[styles.statusIconStyle, { tintColor: COLORS.bluish_green }]}
-            source={radioArrBlue}
-          />
+          <>
+            <Image style={[styles.statusIconStyle]} source={icon} />
+            <Image style={styles.dividerStyle} source={Divider} />
+          </>
         ) : (
-          <Image
-            style={[
-              styles.statusIconStyle,
-              { resizeMode: 'contain', width: ms(17), height: ms(30) },
-            ]}
-            source={radioArrBlue}
-          />
+          <>
+            <Image
+              style={[
+                styles.statusIconStyle,
+                // { resizeMode: 'contain', width: ms(17), height: ms(30) },
+              ]}
+              source={icon}
+            />
+            {heading !== strings.deliveryOrders.orderAccepted && (
+              <Image style={styles.dividerStyle} source={Divider} />
+            )}
+          </>
         )}
       </View>
 
@@ -143,13 +158,13 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
           <TouchableOpacity onPress={onPressShop}>
             <Text style={styles.statusNameText}>{heading}</Text>
 
-            <View style={styles.storeDetailViewStyle}>
+            {/* <View style={styles.storeDetailViewStyle}>
               <Image style={styles.verifiedIconStyle} source={storeLogo} />
               <View>
                 <Text style={styles.statusNameText}>{shopName ?? '-'}</Text>
                 <Text style={styles.addressTextStyle}>{shopAddress ?? '-'}</Text>
               </View>
-            </View>
+            </View> */}
           </TouchableOpacity>
         ) : heading === 'Return to Shop' &&
           orderStatus === 9 &&
@@ -166,7 +181,13 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
             </View>
           </View>
         ) : (
-          <Text style={styles.statusNameText}>{heading}</Text>
+          <>
+            <Text style={styles.statusNameText}>{heading}</Text>
+
+            {heading !== strings.deliveryOrders.orderAccepted && (
+              <Image style={[styles.dividerStyle, { tintColor: COLORS.white }]} source={Divider} />
+            )}
+          </>
         )}
       </View>
     </View>
@@ -176,7 +197,7 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
     <>
       <View style={styles.statusMainView}>
         <View style={{ alignItems: 'center' }}>
-          <Image source={radioArrBlue} style={styles.statusIconStyle} />
+          <Image source={StepPurpleStop} style={styles.statusIconStyle} />
         </View>
 
         <Spacer horizontal space={ms(5)} />
@@ -221,7 +242,7 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
             <View style={styles.statusViewStyle}>
               <View style={styles.statusMainView}>
                 <View style={{ alignItems: 'center' }}>
-                  <Image source={radioArrBlue} style={styles.statusIconStyle} />
+                  <Image source={StepPurple} style={styles.statusIconStyle} />
                 </View>
 
                 <Spacer horizontal space={ms(5)} />
@@ -252,19 +273,19 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
           </>
           {isMaximizeStatusView ? (
             <View style={styles.statusViewStyle}>
-              {returnStatusView('Return CODE')}
-              {returnStatusView('Return to Shop')}
-              {returnStatusView(strings.deliveryOrders.cancelled)}
-              {returnStatusView(strings.deliveryOrders.pickup)}
-              {returnStatusView(strings.deliveryOrders.driverAssigned)}
-              {returnStatusView(strings.deliveryOrders.readyToPickup)}
-              {returnStatusView(strings.deliveryOrders.orderAccepted)}
+              {returnStatusView('Return CODE', StepPurpleStop)}
+              {returnStatusView('Return to Shop', StepPurpleStop)}
+              {returnStatusView(strings.deliveryOrders.cancelled, StepCross)}
+              {returnStatusView(strings.deliveryOrders.pickup, StepPurpleStop)}
+              {returnStatusView(strings.deliveryOrders.driverAssigned, StepSkypStop)}
+              {returnStatusView(strings.deliveryOrders.readyToPickup, StepSkypStop)}
+              {returnStatusView(strings.deliveryOrders.orderAccepted, StepYellow)}
             </View>
           ) : (
             <View style={styles.statusViewStyle}>
               <View style={styles.statusMainView}>
                 <View style={{ alignItems: 'center' }}>
-                  <Image source={radioArrBlue} style={styles.statusIconStyle} />
+                  <Image source={StepPurpleStop} style={styles.statusIconStyle} />
                 </View>
 
                 <Spacer horizontal space={ms(5)} />
@@ -285,37 +306,43 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
                 strings.settings.verified,
                 orderStatus >= 5 && true,
                 orderData?.status_desc?.status_5_updated_at,
-                orderStatus
+                orderStatus,
+                StepPurpleStop
               )}
               {statusView(
                 strings.deliveryOrders.delivered,
                 orderStatus >= 5 && true,
                 orderData?.status_desc?.status_5_updated_at,
-                orderStatus
+                orderStatus,
+                StepPurpleStop
               )}
               {statusView(
                 strings.deliveryOrders.pickup,
                 orderStatus >= 4 && true,
                 orderData?.status_desc?.status_4_updated_at,
-                orderStatus
+                orderStatus,
+                StepPurpleStop
               )}
               {statusView(
                 strings.deliveryOrders.driverAssigned,
                 orderStatus >= 3 && true,
                 orderData?.status_desc?.status_3_updated_at,
-                orderStatus
+                orderStatus,
+                StepSkypStop
               )}
               {statusView(
                 strings.deliveryOrders.readyToPickup,
                 orderStatus >= 2 && true,
                 orderData?.status_desc?.status_2_updated_at,
-                orderStatus
+                orderStatus,
+                StepSkypStop
               )}
               {statusView(
                 strings.deliveryOrders.orderAccepted,
                 orderStatus >= 1 && true,
                 orderData?.status_desc?.status_1_updated_at,
-                orderStatus
+                orderStatus,
+                StepYellow
               )}
             </View>
           ) : (
@@ -379,8 +406,13 @@ const styles = StyleSheet.create({
   },
   statusIconStyle: {
     width: ms(15),
-    height: ms(25),
+    height: ms(15),
     resizeMode: 'stretch',
+  },
+  dividerStyle: {
+    width: ms(1),
+    height: ms(15),
+    marginVertical: ms(1),
   },
   verifiedIconStyle: {
     width: ms(14),

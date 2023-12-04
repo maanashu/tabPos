@@ -15,6 +15,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import RenderHTML from 'react-native-render-html';
 import { width } from '@/theme/ScalerDimensions';
 import { strings } from '@/localization';
+import { Images } from '@/assets/new_icon';
 
 export function Policies() {
   const isFocused = useIsFocused();
@@ -46,13 +47,7 @@ export function Policies() {
       }}
     >
       <View style={styles.dateViewStyle}>
-        <View>
-          <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>Publish Date:</Text>
-          <Text style={[styles.securitysubhead, { fontSize: SF(10) }]}>
-            {moment(item?.created_at).format('MMM D, YYYY h:mm A')}
-          </Text>
-        </View>
-
+        <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>Publish Date:</Text>
         {item?.is_active ? (
           <View style={styles.activebuttonStyle}>
             <Image source={activeCircle} style={[styles.circlImageStyle]} />
@@ -65,18 +60,25 @@ export function Policies() {
           </View>
         )}
       </View>
+      <View style={styles.dateContainer}>
+        <Image source={Images.calendarIcon} style={styles.calendarImageStyle} />
+        <Text style={[styles.securitysubhead, { fontSize: SF(10) }]}>
+          {moment(item?.created_at).format('MMM D, YYYY h:mm A')}
+        </Text>
+      </View>
       <Spacer space={SH(5)} />
       <View style={{ alignItems: 'center' }}>
         <View style={styles.legalView}>
           <Text style={[styles.selectHead, { fontSize: SF(14) }]}>{item?.title}</Text>
           <Spacer space={SH(3)} />
-          <Text numberOfLines={10} style={styles.securitysubhead}>
+          <Text numberOfLines={10} style={[styles.securitysubhead, { flex: 1 }]}>
             {removeHtmlTag(item?.content)}
           </Text>
         </View>
       </View>
       <Spacer space={SH(5)} />
       <Text style={styles.updateTextStyle}>Last update date:</Text>
+      <Spacer space={SH(5)} />
       <Text style={styles.updateTextStyle}>
         {moment(item?.updated_at).format('MMM D, YYYY h:mm A')}
       </Text>

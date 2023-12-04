@@ -30,6 +30,7 @@ import { memo } from 'react';
 import { emailReg } from '@/utils/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useEffect } from 'react';
+import { Images } from '@/assets/new_icon';
 
 export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const textInputRef = useRef(null);
@@ -123,15 +124,14 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
 
   return (
     <KeyboardAwareScrollView
-      style={[styles.customProductCon, { height: ms(330) }]}
+      contentContainerStyle={styles.addCustomerCon}
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.headerConCustomProduct}>
-        {/* <Text style={styles.zeroText}>New Product Add to Cart</Text> */}
         <TouchableOpacity onPress={crossHandler}>
           <Image
             source={crossButton}
-            style={[styles.crossButton, { tintColor: COLORS.solid_grey }]}
+            style={[styles.crossButton, { tintColor: COLORS.navy_blue }]}
           />
         </TouchableOpacity>
         {userLength == 0 && detailArea ? (
@@ -149,23 +149,17 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
             <Text style={styles.addTocartText}>Save</Text>
           </TouchableOpacity>
         ) : null}
-
-        {/* 
-        {userLength == 0 && !detailArea
-        
-        ? null : userLength > 0 && detailArea ? null : (
-          <TouchableOpacity
-          style={[styles.addToCartCon, styles.newCutomersaveCon]}
-          onPress={() => saveCustomer()}
-        >
-          <Text style={styles.addTocartText}>Save</Text>
-        </TouchableOpacity>
-        )} */}
+      </View>
+      <View style={{ alignItems: 'center' }}>
+        <Image source={Images.addCustomer} style={styles.addcustomerIcon} />
+        <Text style={styles.addcustomerIcon}>{'Add a customer'}</Text>
+        <Spacer space={SH(3)} />
+        <Text style={styles.createOne}>
+          {'Search a customer or'}{' '}
+          <Text style={{ color: COLORS.navy_blue }}>{'create a new one.'}</Text>
+        </Text>
       </View>
       <View style={{ padding: ms(15) }}>
-        <Text style={[styles.zeroText, { fontSize: ms(10), marginBottom: ms(5) }]}>Customer</Text>
-        <Spacer space={SH(7)} />
-
         <View style={styles.searchCustomerCon}>
           <CountryPicker
             onSelect={(code) => {
@@ -190,7 +184,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
             onChangeText={(searchCustomer) => customerPhoneSearchFun(searchCustomer)}
             style={styles.searchCustomerInput}
             placeholder="Customer Phone Number"
-            placeholderTextColor={COLORS.gerySkies}
+            placeholderTextColor={COLORS.faded_purple}
             keyboardType="number-pad"
             maxLength={10}
             ref={textInputRef}
@@ -432,6 +426,24 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
           </View>
         )}
       </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingHorizontal: ms(10),
+        }}
+      >
+        <TouchableOpacity style={styles.cancelButtonCon}>
+          <Text style={styles.cancelText}>{'Cancel'}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.addToCartButtonCon}>
+          <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add To Cart'}</Text>
+          <Image source={Images.addProduct} style={styles.plusIconAdd} />
+        </TouchableOpacity>
+      </View>
+      <Spacer space={SH(10)} />
     </KeyboardAwareScrollView>
   );
 });

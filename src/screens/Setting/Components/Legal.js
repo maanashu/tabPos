@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
 import { getSettings } from '@/actions/SettingAction';
 import moment from 'moment';
+import { Images } from '@/assets/new_icon';
 import RenderHTML from 'react-native-render-html';
 import { width } from '@/theme/ScalerDimensions';
 
@@ -61,25 +62,21 @@ export function Legal() {
           </View>
         )}
       </View>
-      <Spacer space={SH(5)} />
-
-      <View style={styles.rowAligned}>
-        <Image
-          source={calendarDrawer}
-          resizeMode="contain"
-          style={{ height: 20, width: 20, marginRight: 8, marginLeft: 7 }}
-        />
-
-        <Text style={[styles.securitysubhead, { fontSize: SF(10) }]}>
+      <View style={styles.dateContainer}>
+        <Image source={Images.calendarIcon} style={styles.calendarImageStyle} />
+        <Text style={[styles.securitysubhead, { fontSize: SF(14) }]}>
           {moment(item?.created_at).format('MMM D, YYYY h:mm A')}
         </Text>
       </View>
       <Spacer space={SH(5)} />
+
       <View style={{ alignItems: 'center' }}>
         <View style={styles.legalView}>
-          <Text style={[styles.selectHead, { fontSize: SF(14) }]}>{item?.title}</Text>
+          <Text style={[styles.selectHead, { fontSize: SF(14), marginBottom: SH(4) }]}>
+            {item?.title}
+          </Text>
           <Spacer space={SH(5)} />
-          <Text numberOfLines={10} style={styles.securitysubhead}>
+          <Text numberOfLines={10} style={[styles.securitysubhead, { flex: 1 }]}>
             {removeHtmlTag(item?.content)}
           </Text>
         </View>
