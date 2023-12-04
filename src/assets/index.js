@@ -451,6 +451,9 @@ export { default as StepPurple } from '@/assets/new_icon/ic_delivery/StepPurple.
 export { default as StepSky } from '@/assets/new_icon/ic_delivery/StepSky.png';
 export { default as StepPurpleStop } from '@/assets/new_icon/ic_delivery/StepPurpleStop.png';
 export { default as StepSkypStop } from '@/assets/new_icon/ic_delivery/StepSkyStop.png';
+export { default as StepYellow } from '@/assets/new_icon/ic_delivery/StepYellow.png';
+export { default as StepCross } from '@/assets/new_icon/ic_delivery/StepCross.png';
+
 export { default as Divider } from '@/assets/new_icon/ic_delivery/Div.png';
 export { default as Sun } from '@/assets/new_icon/ic_delivery/Sun.png';
 export { default as GAuth } from '@/assets/new_icon/ic_delivery/GAuth.png';

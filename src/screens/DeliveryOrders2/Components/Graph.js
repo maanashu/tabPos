@@ -48,9 +48,14 @@ const Graph = () => {
   const [showReadyToPickup, setShowReadyToPickup] = useState(true);
   const [showCompleted, setShowCompleted] = useState(true);
   const [graphData, setgraphData] = useState(null);
+
   useEffect(() => {
-    convertData();
-    // buildDataLineGraph();
+    //convertData();
+    const value = getDeliveryData?.graphOrders;
+    const isEmpty = value && Object?.keys?.(value)?.length === 0;
+    if (!isEmpty) {
+      buildDataLineGraph();
+    }
   }, [getDeliveryData?.graphOrders]);
 
   const isGraphOrder = useSelector((state) => isLoadingSelector([TYPES.GET_GRAPH_ORDERS], state));
@@ -149,128 +154,128 @@ const Graph = () => {
     setgraphData(transformed);
   };
   const onClickCheckBox = (type, value) => {
-    const DATA = getDeliveryData?.graphOrders;
-    const barData = DATA?.labels?.flatMap((day, index) => {
-      const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
-      const setOfThree = [];
-      if (type === 'Incoming') {
-        setOfThree.push({
-          value: values[0] || 0,
-          spacing: 10,
-          label: day,
-          labelWidth: 80,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-          frontColor: value ? COLORS.bluish_green : COLORS.white,
-          initialSpace: 0,
-          Incoming: true,
-        });
-      } else {
-        setOfThree.push({
-          value: values[0] || 0,
-          spacing: 10,
-          label: day,
-          labelWidth: 60,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-          frontColor: showIncoming ? COLORS.bluish_green : COLORS.white,
-          initialSpace: 0,
-          Incoming: true,
-        });
-      }
-      if (type === 'OrderProcessing') {
-        setOfThree.push({
-          value: values[1] || 0,
-          spacing: 10,
-          frontColor: value ? COLORS.pink : COLORS.white,
-          OrderProcessing: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      } else {
-        setOfThree.push({
-          value: values[1] || 0,
-          spacing: 10,
-          frontColor: showProcessing ? COLORS.pink : COLORS.white,
-          OrderProcessing: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      }
-      if (type === 'ReadyForPickup') {
-        setOfThree.push({
-          value: values[2] || 0,
-          spacing: 10,
-          frontColor: value ? COLORS.yellowTweet : COLORS.white,
-          ReadyForPickup: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      } else {
-        setOfThree.push({
-          value: values[2] || 0,
-          spacing: 10,
-          frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
-          ReadyForPickup: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      }
-      if (type === 'Completed') {
-        setOfThree.push({
-          value: values[3] || 0,
-          spacing: 10,
-          frontColor: value ? COLORS.navy_blue : COLORS.white,
-          Completed: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      } else {
-        setOfThree.push({
-          value: values[3] || 0,
-          spacing: 10,
-          frontColor: showCompleted ? COLORS.navy_blue : COLORS.white,
-          Completed: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      }
-      return setOfThree;
-    });
-    setModifyData(barData);
-    return;
+    // const DATA = getDeliveryData?.graphOrders;
+    // const barData = DATA?.labels?.flatMap((day, index) => {
+    //   const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
+    //   const setOfThree = [];
+    //   if (type === 'Incoming') {
+    //     setOfThree.push({
+    //       value: values[0] || 0,
+    //       spacing: 10,
+    //       label: day,
+    //       labelWidth: 80,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //       frontColor: value ? COLORS.bluish_green : COLORS.white,
+    //       initialSpace: 0,
+    //       Incoming: true,
+    //     });
+    //   } else {
+    //     setOfThree.push({
+    //       value: values[0] || 0,
+    //       spacing: 10,
+    //       label: day,
+    //       labelWidth: 60,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //       frontColor: showIncoming ? COLORS.bluish_green : COLORS.white,
+    //       initialSpace: 0,
+    //       Incoming: true,
+    //     });
+    //   }
+    //   if (type === 'OrderProcessing') {
+    //     setOfThree.push({
+    //       value: values[1] || 0,
+    //       spacing: 10,
+    //       frontColor: value ? COLORS.pink : COLORS.white,
+    //       OrderProcessing: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   } else {
+    //     setOfThree.push({
+    //       value: values[1] || 0,
+    //       spacing: 10,
+    //       frontColor: showProcessing ? COLORS.pink : COLORS.white,
+    //       OrderProcessing: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   }
+    //   if (type === 'ReadyForPickup') {
+    //     setOfThree.push({
+    //       value: values[2] || 0,
+    //       spacing: 10,
+    //       frontColor: value ? COLORS.yellowTweet : COLORS.white,
+    //       ReadyForPickup: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   } else {
+    //     setOfThree.push({
+    //       value: values[2] || 0,
+    //       spacing: 10,
+    //       frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
+    //       ReadyForPickup: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   }
+    //   if (type === 'Completed') {
+    //     setOfThree.push({
+    //       value: values[3] || 0,
+    //       spacing: 10,
+    //       frontColor: value ? COLORS.navy_blue : COLORS.white,
+    //       Completed: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   } else {
+    //     setOfThree.push({
+    //       value: values[3] || 0,
+    //       spacing: 10,
+    //       frontColor: showCompleted ? COLORS.navy_blue : COLORS.white,
+    //       Completed: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   }
+    //   return setOfThree;
+    // });
+    // setModifyData(barData);
+    // return;
     if (type == 'Incoming') {
       const updateOpacity = value ? 1 : 0;
       const newColorFunction = () => `rgba(70, 89, 181, ${updateOpacity})`;
@@ -390,7 +395,7 @@ const Graph = () => {
         </View>
       ) : (
         <View style={{ zIndex: -999 }}>
-          <BarChart
+          {/* <BarChart
             roundedTop
             noOfSections={7}
             data={modifyData}
@@ -403,9 +408,9 @@ const Graph = () => {
             height={ms(130)}
             width={windowWidth * 0.49}
             barWidth={SW(3.5)}
-          />
+          /> */}
 
-          {/* {graphData && (
+          {graphData && (
             <LineChart
               withDots={false}
               withVerticalLines={false}
@@ -440,7 +445,7 @@ const Graph = () => {
               fromZero
               segments={5}
             />
-          )} */}
+          )}
           {/* <LineChart
             withDots={false}
             withVerticalLines={false}
@@ -498,7 +503,9 @@ const Graph = () => {
             fromZero
             segments={5}
           />
-          <Text style={styles.monthStyle}>{moment().format('MMMM')}</Text> */}
+           */}
+
+          <Text style={styles.monthStyle}>{moment().format('MMMM')}</Text>
         </View>
       )}
     </View>
@@ -523,10 +530,10 @@ const styles = StyleSheet.create({
     color: COLORS.lavender,
     fontFamily: Fonts.Bold,
 
-    // transform: [{ rotate: '-90deg' }],
-    // position: 'absolute',
-    // left: ms(-50),
-    // top: ms(100),
+    transform: [{ rotate: '-90deg' }],
+    position: 'absolute',
+    left: ms(-50),
+    top: ms(100),
   },
   flexRow: {
     flexDirection: 'row',
