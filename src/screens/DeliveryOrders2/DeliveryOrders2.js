@@ -318,7 +318,6 @@ export function DeliveryOrders2({ route }) {
   };
 
   const renderOrderToReview = ({ item }) => {
-    console.log('Iten-=-=-', JSON.stringify(item));
     const isSelected = viewAllOrder && item?.id === userDetail?.id;
     const orderDetails = item?.order_details || [];
     const deliveryDate = moment(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';

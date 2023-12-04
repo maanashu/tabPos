@@ -61,12 +61,16 @@ const CurrentStatus = () => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <View style={styles.itemMainViewStyle}>
+    <View style={[styles.itemMainViewStyle, item.key == '4' && { borderColor: COLORS.navy_blue }]}>
       <Image source={item?.image} style={styles.deliveryTypeImage} />
 
       <View style={styles.deliveryTypeDetails}>
-        <Text style={styles.deliveryTypeText}>{item?.delivery_type_title}</Text>
-        <Text style={styles.totalTextStyle}>{item?.count}</Text>
+        <Text style={[styles.deliveryTypeText, item.key == '4' && { color: COLORS.navy_blue }]}>
+          {item?.delivery_type_title}
+        </Text>
+        <Text style={[styles.totalTextStyle, item.key == '4' && { color: COLORS.lavender }]}>
+          {item?.count}
+        </Text>
       </View>
     </View>
   );

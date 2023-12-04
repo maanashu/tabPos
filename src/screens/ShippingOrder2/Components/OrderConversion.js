@@ -22,7 +22,11 @@ const OrderConversion = () => {
   //   pieChartData?.[1]?.percentage / 100 ?? 0.0,
   //   pieChartData?.[2]?.percentage / 100 ?? 0.0,
   // ];
-
+  const NewSeries = [
+    pieChartData?.[0]?.percentage ? pieChartData?.[0]?.percentage / 100 : 0.0,
+    pieChartData?.[1]?.percentage ? pieChartData?.[1]?.percentage / 100 : 0.0,
+    pieChartData?.[2]?.percentage ? pieChartData?.[2]?.percentage / 100 : 0.0,
+  ];
   const series = [
     pieChartData?.[0]?.count ?? 0,
     pieChartData?.[1]?.count ?? 0,
@@ -52,7 +56,7 @@ const OrderConversion = () => {
   };
 
   const finalData = {
-    data: series,
+    data: NewSeries,
     colors: sliceColor,
   };
 
