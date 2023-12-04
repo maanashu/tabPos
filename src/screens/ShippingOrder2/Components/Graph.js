@@ -65,7 +65,11 @@ const Graph = () => {
 
   useEffect(() => {
     //convertData();
-    buildDataLineGraph();
+    const value = getGraphOrderData?.graphOrders;
+    const isEmpty = value && Object?.keys?.(value)?.length === 0;
+    if (!isEmpty) {
+      buildDataLineGraph();
+    }
   }, [getGraphOrderData?.graphOrders]);
 
   const isShippingOrder = useSelector((state) =>
@@ -290,7 +294,7 @@ const Graph = () => {
     }
   };
 
-  function transformData(apiData) {
+  const transformData = (apiData) => {
     const transformedData = {
       labels: apiData?.labels,
       datasets: apiData?.datasets?.map((dataset, index) => ({
@@ -310,9 +314,8 @@ const Graph = () => {
         strokeWidth: 3,
       })),
     };
-
     return transformedData;
-  }
+  };
 
   const buildDataLineGraph = () => {
     const DATA = getGraphOrderData?.graphOrders;
