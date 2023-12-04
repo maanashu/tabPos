@@ -87,11 +87,13 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   walletHomeBodyCon: {
+    // height: windowHeight * 0.915,
     flex: 1,
-    marginHorizontal: ms(10),
+    marginRight: ms(10),
     backgroundColor: COLORS.white,
-    borderRadius: ms(4),
-    marginBottom: ms(5),
+    borderRadius: ms(20),
+    marginTop: ms(3),
+    marginBottom: ms(4),
     paddingHorizontal: ms(10),
     paddingVertical: ms(12),
   },
@@ -117,12 +119,13 @@ export const styles = StyleSheet.create({
   },
   custometrCon: {
     width: Platform.OS === 'android' ? ms(175) : ms(135),
-    height: SH(94),
+    height: SH(120),
     borderRadius: 10,
     backgroundColor: COLORS.textInputBackground,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     // alignItems: 'center',
     paddingLeft: ms(10),
+    paddingVertical: ms(8),
   },
   contentContainerStyle: {
     marginTop: ms(15),
@@ -1500,5 +1503,18 @@ export const styles = StyleSheet.create({
     marginBottom: ms(10),
     right: SW(5),
     height: SH(700),
+  },
+  rowAligned: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headingText: {
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(13),
+  },
+  walletHeadings: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(7),
   },
 });

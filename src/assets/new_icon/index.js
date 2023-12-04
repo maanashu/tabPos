@@ -20,4 +20,13 @@ export const Images = {
   localDropOff: require('@/assets/new_icon/ic_settings/localDropOff.png'),
   localPickup: require('@/assets/new_icon/ic_settings/localPickup.png'),
   Plane: require('@/assets/new_icon/ic_settings/Plane.png'),
+  bikeFilled: require('@/assets/new_icon/ic_wallet/bikeFilled.png'),
+  cashOutline: require('@/assets/new_icon/ic_wallet/cashOutline.png'),
+  deliveryBox: require('@/assets/new_icon/ic_wallet/deliveryBox.png'),
+  inStore: require('@/assets/new_icon/ic_wallet/inStore.png'),
+  jobrCoinOutline: require('@/assets/new_icon/ic_wallet/jobrCoinOutline.png'),
+  totalTransactions: require('@/assets/new_icon/ic_wallet/totalTransactions.png'),
+  walletOutline: require('@/assets/new_icon/ic_wallet/walletOutline.png'),
+  visa: require('@/assets/new_icon/ic_wallet/visa.png'),
+  micro_Check: require('@/assets/new_icon/ic_wallet/micro_Check.png'),
 };

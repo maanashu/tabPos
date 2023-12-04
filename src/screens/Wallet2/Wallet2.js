@@ -58,6 +58,8 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { Loader } from '@/components/Loader';
 import WalletInvoice from './Components/WalletInvoice';
+import { height, width } from '@/theme/ScalerDimensions';
+import { Images } from '@/assets/new_icon';
 
 export function Wallet2() {
   const mapRef = useRef(null);
@@ -246,31 +248,39 @@ export function Wallet2() {
     {
       aboutTransaction: 'Total',
       price: getTotalTraData?.data?.total.toFixed(2) ?? '0',
-      img: null,
+      img: Images.totalTransactions,
       id: '1',
       type: 'all',
+      backgroundColor: COLORS.cream_yellow,
+      textColor: COLORS.redish_brown,
     },
     {
       aboutTransaction: 'JBR Coin',
       price: getTotalTraData?.data?.jbr.toFixed(2) ?? '0',
-      img: jbricon,
+      img: Images.jobrCoinOutline,
       id: '2',
       type: 'jbr',
+      backgroundColor: COLORS.light_purple,
+      textColor: '#172461',
     },
 
     {
       aboutTransaction: 'Cash',
       price: getTotalTraData?.data?.cash.toFixed(2) ?? '0',
-      img: cashIcon,
+      img: Images.cashOutline,
       id: '3',
       type: 'cash',
+      backgroundColor: COLORS.soft_green,
+      textColor: COLORS.dark_green,
     },
     {
       aboutTransaction: 'Card',
       price: getTotalTraData?.data?.card.toFixed(2) ?? '0',
-      img: cardIcon,
+      img: Images.visa,
       id: '4',
       type: 'card',
+      backgroundColor: COLORS.light_skyblue,
+      textColor: COLORS.torquoise,
     },
   ];
 
@@ -305,7 +315,7 @@ export function Wallet2() {
     } else if (walletHome) {
       return (
         <>
-          <View style={styles.headerMainView}>
+          {/* <View style={styles.headerMainView}>
             <View style={styles.deliveryView}>
               <Image source={wallet} style={[styles.truckStyle, { marginLeft: 10 }]} />
               <Text style={styles.deliveryText}>{strings.wallet.wallet}</Text>
@@ -341,10 +351,10 @@ export function Wallet2() {
                 <Image source={scn} style={styles.scnStyle} />
               </View>
             </View>
-          </View>
+          </View> */}
 
           <View style={styles.walletHomeBodyCon}>
-            <View style={styles.displayFlex}>
+            {/* <View style={styles.displayFlex}>
               <Text style={styles.trancationHeading}>{strings.wallet.totalTransections}</Text>
               <View style={{ flexDirection: 'row' }}>
                 <View>
@@ -375,32 +385,21 @@ export function Wallet2() {
                       : dateRange}
                   </Text>
                 </TouchableOpacity>
-                {/* <TouchableOpacity
-                  style={[
-                    styles.homeCalenaderBg,
-                    {
-                      backgroundColor: selectId == 0 ? COLORS.primary : COLORS.textInputBackground,
-                    },
-                  ]}
-                  onPress={() => setShow(!show)}
-                >
-                  <Image
-                    source={newCalendar}
-                    style={[
-                      styles.calendarStyle,
-                      { tintColor: selectId == 0 ? COLORS.white : COLORS.darkGray },
-                    ]}
-                  />
-                </TouchableOpacity> */}
-                {/* <DateTimePickerModal
-                  mode={'date'}
-                  isVisible={show}
-                  onConfirm={onChangeDate}
-                  onCancel={() => onCancelFun()}
-                  maximumDate={new Date()}
-                /> */}
+              </View>
+            </View> */}
+
+            <View style={styles.rowAligned}>
+              <View style={styles.rowAligned}>
+                <Image
+                  source={Images.walletOutline}
+                  resizeMode="contain"
+                  style={{ height: ms(16), width: ms(16) }}
+                />
+                <Spacer horizontal space={ms(5)} />
+                <Text style={styles.headingText}>Total Transactions</Text>
               </View>
             </View>
+
             <View>
               <FlatList
                 data={aboutTransactionData}
@@ -408,25 +407,22 @@ export function Wallet2() {
                 renderItem={({ item, index }) => {
                   return (
                     <TouchableOpacity
-                      style={styles.custometrCon}
+                      style={[styles.custometrCon, { backgroundColor: item?.backgroundColor }]}
                       onPress={() => {
                         setWeeklyTrasaction(true);
                         setWalletHome(false);
                         setFromHome(item?.type);
                       }}
                     >
-                      <View style={styles.flexAlign}>
-                        {index === 0 ? null : (
-                          <Image source={item.img} style={styles.newCustomer} />
-                        )}
-
-                        <View style={{ paddingHorizontal: moderateScale(7) }}>
-                          <Text style={styles.customerCount}>
-                            {index === 1 ? '' : '$'}
-                            {item.price}
-                          </Text>
-                          <Text style={styles.newCustomerHeading}>{item.aboutTransaction}</Text>
-                        </View>
+                      <Image source={item.img} style={styles.newCustomer} />
+                      <View style={{ justifyContent: 'flex-end', flex: 1 }}>
+                        <Text style={[styles.walletHeadings, { color: item?.textColor }]}>
+                          {item.aboutTransaction}
+                        </Text>
+                        <Text style={[styles.customerCount, { color: item?.textColor }]}>
+                          {index === 1 ? 'J ' : '$ '}
+                          {item.price}
+                        </Text>
                       </View>
                     </TouchableOpacity>
                   );

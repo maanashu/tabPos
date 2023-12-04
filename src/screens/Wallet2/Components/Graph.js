@@ -20,6 +20,7 @@ import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getWallet } from '@/selectors/WalletSelector';
 import { useEffect } from 'react';
+import { Images } from '@/assets/new_icon';
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 
@@ -272,8 +273,8 @@ const Graph = () => {
   }, [getTotalTraData]);
   return (
     <View style={styles.graphViewStyle}>
-      <View style={styles.flexRow}>
-        <TouchableOpacity
+      <View style={[styles.flexRow, { alignSelf: 'flex-end' }]}>
+        {/* <TouchableOpacity
           onPress={() => {
             setShowJBR((prevShowJBR) => {
               const newState = !prevShowJBR;
@@ -288,6 +289,29 @@ const Graph = () => {
             style={[styles.checkboxIconStyle, showJBR && { tintColor: COLORS.primary }]}
           />
           <Text style={styles.varientTextStyle}>JBR Coin</Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity
+          onPress={() => {
+            setShowJBR((prevShowJBR) => {
+              const newState = !prevShowJBR;
+              onClickCheckBox('JBR', newState);
+              return newState;
+            });
+          }}
+          style={styles.checkboxViewStyle}
+        >
+          <View style={styles.jobrCoinCheckBoxStyle}>
+            <Image
+              source={Images.micro_Check}
+              style={[
+                styles.checkMarkStyle,
+                {
+                  tintColor: showJBR ? COLORS.navy_blue : COLORS.light_purple,
+                },
+              ]}
+            />
+          </View>
+          <Text style={styles.varientTextStyle}>JBR Coin</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -300,10 +324,17 @@ const Graph = () => {
           }}
           style={styles.checkboxViewStyle}
         >
-          <Image
-            source={showCash ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showCash && { tintColor: COLORS.darkBlue }]}
-          />
+          <View style={styles.jobrCashCheckBoxStyle}>
+            <Image
+              source={Images.micro_Check}
+              style={[
+                styles.checkMarkStyle,
+                {
+                  tintColor: showCash ? COLORS.green_new : COLORS.soft_green,
+                },
+              ]}
+            />
+          </View>
           <Text style={styles.varientTextStyle}>Cash</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -316,10 +347,17 @@ const Graph = () => {
           }}
           style={styles.checkboxViewStyle}
         >
-          <Image
-            source={showCard ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showCard && { tintColor: COLORS.violet }]}
-          />
+          <View style={styles.cardCheckBoxStyle}>
+            <Image
+              source={Images.micro_Check}
+              style={[
+                styles.checkMarkStyle,
+                {
+                  tintColor: showCard ? COLORS.aqua : COLORS.light_sky_blue,
+                },
+              ]}
+            />
+          </View>
           <Text style={styles.varientTextStyle}>Card</Text>
         </TouchableOpacity>
       </View>
@@ -422,5 +460,42 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     zIndex: 999,
+  },
+  jobrCoinCheckBoxStyle: {
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: COLORS.navy_blue,
+    height: ms(12),
+    width: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.light_purple,
+    marginRight: ms(3),
+  },
+  jobrCashCheckBoxStyle: {
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: COLORS.green_new,
+    height: ms(12),
+    width: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.soft_green,
+    marginRight: ms(3),
+  },
+  cardCheckBoxStyle: {
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: COLORS.aqua,
+    height: ms(12),
+    width: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.light_sky_blue,
+    marginRight: ms(3),
+  },
+  checkMarkStyle: {
+    height: ms(9),
+    width: ms(9),
   },
 });
