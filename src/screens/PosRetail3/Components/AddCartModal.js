@@ -107,7 +107,7 @@ export function AddCartModal({
         };
 
         const res = await dispatch(checkSuppliedVariant(data));
-
+        openFrom === 'main' && onClickAddCartModal(selectedItem, productIndex, count);
         const Data = {
           seller_id: sellerID,
           service_id: productDetail?.product_detail?.service_id,

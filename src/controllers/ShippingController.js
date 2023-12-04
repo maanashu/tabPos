@@ -161,7 +161,7 @@ export class ShippingController {
     const sellerId = store.getState().auth?.merchantLoginData?.uniqe_id;
     return new Promise((resolve, reject) => {
       const endpoint =
-        ORDER_URL + ApiOrderInventory.shippingGraph + `?seller_id=${sellerId}&filter=week`;
+        ORDER_URL + ApiOrderInventory.shippingGraph + `?seller_id=${sellerId}&filter=year`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

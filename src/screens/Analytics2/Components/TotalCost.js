@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -21,13 +21,15 @@ import {
   totalSales,
 } from '@/assets';
 import { DataTable } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { COLORS } from '@/theme';
+import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
+import { useDebouncedCallback } from 'use-lodash-debounce';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -59,15 +61,12 @@ const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   }
 };
 
-export function TotalCost() {
-  const [channel, setChannel] = useState(false);
-  const [channelValue, setChannelValue] = useState(null);
-  const [channelItem, setChannelItem] = useState([
-    { label: 'Innova', value: 'Innova' },
-    { label: 'Maruti', value: 'Maruti' },
-  ]);
+export function TotalCost({ sellerID, data }) {
+  const dispatch = useDispatch();
+
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
+  const onEndReachedCalledDuringMomentum = useRef(false);
 
   const interval = 1;
   const maxLabel = 31;
@@ -79,6 +78,28 @@ export function TotalCost() {
   const costStatisticsLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
   );
+  const paginationData = {
+    total: analyticStatistics?.orderData?.total,
+    totalPages: analyticStatistics?.orderData?.total_pages,
+    perPage: analyticStatistics?.orderData?.per_page,
+    currentPage: analyticStatistics?.orderData?.current_page,
+  };
+
+  const onLoadMoreCost = useCallback(() => {
+    if (!costStatisticsLoader) {
+      if (paginationData?.currentPage < paginationData?.totalPages) {
+        dispatch(getAnalyticStatistics(sellerID, data, paginationData?.currentPage + 1));
+      }
+    }
+  }, [paginationData]);
+
+  const debouncedLoadMoreCost = useDebouncedCallback(onLoadMoreCost, 300);
+
+  const renderFooter = () => {
+    return costStatisticsLoader ? (
+      <ActivityIndicator size="large" color={COLORS.navy_blue} />
+    ) : null;
+  };
 
   const getCostList = ({ item, index }) => (
     <DataTable.Row
@@ -250,11 +271,12 @@ export function TotalCost() {
             </DataTable.Header>
 
             <View style={styles.mainListContainer}>
-              {costStatisticsLoader ? (
+              {/* {costStatisticsLoader ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
                 </View>
-              ) : analyticStatistics?.orderData?.data?.length === 0 ? (
+              ) : */}
+              {analyticStatistics?.orderData?.data?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
@@ -263,11 +285,24 @@ export function TotalCost() {
                   <FlatList
                     style={styles.listStyle}
                     data={analyticStatistics?.orderData?.data}
+                    extraData={analyticStatistics?.orderData?.data}
                     renderItem={getCostList}
-                    // keyExtractor={(_, index) => index.toString()}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
-                    bounces={false}
+                    // bounces={false}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                    onMomentumScrollBegin={() => {}}
+                    onMomentumScrollEnd={() => {
+                      if (onEndReachedCalledDuringMomentum.current) {
+                        // onLoadMoreProduct();
+                        debouncedLoadMoreCost();
+                        onEndReachedCalledDuringMomentum.current = false;
+                      }
+                    }}
+                    removeClippedSubviews={true}
+                    ListFooterComponent={renderFooter}
                   />
                 </View>
               )}

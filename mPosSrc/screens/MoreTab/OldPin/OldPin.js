@@ -26,7 +26,6 @@ export function OldPin(props) {
   const disptach = useDispatch();
   const getData = useSelector(getAuthData);
   const profileData = getData;
-  // console.log('prodile dataa', JSON.stringify(profileData));
 
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -37,7 +36,6 @@ export function OldPin(props) {
   const [isLoading, setIsLoading] = useState(false);
   // const isLoading = useSelector((state) => isLoadingSelector([TYPES.VERIFY_OLD_PIN], state));
 
-  console.log('sadsdas', isLoading);
   const submit = async () => {
     if (!value) {
       Toast.show({
@@ -59,7 +57,6 @@ export function OldPin(props) {
     else {
       setIsLoading(true);
       const res = await disptach(verifyOldPin(value));
-      console.log('adasda', res);
       if (res?.status_code == '200') {
         navigate(NAVIGATION.setPin, {
           key: 'change_pin',

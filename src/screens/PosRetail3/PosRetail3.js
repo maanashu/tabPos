@@ -3,6 +3,8 @@ import { KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View } from '
 import { AddDiscountToCart, ScreenWrapper, Spacer } from '@/components';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
+  AddProductScreen,
+  AddServiceScreen,
   CartAmountPayBy,
   CartAmountTips,
   CartScreen,
@@ -60,6 +62,7 @@ export function PosRetail3() {
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
+  // const [selectedScreen, setselectedScreen] = useState('AddServiceScreen');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
@@ -82,6 +85,7 @@ export function PosRetail3() {
   useFocusEffect(
     React.useCallback(() => {
       return () => setselectedScreen('MainScreen');
+      // return () => setselectedScreen('AddServiceScreen');
     }, [])
   );
 
@@ -396,6 +400,8 @@ export function PosRetail3() {
         }}
         cartServiceScreenHandler={() => setselectedScreen('CartServiceScreen')}
         activeCategory={activeScreen}
+        addProductscreenShow={() => setselectedScreen('AddProductScreen')}
+        addServiceScreenShow={() => setselectedScreen('AddServiceScreen')}
       />
     ),
     ['CartScreen']: (
@@ -410,6 +416,7 @@ export function PosRetail3() {
         addNotesHandler={addNotesHandler}
         addDiscountHandler={addDiscountHandler}
         getScreen={(value) => getScreenFunction(value)}
+        addProductscreenShow={() => setselectedScreen('AddProductScreen')}
       />
     ),
 
@@ -532,6 +539,30 @@ export function PosRetail3() {
         cartData={savedTempCartData}
         payDetail={cashPayDetail}
         cartType={fromWhichCart}
+      />
+    ),
+    ['AddProductScreen']: (
+      <AddProductScreen
+        backHandler={() =>
+          getRetailData?.addProductFrom == 'main'
+            ? (setselectedScreen('MainScreen'), getScreenFunction('Product'))
+            : setselectedScreen('CartScreen')
+        }
+      />
+    ),
+    ['AddServiceScreen']: (
+      <AddServiceScreen
+        backHandler={
+          () =>
+            // getRetailData?.addProductFrom == 'main'
+            {
+              setselectedScreen('MainScreen');
+              getScreenFunction('Service');
+            }
+
+          // : setselectedScreen('CartScreen')
+        }
+        // getScreen={(value) => getScreenFunction(value)}
       />
     ),
   };

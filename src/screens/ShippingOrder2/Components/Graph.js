@@ -267,6 +267,8 @@ const Graph = () => {
     //   return setOfThree;
     // });
     // setModifyData(barData);
+
+    // return;
     if (type == 'Incoming') {
       const updateOpacity = value ? 1 : 0;
       const newColorFunction = () => `rgba(70, 89, 181, ${updateOpacity})`;
@@ -448,7 +450,7 @@ const Graph = () => {
             <LineChart
               withDots={false}
               withVerticalLines={false}
-              data={graphData}
+              data={graphData || {}}
               width={width * 0.5}
               height={ms(160)}
               // noOfSections={8}

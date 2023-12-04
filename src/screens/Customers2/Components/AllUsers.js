@@ -217,7 +217,7 @@ const AllUsers = ({
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? COLORS.navy_blue : COLORS.white;
     const color = item.id === selectedId ? COLORS.white : COLORS.navy_blue;
-    const borderColor = item.id === selectId ? COLORS.transparent : COLORS.light_purple;
+    const borderColor = item.id === selectedId ? COLORS.transparent : COLORS.light_purple;
 
     return (
       <Item

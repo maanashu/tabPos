@@ -6,6 +6,7 @@ import { COLORS, SF, SH, SW } from '@/theme';
 
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 2;
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -255,7 +256,7 @@ const styles = StyleSheet.create({
     color: COLORS.lavender,
   },
   emptyView: {
-    flex: 0.9,
+    flex: 1,
     alignSelf: 'center',
     height:
       Platform.OS === 'ios'
@@ -263,6 +264,9 @@ const styles = StyleSheet.create({
         : Dimensions.get('window').height / 2.8,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'absolute',
+    top: '20%',
+    left: '40%',
   },
   noOrdersText: {
     fontFamily: Fonts.SemiBold,
@@ -353,7 +357,7 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios'
         ? Dimensions.get('window').width * 0.39
         : Dimensions.get('window').width * 0.42,
-    height: Dimensions.get('window').height - 60,
+    height: Dimensions.get('window').height - 110,
   },
   maximizeButton: {
     backgroundColor: COLORS.white,
@@ -759,6 +763,64 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // justifyContent: 'space-between',
+  },
+
+  calenderTextStyle: {
+    color: COLORS.navy_blue,
+    fontSize: ms(8),
+    fontFamily: Fonts.Medium,
+  },
+  filterButtonStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    height: ms(20),
+    width: ms(60),
+    paddingHorizontal: ms(2),
+    alignItems: 'center',
+    backgroundColor: COLORS.sky_grey,
+    marginHorizontal: ms(2),
+    marginVertical: ms(2),
+    borderRadius: ms(10),
+    // borderColor: COLORS.navy_blue,
+    // borderWidth: 0,
+    position: 'absolute',
+    right: 6,
+  },
+  filterIconStyle: {
+    height: ms(14),
+    width: ms(14),
+    resizeMode: 'contain',
+    // marginRight: ms(2),
+  },
+  calendarDropContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: ms(24),
+    width: ms(100),
+    paddingHorizontal: ms(8),
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    marginHorizontal: ms(10),
+    marginVertical: ms(2),
+    borderRadius: ms(8),
+    borderColor: COLORS.light_purple,
+    borderWidth: 1,
+  },
+  calenderImage: {
+    height: ms(16),
+    width: ms(16),
+    tintColor: COLORS.lavender,
+    resizeMode: 'contain',
+    marginRight: ms(2),
+  },
+  calendarModalView: {
+    backgroundColor: COLORS.white,
+    width: width * 0.6,
+    height: height - SW(30),
+    alignSelf: 'center',
+    paddingVertical: SH(10),
+    paddingHorizontal: SW(5),
+    borderRadius: SW(5),
   },
 });
 

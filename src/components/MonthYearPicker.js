@@ -1,11 +1,12 @@
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { Fonts } from '@/assets';
+import { calendar, Fonts } from '@/assets';
 import { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import { COLORS, SF, SW } from '@/theme';
 import moment from 'moment';
 import { isTablet } from 'react-native-device-info';
+import { ms } from 'react-native-size-matters';
 
 export const DATE_TYPE = {
   MONTH: 'MONTH',
@@ -75,6 +76,9 @@ const MonthYearPicker = ({
           setValue(item.value);
           setIsFocus(false);
         }}
+        renderLeftIcon={() => {
+          return <Image source={calendar} style={styles.calendarStyle} />;
+        }}
       />
     </View>
   );
@@ -88,12 +92,13 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   dropdown: {
-    width: isTablet() ? SW(40) : SW(130),
+    width: isTablet() ? SW(50) : SW(130),
     height: 50,
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: ms(12),
     paddingHorizontal: 8,
+    borderColor: COLORS.navy_blue,
   },
   icon: {
     marginRight: 5,
@@ -110,15 +115,17 @@ const styles = StyleSheet.create({
   placeholderStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    color: COLORS.gerySkies,
+    color: COLORS.navy_blue,
   },
   selectedTextStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
   },
   iconStyle: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
+    tintColor: COLORS.navy_blue,
   },
   inputSearchStyle: {
     height: 40,
@@ -127,5 +134,13 @@ const styles = StyleSheet.create({
   itemTextStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
+    color: COLORS.navy_blue,
+  },
+  calendarStyle: {
+    width: ms(12),
+    height: ms(12),
+    resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
+    marginHorizontal: ms(3),
   },
 });

@@ -12,6 +12,7 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { ProgressChart } from 'react-native-chart-kit';
 
 const OrderConvertion = () => {
   const getData = useSelector(getDelivery);
@@ -21,20 +22,33 @@ const OrderConvertion = () => {
     pieChartData?.[0]?.count ?? 0,
     pieChartData?.[1]?.count ?? 0,
     pieChartData?.[2]?.count ?? 0,
-    pieChartData?.[3]?.count ?? 0,
+    // pieChartData?.[3]?.count ?? 0,
   ];
-
   let sum = 0;
   series?.forEach((num) => {
     sum += num;
   });
 
-  const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellowTweet, COLORS.primary];
-
+  // const sliceColor = [COLORS.lightGreen, COLORS.pink, COLORS.yellowTweet, COLORS.primary];
+  const sliceColor = [COLORS.blur_red, COLORS.yellow, COLORS.extra_purple_300];
   const orderConversionLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ORDER_STATISTICS], state)
   );
+  const chartConfig = {
+    backgroundGradientFrom: '#fff',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#fff',
+    backgroundGradientToOpacity: 0,
+    color: (opacity = 1) => `rgba(242, 244, 247,${1})`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false, // optional
+  };
 
+  const finalData = {
+    data: series,
+    colors: sliceColor,
+  };
   return (
     <View style={styles.orderConvertionView}>
       <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
@@ -42,12 +56,22 @@ const OrderConvertion = () => {
       <Spacer space={ms(20)} />
       <View style={styles.piechartViewStyle}>
         <View>
-          <PieChart
+          {/* <PieChart
             coverRadius={0.7}
             widthAndHeight={140}
             coverFill={COLORS.white}
             series={sum > 0 ? series : [100]}
             sliceColor={sum > 0 ? sliceColor : [COLORS.light_sky]}
+          /> */}
+          <ProgressChart
+            data={finalData}
+            width={ms(70)}
+            height={ms(70)}
+            strokeWidth={ms(4)}
+            radius={ms(18)}
+            chartConfig={chartConfig}
+            hideLegend={true}
+            withCustomBarColorFromData={true}
           />
           <View style={styles.percentageView}>
             <Text style={styles.percentageTextStyle}>{sum > 0 ? '100%' : '0%'}</Text>

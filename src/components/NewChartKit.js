@@ -86,12 +86,8 @@ export function NewChartKit({
               // },
             ],
           }}
-          width={
-            Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.255
-              : Dimensions.get('window').width * 0.26
-          }
-          height={Platform.OS === 'android' ? ms(105) : SH(160)}
+          width={Dimensions.get('window').width * 0.255}
+          height={Platform.OS === 'android' ? ms(105) : ms(115)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -115,7 +111,7 @@ export function NewChartKit({
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? ms(-7) : SW(-8),
+            marginLeft: ms(-7),
             marginTop: ms(5),
           }}
           withShadow={false}
@@ -143,23 +139,16 @@ export function NewChartKit({
               },
             ],
           }}
-          width={
-            Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.265
-              : Dimensions.get('window').width * 0.26
-          }
-          height={Platform.OS === 'android' ? ms(90) : SH(165)}
+          width={Dimensions.get('window').width * 0.265}
+          height={Platform.OS === 'android' ? ms(90) : ms(100)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
             backgroundGradientFrom: COLORS.white,
             backgroundGradientTo: COLORS.white,
+            fillShadowGradientFrom: '#D8B9FF',
+            fillShadowGradientTo: COLORS.light_purple,
             decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            style: {
-              borderRadius: 16,
-              backgroundColor: COLORS.white,
-            },
             color: (opacity = 1) => `rgba(70, 89, 181,${opacity})`,
             propsForBackgroundLines: {
               strokeWidth: 1,
@@ -172,12 +161,12 @@ export function NewChartKit({
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? ms(-10) : SW(-8),
+            marginLeft: ms(-10),
           }}
           withShadow={false}
           fromZero
           bezier
-          xLabelsOffset={ms(-4)}
+          xLabelsOffset={Platform.OS === 'android' ? ms(-4) : 0}
         />
       ) : (
         <LineChart
@@ -191,12 +180,8 @@ export function NewChartKit({
               },
             ],
           }}
-          width={
-            Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.265
-              : Dimensions.get('window').width * 0.26
-          }
-          height={Platform.OS === 'android' ? ms(110) : SH(165)}
+          width={Dimensions.get('window').width * 0.265}
+          height={Platform.OS === 'android' ? ms(110) : ms(120)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -222,11 +207,11 @@ export function NewChartKit({
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? ms(-10) : SW(-8),
+            marginLeft: ms(-10),
             paddingVertical: 0,
             marginTop: ms(5),
           }}
-          xLabelsOffset={ms(-2)}
+          xLabelsOffset={Platform.OS === 'android' ? ms(-2) : 0}
           // withShadow={false}
           fromZero
           bezier

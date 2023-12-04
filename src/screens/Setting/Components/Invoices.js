@@ -9,16 +9,20 @@ import {
   emailS,
   invoice2,
   invoiceFrame,
+  newToggleOff,
+  phoneMsgIcon,
   printInvoice,
   printS,
   smsInvoice,
   smsS,
+  toggleOnNavyBlue,
   vector,
   vectorOff,
 } from '@/assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
 import { upadteApi } from '@/actions/SettingAction';
+import { Images } from '@/assets/new_icon';
 
 export function Invoices() {
   const dispatch = useDispatch();
@@ -61,24 +65,24 @@ export function Invoices() {
   };
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(8) }]}>
+      {/* <View style={[styles.flexRow, { height: SW(8) }]}>
         <Text style={styles.HeaderLabelText}>{strings.settings.invoice}</Text>
-      </View>
-      <Spacer space={SH(20)} />
+      </View> */}
+      {/* <Spacer space={SH(20)} /> */}
       <View style={[styles.securityMainCon, styles.securityMainCon2]}>
         <ScrollView>
           <View style={styles.securityBodyCon}>
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={invoice2} style={styles.securityLogo} />
+              <Image source={invoice2} resizeMode="contain" style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
                 <Text style={styles.twoStepText}>{strings.settings.invoiveHeading}</Text>
                 <Spacer space={SH(10)} />
                 <Text style={styles.securitysubhead}>{strings.settings.invoiveSubHeading}</Text>
                 <Spacer space={SH(20)} />
-                <View style={styles.twoStepMemberCon}>
+                <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
-                      <Image source={smsInvoice} style={styles.teamMember} />
+                      <Image source={Images.phoneMsgIcon} style={styles.teamMember} />
                       <View style={styles.marginLeft}>
                         <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                           {strings.settings.smshead}
@@ -89,14 +93,17 @@ export function Invoices() {
                       </View>
                     </View>
                     <TouchableOpacity style={styles.vectorIconCon} onPress={() => clickHandler(1)}>
-                      <Image source={sms ? vector : vectorOff} style={styles.toggleSecurity} />
+                      <Image
+                        source={sms ? toggleOnNavyBlue : newToggleOff}
+                        style={styles.toggleSecurity}
+                      />
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={styles.twoStepMemberCon}>
+                <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
-                      <Image source={emailInvoice} style={styles.teamMember} />
+                      <Image source={Images.emailBlueIcon} style={styles.teamMember} />
                       <View style={styles.marginLeft}>
                         <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                           {strings.settings.emailHead}
@@ -107,14 +114,17 @@ export function Invoices() {
                       </View>
                     </View>
                     <TouchableOpacity style={styles.vectorIconCon} onPress={() => clickHandler(2)}>
-                      <Image source={email ? vector : vectorOff} style={styles.toggleSecurity} />
+                      <Image
+                        source={email ? toggleOnNavyBlue : newToggleOff}
+                        style={styles.toggleSecurity}
+                      />
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={styles.twoStepMemberCon}>
+                <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
-                      <Image source={printInvoice} style={styles.teamMember} />
+                      <Image source={Images.printerIcon} style={styles.teamMember} />
                       <View style={styles.marginLeft}>
                         <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
                           {strings.settings.printHead}
@@ -125,7 +135,10 @@ export function Invoices() {
                       </View>
                     </View>
                     <TouchableOpacity style={styles.vectorIconCon} onPress={() => clickHandler(3)}>
-                      <Image source={print ? vector : vectorOff} style={styles.toggleSecurity} />
+                      <Image
+                        source={print ? toggleOnNavyBlue : newToggleOff}
+                        style={styles.toggleSecurity}
+                      />
                     </TouchableOpacity>
                   </View>
                 </View>

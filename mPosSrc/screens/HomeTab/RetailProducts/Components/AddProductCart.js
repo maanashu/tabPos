@@ -30,7 +30,16 @@ import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
 
-const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
+const AddProductCart = ({
+  addProductCartRef,
+  productDetailHanlder,
+  onClickAddCartModal,
+  selectedItem,
+  productIndex,
+  cartQty,
+  addToLocalCart,
+  productItem,
+}) => {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
@@ -42,7 +51,7 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
 
   const [colorSelectId, setColorSelectId] = useState(null);
   const [sizeSelectId, setSizeSelectId] = useState(null);
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(cartQty == 0 || cartQty == undefined ? 1 : cartQty);
   const [productDetailExpand, setProductDetailExpand] = useState(false);
   const snapPoints = useMemo(() => ['90%'], []);
   const [colorName, setColorName] = useState();
@@ -55,6 +64,7 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
 
   const addToCartHandler = async () => {
     if (attributeArray?.length === 0) {
+      onClickAddCartModal(selectedItem, productIndex, count);
       const data = {
         seller_id: sellerID,
         service_id: productDetail?.product_detail?.service_id,
@@ -63,6 +73,7 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
         supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
         supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
       };
+      addToLocalCart(productItem, productIndex, count);
       dispatch(addTocart(data));
       addProductCartRef.current.dismiss();
     } else {
@@ -90,6 +101,7 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
             .join(),
           supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
         };
+        onClickAddCartModal(selectedItem, productIndex, count);
         const res = await dispatch(checkSuppliedVariant(data));
         if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
           const data = {
@@ -103,6 +115,7 @@ const AddProductCart = ({ addProductCartRef, productDetailHanlder }) => {
           };
           dispatch(addTocart(data));
           addProductCartRef.current.dismiss();
+          addToLocalCart(selectedItem, productIndex, count, data?.supplyVariantId);
         }
       }
     }
