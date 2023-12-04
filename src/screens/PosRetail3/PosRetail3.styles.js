@@ -373,14 +373,13 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   holdCartCon: {
-    width: windowWidth * 0.09,
+    // width: windowWidth * 0.09,
     height: SH(38),
     borderRadius: 5,
     backgroundColor: COLORS.white,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
   },
   addDiscountcon: {
     width: windowWidth * 0.11,
@@ -401,7 +400,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    // borderWidth: 1,
   },
   pause: {
     width: SW(6),
@@ -410,10 +409,10 @@ export const styles = StyleSheet.create({
     tintColor: COLORS.dark_grey,
   },
   keyboardIcon: {
-    width: SW(7),
-    height: SW(7),
+    width: ms(15),
+    height: ms(15),
     resizeMode: 'contain',
-    tintColor: COLORS.dark_grey,
+    tintColor: COLORS.navy_blue,
   },
   holdCart: {
     color: COLORS.dark_grey,

@@ -471,11 +471,15 @@ export class RetailController {
         pos_user_id: data?.posUserId,
         ...(data?.offerId && { offer_id: data?.offerId }),
       };
+      console.log('endpoint', endpoint);
+      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

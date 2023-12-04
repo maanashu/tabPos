@@ -81,6 +81,7 @@ import { TYPES } from '@/Types/Types';
 import { ServiceCartListModal } from './ServiceCartListModal ';
 import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 import { Images } from '@/assets/new_icon';
+import { imageSource } from '@/utils/GlobalMethods';
 
 export function MainScreen({
   cartScreenHandler,
@@ -520,9 +521,8 @@ export function MainScreen({
   const serviceFun = async (serviceId, index) => {
     const res = await dispatch(getOneService(sellerID, serviceId));
     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-      index == 0 || index == 1
-        ? addServiceScreenShow()
-        : (alert('new service add ui only first and second service'), setAddServiceCartModal(true));
+      // setAddServiceCartModal(true)
+      addServiceScreenShow();
     }
   };
 
@@ -1018,86 +1018,91 @@ export function MainScreen({
                       (data) => data?.product_id === item?.id
                     );
                     return (
-                      <TouchableOpacity
-                        style={styles.serviceCon(cartMatchService?.qty)}
-                        onPress={() => serviceFun(item.id, index)}
-                        activeOpacity={0.7}
-                      >
-                        <View style={styles.avalibleServiceCon}>
-                          <FastImage
-                            source={{
-                              uri: item.image,
-                            }}
-                            style={styles.serviceImagemain}
-                            resizeMode={FastImage.resizeMode.contain}
-                          />
-                          {cartMatchService?.qty > 0 && (
-                            <View style={styles.imageInnerView}>
-                              <Image
-                                source={plus}
-                                style={[styles.plusButton, { tintColor: COLORS.white }]}
-                              />
-                            </View>
-                          )}
-                        </View>
-                        <View style={{ padding: ms(5) }}>
-                          <Text
-                            numberOfLines={1}
-                            style={[styles.productDes, styles.productDesBold]}
-                          >
-                            {item.name}
-                          </Text>
-                          <Spacer space={SH(6)} />
-                          {item.description && (
-                            <Text numberOfLines={2} style={styles.productDes}>
-                              {item.description}
-                            </Text>
-                          )}
-                          <Spacer space={SH(7)} />
-                          <Text numberOfLines={1} style={styles.productPrice}>
-                            ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-                          </Text>
-
-                          <Spacer space={SH(7)} />
-                          <View style={styles.serviceTimeCon}>
-                            <Image source={calendar} style={styles.calendarStyle} />
-                            <Text numberOfLines={1} style={styles.serviceTimeText}>
-                              Tomorrow at 10:00hrs
-                            </Text>
-                          </View>
-                          <Spacer space={SH(7)} />
-                          {item.supplies?.[0]?.approx_service_time == null ? (
-                            <Text numberOfLines={1} style={styles.productDes}>
-                              Estimated Time Not found
-                            </Text>
-                          ) : (
-                            <Text numberOfLines={1} style={styles.productDes}>
-                              Est: {item.supplies?.[0]?.approx_service_time} min
-                            </Text>
-                          )}
-
-                          <Spacer space={SH(6)} />
-                          <View>
-                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                              {item?.pos_staff?.map((data, index) => (
+                      <View style={styles.serviceCon(cartMatchService?.qty)}>
+                        <TouchableOpacity
+                          onPress={() => serviceFun(item.id, index)}
+                          activeOpacity={0.7}
+                        >
+                          <View style={styles.avalibleServiceCon}>
+                            <FastImage
+                              source={{
+                                uri: item.image,
+                              }}
+                              style={styles.serviceImagemain}
+                              resizeMode={FastImage.resizeMode.contain}
+                            />
+                            {cartMatchService?.qty > 0 && (
+                              <View style={styles.imageInnerView}>
                                 <Image
-                                  key={index}
-                                  source={
-                                    { uri: data?.user?.user_profiles?.profile_photo } ?? userImage
-                                  }
-                                  style={{
-                                    width: ms(15),
-                                    height: ms(15),
-                                    resizeMode: 'contain',
-                                    marginRight: -1,
-                                    borderRadius: 50,
-                                  }}
+                                  source={plus}
+                                  style={[styles.plusButton, { tintColor: COLORS.white }]}
                                 />
-                              ))}
-                            </ScrollView>
+                              </View>
+                            )}
                           </View>
+                          <View style={{ padding: ms(5) }}>
+                            <Text
+                              numberOfLines={1}
+                              style={[styles.productDes, styles.productDesBold]}
+                            >
+                              {item.name}
+                            </Text>
+                            <Spacer space={SH(6)} />
+                            {item.description && (
+                              <Text numberOfLines={2} style={styles.productDes}>
+                                {item.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '')}
+                              </Text>
+                            )}
+                            <Spacer space={SH(7)} />
+                            <Text numberOfLines={1} style={styles.productPrice}>
+                              ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                            </Text>
+
+                            <Spacer space={SH(7)} />
+                            <View style={styles.serviceTimeCon}>
+                              <Image source={Images.serviceCalendar} style={styles.calendarStyle} />
+                              <Text numberOfLines={1} style={styles.serviceTimeText}>
+                                Tomorrow at 10:00hrs
+                              </Text>
+                            </View>
+                            <Spacer space={SH(7)} />
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                              <Image source={Images.serviceTime} style={styles.calendarStyle} />
+                              {item.supplies?.[0]?.approx_service_time == null ? (
+                                <Text numberOfLines={1} style={styles.productDes}>
+                                  Estimated Time Not found
+                                </Text>
+                              ) : (
+                                <Text numberOfLines={1} style={styles.productDes}>
+                                  Est: {item.supplies?.[0]?.approx_service_time} min
+                                </Text>
+                              )}
+                            </View>
+                          </View>
+                        </TouchableOpacity>
+                        <Spacer space={SH(6)} />
+                        <View>
+                          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                            {item?.pos_staff?.map((data, index) => (
+                              <Image
+                                key={index}
+                                source={imageSource(
+                                  data?.user?.user_profiles?.profile_photo,
+                                  userImage
+                                )}
+                                style={{
+                                  width: ms(15),
+                                  height: ms(15),
+                                  resizeMode: 'contain',
+                                  marginRight: -1,
+                                  borderRadius: 50,
+                                }}
+                              />
+                            ))}
+                          </ScrollView>
                         </View>
-                      </TouchableOpacity>
+                        <Spacer space={SH(6)} />
+                      </View>
                     );
                   }}
                   key={5 + 'prds'}
