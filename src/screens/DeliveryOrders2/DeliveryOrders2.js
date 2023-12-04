@@ -122,7 +122,6 @@ export function DeliveryOrders2({ route }) {
   const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
   const [changeViewToRecheck, setChangeViewToRecheck] = useState();
   const [isMaximizeStatusView, SetIsMaximizeStatusView] = useState(false);
-  console.log('USER_DETAIL', JSON.stringify(userDetail));
   useEffect(() => {
     if (ORDER_DATA) {
       setOpenShippingOrders(ORDER_DATA?.status?.toString());

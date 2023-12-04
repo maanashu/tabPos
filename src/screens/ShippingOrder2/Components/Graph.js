@@ -45,28 +45,30 @@ const Graph = () => {
   const [showReadyToPickup, setShowReadyToPickup] = useState(true);
   const [showCompleted, setShowCompleted] = useState(true);
   const [graphData, setgraphData] = useState(null);
-  // const month = [
-  //   'January',
-  //   'February',
-  //   'March',
-  //   'April',
-  //   'May',
-  //   'June',
-  //   'July',
-  //   'August',
-  //   'September',
-  //   'October',
-  //   'November',
-  //   'December',
-  // ];
+  const month = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
 
-  // const d = new Date();
-  // const CurrentMonth = month[d.getUTCMonth()];
+  const d = new Date();
+  const CurrentMonth = month[d.getUTCMonth()];
 
   useEffect(() => {
-    convertData();
-    if (getGraphOrderData?.graphOrders) {
-      // buildDataLineGraph();
+    //convertData();
+    const value = getGraphOrderData?.graphOrders;
+    const isEmpty = value && Object?.keys?.(value)?.length === 0;
+    if (!isEmpty) {
+      buildDataLineGraph();
     }
   }, [getGraphOrderData?.graphOrders]);
 
@@ -138,135 +140,135 @@ const Graph = () => {
   };
 
   const onClickCheckBox = (type, value) => {
-    const DATA = getGraphOrderData?.graphOrders;
-    const barData = DATA?.labels?.flatMap((day, index) => {
-      const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
-      const setOfThree = [];
-      if (type === 'Incoming') {
-        setOfThree.push({
-          value: values[0] || 0,
-          spacing: 10,
-          label: day,
-          labelWidth: 80,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-          frontColor: value ? COLORS.bluish_green : COLORS.white,
-          initialSpace: 0,
-          Incoming: true,
-        });
-      } else {
-        setOfThree.push({
-          value: values[0] || 0,
-          spacing: 10,
-          label: day,
-          labelWidth: 60,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-          frontColor: showIncoming ? COLORS.bluish_green : COLORS.white,
-          initialSpace: 0,
-          Incoming: true,
-        });
-      }
-      if (type === 'Delivery') {
-        setOfThree.push({
-          value: values[1] || 0,
-          spacing: 10,
-          frontColor: value ? COLORS.pink : COLORS.white,
-          //  OrderProcessing: true,
-          Delivery: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      } else {
-        setOfThree.push({
-          value: values[1] || 0,
-          spacing: 10,
-          frontColor: showProcessing ? COLORS.pink : COLORS.white,
-          //  OrderProcessing: true,
-          Delivery: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      }
-      if (type === 'Returned') {
-        setOfThree.push({
-          value: values[2] || 0,
-          spacing: 10,
-          frontColor: value ? COLORS.yellowTweet : COLORS.white,
-          // ReadyForPickup: true,
-          Returned: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      } else {
-        setOfThree.push({
-          value: values[2] || 0,
-          spacing: 10,
-          frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
-          // ReadyForPickup: true,
-          Returned: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      }
-      if (type === 'Cancelled') {
-        setOfThree.push({
-          value: values[3] || 0,
-          spacing: 10,
-          frontColor: value ? COLORS.primary : COLORS.white,
-          // Completed: true,
-          Cancelled: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      } else {
-        setOfThree.push({
-          value: values[3] || 0,
-          spacing: 10,
-          frontColor: showCompleted ? COLORS.primary : COLORS.white,
-          // Completed: true,
-          Cancelled: true,
-          labelTextStyle: {
-            color: COLORS.darkGray,
-            fontSize: 9,
-            marginLeft: ms(10),
-            fontFamily: Fonts.Regular,
-          },
-        });
-      }
-      return setOfThree;
-    });
-    setModifyData(barData);
+    // const DATA = getGraphOrderData?.graphOrders;
+    // const barData = DATA?.labels?.flatMap((day, index) => {
+    //   const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
+    //   const setOfThree = [];
+    //   if (type === 'Incoming') {
+    //     setOfThree.push({
+    //       value: values[0] || 0,
+    //       spacing: 10,
+    //       label: day,
+    //       labelWidth: 80,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //       frontColor: value ? COLORS.bluish_green : COLORS.white,
+    //       initialSpace: 0,
+    //       Incoming: true,
+    //     });
+    //   } else {
+    //     setOfThree.push({
+    //       value: values[0] || 0,
+    //       spacing: 10,
+    //       label: day,
+    //       labelWidth: 60,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //       frontColor: showIncoming ? COLORS.bluish_green : COLORS.white,
+    //       initialSpace: 0,
+    //       Incoming: true,
+    //     });
+    //   }
+    //   if (type === 'Delivery') {
+    //     setOfThree.push({
+    //       value: values[1] || 0,
+    //       spacing: 10,
+    //       frontColor: value ? COLORS.pink : COLORS.white,
+    //       //  OrderProcessing: true,
+    //       Delivery: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   } else {
+    //     setOfThree.push({
+    //       value: values[1] || 0,
+    //       spacing: 10,
+    //       frontColor: showProcessing ? COLORS.pink : COLORS.white,
+    //       //  OrderProcessing: true,
+    //       Delivery: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   }
+    //   if (type === 'Returned') {
+    //     setOfThree.push({
+    //       value: values[2] || 0,
+    //       spacing: 10,
+    //       frontColor: value ? COLORS.yellowTweet : COLORS.white,
+    //       // ReadyForPickup: true,
+    //       Returned: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   } else {
+    //     setOfThree.push({
+    //       value: values[2] || 0,
+    //       spacing: 10,
+    //       frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
+    //       // ReadyForPickup: true,
+    //       Returned: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   }
+    //   if (type === 'Cancelled') {
+    //     setOfThree.push({
+    //       value: values[3] || 0,
+    //       spacing: 10,
+    //       frontColor: value ? COLORS.primary : COLORS.white,
+    //       // Completed: true,
+    //       Cancelled: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   } else {
+    //     setOfThree.push({
+    //       value: values[3] || 0,
+    //       spacing: 10,
+    //       frontColor: showCompleted ? COLORS.primary : COLORS.white,
+    //       // Completed: true,
+    //       Cancelled: true,
+    //       labelTextStyle: {
+    //         color: COLORS.darkGray,
+    //         fontSize: 9,
+    //         marginLeft: ms(10),
+    //         fontFamily: Fonts.Regular,
+    //       },
+    //     });
+    //   }
+    //   return setOfThree;
+    // });
+    // setModifyData(barData);
 
-    return;
+    // return;
     if (type == 'Incoming') {
       const updateOpacity = value ? 1 : 0;
       const newColorFunction = () => `rgba(70, 89, 181, ${updateOpacity})`;
@@ -294,7 +296,7 @@ const Graph = () => {
     }
   };
 
-  function transformData(apiData) {
+  const transformData = (apiData) => {
     const transformedData = {
       labels: apiData?.labels,
       datasets: apiData?.datasets?.map((dataset, index) => ({
@@ -314,9 +316,8 @@ const Graph = () => {
         strokeWidth: 3,
       })),
     };
-
     return transformedData;
-  }
+  };
 
   const buildDataLineGraph = () => {
     const DATA = getGraphOrderData?.graphOrders;
@@ -327,7 +328,7 @@ const Graph = () => {
   return (
     <View style={styles.graphViewStyle}>
       <View>
-        <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
+        {/* <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text> */}
         {/* <Spacer space={SH(30)} /> */}
         <View style={[styles.flexRow, { zIndex: 999 }]}>
           <TouchableOpacity
@@ -416,7 +417,7 @@ const Graph = () => {
         </View>
       ) : (
         <View style={{ zIndex: -999 }}>
-          <BarChart
+          {/* <BarChart
             data={modifyData}
             noOfSections={7}
             roundedTop
@@ -429,8 +430,8 @@ const Graph = () => {
             width={width * 0.48}
             barWidth={SW(3.5)}
             yAxisTextStyle={styles.yAxisTextStyle}
-          />
-          {/* <Text
+          /> */}
+          <Text
             style={{
               position: 'absolute',
               bottom: ms(95),
@@ -443,65 +444,9 @@ const Graph = () => {
             }}
           >
             {strings.deliveryOrders.orderNumber}
-          </Text> */}
-          {/* <LineChart
-            withDots={false}
-            withVerticalLines={false}
-            data={{
-              labels: ['Jan', 'Mar', 'May', 'Jul', 'Sept', 'Nov', 'Dec'],
-              datasets: [
-                {
-                  data: [800, 810, 900, 810, 860, 890, 810],
-                  color: () => `rgba(70, 89, 181, 1)`,
-                  strokeWidth: 3,
-                },
-                {
-                  data: [500, 600, 550, 590, 630, 650, 700],
-                  color: () => `rgba(114, 51, 194, 1)`,
-                  strokeWidth: 3,
-                },
-                {
-                  data: [400, 450, 470, 420, 410, 480, 500],
-                  color: () => `rgba(240, 192, 26, 1)`,
-                  strokeWidth: 3,
-                },
-                {
-                  data: [100, 220, 190, 260, 240, 340, 370],
-                  color: () => `rgba(240, 68, 56, 1)`,
-                  strokeWidth: 3,
-                },
-              ].filter((el) => el),
-            }}
-            width={width * 0.5}
-            height={ms(160)}
-            // noOfSections={8}
-            chartConfig={{
-              backgroundColor: '#000',
-              backgroundGradientFrom: '#fff',
-              // backgroundGradientTo: '#f3edf7',
-              backgroundGradientTo: '#fff',
-              decimalPlaces: 0,
-              // horizontalLabelRotation: 45,
-              color: () => `rgba(39, 90, 255, 1)`,
-              labelColor: (opacity = 1) => `rgba(126, 138, 193, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-              propsForBackgroundLines: {
-                stroke: COLORS.sky_grey,
-                strokeDasharray: '', // solid background lines with no dashes
-              },
-            }}
-            bezier
-            style={{
-              marginVertical: 8,
-              // borderRadius: 16,
-            }}
-            withShadow={false}
-            fromZero
-            segments={5}
-          /> */}
-          {/* {graphData !== null && (
+          </Text>
+
+          {graphData && (
             <LineChart
               withDots={false}
               withVerticalLines={false}
@@ -535,8 +480,8 @@ const Graph = () => {
               fromZero
               segments={5}
             />
-          )} */}
-          {/* <Text
+          )}
+          <Text
             style={{
               position: 'absolute',
               bottom: 10,
@@ -547,7 +492,7 @@ const Graph = () => {
             }}
           >
             {CurrentMonth}
-          </Text> */}
+          </Text>
         </View>
       )}
     </View>

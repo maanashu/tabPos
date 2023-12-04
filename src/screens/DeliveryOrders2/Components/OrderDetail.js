@@ -299,7 +299,6 @@ const OrderDetail = ({
     }
   };
 
-  // console.log('ITEM', JSON.stringify(userDetail));
   return <View style={styles.orderDetailView}>{detailView()}</View>;
 };
 
