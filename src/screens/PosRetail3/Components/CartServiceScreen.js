@@ -610,7 +610,7 @@ export function CartServiceScreen({
                 )}
               </View>
               <Spacer space={SH(10)} />
-              <View style={[styles.displayflex, { marginVertical: ms(10) }]}>
+              <View style={[styles.displayflex, { marginVertical: ms(5) }]}>
                 <TouchableOpacity
                   style={styles.addDiscountCon()}
                   onPress={() => {

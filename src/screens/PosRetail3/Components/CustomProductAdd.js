@@ -9,6 +9,7 @@ import {
   ScrollView,
   StyleSheet,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
@@ -194,7 +195,7 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
 
   return (
     <KeyboardAwareScrollView
-      contentContainerStyle={{ flex: 1, justifyContent: 'center' }}
+      contentContainerStyle={{ flex: Platform.OS === 'android' ? 0 : 1, justifyContent: 'center' }}
       showsVerticalScrollIndicator={false}
     >
       <View style={comeFrom === 'product' ? styles.customProductCon : [styles.customProductCon]}>

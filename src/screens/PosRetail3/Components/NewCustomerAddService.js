@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Image, Text, View, TouchableOpacity, Keyboard, ActivityIndicator } from 'react-native';
+import {
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  Keyboard,
+  ActivityIndicator,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -161,7 +170,11 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
 
   return (
     <KeyboardAwareScrollView
-      contentContainerStyle={{ flex: 1, justifyContent: 'center' }}
+      contentContainerStyle={{
+        flex: Platform.OS === 'ios' ? 1 : 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.addCustomerCon}>
@@ -173,33 +186,6 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
               style={[styles.crossButton, { tintColor: COLORS.solid_grey }]}
             />
           </TouchableOpacity>
-          {/* {userLength == 0 && detailArea ? (
-          <TouchableOpacity
-            style={[styles.addToCartCon, styles.newCutomersaveCon]}
-            onPress={() => saveAndAddCustomer()}
-          >
-            <Text style={styles.addTocartText}>Save</Text>
-          </TouchableOpacity>
-        ) : userLength > 0 && detailArea ? (
-          <TouchableOpacity
-            style={[styles.addToCartCon, styles.newCutomersaveCon]}
-            onPress={() => saveCustomer()}
-          >
-            <Text style={styles.addTocartText}>Save</Text>
-          </TouchableOpacity>
-        ) : null} */}
-
-          {/* 
-        {userLength == 0 && !detailArea
-        
-        ? null : userLength > 0 && detailArea ? null : (
-          <TouchableOpacity
-          style={[styles.addToCartCon, styles.newCutomersaveCon]}
-          onPress={() => saveCustomer()}
-        >
-          <Text style={styles.addTocartText}>Save</Text>
-        </TouchableOpacity>
-        )} */}
         </View>
         <View style={{ alignItems: 'center' }}>
           <Image source={Images.addCustomer} style={styles.addcustomerIcon} />

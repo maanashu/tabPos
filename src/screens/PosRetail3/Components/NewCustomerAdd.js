@@ -7,6 +7,7 @@ import {
   Keyboard,
   ActivityIndicator,
   TextInput,
+  Platform,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
@@ -124,7 +125,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
 
   return (
     <KeyboardAwareScrollView
-      contentContainerStyle={{ flex: 1, justifyContent: 'center' }}
+      contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.addCustomerCon}>

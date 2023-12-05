@@ -67,11 +67,7 @@ export function DrawerNavigator(props) {
       contentContainerStyle={styles.contentContainerStyle}
       bounces={false}
     >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        bounces={false}
-        style={{ width: '100%', left: -6 }}
-      >
+      <ScrollView showsVerticalScrollIndicator={false} bounces={false} style={{ width: '100%' }}>
         <DrawerItem
           label={''}
           pressColor={COLORS.transparent}
@@ -423,8 +419,9 @@ const styles = StyleSheet.create({
     return {
       borderRadius: ms(7),
       backgroundColor: focused ? COLORS.textInputBackground : 'transparent',
-      padding: ms(5),
-      left: ms(1.5),
+      paddingHorizontal: ms(5),
+      paddingVertical: ms(3),
+      left: Platform.OS === 'ios' ? ms(0) : ms(2.3),
     };
   },
 });

@@ -90,8 +90,7 @@ export const styles = StyleSheet.create({
   },
   _boxView: {
     height: ms(110),
-    // flexGrow: 1,
-    width: Platform.OS === 'ios' ? ms(103) : ms(110),
+    width: Platform.OS === 'ios' ? ms(103) : ms(130),
     backgroundColor: COLORS.transparentBlue,
     borderRadius: ms(8),
     justifyContent: 'center',
@@ -452,7 +451,7 @@ export const styles = StyleSheet.create({
   addDiscountCon: (addnotes) => {
     return {
       backgroundColor: addnotes ? COLORS.textInputBackground : COLORS.extraYello,
-      height: Platform.OS === 'android' ? SH(40) : SH(45),
+      height: SH(50),
       borderRadius: ms(8),
       flexDirection: 'row',
       justifyContent: 'center',
@@ -972,7 +971,7 @@ export const styles = StyleSheet.create({
   },
   blueListData: {
     borderWidth: 1,
-    height: SH(70),
+    // height: SH(70),
     borderRadius: 5,
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
@@ -1430,7 +1429,7 @@ export const styles = StyleSheet.create({
   },
   productCon: (qty) => {
     return {
-      maxWidth: Platform.OS === 'ios' ? ms(85) : ms(95),
+      maxWidth: Platform.OS === 'ios' ? ms(85) : ms(108),
       flexShrink: 1,
       flex: 1,
       // flexBasis: Platform.OS === 'ios' ? ms(85) : ms(95),
@@ -1446,7 +1445,9 @@ export const styles = StyleSheet.create({
   },
   serviceCon: (qty) => {
     return {
-      width: Platform.OS === 'ios' ? ms(102) : ms(112),
+      maxWidth: Platform.OS === 'ios' ? ms(102) : ms(130),
+      flexShrink: 1,
+      flex: 1,
       backgroundColor: COLORS.white,
       borderRadius: ms(9),
       marginTop: verticalScale(7),

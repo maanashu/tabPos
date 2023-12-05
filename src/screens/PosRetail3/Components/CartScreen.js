@@ -355,6 +355,7 @@ export function CartScreen({
                               style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
+                                marginVertical: ms(3),
                               }}
                             >
                               <View style={styles.cartImageCon}>
@@ -610,7 +611,7 @@ export function CartScreen({
                 )}
               </View>
 
-              <View style={[styles.displayflex, { marginVertical: ms(10) }]}>
+              <View style={[styles.displayflex, { marginVertical: ms(7) }]}>
                 <TouchableOpacity
                   style={styles.addDiscountCon()}
                   onPress={() => {
