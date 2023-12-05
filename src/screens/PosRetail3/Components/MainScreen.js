@@ -64,6 +64,7 @@ import {
   getAllCart,
   getAllCartReset,
   addProductFrom,
+  addServiceFrom,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -523,6 +524,7 @@ export function MainScreen({
     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
       // setAddServiceCartModal(true)
       addServiceScreenShow();
+      dispatch(addServiceFrom('main'));
     }
   };
 

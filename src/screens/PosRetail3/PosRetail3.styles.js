@@ -471,8 +471,8 @@ export const styles = StyleSheet.create({
   },
   addDiscountPic: (value) => {
     return {
-      width: ms(10),
-      height: ms(10),
+      width: ms(12),
+      height: ms(12),
       resizeMode: 'contain',
       paddingHorizontal: moderateScale(7),
       tintColor: value ? COLORS.coffee : COLORS.navy_blue,

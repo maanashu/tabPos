@@ -7,33 +7,13 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
   ActivityIndicator,
 } from 'react-native';
-
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
-
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import {
-  addDiscountPic,
-  addToCart,
-  borderCross,
-  cartEdit,
-  checkArrow,
-  cross,
-  crossButton,
-  eraser,
-  holdCart,
-  minus,
-  newCustomer,
-  notess,
-  plus,
-  rightBack,
-  search_light,
-  sideKeyboard,
-} from '@/assets';
+import { cartEdit, cross, crossButton, minus, plus, search_light } from '@/assets';
 import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -50,7 +30,6 @@ import {
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-import { useFocusEffect } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ms } from 'react-native-size-matters';
 import { AddCartDetailModal } from './AddCartDetailModal';
@@ -64,7 +43,6 @@ import { CustomProductAdd } from './CustomProductAdd';
 import { NewCustomerAdd } from './NewCustomerAdd';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
 
@@ -153,16 +131,6 @@ export function CartScreen({
           };
     dispatch(changeStatusProductCart(data));
   };
-
-  // offline cart handler function
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     return () => {
-  //       beforeDiscountCartLoad();
-  //     };
-  //   }, [])
-  // );
 
   const productFun = async (item, index) => {
     beforeDiscountCartLoad();
@@ -567,7 +535,7 @@ export function CartScreen({
             <View style={{ flex: 1 }}>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
-                  <Image source={addDiscountPic} style={styles.addDiscountPic()} />
+                  <Image source={Images.availableOffer} style={styles.addDiscountPic()} />
                   <Text style={[styles.holdCart, { color: COLORS.coffee }]}>Available Offer</Text>
                   <View></View>
                 </View>

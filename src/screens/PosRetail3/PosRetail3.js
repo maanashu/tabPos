@@ -432,6 +432,7 @@ export function PosRetail3() {
         addNotesHandler={() => setAddServiceNotes(true)}
         addDiscountHandler={() => setAddServiceDiscount(true)}
         getScreen={(value) => getScreenFunction(value)}
+        addServiceScreenShow={() => setselectedScreen('AddServiceScreen')}
       />
     ),
     ['CartAmountTips']: (
@@ -552,17 +553,11 @@ export function PosRetail3() {
     ),
     ['AddServiceScreen']: (
       <AddServiceScreen
-        backHandler={
-          () =>
-            // getRetailData?.addProductFrom == 'main'
-            {
-              setselectedScreen('MainScreen');
-              getScreenFunction('Service');
-            }
-
-          // : setselectedScreen('CartScreen')
+        backHandler={() =>
+          getRetailData?.addServiceFrom == 'main'
+            ? (setselectedScreen('MainScreen'), getScreenFunction('Service'))
+            : setselectedScreen('CartServiceScreen')
         }
-        // getScreen={(value) => getScreenFunction(value)}
       />
     ),
   };
