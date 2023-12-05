@@ -38,7 +38,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import Modal, { ReactNativeModal } from 'react-native-modal';
 import { strings } from '@/localization';
 import { CustomKeyboard } from '../CustomKeyBoard';
-import { digits } from '@/utils/validators';
+import { digits, emailReg } from '@/utils/validators';
 import {
   attachCustomer,
   getQrCodee,
@@ -69,6 +69,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import { getSetting } from '@/selectors/SettingSelector';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { CustomHeader } from './CustomHeader';
+import { Images } from '@/assets/new_icon';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -442,6 +443,8 @@ export const CartAmountPayBy = ({
   const attachUserByEmail = async (customerEmail) => {
     if (customerEmail === '') {
       alert('Please Enter Email');
+    } else if (customerEmail && emailReg.test(customerEmail) === false) {
+      alert('Please Enter valid Email');
     } else if (cartType == 'Product') {
       const data = {
         cartId: cartid,
@@ -829,7 +832,86 @@ export const CartAmountPayBy = ({
 
       {/* Phone PopUp */}
       <Modal isVisible={phonePopVisible}>
-        <View style={styles.calendarSettingModalContainer}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            // alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}
+        >
+          <View style={styles.emailModalContainer}>
+            {/* <View style={{ borderWidth: 1 }}> */}
+            <View style={styles.modalHeaderCon}>
+              <TouchableOpacity style={styles.crossButtonCon} onPress={() => closeHandler()}>
+                <Image source={crossButton} style={styles.crossButton} />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, paddingHorizontal: ms(12) }}>
+              <Image source={Images.phone} style={styles.emailIcon} />
+              <Text style={styles.emailRec}>
+                What phone number do we {`\n`} send the e-receipt to?
+              </Text>
+              <Spacer space={SH(25)} />
+              <Text style={styles.newCusAdd}>{'Phone Number'}</Text>
+
+              <View style={styles.textInputView}>
+                <CountryPicker
+                  onSelect={(code) => {
+                    setFlag(code.cca2);
+                    if (code.callingCode !== []) {
+                      setCountryCode('+' + code.callingCode.flat());
+                    } else {
+                      setCountryCode('');
+                    }
+                  }}
+                  countryCode={flag}
+                  withFilter
+                  withCallingCode
+                />
+                <Image source={dropdown} style={styles.dropDownIcon} />
+                <Text style={styles.countryCodeText}>{countryCode}</Text>
+                <TextInput
+                  maxLength={10}
+                  returnKeyType="done"
+                  keyboardType="number-pad"
+                  value={phoneNumber?.toString()}
+                  onChangeText={setPhoneNumber}
+                  style={styles.textInputContainer}
+                  placeholder={strings.verifyPhone.placeHolderText}
+                  placeholderTextColor={COLORS.light_purple}
+                  // showSoftInputOnFocus={false}
+                />
+              </View>
+              <View style={{ flex: 1 }} />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <TouchableOpacity style={styles.cancelButtonCon} onPress={() => closeHandler()}>
+                  <Text style={styles.cancelText}>{'Cancel'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.addToCartButtonCon}
+                  onPress={() => {
+                    getTipPress();
+                    payNowByphone(selectedTipAmount);
+                    attachUserByPhone(phoneNumber);
+                  }}
+                >
+                  <Text style={[styles.cancelText, { color: COLORS.white }]}>
+                    {'Send E-receipt'}
+                  </Text>
+                  {/* <Image source={Images.addProduct} style={styles.plusIconAdd} /> */}
+                </TouchableOpacity>
+              </View>
+              <Spacer space={SH(25)} />
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
+        {/* <View style={styles.calendarSettingModalContainer}>
           <View>
             <View style={styles.textInputView}>
               <CountryPicker
@@ -855,7 +937,7 @@ export const CartAmountPayBy = ({
                 onChangeText={setPhoneNumber}
                 style={styles.textInputContainer}
                 placeholder={strings.verifyPhone.placeHolderText}
-                placeholderTextColor={COLORS.darkGray}
+                placeholderTextColor={COLORS.light_purple}
                 showSoftInputOnFocus={false}
               />
             </View>
@@ -877,44 +959,48 @@ export const CartAmountPayBy = ({
               <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
             </View>
           ) : null}
-        </View>
+        </View> */}
       </Modal>
 
       <Modal isVisible={emailModal}>
         <KeyboardAwareScrollView
           contentContainerStyle={{
-            alignItems: 'center',
+            // alignItems: 'center',
             justifyContent: 'center',
             flex: 1,
           }}
         >
           <View style={styles.emailModalContainer}>
-            <View>
-              <View style={styles.modalHeaderCon}>
-                <View style={styles.flexRow}>
-                  <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
-                    {strings.retail.eRecipeEmail}
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.crossButtonCon}
-                    onPress={() => {
-                      setEmailModal(false), setSelectedRecipeIndex(null);
-                    }}
-                  >
-                    <Image source={crossButton} style={styles.crossButton} />
-                  </TouchableOpacity>
-                </View>
-              </View>
+            {/* <View style={{ borderWidth: 1 }}> */}
+            <View style={styles.modalHeaderCon}>
+              <TouchableOpacity
+                style={styles.crossButtonCon}
+                onPress={() => {
+                  setEmailModal(false), setSelectedRecipeIndex(null);
+                }}
+              >
+                <Image source={crossButton} style={styles.crossButton} />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, paddingHorizontal: ms(12) }}>
+              <Image source={Images.email} style={styles.emailIcon} />
+              <Text style={styles.emailRec}>
+                What e-mail address do we {`\n`} send the e-receipt to?
+              </Text>
+              <Spacer space={SH(25)} />
+              <Text style={styles.newCusAdd}>{'E-mail Address'}</Text>
+
               <View style={styles.inputContainer}>
+                <Image source={Images.email} style={styles.emailIconInput} />
                 <TextInput
                   style={styles.textInput}
                   placeholder="you@you.mail"
                   value={email?.trim()}
                   onChangeText={setEmail}
                   keyboardType="email-address"
-                  placeholderTextColor={COLORS.solidGrey}
+                  placeholderTextColor={COLORS.light_purple}
                 />
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={styles.payNowButton}
                   onPress={() => {
                     getTipPress();
@@ -924,14 +1010,40 @@ export const CartAmountPayBy = ({
                   }}
                 >
                   <Text style={styles.payNowButtonText}>Pay Now</Text>
+                </TouchableOpacity> */}
+              </View>
+              <View style={{ flex: 1 }} />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <TouchableOpacity
+                  style={styles.cancelButtonCon}
+                  onPress={() => {
+                    setEmailModal(false), setSelectedRecipeIndex(null);
+                  }}
+                >
+                  <Text style={styles.cancelText}>{'Cancel'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.addToCartButtonCon}
+                  onPress={() => {
+                    getTipPress();
+                    payNowByphone(selectedTipAmount);
+                    attachUserByEmail(email);
+                  }}
+                >
+                  <Text style={[styles.cancelText, { color: COLORS.white }]}>
+                    {'Send E-receipt'}
+                  </Text>
+                  {/* <Image source={Images.addProduct} style={styles.plusIconAdd} /> */}
                 </TouchableOpacity>
               </View>
+              <Spacer space={SH(25)} />
             </View>
-            {isLoading ? (
-              <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-                <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
-              </View>
-            ) : null}
           </View>
         </KeyboardAwareScrollView>
       </Modal>

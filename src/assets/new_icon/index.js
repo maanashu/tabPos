@@ -5,6 +5,8 @@ export const Images = {
   serviceIcon: require('@/assets/new_icon/retail_con/serviceIcon.png'),
   filterIcon: require('@/assets/new_icon/retail_con/filterIcon.png'),
   cartIcon: require('@/assets/new_icon/retail_con/cartIcon.png'),
+  email: require('@/assets/new_icon/retail_con/email.png'),
+  phone: require('@/assets/new_icon/retail_con/phone.png'),
   cartHold: require('@/assets/new_icon/retail_con/cartHold.png'),
   addCustomer: require('@/assets/new_icon/retail_con/addCustomer.png'),
   cartDelete: require('@/assets/new_icon/retail_con/cartDelete.png'),

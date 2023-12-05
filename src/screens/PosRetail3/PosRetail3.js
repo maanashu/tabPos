@@ -62,7 +62,7 @@ export function PosRetail3() {
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
-  // const [selectedScreen, setselectedScreen] = useState('AddServiceScreen');
+  // const [selectedScreen, setselectedScreen] = useState('CartAmountPayBy');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
@@ -85,7 +85,7 @@ export function PosRetail3() {
   useFocusEffect(
     React.useCallback(() => {
       return () => setselectedScreen('MainScreen');
-      // return () => setselectedScreen('AddServiceScreen');
+      // return () => setselectedScreen('CartAmountPayBy');
     }, [])
   );
 
@@ -342,36 +342,36 @@ export function PosRetail3() {
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
-        // TYPES.GET_ONE_PRODUCT,
-        // TYPES.GET_ONE_SERVICE,
-        // // TYPES.ADDCART,
-        // TYPES.GET_CLEAR_ALL_CART,
-        // TYPES.GET_ALL_CART,
-        // TYPES.GET_WALLET_PHONE,
-        // TYPES.GET_CLEAR_ONE_CART,
-        // TYPES.REQUEST_MONEY,
-        // TYPES.CREATE_ORDER,
-        // TYPES.ADDNOTES,
-        // TYPES.ADD_DISCOUNT,
-        // TYPES.CHECK_SUPPLIES_VARIANT,
-        // TYPES.GET_TIPS,
-        // TYPES.CLEAR_SERVICE_ALL_CART,
-        // TYPES.GET_SERVICE_CART,
-        // TYPES.ADD_SERVICE_CART,
-        // TYPES.CHANGE_STATUS_PRODUCT_CART,
-        // TYPES.GET_MAIN_PRODUCT,
-        // TYPES.GET_ALL_SERVICE_CART,
-        // TYPES.CHANGE_STATUS_SERVICE_CART,
-        // TYPES.ADD_SERVICE_DISCOUNT,
-        // TYPES.GET_MAIN_SERVICES,
-        // TYPES.PRODUCT_UPDATE_PRICE,
-        // TYPES.SERVICE_UPDATE_PRICE,
-        // TYPES.CUSTOM_PRODUCT_ADD,
-        // TYPES.CUSTOM_SERVICE_ADD,
-        // TYPES.ATTACH_SERVICE_CUSTOMER,
-        // TYPES.ATTACH_CUSTOMER,
-        // TYPES.CREATE_SERVICE_ORDER,
-        // TYPES.UPDATE_CART_BY_TIP,
+        TYPES.GET_ONE_PRODUCT,
+        TYPES.GET_ONE_SERVICE,
+        // TYPES.ADDCART,
+        TYPES.GET_CLEAR_ALL_CART,
+        TYPES.GET_ALL_CART,
+        TYPES.GET_WALLET_PHONE,
+        TYPES.GET_CLEAR_ONE_CART,
+        TYPES.REQUEST_MONEY,
+        TYPES.CREATE_ORDER,
+        TYPES.ADDNOTES,
+        TYPES.ADD_DISCOUNT,
+        TYPES.CHECK_SUPPLIES_VARIANT,
+        TYPES.GET_TIPS,
+        TYPES.CLEAR_SERVICE_ALL_CART,
+        TYPES.GET_SERVICE_CART,
+        TYPES.ADD_SERVICE_CART,
+        TYPES.CHANGE_STATUS_PRODUCT_CART,
+        TYPES.GET_MAIN_PRODUCT,
+        TYPES.GET_ALL_SERVICE_CART,
+        TYPES.CHANGE_STATUS_SERVICE_CART,
+        TYPES.ADD_SERVICE_DISCOUNT,
+        TYPES.GET_MAIN_SERVICES,
+        TYPES.PRODUCT_UPDATE_PRICE,
+        TYPES.SERVICE_UPDATE_PRICE,
+        TYPES.CUSTOM_PRODUCT_ADD,
+        TYPES.CUSTOM_SERVICE_ADD,
+        TYPES.ATTACH_SERVICE_CUSTOMER,
+        TYPES.ATTACH_CUSTOMER,
+        TYPES.CREATE_SERVICE_ORDER,
+        TYPES.UPDATE_CART_BY_TIP,
       ],
       state
     )
