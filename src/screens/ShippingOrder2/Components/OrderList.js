@@ -46,8 +46,6 @@ const OrderList = ({
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id ?? '');
   const todayDate = moment();
 
-  // console.log(JSON.stringify(ordersList), 'LISTINg');
-
   useEffect(() => {
     setOrderId(ordersList?.[0]?.id ?? '');
   }, [getOrdersData?.getReviewDef]);

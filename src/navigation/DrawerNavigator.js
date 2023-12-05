@@ -94,7 +94,7 @@ export function DrawerNavigator(props) {
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
-          focused={active === 'posRetail3' ? true : false}
+          // focused={active === 'posRetail3' ? true : false}
           // onPress={() => {
           //   setActive('posRetail3');
           //   navigate(NAVIGATION.posRetail3);
@@ -424,6 +424,7 @@ const styles = StyleSheet.create({
       borderRadius: ms(7),
       backgroundColor: focused ? COLORS.textInputBackground : 'transparent',
       padding: ms(5),
+      left: ms(1.5),
     };
   },
 });

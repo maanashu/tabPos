@@ -17,11 +17,6 @@ import { ProgressChart } from 'react-native-chart-kit';
 const OrderConversion = () => {
   const getOrdersData = useSelector(getShipping);
   const pieChartData = getOrdersData?.getOrderstatistics?.data;
-  // const NewSeries = [
-  //   pieChartData?.[0]?.percentage / 100 ?? 0.0,
-  //   pieChartData?.[1]?.percentage / 100 ?? 0.0,
-  //   pieChartData?.[2]?.percentage / 100 ?? 0.0,
-  // ];
   const NewSeries = [
     pieChartData?.[0]?.percentage ? pieChartData?.[0]?.percentage / 100 : 0.0,
     pieChartData?.[1]?.percentage ? pieChartData?.[1]?.percentage / 100 : 0.0,

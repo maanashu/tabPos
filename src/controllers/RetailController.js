@@ -340,9 +340,11 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart;
       HttpClient.delete(endpoint)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           reject(error);
         });
     });
