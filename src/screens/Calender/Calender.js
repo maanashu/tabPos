@@ -44,7 +44,7 @@ import { TYPES } from '@/Types/AppointmentTypes';
 import { useIsFocused } from '@react-navigation/native';
 import CustomEventCell from './Components/CustomEventCell';
 import CustomHoursCell from './Components/CustomHoursCell';
-import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
+import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptionsNew';
 import EventItemCard from './Components/EventItemCard';
 import CalendarSettingModal from './Components/CalendarSettingModal';
 import { navigate } from '@/navigation/NavigationRef';
@@ -260,11 +260,12 @@ export function Calender() {
   };
 
   const getFormattedHeaderDate = () => {
-    if (calendarMode === CALENDAR_MODES.MONTH || calendarMode === CALENDAR_MODES.WEEK) {
-      return calendarDate.format('MMM YYYY');
-    } else if (calendarMode === CALENDAR_MODES.DAY) {
-      return calendarDate.format('DD MMM YYYY');
-    }
+    return calendarDate.format('MMM YYYY');
+    // if (calendarMode === CALENDAR_MODES.MONTH || calendarMode === CALENDAR_MODES.WEEK) {
+    //   return calendarDate.format('MMM YYYY');
+    // } else if (calendarMode === CALENDAR_MODES.DAY) {
+    //   return calendarDate.format('DD MMM YYYY');
+    // }
   };
   const isRequestLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_APPOINTMENTS], state)
@@ -463,7 +464,7 @@ export function Calender() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        {customHeader()}
+        {/* {customHeader()} */}
         <View style={[styles.calenderContainer, { flexDirection: 'row' }]}>
           <View style={styles.calenderCon}>
             <CalendarHeaderWithOptions
@@ -482,6 +483,19 @@ export function Calender() {
               }}
               onPressCalendarIcon={() => {
                 setshowMiniCalendar(true);
+              }}
+              onPressNotification={() => {
+                navigate(NAVIGATION.notificationsList, {
+                  screen: NAVIGATION.calender,
+                });
+              }}
+              onPressSearch={() => {
+                setShowSearchModal(true);
+                setSearchedAppointments([]);
+                setSearchedText('');
+                setTimeout(() => {
+                  searchAppoinmentInputRef.current.focus();
+                }, 300);
               }}
               onPressCalendarViewMode={onPressCalendarViewMode}
               onPressListViewMode={onPressListViewMode}

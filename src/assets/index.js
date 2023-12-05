@@ -487,6 +487,14 @@ export { default as deliverySending } from '@/assets/new_icon/ic_shipping/delive
 export { default as deliveryClose } from '@/assets/new_icon/ic_shipping/deliveryClose.png';
 export { default as deliveryBack } from '@/assets/new_icon/ic_shipping/deliveryBack.png';
 
+//Appointment/Booking Icons
+
+export { default as bookings } from '@/assets/new_icon/appointments/bookings.png';
+export { default as bookingsCalender } from '@/assets/new_icon/appointments/bookingCalender.png';
+export { default as bookingsNotification } from '@/assets/new_icon/appointments/bookingsNotification.png';
+export { default as bookingsSearch } from '@/assets/new_icon/appointments/bookingsSearch.png';
+export { default as listview } from '@/assets/new_icon/appointments/listview.png';
+
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',

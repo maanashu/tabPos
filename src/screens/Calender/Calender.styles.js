@@ -43,8 +43,8 @@ export const styles = StyleSheet.create({
     padding: 0,
   },
   truckStyle: {
-    width: SH(32),
-    height: SH(32),
+    width: SH(24),
+    height: SH(24),
     resizeMode: 'contain',
   },
   deliveryView: {
@@ -232,21 +232,21 @@ export const styles = StyleSheet.create({
     // paddingHorizontal:moderateScale(18)
   },
   clickedButtonCon: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: '#263682',
     height: SH(32),
-    borderRadius: 3,
+    borderRadius: SH(16),
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: moderateScale(10),
+    flexDirection: 'row',
     paddingHorizontal: ms(10),
   },
   unClickedButtonCon: {
     backgroundColor: COLORS.textInputBackground,
     height: SH(32),
-    borderRadius: 3,
+    borderRadius: SH(16),
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: moderateScale(10),
+    flexDirection: 'row',
     paddingHorizontal: ms(10),
   },
   checkedText: {
@@ -273,6 +273,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  monthlySchduelNew: {
+    backgroundColor: COLORS.white,
+    borderRadius: 3,
+    paddingHorizontal: moderateScale(5),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   leftLight: {
     width: SH(20),
     height: SH(20),
@@ -280,7 +287,13 @@ export const styles = StyleSheet.create({
   },
   monthlySchduleDate: {
     fontFamily: Fonts.SemiBold,
-    color: COLORS.dark_grey,
+    color: '#263682',
+    fontSize: SF(14),
+    paddingHorizontal: moderateScale(5),
+  },
+  title1: {
+    fontFamily: Fonts.SemiBold,
+    color: '#263682',
     fontSize: SF(14),
     paddingHorizontal: moderateScale(5),
   },
@@ -962,5 +975,35 @@ export const styles = StyleSheet.create({
     marginTop: ms(10),
     marginHorizontal: ms(26),
     alignSelf: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  rowHorizonCenter: {
+    alignItems: 'center',
+  },
+  buttonCalender: {
+    borderWidth: ms(0.8),
+    borderColor: '#D7DEFF',
+    borderRadius: ms(8),
+    paddingVertical: ms(6),
+    paddingHorizontal: ms(12),
+  },
+  arrowDown: {
+    width: SH(16),
+    height: SH(16),
+    resizeMode: 'contain',
+  },
+  calenderModeIcons: {
+    width: SH(16),
+    height: SH(16),
+    resizeMode: 'contain',
+  },
+  calenderModeView: {
+    backgroundColor: COLORS.textInputBackground,
+    height: SH(32),
+    borderRadius: SH(16),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
