@@ -676,8 +676,9 @@ export function DashBoard({ navigation }) {
               // onPress={() => textInputRef.current.focus()}
               onPress={() => setScan(!scan)}
             >
-              <Image source={scan ? scanSearch : scn} style={styles.scnStyle} />
-              {/* <Image source={scn} style={styles.scnStyle} /> */}
+              {/* <Image source={scan ? scanSearch : scn} style={styles.scnStyle} /> */}
+
+              <Image source={Images.homeScan} style={styles.scnStyle} />
             </TouchableOpacity>
           </View>
 
@@ -724,6 +725,11 @@ export function DashBoard({ navigation }) {
                 >
                   <Image source={sellingArrow} style={styles.sellingArrow} />
                 </TouchableOpacity> */}
+                {index == 1 && (
+                  <View style={styles.bellBack}>
+                    <Image source={Images.bell} style={{ width: ms(15), height: ms(15) }} />
+                  </View>
+                )}
               </TouchableOpacity>
             ))}
           </View>

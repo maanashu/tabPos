@@ -404,8 +404,8 @@ const styles = StyleSheet.create({
     height: ms(10),
     borderRadius: ms(5),
     position: 'absolute',
-    bottom: 0,
-    right: -10,
+    bottom: -2,
+    right: -5,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.textInputBackground,
@@ -423,7 +423,7 @@ const styles = StyleSheet.create({
       backgroundColor: focused ? COLORS.textInputBackground : 'transparent',
       paddingHorizontal: ms(5),
       paddingVertical: ms(3),
-      left: Platform.OS === 'ios' ? ms(0) : ms(2.3),
+      left: Platform.OS === 'ios' ? ms(-4) : ms(2.3),
     };
   },
 });

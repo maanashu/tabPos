@@ -40,7 +40,6 @@ export const styles = StyleSheet.create({
     height: ms(70),
     resizeMode: 'contain',
     borderRadius: 100,
-    borderWidth: 7,
   },
   todaySaleCon: {
     borderRadius: 15,
@@ -161,11 +160,11 @@ export const styles = StyleSheet.create({
     borderRadius: ms(22),
     flexDirection: 'row',
     alignItems: 'center',
-    height: ms(35),
+    height: ms(32),
     justifyContent: 'space-between',
     marginHorizontal: moderateScale(10),
     alignSelf: 'center',
-    paddingHorizontal: ms(12),
+    paddingHorizontal: ms(7),
   },
   sideBarInputWraper: {
     borderWidth: 1,
@@ -932,5 +931,17 @@ export const styles = StyleSheet.create({
       transform: [{ rotate: '90deg' }],
       marginLeft: ms(3),
     };
+  },
+  bellBack: {
+    width: ms(27),
+    height: ms(27),
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    borderWidth: 2,
+    borderColor: COLORS.sky_blue,
+    borderRadius: ms(50),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
