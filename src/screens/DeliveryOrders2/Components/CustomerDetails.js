@@ -20,17 +20,17 @@ const CustomerDetails = ({ orderDetail }) => {
         />
 
         <View style={styles.userNameView}>
-          <Text style={styles.totalTextStyle}>
+          <Text style={[styles.totalTextStyle, { color: COLORS.navy_blue }]}>
             {`${capitalizeFirstLetter(userDetails?.firstname)} ${capitalizeFirstLetter(
               userDetails?.lastname
             )}`}
           </Text>
 
-          <Text style={styles.badgetext}>
+          <Text style={[styles.badgetext, { color: COLORS.lavender }]}>
             {`${userDetails?.current_address?.street_address}, ${userDetails?.current_address?.city}`}
           </Text>
 
-          <Text style={styles.badgetext}>
+          <Text style={[styles.badgetext, { color: COLORS.lavender }]}>
             {`${userDetails?.current_address?.state}, ${userDetails?.current_address?.country}`}
           </Text>
         </View>
@@ -40,11 +40,11 @@ const CustomerDetails = ({ orderDetail }) => {
         <Image source={scooter} style={styles.scooterImageStyle} />
 
         <View style={[styles.userNameView, { paddingLeft: 5 }]}>
-          <Text style={styles.datetextStyle}>
+          <Text style={[styles.datetextStyle, { color: COLORS.navy_blue }]}>
             {moment(orderDetail?.invoices?.delivery_date).format('DD MMM YYYY')}
           </Text>
 
-          <Text style={styles.preferredTextStyle}>
+          <Text style={[styles.preferredTextStyle, { color: COLORS.lavender }]}>
             {`${orderDetail?.preffered_delivery_start_time ?? '-'} - ${
               orderDetail?.preffered_delivery_end_time ?? '-'
             }`}

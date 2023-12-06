@@ -14,7 +14,7 @@ import CustomerDetails from './CustomerDetails';
 import ButtonComponent from './ButtonComponent';
 import ShipmentTracking from './ShipmentTracking';
 import mapCustomStyle from '@/components/MapCustomStyles';
-import { deliveryHomeIcon, expand, Fonts, gps, scooter } from '@/assets';
+import { deliveryHomeIcon, expand, Fonts, gps, pay, scooter } from '@/assets';
 
 import styles from '../styles';
 import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
@@ -32,6 +32,7 @@ const OrderDetail = ({
   onPressShop,
   isMaximizeStatusView,
 }) => {
+  console.log('userDetails', JSON.stringify(userDetail));
   const detailView = () => {
     if (
       userDetail?.status === 0 ||
@@ -55,7 +56,7 @@ const OrderDetail = ({
           </View>
 
           <View style={styles.orderandPriceView}>
-            <View style={{ paddingLeft: 15, flex: 1 }}>
+            <View style={{ paddingHorizontal: 15, flex: 1 }}>
               <View>
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                   {strings.shippingOrder.totalItem}
@@ -65,22 +66,48 @@ const OrderDetail = ({
                 </Text>
               </View>
 
-              <Spacer space={SH(15)} />
+              <Spacer space={SH(6)} />
+              <Spacer backgroundColor={COLORS.lavender} space={0.4} />
+              <Spacer space={SH(6)} />
               <View>
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                   {strings.shippingOrder.orderDate}
                 </Text>
-                <Text style={styles.itemCountText}>
+                <Text style={[styles.itemCountText, { fontSize: ms(8) }]}>
                   {userDetail?.date ? moment(userDetail?.date).format('DD/MM/YYYY') : '00:00'}
                 </Text>
               </View>
 
-              <Spacer space={SH(15)} />
+              <Spacer space={SH(6)} />
+              <Spacer backgroundColor={COLORS.lavender} space={0.4} />
+              <Spacer space={SH(6)} />
               <View>
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                   {strings.shippingOrder.orderId}
                 </Text>
                 <Text style={styles.itemCountText}>{`#${userDetail?.id}`}</Text>
+              </View>
+              <Spacer space={SH(6)} />
+              <Spacer backgroundColor={COLORS.lavender} space={0.5} />
+              <Spacer space={SH(6)} />
+              <View>
+                <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
+                  {strings.shippingOrder.paymentMethod}
+                </Text>
+                <View
+                  style={[
+                    styles.locationViewStyle,
+                    { backgroundColor: COLORS.alarm_success_50, borderRadius: 100 },
+                  ]}
+                >
+                  <Image
+                    source={pay}
+                    style={[styles.pinImageStyle, { tintColor: COLORS.success_green }]}
+                  />
+                  <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+                    {userDetail?.mode_of_payment == 'jbr' ? 'JBR coin' : 'cash'}
+                  </Text>
+                </View>
               </View>
 
               {/* {userDetail?.status === 2 && (
@@ -113,11 +140,14 @@ const OrderDetail = ({
 
             <View style={styles.subTotalView}>
               <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
-                <Text style={[styles.invoiceText, { color: COLORS.solid_grey }]}>
+                <Text style={[styles.invoiceText, { color: COLORS.lavender }]}>
                   {strings.deliveryOrders.subTotal}
                 </Text>
                 <Text
-                  style={[styles.totalTextStyle, { paddingTop: 0, fontFamily: Fonts.MaisonBold }]}
+                  style={[
+                    styles.totalTextStyle,
+                    { paddingTop: 0, fontFamily: Fonts.MaisonBold, color: COLORS.navy_blue },
+                  ]}
                 >
                   ${userDetail?.actual_amount ? Number(userDetail?.actual_amount).toFixed(2) : '0'}
                 </Text>
@@ -126,8 +156,8 @@ const OrderDetail = ({
               <View style={styles.orderDetailsView}>
                 <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
                 <View style={styles.flexDirectionRow}>
-                  <Text style={styles.totalTextStyle2}>{'$'}</Text>
-                  <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
+                  <Text style={[styles.totalTextStyle2, { color: COLORS.navy_blue }]}>{'$'}</Text>
+                  <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
                     {/* {userDetail?.discount ? Number(userDetail?.discount).toFixed(2) : '0'} */}
                     {formattedReturnPriceWithoutSign(userDetail?.discount)}
                   </Text>
@@ -137,18 +167,20 @@ const OrderDetail = ({
               <View style={styles.orderDetailsView}>
                 <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
                 <View style={styles.flexDirectionRow}>
-                  <Text style={styles.totalTextStyle2}>{'$'}</Text>
-                  <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
+                  <Text style={[styles.totalTextStyle2, { color: COLORS.navy_blue }]}>{'$'}</Text>
+                  <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
                     {Number(userDetail?.tips).toFixed(2) ?? '0'}
                   </Text>
                 </View>
               </View>
 
               <View style={styles.orderDetailsView}>
-                <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
+                <Text style={[styles.invoiceText, { color: COLORS.lavender }]}>
+                  {strings.deliveryOrders.tax}
+                </Text>
                 <View style={styles.flexDirectionRow}>
-                  <Text style={styles.totalTextStyle2}>{'$'}</Text>
-                  <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}>
+                  <Text style={[styles.totalTextStyle2, { color: COLORS.navy_blue }]}>{'$'}</Text>
+                  <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
                     {userDetail?.tax ? Number(userDetail?.tax).toFixed(2) : '0'}
                   </Text>
                 </View>
@@ -157,9 +189,9 @@ const OrderDetail = ({
                 <View style={styles.orderDetailsView}>
                   <Text style={styles.invoiceText}>{strings.deliveryOrders.deliveryCharges}</Text>
                   <View style={styles.flexDirectionRow}>
-                    <Text style={styles.totalTextStyle2}>{'$'}</Text>
+                    <Text style={[styles.totalTextStyle2, { color: COLORS.navy_blue }]}>{'$'}</Text>
                     <Text
-                      style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.darkGray }]}
+                      style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}
                     >
                       {Number(userDetail?.delivery_charge)?.toFixed(2)}
                     </Text>
@@ -177,21 +209,23 @@ const OrderDetail = ({
               />
 
               <View style={styles.orderDetailsView}>
-                <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
+                <Text style={[styles.totalText, { color: COLORS.black }]}>
+                  {strings.deliveryOrders.total}
+                </Text>
                 <View style={styles.flexDirectionRow}>
                   <Text
                     style={[
-                      styles.totalTextStyle2,
                       {
                         fontFamily: Fonts.MaisonBold,
                         fontSize: SF(13),
-                        color: COLORS.solid_grey,
+                        color: COLORS.navy_blue,
+                        textAlign: 'center',
                       },
                     ]}
                   >
                     {'$'}
                   </Text>
-                  <Text style={[styles.totalText, { paddingTop: 0 }]}>
+                  <Text style={[styles.totalText, { paddingTop: 0, color: COLORS.navy_blue }]}>
                     {Number(userDetail?.payable_amount).toFixed(2)}
                   </Text>
                 </View>

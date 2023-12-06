@@ -51,7 +51,7 @@ const OrderConvertion = () => {
   };
   return (
     <View style={styles.orderConvertionView}>
-      <Text style={styles.orderTextStyle}>{strings.shippingOrder.orderConvertion}</Text>
+      <Text style={styles.orderTextStyle}>{strings.shippingOrder.orders}</Text>
 
       <Spacer space={ms(20)} />
       <View style={styles.piechartViewStyle}>

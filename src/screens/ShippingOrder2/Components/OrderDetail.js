@@ -166,6 +166,8 @@ const OrderDetail = ({
           style={{
             flexDirection: 'row',
             margin: ms(8),
+            alignItems: 'center',
+            paddingEnd: ms(10),
           }}
         >
           <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.8 }]}>
@@ -175,15 +177,19 @@ const OrderDetail = ({
             />
 
             <View style={styles.userNameView}>
-              <Text style={[styles.totalTextStyle, { padding: 0 }]}>
+              <Text style={[styles.totalTextStyle, { padding: 0, color: COLORS.navy_blue }]}>
                 {userDetail?.user_details?.firstname ? userDetail?.user_details?.firstname : '-'}
               </Text>
 
-              <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
+              <Text
+                style={[styles.badgetext, { fontFamily: Fonts.Medium, color: COLORS.lavender }]}
+              >
                 {`${userDetail?.address}, ${userDetail?.city}`}
               </Text>
 
-              <Text style={[styles.badgetext, { fontFamily: Fonts.Medium }]}>
+              <Text
+                style={[styles.badgetext, { fontFamily: Fonts.Medium, color: COLORS.lavender }]}
+              >
                 {`${userDetail?.state}, ${userDetail?.country}`}
               </Text>
             </View>
@@ -215,7 +221,7 @@ const OrderDetail = ({
                 style={{
                   fontFamily: Fonts.Medium,
                   fontSize: SF(10),
-                  color: COLORS.textBlue,
+                  color: COLORS.navy_blue,
                 }}
               >
                 {userDetail?.shipping_details?.title}
