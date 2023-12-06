@@ -430,6 +430,16 @@ export { default as arrowRightIcon } from '@/assets/new_icon/dashboard/Arrow_Rig
 export { default as emailBlueIcon } from '@/assets/new_icon/dashboard/email_blue_icon.png';
 export { default as phoneMsgIcon } from '@/assets/new_icon/dashboard/phone_message.png';
 export { default as printerIcon } from '@/assets/new_icon/dashboard/printer_icon.png';
+export { default as newCheck } from '@/assets/new_icon/ic_customer/newCheck.png';
+export { default as newCustomerUser } from '@/assets/new_icon/ic_customer/newCustomer.png';
+export { default as newReturningCustomer } from '@/assets/new_icon/ic_customer/newReturningCustomer.png';
+export { default as newUsers } from '@/assets/new_icon/ic_customer/newUsers.png';
+export { default as newWalkingCustomer } from '@/assets/new_icon/ic_customer/newWalkingCustomer.png';
+export { default as onlineUser } from '@/assets/new_icon/ic_customer/onlineUser.png';
+export { default as Gift_Card } from '@/assets/new_icon/ic_customer/Gift_Card.png';
+export { default as new_email } from '@/assets/new_icon/ic_customer/new_email.png';
+export { default as new_phone } from '@/assets/new_icon/ic_customer/new_phone.png';
+export { default as new_location } from '@/assets/new_icon/ic_customer/new_location.png';
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',

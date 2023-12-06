@@ -121,6 +121,7 @@ const Graph = ({ graphDetail, newCustomerCheck, onlineCustomerCheck, walkCustome
             withShadow={false}
             fromZero
             segments={10}
+            initialSpacing={10}
           />
         </ScrollView>
       )}

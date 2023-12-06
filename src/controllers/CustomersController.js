@@ -12,8 +12,18 @@ export class CustomersController {
     let convertedString = originalString.toLowerCase().replace(/\s+/g, '_');
     return new Promise((resolve, reject) => {
       function generateUserOrderEndpoint(data) {
-        const { search, area, calenderDate, sellerID, dayWisefilter, page, limit, customerType } =
-          data;
+        const {
+          search,
+          area,
+          calenderDate,
+          sellerID,
+          dayWisefilter,
+          page,
+          limit,
+          customerType,
+          start_date,
+          end_date,
+        } = data;
         const type = customerType?.toLowerCase().replace(/\s+/g, '_');
         const baseEndpoint = `${ORDER_URL}${ApiOrderInventory.getUserOrder}`;
 
@@ -25,7 +35,9 @@ export class CustomersController {
         if (dayWisefilter) queryParams.push(`filter=${dayWisefilter}`);
         if (page) queryParams.push(`page=${page}`);
         if (limit) queryParams.push(`limit=${limit}`);
-
+        if (start_date !== 'Invalid date' && undefined)
+          queryParams.push(`start_date=${start_date}`);
+        if (end_date !== 'Invalid date' && undefined) queryParams.push(`end_date=${end_date}`);
         const queryString = queryParams.join('&');
 
         return `${baseEndpoint}?${queryString}`;
@@ -35,9 +47,13 @@ export class CustomersController {
 
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('adsagd', endpoint);
           resolve(response);
         })
         .catch((error) => {
+          console.log('errorerror', error);
+          console.log('error', endpoint);
+
           error?.msg &&
             Toast.show({
               text2: error.msg,
@@ -80,10 +96,11 @@ export class CustomersController {
     });
   }
 
-  static async getCustomers(time, sellerID) {
+  static async getCustomers(data, sellerID) {
     return new Promise((resolve, reject) => {
+      const params = new URLSearchParams(data).toString();
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getCustomer + `?seller_id=${sellerID}&filter=${time}`;
+        ORDER_URL + ApiOrderInventory.getCustomer + `?seller_id=${sellerID}&${params}`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
