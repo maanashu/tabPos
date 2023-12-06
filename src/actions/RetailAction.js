@@ -995,6 +995,14 @@ export const cartRun = (cartFrom) => ({
   type: TYPES.CART_RUN_SUCCESS,
   payload: { cartFrom },
 });
+export const addProductFrom = (addProductFrom) => ({
+  type: TYPES.ADD_PRODUCT_FROM_SUCCESS,
+  payload: { addProductFrom },
+});
+export const addServiceFrom = (addServiceFrom) => ({
+  type: TYPES.ADD_SERVICE_FROM_SUCCESS,
+  payload: { addServiceFrom },
+});
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {

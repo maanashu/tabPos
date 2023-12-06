@@ -316,6 +316,14 @@ const getCurrentAddress = (current_location) => {
 
   return '';
 };
+
+const imageSource = (url, img) => {
+  if (typeof url === 'string' && url?.length > 2) {
+    return { uri: url };
+  } else {
+    return img;
+  }
+};
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -337,4 +345,5 @@ export {
   calculateTimeSlotSelection,
   formattedReturnPriceWithoutSign,
   getCurrentAddress,
+  imageSource,
 };

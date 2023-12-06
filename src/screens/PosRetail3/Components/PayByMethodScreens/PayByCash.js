@@ -243,6 +243,7 @@ export const PayByCash = ({
                     contentContainerStyle={{
                       flex: 1,
                       justifyContent: 'space-between',
+                      borderWidth: 1,
                     }}
                   />
                 </View>

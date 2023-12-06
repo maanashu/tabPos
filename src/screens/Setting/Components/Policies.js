@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Spacer } from '@/components';
-import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH } from '@/theme';
 import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
-import { activeCircle, ellipse } from '@/assets';
-import { LEGALDATA, policyLabelData } from '@/constants/flatListData';
+import { activeCircle } from '@/assets';
 import Modal from 'react-native-modal';
-import { moderateVerticalScale, ms } from 'react-native-size-matters';
+import { moderateVerticalScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
 import { getSettings } from '@/actions/SettingAction';
 import moment from 'moment';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Images } from '@/assets/new_icon';
 
 export function Policies() {
   const isFocused = useIsFocused();
@@ -45,13 +44,7 @@ export function Policies() {
       }}
     >
       <View style={styles.dateViewStyle}>
-        <View>
-          <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>Publish Date:</Text>
-          <Text style={[styles.securitysubhead, { fontSize: SF(10) }]}>
-            {moment(item?.created_at).format('MMM D, YYYY h:mm A')}
-          </Text>
-        </View>
-
+        <Text style={[styles.securitysubhead, { fontSize: SF(12) }]}>Publish Date:</Text>
         {item?.is_active ? (
           <View style={styles.activebuttonStyle}>
             <Image source={activeCircle} style={[styles.circlImageStyle]} />
@@ -63,6 +56,12 @@ export function Policies() {
             <Text style={[styles.activeTextStyle, styles.activeTextrRed]}>Inactive</Text>
           </View>
         )}
+      </View>
+      <View style={styles.dateContainer}>
+        <Image source={Images.calendarIcon} style={styles.calendarImageStyle} />
+        <Text style={[styles.securitysubhead, { fontSize: SF(10) }]}>
+          {moment(item?.created_at).format('MMM D, YYYY h:mm A')}
+        </Text>
       </View>
       <Spacer space={SH(5)} />
       <View style={{ alignItems: 'center' }}>
@@ -76,6 +75,7 @@ export function Policies() {
       </View>
       <Spacer space={SH(5)} />
       <Text style={styles.updateTextStyle}>Last update date:</Text>
+      <Spacer space={SH(5)} />
       <Text style={styles.updateTextStyle}>
         {moment(item?.updated_at).format('MMM D, YYYY h:mm A')}
       </Text>

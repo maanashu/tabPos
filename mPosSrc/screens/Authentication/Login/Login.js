@@ -45,9 +45,7 @@ export function Login(props) {
   const { posUser } = props?.route?.params;
 
   const getAuth = useSelector(getAuthData);
-  // console.log('auth resposeee', JSON.stringify(posUser));
   const getData = useSelector(getAuthData);
-  // const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
   const TWO_FACTOR = posUser?.user?.user_profiles?.is_two_fa_enabled;
 
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
@@ -97,8 +95,6 @@ export function Login(props) {
       };
       const res = await dispatch(loginPosUser(data));
       setIsLoading(false);
-
-      // console.log('res', JSON.stringify(res));
       if (res?.type !== TYPES.LOGIN_POS_USER_ERROR) {
         if (twoFactorEnabled) {
           navigate(MPOS_NAVIGATION.twoFactorLogin, { userResponse: res });

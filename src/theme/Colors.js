@@ -24,6 +24,7 @@ export const COLORS = {
   orange: '#F2994A',
   darkGreen: '#384048',
   red: '#ff0000',
+  soft_red: '#ffc4c4',
   orange: '#FC7900',
   green: '#2EC759',
   indicator: '#0000ff',
@@ -105,4 +106,5 @@ export const COLORS = {
   dark_purple: '#552099',
   // faded_lavendar: '#D8B9FF',
   base_gray_600: '#535E68',
+  input_border: '#E4E6F2',
 };

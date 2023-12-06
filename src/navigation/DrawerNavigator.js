@@ -33,6 +33,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import { navigate } from '@/navigation/NavigationRef';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { addSellingSelection } from '@/actions/DashboardAction';
+import { Images } from '@/assets/new_icon';
 const windowHeight = Dimensions.get('window').height;
 
 export function DrawerNavigator(props) {
@@ -66,7 +67,7 @@ export function DrawerNavigator(props) {
       contentContainerStyle={styles.contentContainerStyle}
       bounces={false}
     >
-      <ScrollView showsVerticalScrollIndicator={false} bounces={false} style={{ width: SW(25) }}>
+      <ScrollView showsVerticalScrollIndicator={false} bounces={false} style={{ width: '100%' }}>
         <DrawerItem
           label={''}
           pressColor={COLORS.transparent}
@@ -78,13 +79,18 @@ export function DrawerNavigator(props) {
             dispatch(addSellingSelection());
           }}
           icon={({ focused }) => (
-            <Image style={styles.iconStyle} source={focused ? logo_icon : logo_icon} />
+            <View style={styles.iconBackgroud()}>
+              <Image
+                style={[styles.iconStyle(), { tintColor: COLORS.navy_blue }]}
+                source={Images.jbrLogo}
+              />
+            </View>
           )}
         />
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
-          focused={active === 'posRetail3' ? true : false}
+          // focused={active === 'posRetail3' ? true : false}
           // onPress={() => {
           //   setActive('posRetail3');
           //   navigate(NAVIGATION.posRetail3);
@@ -93,7 +99,12 @@ export function DrawerNavigator(props) {
           //   // dispatch(getUserDetailSuccess([]));
           // }}
           icon={({ focused }) => (
-            <Image source={focused ? userImage : userImage} style={styles.iconStyle} />
+            <View style={styles.iconBackgroud(focused)}>
+              <Image
+                source={focused ? userImage : userImage}
+                style={[styles.iconStyle(focused), styles.iconStyleUser]}
+              />
+            </View>
           )}
         />
 
@@ -111,7 +122,9 @@ export function DrawerNavigator(props) {
             // dispatch(getUserDetailSuccess([]));
           }}
           icon={({ focused }) => (
-            <Image source={focused ? retail : greyRetail} style={styles.iconStyle} />
+            <View style={styles.iconBackgroud(focused)}>
+              <Image source={Images.retailIcon} style={styles.iconStyle(focused)} />
+            </View>
           )}
         />
 
@@ -125,16 +138,26 @@ export function DrawerNavigator(props) {
           }}
           icon={({ focused }) => {
             return getDashboardData?.pendingOrders?.delivery_count ? (
-              <View>
-                <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
-                <View style={styles.countViewStyle}>
-                  <Text style={styles.countTextStyle}>
-                    {getDashboardData?.pendingOrders?.delivery_count}
-                  </Text>
+              <View style={styles.iconBackgroud(focused)}>
+                <View>
+                  <Image
+                    source={focused ? blueTruck : deliveryTruck}
+                    style={styles.iconStyle(focused)}
+                  />
+                  <View style={styles.countViewStyle}>
+                    <Text style={styles.countTextStyle}>
+                      {getDashboardData?.pendingOrders?.delivery_count}
+                    </Text>
+                  </View>
                 </View>
               </View>
             ) : (
-              <Image source={focused ? blueTruck : deliveryTruck} style={styles.iconStyle} />
+              <View style={styles.iconBackgroud(focused)}>
+                <Image
+                  source={focused ? blueTruck : deliveryTruck}
+                  style={styles.iconStyle(focused)}
+                />
+              </View>
             );
           }}
         />
@@ -149,16 +172,26 @@ export function DrawerNavigator(props) {
           }}
           icon={({ focused }) => {
             return getDashboardData?.pendingOrders?.shipping_count ? (
-              <View>
-                <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
-                <View style={styles.countViewStyle}>
-                  <Text style={styles.countTextStyle}>
-                    {getDashboardData?.pendingOrders?.shipping_count}
-                  </Text>
+              <View style={styles.iconBackgroud(focused)}>
+                <View>
+                  <Image
+                    source={focused ? bluepara : parachuteBox}
+                    style={styles.iconStyle(focused)}
+                  />
+                  <View style={styles.countViewStyle}>
+                    <Text style={styles.countTextStyle}>
+                      {getDashboardData?.pendingOrders?.shipping_count}
+                    </Text>
+                  </View>
                 </View>
               </View>
             ) : (
-              <Image source={focused ? bluepara : parachuteBox} style={styles.iconStyle} />
+              <View style={styles.iconBackgroud(focused)}>
+                <Image
+                  source={focused ? bluepara : parachuteBox}
+                  style={styles.iconStyle(focused)}
+                />
+              </View>
             );
           }}
         />
@@ -174,16 +207,26 @@ export function DrawerNavigator(props) {
           }}
           icon={({ focused }) => {
             return getDashboardData?.pendingOrders?.appointment_count ? (
-              <View>
-                <Image source={focused ? blueCalender : calendar} style={styles.iconStyle} />
-                <View style={styles.countViewStyle}>
-                  <Text style={styles.countTextStyle}>
-                    {getDashboardData?.pendingOrders?.appointment_count}
-                  </Text>
+              <View style={styles.iconBackgroud(focused)}>
+                <View>
+                  <Image
+                    source={focused ? blueCalender : calendar}
+                    style={styles.iconStyle(focused)}
+                  />
+                  <View style={styles.countViewStyle}>
+                    <Text style={styles.countTextStyle}>
+                      {getDashboardData?.pendingOrders?.appointment_count}
+                    </Text>
+                  </View>
                 </View>
               </View>
             ) : (
-              <Image source={focused ? blueCalender : calendar} style={styles.iconStyle} />
+              <View style={styles.iconBackgroud(focused)}>
+                <Image
+                  source={focused ? blueCalender : calendar}
+                  style={styles.iconStyle(focused)}
+                />
+              </View>
             );
           }}
         />
@@ -198,7 +241,12 @@ export function DrawerNavigator(props) {
             dispatch(addSellingSelection());
           }}
           icon={({ focused }) => (
-            <Image source={focused ? blueanalytics : analytics} style={styles.iconStyle} />
+            <View style={styles.iconBackgroud(focused)}>
+              <Image
+                source={focused ? blueanalytics : analytics}
+                style={styles.iconStyle(focused)}
+              />
+            </View>
           )}
         />
 
@@ -211,23 +259,11 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.wallet2);
           }}
           icon={({ focused }) => (
-            <Image source={focused ? bluewallet : wallet} style={styles.iconStyle} />
+            <View style={styles.iconBackgroud(focused)}>
+              <Image source={focused ? bluewallet : wallet} style={styles.iconStyle(focused)} />
+            </View>
           )}
         />
-
-        {/* <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'wallet' ? true : false}
-          onPress={() => {
-            setActive('wallet');
-            navigate(NAVIGATION.wallet);
-            dispatch(addSellingSelection());
-          }}
-          icon={({ focused }) => (
-            <Image source={focused ? bluewallet : wallet} style={styles.iconStyle} />
-          )}
-        /> */}
 
         <DrawerItem
           label={''}
@@ -239,23 +275,11 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.management);
           }}
           icon={({ focused }) => (
-            <Image source={focused ? bluetray : tray} style={styles.iconStyle} />
+            <View style={styles.iconBackgroud(focused)}>
+              <Image source={focused ? bluetray : tray} style={styles.iconStyle(focused)} />
+            </View>
           )}
         />
-
-        {/* <DrawerItem
-          label={''}
-          activeBackgroundColor={COLORS.transparent}
-          focused={active === 'users' ? true : false}
-          onPress={() => {
-            setActive('users');
-            navigate(NAVIGATION.customers);
-            dispatch(addSellingSelection());
-          }}
-          icon={({ focused }) => (
-            <Image source={focused ? blueusers : users} style={styles.iconStyle} />
-          )}
-        /> */}
 
         <DrawerItem
           label={''}
@@ -267,7 +291,9 @@ export function DrawerNavigator(props) {
             dispatch(addSellingSelection());
           }}
           icon={({ focused }) => (
-            <Image source={focused ? blueusers : users} style={styles.iconStyle} />
+            <View style={styles.iconBackgroud(focused)}>
+              <Image source={focused ? blueusers : users} style={styles.iconStyle(focused)} />
+            </View>
           )}
         />
 
@@ -282,7 +308,12 @@ export function DrawerNavigator(props) {
               dispatch(addSellingSelection());
             }}
             icon={({ focused }) => (
-              <Image source={focused ? blueSetting : settings} style={styles.iconStyle} />
+              <View style={styles.iconBackgroud(focused)}>
+                <Image
+                  source={focused ? blueSetting : settings}
+                  style={styles.iconStyle(focused)}
+                />
+              </View>
             )}
           />
         )}
@@ -296,7 +327,7 @@ export function DrawerNavigator(props) {
             navigate(NAVIGATION.refund);
           }}
           icon={({ focused }) => (
-            <Image source={focused ? blueusers : users} style={styles.iconStyle} />
+            <Image source={focused ? blueusers : users} style={styles.iconStyle(focused)} />
           )}
         /> */}
       </ScrollView>
@@ -305,7 +336,7 @@ export function DrawerNavigator(props) {
           <DrawerItem
             label={''}
             onPress={() => merchantEndSesion()}
-            icon={({ focused, color, size }) => <Image source={power} style={styles.iconStyle} />}
+            icon={({ focused, color, size }) => <Image source={power} style={styles.iconStyle(focused)} />}
           />
         </View>
       ) : null} */}
@@ -321,11 +352,11 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   contentContainerStyle: {
-    alignItems: 'flex-start',
+    // alignItems: 'flex-start',
     left: 0,
-    right: 10,
+    right: 0,
     width: SW(25),
-    paddingVertical: ms(10),
+    // paddingVertical: ms(10),
     backgroundColor: COLORS.white,
     borderRadius: ms(60),
     flex: 1,
@@ -336,25 +367,20 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.text,
     alignSelf: 'center',
   },
-  iconStyle: {
+  iconStyle: (focused) => {
+    return {
+      width: ms(16),
+      height: ms(16),
+      resizeMode: 'contain',
+      // left: ms(2),
+      tintColor: focused ? COLORS.navy_blue : COLORS.light_blue2,
+    };
+  },
+  iconStyleUser: {
     width: ms(20),
     height: ms(20),
-    resizeMode: 'contain',
-    left: SW(2.8),
   },
-  iconStyle2: {
-    width: ms(20),
-    height: ms(20),
-    marginLeft: 3,
-    resizeMode: 'contain',
-    left: SW(2.8),
-  },
-  iconStyle3: {
-    width: ms(20),
-    height: ms(20),
-    marginLeft: 3,
-    resizeMode: 'contain',
-  },
+
   iconStyle1: {
     width: Platform.OS === 'android' ? SW(11) : SW(10),
     height: Platform.OS === 'android' ? SW(11) : SW(10),
@@ -381,12 +407,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.textInputBackground,
-    borderColor: COLORS.black,
+    borderColor: COLORS.light_blue2,
     borderWidth: 1,
   },
   countTextStyle: {
-    color: COLORS.dark_grey,
+    color: COLORS.light_blue2,
     fontSize: SF(8),
     fontFamily: Fonts.SemiBold,
+  },
+  iconBackgroud: (focused) => {
+    return {
+      borderRadius: ms(7),
+      backgroundColor: focused ? COLORS.textInputBackground : 'transparent',
+      paddingHorizontal: ms(5),
+      paddingVertical: ms(3),
+      left: Platform.OS === 'ios' ? ms(0) : ms(2.3),
+    };
   },
 });

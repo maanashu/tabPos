@@ -24,7 +24,6 @@ const OrderConvertion = () => {
     pieChartData?.[2]?.count ?? 0,
     // pieChartData?.[3]?.count ?? 0,
   ];
-
   let sum = 0;
   series?.forEach((num) => {
     sum += num;

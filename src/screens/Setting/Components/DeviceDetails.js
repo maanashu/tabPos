@@ -4,16 +4,11 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import Modal from 'react-native-modal';
 
 import {
-  addIcon,
   blueToothIcon,
   crossButton,
-  deviceLogo,
   scanner,
   toggleSecurity,
   trackCamera,
-  printer,
-  cardReader,
-  tray,
   device,
   systemUpdate,
 } from '@/assets';
@@ -21,7 +16,6 @@ import { SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Button, Spacer } from '@/components';
 import { deviceDropDownArray } from '@/constants/flatListData';
-import DeviceInfo from 'react-native-device-info';
 import { styles } from '@/screens/Setting/Setting.styles';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';

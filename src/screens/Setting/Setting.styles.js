@@ -21,6 +21,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  rowJustified: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   dispalyRow: {
     flexDirection: 'row',
     // alignItems: 'center',
@@ -48,7 +53,7 @@ export const styles = StyleSheet.create({
   },
   DataCon: {
     width: Platform.OS === 'android' ? windowWidth * 0.66 : windowWidth * 0.64,
-    height: windowHeight * 0.96,
+    height: windowHeight * 0.915,
     paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(18),
     backgroundColor: COLORS.white,
@@ -94,7 +99,6 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
-    textAlign: 'center',
   },
 
   // setting security css start
@@ -112,7 +116,7 @@ export const styles = StyleSheet.create({
     // borderColor: COLORS.solidGrey,
 
     // height: windowHeight * 0.5,
-    padding: 15,
+    // padding: 15,
     flex: 0.9,
     // alignItems: 'center',
   },
@@ -140,6 +144,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonBold,
     color: COLORS.navy_blue,
   },
+  walletHeading: {
+    fontSize: SF(15),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
+  },
   downloadText: {
     fontSize: SF(18),
     fontFamily: Fonts.Regular,
@@ -155,6 +164,12 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
   },
+  dateContainer: {
+    flexDirection: 'row',
+    marginLeft: SW(2),
+    marginTop: SH(6),
+    marginBottom: SH(8),
+  },
   securitysubhead: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
@@ -166,7 +181,6 @@ export const styles = StyleSheet.create({
     color: COLORS.navy_blue,
   },
   twoStepMemberCon: {
-    borderWidth: 1,
     borderColor: COLORS.light_purple,
     borderRadius: SH(20),
     paddingHorizontal: moderateScale(12),
@@ -174,6 +188,16 @@ export const styles = StyleSheet.create({
     height: SH(70),
     justifyContent: 'center',
     backgroundColor: COLORS.sky_grey,
+  },
+  staffItemContainer: {
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
+    borderRadius: SH(20),
+    paddingHorizontal: moderateScale(12),
+    marginVertical: verticalScale(3),
+    height: SH(70),
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
   },
   locationsView: {
     borderRadius: SH(20),
@@ -414,6 +438,12 @@ export const styles = StyleSheet.create({
     width: SW(6),
     height: SW(6),
     resizeMode: 'contain',
+  },
+  addNew1: {
+    color: COLORS.navy_blue,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+    marginLeft: SW(6),
   },
   addNew: {
     color: COLORS.white,
@@ -687,7 +717,7 @@ export const styles = StyleSheet.create({
   submitButtons: {
     backgroundColor: COLORS.primary,
     width: SW(30),
-    height: SH(45),
+    height: SH(40),
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
@@ -695,7 +725,7 @@ export const styles = StyleSheet.create({
   selectedText: {
     color: COLORS.white,
     textAlign: 'center',
-    fontSize: SF(16),
+    fontSize: SF(12),
     fontFamily: Fonts.Regular,
   },
   countryModCon: {
@@ -1036,13 +1066,13 @@ export const styles = StyleSheet.create({
   legalViewStyle: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    borderRadius: 5,
+    borderRadius: 10,
     paddingVertical: moderateScale(10),
     paddingHorizontal: moderateScale(5),
     // justifyContent: 'center',
     marginBottom: 5,
-    width: SW(80),
-    height: windowHeight * 0.4,
+    width: windowWidth * 0.19,
+    height: windowHeight * 0.37,
     marginTop: SW(4),
     marginHorizontal: SW(1.9),
     // marginLeft: SW(4),
@@ -1050,11 +1080,17 @@ export const styles = StyleSheet.create({
   legalView: {
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
-    borderRadius: 5,
     padding: moderateScale(10),
     marginBottom: 5,
-    width: SW(70),
+    marginHorizontal: ms(1),
     height: windowHeight * 0.25,
+    borderRadius: 10,
+  },
+  calendarImageStyle: {
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+    marginRight: SW(2),
   },
   circlImageStyle: {
     width: SW(3),
@@ -1089,14 +1125,16 @@ export const styles = StyleSheet.create({
     height: SW(8),
     borderWidth: 1,
     borderColor: COLORS.green,
-    borderRadius: 5,
+    borderRadius: 30,
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: COLORS.soft_green,
   },
   redActiveButton: {
     width: SW(27),
     borderColor: COLORS.red,
+    backgroundColor: COLORS.soft_red,
   },
   legalModalCon: {
     backgroundColor: 'white',
@@ -1165,6 +1203,11 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
   },
+  plusIconStyle: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+  },
   arrowStyle2: {
     width: SW(5),
     height: SW(5),
@@ -1179,24 +1222,31 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  staffBackButton: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   backButtonArrow: {
-    width: SW(12),
+    width: SW(10),
     height: SW(8),
     resizeMode: 'contain',
-    tintColor: COLORS.dark_grey,
+    tintColor: COLORS.navy_blue,
+    marginRight: 5,
   },
   backTextStyle: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(16),
+    fontSize: SF(18),
     paddingVertical: verticalScale(5),
   },
   profileMaincon: {
-    height: windowHeight * 0.16,
     flexDirection: 'row',
+    backgroundColor: COLORS.sky_grey,
+    borderRadius: 15,
+    padding: 10,
   },
   profileBodycon: {
-    width: windowWidth * 0.4,
+    width: windowWidth * 0.38,
     borderRightWidth: 1,
     borderColor: COLORS.solidGrey,
   },
@@ -1213,17 +1263,17 @@ export const styles = StyleSheet.create({
   staffName: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(22),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
   },
   Phonelight: {
     width: SW(5),
     height: SW(5),
     resizeMode: 'contain',
-    tintColor: COLORS.primary,
+    tintColor: COLORS.navy_blue,
     marginRight: moderateScale(5),
   },
   terryText: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
   },
@@ -1234,7 +1284,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   shieldText: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(14),
     fontFamily: Fonts.SemiBold,
   },
@@ -1250,12 +1300,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   joinDateDark: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(14),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Regular,
   },
   joinDatelight: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
   },
@@ -1295,7 +1345,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: moderateScale(10),
     justifyContent: 'center',
-    backgroundColor: COLORS.textInputBackground,
+    // backgroundColor: COLORS.textInputBackground,
     width: windowWidth * 0.7,
   },
   dateHeadAlign: {
@@ -1305,8 +1355,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.dark_grey,
+    fontFamily: Fonts.Medium,
+    color: COLORS.lavender,
     fontSize: SF(14),
     textAlign: 'center',
     width: windowWidth * 0.11,
@@ -1335,7 +1385,7 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.94,
     backgroundColor: COLORS.white,
     alignSelf: 'center',
-    borderRadius: 10,
+    borderRadius: 30,
     // paddingHorizontal: moderateScale(15),
     paddingVertical: verticalScale(10),
   },
@@ -1420,6 +1470,11 @@ export const styles = StyleSheet.create({
   systemPos: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.solid_grey,
+    fontSize: SF(13),
+  },
+  posSystem: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.navy_blue,
     fontSize: SF(14),
   },
   shippingBodyCon: {
@@ -1503,6 +1558,22 @@ export const styles = StyleSheet.create({
     marginLeft: SH(10),
     borderRadius: 3,
   },
+  cancelButton: {
+    backgroundColor: '#E4E6F2',
+    width: windowWidth * 0.21,
+    height: windowHeight * 0.055,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  saveButton: {
+    backgroundColor: COLORS.navy_blue,
+    width: windowWidth * 0.21,
+    height: windowHeight * 0.055,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   addToCartCon: {
     backgroundColor: COLORS.primary,
     width: SH(120),
@@ -1516,12 +1587,12 @@ export const styles = StyleSheet.create({
   addTocartText: {
     color: COLORS.white,
     fontSize: SH(13),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
   },
   detailBtnCon: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SH(13),
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
   },
   addCartConHeader: {
     flexDirection: 'row',
@@ -1551,12 +1622,15 @@ export const styles = StyleSheet.create({
     borderWidth: 0,
     alignItems: 'center',
     flexDirection: 'row',
-    height: windowHeight * 0.08,
+    height: windowHeight * 0.06,
     width: windowWidth * 0.45,
-    backgroundColor: COLORS.textInputBackground,
-    borderRadius: 5,
-    marginTop: 16,
+    backgroundColor: COLORS.input_bg,
+    borderRadius: 50,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
     // marginHorizontal: SW(10),
+    marginVertical: 10,
   },
   dropDownIcon: {
     width: 7,
@@ -1570,7 +1644,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(8),
   },
   phoneText: {
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontSize: SF(14),
     fontFamily: Fonts.Medium,
     // paddingHorizontal: moderateScale(8),
@@ -1582,8 +1656,22 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
     width: windowWidth * 0.5,
   },
+  nameInputContainer: {
+    backgroundColor: COLORS.input_bg,
+    color: COLORS.black,
+    fontSize: SF(16),
+    fontFamily: Fonts.Italic,
+    width: '100%',
+    borderRadius: 50,
+    borderWidth: 1,
+    marginVertical: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderColor: COLORS.light_purple,
+  },
   staffScrollableArea: {
     height: windowHeight * 0.8,
+    width: '100%',
   },
   requestButtoncon: {
     backgroundColor: COLORS.primary,
@@ -1606,8 +1694,8 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   devicesLogo: {
-    height: ms(20),
-    width: ms(20),
+    height: ms(18),
+    width: ms(18),
     marginRight: ms(7),
   },
   deviceText: {
@@ -1622,7 +1710,7 @@ export const styles = StyleSheet.create({
   },
   deviceOptionsView: {
     backgroundColor: COLORS.sky_grey,
-    paddingHorizontal: ms(16),
+    paddingHorizontal: ms(10),
     paddingVertical: ms(10),
     borderRadius: 16,
     alignItems: 'center',
@@ -1724,4 +1812,25 @@ export const styles = StyleSheet.create({
     borderRadius: ms(10),
   },
   firstBox: { flex: 1, width: '100%', alignItems: 'center', justifyContent: 'space-evenly' },
+  walletItemBackground: {
+    backgroundColor: COLORS.sky_grey,
+    padding: ms(14),
+    borderRadius: 16,
+    marginBottom: ms(5),
+  },
+  hourlyRateView: {
+    borderWidth: 1,
+    borderRadius: 15,
+    padding: 15,
+    width: windowWidth * 0.14,
+    marginHorizontal: 5,
+    borderColor: COLORS.light_purple,
+    alignItems: 'flex-start',
+  },
+  tableMainConatiner: {
+    borderWidth: 1,
+    borderRadius: 15,
+    flex: 1,
+    borderColor: COLORS.light_purple,
+  },
 });

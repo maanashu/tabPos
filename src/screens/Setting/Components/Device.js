@@ -59,11 +59,16 @@ export function Device() {
       </View>
 
       <Spacer space={SH(30)} />
-      <View style={{ paddingHorizontal: SW(11) }}>
-        <Text style={[styles.twoStepText, { fontSize: SF(14), paddingLeft: SW(6) }]}>
+      <View style={{ paddingLeft: SW(11) }}>
+        <Text
+          style={[
+            styles.twoStepText,
+            { fontSize: SF(14), paddingLeft: SW(4), fontFamily: Fonts.SemiBold },
+          ]}
+        >
           {strings?.settings?.addNewDevice}
         </Text>
-        <Spacer space={SH(30)} />
+        <Spacer space={SH(15)} />
         <FlatList
           data={deviceDropDownArray}
           horizontal

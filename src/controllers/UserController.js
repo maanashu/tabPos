@@ -79,7 +79,6 @@ export class UserController {
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
-          console.log('ok resp', response);
         })
         .catch((error) => {
           Toast.show({

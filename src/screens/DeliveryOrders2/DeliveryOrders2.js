@@ -13,6 +13,7 @@ import {
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
+import Modal from 'react-native-modal';
 import { useFocusEffect } from '@react-navigation/native';
 
 import {
@@ -61,10 +62,14 @@ import {
   arrowLeftUp,
   Maximize,
   Minimize,
+  filterShippingNew,
+  dropdown2,
+  newCalendarIcon,
 } from '@/assets';
 
 import styles from './styles';
 import Header from './Components/Header';
+import CalendarPickerModal from '@/components/CalendarPickerModal';
 
 export function DeliveryOrders2({ route }) {
   var screen;
@@ -75,6 +80,7 @@ export function DeliveryOrders2({ route }) {
   if (route?.params && route?.params?.ORDER_DETAIL) {
     ORDER_DATA = route?.params?.ORDER_DETAIL;
   }
+  const todayDate = moment();
 
   const mapRef = useRef(null);
   const dispatch = useDispatch();
@@ -85,10 +91,11 @@ export function DeliveryOrders2({ route }) {
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const ordersList = getDeliveryData?.getReviewDef;
   const singleOrderDetail = oneOrderDetail?.getOrderData;
-
+  const [calendarDate, setCalendarDate] = useState(moment());
   const latitude = parseFloat(location?.latitude);
   const longitude = parseFloat(location?.longitude);
-
+  const maxDate = new Date(2030, 6, 3);
+  const [showMiniCalendar, setshowMiniCalendar] = useState(false);
   const sourceCoordinate = {
     latitude: latitude,
     longitude: longitude,
@@ -100,6 +107,7 @@ export function DeliveryOrders2({ route }) {
   };
 
   const [openShippingOrders, setOpenShippingOrders] = useState(ORDER_DATA?.status ?? '0');
+
   const [userDetail, setUserDetail] = useState(getDeliveryData?.getReviewDef?.[0] ?? []);
   const [isBack, setIsBack] = useState();
   const [selectedProductId, setSelectedProductId] = useState();
@@ -114,7 +122,6 @@ export function DeliveryOrders2({ route }) {
   const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
   const [changeViewToRecheck, setChangeViewToRecheck] = useState();
   const [isMaximizeStatusView, SetIsMaximizeStatusView] = useState(false);
-
   useEffect(() => {
     if (ORDER_DATA) {
       setOpenShippingOrders(ORDER_DATA?.status?.toString());
@@ -596,7 +603,7 @@ export function DeliveryOrders2({ route }) {
 
           <Spacer space={SH(20)} /> */}
           <Spacer space={SH(15)} backgroundColor={COLORS.textInputBackground} />
-          <NewHeader />
+          <NewHeader invoiceNo={userDetail?.invoices?.invoice_number ?? 0} />
           <Spacer space={SH(5)} backgroundColor={COLORS.textInputBackground} />
           {viewAllOrder ? (
             <SafeAreaView style={styles.container}>
@@ -618,18 +625,53 @@ export function DeliveryOrders2({ route }) {
                         showsVerticalScrollIndicator={false}
                         data={getDeliveryData?.getReviewDef ?? []}
                         ListHeaderComponent={() => (
-                          <TouchableOpacity
-                            onPress={() => setViewAllOrder(false)}
-                            style={styles.headingRowStyleNew}
-                          >
-                            <Image
-                              source={arrowLeftUp}
-                              style={{ width: ms(15), height: ms(15), marginRight: ms(5) }}
-                            />
-                            <Text style={styles.ordersToReviewText}>
-                              {getHeaderText(openShippingOrders)}
-                            </Text>
-                          </TouchableOpacity>
+                          <>
+                            <View style={styles.headingRowStyleNew}>
+                              <TouchableOpacity onPress={() => setViewAllOrder(false)}>
+                                <Image
+                                  source={arrowLeftUp}
+                                  style={{ width: ms(15), height: ms(15), marginRight: ms(5) }}
+                                />
+                              </TouchableOpacity>
+                              <Text style={styles.ordersToReviewText}>
+                                {getHeaderText(openShippingOrders)}
+                              </Text>
+                              {openShippingOrders == '7,8' && (
+                                <TouchableOpacity style={[styles.filterButtonStyle]}>
+                                  <Text style={styles.calenderTextStyle}>Filters</Text>
+                                  <Image
+                                    source={filterShippingNew}
+                                    style={styles.filterIconStyle}
+                                  />
+                                </TouchableOpacity>
+                              )}
+                            </View>
+                            {openShippingOrders == '7,8' && (
+                              <TouchableOpacity
+                                onPress={() => setshowMiniCalendar(true)}
+                                style={[styles.calendarDropContainer]}
+                              >
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                  <Image source={newCalendarIcon} style={styles.calenderImage} />
+                                  <Text style={styles.calenderTextStyle}>
+                                    {calendarDate?.format('DD MMM YYYY') ==
+                                    todayDate.format('DD MMM YYYY')
+                                      ? 'Today'
+                                      : calendarDate?.format('DD MMM YYYY')}
+                                  </Text>
+                                </View>
+                                <Image
+                                  source={dropdown2}
+                                  style={{
+                                    height: ms(10),
+                                    width: ms(10),
+                                    tintColor: COLORS.lavender,
+                                    resizeMode: 'contain',
+                                  }}
+                                />
+                              </TouchableOpacity>
+                            )}
+                          </>
                         )}
                         refreshControl={
                           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -868,6 +910,30 @@ export function DeliveryOrders2({ route }) {
         orderDetail={singleOrderDetail}
         onPressConfirm={onPressConfirmHandler}
       />
+      <Modal
+        isVisible={showMiniCalendar}
+        statusBarTranslucent
+        animationIn={'slideInRight'}
+        animationInTiming={600}
+        animationOutTiming={300}
+      >
+        <View style={styles.calendarModalView}>
+          <CalendarPickerModal
+            allowRangeSelection={false}
+            maxDate={maxDate}
+            selectedStartDate={calendarDate}
+            onPress={() => setshowMiniCalendar(false)}
+            onSelectedDate={(date) => {
+              setCalendarDate(moment(date));
+              setshowMiniCalendar(false);
+            }}
+            onCancelPress={() => {
+              setshowMiniCalendar(false);
+              setCalendarDate(todayDate);
+            }}
+          />
+        </View>
+      </Modal>
     </>
   );
 }

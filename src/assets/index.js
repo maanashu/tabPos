@@ -415,6 +415,8 @@ export { default as totalCostIcon } from '@/assets/new_icon/ic_analytic/totalCos
 export { default as totalOrder } from '@/assets/new_icon/ic_analytic/totalOrder.png';
 export { default as verifyGreen } from '@/assets/new_icon/Auth_icons/verify_green.png';
 export { default as deliveryIcon } from '@/assets/new_icon/ic_analytic/delivery.png';
+
+// home screen new icons
 export { default as newLogo } from '@/assets/new_icon/Auth_icons/Logo.png';
 export { default as sunIcon } from '@/assets/new_icon/Auth_icons/Sun.png';
 export { default as boxIcon } from '@/assets/new_icon/dashboard/box.png';
@@ -440,6 +442,67 @@ export { default as Gift_Card } from '@/assets/new_icon/ic_customer/Gift_Card.pn
 export { default as new_email } from '@/assets/new_icon/ic_customer/new_email.png';
 export { default as new_phone } from '@/assets/new_icon/ic_customer/new_phone.png';
 export { default as new_location } from '@/assets/new_icon/ic_customer/new_location.png';
+
+// Delivery  New ICON
+export { default as BikeFast } from '@/assets/new_icon/ic_delivery/bikefast.png';
+export { default as Market } from '@/assets/new_icon/ic_delivery/market.png';
+export { default as BikeNormal } from '@/assets/new_icon/ic_delivery/bikeNormal.png';
+export { default as BikeMedium } from '@/assets/new_icon/ic_delivery/bikeMedium.png';
+export { default as RightReturn } from '@/assets/new_icon/ic_delivery/rightReturn.png';
+export { default as CrossRight } from '@/assets/new_icon/ic_delivery/crossRight.png';
+export { default as TiltRight } from '@/assets/new_icon/ic_delivery/tiltRight.png';
+export { default as BikeRight } from '@/assets/new_icon/ic_delivery/bikeRight.png';
+export { default as ClockRight } from '@/assets/new_icon/ic_delivery/clockRight.png';
+export { default as PickupRight } from '@/assets/new_icon/ic_delivery/pickupRight.png';
+export { default as TickRight } from '@/assets/new_icon/ic_delivery/tickRight.png';
+export { default as ArrowLeft } from '@/assets/new_icon/ic_delivery/ArrowLeft.png';
+export { default as Maximize } from '@/assets/new_icon/ic_delivery/maximize.png';
+export { default as Minimize } from '@/assets/new_icon/ic_delivery/minimize.png';
+export { default as RightSide } from '@/assets/new_icon/ic_delivery/rightSide.png';
+export { default as SuperFastBike } from '@/assets/new_icon/ic_delivery/superFastBike.png';
+export { default as StepPurple } from '@/assets/new_icon/ic_delivery/StepPurple.png';
+export { default as StepSky } from '@/assets/new_icon/ic_delivery/StepSky.png';
+export { default as StepPurpleStop } from '@/assets/new_icon/ic_delivery/StepPurpleStop.png';
+export { default as StepSkypStop } from '@/assets/new_icon/ic_delivery/StepSkyStop.png';
+export { default as StepYellow } from '@/assets/new_icon/ic_delivery/StepYellow.png';
+export { default as StepCross } from '@/assets/new_icon/ic_delivery/StepCross.png';
+
+export { default as Divider } from '@/assets/new_icon/ic_delivery/Div.png';
+export { default as Sun } from '@/assets/new_icon/ic_delivery/Sun.png';
+export { default as GAuth } from '@/assets/new_icon/ic_delivery/GAuth.png';
+export { default as CloudDonwload } from '@/assets/new_icon/ic_delivery/CloudDownload.png';
+
+export { default as Qr } from '@/assets/new_icon/ic_delivery/Qr.png';
+
+//Shipping New Icons
+export { default as thunder } from '@/assets/new_icon/ic_shipping/thunderShippingNew.png';
+export { default as cashShippingNew } from '@/assets/new_icon/ic_shipping/cashShippingNew.png';
+export { default as pinShippingNew } from '@/assets/new_icon/ic_shipping/pinShippingNew.png';
+export { default as trackOrder } from '@/assets/new_icon/ic_shipping/trackOrderNew.png';
+export { default as printLabel } from '@/assets/new_icon/ic_shipping/printLabelNew.png';
+export { default as incomingMarked } from '@/assets/new_icon/ic_shipping/incomingCheckbox.png';
+export { default as cancelledMarked } from '@/assets/new_icon/ic_shipping/cancelledCheckbox.png';
+export { default as deliveryMarked } from '@/assets/new_icon/ic_shipping/deliveryCheckbox.png';
+export { default as returnedMarked } from '@/assets/new_icon/ic_shipping/returnedCheckbox.png';
+export { default as incomingBlank } from '@/assets/new_icon/ic_shipping/incomingBlank.png';
+export { default as cancelledBlank } from '@/assets/new_icon/ic_shipping/cancelledBlank.png';
+export { default as deliveryBlank } from '@/assets/new_icon/ic_shipping/deliveryBlank.png';
+export { default as returnedBlank } from '@/assets/new_icon/ic_shipping/returnedBlank.png';
+export { default as userSolid } from '@/assets/new_icon/ic_shipping/usersSolid.png';
+export { default as packageCancelled } from '@/assets/new_icon/ic_shipping/packageCancelled.png';
+export { default as filterShippingNew } from '@/assets/new_icon/ic_shipping/filterShippingNew.png';
+export { default as newCalendarIcon } from '@/assets/new_icon/ic_shipping/newCalendarIcon.png';
+
+//Shipping Drawer Icons
+export { default as ordersReview } from '@/assets/new_icon/ic_shipping/ordersReview.png';
+export { default as orderAccepted } from '@/assets/new_icon/ic_shipping/deliveryCheck.png';
+export { default as orderPrepared } from '@/assets/new_icon/ic_shipping/orderPrepared.png';
+export { default as printingLabelDrawer } from '@/assets/new_icon/ic_shipping/printingLabelDrawer.png';
+export { default as trackDelivery } from '@/assets/new_icon/ic_shipping/trackDelivery.png';
+export { default as deliverySending } from '@/assets/new_icon/ic_shipping/deliverySending.png';
+export { default as deliveryClose } from '@/assets/new_icon/ic_shipping/deliveryClose.png';
+export { default as deliveryBack } from '@/assets/new_icon/ic_shipping/deliveryBack.png';
+
 /* Fonts */
 export const Fonts = {
   Bold: 'Montserrat-Bold',
