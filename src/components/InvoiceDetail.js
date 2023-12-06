@@ -252,7 +252,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               style={[
                 styles.expandButtonStyle,
                 {
-                  borderColor: COLORS.dark_grey,
+                  borderColor: COLORS.navy_blue,
                   borderWidth: 1,
                   backgroundColor: COLORS.white,
                 },
@@ -260,7 +260,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
             >
               <Image source={crossButton} style={styles.rightIconStyle} />
               <Text
-                style={[styles.acceptTextStyle, { color: COLORS.dark_grey, paddingHorizontal: 12 }]}
+                style={[styles.acceptTextStyle, { color: COLORS.navy_blue, paddingHorizontal: 12 }]}
               >
                 {strings.deliveryOrders2.close}
               </Text>
@@ -413,12 +413,13 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               </Text>
 
               <Text style={styles._thankyou}>Thank You</Text>
+              <Image source={logo_full} style={styles.logoFull} />
+
               <Image
                 source={{ uri: singleOrderDetail?.invoices?.barcode }}
                 style={styles._barCodeImage}
               />
               {/* <Text style={styles._barCode}>ABC-abc-1234</Text> */}
-              <Image source={logo_full} style={styles.logoFull} />
             </View>
           </View>
           <View></View>
@@ -442,7 +443,7 @@ const styles = StyleSheet.create({
     marginRight: ms(3),
   },
   backTitle: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(8),
   },
@@ -459,13 +460,13 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.92,
   },
   _kSubCenterContainer: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(7),
     marginTop: ms(5),
   },
   _kAddress: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(6),
     marginTop: ms(5),
@@ -478,13 +479,13 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   _substotalTile: {
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(5.5),
     marginTop: ms(4),
   },
   _subTotalPrice: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(5.5),
     marginTop: ms(4),
@@ -504,33 +505,39 @@ const styles = StyleSheet.create({
   _payTitle: {
     fontSize: ms(7),
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
   },
   _paySubTitle: {
     fontSize: ms(7),
     fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
   },
   _commonPayTitle: {
     alignSelf: 'flex-start',
     marginLeft: ms(15),
     marginTop: ms(3),
     fontSize: ms(7),
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
   },
   _thankyou: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(11),
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     marginTop: ms(10),
   },
-  _barCodeImage: { height: ms(25), width: '70%', marginTop: ms(5) },
+  _barCodeImage: {
+    height: ms(25),
+    width: '70%',
+    marginTop: ms(5),
+    tintColor: COLORS.navy_blue,
+  },
   logoFull: {
     width: ms(90),
     height: ms(30),
     resizeMode: 'contain',
     marginTop: ms(2),
+    tintColor: COLORS.navy_blue,
   },
   mapMainView: {
     flex: 1,
@@ -595,12 +602,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   count: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(6.2),
   },
   itemName: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
     fontSize: ms(5),
   },
@@ -609,18 +616,18 @@ const styles = StyleSheet.create({
     marginTop: ms(2),
   },
   colorsTitle: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(4.2),
   },
   sizeTitle: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(4.2),
     marginLeft: ms(10),
   },
   priceTitle: {
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
     fontSize: ms(6),
     marginLeft: ms(10),

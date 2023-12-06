@@ -26,6 +26,8 @@ import {
   blueCalender,
   blueSetting,
   userImage,
+  newUsers,
+  new_wallet,
 } from '@/assets';
 import { COLORS, SF, SW } from '@/theme';
 import { NAVIGATION } from '@/constants';
@@ -260,7 +262,7 @@ export function DrawerNavigator(props) {
           }}
           icon={({ focused }) => (
             <View style={styles.iconBackgroud(focused)}>
-              <Image source={focused ? bluewallet : wallet} style={styles.iconStyle(focused)} />
+              <Image source={new_wallet} style={styles.iconStyle(focused)} />
             </View>
           )}
         />
@@ -292,7 +294,7 @@ export function DrawerNavigator(props) {
           }}
           icon={({ focused }) => (
             <View style={styles.iconBackgroud(focused)}>
-              <Image source={focused ? blueusers : users} style={styles.iconStyle(focused)} />
+              <Image source={newUsers} style={styles.iconStyle(focused)} />
             </View>
           )}
         />

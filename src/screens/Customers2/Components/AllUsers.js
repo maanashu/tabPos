@@ -14,29 +14,25 @@ import {
 } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import {
-  bell,
-  search_light,
-  leftBack,
-  calendar1,
   dropdown2,
   Union,
   mask,
   maskRight,
   unionRight,
   userImage,
-  Fonts,
   crossButton,
-  users,
   searchDrawer,
   bellDrawer,
   calendarDrawer,
+  arrowLeftUp,
+  newCalendar,
+  scanNew,
 } from '@/assets';
 import { DaySelector, Spacer, TableDropdown } from '@/components';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { strings } from '@/localization';
 import { styles } from '@/screens/Customers2/Customers2.styles';
 import moment from 'moment';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Table } from 'react-native-table-component';
@@ -55,8 +51,7 @@ import { NAVIGATION } from '@/constants';
 import { debounce } from 'lodash';
 import CustomerListView from './CustomerListView';
 import { useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-const result = Dimensions.get('window').height - 50;
+import { TYPES as Types } from '@/Types/AnalyticsTypes';
 
 const AllUsers = ({
   backHandler,
@@ -99,11 +94,24 @@ const AllUsers = ({
   const [searchedText, setSearchedText] = useState('');
   const [searchedAppointments, setSearchedCustomer] = useState([]);
 
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+  const endDate = selectedEndDate ? selectedEndDate.toString() : '';
+  const startDated = moment(startDate).format('YYYY-MM-DD');
+  const endDated = moment(endDate).format('YYYY-MM-DD');
+  const [selectDate, setSelectDate] = useState('');
+  const maxDateCalendar = new Date(2030, 6, 3);
+
   const time = selectTime?.value;
+  const onLoad = useSelector((state) => isLoadingSelector([Types.GET_ORDER_DATA], state));
 
   const onPresFun = () => {
     setFormatedDate();
     setDate();
+    setSelectedStartDate('');
+    setSelectedEndDate('');
   };
 
   const areaSelector = [
@@ -138,6 +146,8 @@ const AllUsers = ({
       area: dropdownSelect,
       calenderDate: formatedDate,
       dayWisefilter: time,
+      start_date: startDated,
+      end_date: endDated,
     };
     dispatch(getUserOrder(data));
   }, [time, selectedId, paginationModalValue, page, dropdownSelect, formatedDate]);
@@ -184,6 +194,28 @@ const AllUsers = ({
     const fullDate = moment(selectedDate).format('MM/DD/YYYY');
     setDateformat(formattedDate);
     setDate(formattedDate);
+  };
+
+  const onDateChange = (date, type) => {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    if (type === 'END_DATE') {
+      setSelectedEndDate(formattedDate);
+    } else {
+      setSelectedStartDate(formattedDate);
+      setSelectedEndDate(null);
+    }
+  };
+  const onSelect = () => {
+    if (!selectedStartDate && !selectedEndDate) {
+      alert('Please Select Date');
+    } else if (selectedStartDate && selectedEndDate) {
+      setShowCalendarModal(false);
+      setSelectTime('');
+      setSelectId('');
+      setSelectDate(!selectDate);
+    } else {
+      alert('Please Select End Date');
+    }
   };
 
   const dummyCustomerData = [
@@ -266,15 +298,9 @@ const AllUsers = ({
     <View style={{ flex: 1 }}>
       <View style={styles.headerMainView}>
         <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
-          {/* <Image source={leftBack} style={styles.backIcon} /> */}
+          <Image source={arrowLeftUp} style={styles.backIcon} />
           <View style={styles.deliveryView}>
-            <Image
-              source={users}
-              style={[
-                styles.truckStyle,
-                { height: ms(20), width: ms(20), tintColor: COLORS.navy_blue },
-              ]}
-            />
+            {/* <Image source={newUsers} style={[styles.userStyle]} /> */}
             <Text style={styles.deliveryText}>{'Users'}</Text>
           </View>
         </TouchableOpacity>
@@ -285,16 +311,38 @@ const AllUsers = ({
             setSelectId={setSelectId}
             setSelectTime={setSelectTime}
           />
+
+          <TouchableOpacity
+            onPress={() => setShowCalendarModal(!showCalendarModal)}
+            style={[
+              styles.headerView,
+              {
+                backgroundColor: selectedStartDate ? COLORS.navy_blue : COLORS.sky_grey,
+              },
+            ]}
+          >
+            <Image
+              source={calendarDrawer}
+              style={[
+                styles.calendarStyle,
+                {
+                  tintColor: selectedStartDate ? COLORS.sky_grey : COLORS.navy_blue,
+                },
+              ]}
+            />
+          </TouchableOpacity>
+
           <TouchableOpacity
             onPress={() =>
               navigate(NAVIGATION.notificationsList, {
                 screen: NAVIGATION.customers2,
               })
             }
-            style={{ marginHorizontal: ms(10) }}
+            style={{ marginRight: ms(10) }}
           >
             <Image source={bellDrawer} style={[styles.truckStyle]} />
           </TouchableOpacity>
+
           <TouchableOpacity
             style={styles.searchView}
             onPress={() => {
@@ -305,6 +353,17 @@ const AllUsers = ({
           >
             <Image source={searchDrawer} style={styles.searchImage} />
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.searchView, { marginHorizontal: ms(10) }]}
+            onPress={() => {
+              setShowSearchModal(true);
+              setSearchedCustomer([]);
+              setSearchedText('');
+            }}
+          >
+            <Image source={scanNew} style={styles.searchImage} />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -312,7 +371,12 @@ const AllUsers = ({
         {/* Date and Area section */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
-            style={[styles.datePickerCon, { borderWidth: 1, borderColor: COLORS.navy_blue }]}
+            style={[
+              styles.datePickerCon,
+              {
+                backgroundColor: date ? COLORS.navy_blue : COLORS.white,
+              },
+            ]}
             onPress={() => {
               if (!dateformat) {
                 const dates = moment(new Date()).format('MM/DD/YYY');
@@ -321,7 +385,15 @@ const AllUsers = ({
               setShow(!show);
             }}
           >
-            <Image source={calendarDrawer} style={styles.calendarStyle} />
+            <Image
+              source={calendarDrawer}
+              style={[
+                styles.calendarStyle,
+                {
+                  tintColor: date ? COLORS.sky_grey : COLORS.navy_blue,
+                },
+              ]}
+            />
             <TextInput
               value={date}
               returnKeyType={'done'}
@@ -330,7 +402,14 @@ const AllUsers = ({
               editable={false}
               placeholder="Date"
               placeholderTextColor={COLORS.navy_blue}
-              style={[styles.txtInput, { padding: 0, marginLeft: ms(2) }]}
+              style={[
+                styles.txtInput,
+                { padding: 0, marginLeft: ms(2), color: date ? COLORS.sky_grey : COLORS.navy_blue },
+              ]}
+            />
+            <Image
+              source={dropdown2}
+              style={[styles.dropDownIconPagination, { marginRight: ms(2) }]}
             />
           </TouchableOpacity>
 
@@ -689,11 +768,11 @@ const AllUsers = ({
             >
               <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
             </TouchableOpacity>
-            <View style={[styles.searchView, { marginVertical: ms(10) }]}>
-              <Image source={search_light} style={styles.searchImage} />
+            <View style={[styles.searchContainer]}>
+              <Image source={searchDrawer} style={styles.searchImage} />
               <TextInput
                 placeholder={strings.deliveryOrders.search}
-                style={styles.textInputStyle}
+                style={[styles.textInputStyle, { fontSize: ms(10), marginHorizontal: ms(5) }]}
                 placeholderTextColor={COLORS.darkGray}
                 value={searchedText}
                 onChangeText={(searchText) => {
@@ -717,6 +796,37 @@ const AllUsers = ({
             />
           </View>
         </KeyboardAvoidingView>
+      </Modal>
+
+      <Modal
+        isVisible={showCalendarModal}
+        statusBarTranslucent
+        animationIn={'fadeIn'}
+        animationInTiming={600}
+        animationOutTiming={300}
+        onBackdropPress={() => setShowCalendarModal(false)}
+      >
+        <View style={styles.calendarModalView}>
+          <CalendarPickerModal
+            onPress={() => setShowCalendarModal(false)}
+            // onDateChange={onChangeDate}
+            // onSelectedDate={() => onDateApply(formattedDate)}
+            // selectedStartDate={formattedDate}
+            maxDate={maxDateCalendar}
+            // onCancelPress={onCancelPressCalendar}
+            allowRangeSelection={true}
+            onDateChange={onDateChange}
+            // handleOnPressNext={handleOnPressNext}
+            onSelectedDate={onSelect}
+            onCancelPress={() => {
+              setShowCalendarModal(false);
+              // setSelectedStartDate('');
+              // setSelectedEndDate('');
+              // setSelectId(2);
+              // setSelectTime({ value: 'week' });
+            }}
+          />
+        </View>
       </Modal>
     </View>
   );

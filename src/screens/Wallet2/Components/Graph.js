@@ -358,7 +358,7 @@ const Graph = () => {
             noOfSections={4}
             // maxValue={100}
             yAxisLength={350}
-            height={Platform.OS === 'android' ? ms(250) : SH(270)}
+            height={Platform.OS === 'android' ? ms(250) : ms(240)}
             width={Dimensions.get('window').width * 0.8}
             initialSpacing={SH(10)}
           />
@@ -409,8 +409,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   checkboxIconStyle: {
-    width: SH(24),
-    height: SH(24),
+    width: ms(12),
+    height: ms(12),
     resizeMode: 'contain',
   },
   checkboxViewStyle: {

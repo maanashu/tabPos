@@ -87,7 +87,7 @@ export function NewChartKit({
             ],
           }}
           width={Dimensions.get('window').width * 0.255}
-          height={Platform.OS === 'android' ? ms(105) : ms(115)}
+          height={Platform.OS === 'android' ? ms(105) : ms(110)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -140,7 +140,7 @@ export function NewChartKit({
             ],
           }}
           width={Dimensions.get('window').width * 0.265}
-          height={Platform.OS === 'android' ? ms(90) : ms(100)}
+          height={Platform.OS === 'android' ? ms(90) : ms(90)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -166,7 +166,7 @@ export function NewChartKit({
           withShadow={false}
           fromZero
           bezier
-          xLabelsOffset={Platform.OS === 'android' ? ms(-4) : 0}
+          xLabelsOffset={ms(-4)}
         />
       ) : (
         <LineChart
@@ -180,8 +180,12 @@ export function NewChartKit({
               },
             ],
           }}
-          width={Dimensions.get('window').width * 0.265}
-          height={Platform.OS === 'android' ? ms(110) : ms(120)}
+          width={
+            Platform.OS === 'android'
+              ? Dimensions.get('window').width * 0.265
+              : Dimensions.get('window').width * 0.26
+          }
+          height={ms(110)}
           withDots={false}
           chartConfig={{
             backgroundColor: COLORS.red,
@@ -211,7 +215,7 @@ export function NewChartKit({
             paddingVertical: 0,
             marginTop: ms(5),
           }}
-          xLabelsOffset={Platform.OS === 'android' ? ms(-2) : 0}
+          xLabelsOffset={ms(-2)}
           // withShadow={false}
           fromZero
           bezier

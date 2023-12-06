@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
-    marginVertical: ms(15),
+    marginVertical: ms(5),
     borderRadius: ms(10),
     marginRight: ms(10),
   },
@@ -34,20 +34,16 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerMainView: {
-    width: windowWidth,
-    paddingHorizontal: SW(16),
-    alignSelf: 'center',
+    // width: windowWidth,
+    paddingHorizontal: ms(10),
+    // alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(18),
+    paddingVertical: ms(10),
     flexDirection: 'row',
   },
   headerMianViewbottomRow: {
     borderBottomWidth: 1,
     borderColor: COLORS.solidGrey,
-  },
-  deliveryView: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   leftBackStyle: {
     width: SW(9),
@@ -94,7 +90,7 @@ export const styles = StyleSheet.create({
   },
   walletHomeBodyCon: {
     flex: 1,
-    marginHorizontal: ms(10),
+    marginHorizontal: ms(5),
     backgroundColor: COLORS.white,
     borderRadius: ms(4),
     marginBottom: ms(5),
@@ -115,14 +111,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  calendarStyle: {
-    width: SW(6),
-    height: SW(6),
-    resizeMode: 'contain',
-    tintColor: COLORS.darkGray,
-  },
   custometrCon: {
-    width: Platform.OS === 'android' ? ms(165) : ms(135),
+    width: Platform.OS === 'android' ? ms(165) : ms(130),
     // height: ms(94),
     borderRadius: 10,
     backgroundColor: COLORS.white,
@@ -176,15 +166,6 @@ export const styles = StyleSheet.create({
 
   //wallet 1 style
 
-  headerMainView: {
-    // width: windowWidth,
-    paddingHorizontal: ms(16),
-    // alignSelf: 'center',
-    justifyContent: 'space-between',
-    marginTop: SH(18),
-    flexDirection: 'row',
-    // backgroundColor: 'red',
-  },
   backView: {
     width: SW(25),
     height: SW(12),
@@ -209,9 +190,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   deliveryText: {
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
-    fontSize: SF(18),
+    fontSize: ms(12),
     paddingLeft: SW(4),
   },
   truckStyle: {
@@ -220,8 +201,8 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   walletIcon: {
-    width: ms(20),
-    height: ms(20),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
     tintColor: COLORS.navy_blue,
   },
@@ -267,9 +248,9 @@ export const styles = StyleSheet.create({
   allTypeCon: {
     // backgroundColor: COLORS.textInputBackground,
     justifyContent: 'space-between',
-    paddingLeft: ms(20),
+    paddingLeft: ms(10),
     flexDirection: 'row',
-    paddingRight: ms(15),
+    paddingRight: ms(10),
   },
   byDayCon: {
     backgroundColor: COLORS.navy_blue,
@@ -386,17 +367,16 @@ export const styles = StyleSheet.create({
   },
   allJbrCon: {
     borderWidth: 1,
-    height: ms(25),
-    width: ms(60),
+    height: ms(20),
+    width: ms(44),
     borderRadius: 7,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: moderateScale(4),
     marginVertical: verticalScale(4),
     borderRadius: ms(15),
-    marginRight: ms(7),
+    marginRight: ms(5),
     // paddingVertical: ms(5),
-    paddingHorizontal: ms(10),
+    // paddingHorizontal: ms(8),
   },
   allJbrConBluish: {
     borderColor: COLORS.navy_blue,
@@ -427,8 +407,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   calendarStyle: {
-    width: SW(5),
-    height: SW(5),
+    width: ms(12),
+    height: ms(12),
     resizeMode: 'contain',
     alignSelf: 'center',
   },
@@ -505,7 +485,7 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
   },
   containerStylePagination: {
-    width: SW(15),
+    width: ms(35),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,
@@ -541,7 +521,8 @@ export const styles = StyleSheet.create({
     fontSize: ms(7),
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
-    paddingHorizontal: ms(3),
+    marginRight: ms(3),
+    marginLeft: ms(7),
   },
   head: {
     height: SH(50),
@@ -1089,7 +1070,7 @@ export const styles = StyleSheet.create({
   tableHeaderRight: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth * 0.74,
+    width: Platform.OS === 'android' ? windowWidth * 0.74 : windowWidth * 0.7,
     alignContent: 'center',
     alignItems: 'center',
 
@@ -1444,12 +1425,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(7),
     justifyContent: 'center',
   },
-  calendarStyle: {
-    width: SW(5),
-    height: SW(5),
-    resizeMode: 'contain',
-    tintColor: COLORS.darkGray,
-  },
   datePlaceholder: {
     fontFamily: Fonts.Regular,
     color: COLORS.solid_grey,
@@ -1503,7 +1478,7 @@ export const styles = StyleSheet.create({
     padding: ms(8),
     alignItems: 'center',
     backgroundColor: COLORS.sky_grey,
-    marginHorizontal: SW(5),
+    marginLeft: ms(10),
     borderRadius: ms(20),
   },
   dateText: {

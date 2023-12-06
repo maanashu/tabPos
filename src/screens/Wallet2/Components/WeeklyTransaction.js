@@ -509,20 +509,20 @@ export function WeeklyTransaction({
             <Text style={styles.datePlaceholder}>Date</Text>
           </View> */}
 
-          <View style={{ marginRight: moderateScale(5) }}>
+          {/* <View style={{ marginRight: moderateScale(5) }}>
             <TableDropdown
               placeholder="Status"
               selected={statusSelection}
               data={weeklyStatus}
               containerStyle={{ width: ms(60) }}
             />
-          </View>
+          </View> */}
           <>
             <TableDropdown
               placeholder="Order type"
               selected={orderTypeSelection}
               data={orderTypeArray}
-              containerStyle={{ width: ms(80) }}
+              containerStyle={{ width: ms(70) }}
             />
           </>
         </View>
@@ -614,7 +614,7 @@ export function WeeklyTransaction({
             </View>
             <View
               style={{
-                width: ms(60),
+                width: ms(50),
                 marginRight: ms(7),
               }}
             >
@@ -776,15 +776,15 @@ export function WeeklyTransaction({
                               ? item?.return_detail?.invoices?.invoice_number
                               : item?.invoices?.invoice_number}
                           </Text>
-                          <Spacer horizontal space={ms(10)} />
+                          {/* <Spacer horizontal space={ms(10)} /> */}
                           <Text style={styles.tableTextData}>
                             {DELIVERY_MODE[item?.delivery_option]}
                           </Text>
 
-                          <Text style={[styles.tableTextData, { marginLeft: ms(40) }]}>
+                          <Text style={[styles.tableTextData, { marginLeft: ms(30) }]}>
                             {item?.mode_of_payment}
                           </Text>
-                          <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(15)} />
+                          {/* <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(15)} /> */}
 
                           <Text
                             style={[
@@ -805,13 +805,13 @@ export function WeeklyTransaction({
                           {/* </View> */}
                           <View
                             style={{
-                              width: SF(110),
+                              width: ms(70),
                               borderRadius: ms(10),
                               backgroundColor: COLORS.navy_blue,
                               alignItems: 'center',
                               // height: SH(24),
                               justifyContent: 'center',
-                              marginLeft: ms(-20),
+                              marginLeft: ms(-35),
                               paddingVertical: ms(3),
                             }}
                           >

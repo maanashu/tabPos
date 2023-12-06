@@ -304,10 +304,8 @@ export function Analytics2() {
       ) : (
         <View style={styles.container}>
           <View style={styles.homeMainContainer}>
-            <View style={styles.flexDirectionRow}>
-              <View>
-                <Spacer space={ms(10)} />
-
+            <View style={[styles.flexDirectionRow, { alignItems: 'center' }]}>
+              <View style={{ flex: 1 }}>
                 <DaySelector
                   onPresFun={orderOnPress}
                   setSelectTime={setFilter}
@@ -366,7 +364,7 @@ export function Analytics2() {
                 )}
               </View>
             </View>
-            <Spacer space={ms(5)} />
+            {/* <Spacer space={ms(5)} /> */}
 
             <View style={[styles.flexDirectionRow, { zIndex: -999 }]}>
               <View style={styles.container}>{screenChangeView()}</View>
