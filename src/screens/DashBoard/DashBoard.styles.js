@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
-import { verticalScale, moderateScale } from 'react-native-size-matters';
+import { verticalScale, moderateScale, ms } from 'react-native-size-matters';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -307,7 +307,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginRight: SW(1),
   },
-  arrowIcon: {
+  arrowIconRight: {
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
@@ -339,23 +339,16 @@ export const styles = StyleSheet.create({
   // start tracking modal css start
   modalMainView: {
     backgroundColor: COLORS.white,
-    width: SW(160),
-    borderRadius: 12,
+    width: ms(250),
+    borderRadius: ms(22),
     alignSelf: 'center',
-    justifyContent: 'center',
-    height: windowHeight - 200,
-    // borderWidth:10
+    height: ms(320),
   },
   headerView: {
-    backgroundColor: COLORS.primary,
-    width: SW(160),
-    height: SH(60),
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    height: ms(30),
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    paddingRight: ms(15),
   },
   trackingButtonText: {
     fontFamily: Fonts.Medium,
@@ -366,44 +359,44 @@ export const styles = StyleSheet.create({
     width: SH(24),
     height: SH(24),
     resizeMode: 'contain',
-    tintColor: COLORS.white,
+    tintColor: COLORS.navy_blue,
   },
   countCashView: {
     width: SW(130),
     alignSelf: 'center',
   },
   countCashText: {
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.solid_grey,
-    fontSize: SF(22),
+    fontFamily: Fonts.Regular,
+    color: COLORS.navy_blue,
+    fontSize: ms(9),
   },
   amountCountedText: {
     fontFamily: Fonts.Medium,
-    color: COLORS.darkGray,
-    fontSize: SF(14),
+    color: COLORS.navy_blue,
+    fontSize: ms(9),
+  },
+  hintText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.lavender,
+    fontSize: ms(9),
   },
   inputStyle: {
-    marginTop: 4,
     height: SH(60),
-    borderRadius: 5,
-    fontFamily: Fonts.Regular,
-    fontSize: SF(24),
-    color: COLORS.solid_grey,
-    paddingLeft: SW(5),
-    paddingVertical: SH(5),
-    backgroundColor: COLORS.textInputBackground,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(12),
+    color: COLORS.navy_blue,
+    paddingLeft: ms(5),
+    flex: 1,
   },
   noteInputStyle: {
-    marginTop: 4,
-    width: SW(130),
-    height: SH(60),
-    borderRadius: 5,
-    fontFamily: Fonts.Italic,
-    fontSize: SF(13),
-    color: COLORS.solid_grey,
-    paddingLeft: SW(5),
-    paddingVertical: SH(8),
-    backgroundColor: COLORS.textInputBackground,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(12),
+    color: COLORS.navy_blue,
+    flex: 1,
+    height: ms(38),
+    textAlignVertical: 'center',
+    paddingLeft: ms(5),
+    paddingTop: ms(10),
   },
   buttonText: {
     fontSize: SF(16),
@@ -413,7 +406,7 @@ export const styles = StyleSheet.create({
   },
   saveButton: {
     alignSelf: 'center',
-    width: windowWidth * 0.28,
+    // width: windowWidth * 0.28,
     height: SH(60),
   },
 
@@ -875,5 +868,65 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  cameraIcon: {
+    width: ms(30),
+    height: ms(30),
+    resizeMode: 'contain',
+  },
+  startTracking: {
+    fontSize: ms(12),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    marginVertical: ms(4),
+  },
+  inputCon: {
+    height: ms(38),
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
+    marginVertical: ms(4),
+    borderRadius: ms(22),
+    paddingHorizontal: ms(12),
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  dollarSign: {
+    fontSize: ms(12),
+    color: COLORS.placeHoldeText,
+    fontFamily: Fonts.Bold,
+  },
+  notFoundIcon: {
+    width: ms(12),
+    height: ms(12),
+    resizeMode: 'contain',
+  },
+  notesIcon: {
+    width: ms(17),
+    height: ms(17),
+    resizeMode: 'contain',
+  },
+  startButtonCon: (value) => {
+    return {
+      height: ms(38),
+      borderRadius: ms(22),
+      backgroundColor: value ? COLORS.navy_blue : COLORS.graySky,
+      justifyContent: 'center',
+      flexDirection: 'row',
+      alignItems: 'center',
+    };
+  },
+  startSessionText: () => {
+    return {
+      fontSize: ms(11),
+      color: COLORS.white,
+      fontFamily: Fonts.Medium,
+    };
+  },
+  arrowIcon: (value) => {
+    return {
+      tintColor: value ? COLORS.sky_blue : COLORS.white,
+      transform: [{ rotate: '90deg' }],
+      marginLeft: ms(3),
+    };
   },
 });

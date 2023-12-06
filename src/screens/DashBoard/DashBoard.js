@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   RefreshControl,
+  Platform,
 } from 'react-native';
 
 import moment from 'moment';
@@ -82,6 +83,8 @@ import { log, useAnimatedRef } from 'react-native-reanimated';
 import { debounce } from 'lodash';
 import { AddCartDetailModal, AddCartModal } from '../PosRetail3/Components';
 import { Modal as PaperModal } from 'react-native-paper';
+import { Images } from '@/assets/new_icon';
+import { ms } from 'react-native-size-matters';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -356,7 +359,7 @@ export function DashBoard({ navigation }) {
           </Text>
         </View>
       </View>
-      <Image source={arrowRightIcon} style={styles.arrowIcon} />
+      <Image source={arrowRightIcon} style={styles.arrowIconRight} />
       <View style={styles.rightIconStyle1}>
         <View style={[styles.timeView, { paddingTop: 0 }]}>
           <Text style={[styles.nameTextBold, { color: COLORS.textBlue }]}>
@@ -373,15 +376,12 @@ export function DashBoard({ navigation }) {
   const trackinSessionModal = () => {
     return (
       <Modal transparent={true} animationType={'fade'} isVisible={trackingSession}>
-        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
+        >
           <View style={styles.modalMainView}>
             <View style={styles.headerView}>
-              <View style={styles.sessionViewStyle}>
-                <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                  {strings.management.session}
-                </Text>
-              </View>
-
               <TouchableOpacity
                 style={styles.crossButonBorder}
                 onPress={() => dispatch(logoutUserFunction())}
@@ -390,67 +390,71 @@ export function DashBoard({ navigation }) {
               </TouchableOpacity>
             </View>
 
-            <Spacer space={SH(40)} />
-            <View style={styles.countCashView}>
-              <Text style={styles.countCashText}>{strings.management.countCash}</Text>
-
-              <Spacer space={SH(40)} />
-              <View>
+            <View style={{ flex: 1 }}>
+              <View style={{ alignItems: 'center' }}>
+                <Image source={Images.camera} style={styles.cameraIcon} />
+                <Text style={styles.startTracking}>{'Start Tracking Session'}</Text>
+                <Text style={styles.countCashText}>{'Count Cash in Drawer'}</Text>
+              </View>
+              <View style={{ flex: 1, padding: ms(20) }}>
+                {/* <View style={[styles.countCashView, { borderWidth: 1 }]}> */}
                 <Text style={styles.amountCountedText}>{strings.management.amountCounted}</Text>
-                <TextInput
-                  // ref={(inputRef) => {
-                  //   onInputFocus(inputRef), inputRef;
-                  // }}
-                  onFocus={(event) => {
-                    // setFresh((prev) => !prev);
-                    setScroll('1');
-                    // onInputFocus(event.target);
-                  }}
-                  placeholder={strings.management.amount}
-                  style={styles.inputStyle}
-                  placeholderTextColor={COLORS.solid_grey}
-                  keyboardType="number-pad"
-                  value={amountCount}
-                  onChangeText={setAmountCount}
-                />
+                <View style={styles.inputCon}>
+                  <Text style={styles.dollarSign}>{'$'}</Text>
+                  <TextInput
+                    // ref={(inputRef) => {
+                    //   onInputFocus(inputRef), inputRef;
+                    // }}
+                    // onFocus={(event) => {
+                    //   // setFresh((prev) => !prev);
+                    //   setScroll('1');
+                    //   // onInputFocus(event.target);
+                    // }}
+                    placeholder={strings.management.amount}
+                    style={styles.inputStyle}
+                    placeholderTextColor={COLORS.placeHoldeText}
+                    keyboardType="number-pad"
+                    value={amountCount}
+                    onChangeText={setAmountCount}
+                  />
+                  <Image source={Images.notFoundIcon} style={styles.notFoundIcon} />
+                </View>
+                <Text style={styles.hintText}>{'This is a hint text to help user.'}</Text>
+
+                <Spacer space={SH(20)} />
+                <View style={styles.inputCon}>
+                  <Image source={Images.addNotesIcon} style={styles.notesIcon} />
+                  <TextInput
+                    // ref={(inputRef) => (onInputFocus(inputRef), inputRef)}
+                    onFocus={(event) => {
+                      // setFresh((prev) => !prev);
+                      setScroll('2');
+                      // onInputFocus(event.target);
+                    }}
+                    placeholder={strings.management.note}
+                    style={styles.noteInputStyle}
+                    placeholderTextColor={COLORS.placeHoldeText}
+                    value={trackNotes}
+                    onChangeText={setTrackNotes}
+                    multiline={true}
+                    numberOfLines={3}
+                  />
+                </View>
+
+                {/* </View> */}
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity
+                  style={styles.startButtonCon(amountCount)}
+                  onPress={startTrackingSesHandler}
+                >
+                  <Text style={styles.startSessionText()}>{'Start Session'}</Text>
+                  <Image
+                    source={Images.arrowLeftUp}
+                    style={[styles.notesIcon, styles.arrowIcon(amountCount)]}
+                  />
+                </TouchableOpacity>
               </View>
-              <Spacer space={SH(40)} />
-              <View>
-                <Text style={styles.amountCountedText}>{strings.management.note}</Text>
-                <TextInput
-                  // ref={(inputRef) => (onInputFocus(inputRef), inputRef)}
-                  onFocus={(event) => {
-                    // setFresh((prev) => !prev);
-                    setScroll('2');
-                    // onInputFocus(event.target);
-                  }}
-                  placeholder={strings.management.note}
-                  style={styles.noteInputStyle}
-                  placeholderTextColor={COLORS.gerySkies}
-                  value={trackNotes}
-                  onChangeText={setTrackNotes}
-                  multiline={true}
-                  numberOfLines={3}
-                />
-              </View>
-              <Spacer space={SH(20)} />
             </View>
-            <View style={{ flex: 1 }} />
-            <Button
-              title={strings.management.startSession}
-              textStyle={{
-                ...styles.buttonText,
-                ...{ color: amountCount ? COLORS.white : COLORS.darkGray },
-              }}
-              style={{
-                ...styles.saveButton,
-                ...{
-                  backgroundColor: amountCount ? COLORS.primary : COLORS.textInputBackground,
-                },
-              }}
-              onPress={startTrackingSesHandler}
-            />
-            <Spacer space={SH(40)} />
           </View>
         </KeyboardAwareScrollView>
       </Modal>
