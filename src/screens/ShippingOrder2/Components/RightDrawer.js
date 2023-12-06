@@ -284,7 +284,8 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
           style={{
             flexDirection: 'row',
             backgroundColor: COLORS.light_sky,
-            justifyContent: 'space-around',
+            // justifyContent: 'space-evenly',
+            paddingHorizontal: ms(6),
             alignItems: 'center',
             height: '100%',
             borderRadius: ms(20),
@@ -301,7 +302,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
               color: COLORS.navy_blue,
               fontSize: SF(14),
               fontFamily: Fonts.Medium,
-              marginRight: ms(10),
+              marginLeft: ms(4),
             }}
           >
             Collapse
@@ -326,6 +327,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(6),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -352,6 +354,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(6),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -380,6 +383,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(6),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -408,6 +412,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(6),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -533,7 +538,7 @@ const styles = StyleSheet.create({
   iconTitleFull: {
     color: '#7E8AC1',
     fontFamily: Fonts.Regular,
-    fontSize: ms(10),
+    fontSize: ms(8),
   },
   countTextStyle: {
     fontFamily: Fonts.SemiBold,
@@ -541,12 +546,13 @@ const styles = StyleSheet.create({
     color: COLORS.textBlue,
   },
   fullSideModal: {
-    width: ms(180),
+    width: ms(190),
     position: 'absolute',
     right: ms(0),
     justifyContent: 'center',
     alignItems: 'flex-start',
-    paddingStart: ms(10),
+    padding: ms(15),
     ...ShadowStyles.shadow,
+    paddingTop: ms(10),
   },
 });

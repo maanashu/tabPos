@@ -458,6 +458,8 @@ export { default as Divider } from '@/assets/new_icon/ic_delivery/Div.png';
 export { default as Sun } from '@/assets/new_icon/ic_delivery/Sun.png';
 export { default as GAuth } from '@/assets/new_icon/ic_delivery/GAuth.png';
 export { default as CloudDonwload } from '@/assets/new_icon/ic_delivery/CloudDownload.png';
+export { default as LocationPurple } from '@/assets/new_icon/ic_delivery/locationPurple.png';
+export { default as TimeSky } from '@/assets/new_icon/ic_delivery/timeSky.png';
 
 export { default as Qr } from '@/assets/new_icon/ic_delivery/Qr.png';
 

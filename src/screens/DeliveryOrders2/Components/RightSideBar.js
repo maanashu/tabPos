@@ -113,12 +113,13 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
           style={{
             flexDirection: 'row',
             backgroundColor: COLORS.light_sky,
-            justifyContent: 'space-around',
+            // justifyContent: 'space-around',
             alignItems: 'center',
             height: '95%',
             borderRadius: ms(20),
             width: '90%',
             marginBottom: ms(4),
+            paddingHorizontal: ms(6),
           }}
           onPress={handleShowMenu}
         >
@@ -131,6 +132,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               color: COLORS.navy_blue,
               fontSize: SF(14),
               fontFamily: Fonts.MaisonRegular,
+              marginLeft: ms(6),
             }}
           >
             Collapse
@@ -181,7 +183,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
-              marginVertical: ms(4),
+              // marginVertical: ms(4),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />

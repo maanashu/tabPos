@@ -37,7 +37,7 @@ import moment from 'moment';
 
 const windowWidth = Dimensions.get('window').width;
 const result = Dimensions.get('window').height - 50;
-const twoEqualView = result / 2.09;
+const twoEqualView = result / 2.4;
 
 const Graph = () => {
   const getDeliveryData = useSelector(getDelivery);
@@ -308,7 +308,7 @@ const Graph = () => {
       <View>
         <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
 
-        <View style={[styles.flexRow, { zIndex: 999, marginTop: ms(20) }]}>
+        <View style={[styles.flexRow, { zIndex: 999, marginTop: ms(10), marginLeft: ms(20) }]}>
           <TouchableOpacity
             onPress={() => {
               setShowIncoming((prevShowIncoming) => {
@@ -387,7 +387,7 @@ const Graph = () => {
         </View>
       </View>
 
-      <Spacer space={SH(30)} />
+      <Spacer space={SH(10)} />
 
       {isGraphOrder ? (
         <View style={styles.loaderView}>
@@ -518,8 +518,9 @@ const styles = StyleSheet.create({
   graphViewStyle: {
     borderRadius: ms(10),
     paddingBottom: 30,
-    height: twoEqualView,
-    paddingHorizontal: 20,
+    // height: twoEqualView,
+    padding: 20,
+
     width: windowWidth * 0.56,
     backgroundColor: COLORS.white,
   },
@@ -542,7 +543,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   loaderView: {
-    height: ms(150),
+    height: twoEqualView,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.white,

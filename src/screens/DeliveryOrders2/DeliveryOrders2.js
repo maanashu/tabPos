@@ -29,7 +29,7 @@ import {
 import { Spacer } from '@/components';
 import Graph from './Components/Graph';
 import { strings } from '@/localization';
-import { COLORS, SH, SW } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 // import Header from './Components/Header';
 import { default as NewHeader } from '@/components/Header';
 
@@ -65,6 +65,8 @@ import {
   filterShippingNew,
   dropdown2,
   newCalendarIcon,
+  LocationPurple,
+  TimeSky,
 } from '@/assets';
 
 import styles from './styles';
@@ -372,7 +374,10 @@ export function DeliveryOrders2({ route }) {
               { backgroundColor: COLORS.tip_back, borderRadius: 100 },
             ]}
           >
-            <Image source={pin} style={[styles.pinImageStyle, { tintColor: COLORS.tip_blue }]} />
+            <Image
+              source={LocationPurple}
+              style={[styles.pinImageStyle, { tintColor: COLORS.tip_blue }]}
+            />
             <Text style={styles.distanceTextStyle}>
               {item?.distance ? `${item.distance} miles` : '0'}
             </Text>
@@ -402,10 +407,22 @@ export function DeliveryOrders2({ route }) {
         </View>
 
         <View style={[styles.orderDetailStyle, { width: SW(42) }]}>
-          <Text style={styles.timeTextStyle}>{deliveryDate}</Text>
-          <View style={styles.locationViewStyle}>
-            <Image source={clock} style={[styles.pinImageStyle, { tintColor: COLORS.navy_blue }]} />
-            <Text style={[styles.distanceTextStyle, { color: COLORS.navy_blue }]}>
+          <Text
+            style={[
+              styles.timeTextStyle,
+              { color: COLORS.black, fontFamily: Fonts.Regular, fontSize: SF(10) },
+            ]}
+          >
+            {deliveryDate}
+          </Text>
+          <View
+            style={[styles.locationViewStyle, { backgroundColor: '#EFFBFF', borderRadius: ms(20) }]}
+          >
+            <Image
+              source={TimeSky}
+              style={[styles.pinImageStyle, { tintColor: COLORS.dark_skyblue }]}
+            />
+            <Text style={[styles.distanceTextStyle, { color: COLORS.dark_skyblue }]}>
               {formattedTime}
             </Text>
           </View>
@@ -808,6 +825,7 @@ export function DeliveryOrders2({ route }) {
 
               <View style={styles.centerMainViewStyle}>
                 <Graph />
+
                 <OrderReview
                   {...{
                     renderOrderToReview,
