@@ -91,7 +91,7 @@ const Graph = ({ graphDetail, newCustomerCheck, onlineCustomerCheck, walkCustome
                   : Dimensions.get('window').width * 1.8
                 : Dimensions.get('window').width * 0.86
             }
-            height={Platform.OS === 'android' ? ms(330) : ms(350)}
+            height={Platform.OS === 'android' ? ms(330) : ms(330)}
             // noOfSections={8}
             chartConfig={{
               backgroundColor: '#000',
@@ -115,8 +115,9 @@ const Graph = ({ graphDetail, newCustomerCheck, onlineCustomerCheck, walkCustome
             }}
             bezier
             style={{
-              marginVertical: 8,
+              // marginVertical: 8,
               borderRadius: 16,
+              marginLeft: ms(-8),
             }}
             withShadow={false}
             fromZero
@@ -135,10 +136,11 @@ const styles = StyleSheet.create({
   graphViewStyle: {
     borderRadius: 10,
     // paddingBottom: 30,
-    height: twoEqualView,
+    // height: twoEqualView,
     backgroundColor: COLORS.white,
-    // padding: ms(10),
-    marginTop: ms(10),
+    padding: ms(10),
+    // marginTop: ms(10),
+    height: Platform.OS === 'android' ? ms(330) : ms(300),
   },
   numberOrdersText: {
     fontSize: SF(16),

@@ -28,6 +28,7 @@ import {
   searchDrawer,
   scanNew,
   profitIcon,
+  calendarDrawer,
 } from '@/assets';
 import moment from 'moment';
 import { debounce } from 'lodash';
@@ -339,7 +340,7 @@ export function Wallet2() {
                 ]}
               >
                 <Image
-                  source={newCalendar}
+                  source={calendarDrawer}
                   style={[
                     styles.calendarStyle,
                     {
@@ -355,9 +356,6 @@ export function Wallet2() {
                       : dateRange}
                   </Text> */}
               </TouchableOpacity>
-              {onSeachLoad && (
-                <ActivityIndicator color={COLORS.primary} size="small" style={{ right: SW(10) }} />
-              )}
 
               <TouchableOpacity
                 onPress={() =>
@@ -366,10 +364,13 @@ export function Wallet2() {
                   })
                 }
               >
-                <Image source={bellDrawer} style={[styles.truckStyle, { marginRight: ms(10) }]} />
+                <Image
+                  source={bellDrawer}
+                  style={[styles.truckStyle, { marginHorizontal: ms(5) }]}
+                />
               </TouchableOpacity>
-              <Image source={searchDrawer} style={[styles.searchImage, { marginRight: ms(15) }]} />
-              <Image source={scanNew} style={[styles.scnStyle, { marginRight: ms(5) }]} />
+              <Image source={searchDrawer} style={[styles.searchImage, { marginRight: ms(5) }]} />
+              <Image source={scanNew} style={[styles.scnStyle, { marginHorizontal: ms(5) }]} />
 
               {/* <View style={styles.searchView}>
                 <View style={styles.flexAlign}>
@@ -390,7 +391,13 @@ export function Wallet2() {
             </View>
           </View>
           <Text
-            style={{ fontSize: ms(9), marginHorizontal: ms(45), color: COLORS.navy_light_blue }}
+            style={{
+              fontSize: ms(9),
+              color: COLORS.navy_light_blue,
+              position: 'absolute',
+              top: ms(35),
+              left: ms(35),
+            }}
           >
             {'All the following data is gathered weekly.'}
           </Text>
@@ -546,9 +553,7 @@ export function Wallet2() {
   };
   return (
     <ScreenWrapper>
-      <View style={weeklyTransaction ? styles.bgWhitecontainer : styles.container}>
-        {bodyView()}
-      </View>
+      <View style={styles.container}>{bodyView()}</View>
       {onLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />

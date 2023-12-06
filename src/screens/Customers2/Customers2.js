@@ -416,7 +416,7 @@ export function Customers2() {
                 onPress={() =>
                   navigate(NAVIGATION.notificationsList, { screen: NAVIGATION.customers2 })
                 }
-                style={{ marginRight: ms(10) }}
+                style={{ marginHorizontal: ms(5) }}
               >
                 <Image source={bellDrawer} style={styles.truckStyle} />
               </TouchableOpacity>
@@ -431,7 +431,7 @@ export function Customers2() {
                 <Image source={searchDrawer} style={styles.searchImage} />
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.searchView, { marginHorizontal: ms(10) }]}
+                style={[styles.searchView, { marginLeft: ms(10) }]}
                 onPress={() => {
                   setShowSearchModal(true);
                   setSearchedCustomer([]);
