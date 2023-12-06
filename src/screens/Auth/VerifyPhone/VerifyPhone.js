@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Image, StatusBar } from 'react-native';
-
 import { useDispatch, useSelector } from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-
 import { dropdown } from '@/assets';
 import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
@@ -126,6 +124,7 @@ export function VerifyPhone() {
               onPressContinueButton={verifyPhoneHandler}
               isBackButtonDisbaled={true}
             />
+            <Spacer space={SH(6)} />
           </View>
         </View>
       </View>

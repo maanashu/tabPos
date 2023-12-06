@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   walkinCon: {
     backgroundColor: COLORS.white,
     width: ms(55),
-    height: ms(20),
+    height: ms(25),
     borderRadius: ms(18),
     justifyContent: 'center',
     alignItems: 'center',
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   logoutCon: {
     backgroundColor: COLORS.white,
     width: SW(40),
-    height: ms(20),
+    height: ms(25),
     borderRadius: ms(18),
     flexDirection: 'row',
     justifyContent: 'center',

@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: ms(60),
     flex: 1,
-    marginVertical: ms(15),
+    marginVertical: ms(10),
   },
   drawerMainView: {
     flex: 1,

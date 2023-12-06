@@ -2002,7 +2002,7 @@ export const styles = StyleSheet.create({
     borderRadius: ms(6),
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: ms(35),
+    marginTop: ms(25),
     backgroundColor: COLORS.light_green,
     alignSelf: 'center',
   },

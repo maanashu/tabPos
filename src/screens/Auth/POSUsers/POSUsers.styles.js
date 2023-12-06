@@ -62,7 +62,6 @@ export const styles = StyleSheet.create({
     paddingVertical: SH(30),
     borderRadius: ms(18),
     flex: 0.25,
-    ...ShadowStyles.shadow2,
   },
   posLoginHeader: {
     color: COLORS.black,

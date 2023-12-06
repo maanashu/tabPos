@@ -407,7 +407,7 @@ export const en = {
     yourSessionEnd: 'Your Session Ends',
     expandOneHour: 'Expand 1 hour',
     expandTwoHour: 'Expand 2 hour',
-    productReturn: 'Product Return',
+    productReturn: 'Product Returns',
   },
   wallet: {
     config: 'Wallet Config',

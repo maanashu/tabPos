@@ -83,11 +83,13 @@ export const VirtualKeyBoard = ({
                 style={{
                   width: 'auto',
                   height: ms(35),
-                  padding: ms(10),
+                  paddingHorizontal: ms(10),
                   backgroundColor: COLORS.sky_grey,
                   borderWidth: 0,
                   borderRadius: ms(20),
                   marginHorizontal: 0,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
                 textStyle={[
                   { fontSize: ms(12), fontFamily: Fonts.Regular },
@@ -107,12 +109,14 @@ export const VirtualKeyBoard = ({
                 style={{
                   width: 'auto',
                   height: ms(35),
-                  padding: ms(10),
+                  paddingHorizontal: ms(10),
                   backgroundColor: COLORS.navy_blue,
                   borderWidth: 0,
                   borderRadius: ms(20),
                   marginLeft: ms(20),
                   marginHorizontal: 0,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
                 textStyle={{ fontSize: ms(12), fontFamily: Fonts.Regular, color: COLORS.white }}
                 iconStyle={{ height: ms(15), width: ms(15), transform: [{ rotate: '90deg' }] }}

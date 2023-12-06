@@ -28,19 +28,19 @@ export const styles = StyleSheet.create({
   // home Screen css start
   homeScreenCon: {
     flex: 1,
+    backgroundColor: COLORS.sky_grey,
   },
   cashProfileCon: {
-    width: windowWidth * 0.29,
-    height: windowHeight * 0.95,
+    flex: 0.3,
     backgroundColor: COLORS.sky_grey,
-    paddingHorizontal: moderateScale(10),
-    alignItems: 'center',
+    paddingRight: moderateScale(15),
   },
   cashProfile: {
-    width: SW(55),
-    height: SW(55),
+    width: ms(70),
+    height: ms(70),
     resizeMode: 'contain',
     borderRadius: 100,
+    borderWidth: 7,
   },
   todaySaleCon: {
     borderRadius: 15,
@@ -58,21 +58,21 @@ export const styles = StyleSheet.create({
   todaySale: {
     color: COLORS.navy_blue,
     fontSize: SF(18),
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.SemiBold,
   },
   cashLabel: {
-    color: COLORS.darkGreen,
+    color: COLORS.solid_grey,
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
   },
   saleAmountLable: {
-    color: COLORS.darkGreen,
+    color: COLORS.solid_grey,
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
     width: windowWidth * 0.13,
   },
   cashAmount: {
-    color: COLORS.darkGreen,
+    color: COLORS.solid_grey,
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
   },
@@ -99,7 +99,7 @@ export const styles = StyleSheet.create({
   checkoutText1: {
     color: COLORS.navy_blue,
     fontSize: SF(16),
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.Medium,
   },
   checkArrow: {
     width: SW(10),
@@ -108,13 +108,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(6),
   },
   lockLight: {
-    width: SW(10),
-    height: SW(10),
+    width: ms(16),
+    height: ms(16),
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(10),
   },
   cashierName: {
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontSize: SF(24),
     fontFamily: Fonts.SemiBold,
   },
@@ -134,6 +134,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: moderateScale(8),
     paddingVertical: moderateScale(3),
+    backgroundColor: COLORS.neutral_blue,
   },
   idDotStyle: {
     backgroundColor: COLORS.sky_blue,
@@ -143,27 +144,28 @@ export const styles = StyleSheet.create({
     marginRight: moderateScale(8),
   },
   cashProfilecon: {
-    borderWidth: 6,
+    width: ms(77),
+    height: ms(77),
     borderRadius: 100,
-    borderColor: COLORS.white,
+    backgroundColor: COLORS.white,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   rightOrderCon: {
-    width: windowWidth * 0.6,
-    height: windowHeight * 0.95,
-    paddingHorizontal: moderateScale(15),
-    paddingVertical: verticalScale(5),
-    backgroundColor: COLORS.sky_grey,
+    flex: 0.7,
+    backgroundColor: COLORS.white,
+    padding: ms(15),
   },
   inputWraper: {
     backgroundColor: COLORS.textInputBackground,
-    borderRadius: 7,
+    borderRadius: ms(22),
     flexDirection: 'row',
     alignItems: 'center',
-    width: windowWidth * 0.61,
-    height: Platform.OS === 'android' ? SH(55) : SH(45),
+    height: ms(35),
     justifyContent: 'space-between',
     marginHorizontal: moderateScale(10),
     alignSelf: 'center',
+    paddingHorizontal: ms(12),
   },
   sideBarInputWraper: {
     borderWidth: 1,
@@ -174,12 +176,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 5,
     paddingLeft: moderateScale(10),
+    tintColor: COLORS.navy_blue,
   },
   searchStyle: {
-    width: SW(7),
-    height: SW(7),
+    width: ms(22),
+    height: ms(22),
     resizeMode: 'contain',
-    marginHorizontal: moderateScale(5),
+    marginRight: moderateScale(5),
   },
   sideSearchStyle: {
     width: SW(7),
@@ -191,8 +194,11 @@ export const styles = StyleSheet.create({
   },
   searchInput: {
     borderRadius: 7,
-    width: windowWidth * 0.4,
-    fontFamily: Fonts.Italic,
+    flex: 1,
+    // width: windowWidth * 0.4,
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
+    fontSize: ms(10),
   },
   sideBarsearchInput: {
     borderRadius: 7,
@@ -207,7 +213,8 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   storeCardCon: {
-    width: SW(100),
+    // width: SW(100),
+    flex: 1,
     height: SW(65),
     borderRadius: 24,
     alignItems: 'center',
@@ -239,7 +246,7 @@ export const styles = StyleSheet.create({
   startSelling: {
     color: COLORS.white,
     fontSize: SF(22),
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.Medium,
   },
   scanSer: {
     color: COLORS.dark_grey,
@@ -256,16 +263,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   homeTableCon: {
-    // borderWidth: 1,
-    height: Platform.OS === 'ios' ? windowHeight * 0.6 : windowHeight * 0.5,
-    backgroundColor: COLORS.textInputBackground,
-    ...ShadowStyles.shadow2,
-    borderRadius: 10,
-    paddingHorizontal: moderateScale(10),
-    paddingVertical: verticalScale(5),
+    flex: 1,
   },
   deliveries: {
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontSize: SF(20),
     fontFamily: Fonts.SemiBold,
   },
@@ -285,12 +286,12 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   nameText: {
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.Medium,
     fontSize: SF(14),
-    color: COLORS.solid_grey,
+    color: COLORS.textBlue,
   },
   timeText: {
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.Medium,
     fontSize: SF(11),
     color: COLORS.dark_grey,
     textAlignVertical: 'center',
@@ -301,15 +302,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: SH(8),
   },
-  pinIcon: {
-    width: SW(6),
-    height: SW(6),
-    resizeMode: 'contain',
-    marginRight: SW(1),
+  pinIcon: (value) => {
+    return {
+      width: SW(6),
+      height: SW(6),
+      resizeMode: 'contain',
+      marginRight: SW(1),
+      tintColor: value === 1 ? COLORS.purple : value === 2 ? COLORS.navy_blue : COLORS.light_time,
+    };
   },
   arrowIconRight: {
-    width: SW(10),
-    height: SW(10),
+    width: ms(16),
+    height: ms(16),
     resizeMode: 'contain',
     alignSelf: 'center',
   },
@@ -390,13 +394,13 @@ export const styles = StyleSheet.create({
   },
   noteInputStyle: {
     fontFamily: Fonts.Medium,
-    fontSize: ms(12),
+    fontSize: ms(11),
     color: COLORS.navy_blue,
     flex: 1,
     height: ms(38),
     textAlignVertical: 'center',
     paddingLeft: ms(5),
-    paddingTop: ms(10),
+    paddingTop: ms(8),
   },
   buttonText: {
     fontSize: SF(16),
@@ -799,7 +803,7 @@ export const styles = StyleSheet.create({
   },
   requestNotFound: {
     fontFamily: Fonts.Regular,
-    color: COLORS.primary,
+    color: COLORS.red,
     alignSelf: 'center',
     marginTop: 50,
     fontSize: SF(20),
