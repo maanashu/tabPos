@@ -42,6 +42,7 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(8),
     resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
   },
   _centerContainer: {
     backgroundColor: COLORS.white,
@@ -1665,7 +1666,7 @@ export const styles = StyleSheet.create({
       height: ms(18),
       width: ms(18),
       resizeMode: 'contain',
-      // tintColor: selectedRecipeIndex === index ? COLORS.white : COLORS.redish_brown,
+      tintColor: selectedRecipeIndex === index ? COLORS.white : COLORS.coffee,
     };
   },
   _payBYBoxContainerReceipeEmpty: {
@@ -1995,15 +1996,15 @@ export const styles = StyleSheet.create({
   },
 
   jobrSaveView: {
-    borderColor: COLORS.primary,
-    borderWidth: 1,
-    height: ms(50),
-    // width: ms(40),
+    height: ms(32),
+    width: '40%',
     margin: ms(3),
     borderRadius: ms(6),
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: ms(25),
+    marginTop: ms(35),
+    backgroundColor: COLORS.light_green,
+    alignSelf: 'center',
   },
   youSave: {
     fontFamily: Fonts.Regular,
@@ -2033,10 +2034,10 @@ export const styles = StyleSheet.create({
     // You can apply any other styles you want for "JBR"
   },
   savePercent: {
-    fontFamily: Fonts.Bold,
-    color: COLORS.primary,
-    fontSize: ms(15),
-    marginTop: ms(4), // Set your desired font size for the percentage value
+    fontFamily: Fonts.Medium,
+    color: COLORS.medium_green,
+    fontSize: ms(9),
+    // marginTop: ms(4), // Set your desired font size for the percentage value
     // Add any other styles you want for the percentage value here
   },
 
@@ -2153,7 +2154,7 @@ export const styles = StyleSheet.create({
     height: ms(460),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
-    borderRadius: 10,
+    borderRadius: ms(18),
   },
   scanPopHeader: {
     borderBottomWidth: 1,
@@ -2719,5 +2720,19 @@ export const styles = StyleSheet.create({
     fontSize: ms(13),
     textAlign: 'center',
     marginTop: ms(3),
+  },
+  confirmButom: {
+    height: ms(35),
+    backgroundColor: COLORS.navy_blue,
+    width: '55%',
+    borderRadius: ms(18),
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  confirmText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.white,
+    fontSize: ms(11),
   },
 });

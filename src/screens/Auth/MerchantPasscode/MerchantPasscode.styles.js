@@ -26,12 +26,10 @@ export const styles = StyleSheet.create({
     ...ShadowStyles.shadow2,
   },
   heading: {
-    fontSize: SF(30),
-    textAlign: 'center',
-    lineHeight: ms(22),
-    letterSpacing: ms(-0.6),
+    fontSize: SF(24),
     color: COLORS.navy_blue,
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.Medium,
+    textAlign: 'center',
   },
   subHeading: {
     fontSize: SF(16),
@@ -49,13 +47,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     marginHorizontal: moderateScale(10),
   },
   cellText: {
     fontFamily: Fonts.Medium,
     fontSize: scale(12),
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     marginTop: SH(10),
   },
 });

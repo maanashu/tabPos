@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { moderateScale } from 'react-native-size-matters';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-import { SH } from '@/theme';
+import { COLORS, Fonts, SH } from '@/theme';
 import { TYPES } from '@/Types/Types';
 import { Spacer } from '@/components';
 import { crossButton, userImage } from '@/assets';
@@ -26,6 +26,7 @@ import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import { styles } from '@/screens/Auth/PosUserPasscode/PosUserPasscode.styles';
+import CustomHeaderPOSUsers from '../components/CustomHeaderPOSUsers';
 
 const CELL_COUNT = 4;
 
@@ -93,10 +94,14 @@ export function PosUserPasscode({ route }) {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.container}>
-        <Text style={styles.subHeading} numberOfLines={1}>
-          {strings.passcode.subHeading}
-        </Text>
-        <Spacer space={SH(12)} />
+        {/* <Spacer space={SH(20)} />
+        <CustomHeaderPOSUsers showUserName={false} /> */}
+        <View style={{ alignItems: 'center' }}>
+          <Text style={styles.welcomeTo}>
+            Welcome to <Text style={{ fontFamily: Fonts.SemiBold }}>JOBR POS</Text>{' '}
+          </Text>
+        </View>
+
         <View style={styles.verifyContainer}>
           <Spacer space={SH(16)} />
 

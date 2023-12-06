@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-import { moderateScale, scale } from 'react-native-size-matters';
+import { moderateScale, ms, scale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
 import { COLORS, SW, SF, ShadowStyles, SH } from '@/theme';
@@ -11,16 +11,16 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.sky_grey,
+    backgroundColor: COLORS.textInputBackground,
   },
   verifyContainer: {
     width: windowWidth * 0.4,
-    height: windowHeight * 0.85,
+    // height: windowHeight * 0.85,
+    height: '82%',
     borderColor: 'grey',
     alignSelf: 'center',
-    borderRadius: 15,
+    borderRadius: ms(18),
     alignItems: 'center',
     backgroundColor: COLORS.white,
     ...ShadowStyles.shadow2,
@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   subHeading: {
     fontSize: SF(24),
     color: COLORS.dark_grey,
-    fontFamily: Fonts.MaisonBold,
+    fontFamily: Fonts.me,
   },
   alignSelfCenter: {
     alignSelf: 'center',
@@ -41,13 +41,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     marginHorizontal: moderateScale(10),
   },
   cellText: {
     fontFamily: Fonts.Medium,
     fontSize: scale(12),
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     marginTop: SH(10),
   },
   cross: {
@@ -56,22 +56,27 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   profileImage: {
-    width: SH(100),
-    height: SH(100),
+    width: ms(50),
+    height: ms(50),
     borderRadius: SH(50),
     borderWidth: 0.5,
     borderColor: COLORS.solidGrey,
   },
   firstName: {
-    fontSize: SH(16),
+    fontSize: ms(10),
     fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
   },
   role: {
-    fontSize: SH(14),
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.primary,
-    width: SH(270),
+    fontSize: ms(9),
+    fontFamily: Fonts.Medium,
+    color: COLORS.lavender,
     textAlign: 'center',
+  },
+  welcomeTo: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(15),
+    color: COLORS.navy_blue,
+    marginVertical: ms(10),
   },
 });

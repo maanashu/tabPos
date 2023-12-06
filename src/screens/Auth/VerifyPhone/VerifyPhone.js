@@ -17,6 +17,7 @@ import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import { styles } from './VerifyPhone.styles';
+import { ms } from 'react-native-size-matters';
 
 export function VerifyPhone() {
   const dispatch = useDispatch();
@@ -73,57 +74,59 @@ export function VerifyPhone() {
 
         <View style={styles.verifyContainer}>
           <Spacer space={SH(25)} />
-
-          <View></View>
           <Text style={styles.header}>{strings.verifyPhone.heading}</Text>
 
           <Spacer space={SH(6)} />
 
-          <Text style={styles.subHeading}>{strings.verifyPhone.subHeading}</Text>
+          <Text style={[styles.subHeading, { alignSelf: 'center' }]}>
+            {strings.verifyPhone.subHeading}
+          </Text>
 
           <Spacer space={SH(6)} />
+          <View style={{ flex: 1, paddingHorizontal: ms(30) }}>
+            <View style={styles.textInputView}>
+              <CountryPicker
+                onSelect={(code) => {
+                  setFlag(code.cca2);
+                  if (code.callingCode?.length > 0) {
+                    setCountryCode('+' + code.callingCode.flat());
+                  } else {
+                    setCountryCode('');
+                  }
+                }}
+                countryCode={flag}
+                withFilter
+                withCallingCode
+              />
 
-          <View style={styles.textInputView}>
-            <CountryPicker
-              onSelect={(code) => {
-                setFlag(code.cca2);
-                if (code.callingCode?.length > 0) {
-                  setCountryCode('+' + code.callingCode.flat());
-                } else {
-                  setCountryCode('');
-                }
-              }}
-              countryCode={flag}
-              withFilter
-              withCallingCode
-            />
+              <Image source={dropdown} style={styles.dropDownIcon} />
+              <View style={styles.countryCodeBack}>
+                <Text style={styles.countryCodeText}>{countryCode}</Text>
+              </View>
 
-            <Image source={dropdown} style={styles.dropDownIcon} />
+              <TextInput
+                maxLength={10}
+                returnKeyType={'done'}
+                keyboardType={'number-pad'}
+                value={phoneNumber.trim()}
+                onChangeText={onChangePhoneNumber}
+                style={styles.textInputContainer}
+                placeholder={strings.verifyPhone.placeHolderText}
+                placeholderTextColor={COLORS.light_purple}
+                showSoftInputOnFocus={false}
+              />
+            </View>
 
-            <Text style={styles.countryCodeText}>{countryCode}</Text>
-
-            <TextInput
-              maxLength={10}
-              returnKeyType={'done'}
-              keyboardType={'number-pad'}
-              value={phoneNumber.trim()}
-              onChangeText={onChangePhoneNumber}
-              style={styles.textInputContainer}
-              placeholder={strings.verifyPhone.placeHolderText}
-              placeholderTextColor={COLORS.darkGray}
-              showSoftInputOnFocus={false}
+            <VirtualKeyBoard
+              canGoBack={false}
+              maxCharLength={10}
+              enteredValue={phoneNumber}
+              setEnteredValue={setPhoneNumber}
+              isButtonLoading={isLoading}
+              onPressContinueButton={verifyPhoneHandler}
+              isBackButtonDisbaled={true}
             />
           </View>
-
-          <VirtualKeyBoard
-            canGoBack={false}
-            maxCharLength={10}
-            enteredValue={phoneNumber}
-            setEnteredValue={setPhoneNumber}
-            isButtonLoading={isLoading}
-            onPressContinueButton={verifyPhoneHandler}
-            isBackButtonDisbaled={true}
-          />
         </View>
       </View>
     </View>

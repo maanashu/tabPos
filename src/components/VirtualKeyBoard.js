@@ -84,7 +84,7 @@ export const VirtualKeyBoard = ({
                   width: 'auto',
                   height: ms(35),
                   padding: ms(10),
-                  backgroundColor: '#F5F6FC',
+                  backgroundColor: COLORS.sky_grey,
                   borderWidth: 0,
                   borderRadius: ms(20),
                   marginHorizontal: 0,
@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: windowWidth / 3.1,
+    // borderWidth: 1,
   },
   button: {
     height: SH(60),
