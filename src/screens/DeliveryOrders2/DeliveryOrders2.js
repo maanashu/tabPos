@@ -849,7 +849,7 @@ export function DeliveryOrders2({ route }) {
               {strings.deliveryOrders.back}
             </Text>
           </TouchableOpacity> */}
-
+          <NewHeader invoiceNo={userDetail?.invoices?.invoice_number ?? 0} />
           <View style={styles.firstRowStyle}>
             {/* {openShippingOrders === '9' ? (
               <ReturnInvoice

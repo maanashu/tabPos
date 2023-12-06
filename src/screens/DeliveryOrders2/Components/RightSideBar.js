@@ -115,9 +115,10 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
             backgroundColor: COLORS.light_sky,
             justifyContent: 'space-around',
             alignItems: 'center',
-            height: '100%',
+            height: '95%',
             borderRadius: ms(20),
             width: '90%',
+            marginBottom: ms(4),
           }}
           onPress={handleShowMenu}
         >
@@ -153,6 +154,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(4),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -179,6 +181,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(4),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -207,6 +210,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(4),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -235,6 +239,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(4),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -259,7 +264,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
   const renderDrawerFull = ({ item }) => (
     <TouchableOpacity
       disabled={item?.count > 0 ? false : true}
-      style={[{ marginVertical: ms(2) }]}
+      style={[{ marginVertical: ms(3) }]}
       onPress={() =>
         // onPressDrawerHandler(item?.key)
         {
@@ -381,10 +386,10 @@ const styles = StyleSheet.create({
     color: COLORS.textBlue,
   },
   fullSideModal: {
-    width: ms(180),
+    width: ms(200),
     position: 'absolute',
     right: ms(0),
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'flex-start',
     paddingStart: ms(10),
     ...ShadowStyles.shadow,

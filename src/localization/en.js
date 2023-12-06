@@ -520,6 +520,8 @@ export const en = {
     shippingOrders: 'Shipping Orders',
     currentStatus: 'Current Status',
     orderConvertion: 'Order convertion',
+    orders: 'Orders',
+
     orderConversion: 'Order Conversion',
     incomingOrders: 'Incoming Orders',
     processingOrders: 'Order Processing',
