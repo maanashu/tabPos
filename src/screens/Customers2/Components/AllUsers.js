@@ -212,6 +212,8 @@ const AllUsers = ({
       setShowCalendarModal(false);
       setSelectTime('');
       setSelectId('');
+      setFormatedDate();
+      setDate();
       setSelectDate(!selectDate);
     } else {
       alert('Please Select End Date');
@@ -296,14 +298,13 @@ const AllUsers = ({
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.headerMainView}>
-        <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
-          <Image source={arrowLeftUp} style={styles.backIcon} />
-          <View style={styles.deliveryView}>
-            {/* <Image source={newUsers} style={[styles.userStyle]} /> */}
-            <Text style={styles.deliveryText}>{'Users'}</Text>
-          </View>
-        </TouchableOpacity>
+      <View style={[styles.headerMainView, { paddingLeft: ms(5) }]}>
+        <View style={styles.deliveryView}>
+          <TouchableOpacity onPress={backHandler} style={{ marginRight: ms(5) }}>
+            <Image source={arrowLeftUp} style={styles.backButtonArrow} />
+          </TouchableOpacity>
+          <Text style={styles.deliveryText}>{'Users'}</Text>
+        </View>
         <View style={styles.deliveryView}>
           <DaySelector
             onPresFun={onPresFun}
@@ -334,15 +335,12 @@ const AllUsers = ({
 
           <TouchableOpacity
             onPress={() =>
-              navigate(NAVIGATION.notificationsList, {
-                screen: NAVIGATION.customers2,
-              })
+              navigate(NAVIGATION.notificationsList, { screen: NAVIGATION.customers2 })
             }
-            style={{ marginRight: ms(10) }}
+            style={{ marginHorizontal: ms(5) }}
           >
-            <Image source={bellDrawer} style={[styles.truckStyle]} />
+            <Image source={bellDrawer} style={styles.truckStyle} />
           </TouchableOpacity>
-
           <TouchableOpacity
             style={styles.searchView}
             onPress={() => {
@@ -353,9 +351,8 @@ const AllUsers = ({
           >
             <Image source={searchDrawer} style={styles.searchImage} />
           </TouchableOpacity>
-
           <TouchableOpacity
-            style={[styles.searchView, { marginHorizontal: ms(10) }]}
+            style={[styles.searchView, { marginLeft: ms(10) }]}
             onPress={() => {
               setShowSearchModal(true);
               setSearchedCustomer([]);

@@ -12,7 +12,7 @@ import {
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { BarChart } from 'react-native-gifted-charts';
-import { Fonts, blankCheckBox, mark } from '@/assets';
+import { Fonts, blankCheckBox, mark, newCheck } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { TYPES } from '@/Types/WalletTypes';
 import { graphOptions } from '@/constants/flatListData';
@@ -283,11 +283,22 @@ const Graph = () => {
           }}
           style={styles.checkboxViewStyle}
         >
-          <Image
-            source={showJBR ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showJBR && { tintColor: COLORS.lavenders }]}
-          />
-          <Text style={[styles.varientTextStyle, { color: COLORS.lavenders }]}>JBR Coin</Text>
+          <View
+            style={[
+              styles.imageView,
+              { borderColor: COLORS.navy_blue, backgroundColor: COLORS.light_purple },
+            ]}
+          >
+            <Image
+              source={showJBR ? newCheck : blankCheckBox}
+              style={[
+                styles.checkboxIconStyle,
+                { tintColor: showJBR ? COLORS.navy_blue : COLORS.transparent },
+              ]}
+            />
+          </View>
+
+          <Text style={[styles.varientTextStyle, { color: COLORS.navy_blue }]}>JBR Coin</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -300,12 +311,26 @@ const Graph = () => {
           }}
           style={styles.checkboxViewStyle}
         >
-          <Image
-            source={showCash ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showCash && { tintColor: COLORS.bright_green }]}
-          />
-          <Text style={[styles.varientTextStyle, { color: COLORS.bright_green }]}>Cash</Text>
+          <View
+            style={[
+              styles.imageView,
+              { borderColor: COLORS.medium_green, backgroundColor: COLORS.light_green },
+            ]}
+          >
+            <Image
+              source={showCash ? newCheck : blankCheckBox}
+              style={[
+                styles.checkboxIconStyle,
+                {
+                  tintColor: showCash ? COLORS.medium_green : COLORS.transparent,
+                },
+              ]}
+            />
+          </View>
+
+          <Text style={[styles.varientTextStyle, { color: COLORS.medium_green }]}>Cash</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => {
             setShowCard((prevShowJBR) => {
@@ -316,11 +341,24 @@ const Graph = () => {
           }}
           style={[styles.checkboxViewStyle, { marginRight: 0 }]}
         >
-          <Image
-            source={showCard ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showCard && { tintColor: COLORS.sky_blue }]}
-          />
-          <Text style={[styles.varientTextStyle, { color: COLORS.sky_blue }]}>Credit Card</Text>
+          <View
+            style={[
+              styles.imageView,
+              { borderColor: COLORS.aqua, backgroundColor: COLORS.light_sky },
+            ]}
+          >
+            <Image
+              source={showCard ? newCheck : blankCheckBox}
+              style={[
+                styles.checkboxIconStyle,
+                {
+                  tintColor: showCard ? COLORS.aqua : COLORS.transparent,
+                },
+              ]}
+            />
+          </View>
+
+          <Text style={[styles.varientTextStyle, { color: COLORS.aqua }]}>Credit Card</Text>
         </TouchableOpacity>
       </View>
       {isLoad ? (
@@ -378,7 +416,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     paddingVertical: ms(10),
     // marginTop: ms(10),
-    paddingBottom: ms(30),
+    // paddingBottom: ms(30),
   },
   numberOrdersText: {
     fontSize: SF(16),
@@ -404,24 +442,32 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   varientTextStyle: {
-    fontSize: ms(9),
+    fontSize: ms(7),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },
   checkboxIconStyle: {
-    width: ms(12),
-    height: ms(12),
+    width: ms(8),
+    height: ms(8),
     resizeMode: 'contain',
   },
   checkboxViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: ms(10),
+    marginRight: ms(5),
   },
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
     zIndex: 999,
     alignSelf: 'flex-end',
+    marginHorizontal: ms(5),
+  },
+  imageView: {
+    borderWidth: 1,
+    borderRadius: ms(3),
+    borderColor: COLORS.medium_green,
+    backgroundColor: COLORS.light_green,
+    marginHorizontal: ms(2),
   },
 });

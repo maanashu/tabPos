@@ -8,42 +8,49 @@ import axios from 'axios';
 
 export class CustomersController {
   static async getUserOrder(data) {
-    let originalString = data?.customerType;
-    let convertedString = originalString.toLowerCase().replace(/\s+/g, '_');
+    console.log('second', data);
+
     return new Promise((resolve, reject) => {
-      function generateUserOrderEndpoint(data) {
-        const {
-          search,
-          area,
-          calenderDate,
-          sellerID,
-          dayWisefilter,
-          page,
-          limit,
-          customerType,
-          start_date,
-          end_date,
-        } = data;
-        const type = customerType?.toLowerCase().replace(/\s+/g, '_');
-        const baseEndpoint = `${ORDER_URL}${ApiOrderInventory.getUserOrder}`;
+      const type = data?.customerType?.toLowerCase().replace(/\s+/g, '_');
+      console.log('type', type);
+      const defaultParams = {
+        seller_id: data?.sellerID,
+        type: type,
+      };
 
-        let queryParams = [`seller_id=${sellerID}`, `type=${type}`];
+      const queryParams = {
+        ...defaultParams,
+        page: data?.page,
+        limit: data?.limit,
+      };
 
-        if (search) queryParams.push(`search=${search}`);
-        if (calenderDate !== undefined) queryParams.push(`date=${calenderDate}`);
-        if (area !== 'none' && undefined) queryParams.push(`area=${area}`);
-        if (dayWisefilter) queryParams.push(`filter=${dayWisefilter}`);
-        if (page) queryParams.push(`page=${page}`);
-        if (limit) queryParams.push(`limit=${limit}`);
-        if (start_date !== 'Invalid date' && undefined)
-          queryParams.push(`start_date=${start_date}`);
-        if (end_date !== 'Invalid date' && undefined) queryParams.push(`end_date=${end_date}`);
-        const queryString = queryParams.join('&');
-
-        return `${baseEndpoint}?${queryString}`;
+      if (data?.search) {
+        queryParams.search = data?.search;
       }
 
-      const endpoint = generateUserOrderEndpoint(data);
+      if (data?.calenderDate !== undefined) {
+        queryParams.date = data?.calenderDate;
+      }
+
+      if (data?.area !== 'none' && data?.area !== undefined) {
+        queryParams.area = data?.area;
+      }
+
+      if (data?.dayWisefilter) {
+        queryParams.filter = data?.dayWisefilter;
+      }
+
+      if (data?.start_date !== 'Invalid date' && data?.start_date !== undefined) {
+        queryParams.start_date = data?.start_date;
+      }
+
+      if (data?.end_date !== 'Invalid date' && data?.end_date !== undefined) {
+        queryParams.end_date = data?.end_date;
+      }
+
+      const params = new URLSearchParams(queryParams).toString();
+
+      const endpoint = `${ORDER_URL}${ApiOrderInventory.getUserOrder}?${params}`;
 
       HttpClient.get(endpoint)
         .then((response) => {
@@ -52,7 +59,7 @@ export class CustomersController {
         })
         .catch((error) => {
           console.log('errorerror', error);
-          console.log('error', endpoint);
+          console.log('error', endpoint, data);
 
           error?.msg &&
             Toast.show({

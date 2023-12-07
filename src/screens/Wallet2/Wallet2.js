@@ -29,6 +29,10 @@ import {
   scanNew,
   profitIcon,
   calendarDrawer,
+  new_wallet,
+  new_JBR_coin,
+  new_visa,
+  new_cash,
 } from '@/assets';
 import moment from 'moment';
 import { debounce } from 'lodash';
@@ -260,7 +264,7 @@ export function Wallet2() {
     {
       aboutTransaction: 'JBR Coin',
       price: getTotalTraData?.data?.jbr.toFixed(2) ?? '0',
-      img: profitIcon,
+      img: new_JBR_coin,
       id: '2',
       type: 'jbr',
       backgroundColor: COLORS.light_purple,
@@ -270,7 +274,7 @@ export function Wallet2() {
     {
       aboutTransaction: 'Cash',
       price: getTotalTraData?.data?.cash.toFixed(2) ?? '0',
-      img: cashIcon,
+      img: new_cash,
       id: '3',
       type: 'cash',
       backgroundColor: COLORS.light_green,
@@ -279,7 +283,7 @@ export function Wallet2() {
     {
       aboutTransaction: 'Card',
       price: getTotalTraData?.data?.card.toFixed(2) ?? '0',
-      img: cardIcon,
+      img: new_visa,
       id: '4',
       type: 'card',
       backgroundColor: COLORS.light_skyblue,
@@ -320,7 +324,7 @@ export function Wallet2() {
         <View style={{ flex: 1 }}>
           <View style={styles.headerMainView}>
             <View style={styles.deliveryView}>
-              <Image source={wallet} style={[styles.walletIcon]} />
+              <Image source={new_wallet} style={[styles.userStyle]} />
               <Text style={styles.deliveryText}>{strings.wallet.totalTransections}</Text>
             </View>
             <View style={styles.deliveryView}>
@@ -330,6 +334,7 @@ export function Wallet2() {
                 setSelectId={setSelectId}
                 setSelectTime={setSelectTime}
               />
+
               <TouchableOpacity
                 onPress={() => setShow(!show)}
                 style={[
@@ -348,13 +353,6 @@ export function Wallet2() {
                     },
                   ]}
                 />
-                {/* <Text style={startDate ? styles.dateText : styles.dateText2}>
-                    {startDate
-                      ? moment(startDate).format('MMM D') +
-                        ' - ' +
-                        moment(endDate).format('MMM D, YYYY')
-                      : dateRange}
-                  </Text> */}
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -363,33 +361,33 @@ export function Wallet2() {
                     screen: NAVIGATION.wallet2,
                   })
                 }
+                style={{ marginHorizontal: ms(5) }}
               >
-                <Image
-                  source={bellDrawer}
-                  style={[styles.truckStyle, { marginHorizontal: ms(5) }]}
-                />
+                <Image source={bellDrawer} style={styles.truckStyle} />
               </TouchableOpacity>
-              <Image source={searchDrawer} style={[styles.searchImage, { marginRight: ms(5) }]} />
-              <Image source={scanNew} style={[styles.scnStyle, { marginHorizontal: ms(5) }]} />
-
-              {/* <View style={styles.searchView}>
-                <View style={styles.flexAlign}>
-                  <Image source={search_light} style={styles.searchImage} />
-                  <TextInput
-                    value={sku}
-                    placeholder={strings.wallet.searchHere}
-                    style={styles.textInputStyles}
-                    placeholderTextColor={COLORS.darkGray}
-                    onChangeText={(text) => {
-                      setSku(text);
-                      debouncedSearchInvoice(text);
-                    }}
-                  />
-                </View>
-                <Image source={scn} style={styles.scnStyle} />
-              </View> */}
+              <TouchableOpacity
+                style={styles.searchView}
+                // onPress={() => {
+                //   setShowSearchModal(true);
+                //   setSearchedCustomer([]);
+                //   setSearchedText('');
+                // }}
+              >
+                <Image source={searchDrawer} style={styles.searchImage} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.searchView, { marginLeft: ms(10) }]}
+                // onPress={() => {
+                //   setShowSearchModal(true);
+                //   setSearchedCustomer([]);
+                //   setSearchedText('');
+                // }}
+              >
+                <Image source={scanNew} style={styles.searchImage} />
+              </TouchableOpacity>
             </View>
           </View>
+
           <Text
             style={{
               fontSize: ms(9),
@@ -401,6 +399,7 @@ export function Wallet2() {
           >
             {'All the following data is gathered weekly.'}
           </Text>
+
           <View style={styles.walletHomeBodyCon}>
             <View>
               <FlatList
