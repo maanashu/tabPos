@@ -88,14 +88,14 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
               {item?.shipping_details?.title}
               {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
             </Text>
-            <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
+            {/* <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
               <Image source={thunder} style={[styles.pinImageStyle]} />
               <Text style={[styles.distanceTextStyle, { color: COLORS.dark_yellow }]}>
                 {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
                   item?.preffered_delivery_end_time ?? '00.00'
                 }`}
               </Text>
-            </View>
+            </View> */}
           </View>
         </View>
 
@@ -218,12 +218,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderToReviewView: {
-    borderRadius: ms(20),
+    borderRadius: ms(10),
     backgroundColor: COLORS.white,
     // height: height / 2.35,
-    paddingBottom: ms(10),
-    flex: 0.48,
-    marginBottom: ms(10),
+    // paddingBottom: ms(10),
+    flex: 0.495,
+    // marginBottom: ms(10),
   },
   headingRowStyle: {
     flexDirection: 'row',

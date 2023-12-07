@@ -43,7 +43,6 @@ const CustomerDetails = ({ orderDetail }) => {
           <Text style={[styles.datetextStyle, { color: COLORS.navy_blue }]}>
             {moment(orderDetail?.invoices?.delivery_date).format('DD MMM YYYY')}
           </Text>
-
           <Text style={[styles.preferredTextStyle, { color: COLORS.lavender }]}>
             {`${orderDetail?.preffered_delivery_start_time ?? '-'} - ${
               orderDetail?.preffered_delivery_end_time ?? '-'
@@ -61,12 +60,13 @@ const styles = StyleSheet.create({
   orderDetailViewStyle: {
     alignSelf: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    marginHorizontal: 10,
-    paddingVertical: 10,
+    justifyContent: 'space-evenly',
+    padding: ms(10),
+    // paddingHorizontal: 20,
+    // marginHorizontal: 10,
+    // paddingVertical: 10,
     borderRadius: 10,
-    marginTop: ms(10),
+    // marginTop: ms(10),
     borderBottomWidth: 0.3,
     borderBottomColor: COLORS.light_grey,
     // backgroundColor: COLORS.textInputBackground,
@@ -104,12 +104,12 @@ const styles = StyleSheet.create({
   },
   datetextStyle: {
     fontFamily: Fonts.Bold,
-    fontSize: SF(14),
+    fontSize: ms(7.2),
     color: COLORS.primary,
   },
   preferredTextStyle: {
     fontFamily: Fonts.Medium,
-    fontSize: SF(11),
+    fontSize: ms(5.5),
     color: COLORS.dark_grey,
   },
 });

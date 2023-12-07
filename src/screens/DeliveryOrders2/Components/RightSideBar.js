@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
   rightSideView: {
     borderRadius: ms(30),
     alignItems: 'center',
-    width: width * 0.06,
+    // width: width * 0.055,
     backgroundColor: COLORS.white,
     paddingVertical: verticalScale(8),
   },

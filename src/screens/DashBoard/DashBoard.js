@@ -374,7 +374,13 @@ export function DashBoard({ navigation }) {
 
   const trackinSessionModal = () => {
     return (
-      <Modal transparent={true} animationType={'fade'} isVisible={trackingSession}>
+      <Modal
+        transparent={true}
+        animationType={'fade'}
+        isVisible={trackingSession}
+        backdropColor={COLORS.row_grey}
+        backdropOpacity={0.9}
+      >
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
