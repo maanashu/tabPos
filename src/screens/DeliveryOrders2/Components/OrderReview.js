@@ -72,11 +72,10 @@ export default memo(OrderReview);
 const styles = StyleSheet.create({
   loaderViewStyle: {
     borderRadius: 10,
-    flex: 0.49,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.white,
-    // height: ms(200),
   },
   orderToReviewView: {
     borderRadius: ms(10),

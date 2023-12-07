@@ -626,7 +626,14 @@ export function DeliveryOrders2({ route }) {
             <SafeAreaView style={[styles.container, { justifyContent: 'space-evenly' }]}>
               <>
                 {getDeliveryData?.getReviewDef?.length == 0 && (
-                  <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
+                  <>
+                    {
+                      <View style={{ position: 'absolute', left: ms(20) }}>
+                        <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
+                      </View>
+                    }
+                    {}
+                  </>
                 )}
                 {getDeliveryData?.getReviewDef?.length > 0 ? (
                   <>
@@ -731,7 +738,10 @@ export function DeliveryOrders2({ route }) {
                 <View
                   style={[
                     styles.drawerMainViewStyle,
-
+                    getDeliveryData?.getReviewDef?.length == 0 && {
+                      position: 'absolute',
+                      right: ms(10),
+                    },
                     // {
                     //   // marginLeft: ms(12),
                     //   justifyContent: 'space-between',
@@ -773,7 +783,7 @@ export function DeliveryOrders2({ route }) {
                 <View style={styles.graphViewContainer}>
                   <Graph />
                 </View>
-                <View style={{ flex: 0.02 }} />
+                <View style={{ flex: 0.01 }} />
                 <View style={styles.graphViewContainer}>
                   <OrderReview
                     {...{

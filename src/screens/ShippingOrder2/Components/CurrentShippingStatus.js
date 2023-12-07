@@ -41,7 +41,7 @@ export default memo(CurrentShippingStatus);
 const styles = StyleSheet.create({
   currentStatusView: {
     flex: 1,
-    borderRadius: ms(16),
+    borderRadius: ms(10),
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
     paddingTop: 15,

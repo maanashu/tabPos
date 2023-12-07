@@ -327,96 +327,103 @@ const Graph = () => {
 
   return (
     <View style={styles.graphViewStyle}>
-      <View>
-        {/* <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text> */}
-        {/* <Spacer space={SH(30)} /> */}
-        <View style={[styles.flexRow, { zIndex: 999 }]}>
-          <TouchableOpacity
-            onPress={() => {
-              setShowIncoming((prevShowIncoming) => {
-                const newState = !prevShowIncoming;
-                onClickCheckBox('Incoming', newState);
-                return newState;
-              });
-            }}
-            style={styles.checkboxViewStyle}
-          >
-            <Image
-              source={showIncoming ? incomingMarked : incomingBlank}
-              style={[styles.checkboxIconStyle]}
-            />
-            <Text style={[styles.varientTextStyle, { color: COLORS.navy_blue }]}>
-              {strings.shippingOrder.incomingOrders}
-            </Text>
-          </TouchableOpacity>
+      {!isShippingOrder && (
+        <View style={{}}>
+          {/* <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text> */}
+          {/* <Spacer space={SH(30)} /> */}
 
-          <TouchableOpacity
-            onPress={() => {
-              setShowProcessing((prevShowProcessing) => {
-                const newState = !prevShowProcessing;
-                onClickCheckBox('Delivery', newState);
-                return newState;
-              });
-            }}
-            style={styles.checkboxViewStyle}
+          <View
+            style={[
+              styles.flexRow,
+              { alignItems: 'center', justifyContent: 'center', alignSelf: 'center' },
+            ]}
           >
-            <Image
-              source={showProcessing ? deliveryMarked : deliveryBlank}
-              style={[styles.checkboxIconStyle]}
-            />
-            <Text style={[styles.varientTextStyle, { color: COLORS.purple }]}>
-              {strings.shippingOrder.deliveryOrders}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setShowIncoming((prevShowIncoming) => {
+                  const newState = !prevShowIncoming;
+                  onClickCheckBox('Incoming', newState);
+                  return newState;
+                });
+              }}
+              style={styles.checkboxViewStyle}
+            >
+              <Image
+                source={showIncoming ? incomingMarked : incomingBlank}
+                style={[styles.checkboxIconStyle]}
+              />
+              <Text style={[styles.varientTextStyle, { color: COLORS.navy_blue }]}>
+                {strings.shippingOrder.incomingOrders}
+              </Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              setShowReadyToPickup((prevShowReadyToPickup) => {
-                const newState = !prevShowReadyToPickup;
-                onClickCheckBox('Returned', newState);
-                return newState;
-              });
-            }}
-            style={styles.checkboxViewStyle}
-          >
-            <Image
-              source={showReadyToPickup ? returnedMarked : returnedBlank}
-              style={[styles.checkboxIconStyle]}
-            />
-            <Text style={[styles.varientTextStyle, { color: COLORS.extra_yellow_600 }]}>
-              {strings.shippingOrder.returnedOrders}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setShowProcessing((prevShowProcessing) => {
+                  const newState = !prevShowProcessing;
+                  onClickCheckBox('Delivery', newState);
+                  return newState;
+                });
+              }}
+              style={styles.checkboxViewStyle}
+            >
+              <Image
+                source={showProcessing ? deliveryMarked : deliveryBlank}
+                style={[styles.checkboxIconStyle]}
+              />
+              <Text style={[styles.varientTextStyle, { color: COLORS.purple }]}>
+                {strings.shippingOrder.deliveryOrders}
+              </Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              setShowCompleted((prevShowCompleted) => {
-                const newState = !prevShowCompleted;
-                onClickCheckBox('Cancelled', newState);
-                return newState;
-              });
-            }}
-            style={styles.checkboxViewStyle}
-          >
-            <Image
-              source={showCompleted ? cancelledMarked : cancelledBlank}
-              style={[styles.checkboxIconStyle]}
-            />
-            <Text style={[styles.varientTextStyle, { color: COLORS.alert_red }]}>
-              {strings.shippingOrder.cancelledOrders}
-            </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setShowReadyToPickup((prevShowReadyToPickup) => {
+                  const newState = !prevShowReadyToPickup;
+                  onClickCheckBox('Returned', newState);
+                  return newState;
+                });
+              }}
+              style={styles.checkboxViewStyle}
+            >
+              <Image
+                source={showReadyToPickup ? returnedMarked : returnedBlank}
+                style={[styles.checkboxIconStyle]}
+              />
+              <Text style={[styles.varientTextStyle, { color: COLORS.extra_yellow_600 }]}>
+                {strings.shippingOrder.returnedOrders}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                setShowCompleted((prevShowCompleted) => {
+                  const newState = !prevShowCompleted;
+                  onClickCheckBox('Cancelled', newState);
+                  return newState;
+                });
+              }}
+              style={styles.checkboxViewStyle}
+            >
+              <Image
+                source={showCompleted ? cancelledMarked : cancelledBlank}
+                style={[styles.checkboxIconStyle]}
+              />
+              <Text style={[styles.varientTextStyle, { color: COLORS.alert_red }]}>
+                {strings.shippingOrder.cancelledOrders}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-
-      <Spacer space={SH(30)} />
+      )}
+      {/* <Spacer space={SH(30)} /> */}
 
       {isShippingOrder ? (
         <View style={styles.loaderViewStyle}>
           <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
-        <View style={{ zIndex: -999 }}>
+        <View style={{ marginVertical: ms(10) }}>
           {/* <BarChart
             data={modifyData}
             noOfSections={7}
@@ -435,11 +442,11 @@ const Graph = () => {
             style={{
               position: 'absolute',
               bottom: ms(95),
-              left: ms(-20),
+              left: ms(-40),
               zIndex: 1,
               transform: [{ rotate: '270deg' }],
               color: COLORS.lavender,
-              fontSize: ms(6),
+              fontSize: ms(8),
               fontFamily: Fonts.Regular,
             }}
           >
@@ -484,10 +491,10 @@ const Graph = () => {
           <Text
             style={{
               position: 'absolute',
-              bottom: 10,
+              bottom: 2,
               left: width * 0.22,
               color: COLORS.lavender,
-              fontSize: ms(6),
+              fontSize: ms(8),
               fontFamily: Fonts.Regular,
             }}
           >
@@ -503,12 +510,14 @@ export default memo(Graph);
 
 const styles = StyleSheet.create({
   graphViewStyle: {
-    flex: 0.5,
+    flex: 0.495,
     backgroundColor: COLORS.white,
-    borderRadius: ms(20),
+    borderRadius: ms(10),
     paddingHorizontal: ms(12),
-    paddingBottom: 30,
+
     marginTop: SH(15),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   numberOrdersText: {
     color: COLORS.navy_blue,
@@ -538,8 +547,8 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   checkboxIconStyle: {
-    width: SH(22),
-    height: SH(22),
+    width: SH(20),
+    height: SH(20),
     resizeMode: 'contain',
     marginRight: ms(3),
   },

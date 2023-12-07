@@ -154,9 +154,10 @@ export default memo(OrderConversion);
 
 const styles = StyleSheet.create({
   orderConvertionView: {
-    borderRadius: ms(16),
+    borderRadius: ms(10),
     backgroundColor: COLORS.white,
     paddingBottom: ms(10),
+    flex: 1,
   },
   orderTextStyle: {
     fontFamily: Fonts.MaisonBold,

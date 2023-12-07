@@ -464,7 +464,7 @@ export default memo(Graph);
 const styles = StyleSheet.create({
   graphViewStyle: {
     borderRadius: ms(10),
-    paddingBottom: 30,
+    // paddingBottom: 30,
     // height: twoEqualView,
     padding: 20,
 

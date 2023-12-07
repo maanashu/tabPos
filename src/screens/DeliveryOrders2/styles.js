@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(80),
 
     position: 'absolute',
-    right: ms(10),
+    right: ms(5),
     bottom: ms(10),
   },
   userDetailView: {
@@ -843,7 +843,7 @@ const styles = StyleSheet.create({
     borderRadius: SW(5),
   },
   graphViewContainer: {
-    flex: 0.49,
+    flex: 0.495,
   },
 });
 
