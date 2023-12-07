@@ -22,7 +22,7 @@ import {
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
-import { ScreenWrapper } from '@/components';
+import { ScreenWrapper, Spacer } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import { Calendar } from '@/components/CustomCalendar';
@@ -64,6 +64,7 @@ moment.suppressDeprecationWarnings = true;
 
 export function Calender() {
   const windowHeight = Dimensions.get('window').height;
+  const windowWidth = Dimensions.get('window').width;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const maxDate = new Date(2030, 6, 3);
@@ -81,11 +82,11 @@ export function Calender() {
   const [employeeHeaderLayouts, setEmployeeHeaderLayouts] = useState([]);
   const [showEventDetailModal, setshowEventDetailModal] = useState(false);
   const [eventData, setEventData] = useState({});
-
+  const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
-
+  const [monthDays, setMonthDays] = useState([]);
   const searchAppoinmentInputRef = useRef(null);
   const [isLoadingSearchAppoinment, setIsLoadingSearchAppoinment] = useState(false);
 
@@ -134,7 +135,29 @@ export function Calender() {
     if (isFocused || showRequestsView) {
       dispatch(getAppointment(pageNumber));
     }
+    getCurrentMonthDays();
   }, [isFocused, pageNumber, showRequestsView]);
+
+  const getCurrentMonthDays = () => {
+    const date = new Date(calendarDate);
+    const days = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+
+    const currentMonthdays = [];
+
+    for (let index = 0; index < days; index++) {
+      var day = index + 1;
+
+      const fullDateFortheDay = new Date();
+      fullDateFortheDay.setDate(day);
+      const dayName = weekDays[fullDateFortheDay.getDay()];
+      if (day < 10) {
+        day = `0${day}`;
+      }
+      const objDay = { fullDateFortheDay, day, dayName };
+      currentMonthdays.push(objDay);
+    }
+    setMonthDays(currentMonthdays);
+  };
 
   useEffect(() => {
     if (selectedStaffEmployeeId) {
@@ -315,6 +338,34 @@ export function Calender() {
           dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
         }}
       />
+    );
+  };
+
+  const renderMonthItem = ({ item, index }) => {
+    const isSelected = calendarDate.date() == item.day;
+
+    return (
+      <TouchableOpacity
+        style={{
+          width: (windowWidth * 0.84 - monthDays.length * ms(2)) / monthDays.length,
+          borderRadius: ms(4),
+          borderWidth: ms(1),
+          borderColor: '#F5F6FC',
+          paddingHorizontal: ms(1),
+          paddingVertical: ms(4),
+          marginRight: ms(2),
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: isSelected ? '#263682' : 'transparent',
+        }}
+        onPress={() => {
+          setCalendarDate(moment(item.fullDateFortheDay));
+        }}
+      >
+        <Text style={{ color: isSelected ? '#F5F6FC' : '#8D99D2', fontSize: ms(8) }}>
+          {item.day}
+        </Text>
+      </TouchableOpacity>
     );
   };
 
@@ -500,6 +551,18 @@ export function Calender() {
               onPressCalendarViewMode={onPressCalendarViewMode}
               onPressListViewMode={onPressListViewMode}
             />
+
+            {calendarViewMode === CALENDAR_VIEW_MODES.LIST_VIEW && (
+              <View>
+                <FlatList
+                  horizontal
+                  data={monthDays}
+                  keyExtractor={(_, index) => index.toString()}
+                  renderItem={renderMonthItem}
+                />
+                <Spacer space={ms(8)} />
+              </View>
+            )}
 
             <View style={styles._calendarContainer}>
               {calendarViewMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW ? (
