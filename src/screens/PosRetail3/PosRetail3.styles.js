@@ -417,7 +417,7 @@ export const styles = StyleSheet.create({
   holdCart: {
     color: COLORS.dark_grey,
     fontSize: SF(12),
-    fontFamily: Fonts.Medium,
+    fontFamily: Fonts.SemiBold,
     paddingHorizontal: moderateScale(3),
   },
 
@@ -510,13 +510,12 @@ export const styles = StyleSheet.create({
   },
 
   checkoutButtonSideBar: {
-    width: windowWidth * 0.22,
+    flex: 1,
     height: ms(35),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.navy_blue,
-    alignSelf: 'center',
     borderRadius: ms(30),
     paddingVertical: verticalScale(1),
   },
@@ -526,10 +525,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Medium,
   },
   checkArrow: {
-    width: SW(10),
-    height: SW(4),
+    width: ms(15),
+    height: ms(15),
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(6),
+    tintColor: COLORS.lavender,
   },
 
   // sideBar css end
@@ -977,11 +977,12 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
     marginVertical: verticalScale(2),
+    paddingVertical: ms(4),
   },
   blueListDataText: {
     color: COLORS.navy_blue,
     fontSize: SF(13),
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.SemiBold,
   },
   columbiaMen: {
     width: ms(18),
@@ -1502,6 +1503,7 @@ export const styles = StyleSheet.create({
     color: COLORS.light_time,
     fontSize: ms(6),
     fontFamily: Fonts.Medium,
+    flex: 1,
   },
   addToCart: {
     width: ms(10),
@@ -1785,8 +1787,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   offerImage: {
-    width: ms(20),
-    height: ms(20),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
     borderRadius: ms(4),
   },
@@ -1819,11 +1821,11 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -50,
     right: -50,
-    borderRadius: 10,
+    borderRadius: ms(15),
     padding: 18,
   },
   shortestCartListBody: {
-    width: windowWidth * 0.35,
+    flex: 1,
   },
   cartListIconBody: {
     width: windowWidth * 0.04,
@@ -1836,10 +1838,11 @@ export const styles = StyleSheet.create({
   },
   shortCartListData: {
     borderWidth: 1,
-    width: windowWidth * 0.35,
-    height: SH(48),
+    // width: windowWidth * 0.35,
+    flex: 1,
+    height: ms(40),
     borderRadius: 5,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     justifyContent: 'center',
     marginVertical: verticalScale(2),
     paddingHorizontal: ms(5),
@@ -1858,7 +1861,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   shortCartListHeight: {
-    height: windowHeight * 0.7,
+    flex: 1,
   },
 
   //PHONE POPUP
@@ -2234,7 +2237,7 @@ export const styles = StyleSheet.create({
 
   cartHeaderLeftSide: {
     flexDirection: 'row',
-    width: windowWidth * 0.18,
+    width: windowWidth * 0.25,
   },
   cartHeaderRightSide: {
     flexDirection: 'row',
@@ -2250,7 +2253,8 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SF(14),
     fontFamily: Fonts.Medium,
-    width: windowWidth * 0.13,
+    // width: windowWidth * 0.13,
+    flex: 1,
   },
   cartBodyRightSide: {
     color: COLORS.solid_grey,
@@ -2279,8 +2283,8 @@ export const styles = StyleSheet.create({
     marginTop: ms(10),
   },
   shortServiceItalic: {
-    fontFamily: Fonts.Italic,
-    color: COLORS.solid_grey,
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
     fontSize: ms(6),
   },
   serviceCartImage: {
@@ -2453,12 +2457,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   serviceCartRightBody: {
-    width: Platform.OS === 'android' ? ms(360) : ms(280),
+    width: Platform.OS === 'android' ? ms(290) : ms(220),
     height: ms(20),
     flexDirection: 'row',
   },
   serviceCartBody: {
-    width: Platform.OS === 'android' ? ms(68) : ms(52),
+    width: Platform.OS === 'android' ? ms(72) : ms(56),
     height: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
@@ -2621,7 +2625,7 @@ export const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderRightWidth: 1,
     height: SH(35),
-    width: ms(20),
+    width: ms(22),
     borderColor: COLORS.light_purple,
     justifyContent: 'center',
     alignItems: 'center',

@@ -109,6 +109,10 @@ export function DashBoard({ navigation }) {
   const getDeliveryData = getDashboardData?.getOrderDeliveries?.data;
   const [orderDeliveriesData, setOrderDeleveriesData] = useState([]);
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
+  console.log(
+    'etDashboardData?.onLineOrders?.onLineOrders?.',
+    getDashboardData?.onLineOrders?.onLineOrders
+  );
 
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
@@ -716,15 +720,9 @@ export function DashBoard({ navigation }) {
                       paddingHorizontal: SW(3),
                     }}
                   >
-                    <Text style={styles.searchTxtStyle}>New Orders</Text>
+                    <Text style={styles.searchTxtStyle}>{onLineOrder} New Orders</Text>
                   </View>
                 )}
-                {/* <TouchableOpacity
-                  style={styles.arrowBtnCon}
-                  
-                >
-                  <Image source={sellingArrow} style={styles.sellingArrow} />
-                </TouchableOpacity> */}
                 {index == 1 && (
                   <View style={styles.bellBack}>
                     <Image source={Images.bell} style={{ width: ms(15), height: ms(15) }} />

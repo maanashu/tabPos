@@ -35,6 +35,8 @@ import { getCartLength, getServiceCartLength } from '@/selectors/CartSelector';
 import moment from 'moment';
 import { updateServiceCartLength } from '@/actions/CartAction';
 import { useFocusEffect } from '@react-navigation/native';
+import { Images } from '@/assets/new_icon';
+import { ms } from 'react-native-size-matters';
 
 export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCart, customAddBtn }) {
   const dispatch = useDispatch();
@@ -152,9 +154,21 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
   //     };
   //   }, [])
   // );
+  const formattedReturnPrice = (price) => {
+    // Convert price to a number, defaulting to 0 if it's falsy or not a number
+    const numericPrice = parseFloat(price) || 0;
+
+    // Format the numeric price with 2 decimal places
+    const formattedPrice = numericPrice.toFixed(2);
+
+    // Determine the sign and prepend accordingly
+    const sign = numericPrice == 0 ? '' : '-';
+
+    return `${sign}$${formattedPrice}`;
+  };
   return (
     <View style={styles.cartListModalView}>
-      <View style={styles.displayRow}>
+      {/* <View style={styles.displayRow}>
         <TouchableOpacity style={styles.bucketBackgorund}>
           <Image source={bucket} style={[styles.sideBarImage, { tintColor: COLORS.primary }]} />
           <View style={[styles.bucketBadge, styles.bucketBadgePrimary]}>
@@ -171,7 +185,7 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
         >
           <Image source={crossButton} style={[styles.crossImage]} />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       {isLoading ? (
         <ActivityIndicator size={'large'} animating color={COLORS.primary} />
@@ -195,7 +209,7 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                             <View
                               style={{
                                 flexDirection: 'row',
-                                // alignItems: 'center',
+                                alignItems: 'center',
                               }}
                             >
                               <Image
@@ -284,7 +298,7 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
               </ScrollView>
             </View>
 
-            <View style={{ flex: 1 }} />
+            {/* <View style={{ flex: 1 }} />
             <View style={styles.displayflex}>
               <View>
                 <Text style={styles.blueListDataText}>Item Value</Text>
@@ -297,10 +311,54 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                 <Text style={styles.checkoutText}>Checkout</Text>
                 <Image source={checkArrow} style={styles.checkArrow} />
               </TouchableOpacity>
+            </View> */}
+            <View style={{ height: ms(132), paddingHorizontal: ms(30) }}>
+              <View
+                style={{
+                  flex: 1,
+                  borderTopWidth: 1,
+                  paddingTop: ms(5),
+                  borderColor: COLORS.light_purple,
+                }}
+              >
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>Sub Total</Text>
+                  <Text style={styles.subTotalDollar}>
+                    ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>{`Discount ${
+                    cartData?.discount_flag === 'percentage' ? '(%)' : ''
+                  } `}</Text>
+                  <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
+                    {formattedReturnPrice(cartData?.amount?.discount)}
+                  </Text>
+                </View>
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>Total Taxes</Text>
+                  <Text style={styles.subTotalDollar}>
+                    ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.itemValue}>Total</Text>
+                  <Text style={styles.itemValue}>
+                    ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={[styles.checkoutButtonSideBar, { marginTop: ms(7) }]}
+                  onPress={checkOutHandler}
+                >
+                  <Text style={styles.checkoutText}>Proceed to checkout</Text>
+                  <Image source={Images.arrowUpRightIcon} style={styles.checkArrow} />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
 
-          <View style={styles.cartListIconBody}>
+          {/* <View style={styles.cartListIconBody}>
             <View style={{ flexDirection: 'column', alignItems: 'center' }}>
               <TouchableOpacity onPress={customAddBtn}>
                 <Image
@@ -352,7 +410,7 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                 </View>
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
         </View>
       )}
     </View>

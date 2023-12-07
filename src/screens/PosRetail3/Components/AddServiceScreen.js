@@ -549,7 +549,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   productName: {
-    fontSize: ms(13),
+    fontSize: ms(12),
     color: COLORS.navy_blue,
     fontFamily: Fonts.Medium,
   },
