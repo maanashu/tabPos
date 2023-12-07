@@ -5,12 +5,24 @@ import { styles } from '../../Calender.styles';
 import { Button, Spacer } from '@/components';
 import { memo } from 'react';
 import { ms } from 'react-native-size-matters';
-import { Fonts, editIcon, pin } from '@/assets';
+import {
+  Fonts,
+  arrowLeftUp,
+  arrowRightIcon,
+  checkInIcon,
+  circleTick,
+  editAppointmentIcon,
+  editIcon,
+  new_location,
+  pin,
+  timeDurationIcon,
+} from '@/assets';
 import { COLORS } from '@/theme';
 import { getCalendarActionButtonTitle } from '@/utils/GlobalMethods';
 import { APPOINTMENT_STATUS } from '@/constants/status';
 import { changeAppointmentStatus } from '@/actions/AppointmentAction';
 import { useDispatch } from 'react-redux';
+import { ButtonIcon } from '@/components/ButtonIcon';
 
 const ListViewItem = ({
   item,
@@ -34,12 +46,20 @@ const ListViewItem = ({
 
   const renderButtons = {
     [APPOINTMENT_STATUS.REVIEWING]: (
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
         <Button
           pending={isChangeStatusLoading}
           title={'Decline'}
-          textStyle={styles.listCheckinBtnText}
-          style={[styles.listViewCheckinBtn, { paddingHorizontal: ms(5) }]}
+          textStyle={[styles.listCheckinBtnText, { color: COLORS.navy_blue }]}
+          style={[
+            styles.listViewCheckinBtn,
+            {
+              paddingHorizontal: ms(5),
+              borderColor: COLORS.navy_blue,
+              borderRadius: ms(15),
+              width: '47%',
+            },
+          ]}
           onPress={async () => {
             await dispatch(
               changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER)
@@ -48,13 +68,28 @@ const ListViewItem = ({
           }}
         />
         <Spacer space={ms(4)} horizontal />
-        <Button
+        <ButtonIcon
+          iconPostion="right"
+          icon={arrowLeftUp}
+          iconStyle={{
+            height: ms(8),
+            width: ms(8),
+            tintColor: COLORS.sky_blue,
+            transform: [{ rotate: '90deg' }],
+          }}
           pending={isChangeStatusLoading}
-          title={'Approve'}
-          textStyle={[styles.listCheckinBtnText, { color: COLORS.white }]}
+          title={'Accept'}
+          textStyle={[styles.listCheckinBtnText, { color: COLORS.white, paddingHorizontal: ms(2) }]}
           style={[
             styles.listViewCheckinBtn,
-            { paddingHorizontal: ms(5), backgroundColor: COLORS.primary },
+            {
+              height: ms(24),
+              paddingHorizontal: ms(5),
+              backgroundColor: COLORS.navy_blue,
+              borderRadius: ms(15),
+              marginHorizontal: 0,
+              width: '47%',
+            },
           ]}
           onPress={async () => {
             await dispatch(
@@ -66,16 +101,36 @@ const ListViewItem = ({
       </View>
     ),
     [APPOINTMENT_STATUS.ACCEPTED_BY_SELLER]: (
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-        <Button
+      <View style={{ flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
+        <ButtonIcon
+          iconPostion="right"
+          icon={checkInIcon}
+          iconStyle={{
+            height: ms(8),
+            width: ms(8),
+          }}
           pending={isChangeStatusLoading}
           title={'Check-in'}
-          textStyle={styles.listCheckinBtnText}
-          style={styles.listViewCheckinBtn}
+          textStyle={[
+            styles.listCheckinBtnText,
+            { color: COLORS.navy_blue, paddingHorizontal: ms(2) },
+          ]}
+          style={[
+            styles.listViewCheckinBtn,
+            {
+              height: ms(26),
+              paddingHorizontal: ms(5),
+              backgroundColor: COLORS.sky_grey,
+              borderRadius: ms(13),
+              marginHorizontal: 0,
+              width: '65%',
+              borderWidth: 0,
+            },
+          ]}
           onPress={() => onPressCheckin(item)}
         />
         <TouchableOpacity style={styles.listViewEditBtn} onPress={() => onPressEdit(item)}>
-          <Image source={editIcon} style={styles.listViewEditIcon} />
+          <Image source={editAppointmentIcon} style={styles.listViewEditIcon} />
         </TouchableOpacity>
       </View>
     ),
@@ -83,27 +138,40 @@ const ListViewItem = ({
       <Button
         pending={isChangeStatusLoading}
         title={getCalendarActionButtonTitle(item?.status)}
-        textStyle={[styles.listCheckinBtnText, { color: COLORS.white }]}
+        textStyle={[styles.listCheckinBtnText, { color: COLORS.navy_blue }]}
         style={[
           styles.listViewCheckinBtn,
           {
-            backgroundColor: COLORS.primary,
+            backgroundColor: COLORS.sky_grey,
+            borderWidth: 0,
+            borderRadius: ms(15),
           },
         ]}
         onPress={() => onPressMarkComplete(item)}
       />
     ),
     [APPOINTMENT_STATUS.COMPLETED]: (
-      <Button
-        pending={isChangeStatusLoading}
+      <ButtonIcon
+        iconPostion="right"
         disabled
-        title={getCalendarActionButtonTitle(item?.status)}
-        textStyle={[styles.listCheckinBtnText, { color: COLORS.white }]}
+        icon={circleTick}
+        iconStyle={{
+          height: ms(8),
+          width: ms(8),
+        }}
+        pending={isChangeStatusLoading}
+        title={'Completed'}
+        textStyle={[styles.listCheckinBtnText, { color: COLORS.white, paddingHorizontal: ms(2) }]}
         style={[
           styles.listViewCheckinBtn,
           {
-            backgroundColor: COLORS.darkGray,
+            height: ms(26),
+            paddingHorizontal: ms(8),
+            backgroundColor: COLORS.success_green,
+            borderRadius: ms(15),
+            marginHorizontal: 0,
             borderWidth: 0,
+            width: '98%',
           },
         ]}
       />
@@ -119,6 +187,9 @@ const ListViewItem = ({
           {
             backgroundColor: COLORS.darkGray,
             borderWidth: 0,
+            borderRadius: ms(15),
+            height: ms(26),
+            width: '98%',
           },
         ]}
       />
@@ -134,6 +205,9 @@ const ListViewItem = ({
           {
             backgroundColor: COLORS.darkGray,
             borderWidth: 0,
+            borderRadius: ms(15),
+            height: ms(26),
+            width: '98%',
           },
         ]}
       />
@@ -142,8 +216,18 @@ const ListViewItem = ({
 
   return (
     <>
-      <View key={index} style={[styles.LlistViewHeaderContainer, { marginVertical: ms(5) }]}>
-        <View style={[styles.listViewSubContainers, { flex: 0.3, justifyContent: 'flex-start' }]}>
+      <View
+        key={index}
+        style={[
+          styles.LlistViewHeaderContainer,
+          styles._listViewItemContainer2,
+          {
+            borderColor:
+              item?.status == APPOINTMENT_STATUS.COMPLETED ? COLORS.light_purple : COLORS.sky_grey,
+          },
+        ]}
+      >
+        <View style={[styles.listViewSubContainers, { flex: 0.2, justifyContent: 'flex-start' }]}>
           {userDetails || invitedUserDetails ? (
             <>
               <ProfileImage
@@ -154,8 +238,8 @@ const ListViewItem = ({
                 <Text style={styles.customerName}>
                   {customerDetails?.firstname + ' ' + customerDetails?.lastname}
                 </Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  {/* <Image source={pin} style={styles.eventAddressIcon} /> */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: ms(2) }}>
+                  {/* <Image source={new_location} style={styles.eventAddressIcon} /> */}
                   <Text style={styles.eventAddress}>
                     {userId !== null
                       ? customerDetails?.phone_number
@@ -178,11 +262,17 @@ const ListViewItem = ({
           <Text style={styles.lineViewValues}>{item?.appointment_details[0]?.product_name}</Text>
         </View>
         <View style={styles.listViewSubContainers}>
+          <Image
+            source={timeDurationIcon}
+            style={{ height: ms(10), width: ms(10), marginRight: ms(2) }}
+          />
           <Text style={styles.lineViewValues}>{`${item?.start_time}-${item?.end_time}`}</Text>
         </View>
-        <View style={styles.listViewSubContainers}>{renderButtons[item?.status]}</View>
+        <View style={[styles.listViewSubContainers, { backgroundColor: 'transparent' }]}>
+          {renderButtons[item?.status]}
+        </View>
       </View>
-      <View style={styles.deviderList} />
+      {/* <View style={styles.deviderList} /> */}
     </>
   );
 };

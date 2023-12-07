@@ -513,6 +513,10 @@ export { default as bookingsCalender } from '@/assets/new_icon/appointments/book
 export { default as bookingsNotification } from '@/assets/new_icon/appointments/bookingsNotification.png';
 export { default as bookingsSearch } from '@/assets/new_icon/appointments/bookingsSearch.png';
 export { default as listview } from '@/assets/new_icon/appointments/listview.png';
+export { default as timeDurationIcon } from '@/assets/new_icon/appointments/timeDuration.png';
+export { default as editAppointmentIcon } from '@/assets/new_icon/appointments/editAppointment.png';
+export { default as checkInIcon } from '@/assets/new_icon/appointments/checkInIcon.png';
+export { default as circleTick } from '@/assets/new_icon/appointments/circleTick.png';
 
 /* Fonts */
 export const Fonts = {

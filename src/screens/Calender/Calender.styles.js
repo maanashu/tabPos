@@ -609,14 +609,14 @@ export const styles = StyleSheet.create({
   eventAddress: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(6),
-    color: COLORS.solid_grey,
+    color: COLORS.purple,
     marginTop: ms(2),
   },
   eventAddressIcon: {
     height: ms(10),
-    width: ms(8),
+    width: ms(10),
     resizeMode: 'contain',
-    tintColor: COLORS.primary,
+    tintColor: COLORS.purple,
   },
   customerName: {
     fontFamily: Fonts.SemiBold,
@@ -624,10 +624,10 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
   },
   customerUserProfile: {
-    height: ms(20),
-    width: ms(20),
+    height: ms(24),
+    width: ms(24),
     resizeMode: 'cover',
-    borderRadius: ms(10),
+    borderRadius: ms(12),
   },
   customerDetailContainer: {
     backgroundColor: COLORS.textInputBackground,
@@ -902,6 +902,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     marginVertical: ms(5),
     textAlign: 'center',
+    color: COLORS.lavender,
   },
   LlistViewHeaderContainer: {
     flexDirection: 'row',
@@ -922,11 +923,12 @@ export const styles = StyleSheet.create({
   listViewEditBtn: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.darkGray,
-    marginLeft: ms(5),
+    backgroundColor: COLORS.sky_grey,
+    marginLeft: ms(8),
     padding: ms(5),
-    borderRadius: ms(3),
+    borderRadius: ms(12.5),
+    height: ms(25),
+    width: ms(25),
   },
   listViewCheckinBtn: {
     width: 'auto',
@@ -942,7 +944,7 @@ export const styles = StyleSheet.create({
     fontSize: ms(7),
     fontWeight: '500',
   },
-  lineViewValues: { fontFamily: Fonts.Regular, fontSize: ms(8.5) },
+  lineViewValues: { fontFamily: Fonts.Medium, fontSize: ms(8.5), color: COLORS.textBlue },
   noAppointmentEmpty: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(11),
@@ -1005,5 +1007,14 @@ export const styles = StyleSheet.create({
     borderRadius: SH(16),
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  _listViewItemContainer2: {
+    marginVertical: ms(5),
+    borderWidth: 1,
+    padding: ms(10),
+    borderRadius: ms(22),
+    borderColor: COLORS.sky_grey,
+    alignItems: 'center',
+    marginHorizontal: ms(5),
   },
 });
