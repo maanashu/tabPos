@@ -30,6 +30,10 @@ import {
   dropdown2,
   tableArrow,
   Fonts,
+  arrowLeftUp,
+  bellDrawer,
+  searchDrawer,
+  scanNew,
 } from '@/assets';
 import moment from 'moment';
 import { DaySelector, Spacer, TableDropdown } from '@/components';
@@ -293,8 +297,9 @@ export function WeeklyTransaction({
   };
 
   const allTransactionItem = ({ item }) => {
-    const borderColor = item.id === transcationTypeId ? COLORS.primary : COLORS.solidGrey;
-    const color = item.id === transcationTypeId ? COLORS.primary : COLORS.dark_grey;
+    const borderColor = item.id === transcationTypeId ? COLORS.transparent : COLORS.light_purple;
+    const backgroundColor = item.id === transcationTypeId ? COLORS.navy_blue : COLORS.white;
+    const color = item.id === transcationTypeId ? COLORS.white : COLORS.navy_blue;
     const fontFamily = item.id === transcationTypeId ? Fonts.SemiBold : Fonts.Regular;
     return (
       <TransactionSelectItem
@@ -307,27 +312,45 @@ export function WeeklyTransaction({
         borderColor={borderColor}
         color={color}
         fontFamily={fontFamily}
+        backgroundColor={backgroundColor}
       />
     );
   };
 
-  const TransactionSelectItem = ({ item, onPress, borderColor, color, fontFamily }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.allJbrCon, { borderColor }]}>
-      {isTotalTraType ? (
-        <ActivityIndicator size="small" color={COLORS.primary} />
-      ) : (
+  const TransactionSelectItem = ({
+    item,
+    onPress,
+    borderColor,
+    color,
+    fontFamily,
+    backgroundColor,
+  }) => (
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.allJbrCon, { borderColor, backgroundColor }]}
+    >
+      {
         <Text style={[styles.allJbrText, { color, fontFamily }]}>
-          {item.type} ({item.count})
+          {item.type}{' '}
+          {isTotalTraType ? (
+            <ActivityIndicator
+              size="small"
+              color={COLORS.navy_light_blue}
+              style={{ alignSelf: 'center' }}
+            />
+          ) : (
+            '(' + item.count + ')'
+          )}
         </Text>
-      )}
+      }
     </TouchableOpacity>
   );
 
   return (
     <View style={{ height: windowHeight * 0.95 }}>
-      <View style={styles.headerMainView}>
+      {/* <View style={styles.headerMainView}>
         <TouchableOpacity style={styles.backButtonCon} onPress={backHandler}>
-          <Image source={backArrow} style={styles.backButtonArrow} />
+          <Image source={arrowLeftUp} style={styles.backButtonArrow} />
           <Text style={styles.backTextStyle}>{strings.posSale.back}</Text>
         </TouchableOpacity>
         <View style={styles.deliveryView}>
@@ -352,12 +375,17 @@ export function WeeklyTransaction({
             <Image source={scn} style={styles.scnStyle} />
           </View>
         </View>
-      </View>
+      </View> */}
       {/* <ScrollView> */}
-      <View style={styles.walletTranCon}>
+      <View style={[styles.walletTranCon, { marginTop: ms(10) }]}>
         <View style={styles.displayFlex}>
-          <Text style={styles.trancationHeading}>{strings.wallet.totalTransections}</Text>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity onPress={backHandler}>
+              <Image source={arrowLeftUp} style={styles.backButtonArrow} />
+            </TouchableOpacity>
+            <Text style={styles.trancationHeading}>{strings.wallet.totalTransections}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View>
               <DaySelector
                 onPresFun={onPresFun}
@@ -371,20 +399,39 @@ export function WeeklyTransaction({
               style={[
                 styles.headerView,
                 {
-                  borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
-                  marginHorizontal: ms(5),
+                  backgroundColor: !selectedStartDate ? COLORS.sky_grey : COLORS.navy_blue,
                 },
               ]}
             >
-              <Image source={newCalendar} style={styles.calendarStyle} />
-              <Text style={startDate ? styles.dateText : styles.dateText2}>
+              <Image
+                source={newCalendar}
+                style={[
+                  styles.calendarStyle,
+                  {
+                    tintColor: selectedStartDate ? COLORS.sky_grey : COLORS.navy_blue,
+                  },
+                ]}
+              />
+              {/* <Text style={startDate ? styles.dateText : styles.dateText2}>
                 {startDate
                   ? moment(startDate).format('MMM D') +
                     ' - ' +
                     moment(endDate).format('MMM D, YYYY')
                   : dateRange}
-              </Text>
+              </Text> */}
             </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigate(NAVIGATION.notificationsList, {
+                  screen: NAVIGATION.wallet2,
+                })
+              }
+            >
+              <Image source={bellDrawer} style={[styles.truckStyle, { marginRight: ms(10) }]} />
+            </TouchableOpacity>
+            <Image source={searchDrawer} style={[styles.searchImage, { marginRight: ms(15) }]} />
+            <Image source={scanNew} style={[styles.scnStyle, { marginRight: ms(5) }]} />
+
             <Modal
               isVisible={show}
               statusBarTranslucent
@@ -443,7 +490,8 @@ export function WeeklyTransaction({
           </View>
         </View>
       </View>
-      <Spacer space={SH(10)} />
+
+      <Spacer space={ms(10)} />
       <View style={[styles.allTypeCon]}>
         <FlatList
           data={transactionArray}
@@ -451,142 +499,206 @@ export function WeeklyTransaction({
           renderItem={allTransactionItem}
           keyExtractor={(item) => item.id}
           horizontal
+          showsHorizontalScrollIndicator={false}
         />
-      </View>
-      {/* </ScrollView> */}
-      <View style={styles.orderTypeCon}>
+
+        {/* </ScrollView> */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {/* <View style={styles.datePickerCon}>
             <Image source={calendar1} style={styles.calendarStyle} />
             <Text style={styles.datePlaceholder}>Date</Text>
           </View> */}
 
-          <View style={{ marginRight: moderateScale(5) }}>
-            <TableDropdown placeholder="Status" selected={statusSelection} data={weeklyStatus} />
-          </View>
+          {/* <View style={{ marginRight: moderateScale(5) }}>
+            <TableDropdown
+              placeholder="Status"
+              selected={statusSelection}
+              data={weeklyStatus}
+              containerStyle={{ width: ms(60) }}
+            />
+          </View> */}
           <>
             <TableDropdown
               placeholder="Order type"
               selected={orderTypeSelection}
               data={orderTypeArray}
+              containerStyle={{ width: ms(70) }}
             />
           </>
         </View>
-      </View>
-      <View
-        style={[styles.jbrTypeCon, { zIndex: -2, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
-        pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
-      >
+
         <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}
+          style={[styles.jbrTypeCon, { zIndex: -2, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
+          pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
         >
-          <Text style={[styles.paginationCount, { fontSize: 12 }]}>Showing Results</Text>
-          <View style={{ marginHorizontal: moderateScale(10) }}>
-            <DropDownPicker
-              ArrowUpIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIconPagination} />
-              )}
-              ArrowDownIconComponent={({ style }) => (
-                <Image source={dropdown2} style={styles.dropDownIconPagination} />
-              )}
-              style={styles.dropdown}
-              containerStyle={[
-                styles.containerStylePagination,
-                { zIndex: Platform.OS === 'ios' ? 20 : 1 },
-              ]}
-              dropDownContainerStyle={styles.dropDownContainerStyle}
-              listItemLabelStyle={styles.listItemLabelStyle}
-              labelStyle={styles.labelStyle}
-              selectedItemLabelStyle={styles.selectedItemLabelStyle}
-              open={paginationModalOpen}
-              value={paginationModalValue}
-              items={paginationModalItems}
-              setOpen={setPaginationModalOpen}
-              setValue={setPaginationModalValue}
-              setItems={setPaginationModalItems}
-              placeholder="10"
-              placeholderStyle={styles.placeholderStylePagination}
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.unionCon,
-              {
-                backgroundColor: paginationData?.currentPage == 1 ? COLORS.washGrey : COLORS.white,
-              },
-            ]}
-            onPress={() => setPage(page - 1)}
-            disabled={paginationData?.currentPage == 1 ? true : false}
-          >
-            <Image
-              source={Union}
-              style={[
-                styles.unionStyle,
-                {
-                  tintColor:
-                    paginationData?.currentPage == 1 ? COLORS.gerySkies : COLORS.solid_grey,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-          <View style={[styles.unionCon, { marginLeft: 7 }]}>
-            <Image source={mask} style={styles.unionStyle} />
-          </View>
           <View
             style={{
-              width: ms(70),
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
             }}
           >
-            {isTotalTradetail ? (
-              <ActivityIndicator size="small" />
-            ) : (
-              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
-                {startIndex} - {startIndex + (getTotalTraDetail?.length - 1)} of{' '}
-                {paginationData?.total}
-              </Text>
-            )}
-          </View>
-          <View style={[styles.unionCon, { marginRight: 7 }]}>
-            <Image
-              source={maskRight}
-              style={[styles.unionStyle, { tintColor: COLORS.gerySkies }]}
-            />
-          </View>
-          <TouchableOpacity
-            style={[
-              styles.unionCon,
-              {
-                backgroundColor:
-                  paginationData?.currentPage == paginationData?.totalPages
-                    ? COLORS.washGrey
-                    : COLORS.white,
-              },
-            ]}
-            onPress={() => setPage(page + 1)}
-            disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
-          >
-            <Image
-              source={unionRight}
+            <Text style={[styles.paginationCount]}>Showing Results</Text>
+            <View style={{ marginHorizontal: moderateScale(2) }}>
+              <DropDownPicker
+                ArrowUpIconComponent={({ style }) => (
+                  <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                )}
+                ArrowDownIconComponent={({ style }) => (
+                  <Image source={dropdown2} style={styles.dropDownIconPagination} />
+                )}
+                style={styles.dropdown}
+                containerStyle={[
+                  styles.containerStylePagination,
+                  { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+                ]}
+                dropDownContainerStyle={styles.dropDownContainerStyle}
+                listItemLabelStyle={styles.listItemLabelStyle}
+                labelStyle={styles.labelStyle}
+                selectedItemLabelStyle={styles.selectedItemLabelStyle}
+                open={paginationModalOpen}
+                value={paginationModalValue}
+                items={paginationModalItems}
+                setOpen={setPaginationModalOpen}
+                setValue={setPaginationModalValue}
+                setItems={setPaginationModalItems}
+                placeholder="10"
+                placeholderStyle={styles.placeholderStylePagination}
+              />
+            </View>
+            <TouchableOpacity
               style={[
-                styles.unionStyle,
+                styles.unionCon,
                 {
-                  tintColor:
-                    paginationData?.currentPage == paginationData?.totalPages
-                      ? COLORS.gerySkies
-                      : COLORS.solid_grey,
+                  backgroundColor:
+                    paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
                 },
               ]}
-            />
-          </TouchableOpacity>
+              onPress={() => setPage(page - 1)}
+              disabled={paginationData?.currentPage == 1 ? true : false}
+            >
+              <Image
+                source={Union}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor: paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+            <View
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
+                },
+              ]}
+            >
+              <Image
+                source={mask}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor: paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                  },
+                ]}
+              />
+            </View>
+            <View
+              style={{
+                width: ms(50),
+                marginRight: ms(7),
+              }}
+            >
+              {isTotalTradetail ? (
+                <ActivityIndicator size="small" color={COLORS.navy_blue} />
+              ) : (
+                <Text
+                  style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}
+                >
+                  {startIndex} - {startIndex + (getTotalTraDetail?.length - 1)} of{' '}
+                  {paginationData?.total}
+                </Text>
+              )}
+            </View>
+
+            <View
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.sky_grey
+                      : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.transparent
+                      : COLORS.light_purple,
+                },
+              ]}
+            >
+              <Image
+                source={maskRight}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor:
+                      paginationData?.currentPage == paginationData?.totalPages
+                        ? COLORS.graySky
+                        : COLORS.navy_blue,
+                  },
+                ]}
+              />
+            </View>
+            <TouchableOpacity
+              style={[
+                styles.unionCon,
+                {
+                  backgroundColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.sky_grey
+                      : COLORS.white,
+                  borderWidth: 1,
+                  borderColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.transparent
+                      : COLORS.light_purple,
+                },
+              ]}
+              onPress={() => setPage(page + 1)}
+              disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
+            >
+              <Image
+                source={unionRight}
+                style={[
+                  styles.unionStyle,
+                  {
+                    tintColor:
+                      paginationData?.currentPage == paginationData?.totalPages
+                        ? COLORS.graySky
+                        : COLORS.navy_blue,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
+
+      <Spacer space={ms(5)} />
+
       <View style={{ zIndex: -9 }}>
         <Table>
-          <View style={[styles.tableDataHeaderCon, { borderWidth: 1, padding: 0 }]}>
+          <View style={[styles.tableDataHeaderCon]}>
             <View style={styles.displayFlex}>
               <View style={styles.tableHeaderLeft}>
                 <Text style={styles.tableTextHeaFirst}>#</Text>
@@ -617,10 +729,10 @@ export function WeeklyTransaction({
           </View>
 
           <View style={styles.tableHeight}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               {isTotalTradetail ? (
                 <View style={{ marginTop: 100 }}>
-                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                  <ActivityIndicator size="large" color={COLORS.navy_blue} />
                 </View>
               ) : getTotalTraDetail?.length === 0 ? (
                 <View style={{ marginTop: ms(110) }}>
@@ -641,7 +753,7 @@ export function WeeklyTransaction({
                           <View
                             style={{
                               flexDirection: 'column',
-                              marginLeft: 30,
+                              marginLeft: 20,
                             }}
                           >
                             <Text style={styles.tableTextData}>
@@ -649,11 +761,11 @@ export function WeeklyTransaction({
                                 ? moment(item.created_at).format('ll')
                                 : 'date not found'}
                             </Text>
-                            <Text style={[styles.tableTextData, { color: COLORS.gerySkies }]}>
+                            {/* <Text style={[styles.tableTextData, { color: COLORS.gerySkies }]}>
                               {item.created_at
                                 ? moment(item.created_at).format('h:mm A')
                                 : 'date not found'}
-                            </Text>
+                            </Text> */}
                           </View>
                         </View>
                         <View style={styles.tableHeaderRight}>
@@ -664,16 +776,24 @@ export function WeeklyTransaction({
                               ? item?.return_detail?.invoices?.invoice_number
                               : item?.invoices?.invoice_number}
                           </Text>
-                          <Spacer horizontal space={ms(20)} />
+                          {/* <Spacer horizontal space={ms(10)} /> */}
                           <Text style={styles.tableTextData}>
                             {DELIVERY_MODE[item?.delivery_option]}
                           </Text>
-                          <Text style={[styles.tableTextData, { marginLeft: ms(15) }]}>
+
+                          <Text style={[styles.tableTextData, { marginLeft: ms(30) }]}>
                             {item?.mode_of_payment}
                           </Text>
-                          <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(25)} />
+                          {/* <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(15)} /> */}
 
-                          <Text style={styles.tableTextData}>${item?.payable_amount ?? '0'}</Text>
+                          <Text
+                            style={[
+                              styles.tableTextData,
+                              { fontFamily: Fonts.SemiBold, color: COLORS.lavender },
+                            ]}
+                          >
+                            ${item?.payable_amount ?? '0'}
+                          </Text>
                           {/* <View
                             style={{
                               marginLeft: ms(-15),
@@ -685,13 +805,14 @@ export function WeeklyTransaction({
                           {/* </View> */}
                           <View
                             style={{
-                              width: SF(110),
-                              borderRadius: ms(3),
-                              backgroundColor: COLORS.bluish_green,
+                              width: ms(70),
+                              borderRadius: ms(10),
+                              backgroundColor: COLORS.navy_blue,
                               alignItems: 'center',
-                              height: SH(24),
+                              // height: SH(24),
                               justifyContent: 'center',
-                              marginLeft: ms(-20),
+                              marginLeft: ms(-35),
+                              paddingVertical: ms(3),
                             }}
                           >
                             <Text style={[styles.tableTextDataCom, { textAlign: 'center' }]}>

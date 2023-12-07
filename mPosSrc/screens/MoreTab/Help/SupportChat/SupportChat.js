@@ -34,7 +34,6 @@ export const SupportChat = (props) => {
   const [messagesData, setMessages] = useState([]);
   const [messageHeadId, setMessageHeadId] = useState('');
   const [recipientId, setRecipientId] = useState();
-  console.log('recedddipt', recipientId);
 
   const [bottomOffset, setbottomOffset] = useState(0);
   const [showView, setShowView] = useState('');

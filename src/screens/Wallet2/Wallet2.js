@@ -24,6 +24,11 @@ import {
   jbricon,
   Fonts,
   backArrow,
+  bellDrawer,
+  searchDrawer,
+  scanNew,
+  profitIcon,
+  calendarDrawer,
 } from '@/assets';
 import moment from 'moment';
 import { debounce } from 'lodash';
@@ -246,16 +251,20 @@ export function Wallet2() {
     {
       aboutTransaction: 'Total',
       price: getTotalTraData?.data?.total.toFixed(2) ?? '0',
-      img: null,
+      img: profitIcon,
       id: '1',
       type: 'all',
+      backgroundColor: COLORS.cream_yellow,
+      color: COLORS.redish_brown,
     },
     {
       aboutTransaction: 'JBR Coin',
       price: getTotalTraData?.data?.jbr.toFixed(2) ?? '0',
-      img: jbricon,
+      img: profitIcon,
       id: '2',
       type: 'jbr',
+      backgroundColor: COLORS.light_purple,
+      color: COLORS.navy_blue,
     },
 
     {
@@ -264,6 +273,8 @@ export function Wallet2() {
       img: cashIcon,
       id: '3',
       type: 'cash',
+      backgroundColor: COLORS.light_green,
+      color: COLORS.dark_green,
     },
     {
       aboutTransaction: 'Card',
@@ -271,6 +282,8 @@ export function Wallet2() {
       img: cardIcon,
       id: '4',
       type: 'card',
+      backgroundColor: COLORS.light_skyblue,
+      color: COLORS.torquoise,
     },
   ];
 
@@ -304,17 +317,46 @@ export function Wallet2() {
       );
     } else if (walletHome) {
       return (
-        <>
+        <View style={{ flex: 1 }}>
           <View style={styles.headerMainView}>
             <View style={styles.deliveryView}>
-              <Image source={wallet} style={[styles.truckStyle, { marginLeft: 10 }]} />
-              <Text style={styles.deliveryText}>{strings.wallet.wallet}</Text>
+              <Image source={wallet} style={[styles.walletIcon]} />
+              <Text style={styles.deliveryText}>{strings.wallet.totalTransections}</Text>
             </View>
-
             <View style={styles.deliveryView}>
-              {onSeachLoad && (
-                <ActivityIndicator color={COLORS.primary} size="small" style={{ right: SW(10) }} />
-              )}
+              <DaySelector
+                onPresFun={onPresFun1}
+                selectId={selectId}
+                setSelectId={setSelectId}
+                setSelectTime={setSelectTime}
+              />
+              <TouchableOpacity
+                onPress={() => setShow(!show)}
+                style={[
+                  styles.headerView,
+                  {
+                    backgroundColor: selectedStartDate ? COLORS.navy_blue : COLORS.sky_grey,
+                  },
+                ]}
+              >
+                <Image
+                  source={calendarDrawer}
+                  style={[
+                    styles.calendarStyle,
+                    {
+                      tintColor: selectedStartDate ? COLORS.sky_grey : COLORS.navy_blue,
+                    },
+                  ]}
+                />
+                {/* <Text style={startDate ? styles.dateText : styles.dateText2}>
+                    {startDate
+                      ? moment(startDate).format('MMM D') +
+                        ' - ' +
+                        moment(endDate).format('MMM D, YYYY')
+                      : dateRange}
+                  </Text> */}
+              </TouchableOpacity>
+
               <TouchableOpacity
                 onPress={() =>
                   navigate(NAVIGATION.notificationsList, {
@@ -322,9 +364,15 @@ export function Wallet2() {
                   })
                 }
               >
-                <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
+                <Image
+                  source={bellDrawer}
+                  style={[styles.truckStyle, { marginHorizontal: ms(5) }]}
+                />
               </TouchableOpacity>
-              <View style={styles.searchView}>
+              <Image source={searchDrawer} style={[styles.searchImage, { marginRight: ms(5) }]} />
+              <Image source={scanNew} style={[styles.scnStyle, { marginHorizontal: ms(5) }]} />
+
+              {/* <View style={styles.searchView}>
                 <View style={styles.flexAlign}>
                   <Image source={search_light} style={styles.searchImage} />
                   <TextInput
@@ -339,68 +387,21 @@ export function Wallet2() {
                   />
                 </View>
                 <Image source={scn} style={styles.scnStyle} />
-              </View>
+              </View> */}
             </View>
           </View>
-
+          <Text
+            style={{
+              fontSize: ms(9),
+              color: COLORS.navy_light_blue,
+              position: 'absolute',
+              top: ms(35),
+              left: ms(35),
+            }}
+          >
+            {'All the following data is gathered weekly.'}
+          </Text>
           <View style={styles.walletHomeBodyCon}>
-            <View style={styles.displayFlex}>
-              <Text style={styles.trancationHeading}>{strings.wallet.totalTransections}</Text>
-              <View style={{ flexDirection: 'row' }}>
-                <View>
-                  <DaySelector
-                    onPresFun={onPresFun1}
-                    selectId={selectId}
-                    setSelectId={setSelectId}
-                    setSelectTime={setSelectTime}
-                  />
-                </View>
-
-                <TouchableOpacity
-                  onPress={() => setShow(!show)}
-                  style={[
-                    styles.headerView,
-                    {
-                      borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
-                      marginHorizontal: ms(5),
-                    },
-                  ]}
-                >
-                  <Image source={newCalendar} style={styles.calendarStyle} />
-                  <Text style={startDate ? styles.dateText : styles.dateText2}>
-                    {startDate
-                      ? moment(startDate).format('MMM D') +
-                        ' - ' +
-                        moment(endDate).format('MMM D, YYYY')
-                      : dateRange}
-                  </Text>
-                </TouchableOpacity>
-                {/* <TouchableOpacity
-                  style={[
-                    styles.homeCalenaderBg,
-                    {
-                      backgroundColor: selectId == 0 ? COLORS.primary : COLORS.textInputBackground,
-                    },
-                  ]}
-                  onPress={() => setShow(!show)}
-                >
-                  <Image
-                    source={newCalendar}
-                    style={[
-                      styles.calendarStyle,
-                      { tintColor: selectId == 0 ? COLORS.white : COLORS.darkGray },
-                    ]}
-                  />
-                </TouchableOpacity> */}
-                {/* <DateTimePickerModal
-                  mode={'date'}
-                  isVisible={show}
-                  onConfirm={onChangeDate}
-                  onCancel={() => onCancelFun()}
-                  maximumDate={new Date()}
-                /> */}
-              </View>
-            </View>
             <View>
               <FlatList
                 data={aboutTransactionData}
@@ -408,26 +409,25 @@ export function Wallet2() {
                 renderItem={({ item, index }) => {
                   return (
                     <TouchableOpacity
-                      style={styles.custometrCon}
+                      style={[styles.custometrCon, { backgroundColor: item.backgroundColor }]}
                       onPress={() => {
                         setWeeklyTrasaction(true);
                         setWalletHome(false);
                         setFromHome(item?.type);
                       }}
                     >
-                      <View style={styles.flexAlign}>
-                        {index === 0 ? null : (
-                          <Image source={item.img} style={styles.newCustomer} />
-                        )}
+                      <Image
+                        source={item.img}
+                        style={[styles.newCustomer, { tintColor: item.color }]}
+                      />
 
-                        <View style={{ paddingHorizontal: moderateScale(7) }}>
-                          <Text style={styles.customerCount}>
-                            {index === 1 ? '' : '$'}
-                            {item.price}
-                          </Text>
-                          <Text style={styles.newCustomerHeading}>{item.aboutTransaction}</Text>
-                        </View>
-                      </View>
+                      <Text style={[styles.customerCount, { color: item.color }]}>
+                        {index === 1 ? '' : '$'}
+                        {item.price}
+                      </Text>
+                      <Text style={[styles.newCustomerHeading, { color: item.color }]}>
+                        {item.aboutTransaction}
+                      </Text>
                     </TouchableOpacity>
                   );
                 }}
@@ -437,9 +437,9 @@ export function Wallet2() {
                 scrollEnabled={false}
               />
             </View>
-            <View style={[styles.displayFlex, { marginTop: ms(20) }]}>
-              <Text style={styles.transactions}>{strings.wallet.transactions}</Text>
-              {/* <TouchableOpacity
+            {/* <View style={[styles.displayFlex, { marginTop: ms(20) }]}> */}
+            {/* <Text style={styles.transactions}>{strings.wallet.transactions}</Text> */}
+            {/* <TouchableOpacity
                 onPress={() => {
                   setWeeklyTrasaction(true), setWalletHome(false);
                 }}
@@ -447,12 +447,12 @@ export function Wallet2() {
               >
                 <Text style={styles.viewAll}>{strings.reward.viewAll}</Text>
               </TouchableOpacity> */}
-            </View>
+            {/* </View> */}
             <View>
               <Graph />
             </View>
           </View>
-        </>
+        </View>
       );
     } else if (weeklyTransaction) {
       return (
@@ -553,9 +553,7 @@ export function Wallet2() {
   };
   return (
     <ScreenWrapper>
-      <View style={weeklyTransaction ? styles.bgWhitecontainer : styles.container}>
-        {bodyView()}
-      </View>
+      <View style={styles.container}>{bodyView()}</View>
       {onLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />

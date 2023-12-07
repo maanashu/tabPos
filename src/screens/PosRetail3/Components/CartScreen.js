@@ -7,33 +7,13 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView,
   ActivityIndicator,
 } from 'react-native';
-
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
-
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import {
-  addDiscountPic,
-  addToCart,
-  borderCross,
-  cartEdit,
-  checkArrow,
-  cross,
-  crossButton,
-  eraser,
-  holdCart,
-  minus,
-  newCustomer,
-  notess,
-  plus,
-  rightBack,
-  search_light,
-  sideKeyboard,
-} from '@/assets';
+import { cartEdit, cross, crossButton, minus, plus, search_light } from '@/assets';
 import { CustomHeader } from './CustomHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -50,7 +30,6 @@ import {
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-import { useFocusEffect } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { ms } from 'react-native-size-matters';
 import { AddCartDetailModal } from './AddCartDetailModal';
@@ -64,7 +43,6 @@ import { CustomProductAdd } from './CustomProductAdd';
 import { NewCustomerAdd } from './NewCustomerAdd';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
 
@@ -153,16 +131,6 @@ export function CartScreen({
           };
     dispatch(changeStatusProductCart(data));
   };
-
-  // offline cart handler function
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     return () => {
-  //       beforeDiscountCartLoad();
-  //     };
-  //   }, [])
-  // );
 
   const productFun = async (item, index) => {
     beforeDiscountCartLoad();
@@ -387,6 +355,7 @@ export function CartScreen({
                               style={{
                                 flexDirection: 'row',
                                 alignItems: 'center',
+                                marginVertical: ms(3),
                               }}
                             >
                               <View style={styles.cartImageCon}>
@@ -522,7 +491,7 @@ export function CartScreen({
             <Spacer space={SH(7)} />
           </View>
           <View style={styles.rightSideCon}>
-            <View style={styles.displayflex}>
+            <View style={[styles.displayflex, { justifyContent: 'space-around' }]}>
               <TouchableOpacity
                 style={styles.holdCartPad}
                 onPress={() => {
@@ -530,16 +499,10 @@ export function CartScreen({
                   setNumPadModal((prev) => !prev);
                 }}
               >
-                <Image source={plus} style={styles.keyboardIcon} />
+                <Image source={Images.cartIconPlus} style={styles.keyboardIcon} />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.holdCartPad}
-                onPress={() => {
-                  beforeDiscountCartLoad();
-                  setNewCustomerModal((prev) => !prev);
-                }}
-              >
-                <Image source={newCustomer} style={styles.keyboardIcon} />
+              <TouchableOpacity style={styles.holdCartCon} onPress={clearCartHandler}>
+                <Image source={Images.cartDelete} style={styles.keyboardIcon} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
@@ -549,7 +512,7 @@ export function CartScreen({
                 onPress={cartStatusHandler}
               >
                 <Image
-                  source={holdCart}
+                  source={Images.cartHold}
                   style={[
                     styles.keyboardIcon,
                     {
@@ -559,16 +522,21 @@ export function CartScreen({
                 />
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.holdCartCon} onPress={clearCartHandler}>
-                <Image source={eraser} style={[styles.pause, { tintColor: COLORS.dark_grey }]} />
-                <Text style={styles.holdCart}>{strings.dashboard.clearcart}</Text>
+              <TouchableOpacity
+                style={styles.holdCartPad}
+                onPress={() => {
+                  beforeDiscountCartLoad();
+                  setNewCustomerModal((prev) => !prev);
+                }}
+              >
+                <Image source={Images.addCustomer} style={styles.keyboardIcon} />
               </TouchableOpacity>
             </View>
             <Spacer space={SH(10)} />
             <View style={{ flex: 1 }}>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
-                  <Image source={addDiscountPic} style={styles.addDiscountPic()} />
+                  <Image source={Images.availableOffer} style={styles.addDiscountPic()} />
                   <Text style={[styles.holdCart, { color: COLORS.coffee }]}>Available Offer</Text>
                   <View></View>
                 </View>
@@ -643,7 +611,7 @@ export function CartScreen({
                 )}
               </View>
 
-              <View style={[styles.displayflex, { marginVertical: ms(10) }]}>
+              <View style={[styles.displayflex, { marginVertical: ms(7) }]}>
                 <TouchableOpacity
                   style={styles.addDiscountCon()}
                   onPress={() => {
@@ -652,7 +620,7 @@ export function CartScreen({
                   }}
                   disabled={cartData?.poscart_products?.length > 0 ? false : true}
                 >
-                  <Image source={addDiscountPic} style={styles.addDiscountPic('discount')} />
+                  <Image source={Images.discounticon} style={styles.addDiscountPic('discount')} />
                   <Text style={styles.addDiscountText('discount')}>Add Discount</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -663,7 +631,7 @@ export function CartScreen({
                   }}
                   disabled={cartData?.poscart_products?.length > 0 ? false : true}
                 >
-                  <Image source={notess} style={styles.addDiscountPic()} />
+                  <Image source={Images.addNotes} style={styles.addDiscountPic()} />
                   <Text style={styles.addDiscountText()}>Add Notes</Text>
                 </TouchableOpacity>
               </View>
@@ -754,11 +722,8 @@ export function CartScreen({
         <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="product" />
         {/* </KeyboardAvoidingView> */}
       </Modal>
-
       <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
-        {/* <KeyboardAwareScrollView showsVerticalScrollIndicator={false}> */}
         <NewCustomerAdd crossHandler={closeCustomerAddModal} cartid={cartidFrom} />
-        {/* </KeyboardAwareScrollView> */}
       </Modal>
     </View>
   );

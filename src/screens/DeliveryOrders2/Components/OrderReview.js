@@ -17,7 +17,7 @@ import { getPendingOrders } from '@/actions/DashboardAction';
 import { ms } from 'react-native-size-matters';
 
 const result = Dimensions.get('window').height - 50;
-const twoEqualView = result / 2.2;
+const twoEqualView = result / 2;
 
 const OrderReview = ({
   renderOrderToReview,
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.white,
+    // height: ms(200),
   },
   orderToReviewView: {
     borderRadius: ms(10),

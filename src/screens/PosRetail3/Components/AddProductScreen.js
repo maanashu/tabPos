@@ -214,7 +214,7 @@ export const AddProductScreen = ({ backHandler }) => {
       <CustomHeader />
       <View style={[styles.displayflex, { flex: 1 }]}>
         <View style={styles.leftCon}>
-          <View style={{ marginTop: ms(10), flex: 1 }}>
+          <View style={{ marginTop: ms(5), flex: 1 }}>
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity onPress={() => backHandler()}>
                 <Image source={Images.arrowLeftUp} style={styles.leftIcon} />
@@ -348,9 +348,9 @@ export const AddProductScreen = ({ backHandler }) => {
           </View>
         </View>
         <View style={styles.rightCon}>
-          <View style={{ marginTop: ms(10), flex: 1 }}>
+          <View style={{ marginTop: ms(5), flex: 1 }}>
             <Text style={styles.addNewProduct}>{'Product details'}</Text>
-            <View style={{ marginTop: ms(15) }}>
+            <View style={{ marginTop: ms(7) }}>
               {productDetailArray?.map((item, index) => (
                 <View
                   style={[
@@ -418,7 +418,7 @@ export const AddProductScreen = ({ backHandler }) => {
                   </View>
                 </View>
               </View>
-              <View style={{ marginTop: ms(10) }}>
+              <View style={{ marginTop: ms(5) }}>
                 <Text style={styles.addNewProduct}>{'Availability'}</Text>
                 <FlatList
                   data={availblityArray}
@@ -436,7 +436,7 @@ export const AddProductScreen = ({ backHandler }) => {
                   contentContainerStyle={{
                     flex: 1,
                     justifyContent: 'space-between',
-                    marginTop: ms(15),
+                    marginTop: ms(7),
                   }}
                 />
               </View>
@@ -465,14 +465,17 @@ export const styles = StyleSheet.create({
     borderRadius: ms(12),
     flex: 0.41,
     marginRight: ms(7),
-    padding: ms(20),
+    // padding: ms(20),
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(7),
   },
   rightCon: {
     backgroundColor: COLORS.white,
     borderRadius: ms(12),
     flex: 0.58,
     marginRight: ms(7),
-    padding: ms(20),
+    paddingVertical: ms(7),
+    paddingHorizontal: ms(20),
   },
   leftIcon: {
     width: ms(22),
@@ -492,8 +495,8 @@ export const styles = StyleSheet.create({
     marginTop: ms(4),
   },
   imagebackground: {
-    width: ms(85),
-    height: ms(85),
+    width: ms(75),
+    height: ms(75),
     borderRadius: ms(12),
     alignSelf: 'center',
     backgroundColor: COLORS.textInputBackground,

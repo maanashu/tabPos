@@ -99,7 +99,10 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
           </View>
         </View>
 
-        <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
+        <TouchableOpacity
+          onPress={() => onViewAllHandler(item.id)}
+          style={[styles.orderDetailStyle, { width: SH(24) }]}
+        >
           <Image
             source={arrowRightTop}
             style={{ height: ms(13), width: ms(13), tintColor: COLORS.primaryDark }}
@@ -167,7 +170,7 @@ export default memo(Orders);
 const styles = StyleSheet.create({
   orderRowStyle: {
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 10,
     height: SH(65),
     marginVertical: 10,
     flexDirection: 'row',

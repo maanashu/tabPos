@@ -81,7 +81,7 @@ export class WalletController {
       const params = new URLSearchParams(data).toString();
 
       const endpoint =
-        data?.calendarDate == undefined || data?.calendarDate == ''
+        data?.calendarDate == undefined || data?.calendarDate === 'Invalid date'
           ? ORDER_URL +
             ApiOrderInventory.getTotalTraType +
             `?seller_id=${data?.sellerID}&filter=${data?.dayWiseFilter}`

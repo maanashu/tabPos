@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 import {
   CodeField,
@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { moderateScale } from 'react-native-size-matters';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-import { SH } from '@/theme';
+import { COLORS, Fonts, SH } from '@/theme';
 import { TYPES } from '@/Types/Types';
 import { Spacer } from '@/components';
 import { crossButton, userImage } from '@/assets';
@@ -26,6 +26,7 @@ import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import { styles } from '@/screens/Auth/PosUserPasscode/PosUserPasscode.styles';
+import CustomHeaderPOSUsers from '../components/CustomHeaderPOSUsers';
 
 const CELL_COUNT = 4;
 
@@ -93,54 +94,61 @@ export function PosUserPasscode({ route }) {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.container}>
-        <Text style={styles.subHeading} numberOfLines={1}>
-          {strings.passcode.subHeading}
-        </Text>
-        <Spacer space={SH(12)} />
+        <View style={{ alignItems: 'center' }}>
+          <Text style={styles.welcomeTo}>
+            Welcome to <Text style={{ fontFamily: Fonts.SemiBold }}>JOBR POS</Text>
+          </Text>
+        </View>
+
         <View style={styles.verifyContainer}>
-          <Spacer space={SH(16)} />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Spacer space={SH(16)} />
 
-          <Image
-            source={
-              posuser.user?.user_profiles?.profile_photo
-                ? { uri: posuser.user?.user_profiles?.profile_photo }
-                : userImage
-            }
-            style={styles.profileImage}
-          />
+            <View style={{ alignItems: 'center' }}>
+              <Image
+                source={
+                  posuser.user?.user_profiles?.profile_photo
+                    ? { uri: posuser.user?.user_profiles?.profile_photo }
+                    : userImage
+                }
+                style={styles.profileImage}
+              />
 
-          <Spacer space={SH(10)} />
-          <Text style={styles.firstName} numberOfLines={1}>
-            {`${posuser.user?.user_profiles?.firstname} ${posuser.user?.user_profiles?.lastname} `}
-          </Text>
-          <Spacer space={SH(6)} />
-          <Text style={styles.role} numberOfLines={1}>
-            {posuser.user?.user_roles?.length > 0
-              ? posuser.user?.user_roles?.map((item) => item.role?.name)
-              : 'admin'}
-          </Text>
-          <Spacer space={SH(16)} />
+              <Spacer space={SH(10)} />
+              <Text style={styles.firstName} numberOfLines={1}>
+                {`${posuser.user?.user_profiles?.firstname} ${posuser.user?.user_profiles?.lastname} `}
+              </Text>
+              <Spacer space={SH(6)} />
+              <Text style={styles.role} numberOfLines={1}>
+                {posuser.user?.user_roles?.length > 0
+                  ? posuser.user?.user_roles?.map((item) => item.role?.name)
+                  : 'admin'}
+              </Text>
+            </View>
+            <Spacer space={SH(16)} />
 
-          <CodeField
-            ref={ref}
-            {...prop}
-            value={value}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.alignSelfCenter}
-            showSoftInputOnFocus={false}
-            keyboardType={'number-pad'}
-            textContentType={'oneTimeCode'}
-            renderCell={renderCell}
-          />
+            <CodeField
+              ref={ref}
+              {...prop}
+              value={value}
+              onChangeText={setValue}
+              cellCount={CELL_COUNT}
+              rootStyle={styles.alignSelfCenter}
+              showSoftInputOnFocus={false}
+              keyboardType={'number-pad'}
+              textContentType={'oneTimeCode'}
+              renderCell={renderCell}
+            />
 
-          <VirtualKeyBoard
-            maxCharLength={4}
-            enteredValue={value}
-            setEnteredValue={setValue}
-            isButtonLoading={isLoading}
-            onPressContinueButton={passcodeHandler}
-          />
+            <VirtualKeyBoard
+              maxCharLength={4}
+              enteredValue={value}
+              setEnteredValue={setValue}
+              isButtonLoading={isLoading}
+              onPressContinueButton={passcodeHandler}
+            />
+            <Spacer space={SH(20)} />
+          </ScrollView>
         </View>
       </View>
     </View>

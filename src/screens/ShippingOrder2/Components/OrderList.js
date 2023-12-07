@@ -46,8 +46,6 @@ const OrderList = ({
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id ?? '');
   const todayDate = moment();
 
-  // console.log(JSON.stringify(ordersList), 'LISTINg');
-
   useEffect(() => {
     setOrderId(ordersList?.[0]?.id ?? '');
   }, [getOrdersData?.getReviewDef]);
@@ -630,7 +628,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingVertical: SH(15),
+    paddingBottom: SH(6),
   },
   ordersToReviewText: {
     color: COLORS.navy_blue,

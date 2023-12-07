@@ -27,6 +27,10 @@ import {
   Phone_light,
   location,
   arrowLeftUp,
+  new_location,
+  new_phone,
+  new_email,
+  Gift_Card,
 } from '@/assets';
 import { Spacer, TableDropdown } from '@/components';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -167,7 +171,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
       <View style={[styles.headerMainView]}>
         <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
           <Image source={arrowLeftUp} style={styles.backIconProfile} />
-          <Text style={[styles.deliveryText, { fontSize: ms(10) }]}>{'User profile'}</Text>
+          <Text style={[styles.deliveryText, { fontSize: ms(12) }]}>{'User Profile'}</Text>
         </TouchableOpacity>
         {/* <View style={styles.editButtonCon}>
           <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
@@ -188,7 +192,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             <Text style={styles.angelaText}>{data?.firstName}</Text>
             <Spacer space={SH(5)} />
             <View style={styles.flexAlign}>
-              <Image source={location} style={styles.Phonelight} />
+              <Image source={new_location} style={styles.Phonelight} />
               {userDetail?.user_details?.current_address ? (
                 <Text style={[styles.adressText, { width: windowWidth * 0.25 }]} numberOfLines={1}>
                   {data?.streetAdd} {data?.city} {data?.state} {data?.country}
@@ -202,12 +206,12 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
         <View style={{ flex: 1 }}>
           <Spacer space={SH(5)} />
           <View style={styles.flexAlign}>
-            <Image source={Phone_light} style={styles.Phonelight} />
+            <Image source={new_phone} style={styles.Phonelight} />
             <Text style={styles.adressText}>{data?.phoneNumber}</Text>
           </View>
           <Spacer space={SH(10)} />
           <View style={styles.flexAlign}>
-            <Image source={email} style={styles.Phonelight} />
+            <Image source={new_email} style={styles.Phonelight} />
             <Text style={styles.adressText}>{data?.userEmail}</Text>
           </View>
         </View>
@@ -233,7 +237,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             onPress={pointHandler}
           >
             <View style={styles.flexAlign}>
-              <Image source={reward2} style={styles.rewardStyle} />
+              <Image source={Gift_Card} style={styles.rewardStyle} />
               <Text style={styles.pointText}>{strings.customers.point}</Text>
             </View>
           </TouchableOpacity>
@@ -454,7 +458,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             <View style={styles.profileheaderUnderView}>
               <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}>
                 <View style={{ flexDirection: 'row' }}>
-                  <Text style={[styles.tableTextHeader, { marginRight: ms(30) }]}>#</Text>
+                  <Text style={[styles.tableTextHeader, { marginRight: ms(25) }]}>#</Text>
                   <Text style={styles.tableTextHeader}>Order id#</Text>
                 </View>
               </View>
@@ -516,7 +520,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                       <View style={styles.profileheaderUnderView}>
                         <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}>
                           <View style={{ flexDirection: 'row' }}>
-                            <Text style={[styles.tableTextData, { marginRight: ms(40) }]}>
+                            <Text style={[styles.tableTextData, { marginRight: ms(30) }]}>
                               {currentIndex}
                             </Text>
                             <Text style={styles.tableTextData}>{item.id}</Text>
@@ -547,12 +551,10 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                                   height: ms(17),
                                   resizeMode: 'contain',
                                   borderRadius: 50,
+                                  tintColor: COLORS.navy_blue,
                                 }}
                               />
-                              <Text
-                                style={[styles.tableTextData, { marginLeft: ms(3) }]}
-                                numberOfLines={2}
-                              >
+                              <Text style={[styles.tableTextStyle]} numberOfLines={2}>
                                 {item?.shipping_details?.title}
                               </Text>
                             </View>
@@ -565,9 +567,14 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                                     ? userImage
                                     : { uri: item?.pos_user_details?.profile_photo }
                                 }
-                                style={{ width: ms(15), height: ms(15), resizeMode: 'contain' }}
+                                style={{
+                                  width: ms(15),
+                                  height: ms(15),
+                                  resizeMode: 'contain',
+                                  tintColor: COLORS.navy_blue,
+                                }}
                               />
-                              <Text style={styles.tableTextData}>
+                              <Text style={styles.tableTextStyle}>
                                 {item?.pos_user_details?.firstname}
                               </Text>
                             </View>
@@ -580,9 +587,14 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                                     ? userImage
                                     : { uri: item?.driver_details?.profile_photo }
                                 }
-                                style={{ width: ms(15), height: ms(15), resizeMode: 'contain' }}
+                                style={{
+                                  width: ms(15),
+                                  height: ms(15),
+                                  resizeMode: 'contain',
+                                  tintColor: COLORS.navy_blue,
+                                }}
                               />
-                              <Text style={styles.tableTextData}>
+                              <Text style={[styles.tableTextStyle]}>
                                 {item?.driver_details?.firstname}
                               </Text>
                             </View>
@@ -611,7 +623,12 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                               },
                             ]}
                           >
-                            <Text style={[styles.tableTextData, { color: COLORS.white }]}>
+                            <Text
+                              style={[
+                                styles.tableTextData,
+                                { color: COLORS.white, paddingLeft: 0 },
+                              ]}
+                            >
                               {DELIVERY_MODE[item?.delivery_option]}
                             </Text>
                           </View>

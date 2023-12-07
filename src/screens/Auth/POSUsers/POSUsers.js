@@ -262,14 +262,13 @@ export function POSUsers({ navigation }) {
     <ScreenWrapper>
       {!twoFactorEnabled ? (
         <View style={styles.container}>
-          <View style={styles.flexRow}>
-            <Text style={styles.posLoginHeader}>{strings.posUsersList.heading}</Text>
-            <TouchableOpacity style={styles.logoutCon} onPress={() => logoutHandler()}>
-              <Image source={powerAuth} style={styles.powerAuth} />
-              <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
-            </TouchableOpacity>
+          <Spacer space={SH(10)} />
+          <CustomHeaderPOSUsers showUserName={false} {...{ logoutHandler }} logoutButton />
+          <View style={{ alignItems: 'center' }}>
+            <Text style={styles.welcomeTo}>
+              Welcome to <Text style={{ fontFamily: Fonts.SemiBold }}>JOBR POS</Text>{' '}
+            </Text>
           </View>
-          <CustomHeaderPOSUsers showUserName={false} />
 
           {getPosUserLoading ? (
             <View style={{ marginTop: 50 }}>
@@ -285,10 +284,11 @@ export function POSUsers({ navigation }) {
               data={posUserArray}
               extraData={posUserArray}
               scrollEnabled={true}
+              showsVerticalScrollIndicator={false}
               contentContainerStyle={{ flexGrow: 1 }}
               style={{
                 height: '100%',
-                marginHorizontal: SH(40),
+                marginHorizontal: ms(60),
               }}
               renderItem={({ item }) => {
                 return (

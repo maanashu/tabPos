@@ -1,6 +1,15 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { cloth, crossButton, logo_icon, newLogo, search_light, sunIcon, userImage } from '@/assets';
+import {
+  cloth,
+  crossButton,
+  logo_icon,
+  newLogo,
+  powerAuth,
+  search_light,
+  sunIcon,
+  userImage,
+} from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import moment from 'moment';
@@ -8,8 +17,15 @@ import { useSelector } from 'react-redux';
 import { getUser } from '@/selectors/UserSelectors';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
+import { strings } from '@/localization';
 
-const CustomHeaderPOSUsers = ({ crossHandler, iconShow, showUserName = true }) => {
+const CustomHeaderPOSUsers = ({
+  crossHandler,
+  iconShow,
+  showUserName = true,
+  logoutHandler,
+  logoutButton,
+}) => {
   const getUserData = useSelector(getUser);
   const getPosUser = getUserData?.posLoginData;
   return (
@@ -18,8 +34,8 @@ const CustomHeaderPOSUsers = ({ crossHandler, iconShow, showUserName = true }) =
         <Image
           source={newLogo}
           style={{
-            height: ms(42),
-            width: ms(30),
+            height: ms(35),
+            width: ms(25),
             borderRadius: ms(60),
             backgroundColor: COLORS.white,
             marginRight: ms(32),
@@ -31,15 +47,14 @@ const CustomHeaderPOSUsers = ({ crossHandler, iconShow, showUserName = true }) =
             flex: 1,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginRight: ms(32),
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image
               source={sunIcon}
               style={{
-                height: ms(20),
-                width: ms(20),
+                height: ms(18),
+                width: ms(18),
                 marginRight: ms(6),
               }}
               resizeMode="contain"
@@ -75,18 +90,22 @@ const CustomHeaderPOSUsers = ({ crossHandler, iconShow, showUserName = true }) =
             <View />
           )}
           {/* <View style={styles._border} /> */}
-          {getUserData?.posLoginData?.pos_number && (
-            <Text style={styles.cashLabelBold}>
-              POS No. {getUserData?.posLoginData?.pos_number}
-            </Text>
-          )}
-          <View style={[styles.walkinCon, { borderWidth: 1 }]}>
+          {/* {getUserData?.posLoginData?.pos_number && (
+          <Text style={styles.cashLabelBold}>POS No. {getUserData?.posLoginData?.pos_number}</Text>
+         )} */}
+          <View style={[styles.walkinCon]}>
             <Text style={styles.cashLabelBold}>Walk-In</Text>
           </View>
 
-          {iconShow && (
+          {/* {iconShow && (
             <TouchableOpacity onPress={crossHandler}>
               <Image source={crossButton} style={styles.crossBg} />
+            </TouchableOpacity>
+          )} */}
+          {logoutButton && (
+            <TouchableOpacity style={styles.logoutCon} onPress={() => logoutHandler()}>
+              <Image source={powerAuth} style={styles.powerAuth} />
+              <Text style={styles.logOut}>{strings.posUsersList.logOut}</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -135,13 +154,35 @@ const styles = StyleSheet.create({
   },
   walkinCon: {
     backgroundColor: COLORS.white,
-    paddingHorizontal: ms(10),
-    paddingVertical: ms(5),
-    borderRadius: ms(30),
+    width: ms(55),
+    height: ms(25),
+    borderRadius: ms(18),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   crossBg: {
     width: SW(10),
     height: SW(8),
     resizeMode: 'contain',
+  },
+  logoutCon: {
+    backgroundColor: COLORS.white,
+    width: SW(40),
+    height: ms(25),
+    borderRadius: ms(18),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  powerAuth: {
+    width: ms(10),
+    height: ms(10),
+    resizeMode: 'contain',
+    marginRight: 4,
+  },
+  logOut: {
+    fontSize: ms(9),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
   },
 });

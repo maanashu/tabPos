@@ -43,9 +43,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   totalTextStyle: {
-    fontSize: SF(12),
+    fontSize: SF(10),
     paddingTop: ms(2),
-    color: COLORS.solid_grey,
+    color: COLORS.lavender,
     fontFamily: Fonts.SemiBold,
   },
   totalTextStyle2: {
@@ -100,10 +100,11 @@ const styles = StyleSheet.create({
   locationViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
+    minWidth: '50%',
   },
   pinImageStyle: {
-    width: SH(16),
-    height: SH(16),
+    width: SH(14),
+    height: SH(14),
     resizeMode: 'contain',
   },
   timeTextStyle: {
@@ -428,17 +429,17 @@ const styles = StyleSheet.create({
   invoiceText: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(12),
-    color: COLORS.darkGray,
+    color: COLORS.lavender,
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(12),
-    color: COLORS.dark_grey,
+    fontSize: ms(10),
+    color: COLORS.navy_blue,
   },
   totalText: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(16),
-    color: COLORS.solid_grey,
+    color: COLORS.lavender,
   },
   acceptButtonView: {
     height: SH(48),
@@ -525,7 +526,7 @@ const styles = StyleSheet.create({
     width:
       Platform.OS === 'android'
         ? Dimensions.get('window').width / 5
-        : Dimensions.get('window').width / 4.5,
+        : Dimensions.get('window').width / 4,
     borderRadius: 10,
   },
   flexDirectionRow: {

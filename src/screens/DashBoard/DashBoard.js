@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   RefreshControl,
+  Platform,
 } from 'react-native';
 
 import moment from 'moment';
@@ -82,6 +83,8 @@ import { log, useAnimatedRef } from 'react-native-reanimated';
 import { debounce } from 'lodash';
 import { AddCartDetailModal, AddCartModal } from '../PosRetail3/Components';
 import { Modal as PaperModal } from 'react-native-paper';
+import { Images } from '@/assets/new_icon';
+import { ms } from 'react-native-size-matters';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -326,7 +329,7 @@ export function DashBoard({ navigation }) {
           {item?.user_details?.firstname ?? 'userName'}
         </Text>
         <View style={styles.timeView}>
-          <Image source={locationSolidIcon} style={styles.pinIcon} />
+          <Image source={locationSolidIcon} style={styles.pinIcon(1)} />
           <Text style={[styles.timeText, { color: COLORS.purple }]}>
             {item?.distance ? item?.distance : '0miles'} miles
           </Text>
@@ -336,7 +339,7 @@ export function DashBoard({ navigation }) {
       <View style={{ width: SW(25) }}>
         <Text style={styles.nameText}>{item?.order_details?.length} items</Text>
         <View style={styles.timeView}>
-          <Image source={moneySolidIcon} style={styles.pinIcon} />
+          <Image source={moneySolidIcon} style={styles.pinIcon(2)} />
           <Text style={[styles.timeText, { color: COLORS.success_green }]}>
             ${item.payable_amount ? item.payable_amount : '0'}
           </Text>
@@ -347,7 +350,7 @@ export function DashBoard({ navigation }) {
           {item?.preffered_delivery_start_time} - {item?.preffered_delivery_end_time}
         </Text>
         <View style={styles.timeView}>
-          <Image source={timeBlueIcon} style={styles.pinIcon} />
+          <Image source={Images.serviceTime} style={styles.pinIcon(3)} />
           <Text
             style={[styles.timeText, styles.nameTextBold, { color: COLORS.light_time }]}
             numberOfLines={1}
@@ -356,7 +359,7 @@ export function DashBoard({ navigation }) {
           </Text>
         </View>
       </View>
-      <Image source={arrowRightIcon} style={styles.arrowIcon} />
+      <Image source={arrowRightIcon} style={styles.arrowIconRight} />
       <View style={styles.rightIconStyle1}>
         <View style={[styles.timeView, { paddingTop: 0 }]}>
           <Text style={[styles.nameTextBold, { color: COLORS.textBlue }]}>
@@ -373,15 +376,12 @@ export function DashBoard({ navigation }) {
   const trackinSessionModal = () => {
     return (
       <Modal transparent={true} animationType={'fade'} isVisible={trackingSession}>
-        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
+        >
           <View style={styles.modalMainView}>
             <View style={styles.headerView}>
-              <View style={styles.sessionViewStyle}>
-                <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                  {strings.management.session}
-                </Text>
-              </View>
-
               <TouchableOpacity
                 style={styles.crossButonBorder}
                 onPress={() => dispatch(logoutUserFunction())}
@@ -390,67 +390,71 @@ export function DashBoard({ navigation }) {
               </TouchableOpacity>
             </View>
 
-            <Spacer space={SH(40)} />
-            <View style={styles.countCashView}>
-              <Text style={styles.countCashText}>{strings.management.countCash}</Text>
-
-              <Spacer space={SH(40)} />
-              <View>
+            <View style={{ flex: 1 }}>
+              <View style={{ alignItems: 'center' }}>
+                <Image source={Images.camera} style={styles.cameraIcon} />
+                <Text style={styles.startTracking}>{'Start Tracking Session'}</Text>
+                <Text style={styles.countCashText}>{'Count Cash in Drawer'}</Text>
+              </View>
+              <View style={{ flex: 1, padding: ms(20) }}>
+                {/* <View style={[styles.countCashView, { borderWidth: 1 }]}> */}
                 <Text style={styles.amountCountedText}>{strings.management.amountCounted}</Text>
-                <TextInput
-                  // ref={(inputRef) => {
-                  //   onInputFocus(inputRef), inputRef;
-                  // }}
-                  onFocus={(event) => {
-                    // setFresh((prev) => !prev);
-                    setScroll('1');
-                    // onInputFocus(event.target);
-                  }}
-                  placeholder={strings.management.amount}
-                  style={styles.inputStyle}
-                  placeholderTextColor={COLORS.solid_grey}
-                  keyboardType="number-pad"
-                  value={amountCount}
-                  onChangeText={setAmountCount}
-                />
+                <View style={styles.inputCon}>
+                  <Text style={styles.dollarSign}>{'$'}</Text>
+                  <TextInput
+                    // ref={(inputRef) => {
+                    //   onInputFocus(inputRef), inputRef;
+                    // }}
+                    // onFocus={(event) => {
+                    //   // setFresh((prev) => !prev);
+                    //   setScroll('1');
+                    //   // onInputFocus(event.target);
+                    // }}
+                    placeholder={strings.management.amount}
+                    style={styles.inputStyle}
+                    placeholderTextColor={COLORS.placeHoldeText}
+                    keyboardType="number-pad"
+                    value={amountCount}
+                    onChangeText={setAmountCount}
+                  />
+                  <Image source={Images.notFoundIcon} style={styles.notFoundIcon} />
+                </View>
+                <Text style={styles.hintText}>{'This is a hint text to help user.'}</Text>
+
+                <Spacer space={SH(20)} />
+                <View style={styles.inputCon}>
+                  <Image source={Images.addNotesIcon} style={styles.notesIcon} />
+                  <TextInput
+                    // ref={(inputRef) => (onInputFocus(inputRef), inputRef)}
+                    onFocus={(event) => {
+                      // setFresh((prev) => !prev);
+                      setScroll('2');
+                      // onInputFocus(event.target);
+                    }}
+                    placeholder={strings.management.note}
+                    style={styles.noteInputStyle}
+                    placeholderTextColor={COLORS.placeHoldeText}
+                    value={trackNotes}
+                    onChangeText={setTrackNotes}
+                    multiline={true}
+                    numberOfLines={3}
+                  />
+                </View>
+
+                {/* </View> */}
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity
+                  style={styles.startButtonCon(amountCount)}
+                  onPress={startTrackingSesHandler}
+                >
+                  <Text style={styles.startSessionText()}>{'Start Session'}</Text>
+                  <Image
+                    source={Images.arrowLeftUp}
+                    style={[styles.notesIcon, styles.arrowIcon(amountCount)]}
+                  />
+                </TouchableOpacity>
               </View>
-              <Spacer space={SH(40)} />
-              <View>
-                <Text style={styles.amountCountedText}>{strings.management.note}</Text>
-                <TextInput
-                  // ref={(inputRef) => (onInputFocus(inputRef), inputRef)}
-                  onFocus={(event) => {
-                    // setFresh((prev) => !prev);
-                    setScroll('2');
-                    // onInputFocus(event.target);
-                  }}
-                  placeholder={strings.management.note}
-                  style={styles.noteInputStyle}
-                  placeholderTextColor={COLORS.gerySkies}
-                  value={trackNotes}
-                  onChangeText={setTrackNotes}
-                  multiline={true}
-                  numberOfLines={3}
-                />
-              </View>
-              <Spacer space={SH(20)} />
             </View>
-            <View style={{ flex: 1 }} />
-            <Button
-              title={strings.management.startSession}
-              textStyle={{
-                ...styles.buttonText,
-                ...{ color: amountCount ? COLORS.white : COLORS.darkGray },
-              }}
-              style={{
-                ...styles.saveButton,
-                ...{
-                  backgroundColor: amountCount ? COLORS.primary : COLORS.textInputBackground,
-                },
-              }}
-              onPress={startTrackingSesHandler}
-            />
-            <Spacer space={SH(40)} />
           </View>
         </KeyboardAwareScrollView>
       </Modal>
@@ -483,52 +487,42 @@ export function DashBoard({ navigation }) {
 
   const bodyView = () => (
     <View style={styles.homeScreenCon}>
-      <View style={styles.displayRow}>
+      <View style={[styles.displayRow, { flex: 1 }]}>
         <View style={styles.cashProfileCon}>
-          <Spacer space={SH(12)} />
-          <View style={styles.cashProfilecon}>
-            <Image
-              source={
-                getPosUser?.user_profiles?.profile_photo
-                  ? { uri: getPosUser?.user_profiles?.profile_photo }
-                  : userImage
-              }
-              style={styles.cashProfile}
-            />
-          </View>
-          <Text style={styles.cashierName}>
-            {`${getPosUser?.user_profiles?.firstname} ${getPosUser?.user_profiles?.lastname}`}
-          </Text>
-          <View style={styles.cashierContainer}>
-            <Text style={styles.posCashier}>
-              {getPosUser?.user_roles?.length > 0
-                ? getPosUser?.user_roles?.map((item) => item.role?.name)
-                : 'admin'}
+          <View style={{ alignItems: 'center' }}>
+            <Spacer space={SH(12)} />
+            <View style={styles.cashProfilecon}>
+              <Image
+                source={
+                  getPosUser?.user_profiles?.profile_photo
+                    ? { uri: getPosUser?.user_profiles?.profile_photo }
+                    : userImage
+                }
+                style={styles.cashProfile}
+              />
+            </View>
+            <Text style={styles.cashierName}>
+              {`${getPosUser?.user_profiles?.firstname} ${getPosUser?.user_profiles?.lastname}`}
             </Text>
-            <Spacer horizontal space={12} />
-            <View style={styles.cashierIdContainer}>
-              <View style={styles.idDotStyle} />
-              <Text style={styles.cashLabel}>ID : {getPosUser?.user_profiles?.user_id ?? '0'}</Text>
+            <View style={styles.cashierContainer}>
+              <Text style={styles.posCashier}>
+                {getPosUser?.user_roles?.length > 0
+                  ? getPosUser?.user_roles?.map((item) => item.role?.name)
+                  : 'admin'}
+              </Text>
+              <Spacer horizontal space={12} />
+              <View style={styles.cashierIdContainer}>
+                <View style={styles.idDotStyle} />
+                <Text style={styles.cashLabel}>
+                  ID : {getPosUser?.user_profiles?.user_id ?? '0'}
+                </Text>
+              </View>
             </View>
           </View>
           <Spacer space={SH(10)} />
           <View style={styles.todaySaleCon}>
             <View style={styles.displayflex}>
               <Text style={styles.todaySale}>{strings.dashboard.todaySale}</Text>
-              {/* <TouchableOpacity
-                    style={{
-                      width: SW(30),
-                      height: SW(8),
-                      backgroundColor: COLORS.primary,
-                      color: COLORS.white,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderRadius: 3,
-                    }}
-                    onPress={() => setYourSessionEndModal(true)}
-                  >
-                    <Text style={{ color: COLORS.white }}>Your Session</Text>
-                  </TouchableOpacity> */}
             </View>
             <Spacer space={SH(6)} />
             <View style={[styles.displayflex, styles.paddingV]}>
@@ -569,28 +563,28 @@ export function DashBoard({ navigation }) {
 
           <View style={styles.sessionCon}>
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={[styles.cashLabel, { color: COLORS.primaryDark }]}>
+              <Text style={[styles.cashLabel, { color: COLORS.navy_blue }]}>
                 {moment().format('dddd')}
                 {', '}
                 {moment().format('ll')}
               </Text>
-              <Text style={[styles.cashLabel, { color: COLORS.primaryDark }]}>
+              <Text style={[styles.cashLabel, { color: COLORS.navy_blue }]}>
                 {moment().format('LTS')}
               </Text>
             </View>
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={[styles.cashLabel, { color: COLORS.primaryDark }]}>
+              <Text style={[styles.cashLabel, { color: COLORS.navy_blue }]}>
                 {strings.dashboard.logTime}
               </Text>
-              <Text style={[styles.cashAmount, { color: COLORS.primaryDark }]}>
+              <Text style={[styles.cashAmount, { color: COLORS.navy_blue }]}>
                 {moment(getLoginDeatil?.updated_at).format('LTS')}
               </Text>
             </View>
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={[styles.cashLabel, { color: COLORS.primaryDark }]}>
+              <Text style={[styles.cashLabel, { color: COLORS.navy_blue }]}>
                 {strings.dashboard.session}
               </Text>
-              <Text style={[styles.cashAmount, { color: COLORS.primaryDark }]}>
+              <Text style={[styles.cashAmount, { color: COLORS.navy_blue }]}>
                 {getLoginSessionTime(moment(getLoginDeatil?.updated_at).format('LTS'))}
               </Text>
             </View>
@@ -614,7 +608,10 @@ export function DashBoard({ navigation }) {
           <Spacer space={SH(10)} />
 
           <TouchableOpacity
-            style={styles.checkoutButton}
+            style={[
+              styles.checkoutButton,
+              { backgroundColor: COLORS.input_border, borderWidth: 0 },
+            ]}
             onPress={async () => {
               const data = {
                 amount: parseInt(profileObj?.closeBalance),
@@ -659,6 +656,7 @@ export function DashBoard({ navigation }) {
                     onSetSkuFun(sku);
                   }}
                   ref={textInputRef}
+                  placeholderTextColor={COLORS.placeHoldeText}
                 />
               ) : (
                 <TextInput
@@ -670,6 +668,7 @@ export function DashBoard({ navigation }) {
                     debouncedSearch(search);
                     // onChangeFun(search);
                   }}
+                  placeholderTextColor={COLORS.placeHoldeText}
                 />
               )}
             </View>
@@ -677,8 +676,9 @@ export function DashBoard({ navigation }) {
               // onPress={() => textInputRef.current.focus()}
               onPress={() => setScan(!scan)}
             >
-              <Image source={scan ? scanSearch : scn} style={styles.scnStyle} />
-              {/* <Image source={scn} style={styles.scnStyle} /> */}
+              {/* <Image source={scan ? scanSearch : scn} style={styles.scnStyle} /> */}
+
+              <Image source={Images.homeScan} style={styles.scnStyle} />
             </TouchableOpacity>
           </View>
 
@@ -690,7 +690,10 @@ export function DashBoard({ navigation }) {
                 onPress={() => startSellingHandler(item.id)}
                 style={[
                   styles.storeCardCon,
-                  { backgroundColor: index === 0 ? COLORS.navy_blue : COLORS.solid_grey },
+                  {
+                    backgroundColor: index === 0 ? COLORS.navy_blue : COLORS.darkSky,
+                    marginRight: index === 0 ? ms(10) : ms(0),
+                  },
                 ]}
                 key={index}
               >
@@ -722,6 +725,11 @@ export function DashBoard({ navigation }) {
                 >
                   <Image source={sellingArrow} style={styles.sellingArrow} />
                 </TouchableOpacity> */}
+                {index == 1 && (
+                  <View style={styles.bellBack}>
+                    <Image source={Images.bell} style={{ width: ms(15), height: ms(15) }} />
+                  </View>
+                )}
               </TouchableOpacity>
             ))}
           </View>

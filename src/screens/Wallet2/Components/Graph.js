@@ -182,20 +182,20 @@ const Graph = () => {
         label: day,
         labelWidth: 80,
         labelTextStyle: { color: COLORS.darkGray, fontSize: 11, marginLeft: ms(10) },
-        frontColor: showJBR ? COLORS.primary : COLORS.white,
+        frontColor: showJBR ? COLORS.lavenders : COLORS.white,
         initialSpace: 0,
         JBR: true,
       });
       setOfThree.push({
         value: showCash ? values[1] || 0 : 0,
         spacing: 10,
-        frontColor: showCash ? COLORS.darkBlue : COLORS.white,
+        frontColor: showCash ? COLORS.bright_green : COLORS.white,
         Cash: true,
       });
       setOfThree.push({
         value: showCard ? values[2] || 0 : 0,
         spacing: 25,
-        frontColor: showCard ? COLORS.violet : COLORS.white,
+        frontColor: showCard ? COLORS.sky_blue : COLORS.white,
         Card: true,
       });
 
@@ -217,7 +217,7 @@ const Graph = () => {
           label: day,
           labelWidth: 80,
           labelTextStyle: { color: COLORS.darkGray, fontSize: 11, marginLeft: ms(10) },
-          frontColor: value ? COLORS.primary : COLORS.white,
+          frontColor: value ? COLORS.lavenders : COLORS.white,
           initialSpace: 0,
           JBR: true,
         });
@@ -227,7 +227,7 @@ const Graph = () => {
           label: day,
           labelWidth: 80,
           labelTextStyle: { color: COLORS.darkGray, fontSize: 11, marginLeft: ms(10) },
-          frontColor: showJBR ? COLORS.primary : COLORS.white,
+          frontColor: showJBR ? COLORS.lavenders : COLORS.white,
           initialSpace: 0,
           JBR: true,
         });
@@ -236,14 +236,14 @@ const Graph = () => {
         setOfThree.push({
           value: value ? values[1] || 0 : 0,
           spacing: 10,
-          frontColor: value ? COLORS.darkBlue : COLORS.white,
+          frontColor: value ? COLORS.bright_green : COLORS.white,
           Cash: true,
         });
       } else {
         setOfThree.push({
           value: showCash ? values[1] || 0 : 0,
           spacing: 10,
-          frontColor: showCash ? COLORS.darkBlue : COLORS.white,
+          frontColor: showCash ? COLORS.bright_green : COLORS.white,
           Cash: true,
         });
       }
@@ -251,14 +251,14 @@ const Graph = () => {
         setOfThree.push({
           value: value ? values[2] || 0 : 0,
           spacing: 10,
-          frontColor: value ? COLORS.violet : COLORS.white,
+          frontColor: value ? COLORS.sky_blue : COLORS.white,
           Card: true,
         });
       } else {
         setOfThree.push({
           value: showCard ? values[2] || 0 : 0,
           spacing: 10,
-          frontColor: showCard ? COLORS.violet : COLORS.white,
+          frontColor: showCard ? COLORS.sky_blue : COLORS.white,
           Card: true,
         });
       }
@@ -285,9 +285,9 @@ const Graph = () => {
         >
           <Image
             source={showJBR ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showJBR && { tintColor: COLORS.primary }]}
+            style={[styles.checkboxIconStyle, showJBR && { tintColor: COLORS.lavenders }]}
           />
-          <Text style={styles.varientTextStyle}>JBR Coin</Text>
+          <Text style={[styles.varientTextStyle, { color: COLORS.lavenders }]}>JBR Coin</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -302,9 +302,9 @@ const Graph = () => {
         >
           <Image
             source={showCash ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showCash && { tintColor: COLORS.darkBlue }]}
+            style={[styles.checkboxIconStyle, showCash && { tintColor: COLORS.bright_green }]}
           />
-          <Text style={styles.varientTextStyle}>Cash</Text>
+          <Text style={[styles.varientTextStyle, { color: COLORS.bright_green }]}>Cash</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -314,13 +314,13 @@ const Graph = () => {
               return newState;
             });
           }}
-          style={styles.checkboxViewStyle}
+          style={[styles.checkboxViewStyle, { marginRight: 0 }]}
         >
           <Image
             source={showCard ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showCard && { tintColor: COLORS.violet }]}
+            style={[styles.checkboxIconStyle, showCard && { tintColor: COLORS.sky_blue }]}
           />
-          <Text style={styles.varientTextStyle}>Card</Text>
+          <Text style={[styles.varientTextStyle, { color: COLORS.sky_blue }]}>Credit Card</Text>
         </TouchableOpacity>
       </View>
       {isLoad ? (
@@ -328,7 +328,7 @@ const Graph = () => {
           <ActivityIndicator size={'small'} color={COLORS.primary} />
         </View>
       ) : (
-        <View style={{ marginTop: ms(10) }}>
+        <View>
           {/* <BarChartCom
         barWid={Dimensions.get('window').width * 0.82}
         barHei={Platform.OS === 'android' ? ms(170) : SH(270)}
@@ -358,8 +358,8 @@ const Graph = () => {
             noOfSections={4}
             // maxValue={100}
             yAxisLength={350}
-            height={Platform.OS === 'android' ? ms(170) : SH(270)}
-            width={Dimensions.get('window').width * 0.82}
+            height={Platform.OS === 'android' ? ms(250) : ms(240)}
+            width={Dimensions.get('window').width * 0.8}
             initialSpacing={SH(10)}
           />
         </View>
@@ -373,12 +373,12 @@ export default memo(Graph);
 const styles = StyleSheet.create({
   graphViewStyle: {
     borderRadius: 10,
-    paddingBottom: 30,
-    height: twoEqualView,
+    // height: twoEqualView,
     // width: windowWidth * 0.76,
     backgroundColor: COLORS.white,
-    padding: ms(10),
-    marginTop: ms(10),
+    paddingVertical: ms(10),
+    // marginTop: ms(10),
+    paddingBottom: ms(30),
   },
   numberOrdersText: {
     fontSize: SF(16),
@@ -404,13 +404,13 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   varientTextStyle: {
-    fontSize: SF(11),
+    fontSize: ms(9),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },
   checkboxIconStyle: {
-    width: SH(24),
-    height: SH(24),
+    width: ms(12),
+    height: ms(12),
     resizeMode: 'contain',
   },
   checkboxViewStyle: {
@@ -422,5 +422,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     zIndex: 999,
+    alignSelf: 'flex-end',
   },
 });

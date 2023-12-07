@@ -22,13 +22,18 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { addTocart, checkSuppliedVariant, getTimeSlots } from '@/actions/RetailAction';
+import {
+  addTocart,
+  addToServiceCart,
+  checkSuppliedVariant,
+  getTimeSlots,
+} from '@/actions/RetailAction';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import { FullScreenLoader, Spacer } from '@mPOS/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
-import { calculateTimeSlotSelection, getDaysAndDates } from '@/utils/GlobalMethods';
+import { calculateTimeSlotSelection, getDaysAndDates, imageSource } from '@/utils/GlobalMethods';
 import { useEffect } from 'react';
 
 moment.suppressDeprecationWarnings = true;
@@ -37,6 +42,23 @@ export const AddServiceScreen = ({ backHandler }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const itemData = getRetailData?.getOneService?.product_detail;
+  const posStaffArray = itemData?.pos_staff;
+
+  function modifiedPosArray(arr, size) {
+    const posStaffedArray = [];
+    for (let i = 0; i < arr.length; i += size) {
+      posStaffedArray.push(arr.slice(i, i + size));
+    }
+    return posStaffedArray;
+  }
+  const finalPosStaffArray = modifiedPosArray(posStaffArray, 2);
+
+  console.log('finalPosStaffArray', JSON.stringify(finalPosStaffArray));
+  // Remove HTML tags
+  const withoutHtmlTags = itemData?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
+
+  // Remove special characters and white spaces
+  const withoutSpecialCharsAndSpaces = withoutHtmlTags?.trim().replace(/[^\w\s]/gi, '');
   const getAuth = useSelector(getAuthData);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
   const [colorId, setColorId] = useState(null);
@@ -55,10 +77,7 @@ export const AddServiceScreen = ({ backHandler }) => {
   const [timeSlotsData, setTimeSlotsData] = useState([]);
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const [posUserId, setposUserId] = useState(itemData?.pos_staff?.[0]?.user?.unique_uuid);
-
-  useEffect(() => {
-    alert('only ui, functionality in progress');
-  }, []);
+  const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff?.[0]?.user);
 
   useEffect(() => {
     const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
@@ -90,21 +109,6 @@ export const AddServiceScreen = ({ backHandler }) => {
   const isLoadingTimeSlot = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TIME_SLOTS], state)
   );
-
-  const data = [
-    [
-      { id: '1', value: '1' },
-      { id: '2', value: '2' },
-    ],
-    [
-      { id: '3', value: '3' },
-      { id: '4', value: '4' },
-    ],
-    [
-      { id: '5', value: '5' },
-      { id: '6', value: '6' },
-    ],
-  ];
 
   const renderWeekItem = ({ item, index }) => (
     <TouchableOpacity
@@ -182,6 +186,32 @@ export const AddServiceScreen = ({ backHandler }) => {
       </Text>
     </TouchableOpacity>
   );
+  const onClickServiceProvider = (item) => {
+    setposUserId(item?.user?.unique_uuid);
+    setProviderDetail(item?.user);
+  };
+
+  const addToServiceCartHandler = () => {
+    if (!selectedTimeSlotData) {
+      CustomErrorToast({ message: 'Please select a time slot for the service' });
+      return;
+    }
+
+    const data = {
+      supplyId: itemData?.supplies?.[0]?.id,
+      supplyPriceID: itemData?.supplies?.[0]?.supply_prices[0]?.id,
+      product_id: itemData?.id,
+      appName: 'pos',
+      date: selectedDate,
+      startTime: selectedTimeSlotData?.start_time,
+      endTime: selectedTimeSlotData?.end_time,
+      posUserId: posUserId,
+      // offerId: offerId,
+    };
+
+    dispatch(addToServiceCart(data));
+    backHandler();
+  };
 
   return (
     <SafeAreaView style={styles._innerContainer}>
@@ -201,7 +231,7 @@ export const AddServiceScreen = ({ backHandler }) => {
               </View>
             </View>
             <View style={styles.imagebackground}>
-              <Image source={{ uri: productDetail?.image }} style={styles.productImage} />
+              <Image source={{ uri: itemData?.image }} style={styles.productImage} />
               <View style={styles.roundScrollbackground}>
                 <Image source={Images.aroundCircule} style={styles.aroundCircule} />
               </View>
@@ -209,12 +239,10 @@ export const AddServiceScreen = ({ backHandler }) => {
             <View style={{ marginTop: ms(10) }}>
               <View style={{ alignItems: 'center' }}>
                 <Text style={styles.productName} numberOfLines={2}>
-                  Veterinary Consultations.
+                  {itemData?.name}
                 </Text>
                 <Text style={styles.serviceDes} numberOfLines={4}>
-                  Pets are an important part of your family, and as a team of animal lovers, we
-                  understand that very well. As a family member, one part of your duty is ensuring
-                  your pets get the best veterinary care possible.
+                  {withoutSpecialCharsAndSpaces}
                 </Text>
               </View>
 
@@ -226,19 +254,28 @@ export const AddServiceScreen = ({ backHandler }) => {
                 }}
               >
                 <View style={styles.serviceTimeCon}>
-                  <Image source={calendar} style={(styles.calendarStyle, styles.calendarEst)} />
-                  <Text numberOfLines={1} style={styles.serviceTimeText}>
-                    Est. 45-60min
-                  </Text>
+                  <Image
+                    source={Images.serviceTime}
+                    style={(styles.calendarStyle, styles.calendarEst)}
+                  />
+                  {itemData.supplies?.[0]?.approx_service_time == null ? (
+                    <Text numberOfLines={1} style={styles.serviceTimeText}>
+                      Estimated Time Not found
+                    </Text>
+                  ) : (
+                    <Text numberOfLines={1} style={styles.serviceTimeText}>
+                      Est: {itemData.supplies?.[0]?.approx_service_time} min
+                    </Text>
+                  )}
                 </View>
-                {productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
-                productDetail?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+                {itemData?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+                itemData?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
                   <Text style={styles.productName}>
-                    ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                    ${itemData?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
                   </Text>
                 ) : (
                   <Text style={styles.productName}>
-                    ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                    ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
                   </Text>
                 )}
               </View>
@@ -247,7 +284,8 @@ export const AddServiceScreen = ({ backHandler }) => {
               <Text style={styles.addNewProduct}>{'Provider'}</Text>
               <View>
                 <FlatList
-                  data={data}
+                  data={finalPosStaffArray}
+                  extraData={finalPosStaffArray}
                   horizontal
                   // numColumns={2}
                   keyExtractor={(item) => item.id}
@@ -257,16 +295,27 @@ export const AddServiceScreen = ({ backHandler }) => {
                       <View style={{ flexDirection: 'column' }}>
                         {item?.map((data, index) => {
                           const borderColor =
-                            data.id === providerId ? COLORS.navy_blue : COLORS.light_purple;
+                            data?.user?.unique_uuid === posUserId
+                              ? COLORS.navy_blue
+                              : COLORS.light_purple;
                           const backgroundColor =
-                            data.id === providerId ? COLORS.textInputBackground : 'transparent';
+                            data?.user?.unique_uuid === posUserId
+                              ? COLORS.textInputBackground
+                              : 'transparent';
                           return (
                             <TouchableOpacity
                               key={index}
                               style={[styles.providerCon, { borderColor, backgroundColor }]}
-                              onPress={() => setProviderId(providerId === data.id ? null : data.id)}
+                              // onPress={() => setProviderId(providerId === data.id ? null : data.id)}
+                              onPress={() => onClickServiceProvider(data)}
                             >
-                              <Image source={userImage} style={styles.userImage} />
+                              <Image
+                                source={imageSource(
+                                  data?.user?.user_profiles?.profile_photo,
+                                  userImage
+                                )}
+                                style={styles.userImage}
+                              />
                               <Text
                                 numberOfLines={1}
                                 style={[
@@ -274,41 +323,46 @@ export const AddServiceScreen = ({ backHandler }) => {
                                   { fontSize: ms(9), marginVertical: ms(2) },
                                 ]}
                               >
-                                {data?.value}
+                                {data?.user?.user_profiles?.firstname +
+                                  ' ' +
+                                  data?.user?.user_profiles?.lastname}
                               </Text>
-                              <Text style={styles.providerName}>Dr. Evan Hills</Text>
+
+                              <Text style={styles.providerName}>
+                                {' '}
+                                {data.user?.user_roles?.length > 0
+                                  ? data.user?.user_roles?.map((item) => item.role?.name)
+                                  : 'admin'}
+                              </Text>
                             </TouchableOpacity>
                           );
                         })}
                       </View>
                     );
                   }}
-                  contentContainerStyle={{
-                    flex: 1,
+                  contentContainerStyle={
+                    {
+                      // flex: 1,
+                    }
+                  }
+                  ListEmptyComponent={() => {
+                    return (
+                      <View
+                        style={{
+                          marginTop: ms(50),
+                          alignSelf: 'center',
+                          width: '100%',
+                          marginLeft: ms(25),
+                        }}
+                      >
+                        <Text style={styles.serviceNotfound}>{'Service provider not found'}</Text>
+                      </View>
+                    );
                   }}
                 />
                 {/* <ScrollView horizontal>{renderItems()}</ScrollView> */}
               </View>
             </View>
-
-            {/* <TouchableOpacity
-              style={styles.addButtonCon}
-              onPress={addToCartHandler}
-              disabled={isChecksSuppliesVariant ? true : false}
-            >
-              <Text style={[styles.productName, { fontSize: ms(10), color: COLORS.white }]}>
-                {'Add item'}
-              </Text>
-              <Image
-                source={Images.cartIcon}
-                style={[styles.plusSign, { tintColor: COLORS.sky_blue, marginLeft: ms(4) }]}
-              />
-              {isChecksSuppliesVariant && (
-                <View style={{ marginLeft: ms(10) }}>
-                  <ActivityIndicator size="small" color={COLORS.sky_blue} />
-                </View>
-              )}
-            </TouchableOpacity> */}
           </View>
         </View>
         <View style={styles.rightCon}>
@@ -344,9 +398,18 @@ export const AddServiceScreen = ({ backHandler }) => {
             </View>
 
             <View style={{ marginTop: ms(15) }}>
-              <Image source={calendar} style={styles.calendarStyle} />
+              <Image source={Images.serviceCalendar} style={styles.calendarStyle} />
               <Text style={styles.schduleOf}>
-                Schedule of <Text style={{ fontFamily: Fonts.Bold }}>Dr. Africa Zwarawi</Text>{' '}
+                Schedule of{' '}
+                {itemData?.pos_staff?.length > 0 ? (
+                  <Text style={{ fontFamily: Fonts.Bold }}>
+                    {providerDetail?.user_profiles?.firstname +
+                      ' ' +
+                      providerDetail?.user_profiles?.lastname}
+                  </Text>
+                ) : (
+                  <Text style={{ fontFamily: Fonts.Bold }}>{'Not service provider'}</Text>
+                )}
               </Text>
             </View>
 
@@ -385,7 +448,7 @@ export const AddServiceScreen = ({ backHandler }) => {
 
             <TouchableOpacity
               style={styles.addButtonCon}
-              onPress={() => alert('this work in progress')}
+              onPress={() => addToServiceCartHandler()}
               // disabled={isChecksSuppliesVariant ? true : false}
             >
               <Text style={[styles.productName, { fontSize: ms(10), color: COLORS.white }]}>
@@ -425,14 +488,16 @@ export const styles = StyleSheet.create({
     borderRadius: ms(12),
     flex: 0.41,
     marginRight: ms(7),
-    padding: ms(20),
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(7),
   },
   rightCon: {
     backgroundColor: COLORS.white,
     borderRadius: ms(12),
     flex: 0.58,
     marginRight: ms(7),
-    padding: ms(20),
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(7),
   },
   leftIcon: {
     width: ms(22),
@@ -706,6 +771,12 @@ export const styles = StyleSheet.create({
     fontSize: ms(12),
     fontFamily: Fonts.Medium,
     marginTop: ms(5),
+    alignSelf: 'center',
+  },
+  serviceNotfound: {
+    color: COLORS.red,
+    fontSize: ms(10),
+    fontFamily: Fonts.Medium,
     alignSelf: 'center',
   },
 });

@@ -429,6 +429,20 @@ export { default as locationSolidIcon } from '@/assets/new_icon/dashboard/locati
 export { default as moneySolidIcon } from '@/assets/new_icon/dashboard/money_solid.png';
 export { default as timeBlueIcon } from '@/assets/new_icon/dashboard/time_blue.png';
 export { default as arrowRightIcon } from '@/assets/new_icon/dashboard/Arrow_Right.png';
+// export { default as emailBlueIcon } from '@/assets/new_icon/dashboard/email_blue_icon.png';
+// export { default as phoneMsgIcon } from '@/assets/new_icon/dashboard/phone_message.png';
+// export { default as printerIcon } from '@/assets/new_icon/dashboard/printer_icon.png';
+export { default as newCheck } from '@/assets/new_icon/ic_customer/newCheck.png';
+export { default as newCustomerUser } from '@/assets/new_icon/ic_customer/newCustomer.png';
+export { default as newReturningCustomer } from '@/assets/new_icon/ic_customer/newReturningCustomer.png';
+export { default as newUsers } from '@/assets/new_icon/ic_customer/newUsers.png';
+export { default as newWalkingCustomer } from '@/assets/new_icon/ic_customer/newWalkingCustomer.png';
+export { default as onlineUser } from '@/assets/new_icon/ic_customer/onlineUser.png';
+export { default as Gift_Card } from '@/assets/new_icon/ic_customer/Gift_Card.png';
+export { default as new_email } from '@/assets/new_icon/ic_customer/new_email.png';
+export { default as new_phone } from '@/assets/new_icon/ic_customer/new_phone.png';
+export { default as new_location } from '@/assets/new_icon/ic_customer/new_location.png';
+export { default as new_wallet } from '@/assets/new_icon/ic_customer/new_wallet.png';
 
 // Delivery  New ICON
 export { default as BikeFast } from '@/assets/new_icon/ic_delivery/bikefast.png';
@@ -451,10 +465,15 @@ export { default as StepPurple } from '@/assets/new_icon/ic_delivery/StepPurple.
 export { default as StepSky } from '@/assets/new_icon/ic_delivery/StepSky.png';
 export { default as StepPurpleStop } from '@/assets/new_icon/ic_delivery/StepPurpleStop.png';
 export { default as StepSkypStop } from '@/assets/new_icon/ic_delivery/StepSkyStop.png';
+export { default as StepYellow } from '@/assets/new_icon/ic_delivery/StepYellow.png';
+export { default as StepCross } from '@/assets/new_icon/ic_delivery/StepCross.png';
+
 export { default as Divider } from '@/assets/new_icon/ic_delivery/Div.png';
 export { default as Sun } from '@/assets/new_icon/ic_delivery/Sun.png';
 export { default as GAuth } from '@/assets/new_icon/ic_delivery/GAuth.png';
 export { default as CloudDonwload } from '@/assets/new_icon/ic_delivery/CloudDownload.png';
+export { default as LocationPurple } from '@/assets/new_icon/ic_delivery/locationPurple.png';
+export { default as TimeSky } from '@/assets/new_icon/ic_delivery/timeSky.png';
 
 export { default as Qr } from '@/assets/new_icon/ic_delivery/Qr.png';
 

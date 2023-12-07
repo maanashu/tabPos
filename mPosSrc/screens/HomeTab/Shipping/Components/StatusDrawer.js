@@ -32,7 +32,6 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
   const { height } = Dimensions.get('window');
   const shippingData = useSelector(getShipping);
   const orderStatusCountData = shippingData?.orderStatus;
-  console.log('mpos', JSON.stringify(orderStatusCountData));
   // const shippingDrawer = [
   //   {
   //     key: '0',

@@ -340,9 +340,11 @@ export class RetailController {
       const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart;
       HttpClient.delete(endpoint)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           reject(error);
         });
     });
@@ -901,14 +903,11 @@ export class RetailController {
         PRODUCT_URL +
         ApiProductInventory.getProduct +
         `/${serviceId}?app_name=pos&seller_id=${sellerID}&need_pos_users=true`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -1140,10 +1139,8 @@ export class RetailController {
   static async createBulkCart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
-      console.log(data);
       HttpClient.post(endpoint, data)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
@@ -1412,13 +1409,13 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          error?.statusCode === 204 &&
-            Toast.show({
-              text2: 'Offer Not Found',
-              position: 'bottom',
-              type: 'error_toast',
-              visibilityTime: 1500,
-            });
+          // error?.statusCode === 204 &&
+          //   Toast.show({
+          //     text2: 'Offer Not Found',
+          //     position: 'bottom',
+          //     type: 'error_toast',
+          //     visibilityTime: 1500,
+          //   });
           reject(error);
         });
     });

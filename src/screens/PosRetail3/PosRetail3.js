@@ -62,7 +62,7 @@ export function PosRetail3() {
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;
   const [selectedScreen, setselectedScreen] = useState('MainScreen');
-  // const [selectedScreen, setselectedScreen] = useState('AddServiceScreen');
+  // const [selectedScreen, setselectedScreen] = useState('CartAmountPayBy');
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
@@ -85,7 +85,7 @@ export function PosRetail3() {
   useFocusEffect(
     React.useCallback(() => {
       return () => setselectedScreen('MainScreen');
-      // return () => setselectedScreen('AddServiceScreen');
+      // return () => setselectedScreen('CartAmountPayBy');
     }, [])
   );
 
@@ -432,6 +432,7 @@ export function PosRetail3() {
         addNotesHandler={() => setAddServiceNotes(true)}
         addDiscountHandler={() => setAddServiceDiscount(true)}
         getScreen={(value) => getScreenFunction(value)}
+        addServiceScreenShow={() => setselectedScreen('AddServiceScreen')}
       />
     ),
     ['CartAmountTips']: (
@@ -552,17 +553,11 @@ export function PosRetail3() {
     ),
     ['AddServiceScreen']: (
       <AddServiceScreen
-        backHandler={
-          () =>
-            // getRetailData?.addProductFrom == 'main'
-            {
-              setselectedScreen('MainScreen');
-              getScreenFunction('Service');
-            }
-
-          // : setselectedScreen('CartScreen')
+        backHandler={() =>
+          getRetailData?.addServiceFrom == 'main'
+            ? (setselectedScreen('MainScreen'), getScreenFunction('Service'))
+            : setselectedScreen('CartServiceScreen')
         }
-        // getScreen={(value) => getScreenFunction(value)}
       />
     ),
   };
