@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Platform, Text, View } from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
@@ -168,25 +168,6 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
   };
   return (
     <View style={styles.cartListModalView}>
-      {/* <View style={styles.displayRow}>
-        <TouchableOpacity style={styles.bucketBackgorund}>
-          <Image source={bucket} style={[styles.sideBarImage, { tintColor: COLORS.primary }]} />
-          <View style={[styles.bucketBadge, styles.bucketBadgePrimary]}>
-            <Text style={[styles.badgetext, { color: COLORS.white }]}>
-              {cartData?.appointment_cart_products?.length ?? '0'}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <Text style={styles.carttoAdd}>Cart</Text>
-        <TouchableOpacity
-          disabled={isLoading}
-          style={styles.crossView}
-          onPress={() => CloseCartModal()}
-        >
-          <Image source={crossButton} style={[styles.crossImage]} />
-        </TouchableOpacity>
-      </View> */}
-
       {isLoading ? (
         <ActivityIndicator size={'large'} animating color={COLORS.primary} />
       ) : (
@@ -312,7 +293,12 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                 <Image source={checkArrow} style={styles.checkArrow} />
               </TouchableOpacity>
             </View> */}
-            <View style={{ height: ms(132), paddingHorizontal: ms(30) }}>
+            <View
+              style={{
+                height: Platform.OS === 'ios' ? ms(108) : ms(132),
+                paddingHorizontal: ms(30),
+              }}
+            >
               <View
                 style={{
                   flex: 1,
@@ -357,60 +343,6 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
               </View>
             </View>
           </View>
-
-          {/* <View style={styles.cartListIconBody}>
-            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <TouchableOpacity onPress={customAddBtn}>
-                <Image
-                  source={plus}
-                  style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
-                />
-              </TouchableOpacity>
-              <Spacer space={SH(20)} />
-              <TouchableOpacity
-                onPress={() => {
-                  dispatch(clearServiceAllCart());
-                  CloseCartModal();
-                }}
-              >
-                <Image
-                  source={sideEarser}
-                  style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
-                />
-              </TouchableOpacity>
-              <Spacer space={SH(20)} />
-              <TouchableOpacity
-                onPress={cartStatusHandler}
-                // disabled={getRetailData?.getAllCart?.id === 'undefined' ? false : true}
-              >
-                <Image
-                  source={holdCart}
-                  style={
-                    holdServiceArray?.length > 0
-                      ? [styles.sideBarImage, { tintColor: COLORS.primary }]
-                      : styles.sideBarImage
-                  }
-                />
-                <View
-                  style={
-                    holdServiceArray?.length > 0
-                      ? [styles.holdBadge, styles.holdBadgePrimary]
-                      : styles.holdBadge
-                  }
-                >
-                  <Text
-                    style={
-                      holdServiceArray?.length > 0
-                        ? [styles.holdBadgetext, { color: COLORS.white }]
-                        : styles.holdBadgetext
-                    }
-                  >
-                    {holdServiceArray?.length}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View> */}
         </View>
       )}
     </View>

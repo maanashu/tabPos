@@ -52,8 +52,6 @@ export const AddServiceScreen = ({ backHandler }) => {
     return posStaffedArray;
   }
   const finalPosStaffArray = modifiedPosArray(posStaffArray, 2);
-
-  console.log('finalPosStaffArray', JSON.stringify(finalPosStaffArray));
   // Remove HTML tags
   const withoutHtmlTags = itemData?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
 

@@ -1113,7 +1113,7 @@ export const CartAmountPayBy = ({
               </View>
               <View style={{ flex: 0.6, paddingHorizontal: ms(15), paddingBottom: ms(15) }}>
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                  <Image source={new_wallet} style={{ width: ms(30), height: ms(30) }} />
+                  <Image source={Images.walletIcon} style={{ width: ms(30), height: ms(30) }} />
                   <Spacer space={SH(20)} />
                   <Text style={[styles.scanToPay, { textAlign: 'center' }]}>
                     Or send the payment request to your {`\n`} JOBR wallet:

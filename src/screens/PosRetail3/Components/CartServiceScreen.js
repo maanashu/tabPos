@@ -399,34 +399,6 @@ export function CartServiceScreen({
                             </View>
                           </View>
                           <View style={styles.serviceCartRightBody}>
-                            {/* <View style={styles.serviceCartBody}>
-                              <View
-                                style={[
-                                  styles.cartBodyRightSide,
-                                  {
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    paddingLeft: ms(0),
-                                    opacity: cartIndex === ind && cartEditItem ? 0.3 : 1,
-                                    width: ms(60),
-                                    paddingRight: 30,
-                                  },
-                                ]}
-                              >
-                                <Image
-                                  source={
-                                    {
-                                      uri: data?.pos_user_details?.user?.user_profiles
-                                        ?.profile_photo,
-                                    } ?? userImage
-                                  }
-                                  style={styles.offerImage}
-                                />
-                                <Text style={styles.blueListDataText} numberOfLines={1}>
-                                  {data?.pos_user_details?.user?.user_profiles?.firstname}
-                                </Text>
-                              </View>
-                            </View> */}
                             <View style={styles.serviceCartBody}>
                               {cartIndex === ind && cartEditItem ? (
                                 <TextInput

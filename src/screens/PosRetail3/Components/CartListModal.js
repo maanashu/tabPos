@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Platform, Text, View } from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
 
@@ -222,7 +222,7 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate }) {
                               </TouchableOpacity>
                             </View>
                             <Text style={styles.blueListDataText}>
-                              ${' '}
+                              $
                               {(
                                 data.product_details?.supply?.supply_prices?.selling_price *
                                 data?.qty
@@ -248,7 +248,12 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate }) {
               </ScrollView>
             </View>
 
-            <View style={{ height: ms(132), paddingHorizontal: ms(30) }}>
+            <View
+              style={{
+                height: Platform.OS === 'ios' ? ms(108) : ms(132),
+                paddingHorizontal: ms(30),
+              }}
+            >
               <View
                 style={{
                   flex: 1,
