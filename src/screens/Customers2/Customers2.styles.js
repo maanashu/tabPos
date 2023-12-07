@@ -111,7 +111,13 @@ export const styles = StyleSheet.create({
     margin: 0,
   },
   homeBodyCon: {
-    marginLeft: ms(10),
+    flex: 1,
+    marginHorizontal: ms(5),
+    backgroundColor: COLORS.white,
+    borderRadius: ms(4),
+    marginBottom: ms(5),
+    paddingHorizontal: ms(10),
+    paddingVertical: ms(15),
   },
   totalCustomerCon: {
     flexDirection: 'row',
@@ -130,20 +136,21 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     // justifyContent: 'center',
     // alignItems: 'center',
-    marginRight: ms(10),
+    // marginHorizontal: ms(5),
     paddingHorizontal: ms(15),
     paddingVertical: ms(10),
     // flex: 1,
   },
   newCustomer: {
-    width: SH(36),
-    height: SH(36),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
   },
   customerCount: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
-    fontSize: SF(24),
+    fontSize: ms(12),
+    marginTop: ms(10),
   },
   newCustomerHeading: {
     fontFamily: Fonts.Regular,
@@ -151,8 +158,9 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
   },
   contentContainerStyle: {
-    // flex: 1,
-    // justifyContent: 'space-between',
+    // marginTop: ms(15),
+    flex: 1,
+    justifyContent: 'space-between',
   },
   totalCusPrimary: {
     fontFamily: Fonts.SemiBold,
@@ -404,7 +412,7 @@ export const styles = StyleSheet.create({
   lovingStyleData: {
     width: ms(22),
     height: ms(22),
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderRadius: 50,
   },
   tableTextDataName: {
@@ -464,9 +472,8 @@ export const styles = StyleSheet.create({
   lovingStyle: {
     width: ms(30),
     height: ms(30),
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderRadius: 50,
-    tintColor: COLORS.navy_blue,
   },
   angelaText: {
     fontFamily: Fonts.Medium,
@@ -545,7 +552,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   profileheaderChildView: {
-    width: Platform.OS === 'android' ? ms(100) : ms(83),
+    width: Platform.OS === 'android' ? ms(100) : ms(75),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(3),
@@ -586,7 +593,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   profilDetailChildView: {
-    width: Platform.OS === 'android' ? ms(115) : ms(95),
+    width: Platform.OS === 'android' ? ms(115) : ms(90),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(3),
@@ -610,7 +617,7 @@ export const styles = StyleSheet.create({
     padding: 0,
   },
   varientTextStyle: {
-    fontSize: SF(11),
+    fontSize: ms(7),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },
@@ -647,5 +654,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.sky_grey,
     marginLeft: ms(10),
     borderRadius: ms(20),
+  },
+  backButtonArrow: {
+    width: ms(18),
+    height: ms(18),
+    resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
   },
 });

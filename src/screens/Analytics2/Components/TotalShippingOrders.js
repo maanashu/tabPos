@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
@@ -27,6 +28,7 @@ import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { height } from '@/theme/ScalerDimensions';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -143,7 +145,7 @@ export function TotalShippingOrders({ onPressReview }) {
   return (
     <View
       style={{
-        height: '97%',
+        height: Platform.OS === 'android' ? '97%' : height - ms(50),
         backgroundColor: COLORS.white,
         borderRadius: ms(10),
         marginTop: ms(5),
@@ -222,7 +224,7 @@ export function TotalShippingOrders({ onPressReview }) {
                 <Text style={styles.revenueText}>Total Shipping Orders</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting} numberOfLines={2}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Average Order Value</Text>
               </DataTable.Title>
 
