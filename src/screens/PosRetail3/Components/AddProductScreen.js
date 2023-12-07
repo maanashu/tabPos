@@ -74,7 +74,6 @@ export const AddProductScreen = ({ backHandler }) => {
         supplyPriceID: productDetail?.supplies?.[0]?.supply_prices[0]?.id,
         // offerId: offerId,
       };
-      console.log('data', data);
       // openFrom === 'main' && addToLocalCart(productItem, productIndex, count);
       dispatch(addTocart(data));
       backHandler();
@@ -112,7 +111,6 @@ export const AddProductScreen = ({ backHandler }) => {
           supplyPriceID: productDetail?.supplies?.[0]?.supply_prices[0]?.id,
           supplyVariantId: res?.payload?.id,
         };
-        console.log('Data', Data);
         if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
           // setAddToCartLoader(true);
 

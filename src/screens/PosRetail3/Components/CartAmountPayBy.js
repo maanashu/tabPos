@@ -29,6 +29,7 @@ import {
   dropdown,
   logo_full,
   emailInvoice,
+  new_wallet,
 } from '@/assets';
 import moment from 'moment';
 import { COLORS, SF, SH } from '@/theme';
@@ -94,7 +95,6 @@ export const CartAmountPayBy = ({
   const getUserData = useSelector(getUser);
   const updateData = useSelector(getRetail).updateQuantityy;
   const getSettingData = useSelector(getSetting);
-  // console.log('getSetting data', JSON.stringify(getSettingData));
   // jbrcoin: getSettingData?.getSetting?.accept_jbr_coin_payment,
   // cash: getSettingData?.getSetting?.accept_cash_payment,
   // card: getSettingData?.getSetting?.accept_card_payment,
@@ -104,19 +104,19 @@ export const CartAmountPayBy = ({
     paymentMethodData.push(
       {
         title: 'cash',
-        icon: moneyIcon,
+        icon: Images.cashFlowIcon,
         status: getSettingData.getSetting.accept_cash_payment,
         id: 1,
       },
       {
         title: 'jobr coin',
-        icon: qrCodeIcon,
+        icon: Images.jbrFlowIcon,
         status: true,
         id: 2,
       },
       {
         title: 'debit/credit',
-        icon: cardPayment,
+        icon: Images.debitCardIcon,
         status: getSettingData.getSetting.accept_card_payment,
         id: 3,
       }
@@ -832,7 +832,7 @@ export const CartAmountPayBy = ({
               <Image source={logo_full} style={styles.logoFull} />
               <Image
                 source={{ uri: cartData?.barcode } ?? barcode}
-                style={[styles._barCodeImage, { alignSelf: 'center' }]}
+                style={[styles._barCodeImage, { alignSelf: 'center', tintColor: COLORS.navy_blue }]}
               />
             </View>
           </View>
@@ -1058,194 +1058,212 @@ export const CartAmountPayBy = ({
       </Modal>
 
       {/* qr code scan pop */}
-      <ReactNativeModal isVisible={qrPopUp}>
+      <ReactNativeModal isVisible={qrPopUp} backdropColor={COLORS.row_grey} backdropOpacity={0.9}>
         <KeyboardAvoidingView
           contentContainerStyle={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 100}
+          // behavior={Platform.OS === 'ios' ? 'padding' : 100}
         >
           {/* <ScrollView showsVerticalScrollIndicator={false}> */}
           <View style={styles.scanPopUpCon}>
-            <>
-              <View style={styles.scanPopHeader}>
-                <TouchableOpacity
-                  style={styles.crossBg}
-                  onPress={() => {
-                    setQrPopUp(false);
-                    dispatch(requestCheckSuccess(''));
-                    dispatch(qrCodeStatusSuccess(''));
-                  }}
-                >
-                  <Image source={crossButton} style={styles.crossButton} />
-                </TouchableOpacity>
-              </View>
-              {/* <View style={{ borderWidth: 1, flex: 1, flexDirection: 'row' }}>
-                <View style={{ borderWidth: 1, flex: 0.4, padding: ms(15) }}>
-                  <Image source={Images.jbrPayLogo} />
-                </View>
-                <View style={{ borderWidth: 1, flex: 0.6 }}></View>
-              </View> */}
-              <View style={[styles._centerContainer, { justifyContent: 'flex-start' }]}>
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Spacer space={SH(10)} />
-                  <Text
-                    style={[
-                      styles._totalAmountTitle,
-                      { fontFamily: Fonts.SemiBold, color: COLORS.dark_grey },
-                    ]}
-                  >
-                    {'Scan to Pay'}
-                  </Text>
-                  <View style={{ alignItems: 'center' }}>
-                    <Text style={styles._amount}>
+            <View style={styles.scanPopHeader}>
+              <TouchableOpacity
+                style={styles.crossBg}
+                onPress={() => {
+                  setQrPopUp(false);
+                  dispatch(requestCheckSuccess(''));
+                  dispatch(qrCodeStatusSuccess(''));
+                }}
+              >
+                <Image source={crossButton} style={styles.crossButton} />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <View
+                style={{
+                  flex: 0.4,
+                  paddingHorizontal: ms(15),
+                  paddingBottom: ms(15),
+                  borderRightWidth: 1,
+                  borderColor: COLORS.light_purple,
+                }}
+              >
+                <View style={{ flex: 1, alignItems: 'center' }}>
+                  <Image source={Images.jbrPayLogo} style={{ width: ms(30), height: ms(30) }} />
+                  <Spacer space={SH(20)} />
+                  <Text style={styles.scanToPay}>{'Scan to Pay'}</Text>
+
+                  <View style={styles.scanpayBack}>
+                    <Text style={[styles._amount, { fontSize: ms(14) }]}>
                       JBR {(cartData?.amount?.total_amount * 100).toFixed(0)}
                     </Text>
-                    <Text style={styles._usdText}>
-                      USD ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
-                    </Text>
                   </View>
+                  <Text style={styles.scanToPay}>
+                    ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'} USD
+                  </Text>
+                  <View style={{ flex: 1 }} />
+                  <Image
+                    blurRadius={sendRequest ? 10 : 0}
+                    source={{ uri: qrcodeData?.qr_code }}
+                    style={{
+                      height: ms(180),
+                      width: ms(180),
+                    }}
+                  />
                 </View>
-                <View style={{ width: '60%' }}>
-                  <View style={{ margin: ms(5), alignItems: 'center' }}>
-                    <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
-                      <Image
-                        blurRadius={sendRequest ? 10 : 0}
-                        source={{ uri: qrcodeData?.qr_code }}
+              </View>
+              <View style={{ flex: 0.6, paddingHorizontal: ms(15), paddingBottom: ms(15) }}>
+                <View style={{ flex: 1, alignItems: 'center' }}>
+                  <Image source={new_wallet} style={{ width: ms(30), height: ms(30) }} />
+                  <Spacer space={SH(20)} />
+                  <Text style={[styles.scanToPay, { textAlign: 'center' }]}>
+                    Or send the payment request to your {`\n`} JOBR wallet:
+                  </Text>
+                  <View style={[styles._inputMain, { flex: 1 }]}>
+                    {requestStatus == 'approved' ? (
+                      <View
                         style={{
-                          height: ms(180),
-                          width: ms(180),
+                          flexDirection: 'row',
+                          justifyContent: 'space-around',
+                          marginTop: verticalScale(10),
+                          alignItems: 'center',
+                          flexDirection: 'column',
                         }}
-                      />
-                    </View>
-
-                    <View style={[styles._inputMain, { width: ms(310) }]}>
-                      <View style={styles._orContainer}>
-                        <View style={styles._borderView} />
-                        <Text style={styles._orText}>Or</Text>
-                        <View style={styles._borderView} />
-                      </View>
-                      {requestStatus == 'approved' ? (
-                        <View
+                      >
+                        <Text
                           style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-around',
-                            marginTop: verticalScale(10),
+                            fontSize: 20,
+                            textAlign: 'center',
+                            color: COLORS.success_green,
+                            fontFamily: Fonts.Medium,
+                          }}
+                        >
+                          Payment Approved
+                        </Text>
+
+                        <TouchableOpacity
+                          onPress={createOrderHandler}
+                          style={{
+                            backgroundColor: COLORS.navy_blue,
+                            justifyContent: 'center',
                             alignItems: 'center',
+                            padding: moderateScale(10),
+                            borderRadius: ms(15),
+                            marginTop: ms(10),
                           }}
                         >
                           <Text
                             style={{
-                              fontSize: 20,
-
-                              textAlign: 'center',
-                              color: 'green',
+                              fontSize: moderateScale(10),
+                              color: '#FFFFFF',
                             }}
                           >
-                            Payment Approved
+                            Create Order
                           </Text>
+                        </TouchableOpacity>
+                      </View>
+                    ) : (
+                      <View style={{ flex: 1 }}>
+                        <Spacer space={SH(60)} />
+                        <Text style={[styles._sendPaymentText, { color: COLORS.navy_blue }]}>
+                          Wallet phone number
+                        </Text>
 
-                          <TouchableOpacity
-                            onPress={createOrderHandler}
-                            style={{
-                              backgroundColor: 'blue',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              padding: moderateScale(5),
-                              borderRadius: moderateScale(5),
+                        <View style={styles.textInputView2}>
+                          <CountryPicker
+                            onSelect={(code) => {
+                              setWalletFlag(code.cca2);
+                              if (code.callingCode !== []) {
+                                setWalletCountryCode('+' + code.callingCode.flat());
+                              } else {
+                                setWalletCountryCode('');
+                              }
                             }}
+                            countryCode={walletFlag}
+                            withFilter
+                            withCallingCode
+                          />
+                          <Image source={dropdown} style={styles.dropDownIcon} />
+                          <Text style={styles.countryCodeText}>{walletCountryCode}</Text>
+                          <TextInput
+                            maxLength={15}
+                            returnKeyType="done"
+                            keyboardType="number-pad"
+                            value={walletIdInp?.trim()}
+                            onChangeText={(walletIdInp) => walletInputFun(walletIdInp)}
+                            style={styles.walletSearchContainer}
+                            placeholder={strings.verifyPhone.placeHolderText}
+                            placeholderTextColor={COLORS.navy_blue}
+                            // showSoftInputOnFocus={false}
+                          />
+                        </View>
+                        <View style={{ flex: 1 }} />
+                        <View style={{ flexDirection: 'row' }}>
+                          <TouchableOpacity
+                            style={styles.cancelButtonCon}
+                            onPress={() => {
+                              setQrPopUp(false);
+                              dispatch(requestCheckSuccess(''));
+                              dispatch(qrCodeStatusSuccess(''));
+                            }}
+                          >
+                            <Text style={styles.cancelText}>{'Cancel'}</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            // onPress={onPressContinue}
+
+                            disabled={
+                              walletUser?.step >= 2 && walletIdInp?.length > 9 && !sendRequest
+                                ? false
+                                : true
+                            }
+                            style={[
+                              styles._sendRequest,
+                              {
+                                opacity:
+                                  walletUser?.step >= 2 && walletIdInp?.length > 9 && !sendRequest
+                                    ? 1
+                                    : 0.7,
+                                marginLeft: ms(10),
+                              },
+                            ]}
+                            onPress={() => sendRequestFun(walletIdInp)}
                           >
                             <Text
-                              style={{
-                                fontSize: moderateScale(10),
-                                color: '#FFFFFF',
-                              }}
+                              style={[
+                                styles._tipText,
+                                { color: COLORS.white, fontSize: ms(10), fontFamily: Fonts.Medium },
+                              ]}
                             >
-                              Create Order
+                              {sendRequest ? 'Request Sent' : 'Send Request'}
                             </Text>
                           </TouchableOpacity>
                         </View>
-                      ) : (
-                        <View>
-                          <Text style={styles._sendPaymentText}>
-                            Send payment request to your wallet
+                        <Spacer space={SH(10)} />
+
+                        {sendRequest ? (
+                          <Text
+                            style={{
+                              fontSize: ms(14),
+                              textAlign: 'center',
+                              fontFamily: Fonts.MaisonBold,
+                              color: COLORS.navy_blue,
+                            }}
+                          >
+                            {formatTime(duration)}
                           </Text>
-                          <View style={styles._inputSubView}>
-                            <View style={styles.textInputView2}>
-                              <CountryPicker
-                                onSelect={(code) => {
-                                  setWalletFlag(code.cca2);
-                                  if (code.callingCode !== []) {
-                                    setWalletCountryCode('+' + code.callingCode.flat());
-                                  } else {
-                                    setWalletCountryCode('');
-                                  }
-                                }}
-                                countryCode={walletFlag}
-                                withFilter
-                                withCallingCode
-                              />
-                              <Image source={dropdown} style={styles.dropDownIcon} />
-                              <Text style={styles.countryCodeText}>{walletCountryCode}</Text>
-                              <TextInput
-                                maxLength={15}
-                                returnKeyType="done"
-                                keyboardType="number-pad"
-                                value={walletIdInp?.trim()}
-                                onChangeText={(walletIdInp) => walletInputFun(walletIdInp)}
-                                style={styles.textInputContainer}
-                                placeholder={strings.verifyPhone.placeHolderText}
-                                placeholderTextColor={COLORS.darkGray}
-                                // showSoftInputOnFocus={false}
-                              />
-                            </View>
-
-                            <TouchableOpacity
-                              // onPress={onPressContinue}
-
-                              disabled={
-                                walletUser?.step >= 2 && walletIdInp?.length > 9 && !sendRequest
-                                  ? false
-                                  : true
-                              }
-                              style={[
-                                styles._sendRequest,
-                                {
-                                  opacity:
-                                    walletUser?.step >= 2 && walletIdInp?.length > 9 && !sendRequest
-                                      ? 1
-                                      : 0.7,
-                                },
-                              ]}
-                              onPress={() => sendRequestFun(walletIdInp)}
-                            >
-                              <Text style={[styles._tipText, { color: COLORS.solid_green }]}>
-                                {sendRequest ? 'Request Sent' : 'Send Request'}
-                              </Text>
-                            </TouchableOpacity>
-                            {sendRequest ? (
-                              <Text
-                                style={{
-                                  fontSize: moderateScale(10),
-                                  textAlign: 'center',
-                                  fontFamily: Fonts.MaisonBold,
-                                  color: '#8F8E93',
-                                }}
-                              >
-                                {formatTime(duration)}
-                              </Text>
-                            ) : null}
-                          </View>
-                        </View>
-                      )}
-                    </View>
+                        ) : null}
+                      </View>
+                    )}
                   </View>
                 </View>
               </View>
-            </>
-            {isLoading ? (
+            </View>
+
+            {/* {isLoading ? (
               <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
                 <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
               </View>
-            ) : null}
+            ) : null} */}
           </View>
           {/* </ScrollView> */}
         </KeyboardAvoidingView>

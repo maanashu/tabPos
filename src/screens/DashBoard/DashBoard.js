@@ -109,11 +109,6 @@ export function DashBoard({ navigation }) {
   const getDeliveryData = getDashboardData?.getOrderDeliveries?.data;
   const [orderDeliveriesData, setOrderDeleveriesData] = useState([]);
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
-  console.log(
-    'etDashboardData?.onLineOrders?.onLineOrders?.',
-    getDashboardData?.onLineOrders?.onLineOrders
-  );
-
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
   const [trackNotes, setTrackNotes] = useState('');

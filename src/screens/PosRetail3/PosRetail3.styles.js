@@ -116,7 +116,7 @@ export const styles = StyleSheet.create({
   },
   _inputMain: {
     marginTop: ms(15),
-    width: ms(360),
+    // width: ms(360),
   },
   _inputSubView: {
     flexDirection: 'row',
@@ -274,14 +274,12 @@ export const styles = StyleSheet.create({
     marginTop: ms(12),
   },
   _sendRequest: {
+    flex: 1,
     height: ms(40),
-    paddingHorizontal: ms(10),
-    backgroundColor: COLORS.dark_grey,
-    borderRadius: ms(3),
+    backgroundColor: COLORS.navy_blue,
+    borderRadius: ms(22),
     justifyContent: 'center',
     alignContent: 'center',
-    // flex: 0.4,
-    marginLeft: ms(10),
   },
   _orContainer: {
     flexDirection: 'row',
@@ -303,7 +301,6 @@ export const styles = StyleSheet.create({
     fontSize: ms(8),
     color: COLORS.solid_grey,
     marginBottom: ms(10),
-    marginTop: ms(20),
   },
   itemLIistCon: {
     // width: windowWidth * 0.67,
@@ -1971,15 +1968,15 @@ export const styles = StyleSheet.create({
     marginTop: ms(3),
   },
   textInputView2: {
-    paddingHorizontal: SW(4),
     borderWidth: 0,
     alignItems: 'center',
     flexDirection: 'row',
     height: windowHeight * 0.08,
-    width: windowWidth * 0.25,
+    width: windowWidth * 0.35,
     borderWidth: 1,
-    borderColor: '#D8D8D8',
-    borderRadius: 5,
+    borderColor: COLORS.light_purple,
+    borderRadius: ms(22),
+    paddingHorizontal: ms(10),
   },
   dropDownIcon: {
     width: 7,
@@ -1994,8 +1991,14 @@ export const styles = StyleSheet.create({
   },
   textInputContainer: {
     color: COLORS.navy_blue,
-    fontSize: SF(16),
+    fontSize: ms(12),
     fontFamily: Fonts.Medium,
+  },
+  walletSearchContainer: {
+    color: COLORS.navy_blue,
+    fontSize: ms(9),
+    fontFamily: Fonts.Medium,
+    width: '100%',
   },
 
   jobrSaveView: {
@@ -2153,17 +2156,16 @@ export const styles = StyleSheet.create({
 
   // jbrcoin modal popup
   scanPopUpCon: {
-    width: ms(460),
-    height: ms(460),
+    width: ms(550),
+    height: ms(380),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: ms(18),
   },
   scanPopHeader: {
-    borderBottomWidth: 1,
-    height: ms(35),
+    height: ms(30),
     paddingHorizontal: ms(15),
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'flex-end',
     borderColor: COLORS.solidGrey,
   },
@@ -2738,5 +2740,17 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.white,
     fontSize: ms(11),
+  },
+  scanToPay: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
+    fontSize: ms(10),
+  },
+  scanpayBack: {
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: ms(22),
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(8),
+    marginVertical: ms(8),
   },
 });

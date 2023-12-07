@@ -47,13 +47,9 @@ export class CustomersController {
 
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('adsagd', endpoint);
           resolve(response);
         })
         .catch((error) => {
-          console.log('errorerror', error);
-          console.log('error', endpoint);
-
           error?.msg &&
             Toast.show({
               text2: error.msg,
