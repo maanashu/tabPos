@@ -49,7 +49,7 @@ export function PosRetail3() {
   const getAuth = useSelector(getAuthData);
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const cartID2 = getRetailData?.getAllCart?.id;
-  const servicCartId = getRetailData?.getserviceCart?.id;
+  const servicCartId = getRetailData?.getAllCart?.id;
   const cartData = getRetailData?.getAllCart;
   const getCart = getRetailData?.getAllCart;
   const getServicecart = getRetailData?.getserviceCart;

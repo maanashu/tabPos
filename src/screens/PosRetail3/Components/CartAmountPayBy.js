@@ -146,8 +146,9 @@ export const CartAmountPayBy = ({
 
   // const [loading, setloading] = useState(false);
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
-  const cartData =
-    cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+  // const cartData =
+  //   cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+  const cartData = cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getAllCart;
   const qrcodeData = useSelector(getRetail).qrKey;
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
@@ -291,21 +292,62 @@ export const CartAmountPayBy = ({
     } else {
       const data = {
         tip: selectedTipAmount.toString(),
-        cartId: serviceCartId,
-        services: 'services',
+        cartId: cartData.id,
       };
       const res = await dispatch(updateCartByTip(data));
-
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
-        const data = {
-          services: 'services',
-        };
-        dispatch(getQrCodee(serviceCartId, data));
+        dispatch(getQrCodee(cartData?.id));
         // setQrPopUp(true);
-        dispatch(getServiceCart());
+        dispatch(getAllCart());
       }
+      // const data = {
+      //   tip: selectedTipAmount.toString(),
+      //   cartId: serviceCartId,
+      //   services: 'services',
+      // };
+      // const res = await dispatch(updateCartByTip(data));
+
+      // if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+      //   const data = {
+      //     services: 'services',
+      //   };
+      //   dispatch(getQrCodee(serviceCartId, data));
+      //   // setQrPopUp(true);
+      //   dispatch(getServiceCart());
+      // }
     }
   };
+
+  // const getTipPress = async () => {
+  //   if (cartType == 'Product') {
+  //     const data = {
+  //       tip: selectedTipAmount.toString(),
+  //       cartId: cartData.id,
+  //     };
+  //     const res = await dispatch(updateCartByTip(data));
+  //     if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+  //       dispatch(getQrCodee(cartData?.id));
+  //       // setQrPopUp(true);
+  //       dispatch(getAllCart());
+  //     }
+  //   } else {
+  //     const data = {
+  //       tip: selectedTipAmount.toString(),
+  //       cartId: serviceCartId,
+  //       services: 'services',
+  //     };
+  //     const res = await dispatch(updateCartByTip(data));
+
+  //     if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+  //       const data = {
+  //         services: 'services',
+  //       };
+  //       dispatch(getQrCodee(serviceCartId, data));
+  //       // setQrPopUp(true);
+  //       dispatch(getServiceCart());
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     let timer;
@@ -442,11 +484,10 @@ export const CartAmountPayBy = ({
       index: selectedPaymentIndex,
     });
   };
-
   const attachUserByPhone = async (customerNo) => {
     if (customerNo === '') {
       alert('Please Enter Phone Number');
-    } else if (cartType == 'Product') {
+    } else {
       const data = {
         cartId: cartid,
         phoneNo: customerNo,
@@ -460,22 +501,42 @@ export const CartAmountPayBy = ({
         });
         setPhonePopVisible(false);
       }
-    } else {
-      const data = {
-        cartId: servicCartId,
-        phoneNo: customerNo,
-        countryCode: countryCode,
-      };
-      const res = await dispatch(attachServiceCustomer(data));
-      if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
-        onPressPaymentMethod({
-          method: 'PayBy' + selectedPaymentMethod,
-          index: selectedPaymentIndex,
-        });
-        setPhonePopVisible(false);
-      }
     }
   };
+
+  // const attachUserByPhone = async (customerNo) => {
+  //   if (customerNo === '') {
+  //     alert('Please Enter Phone Number');
+  //   } else if (cartType == 'Product') {
+  //     const data = {
+  //       cartId: cartid,
+  //       phoneNo: customerNo,
+  //       countryCode: countryCode,
+  //     };
+  //     const res = await dispatch(attachCustomer(data));
+  //     if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+  //       onPressPaymentMethod({
+  //         method: 'PayBy' + selectedPaymentMethod,
+  //         index: selectedPaymentIndex,
+  //       });
+  //       setPhonePopVisible(false);
+  //     }
+  //   } else {
+  //     const data = {
+  //       cartId: servicCartId,
+  //       phoneNo: customerNo,
+  //       countryCode: countryCode,
+  //     };
+  //     const res = await dispatch(attachServiceCustomer(data));
+  //     if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
+  //       onPressPaymentMethod({
+  //         method: 'PayBy' + selectedPaymentMethod,
+  //         index: selectedPaymentIndex,
+  //       });
+  //       setPhonePopVisible(false);
+  //     }
+  //   }
+  // };
 
   const attachUserByEmail = async (customerEmail) => {
     if (customerEmail === '') {
@@ -810,10 +871,13 @@ export const CartAmountPayBy = ({
             </View>
             <View style={styles._flatListContainer}>
               <FlatList
+                // data={
+                //   cartType == 'Product'
+                //     ? cartData.poscart_products
+                //     : cartData?.appointment_cart_products
+                // }
                 data={
-                  cartType == 'Product'
-                    ? cartData.poscart_products
-                    : cartData?.appointment_cart_products
+                  cartType == 'Product' ? cartData.poscart_products : cartData?.poscart_products
                 }
                 style={{ width: '100%' }}
                 renderItem={({ item, index }) => <AddedCartItemsCard item={item} index={index} />}

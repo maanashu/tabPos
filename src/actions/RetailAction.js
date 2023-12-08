@@ -1260,7 +1260,8 @@ export const addToServiceCart = (data) => async (dispatch) => {
   try {
     const res = await RetailController.addToServiceCart(data);
     dispatch(addToServiceCartSuccess(res));
-    dispatch(getServiceCart());
+    // dispatch(getServiceCart());
+    dispatch(getAllCart());
   } catch (error) {
     dispatch(addToServiceCartError(error.message));
   }

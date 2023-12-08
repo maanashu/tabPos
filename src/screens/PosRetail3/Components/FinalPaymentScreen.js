@@ -64,8 +64,10 @@ export const FinalPaymentScreen = ({
     },
   ];
 
+  // const cartProducts =
+  //   cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
   const cartProducts =
-    cartType == 'Product' ? cartData?.poscart_products : cartData?.appointment_cart_products;
+    cartType == 'Product' ? cartData?.poscart_products : cartData?.poscart_products;
 
   const totalPayAmount = () => {
     const cartAmount = cartData?.amount?.total_amount ?? '0.00';

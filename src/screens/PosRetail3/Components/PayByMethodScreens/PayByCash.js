@@ -40,8 +40,9 @@ export const PayByCash = ({
   const dispatch = useDispatch();
   const getUserData = useSelector(getUser);
   const getRetailData = useSelector(getRetail);
-  const cartData =
-    cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+  // const cartData =
+  //   cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+  const cartData = cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getAllCart;
   const [amount, setAmount] = useState();
   const [selectedId, setSelectedId] = useState(1);
   const [cashRate, setCashRate] = useState();
@@ -100,6 +101,7 @@ export const PayByCash = ({
       return Math.ceil(value / 10) * 10;
     }
   };
+
   const createOrderHandler = () => {
     if (cartType == 'Product') {
       const data = {
@@ -115,20 +117,61 @@ export const PayByCash = ({
       dispatch(createOrder(data, callback));
       setCashRate(localyPay?.usd);
     } else {
+      // const data = {
+      //   serviceCartId: cartData.id,
+      //   tips: amount === undefined || amount === '' ? cashRate : amount,
+      //   modeOfPayment: 'cash',
+      // };
+      // const callback = (response) => {
+      //   if (response) {
+      //     onPressServiceContinue(saveCartData, data);
+      //   }
+      // };
+      // dispatch(createServiceOrder(data, callback));
+      // setCashRate(localyPay?.usd);
       const data = {
-        serviceCartId: cartData.id,
+        cartid: cartData.id,
         tips: amount === undefined || amount === '' ? cashRate : amount,
         modeOfPayment: 'cash',
       };
       const callback = (response) => {
         if (response) {
-          onPressServiceContinue(saveCartData, data);
+          onPressContinue(saveCartData, data);
         }
       };
-      dispatch(createServiceOrder(data, callback));
+      dispatch(createOrder(data, callback));
       setCashRate(localyPay?.usd);
     }
   };
+  // const createOrderHandler = () => {
+  //   if (cartType == 'Product') {
+  //     const data = {
+  //       cartid: cartData.id,
+  //       tips: amount === undefined || amount === '' ? cashRate : amount,
+  //       modeOfPayment: 'cash',
+  //     };
+  //     const callback = (response) => {
+  //       if (response) {
+  //         onPressContinue(saveCartData, data);
+  //       }
+  //     };
+  //     dispatch(createOrder(data, callback));
+  //     setCashRate(localyPay?.usd);
+  //   } else {
+  //     const data = {
+  //       serviceCartId: cartData.id,
+  //       tips: amount === undefined || amount === '' ? cashRate : amount,
+  //       modeOfPayment: 'cash',
+  //     };
+  //     const callback = (response) => {
+  //       if (response) {
+  //         onPressServiceContinue(saveCartData, data);
+  //       }
+  //     };
+  //     dispatch(createServiceOrder(data, callback));
+  //     setCashRate(localyPay?.usd);
+  //   }
+  // };
   const renderItem = ({ item }) => {
     const borderColor = item.id === selectedId ? COLORS.navy_blue : COLORS.transparentBlue;
 
@@ -294,10 +337,13 @@ export const PayByCash = ({
 
             <View style={styles._flatListContainer}>
               <FlatList
+                // data={
+                //   cartType == 'Product'
+                //     ? cartData?.poscart_products
+                //     : cartData?.appointment_cart_products
+                // }
                 data={
-                  cartType == 'Product'
-                    ? cartData?.poscart_products
-                    : cartData?.appointment_cart_products
+                  cartType == 'Product' ? cartData?.poscart_products : cartData?.poscart_products
                 }
                 style={{ width: '100%' }}
                 renderItem={({ item, index }) => <AddedCartItemsCard item={item} index={index} />}
