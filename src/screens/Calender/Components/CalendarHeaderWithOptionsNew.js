@@ -46,7 +46,7 @@ const CalendarHeaderWithOptions = ({
           <View style={styles.displayFlex}>
             <Image source={bookings} style={styles.leftLight} />
             <Text style={styles.title1}>{`Bookings`}</Text>
-            <Spacer space={ms(8)} horizontal />
+            <Spacer space={ms(4)} horizontal />
 
             <TouchableOpacity
               onPress={onPressCalendarIcon}
@@ -57,7 +57,7 @@ const CalendarHeaderWithOptions = ({
               <Spacer space={ms(12)} horizontal />
               <Image source={arrowDown} style={styles.arrowDown} />
             </TouchableOpacity>
-            <Spacer space={ms(16)} horizontal />
+            <Spacer space={ms(5)} horizontal />
 
             {shouldShowCalendarModeOptions && (
               <View style={[styles.flexAlign, styles.calenderModeView]}>

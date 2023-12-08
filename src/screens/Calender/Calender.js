@@ -19,6 +19,9 @@ import {
   calendarSettingsIcon,
   crossButton,
   Fonts,
+  circleTick,
+  checkInIcon,
+  new_location,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
@@ -57,8 +60,11 @@ import ReScheduleDetailModal from './Components/ReScheduleDetailModal';
 import ListViewItem from './Components/ListViewComponents/ListViewItem';
 import ListViewHeader from './Components/ListViewComponents/ListViewHeader';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
-import { Modal as PaperModal } from 'react-native-paper';
+import { Modal as PaperModal, Portal, Provider } from 'react-native-paper';
 import { useRef } from 'react';
+import { BlurView } from '@react-native-community/blur';
+import BlurredModal from '@/components/BlurredModal';
+import ProfileImage from '@/components/ProfileImage';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -553,8 +559,9 @@ export function Calender() {
             />
 
             {calendarViewMode === CALENDAR_VIEW_MODES.LIST_VIEW && (
-              <View>
+              <View style={{ backgroundColor: COLORS.white, paddingHorizontal: ms(10) }}>
                 <FlatList
+                  showsHorizontalScrollIndicator={false}
                   horizontal
                   data={monthDays}
                   keyExtractor={(_, index) => index.toString()}
@@ -581,7 +588,7 @@ export function Calender() {
                     : {})}
                   headerContainerStyle={{
                     height: calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
-                    backgroundColor: COLORS.textInputBackground,
+                    backgroundColor: COLORS.white,
                     paddingTop: ms(5),
                   }}
                   dayHeaderHighlightColor={COLORS.dayHighlight}
@@ -608,18 +615,29 @@ export function Calender() {
                   }
                 />
               ) : (
-                <FlatList
-                  data={getAppointmentsByDate}
-                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                  keyExtractor={(_, index) => index.toString()}
-                  ListHeaderComponent={<ListViewHeader />}
-                  renderItem={renderListViewItem}
-                  ListEmptyComponent={() => (
-                    <Text style={styles.noAppointmentEmpty}>
-                      There are no appointments on this day
-                    </Text>
-                  )}
-                />
+                <View
+                  style={{
+                    flex: 1,
+                    backgroundColor: COLORS.white,
+                    borderBottomLeftRadius: ms(10),
+                    borderBottomRightRadius: ms(10),
+                  }}
+                >
+                  <FlatList
+                    data={getAppointmentsByDate}
+                    refreshControl={
+                      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                    keyExtractor={(_, index) => index.toString()}
+                    ListHeaderComponent={<ListViewHeader />}
+                    renderItem={renderListViewItem}
+                    ListEmptyComponent={() => (
+                      <Text style={styles.noAppointmentEmpty}>
+                        There are no appointments on this day
+                      </Text>
+                    )}
+                  />
+                </View>
               )}
             </View>
           </View>
@@ -858,6 +876,160 @@ export function Calender() {
           appointmentData={selectedPosStaffCompleteData}
           setshowEventDetailModal={setshowEventDetailModal}
         />
+
+        {/**
+         * Design Check-in Modal
+         * It is in Progress/unfinished due to change of preority
+         */}
+        {/* <BlurredModal isVisible={false}>
+          <View
+            style={{
+              width: ms(300),
+              paddingVertical: ms(20),
+              backgroundColor: 'white',
+              alignItems: 'center',
+              alignSelf: 'center',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 0.29,
+              shadowRadius: 4.65,
+              elevation: 7,
+              borderRadius: ms(15),
+            }}
+          >
+            <Image
+              source={checkInIcon}
+              style={{
+                height: ms(35),
+                width: ms(35),
+                resizeMode: 'contain',
+                tintColor: COLORS.sky_blue,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: ms(14),
+                color: COLORS.navy_blue,
+                fontFamily: Fonts.SemiBold,
+                marginTop: ms(10),
+              }}
+            >
+              Check In
+            </Text>
+            <Text
+              style={{
+                fontSize: ms(11),
+                color: COLORS.navy_blue,
+                fontFamily: Fonts.Regular,
+                marginTop: ms(10),
+              }}
+            >
+              Confirm the details of your appointment
+            </Text>
+
+            <View
+              style={{
+                borderWidth: 0.5,
+                borderColor: COLORS.light_purple,
+                borderRadius: ms(15),
+                padding: ms(10),
+                marginVertical: ms(10),
+                width: '92%',
+              }}
+            >
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text
+                  style={{
+                    fontSize: ms(11),
+                    color: COLORS.navy_blue,
+                    fontFamily: Fonts.Regular,
+                  }}
+                >
+                  Customer
+                </Text>
+                <Text
+                  style={{
+                    fontSize: ms(11),
+                    color: COLORS.navy_blue,
+                    fontFamily: Fonts.Regular,
+                  }}
+                >
+                  Unpaid
+                </Text>
+              </View>
+
+              <View style={{ marginTop: ms(10), flexDirection: 'row', alignItems: 'center' }}>
+                <ProfileImage source={{ uri: null }} style={{ height: ms(35), width: ms(35) }} />
+                <View style={{ marginLeft: ms(5) }}>
+                  <Text
+                    style={{
+                      fontSize: ms(11),
+                      color: COLORS.navy_blue,
+                      fontFamily: Fonts.Medium,
+                    }}
+                  >
+                    John Wick
+                  </Text>
+                  <Spacer space={ms(5)} />
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={new_location} style={styles.eventAddressIcon} />
+
+                    <Text
+                      style={{
+                        fontSize: ms(9),
+                        color: COLORS.purple,
+                        fontFamily: Fonts.Medium,
+                        marginLeft: ms(5),
+                      }}
+                    >
+                      San Andreas, LA
+                    </Text>
+                  </View>
+                </View>
+              </View>
+
+              <View
+                style={{
+                  marginTop: ms(10),
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: ms(9),
+                    color: COLORS.navy_blue,
+                    fontFamily: Fonts.Medium,
+                  }}
+                >
+                  Services requested:
+                </Text>
+                <ScrollView horizontal>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    {[0, 1].map((item, index) => (
+                      <View
+                        style={{
+                          backgroundColor: COLORS.sky_blue,
+                          margin: ms(5),
+                          padding: ms(5),
+                          borderRadius: ms(10),
+                        }}
+                      >
+                        <Text style={{ fontFamily: Fonts.Medium, color: COLORS.white }}>
+                          Haircut
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                </ScrollView>
+              </View>
+            </View>
+          </View>
+        </BlurredModal> */}
       </View>
     </ScreenWrapper>
   );

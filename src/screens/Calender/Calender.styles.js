@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
+    borderRadius: ms(15),
   },
   displayFlex: {
     flex: 1,
@@ -23,7 +24,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   calenderContainer: {
-    width: windowWidth * 0.94,
+    backgroundColor: COLORS.sky_grey,
+    borderRadius: ms(15),
+    flex: 1,
   },
   headerMainView: {
     width: windowWidth,
@@ -73,8 +76,10 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   calenderCon: {
-    width: windowWidth * 0.84,
-    height: windowHeight * 0.904,
+    flex: 1,
+    borderRadius: ms(15),
+    backgroundColor: COLORS.white,
+    overflow: 'hidden',
   },
   notificationCon: {
     width: windowWidth * 0.34,
@@ -223,7 +228,9 @@ export const styles = StyleSheet.create({
     height: SH(60),
     backgroundColor: COLORS.white,
     justifyContent: 'center',
-    paddingLeft: moderateScale(5),
+    paddingHorizontal: ms(10),
+    borderTopLeftRadius: ms(10),
+    borderTopRightRadius: ms(10),
   },
   unChecked: {
     fontFamily: Fonts.Regular,
@@ -368,12 +375,13 @@ export const styles = StyleSheet.create({
     paddingVertical: ms(2),
   },
   rightTabContainer: {
-    backgroundColor: COLORS.textInputBackground,
-    flex: 0.9,
+    backgroundColor: COLORS.white,
+    borderRadius: ms(20),
+    width: ms(45),
     margin: ms(7),
+    paddingVertical: ms(10),
+    marginVertical: 0,
     marginLeft: ms(10),
-    marginTop: ms(10),
-    height: '97.8%',
     alignItems: 'center',
   },
   RequestEventBadgeText: {
@@ -484,9 +492,7 @@ export const styles = StyleSheet.create({
   },
   _calendarContainer: {
     flex: 1,
-    marginLeft: ms(10),
-    borderRightWidth: ms(10),
-    borderRightColor: COLORS.textInputBackground,
+    borderRightColor: COLORS.white,
   },
   _eventTitle: {
     fontFamily: Fonts.Regular,

@@ -108,6 +108,7 @@ const ListViewItem = ({
           iconStyle={{
             height: ms(8),
             width: ms(8),
+            tintColor: COLORS.navy_blue,
           }}
           pending={isChangeStatusLoading}
           title={'Check-in'}
