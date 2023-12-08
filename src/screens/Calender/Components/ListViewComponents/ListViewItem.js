@@ -42,7 +42,7 @@ const ListViewItem = ({
   const userAddress = userDetails?.current_address;
   const posUserDetails = item?.pos_user_details?.user?.user_profiles;
   const dispatch = useDispatch();
-  const appointmentID = item.appointment_details[0]?.appointment_id;
+  const appointmentID = item?.id;
 
   const renderButtons = {
     [APPOINTMENT_STATUS.REVIEWING]: (
@@ -260,7 +260,7 @@ const ListViewItem = ({
           </Text>
         </View>
         <View style={styles.listViewSubContainers}>
-          <Text style={styles.lineViewValues}>{item?.appointment_details[0]?.product_name}</Text>
+          <Text style={styles.lineViewValues}>{item?.product_name}</Text>
         </View>
         <View style={styles.listViewSubContainers}>
           <Image

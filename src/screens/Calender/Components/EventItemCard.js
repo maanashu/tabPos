@@ -16,7 +16,7 @@ const EventItemCard = ({ item, index }) => {
   const dispatch = useDispatch();
   const userDetails = item?.user_details;
   const userAddress = userDetails?.current_address;
-  const appointmentDetail = item?.appointment_details[0];
+  const appointmentDetail = item;
 
   return (
     <View style={styles.eventItemContainer}>
@@ -78,7 +78,7 @@ const EventItemCard = ({ item, index }) => {
               ? item?.mode_of_payment?.toUpperCase() + ' '
               : '$'}
 
-            {item?.payable_amount}
+            {item?.price}
           </Text>
         </View>
       </View>
@@ -89,7 +89,7 @@ const EventItemCard = ({ item, index }) => {
       <View style={styles._btnContainer}>
         <TouchableOpacity
           onPress={() => {
-            const appointmentID = item.appointment_details[0]?.appointment_id ?? '';
+            const appointmentID = item?.appointment_id ?? '';
             dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
           }}
           style={styles.declineBtnContainer}
@@ -99,7 +99,7 @@ const EventItemCard = ({ item, index }) => {
 
         <TouchableOpacity
           onPress={() => {
-            const appointmentID = item.appointment_details[0]?.appointment_id ?? '';
+            const appointmentID = item?.appointment_id ?? '';
             dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.ACCEPTED_BY_SELLER));
           }}
           style={styles.acceptbtnContainer}
