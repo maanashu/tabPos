@@ -15,10 +15,14 @@ import {
   Fonts,
   backArrow2,
   channel,
+  deliveryIcon,
   locationSales,
+  order_frequency,
   profitIcon,
+  soldProduct,
   totalOrders,
   totalSales,
+  total_orders,
 } from '@/assets';
 import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
@@ -168,14 +172,14 @@ export function TotalDeliveryOrders({ onPressReview }) {
       </View>
       <View style={styles.headerContainer}>
         <HeaderView
-          image={locationSales}
+          image={total_orders}
           text={'Total Orders'}
           count={deliveryGraph?.ordersOverView?.total_orders}
           style={{ marginHorizontal: ms(5) }}
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={channel}
+          image={order_frequency}
           text={'Order Frequency'}
           count={
             deliveryGraph?.ordersOverView?.order_frequency
@@ -185,7 +189,7 @@ export function TotalDeliveryOrders({ onPressReview }) {
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={totalOrders}
+          image={deliveryIcon}
           text={'Average Order Value'}
           count={
             deliveryGraph?.ordersOverView?.averageValue
@@ -195,7 +199,7 @@ export function TotalDeliveryOrders({ onPressReview }) {
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={totalSales}
+          image={soldProduct}
           text={'Total Sales'}
           count={
             deliveryGraph?.ordersOverView?.total_sales_or_actual_amount

@@ -11,7 +11,17 @@ import {
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { backArrow2, locationSales, margin, profit, profitIcon, revenueTotal } from '@/assets';
+import {
+  backArrow2,
+  locationSales,
+  margin,
+  margin_profit,
+  profit,
+  profitIcon,
+  revenueTotal,
+  total_volume,
+  unit_sold,
+} from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
@@ -177,7 +187,7 @@ export function TotalProductSold({ sellerID, data }) {
 
       <View style={styles.headerContainer}>
         <HeaderView
-          image={locationSales}
+          image={unit_sold}
           text={'Unit Sold'}
           count={
             soldProduct?.productOverview?.totalProducts
@@ -188,7 +198,7 @@ export function TotalProductSold({ sellerID, data }) {
           isLoading={isSoldProductLoading}
         />
         <HeaderView
-          image={revenueTotal}
+          image={total_volume}
           text={'Total Volume'}
           count={
             soldProduct?.productOverview?.totalVolume
@@ -198,7 +208,7 @@ export function TotalProductSold({ sellerID, data }) {
           isLoading={isSoldProductLoading}
         />
         <HeaderView
-          image={margin}
+          image={margin_profit}
           text={'Profit Margin'}
           count={
             soldProduct?.productOverview?.totalMargin
@@ -208,7 +218,7 @@ export function TotalProductSold({ sellerID, data }) {
           isLoading={isSoldProductLoading}
         />
         <HeaderView
-          image={profit}
+          image={profitIcon}
           text={'Gross Profit'}
           count={
             soldProduct?.productOverview?.totalProfit

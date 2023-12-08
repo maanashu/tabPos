@@ -78,16 +78,34 @@ export class WalletController {
 
   static async getTotalTraType(data) {
     return new Promise((resolve, reject) => {
+      const defaultParams = {
+        seller_id: data?.sellerID,
+      };
+      const queryParams = {
+        ...defaultParams,
+      };
+
+      if (data?.calendarDate !== undefined) {
+        queryParams.date = data?.calendarDate;
+      }
+
+      if (data?.dayWiseFilter) {
+        queryParams.filter = data?.dayWiseFilter;
+      }
+
+      if (data?.start_date !== 'Invalid date' && data?.start_date !== undefined) {
+        queryParams.start_date = data?.start_date;
+      }
+
+      if (data?.end_date !== 'Invalid date' && data?.end_date !== undefined) {
+        queryParams.end_date = data?.end_date;
+      }
+      const stringifiedQueryParams = new URLSearchParams(queryParams).toString();
+
       const params = new URLSearchParams(data).toString();
 
-      const endpoint =
-        data?.calendarDate == undefined || data?.calendarDate === 'Invalid date'
-          ? ORDER_URL +
-            ApiOrderInventory.getTotalTraType +
-            `?seller_id=${data?.sellerID}&filter=${data?.dayWiseFilter}`
-          : ORDER_URL +
-            ApiOrderInventory.getTotalTraType +
-            `?seller_id=${data?.sellerID}&date=${data?.calendarDate}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.getTotalTraType + `?` + stringifiedQueryParams;
+
       const mPosEndpoint = `${ORDER_URL}${ApiOrderInventory.getTotalTraType}?${params}`;
       const finalEndPoint = isTablet() ? endpoint : mPosEndpoint;
       HttpClient.get(finalEndPoint)

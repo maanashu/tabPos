@@ -429,7 +429,7 @@ export const styles = StyleSheet.create({
     height: ms(20),
     alignItems: 'center',
     flexDirection: 'row',
-    marginRight: ms(48),
+    marginRight: Platform.OS === 'android' ? ms(60) : ms(48),
   },
   reviewView: {
     borderColor: COLORS.light_blue2,

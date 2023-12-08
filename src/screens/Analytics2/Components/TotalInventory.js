@@ -11,7 +11,17 @@ import {
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { averageOrder, backArrow2, locationSales, profit, profitIcon, totalOrders } from '@/assets';
+import {
+  averageOrder,
+  backArrow2,
+  deliveryIcon,
+  inventory_value,
+  locationSales,
+  profit,
+  profitIcon,
+  totalOrders,
+  total_inventory,
+} from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useDispatch, useSelector } from 'react-redux';
@@ -171,7 +181,7 @@ export function TotalInventory({ sellerID, data }) {
       </View>
       <View style={styles.headerContainer}>
         <HeaderView
-          image={locationSales}
+          image={total_inventory}
           text={'Total Inventory'}
           count={
             totalInventory?.inventory_overview?.total_inventory
@@ -182,7 +192,7 @@ export function TotalInventory({ sellerID, data }) {
           isLoading={isInventoryLoading}
         />
         <HeaderView
-          image={averageOrder}
+          image={inventory_value}
           text={'Total Inventory Value'}
           count={
             totalInventory?.inventory_overview?.total_inventory_cost
@@ -192,7 +202,7 @@ export function TotalInventory({ sellerID, data }) {
           isLoading={isInventoryLoading}
         />
         <HeaderView
-          image={totalOrders}
+          image={deliveryIcon}
           text={'Average Order Value'}
           count={
             totalInventory?.inventory_overview?.average_value
@@ -202,7 +212,7 @@ export function TotalInventory({ sellerID, data }) {
           isLoading={isInventoryLoading}
         />
         <HeaderView
-          image={profit}
+          image={profitIcon}
           text={'Gross Profit'}
           count={
             totalInventory?.inventory_overview?.total_profit

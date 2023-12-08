@@ -14,12 +14,16 @@ import { styles } from '../Analytics2.styles';
 import {
   Fonts,
   backArrow2,
+  deliveryIcon,
   locationSales,
   productSelling,
   profitIcon,
   revenueTotal,
+  revnue,
   totalOrders,
   totalSales,
+  total_orders,
+  total_volume,
 } from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -195,7 +199,7 @@ export function Revenue({ sellerID, data }) {
       </View>
       <View style={styles.headerContainer}>
         <HeaderView
-          image={locationSales}
+          image={total_orders}
           text={'Total Orders'}
           count={
             analyticStatistics?.overView?.total_orders
@@ -206,7 +210,7 @@ export function Revenue({ sellerID, data }) {
           isLoading={revenueStatisticsLoader}
         />
         <HeaderView
-          image={revenueTotal}
+          image={revnue}
           text={'Total Revenue'}
           count={
             analyticStatistics?.overView?.total_revenue
@@ -218,7 +222,7 @@ export function Revenue({ sellerID, data }) {
           isLoading={revenueStatisticsLoader}
         />
         <HeaderView
-          image={totalOrders}
+          image={deliveryIcon}
           text={'Average order value'}
           count={
             analyticStatistics?.overView?.average_value
@@ -230,7 +234,7 @@ export function Revenue({ sellerID, data }) {
           isLoading={revenueStatisticsLoader}
         />
         <HeaderView
-          image={productSelling}
+          image={total_volume}
           text={'Total Volume'}
           count={
             analyticStatistics?.overView?.transaction

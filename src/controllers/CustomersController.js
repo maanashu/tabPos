@@ -12,7 +12,6 @@ export class CustomersController {
 
     return new Promise((resolve, reject) => {
       const type = data?.customerType?.toLowerCase().replace(/\s+/g, '_');
-      console.log('type', type);
       const defaultParams = {
         seller_id: data?.sellerID,
         type: type,
