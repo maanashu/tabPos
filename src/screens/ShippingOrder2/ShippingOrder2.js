@@ -154,6 +154,7 @@ export function ShippingOrder2() {
       status: status,
       sellerID: sellerID,
     };
+    console.log('SAdasas', data);
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg) {
@@ -218,7 +219,7 @@ export function ShippingOrder2() {
   };
 
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: COLORS.sky_grey, paddingRight: ms(5) }}>
       {!openWebView ? (
         <>
           <Spacer space={SH(15)} />
@@ -253,7 +254,7 @@ export function ShippingOrder2() {
             <SafeAreaView
               style={{
                 flex: 1,
-                backgroundColor: COLORS.textInputBackground,
+                backgroundColor: COLORS.sky_grey,
                 justifyContent: 'space-evenly',
               }}
             >
@@ -415,6 +416,6 @@ export function ShippingOrder2() {
           <ActivityIndicator size={'small'} color={COLORS.primary} style={styles.loader} />
         </View>
       ) : null}
-    </>
+    </View>
   );
 }

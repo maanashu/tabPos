@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
   },
   leftMainViewStyle: {
     flex: 0.24,
@@ -391,6 +391,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     paddingHorizontal: 20,
     alignSelf: 'center',
+    flex: 1,
     // width: ms(80),
   },
   acceptTextStyle: {
@@ -407,6 +408,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary,
     borderRadius: 5,
     paddingHorizontal: 20,
+    flex: 1,
     // width: ms(80),
   },
   declineTextStyle: {

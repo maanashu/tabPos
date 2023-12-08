@@ -33,6 +33,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
   const getOrder = useSelector(getAnalytics);
   const getUserData = useSelector(getUser);
   const orderDetail = getOrder?.getOrderData;
+  console.log('dfdsfdsfds', JSON.stringify(orderDetail));
 
   useEffect(() => {
     dispatch(getOrderData(orderData?.order_id));
@@ -120,7 +121,22 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
               </Text>
             </View>
           )}
+          {/* {New Addition} */}
 
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{'Delivery Charges'}</Text>
+            <Text style={style._subTotalPrice}>
+              {`$` + `${parseFloat(orderDetail?.delivery_charge).toFixed(2)}`}
+            </Text>
+          </View>
+
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{'Tip'}</Text>
+            <Text style={style._subTotalPrice}>{`${formattedReturnPrice(orderDetail?.tips)}`}</Text>
+          </View>
+          {/* { Above New Addition} */}
           <View style={style._horizontalLine} />
 
           <View style={style._subTotalContainer}>

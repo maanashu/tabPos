@@ -101,6 +101,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
   },
+  taxDesc: {
+    fontSize: SF(10),
+    fontFamily: Fonts.Regular,
+    color: COLORS.navy_blue,
+  },
 
   // setting security css start
   securityMainCon: {
@@ -129,6 +134,13 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     // padding: 15,
   },
+  securityBodyConNew: {
+    // flex: 1,
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    // padding: 15,
+  },
   securityLogo: {
     width: SW(8),
     height: SW(8),
@@ -139,7 +151,17 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   twoStepText: {
-    fontSize: SF(24),
+    fontSize: ms(10),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.navy_blue,
+  },
+  shiipingBorderStyle: {
+    borderWidth: 0.5,
+    padding: ms(10),
+    borderColor: COLORS.light_purple,
+  },
+  shippingPickupHeading: {
+    fontSize: ms(13),
     fontFamily: Fonts.MaisonBold,
     color: COLORS.navy_blue,
   },
@@ -190,6 +212,26 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(12),
     marginVertical: verticalScale(3),
     height: SH(70),
+    borderWidth: 0.4,
+    justifyContent: 'center',
+    // backgroundColor: COLORS.sky_grey,
+  },
+  twoStepMemberConNew: {
+    borderColor: COLORS.light_purple,
+    borderRadius: SH(20),
+    paddingHorizontal: moderateScale(12),
+    marginVertical: verticalScale(3),
+    height: SH(70),
+    borderWidth: 0.4,
+    justifyContent: 'center',
+    backgroundColor: COLORS.sky_grey,
+  },
+  twoStepMemberConNew: {
+    borderColor: COLORS.light_purple,
+    borderRadius: SH(20),
+    paddingHorizontal: moderateScale(12),
+    marginVertical: verticalScale(3),
+    height: SH(70),
     justifyContent: 'center',
     backgroundColor: COLORS.sky_grey,
   },
@@ -219,10 +261,11 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.38,
   },
   teamMember: {
-    width: SW(8),
-    height: SW(8),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
     marginRight: SW(8),
+    borderRadius: 100,
   },
   locationPinStyle: {
     width: ms(15),
@@ -1256,15 +1299,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLORS.sky_grey,
     borderRadius: 15,
-    padding: 10,
+    padding: 15,
   },
   profileBodycon: {
-    width: windowWidth * 0.38,
+    flex: 0.6,
+
     borderRightWidth: 1,
     borderColor: COLORS.solidGrey,
   },
   profileBodycon2: {
-    width: windowWidth * 0.27,
+    flex: 0.4,
     borderRightWidth: 0,
   },
   profileImageStaff: {
@@ -1395,12 +1439,12 @@ export const styles = StyleSheet.create({
   },
   addStaffModalCon: {
     width: windowWidth * 0.5,
-    height: windowHeight * 0.94,
+    height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: 30,
     // paddingHorizontal: moderateScale(15),
-    paddingVertical: verticalScale(10),
+    paddingVertical: verticalScale(24),
   },
   invoice: {
     fontFamily: Fonts.Medium,
@@ -1491,7 +1535,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
   },
   shippingBodyCon: {
-    height: windowHeight * 0.83,
+    height: windowHeight * 0.8,
   },
   flagCon: {
     borderWidth: 1,
@@ -1645,6 +1689,21 @@ export const styles = StyleSheet.create({
     // marginHorizontal: SW(10),
     marginVertical: 10,
   },
+  textInputViewTex: {
+    paddingHorizontal: SW(4),
+    borderWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: windowHeight * 0.06,
+
+    backgroundColor: COLORS.input_bg,
+    borderRadius: 50,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
+    // marginHorizontal: SW(10),
+    marginVertical: 10,
+  },
   dropDownIcon: {
     width: 7,
     height: 7,
@@ -1691,9 +1750,10 @@ export const styles = StyleSheet.create({
     width: ms(50),
     height: ms(20),
     borderRadius: ms(3),
-    marginLeft: ms(20),
+    // marginLeft: ms(20),
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: ms(20),
   },
   requestText: {
     color: COLORS.white,
@@ -1746,7 +1806,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.navy_blue,
   },
   subscribedView: {
-    height: ms(37),
+    height: ms(33),
     width: ms(100),
     backgroundColor: COLORS.light_skyblue,
     borderRadius: ms(20),

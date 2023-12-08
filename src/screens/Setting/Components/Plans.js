@@ -253,64 +253,86 @@ export function Plans() {
           <Image source={checkCircle} resizeMode="contain" style={{ height: 24, width: 24 }} />
           <Spacer horizontal space={ms(10)} />
           <Text style={[styles.HeaderLabelText, { fontSize: ms(12) }]}>
-            {strings.settings.plans}
+            {strings.settings.CurrentPlan}
           </Text>
         </View>
-        <Spacer space={SH(20)} />
-        <View style={styles.securityMainCon}>
-          <View style={[styles.flexRow, { alignItems: 'flex-start' }]}>
-            <View>
-              <Text style={[styles.basic, { fontSize: 26 }]}>{activePlan?.plan_id?.name}</Text>
-              <Spacer space={SH(3)} />
-              <Text style={styles.everyThingNeed}>{activePlan?.plan_id?.description}</Text>
+        <View
+          style={{
+            borderWidth: 1.5,
+            borderColor: COLORS.sky_blue,
+            padding: ms(12),
+            borderRadius: ms(12),
+          }}
+        >
+          <Spacer space={SH(20)} />
+          <View style={styles.securityMainCon}>
+            <View style={[styles.flexRow, { alignItems: 'flex-start' }]}>
+              <View style={{}}>
+                <Text style={[styles.basic, { fontSize: 26 }]}>{activePlan?.plan_id?.name}</Text>
+                <Spacer space={SH(3)} />
+                <Text style={styles.everyThingNeed}>{activePlan?.plan_id?.description}</Text>
+              </View>
+              <TouchableOpacity style={styles.upgradePlanView} onPress={() => setPlanModal(true)}>
+                <Text style={[styles.changePlanText, { fontFamily: Fonts.SemiBold }]}>
+                  {strings.settings.upgradePlan}
+                </Text>
+                <Image source={upgradeIcon} style={styles.changePlan} />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.upgradePlanView} onPress={() => setPlanModal(true)}>
-              <Text style={[styles.changePlanText, { fontFamily: Fonts.SemiBold }]}>
-                {strings.settings.upgradePlan}
-              </Text>
-              <Image source={upgradeIcon} style={styles.changePlan} />
-            </TouchableOpacity>
-          </View>
-          <Spacer space={SH(10)} />
+            <Spacer space={SH(10)} />
 
-          <View
-            style={{ borderBottomWidth: 1, borderStyle: 'dashed', borderColor: COLORS.lavender }}
-          />
-
-          <Spacer space={SH(10)} />
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.changePlanText}>{strings.settings.includePlan}</Text>
-              <Spacer space={SH(2)} />
-
-              {activePlan?.plan_id?.included_apps?.map((item) => (
-                <View key={item} style={[styles.dispalyRow, { paddingVertical: verticalScale(2) }]}>
-                  <Image source={CheckBadgeFilled} style={styles.radioFillPlan} />
-                  <Text style={styles.includedText}>JOBR {item}</Text>
-                </View>
-              ))}
-            </View>
-            <FlatList
-              data={activePlan?.plan_id?.tags}
-              extraData={activePlan?.plan_id?.tags}
-              renderItem={planTagItem}
-              keyExtractor={(item) => item}
+            <View
+              style={{
+                borderWidth: 1,
+                borderStyle: 'dotted',
+                borderColor: COLORS.lavender,
+                marginVertical: ms(5),
+              }}
             />
-          </View>
-          <Spacer space={SH(15)} />
 
-          <View
-            style={{ borderBottomWidth: 1, borderStyle: 'dashed', borderColor: COLORS.lavender }}
-          />
-          <Spacer space={SH(10)} />
-          <View style={styles.rowAligned}>
-            <View style={styles.subscribedView}>
-              <Text style={styles.subscribedText}>{'Subscribed'}</Text>
+            <Spacer space={SH(10)} />
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.changePlanText}>{strings.settings.includePlan}</Text>
+                <Spacer space={SH(2)} />
+
+                {activePlan?.plan_id?.included_apps?.map((item) => (
+                  <View
+                    key={item}
+                    style={[styles.dispalyRow, { paddingVertical: verticalScale(2) }]}
+                  >
+                    <Image source={CheckBadgeFilled} style={styles.radioFillPlan} />
+                    <Text style={styles.includedText}>JOBR {item}</Text>
+                  </View>
+                ))}
+              </View>
+              <FlatList
+                data={activePlan?.plan_id?.tags}
+                extraData={activePlan?.plan_id?.tags}
+                renderItem={planTagItem}
+                keyExtractor={(item) => item}
+              />
             </View>
-            <Spacer horizontal space={ms(50)} />
-            <Text style={[styles.subscribedText, { fontSize: ms(14) }]}>{`$${parseFloat(
-              activePlan?.plan_id?.amount
-            ).toFixed(2)} /mo`}</Text>
+            <Spacer space={SH(15)} />
+
+            <View
+              style={{
+                borderWidth: 1,
+                borderStyle: 'dotted',
+                borderColor: COLORS.lavender,
+                marginVertical: ms(5),
+              }}
+            />
+            <Spacer space={SH(10)} />
+            <View style={styles.rowAligned}>
+              <View style={styles.subscribedView}>
+                <Text style={styles.subscribedText}>{'Subscribed'}</Text>
+              </View>
+              <Spacer horizontal space={ms(50)} />
+              <Text style={[styles.subscribedText, { fontSize: ms(14) }]}>{`$${parseFloat(
+                activePlan?.plan_id?.amount
+              ).toFixed(2)} /mo`}</Text>
+            </View>
           </View>
         </View>
         <Spacer space={SH(20)} />
@@ -358,13 +380,17 @@ export function Plans() {
           { justifyContent: 'space-evenly', alignItems: 'center', height: ms(100) },
         ]}
       >
-        <Text style={{ textAlign: 'center' }}>No Active Subscription</Text>
+        <Text style={{ textAlign: 'center', fontSize: ms(10) }}>No Active Subscription</Text>
 
         <TouchableOpacity
           onPress={() => {
             setPlanModal(true);
           }}
-          style={[styles.checkoutButton, styles.checkoutButtonSec]}
+          style={[
+            styles.checkoutButton,
+            styles.checkoutButtonSec,
+            { backgroundColor: COLORS.navy_blue },
+          ]}
         >
           <Text style={[styles.checkoutText, { color: COLORS.white }]}>{'Buy Subscription'}</Text>
 
@@ -392,6 +418,7 @@ export function Plans() {
               <Image source={crossButton} style={styles.crossButton} />
             </TouchableOpacity>
           </View>
+          <Spacer space={SH(10)} />
           <Text style={[styles.everyThingNeed, { textAlign: 'center' }]}>
             {strings.settings.simpleTra}
           </Text>
@@ -406,7 +433,7 @@ export function Plans() {
               contentContainerStyle={{
                 padding: 7,
                 borderRadius: 30,
-                borderWidth: 1,
+                // borderWidth: 1,
               }}
               style={{ backgroundColor: COLORS.sky_grey, borderRadius: 30 }}
             />

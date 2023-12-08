@@ -310,6 +310,7 @@ export const en = {
     locationsubhead:
       'An extra layer to boost your team members account security. A verification code will be required in addition to password each time you sign in.',
     plans: 'Plans',
+    CurrentPlan: 'Current Plan',
     yourPlan: 'Your Plan',
     basic: 'Basic',
     everyThingNeed: 'Everything you need to create a store, ship products, and process payments',
@@ -342,6 +343,7 @@ export const en = {
     taxSubHead:
       'If you haven’t already, create a shipping zone in the region(s) you’re liable in. Then, find the region in this list and select it to manage its tax settings. If you’re unsure about where you’re liable, check with a tax professional.',
     taxes: 'Taxes',
+    taxes: 'Taxes and duties',
     active: 'Active',
     activateStr: 'Activate',
     selectHead: 'Select your Operating Country',

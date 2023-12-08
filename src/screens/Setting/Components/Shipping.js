@@ -16,7 +16,7 @@ import {
   dropOff,
   store,
 } from '@/assets';
-import { verticalScale } from 'react-native-size-matters';
+import { ms, verticalScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
@@ -70,7 +70,13 @@ export function Shipping() {
       <View style={[styles.shippingBodyCon]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* local pickup address */}
-          <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
+          <View
+            style={[
+              styles.securityMainCon,
+              { marginVertical: verticalScale(ms(2)) },
+              styles.shiipingBorderStyle,
+            ]}
+          >
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={Images.localPickup} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
@@ -113,7 +119,7 @@ export function Shipping() {
                         <Image source={locationIcon} style={styles.toggleSecurity} />
 
                         <View style={styles.twoStepVerifiCon}>
-                          <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                          <Text style={[styles.twoStepText]}>
                             {merchantDetails?.user_profiles?.organization_name}
                           </Text>
                           <Text
@@ -154,7 +160,13 @@ export function Shipping() {
             </View>
           </View>
           {/*jobrdelivery address */}
-          <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
+          <View
+            style={[
+              styles.securityMainCon,
+              { marginVertical: verticalScale(3) },
+              styles.shiipingBorderStyle,
+            ]}
+          >
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={Images.bikeDelivery} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
@@ -200,7 +212,7 @@ export function Shipping() {
                         <Image source={locationIcon} style={styles.toggleSecurity} />
 
                         <View style={styles.twoStepVerifiCon}>
-                          <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                          <Text style={[styles.twoStepText]}>
                             {merchantDetails?.user_profiles?.organization_name}
                           </Text>
                           <Text
@@ -237,7 +249,13 @@ export function Shipping() {
           </View>
 
           {/*local drop off address */}
-          <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
+          <View
+            style={[
+              styles.securityMainCon,
+              { marginVertical: verticalScale(3) },
+              styles.shiipingBorderStyle,
+            ]}
+          >
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={Images.localDropOff} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
@@ -283,7 +301,7 @@ export function Shipping() {
                         <Image source={locationIcon} style={styles.toggleSecurity} />
 
                         <View style={styles.twoStepVerifiCon}>
-                          <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                          <Text style={[styles.twoStepText]}>
                             {merchantDetails?.user_profiles?.organization_name}
                           </Text>
                           <Text
@@ -321,7 +339,13 @@ export function Shipping() {
           </View>
 
           {/*shipping address */}
-          <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
+          <View
+            style={[
+              styles.securityMainCon,
+              { marginVertical: verticalScale(3) },
+              styles.shiipingBorderStyle,
+            ]}
+          >
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={Images.Plane} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
@@ -439,7 +463,7 @@ export function Shipping() {
                         <Image source={locationIcon} style={styles.toggleSecurity} />
 
                         <View style={styles.twoStepVerifiCon}>
-                          <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                          <Text style={[styles.twoStepText]}>
                             {merchantDetails?.user_profiles?.organization_name}
                           </Text>
                           <Text
