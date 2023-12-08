@@ -21,6 +21,7 @@ import Modal, { ReactNativeModal } from 'react-native-modal';
 import {
   addServiceFrom,
   changeStatusServiceCart,
+  clearAllCart,
   clearServiceAllCart,
   getAvailableOffer,
   getOneService,
@@ -56,9 +57,15 @@ export function CartServiceScreen({
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
-  const cartServiceData = getRetailData?.getserviceCart;
-  const cartServiceId = getRetailData?.getserviceCart?.id;
-  let arr = [getRetailData?.getserviceCart];
+  // const cartServiceData = getRetailData?.getserviceCart;
+
+  const cartServiceData = getRetailData?.getAllCart;
+  console.log('cartServiceData', JSON.stringify(cartServiceData));
+  // const cartServiceId = getRetailData?.getserviceCart?.id;
+  const cartServiceId = getRetailData?.getAllCart?.id;
+  // let arr = [getRetailData?.getserviceCart];
+
+  let arr = [getRetailData?.getAllCart];
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
@@ -97,7 +104,7 @@ export function CartServiceScreen({
   };
 
   const payNowHandler = () => {
-    if (cartServiceData?.appointment_cart_products?.length === 0) {
+    if (cartServiceData?.poscart_products?.length === 0) {
       Toast.show({
         text2: 'Cart not found',
         position: 'bottom',
@@ -225,7 +232,8 @@ export function CartServiceScreen({
   };
 
   const clearCartHandler = () => {
-    dispatch(clearServiceAllCart());
+    // dispatch(clearServiceAllCart());
+    dispatch(clearAllCart());
     crossHandler();
     getScreen('Service');
   };
@@ -325,7 +333,7 @@ export function CartServiceScreen({
               <ScrollView style={{ paddingBottom: ms(20) }} showsVerticalScrollIndicator={false}>
                 {arr?.map((item, index) => (
                   <View key={index}>
-                    {item?.appointment_cart_products?.map((data, ind) => (
+                    {item?.poscart_products?.map((data, ind) => (
                       <View style={[styles.blueListData]} key={ind}>
                         <View style={styles.displayflex}>
                           <View style={[styles.cartHeaderLeftSide, { alignItems: 'center' }]}>
@@ -371,7 +379,7 @@ export function CartServiceScreen({
                                   </Text>
                                 )} */}
 
-                                {Object.keys(data?.pos_user_details)?.length > 0 && (
+                                {/* {Object.keys(data?.pos_user_details)?.length > 0 && (
                                   <View
                                     style={{
                                       borderWidth: 1,
@@ -394,7 +402,7 @@ export function CartServiceScreen({
                                       {data?.pos_user_details?.user?.user_profiles?.firstname}
                                     </Text>
                                   </View>
-                                )}
+                                )} */}
                               </View>
                             </View>
                           </View>
@@ -669,7 +677,7 @@ export function CartServiceScreen({
                   style={[
                     styles.checkoutButtonSideBar,
                     {
-                      opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7,
+                      opacity: cartServiceData?.poscart_products?.length > 0 ? 1 : 0.7,
                       height: ms(35),
                       flex: 0,
                     },
@@ -679,7 +687,7 @@ export function CartServiceScreen({
                   //   onPressPayNow();
                   // }}
                   onPress={() => payNowHandler()}
-                  disabled={cartServiceData?.appointment_cart_products?.length > 0 ? false : true}
+                  disabled={cartServiceData?.poscart_products?.length > 0 ? false : true}
                 >
                   <Text style={styles.checkoutText}>{strings.posRetail.procedtoCheckout}</Text>
                   <Image source={Images.arrowLeftUp} style={styles.mainScreenArrow('cart')} />

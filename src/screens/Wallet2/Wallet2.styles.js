@@ -469,7 +469,7 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
   },
   containerStylePagination: {
-    width: ms(35),
+    width: ms(45),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,

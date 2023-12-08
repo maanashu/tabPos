@@ -19,10 +19,13 @@ import {
   calendarSettingsIcon,
   crossButton,
   Fonts,
+  circleTick,
+  checkInIcon,
+  new_location,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
-import { ScreenWrapper } from '@/components';
+import { ScreenWrapper, Spacer } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import { Calendar } from '@/components/CustomCalendar';
@@ -44,7 +47,7 @@ import { TYPES } from '@/Types/AppointmentTypes';
 import { useIsFocused } from '@react-navigation/native';
 import CustomEventCell from './Components/CustomEventCell';
 import CustomHoursCell from './Components/CustomHoursCell';
-import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptions';
+import CalendarHeaderWithOptions from './Components/CalendarHeaderWithOptionsNew';
 import EventItemCard from './Components/EventItemCard';
 import CalendarSettingModal from './Components/CalendarSettingModal';
 import { navigate } from '@/navigation/NavigationRef';
@@ -57,13 +60,17 @@ import ReScheduleDetailModal from './Components/ReScheduleDetailModal';
 import ListViewItem from './Components/ListViewComponents/ListViewItem';
 import ListViewHeader from './Components/ListViewComponents/ListViewHeader';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
-import { Modal as PaperModal } from 'react-native-paper';
+import { Modal as PaperModal, Portal, Provider } from 'react-native-paper';
 import { useRef } from 'react';
+import { BlurView } from '@react-native-community/blur';
+import BlurredModal from '@/components/BlurredModal';
+import ProfileImage from '@/components/ProfileImage';
 
 moment.suppressDeprecationWarnings = true;
 
 export function Calender() {
   const windowHeight = Dimensions.get('window').height;
+  const windowWidth = Dimensions.get('window').width;
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const maxDate = new Date(2030, 6, 3);
@@ -81,11 +88,11 @@ export function Calender() {
   const [employeeHeaderLayouts, setEmployeeHeaderLayouts] = useState([]);
   const [showEventDetailModal, setshowEventDetailModal] = useState(false);
   const [eventData, setEventData] = useState({});
-
+  const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
-
+  const [monthDays, setMonthDays] = useState([]);
   const searchAppoinmentInputRef = useRef(null);
   const [isLoadingSearchAppoinment, setIsLoadingSearchAppoinment] = useState(false);
 
@@ -134,7 +141,29 @@ export function Calender() {
     if (isFocused || showRequestsView) {
       dispatch(getAppointment(pageNumber));
     }
+    getCurrentMonthDays();
   }, [isFocused, pageNumber, showRequestsView]);
+
+  const getCurrentMonthDays = () => {
+    const date = new Date(calendarDate);
+    const days = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+
+    const currentMonthdays = [];
+
+    for (let index = 0; index < days; index++) {
+      var day = index + 1;
+
+      const fullDateFortheDay = new Date();
+      fullDateFortheDay.setDate(day);
+      const dayName = weekDays[fullDateFortheDay.getDay()];
+      if (day < 10) {
+        day = `0${day}`;
+      }
+      const objDay = { fullDateFortheDay, day, dayName };
+      currentMonthdays.push(objDay);
+    }
+    setMonthDays(currentMonthdays);
+  };
 
   useEffect(() => {
     if (selectedStaffEmployeeId) {
@@ -173,7 +202,7 @@ export function Calender() {
         const endDateTime = new Date(booking.end_date_time);
 
         return {
-          title: booking.appointment_details[0]?.product_name || 'NULL',
+          title: booking?.product_name || 'NULL',
           start: startDateTime,
           end: endDateTime,
           completeData: booking,
@@ -260,11 +289,12 @@ export function Calender() {
   };
 
   const getFormattedHeaderDate = () => {
-    if (calendarMode === CALENDAR_MODES.MONTH || calendarMode === CALENDAR_MODES.WEEK) {
-      return calendarDate.format('MMM YYYY');
-    } else if (calendarMode === CALENDAR_MODES.DAY) {
-      return calendarDate.format('DD MMM YYYY');
-    }
+    return calendarDate.format('MMM YYYY');
+    // if (calendarMode === CALENDAR_MODES.MONTH || calendarMode === CALENDAR_MODES.WEEK) {
+    //   return calendarDate.format('MMM YYYY');
+    // } else if (calendarMode === CALENDAR_MODES.DAY) {
+    //   return calendarDate.format('DD MMM YYYY');
+    // }
   };
   const isRequestLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_APPOINTMENTS], state)
@@ -314,6 +344,34 @@ export function Calender() {
           dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.COMPLETED));
         }}
       />
+    );
+  };
+
+  const renderMonthItem = ({ item, index }) => {
+    const isSelected = calendarDate.date() == item.day;
+
+    return (
+      <TouchableOpacity
+        style={{
+          width: (windowWidth * 0.84 - monthDays.length * ms(2)) / monthDays.length,
+          borderRadius: ms(4),
+          borderWidth: ms(1),
+          borderColor: '#F5F6FC',
+          paddingHorizontal: ms(1),
+          paddingVertical: ms(4),
+          marginRight: ms(2),
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: isSelected ? '#263682' : 'transparent',
+        }}
+        onPress={() => {
+          setCalendarDate(moment(item.fullDateFortheDay));
+        }}
+      >
+        <Text style={{ color: isSelected ? '#F5F6FC' : '#8D99D2', fontSize: ms(8) }}>
+          {item.day}
+        </Text>
+      </TouchableOpacity>
     );
   };
 
@@ -463,7 +521,7 @@ export function Calender() {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        {customHeader()}
+        {/* {customHeader()} */}
         <View style={[styles.calenderContainer, { flexDirection: 'row' }]}>
           <View style={styles.calenderCon}>
             <CalendarHeaderWithOptions
@@ -483,9 +541,35 @@ export function Calender() {
               onPressCalendarIcon={() => {
                 setshowMiniCalendar(true);
               }}
+              onPressNotification={() => {
+                navigate(NAVIGATION.notificationsList, {
+                  screen: NAVIGATION.calender,
+                });
+              }}
+              onPressSearch={() => {
+                setShowSearchModal(true);
+                setSearchedAppointments([]);
+                setSearchedText('');
+                setTimeout(() => {
+                  searchAppoinmentInputRef.current.focus();
+                }, 300);
+              }}
               onPressCalendarViewMode={onPressCalendarViewMode}
               onPressListViewMode={onPressListViewMode}
             />
+
+            {calendarViewMode === CALENDAR_VIEW_MODES.LIST_VIEW && (
+              <View style={{ backgroundColor: COLORS.white, paddingHorizontal: ms(10) }}>
+                <FlatList
+                  showsHorizontalScrollIndicator={false}
+                  horizontal
+                  data={monthDays}
+                  keyExtractor={(_, index) => index.toString()}
+                  renderItem={renderMonthItem}
+                />
+                <Spacer space={ms(8)} />
+              </View>
+            )}
 
             <View style={styles._calendarContainer}>
               {calendarViewMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW ? (
@@ -504,7 +588,7 @@ export function Calender() {
                     : {})}
                   headerContainerStyle={{
                     height: calendarMode === CALENDAR_MODES.MONTH ? 'auto' : ms(38),
-                    backgroundColor: COLORS.textInputBackground,
+                    backgroundColor: COLORS.white,
                     paddingTop: ms(5),
                   }}
                   dayHeaderHighlightColor={COLORS.dayHighlight}
@@ -531,18 +615,29 @@ export function Calender() {
                   }
                 />
               ) : (
-                <FlatList
-                  data={getAppointmentsByDate}
-                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-                  keyExtractor={(_, index) => index.toString()}
-                  ListHeaderComponent={<ListViewHeader />}
-                  renderItem={renderListViewItem}
-                  ListEmptyComponent={() => (
-                    <Text style={styles.noAppointmentEmpty}>
-                      There are no appointments on this day
-                    </Text>
-                  )}
-                />
+                <View
+                  style={{
+                    flex: 1,
+                    backgroundColor: COLORS.white,
+                    borderBottomLeftRadius: ms(10),
+                    borderBottomRightRadius: ms(10),
+                  }}
+                >
+                  <FlatList
+                    data={getAppointmentsByDate}
+                    refreshControl={
+                      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                    keyExtractor={(_, index) => index.toString()}
+                    ListHeaderComponent={<ListViewHeader />}
+                    renderItem={renderListViewItem}
+                    ListEmptyComponent={() => (
+                      <Text style={styles.noAppointmentEmpty}>
+                        There are no appointments on this day
+                      </Text>
+                    )}
+                  />
+                </View>
               )}
             </View>
           </View>
@@ -781,6 +876,160 @@ export function Calender() {
           appointmentData={selectedPosStaffCompleteData}
           setshowEventDetailModal={setshowEventDetailModal}
         />
+
+        {/**
+         * Design Check-in Modal
+         * It is in Progress/unfinished due to change of preority
+         */}
+        {/* <BlurredModal isVisible={false}>
+          <View
+            style={{
+              width: ms(300),
+              paddingVertical: ms(20),
+              backgroundColor: 'white',
+              alignItems: 'center',
+              alignSelf: 'center',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 0.29,
+              shadowRadius: 4.65,
+              elevation: 7,
+              borderRadius: ms(15),
+            }}
+          >
+            <Image
+              source={checkInIcon}
+              style={{
+                height: ms(35),
+                width: ms(35),
+                resizeMode: 'contain',
+                tintColor: COLORS.sky_blue,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: ms(14),
+                color: COLORS.navy_blue,
+                fontFamily: Fonts.SemiBold,
+                marginTop: ms(10),
+              }}
+            >
+              Check In
+            </Text>
+            <Text
+              style={{
+                fontSize: ms(11),
+                color: COLORS.navy_blue,
+                fontFamily: Fonts.Regular,
+                marginTop: ms(10),
+              }}
+            >
+              Confirm the details of your appointment
+            </Text>
+
+            <View
+              style={{
+                borderWidth: 0.5,
+                borderColor: COLORS.light_purple,
+                borderRadius: ms(15),
+                padding: ms(10),
+                marginVertical: ms(10),
+                width: '92%',
+              }}
+            >
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text
+                  style={{
+                    fontSize: ms(11),
+                    color: COLORS.navy_blue,
+                    fontFamily: Fonts.Regular,
+                  }}
+                >
+                  Customer
+                </Text>
+                <Text
+                  style={{
+                    fontSize: ms(11),
+                    color: COLORS.navy_blue,
+                    fontFamily: Fonts.Regular,
+                  }}
+                >
+                  Unpaid
+                </Text>
+              </View>
+
+              <View style={{ marginTop: ms(10), flexDirection: 'row', alignItems: 'center' }}>
+                <ProfileImage source={{ uri: null }} style={{ height: ms(35), width: ms(35) }} />
+                <View style={{ marginLeft: ms(5) }}>
+                  <Text
+                    style={{
+                      fontSize: ms(11),
+                      color: COLORS.navy_blue,
+                      fontFamily: Fonts.Medium,
+                    }}
+                  >
+                    John Wick
+                  </Text>
+                  <Spacer space={ms(5)} />
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Image source={new_location} style={styles.eventAddressIcon} />
+
+                    <Text
+                      style={{
+                        fontSize: ms(9),
+                        color: COLORS.purple,
+                        fontFamily: Fonts.Medium,
+                        marginLeft: ms(5),
+                      }}
+                    >
+                      San Andreas, LA
+                    </Text>
+                  </View>
+                </View>
+              </View>
+
+              <View
+                style={{
+                  marginTop: ms(10),
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: ms(9),
+                    color: COLORS.navy_blue,
+                    fontFamily: Fonts.Medium,
+                  }}
+                >
+                  Services requested:
+                </Text>
+                <ScrollView horizontal>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    {[0, 1].map((item, index) => (
+                      <View
+                        style={{
+                          backgroundColor: COLORS.sky_blue,
+                          margin: ms(5),
+                          padding: ms(5),
+                          borderRadius: ms(10),
+                        }}
+                      >
+                        <Text style={{ fontFamily: Fonts.Medium, color: COLORS.white }}>
+                          Haircut
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                </ScrollView>
+              </View>
+            </View>
+          </View>
+        </BlurredModal> */}
       </View>
     </ScreenWrapper>
   );

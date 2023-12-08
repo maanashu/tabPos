@@ -20,8 +20,9 @@ const styles = StyleSheet.create({
   hourContainer: {
     alignItems: 'center',
     marginTop: -5,
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     height: '100%',
+    overflow: 'hidden',
   },
 
   timeText: {

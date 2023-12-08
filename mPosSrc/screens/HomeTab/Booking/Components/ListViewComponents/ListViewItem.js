@@ -31,7 +31,7 @@ const ListViewItem = ({
   const userAddress = userDetails?.current_address;
   const posUserDetails = item?.pos_user_details?.user?.user_profiles;
   const dispatch = useDispatch();
-  const appointmentID = item.appointment_details[0]?.appointment_id;
+  const appointmentID = item?.id;
 
   const renderButtons = {
     [APPOINTMENT_STATUS.REVIEWING]: (
@@ -183,7 +183,7 @@ const ListViewItem = ({
           />
           <View style={{ marginLeft: ms(6), flex: 1 }}>
             <Text style={[styles.customerName, { fontFamily: Fonts.SemiBold }]}>
-              {item?.appointment_details[0]?.product_name}
+              {item?.product_name}
             </Text>
             <View style={[timeStyle, { flexDirection: 'row', alignItems: 'center' }]}>
               <Image source={clock} style={styles.eventAddressIcon} />

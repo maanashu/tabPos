@@ -1260,7 +1260,8 @@ export const addToServiceCart = (data) => async (dispatch) => {
   try {
     const res = await RetailController.addToServiceCart(data);
     dispatch(addToServiceCartSuccess(res));
-    dispatch(getServiceCart());
+    // dispatch(getServiceCart());
+    dispatch(getAllCart());
   } catch (error) {
     dispatch(addToServiceCartError(error.message));
   }
@@ -1316,9 +1317,11 @@ export const addServiceDiscountToCart = (data) => async (dispatch) => {
   try {
     const res = await RetailController.addServiceDiscountToCart(data);
     dispatch(addServiceDiscountToCartSuccess(res));
-    dispatch(getServiceCart());
+    // dispatch(getServiceCart());
+    dispatch(getAllCart());
   } catch (error) {
-    dispatch(getServiceCart());
+    // dispatch(getServiceCart());
+    dispatch(getAllCart());
     dispatch(addServiceDiscountToCartError(error.message));
   }
 };
@@ -1637,7 +1640,8 @@ export const addServiceNotescart = (data) => async (dispatch) => {
   try {
     const res = await RetailController.addServiceNotescart(data);
     dispatch(addServiceNotescartSuccess(res));
-    dispatch(getServiceCart());
+    // dispatch(getServiceCart());
+    dispatch(getAllCart());
   } catch (error) {
     dispatch(addServiceNotescartError(error.message));
   }
@@ -1718,7 +1722,8 @@ export const customServiceAdd = (data) => async (dispatch) => {
   try {
     const res = await RetailController.customServiceAdd(data);
     dispatch(customServiceAddSuccess(res));
-    dispatch(getServiceCart());
+    // dispatch(getServiceCart());
+    dispatch(getAllCart());
     dispatch(getMainServices());
   } catch (error) {
     dispatch(customServiceAddError(error.message));

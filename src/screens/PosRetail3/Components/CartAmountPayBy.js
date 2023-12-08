@@ -68,7 +68,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { DATA } from '@/constants/flatListData';
 import { getUser } from '@/selectors/UserSelectors';
 import { getSetting } from '@/selectors/SettingSelector';
-import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
 import { CustomHeader } from './CustomHeader';
 import { Images } from '@/assets/new_icon';
 
@@ -89,12 +89,15 @@ export const CartAmountPayBy = ({
   cartType,
   onPressContinue,
   onPressServiceContinue,
+  selectValueTake,
+  tipsSelected,
 }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const getUserData = useSelector(getUser);
   const updateData = useSelector(getRetail).updateQuantityy;
   const getSettingData = useSelector(getSetting);
+  console.log('tipsSelected12344455', tipsSelected);
   // jbrcoin: getSettingData?.getSetting?.accept_jbr_coin_payment,
   // cash: getSettingData?.getSetting?.accept_cash_payment,
   // card: getSettingData?.getSetting?.accept_card_payment,
@@ -143,8 +146,9 @@ export const CartAmountPayBy = ({
 
   // const [loading, setloading] = useState(false);
   const tipLoading = useSelector((state) => isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state));
-  const cartData =
-    cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+  // const cartData =
+  //   cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getserviceCart;
+  const cartData = cartType == 'Product' ? getRetailData?.getAllCart : getRetailData?.getAllCart;
   const qrcodeData = useSelector(getRetail).qrKey;
   const cartProducts = cartData?.poscart_products;
   const saveCartData = { ...getRetailData };
@@ -152,6 +156,7 @@ export const CartAmountPayBy = ({
   const servicCartId = getRetailData?.getserviceCart?.id;
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
+  console.log('selectedTipAmount', selectedTipAmount);
   const [selectedPaymentIndex, setSelectedPaymentIndex] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
@@ -180,6 +185,16 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
+  useEffect(() => {
+    setSelectedTipIndex(tipsSelected);
+    setSelectedTipAmount(
+      calculatePercentageValue(
+        cartData?.amount?.products_price,
+        tipsSelected === 0 ? 18 : tipsSelected === 1 ? 20 : tipsSelected === 2 ? 22 : '0.00'
+      )
+    );
+  }, []);
+
   const invoiceData = [
     {
       title: 'Payment Option',
@@ -249,6 +264,19 @@ export const CartAmountPayBy = ({
     return totalPayment.toFixed(2);
   };
 
+  const paymentShow = () => {
+    console.log('--------', formattedReturnPriceWithoutSign(cartData?.amount?.discount || '0.00'));
+    const produdctPrice = cartData?.amount?.products_price || '0.00';
+    const discount = formattedReturnPriceWithoutSign(cartData?.amount?.discount || '0.00');
+    const tips = selectedTipAmount || '0.00';
+    const tax = cartData?.amount?.tax || '0.00';
+
+    const payment =
+      parseFloat(produdctPrice) + parseFloat(discount) + parseFloat(tips) + parseFloat(tax);
+
+    return payment.toFixed(2);
+  };
+
   const getTipPress = async () => {
     if (cartType == 'Product') {
       const data = {
@@ -264,21 +292,62 @@ export const CartAmountPayBy = ({
     } else {
       const data = {
         tip: selectedTipAmount.toString(),
-        cartId: serviceCartId,
-        services: 'services',
+        cartId: cartData.id,
       };
       const res = await dispatch(updateCartByTip(data));
-
       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
-        const data = {
-          services: 'services',
-        };
-        dispatch(getQrCodee(serviceCartId, data));
+        dispatch(getQrCodee(cartData?.id));
         // setQrPopUp(true);
-        dispatch(getServiceCart());
+        dispatch(getAllCart());
       }
+      // const data = {
+      //   tip: selectedTipAmount.toString(),
+      //   cartId: serviceCartId,
+      //   services: 'services',
+      // };
+      // const res = await dispatch(updateCartByTip(data));
+
+      // if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+      //   const data = {
+      //     services: 'services',
+      //   };
+      //   dispatch(getQrCodee(serviceCartId, data));
+      //   // setQrPopUp(true);
+      //   dispatch(getServiceCart());
+      // }
     }
   };
+
+  // const getTipPress = async () => {
+  //   if (cartType == 'Product') {
+  //     const data = {
+  //       tip: selectedTipAmount.toString(),
+  //       cartId: cartData.id,
+  //     };
+  //     const res = await dispatch(updateCartByTip(data));
+  //     if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+  //       dispatch(getQrCodee(cartData?.id));
+  //       // setQrPopUp(true);
+  //       dispatch(getAllCart());
+  //     }
+  //   } else {
+  //     const data = {
+  //       tip: selectedTipAmount.toString(),
+  //       cartId: serviceCartId,
+  //       services: 'services',
+  //     };
+  //     const res = await dispatch(updateCartByTip(data));
+
+  //     if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+  //       const data = {
+  //         services: 'services',
+  //       };
+  //       dispatch(getQrCodee(serviceCartId, data));
+  //       // setQrPopUp(true);
+  //       dispatch(getServiceCart());
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     let timer;
@@ -382,13 +451,23 @@ export const CartAmountPayBy = ({
     const percentageValue = (percent / 100) * parseFloat(value);
     return percentageValue.toFixed(2) ?? 0.0;
   };
+  // const totalAmountByPaymentMethod = (index) => {
+  //   if (index === 0) {
+  //     return `$${totalPayAmount()}`;
+  //   } else if (index === 1) {
+  //     return `J ${(totalPayAmount() * 100).toFixed(0)}`;
+  //   } else {
+  //     return `$${totalPayAmount()}`;
+  //   }
+  // };
+
   const totalAmountByPaymentMethod = (index) => {
     if (index === 0) {
-      return `$${totalPayAmount()}`;
+      return `$${paymentShow()}`;
     } else if (index === 1) {
-      return `J ${(totalPayAmount() * 100).toFixed(0)}`;
+      return `J ${(paymentShow() * 100).toFixed(0)}`;
     } else {
-      return `$${totalPayAmount()}`;
+      return `$${paymentShow()}`;
     }
   };
 
@@ -405,11 +484,10 @@ export const CartAmountPayBy = ({
       index: selectedPaymentIndex,
     });
   };
-
   const attachUserByPhone = async (customerNo) => {
     if (customerNo === '') {
       alert('Please Enter Phone Number');
-    } else if (cartType == 'Product') {
+    } else {
       const data = {
         cartId: cartid,
         phoneNo: customerNo,
@@ -423,22 +501,42 @@ export const CartAmountPayBy = ({
         });
         setPhonePopVisible(false);
       }
-    } else {
-      const data = {
-        cartId: servicCartId,
-        phoneNo: customerNo,
-        countryCode: countryCode,
-      };
-      const res = await dispatch(attachServiceCustomer(data));
-      if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
-        onPressPaymentMethod({
-          method: 'PayBy' + selectedPaymentMethod,
-          index: selectedPaymentIndex,
-        });
-        setPhonePopVisible(false);
-      }
     }
   };
+
+  // const attachUserByPhone = async (customerNo) => {
+  //   if (customerNo === '') {
+  //     alert('Please Enter Phone Number');
+  //   } else if (cartType == 'Product') {
+  //     const data = {
+  //       cartId: cartid,
+  //       phoneNo: customerNo,
+  //       countryCode: countryCode,
+  //     };
+  //     const res = await dispatch(attachCustomer(data));
+  //     if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+  //       onPressPaymentMethod({
+  //         method: 'PayBy' + selectedPaymentMethod,
+  //         index: selectedPaymentIndex,
+  //       });
+  //       setPhonePopVisible(false);
+  //     }
+  //   } else {
+  //     const data = {
+  //       cartId: servicCartId,
+  //       phoneNo: customerNo,
+  //       countryCode: countryCode,
+  //     };
+  //     const res = await dispatch(attachServiceCustomer(data));
+  //     if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
+  //       onPressPaymentMethod({
+  //         method: 'PayBy' + selectedPaymentMethod,
+  //         index: selectedPaymentIndex,
+  //       });
+  //       setPhonePopVisible(false);
+  //     }
+  //   }
+  // };
 
   const attachUserByEmail = async (customerEmail) => {
     if (customerEmail === '') {
@@ -637,9 +735,13 @@ export const CartAmountPayBy = ({
 
                       <View style={{ flex: 1 }} />
                       {index === 2 && (
-                        <Text style={styles._payByMethod(selectedPaymentIndex, index)}>
-                          5464 6487 7484 93034
-                        </Text>
+                        // <Text style={styles._payByMethod(selectedPaymentIndex, index)}>
+                        //   5464 6487 7484 93034
+                        // </Text>
+                        <Image
+                          source={Images.cardDot}
+                          style={{ width: ms(80), height: ms(15), resizeMode: 'contain' }}
+                        />
                       )}
                       <Spacer space={SH(10)} />
                       <View
@@ -667,7 +769,7 @@ export const CartAmountPayBy = ({
             ) : (
               <View style={styles._payBYBoxContainerEmpty} />
             )}
-            {selectedPaymentIndex !== null && selectedPaymentId !== 2 && (
+            {selectedPaymentIndex !== null && selectedPaymentId === 1 && (
               <View
                 style={{
                   marginTop: ms(7),
@@ -694,7 +796,10 @@ export const CartAmountPayBy = ({
                           setEmailModal(true);
                           //getTipPress();
                         } else if (item.title == 'No, thanks') {
-                          getTipPress(), payNowHandler(), payNowByphone(selectedTipAmount);
+                          getTipPress(),
+                            payNowHandler(),
+                            payNowByphone(selectedTipAmount),
+                            selectValueTake(selectedPaymentId, selectedTipIndex);
                         }
                       }}
                       key={index}
@@ -766,10 +871,13 @@ export const CartAmountPayBy = ({
             </View>
             <View style={styles._flatListContainer}>
               <FlatList
+                // data={
+                //   cartType == 'Product'
+                //     ? cartData.poscart_products
+                //     : cartData?.appointment_cart_products
+                // }
                 data={
-                  cartType == 'Product'
-                    ? cartData.poscart_products
-                    : cartData?.appointment_cart_products
+                  cartType == 'Product' ? cartData.poscart_products : cartData?.poscart_products
                 }
                 style={{ width: '100%' }}
                 renderItem={({ item, index }) => <AddedCartItemsCard item={item} index={index} />}
@@ -814,6 +922,15 @@ export const CartAmountPayBy = ({
               </View>
               <Spacer space={SH(10)} />
               <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Tips</Text>
+                <Text style={styles._payTitle}>
+                  {/* {formattedReturnPrice(cartData?.amount?.discount)} */}$
+                  {/* {selectedTipAmount > 0 ? selectedTipAmount : cartData?.amount?.tip ? selectedTipAmount == '0.00' ?  || '0.00'} */}
+                  {selectedTipAmount || '0.00'}
+                </Text>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Total Taxes</Text>
                 <Text style={styles._payTitle}>${cartData?.amount?.tax.toFixed(2) ?? '0.00'}</Text>
               </View>
@@ -824,7 +941,11 @@ export const CartAmountPayBy = ({
                 </Text>
                 <View style={styles.totalView}>
                   <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
-                    ${totalPayAmount() ?? '0.00'}
+                    {/* ${totalPayAmount() ?? '0.00'} */} $
+                    {/* {selectedTipAmount == '0.00'
+                      ? totalPayAmount() ?? '0.00'
+                      : paymentShow() || '0.00'} */}
+                    {paymentShow() || '0.00'}
                   </Text>
                 </View>
               </View>

@@ -193,29 +193,35 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
           <View style={{ paddingHorizontal: moderateScale(10) }}>
             <Text style={styles.angelaText}>{data?.firstName}</Text>
             <Spacer space={SH(5)} />
-            <View style={styles.flexAlign}>
-              <Image source={new_location} style={styles.Phonelight} />
-              {userDetail?.user_details?.current_address ? (
+
+            {userDetail?.user_details?.current_address ? (
+              <View style={styles.flexAlign}>
+                <Image source={new_location} style={styles.Phonelight} />
+
                 <Text style={[styles.adressText, { width: windowWidth * 0.25 }]} numberOfLines={1}>
                   {data?.streetAdd} {data?.city} {data?.state} {data?.country}
                   {data?.postalCode}
                 </Text>
-              ) : null}
-            </View>
+              </View>
+            ) : null}
           </View>
         </View>
 
         <View style={{ flex: 1 }}>
           <Spacer space={SH(5)} />
-          <View style={styles.flexAlign}>
-            <Image source={new_phone} style={styles.Phonelight} />
-            <Text style={styles.adressText}>{data?.phoneNumber}</Text>
-          </View>
+          {userDetail?.user_details?.phone_number ? (
+            <View style={styles.flexAlign}>
+              <Image source={new_phone} style={styles.Phonelight} />
+              <Text style={styles.adressText}>{data?.phoneNumber}</Text>
+            </View>
+          ) : null}
           <Spacer space={SH(10)} />
-          <View style={styles.flexAlign}>
-            <Image source={new_email} style={styles.Phonelight} />
-            <Text style={styles.adressText}>{data?.userEmail}</Text>
-          </View>
+          {userDetail?.user_details?.email ? (
+            <View style={styles.flexAlign}>
+              <Image source={new_email} style={styles.Phonelight} />
+              <Text style={styles.adressText}>{data?.userEmail}</Text>
+            </View>
+          ) : null}
         </View>
 
         <View
@@ -267,9 +273,10 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
       <Spacer space={SH(10)} />
       <View style={styles.orderTypeCon}>
         <View style={styles.flexAlign}>
-          <View style={{ marginHorizontal: moderateScale(5) }}>
-            <TableDropdown placeholder="Month" selected={monthSelection} data={months} />
-            {/* <MonthYearPicker
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ marginHorizontal: moderateScale(5) }}>
+              <TableDropdown placeholder="Month" selected={monthSelection} data={months} />
+              {/* <MonthYearPicker
               showAllMonths={true}
               dateType={DATE_TYPE.MONTH}
               placeholder={'Month'}
@@ -281,14 +288,16 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
               }}
               dropdownStyle={{ height: SH(35), borderColor: COLORS.solidGrey }}
             /> */}
+            </View>
+            <>
+              <TableDropdown
+                placeholder="Store location"
+                selected={storeLocation}
+                data={storeLocationArray?.[0]}
+              />
+            </>
           </View>
-          <>
-            <TableDropdown
-              placeholder="Store location"
-              selected={storeLocation}
-              data={storeLocationArray?.[0]}
-            />
-          </>
+
           <View
             style={[styles.jbrTypeCon, { zIndex: -1, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
             pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}

@@ -5,6 +5,7 @@ export const Images = {
   shippingSideIcon: require('@/assets/new_icon/retail_con/shippingSideIcon.png'),
   analyticsSideIcon: require('@/assets/new_icon/retail_con/analyticsSideIcon.png'),
   cashTrackingSideIcon: require('@/assets/new_icon/retail_con/cashTrackingSideIcon.png'),
+  cardDot: require('@/assets/new_icon/retail_con/cardDot.png'),
   analytics: require('@/assets/new_icon/retail_con/analyticsReport.png'),
   productsIcon: require('@/assets/new_icon/retail_con/productsIcon.png'),
   serviceIcon: require('@/assets/new_icon/retail_con/serviceIcon.png'),

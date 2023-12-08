@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
@@ -83,6 +84,7 @@ import { ServiceCartListModal } from './ServiceCartListModal ';
 import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 import { Images } from '@/assets/new_icon';
 import { imageSource } from '@/utils/GlobalMethods';
+import CustomAlert from '@/components/CustomAlert';
 
 export function MainScreen({
   cartScreenHandler,
@@ -138,6 +140,15 @@ export function MainScreen({
 
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
+
+  console.log(JSON.stringify(cartData));
+  const onlyProductCartArray = cartData?.poscart_products?.filter(
+    (item) => item?.product_type === 'product'
+  );
+  const onlyServiceCartArray = cartData?.poscart_products?.filter(
+    (item) => item?.product_type === 'service'
+  );
+  console.log('---------', onlyProductCartArray, onlyServiceCartArray);
   const productCartArray = getRetailData?.getAllProductCart;
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
@@ -497,34 +508,58 @@ export function MainScreen({
   ];
 
   const productFun = async (productId, index, item) => {
-    bulkCart();
-    const isProductMatchArray = localCartArray?.find((data) => data.product_id === item.id);
-    const cartAddQty = isProductMatchArray?.qty;
-    // Create a new object with updated cart_qty value
-    const updatedItem = { ...item };
-    if (cartAddQty !== undefined) {
-      updatedItem.cart_qty = cartAddQty;
+    if (onlyServiceCartArray?.length > 0) {
+      CustomAlert({
+        title: 'Alert',
+        description: 'Please clear service cart',
+        yesButtonTitle: 'Clear cart',
+        noButtonTitle: 'Cancel',
+        onYesPress: () => {
+          dispatch(clearAllCart());
+        },
+      });
     } else {
-      updatedItem.cart_qty = 1;
-    }
-    const res = await dispatch(getOneProduct(sellerID, productId));
-    if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-      setSelectedItemQty(updatedItem?.cart_qty);
-      setSelectedItem(item);
-      // setAddCartModal(true);
-      setProductIndex(index);
-      setProductItem(item);
-      addProductscreenShow();
-      dispatch(addProductFrom('main'));
+      bulkCart();
+      const isProductMatchArray = localCartArray?.find((data) => data.product_id === item.id);
+      const cartAddQty = isProductMatchArray?.qty;
+      // Create a new object with updated cart_qty value
+      const updatedItem = { ...item };
+      if (cartAddQty !== undefined) {
+        updatedItem.cart_qty = cartAddQty;
+      } else {
+        updatedItem.cart_qty = 1;
+      }
+      const res = await dispatch(getOneProduct(sellerID, productId));
+      if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+        setSelectedItemQty(updatedItem?.cart_qty);
+        setSelectedItem(item);
+        // setAddCartModal(true);
+        setProductIndex(index);
+        setProductItem(item);
+        addProductscreenShow();
+        dispatch(addProductFrom('main'));
+      }
     }
   };
 
   const serviceFun = async (serviceId, index) => {
-    const res = await dispatch(getOneService(sellerID, serviceId));
-    if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-      // setAddServiceCartModal(true)
-      addServiceScreenShow();
-      dispatch(addServiceFrom('main'));
+    if (onlyProductCartArray?.length > 0) {
+      CustomAlert({
+        title: 'Alert',
+        description: 'Please clear product cart',
+        yesButtonTitle: 'Clear cart',
+        noButtonTitle: 'Cancel',
+        onYesPress: () => {
+          dispatch(clearAllCart());
+        },
+      });
+    } else {
+      const res = await dispatch(getOneService(sellerID, serviceId));
+      if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
+        // setAddServiceCartModal(true)
+        addServiceScreenShow();
+        dispatch(addServiceFrom('main'));
+      }
     }
   };
 
@@ -607,7 +642,7 @@ export function MainScreen({
               ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
             </Text>
             <TouchableOpacity
-              onPress={() => checkAttributes(item, index, cartAddQty)}
+              // onPress={() => checkAttributes(item, index, cartAddQty)}
               style={styles.offerImagebackground}
             >
               <FastImage
@@ -1245,55 +1280,57 @@ export function MainScreen({
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
-                    disabled={serviceCartLength > 0 ? false : true}
-                    onPress={() => setServiceCartModal(true)}
+                    disabled={cartLength > 0 ? false : true}
+                    onPress={() => {
+                      bulkCart(), setCartModal(true);
+                    }}
                   >
                     <Image
                       source={Images.cartIcon}
                       style={
-                        serviceCartLength > 0
+                        cartLength > 0
                           ? [styles.sideBarImage, { tintColor: COLORS.navy_blue }]
                           : styles.sideBarImage
                       }
                     />
                     <View
                       style={
-                        serviceCartLength > 0
+                        cartLength > 0
                           ? [styles.bucketBadge, styles.bucketBadgePrimary]
                           : styles.bucketBadge
                       }
                     >
                       <Text
                         style={
-                          serviceCartLength > 0
+                          cartLength > 0
                             ? [styles.badgetext, { color: COLORS.white }]
                             : styles.badgetext
                         }
                       >
-                        {serviceCartLength ?? '0'}
+                        {cartLength ?? '0'}
                       </Text>
                     </View>
                   </TouchableOpacity>
                   <Spacer space={SH(25)} />
-                  <View>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setNumPadModal((prev) => !prev);
-                        setCustomProductOpen('service');
-                      }}
-                    >
-                      <Image source={Images.addProduct} style={styles.sideBarImage} />
-                    </TouchableOpacity>
-                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      bulkCart();
+                      setNumPadModal((prev) => !prev);
+                      setCustomProductOpen('service');
+                    }}
+                  >
+                    <Image source={Images.addProduct} style={styles.sideBarImage} />
+                  </TouchableOpacity>
+
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
-                    onPress={() => dispatch(clearServiceAllCart())}
-                    disabled={serviceCartLength > 0 ? false : true}
+                    onPress={() => eraseClearCart()}
+                    disabled={cartLength > 0 ? false : true}
                   >
                     <Image
                       source={Images.clearCart}
                       // style={
-                      //   serviceCartLength > 0
+                      //   cartLength > 0
                       //     ? [styles.sideBarImage]
                       //     : styles.sideBarImage
                       // }
@@ -1302,47 +1339,153 @@ export function MainScreen({
                   </TouchableOpacity>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
-                    onPress={() => {
-                      serviceCartStatusHandler();
-                      // setGoToCart(true)
-                    }}
+                    onPress={cartStatusHandler}
+                    // disabled={holdProductArray?.length > 0 ? false : true}
                   >
                     <Image
                       source={Images.holdCart}
                       style={
-                        holdServiceArray?.length > 0
-                          ? [styles.sideBarImage, { tintColor: COLORS.primary }]
+                        holdProductArray?.length > 0
+                          ? [styles.sideBarImage, { tintColor: COLORS.navy_blue }]
                           : styles.sideBarImage
                       }
                     />
                     <View
                       style={
-                        holdServiceArray?.length > 0
+                        holdProductArray?.length > 0
                           ? [styles.holdBadge, styles.holdBadgePrimary]
                           : styles.holdBadge
                       }
                     >
                       <Text
                         style={
-                          holdServiceArray?.length > 0
+                          holdProductArray?.length > 0
                             ? [styles.holdBadgetext, { color: COLORS.white }]
                             : styles.holdBadgetext
                         }
                       >
-                        {holdServiceArray?.length}
+                        {holdProductArray?.length}
                       </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
-                  disabled={serviceCartLength > 0 ? false : true}
+                  disabled={cartLength > 0 ? false : true}
+                  // onPress={() => {
+                  //   bulkCart();
+                  //   setTimeout(() => {
+                  //     cartScreenHandler();
+                  //   }, 200);
+                  // }}
                   onPress={cartServiceScreenHandler}
                   style={styles.bucketBackgorund}
                 >
                   <Image source={Images.arrowLeftUp} style={styles.mainScreenArrow()} />
                 </TouchableOpacity>
               </View>
+              // <View style={styles.rightSideView}>
+              //   <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+              //     <TouchableOpacity
+              //       style={styles.bucketBackgorund}
+              //       disabled={serviceCartLength > 0 ? false : true}
+              //       onPress={() => setServiceCartModal(true)}
+              //     >
+              //       <Image
+              //         source={Images.cartIcon}
+              //         style={
+              //           serviceCartLength > 0
+              //             ? [styles.sideBarImage, { tintColor: COLORS.navy_blue }]
+              //             : styles.sideBarImage
+              //         }
+              //       />
+              //       <View
+              //         style={
+              //           serviceCartLength > 0
+              //             ? [styles.bucketBadge, styles.bucketBadgePrimary]
+              //             : styles.bucketBadge
+              //         }
+              //       >
+              //         <Text
+              //           style={
+              //             serviceCartLength > 0
+              //               ? [styles.badgetext, { color: COLORS.white }]
+              //               : styles.badgetext
+              //           }
+              //         >
+              //           {serviceCartLength ?? '0'}
+              //         </Text>
+              //       </View>
+              //     </TouchableOpacity>
+              //     <Spacer space={SH(25)} />
+              //     <View>
+              //       <TouchableOpacity
+              //         onPress={() => {
+              //           setNumPadModal((prev) => !prev);
+              //           setCustomProductOpen('service');
+              //         }}
+              //       >
+              //         <Image source={Images.addProduct} style={styles.sideBarImage} />
+              //       </TouchableOpacity>
+              //     </View>
+              //     <Spacer space={SH(20)} />
+              //     <TouchableOpacity
+              //       onPress={() => dispatch(clearServiceAllCart())}
+              //       disabled={serviceCartLength > 0 ? false : true}
+              //     >
+              //       <Image
+              //         source={Images.clearCart}
+              //         // style={
+              //         //   serviceCartLength > 0
+              //         //     ? [styles.sideBarImage]
+              //         //     : styles.sideBarImage
+              //         // }
+              //         style={styles.sideBarImage}
+              //       />
+              //     </TouchableOpacity>
+              //     <Spacer space={SH(20)} />
+              //     <TouchableOpacity
+              //       onPress={() => {
+              //         serviceCartStatusHandler();
+              //         // setGoToCart(true)
+              //       }}
+              //     >
+              //       <Image
+              //         source={Images.holdCart}
+              //         style={
+              //           holdServiceArray?.length > 0
+              //             ? [styles.sideBarImage, { tintColor: COLORS.primary }]
+              //             : styles.sideBarImage
+              //         }
+              //       />
+              //       <View
+              //         style={
+              //           holdServiceArray?.length > 0
+              //             ? [styles.holdBadge, styles.holdBadgePrimary]
+              //             : styles.holdBadge
+              //         }
+              //       >
+              //         <Text
+              //           style={
+              //             holdServiceArray?.length > 0
+              //               ? [styles.holdBadgetext, { color: COLORS.white }]
+              //               : styles.holdBadgetext
+              //           }
+              //         >
+              //           {holdServiceArray?.length}
+              //         </Text>
+              //       </View>
+              //     </TouchableOpacity>
+              //   </View>
+              //   <View style={{ flex: 1 }} />
+              //   <TouchableOpacity
+              //     disabled={serviceCartLength > 0 ? false : true}
+              //     onPress={cartServiceScreenHandler}
+              //     style={styles.bucketBackgorund}
+              //   >
+              //     <Image source={Images.arrowLeftUp} style={styles.mainScreenArrow()} />
+              //   </TouchableOpacity>
+              // </View>
             )}
           </View>
         )}

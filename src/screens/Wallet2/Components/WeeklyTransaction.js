@@ -81,7 +81,7 @@ export function WeeklyTransaction({
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
-  const [paginationModalValue, setPaginationModalValue] = useState(10);
+  const [paginationModalValue, setPaginationModalValue] = useState('10');
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
 
   const [selectId, setSelectId] = useState(2);
@@ -184,9 +184,11 @@ export function WeeklyTransaction({
       dayWiseFilter: time,
       calendarDate: formatedDate,
       sellerID: sellerID,
+      start_date: startDated,
+      end_date: endDated,
     };
     dispatch(getTotalTraType(data));
-  }, [selectId, formatedDate]);
+  }, [selectId, formatedDate, time, startDated, endDated]);
 
   useEffect(() => {
     const data = {
@@ -476,7 +478,7 @@ export function WeeklyTransaction({
               placeholder="Order type"
               selected={orderTypeSelection}
               data={orderTypeArray}
-              containerStyle={{ width: ms(70) }}
+              containerStyle={{ width: Platform.OS === 'ios' ? ms(70) : ms(80) }}
             />
           </>
         </View>
