@@ -343,6 +343,12 @@ export const PayByCash = ({
               </View>
               <Spacer space={SH(10)} />
               <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>Tips</Text>
+                {/* <Text style={styles._payTitle}>${tipamount.toFixed(2) ?? '0.00'}</Text> */}
+                <Text style={styles._payTitle}>${cartData?.amount?.tip.toFixed(2) ?? '0.00'}</Text>
+              </View>
+              <Spacer space={SH(10)} />
+              <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Total Taxes</Text>
                 <Text style={styles._payTitle}>${cartData?.amount?.tax.toFixed(2) ?? '0.00'}</Text>
               </View>

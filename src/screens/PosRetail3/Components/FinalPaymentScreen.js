@@ -33,6 +33,7 @@ export const FinalPaymentScreen = ({
   const getUserData = useSelector(getUser);
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const reatilData = useSelector(getRetail);
+  console.log('cartData', JSON.stringify(cartData));
   const orderInvoice =
     cartType == 'Product' ? reatilData?.createOrder : reatilData?.createServiceOrder;
   const invoiceData = [
@@ -211,7 +212,8 @@ export const FinalPaymentScreen = ({
                 </Text>
                 <View style={styles.totalView}>
                   <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
-                    ${totalPayAmount() ?? '0.00'}
+                    {/* ${totalPayAmount() ?? '0.00'} */}$
+                    {cartData?.amount?.total_amount.toFixed(2) || '0.00'}
                   </Text>
                 </View>
               </View>
