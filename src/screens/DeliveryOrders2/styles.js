@@ -23,7 +23,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: ms(5),
     height: Dimensions.get('window').width / 1.5,
-    // justifyContent: 'space-around',
+    //  justifyContent: 'space-around',
+  },
+  firstRowStyleInvoice: {
+    flex: 1,
+    flexDirection: 'row',
+    // paddingHorizontal: ms(5),
+    height: Dimensions.get('window').width / 1.5,
+    justifyContent: 'space-evenly',
   },
   centerMainViewStyle: {
     flex: 0.64,
@@ -43,9 +50,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   totalTextStyle: {
-    fontSize: SF(12),
+    fontSize: SF(10),
     paddingTop: ms(2),
-    color: COLORS.solid_grey,
+    color: COLORS.lavender,
     fontFamily: Fonts.SemiBold,
   },
   totalTextStyle2: {
@@ -100,10 +107,11 @@ const styles = StyleSheet.create({
   locationViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
+    minWidth: '50%',
   },
   pinImageStyle: {
-    width: SH(16),
-    height: SH(16),
+    width: SH(14),
+    height: SH(14),
     resizeMode: 'contain',
   },
   timeTextStyle: {
@@ -223,9 +231,11 @@ const styles = StyleSheet.create({
   orderToReviewView: {
     borderRadius: ms(10),
     // marginTop: ms(30),
+    flex: 0.45,
     backgroundColor: COLORS.white,
-    height: twoEqualView,
-    marginRight: ms(10),
+    width: '100%',
+    // height: twoEqualView,
+    // marginRight: ms(10),
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -357,7 +367,7 @@ const styles = StyleSheet.create({
       Platform.OS === 'ios'
         ? Dimensions.get('window').width * 0.39
         : Dimensions.get('window').width * 0.42,
-    height: Dimensions.get('window').height - 110,
+    // height: Dimensions.get('window').height - 110,
   },
   maximizeButton: {
     backgroundColor: COLORS.white,
@@ -369,7 +379,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(80),
 
     position: 'absolute',
-    right: ms(10),
+    right: ms(5),
     bottom: ms(10),
   },
   userDetailView: {
@@ -428,17 +438,17 @@ const styles = StyleSheet.create({
   invoiceText: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(12),
-    color: COLORS.darkGray,
+    color: COLORS.lavender,
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(12),
-    color: COLORS.dark_grey,
+    fontSize: ms(10),
+    color: COLORS.navy_blue,
   },
   totalText: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(16),
-    color: COLORS.solid_grey,
+    color: COLORS.lavender,
   },
   acceptButtonView: {
     height: SH(48),
@@ -525,7 +535,7 @@ const styles = StyleSheet.create({
     width:
       Platform.OS === 'android'
         ? Dimensions.get('window').width / 5
-        : Dimensions.get('window').width / 4.5,
+        : Dimensions.get('window').width / 4,
     borderRadius: 10,
   },
   flexDirectionRow: {
@@ -592,7 +602,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   storeDetailView: {
-    width: '45%',
+    flex: 0.49,
     marginTop: ms(10),
     backgroundColor: COLORS.white,
     borderRadius: 15,
@@ -635,11 +645,10 @@ const styles = StyleSheet.create({
     color: COLORS.dark_grey,
   },
   mapMainView: {
-    width: '45%',
+    flex: 0.49,
     marginTop: ms(10),
     borderRadius: 10,
     backgroundColor: COLORS.white,
-    marginHorizontal: ms(10),
 
     // height: Dimensions.get('window').height - 80,
   },
@@ -691,9 +700,13 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-around',
   },
   leftMainViewStyle: {
-    flex: 0.28,
-    marginRight: SH(15),
+    flex: 0.24,
     justifyContent: 'space-between',
+
+    // alignItems: 'center',
+  },
+  gapView: {
+    flex: 0.011,
   },
   todayShippingViewStyle: {
     flex: 0.2,
@@ -703,12 +716,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   orderConversionViewStyle: {
-    flex: 0.5,
+    flex: 0.4,
   },
-  centerMainViewStyle: {
-    flex: 0.64,
+  centerMainViewStyleNew: {
+    flex: 0.68,
     justifyContent: 'space-between',
-    marginRight: 15,
+    paddingHorizontal: ms(10),
+    // marginRight: 15,
   },
   centerMainOrder: {
     flex: 0.4,
@@ -724,7 +738,7 @@ const styles = StyleSheet.create({
     flex: 0.45,
   },
   drawerMainViewStyle: {
-    flex: 0.07,
+    flex: 0.06,
     // marginTop: SH(15),
   },
   centerViewStyle: {
@@ -746,16 +760,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  orderDetailMainNew: {
+    flex: 0.45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderRadius: ms(10),
+  },
   emptyOrderView: {
     flex: 0.92,
     alignItems: 'center',
     justifyContent: 'center',
   },
 
-  firstRowStyle: {
+  firstRowStyleMain: {
     flexDirection: 'row',
-    paddingHorizontal: ms(10),
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
+    flex: 0.9,
   },
 
   shippingOrdersViewStyle: {
@@ -821,6 +841,9 @@ const styles = StyleSheet.create({
     paddingVertical: SH(10),
     paddingHorizontal: SW(5),
     borderRadius: SW(5),
+  },
+  graphViewContainer: {
+    flex: 0.495,
   },
 });
 

@@ -52,8 +52,6 @@ export const AddServiceScreen = ({ backHandler }) => {
     return posStaffedArray;
   }
   const finalPosStaffArray = modifiedPosArray(posStaffArray, 2);
-
-  console.log('finalPosStaffArray', JSON.stringify(finalPosStaffArray));
   // Remove HTML tags
   const withoutHtmlTags = itemData?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
 
@@ -488,14 +486,16 @@ export const styles = StyleSheet.create({
     borderRadius: ms(12),
     flex: 0.41,
     marginRight: ms(7),
-    padding: ms(20),
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(7),
   },
   rightCon: {
     backgroundColor: COLORS.white,
     borderRadius: ms(12),
     flex: 0.58,
     marginRight: ms(7),
-    padding: ms(20),
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(7),
   },
   leftIcon: {
     width: ms(22),
@@ -547,7 +547,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   productName: {
-    fontSize: ms(13),
+    fontSize: ms(12),
     color: COLORS.navy_blue,
     fontFamily: Fonts.Medium,
   },

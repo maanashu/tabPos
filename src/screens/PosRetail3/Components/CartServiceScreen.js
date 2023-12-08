@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   ActivityIndicator,
   Keyboard,
@@ -10,24 +10,7 @@ import {
 import { COLORS, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
-import {
-  addDiscountPic,
-  addToCart,
-  borderCross,
-  cartEdit,
-  checkArrow,
-  cross,
-  crossButton,
-  eraser,
-  holdCart,
-  newCustomer,
-  notess,
-  plus,
-  rightBack,
-  search_light,
-  sideKeyboard,
-  userImage,
-} from '@/assets';
+import { cartEdit, cross, crossButton, search_light, userImage } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
@@ -36,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import Modal, { ReactNativeModal } from 'react-native-modal';
 import {
+  addServiceFrom,
   changeStatusServiceCart,
   clearServiceAllCart,
   getAvailableOffer,
@@ -54,12 +38,8 @@ import { AddServiceCartModal } from './AddServiceCartModal';
 import { useEffect } from 'react';
 import { updateServiceCartLength } from '@/actions/CartAction';
 import { getServiceCartLength } from '@/selectors/CartSelector';
-import { useFocusEffect } from '@react-navigation/core';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { CustomProductAdd } from './CustomProductAdd';
-import { NewCustomerAdd } from './NewCustomerAdd';
-import { useCallback } from 'react';
-import { useMemo } from 'react';
 import { NewCustomerAddService } from './NewCustomerAddService';
 import Toast from 'react-native-toast-message';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
@@ -71,6 +51,7 @@ export function CartServiceScreen({
   addNotesHandler,
   addDiscountHandler,
   getScreen,
+  addServiceScreenShow,
 }) {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
@@ -84,7 +65,6 @@ export function CartServiceScreen({
   const [serviceItemSave, setServiceItemSave] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const availableOfferArray = getRetailData?.availableOffer?.data;
-
   const [cartSearch, setCartSearch] = useState('');
   const [offerId, setOfferId] = useState();
   const CART_LENGTH = useSelector(getServiceCartLength);
@@ -165,12 +145,6 @@ export function CartServiceScreen({
   }
 
   const removeOneCartHandler = (productId, index) => {
-    // const data = {
-    //   cartId: cartServiceData?.id,
-    //   productId: productId,
-    // };
-    // dispatch(clearOneserviceCart(data));
-
     var arr = getRetailData?.getserviceCart;
     if (arr?.appointment_cart_products.length == 1 && index == 0) {
       clearCartHandler();
@@ -228,7 +202,9 @@ export function CartServiceScreen({
     // setOfferId(item?.product?.id);
     const res = await dispatch(getOneService(sellerID, item?.id));
     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-      setAddServiceCartModal(true);
+      // setAddServiceCartModal(true);
+      addServiceScreenShow();
+      dispatch(addServiceFrom('cart'));
     }
   };
 
@@ -321,11 +297,11 @@ export function CartServiceScreen({
                   <Text style={styles.ItemHeader}>Item</Text>
                 </View>
                 <View style={styles.serviceCartRightBody}>
-                  <View style={styles.serviceCartBody}>
+                  {/* <View style={styles.serviceCartBody}>
                     <Text style={styles.cartHeaderBodyRighSide} numberOfLines={1}>
                       Staff Name
                     </Text>
-                  </View>
+                  </View> */}
                   <View style={styles.serviceCartBody}>
                     <Text style={styles.cartHeaderBodyRighSide} numberOfLines={1}>
                       Unit Price
@@ -350,7 +326,7 @@ export function CartServiceScreen({
                 {arr?.map((item, index) => (
                   <View key={index}>
                     {item?.appointment_cart_products?.map((data, ind) => (
-                      <View style={[styles.blueListData, { height: SH(70) }]} key={ind}>
+                      <View style={[styles.blueListData]} key={ind}>
                         <View style={styles.displayflex}>
                           <View style={[styles.cartHeaderLeftSide, { alignItems: 'center' }]}>
                             <Text
@@ -375,62 +351,54 @@ export function CartServiceScreen({
                                 />
                               </View>
 
-                              <View style={{ marginLeft: ms(2) }}>
+                              <View style={{ marginLeft: ms(2), flex: 1 }}>
                                 <Text
-                                  style={[
-                                    styles.holdCart,
-                                    { color: COLORS.navy_blue, width: SW(40) },
-                                  ]}
+                                  style={[styles.holdCart, { color: COLORS.navy_blue }]}
+                                  numberOfLines={2}
                                 >
                                   {data.product_details?.name}
                                 </Text>
-                                <Text
-                                  style={[styles.sukNumber, { width: SW(20) }]}
-                                  numberOfLines={1}
-                                >
+                                <Text style={[styles.sukNumber]} numberOfLines={1}>
                                   {moment(data?.date).format('LL')} @
                                   {data?.start_time + '-' + data?.end_time}
                                 </Text>
 
-                                {data?.product_details?.supply?.approx_service_time == null ? (
+                                {/* {data?.product_details?.supply?.approx_service_time == null ? (
                                   <Text style={styles.sukNumber}>Estimated Time Not found</Text>
                                 ) : (
                                   <Text style={styles.sukNumber}>
                                     Est: {data?.product_details?.supply?.approx_service_time} min
                                   </Text>
+                                )} */}
+
+                                {Object.keys(data?.pos_user_details)?.length > 0 && (
+                                  <View
+                                    style={{
+                                      borderWidth: 1,
+                                      flexDirection: 'row',
+                                      alignItems: 'center',
+                                      flex: 1,
+                                      marginVertical: ms(5),
+                                    }}
+                                  >
+                                    <Image
+                                      source={
+                                        {
+                                          uri: data?.pos_user_details?.user?.user_profiles
+                                            ?.profile_photo,
+                                        } ?? userImage
+                                      }
+                                      style={styles.offerImage}
+                                    />
+                                    <Text style={styles.blueListDataText} numberOfLines={1}>
+                                      {data?.pos_user_details?.user?.user_profiles?.firstname}
+                                    </Text>
+                                  </View>
                                 )}
                               </View>
                             </View>
                           </View>
                           <View style={styles.serviceCartRightBody}>
-                            <View style={styles.serviceCartBody}>
-                              <View
-                                style={[
-                                  styles.cartBodyRightSide,
-                                  {
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    paddingLeft: ms(0),
-                                    opacity: cartIndex === ind && cartEditItem ? 0.3 : 1,
-                                    width: ms(60),
-                                    paddingRight: 30,
-                                  },
-                                ]}
-                              >
-                                <Image
-                                  source={
-                                    {
-                                      uri: data?.pos_user_details?.user?.user_profiles
-                                        ?.profile_photo,
-                                    } ?? userImage
-                                  }
-                                  style={styles.offerImage}
-                                />
-                                <Text style={styles.blueListDataText} numberOfLines={1}>
-                                  {data?.pos_user_details?.user?.user_profiles?.firstname}
-                                </Text>
-                              </View>
-                            </View>
                             <View style={styles.serviceCartBody}>
                               {cartIndex === ind && cartEditItem ? (
                                 <TextInput
@@ -556,7 +524,7 @@ export function CartServiceScreen({
             <View style={{ flex: 1 }}>
               <View style={styles.nameAddCon}>
                 <View style={styles.avaliableOfferCon}>
-                  <Image source={addDiscountPic} style={styles.addDiscountPic()} />
+                  <Image source={Images.availableOffer} style={styles.addDiscountPic()} />
                   <Text style={[styles.holdCart, { color: COLORS.coffee }]}>Available Offer</Text>
                   <View></View>
                 </View>
@@ -634,7 +602,7 @@ export function CartServiceScreen({
                 )}
               </View>
               <Spacer space={SH(10)} />
-              <View style={[styles.displayflex, { marginVertical: ms(10) }]}>
+              <View style={[styles.displayflex, { marginVertical: ms(5) }]}>
                 <TouchableOpacity
                   style={styles.addDiscountCon()}
                   onPress={() => {
@@ -700,7 +668,11 @@ export function CartServiceScreen({
                 <TouchableOpacity
                   style={[
                     styles.checkoutButtonSideBar,
-                    { opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7 },
+                    {
+                      opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7,
+                      height: ms(35),
+                      flex: 0,
+                    },
                   ]}
                   // onPress={() => {
                   //   backCartLoad();
@@ -713,69 +685,7 @@ export function CartServiceScreen({
                   <Image source={Images.arrowLeftUp} style={styles.mainScreenArrow('cart')} />
                 </TouchableOpacity>
               </View>
-              {/* <Spacer space={SH(10)} />
-              <View style={styles.totalItemCon}>
-                <Text style={styles.totalItem}>
-                  {strings.dashboard.totalItem} {cartServiceData?.appointment_cart_products?.length}
-                </Text>
-              </View>
-              <Spacer space={SH(5)} />
-              <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>Sub Total</Text>
-                <Text style={styles.subTotalDollar}>
-                  ${cartServiceData?.amount?.products_price.toFixed(2) ?? '0.00'}
-                </Text>
-              </View>
-              <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>Total Taxes</Text>
-                <Text style={styles.subTotalDollar}>
-                  {' '}
-                  ${cartServiceData?.amount?.tax.toFixed(2) ?? '0.00'}
-                </Text>
-              </View>
-              <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.subTotal}>{`Discount ${
-                  cartServiceData?.discount_flag === 'percentage' ? '(%)' : ''
-                } `}</Text>
-                <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
-                  {formattedReturnPrice(cartServiceData?.amount?.discount)}
-                </Text>
-              </View>
-              <View
-                style={{
-                  borderWidth: 1,
-                  borderStyle: 'dashed',
-                  borderColor: COLORS.solidGrey,
-                }}
-              />
-              <Spacer space={SH(5)} />
-              <View style={[styles.displayflex2, styles.paddVertical]}>
-                <Text style={styles.itemValue}>Item value</Text>
-                <Text style={[styles.subTotalDollar, styles.itemValueBold]}>
-                  ${cartServiceData?.amount?.total_amount.toFixed(2) ?? '0.00'}
-                </Text>
-              </View> */}
             </View>
-            {/* <TouchableOpacity
-              style={[
-                styles.checkoutButtonSideBar,
-                // { opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7 },
-              ]}
-              // onPress={() => {
-              //   backCartLoad();
-              //   onPressPayNow();
-              // }}
-              onPress={() => payNowHandler()}
-              // disabled={
-              //   cartServiceData?.appointment_cart_products?.length > 0 &&
-              //   Object.keys(cartServiceData?.user_details)?.length > 0
-              //     ? false
-              //     : true
-              // }
-            >
-              <Text style={styles.checkoutText}>{strings.posRetail.procedtoCheckout}</Text>
-              <Image source={checkArrow} style={styles.checkArrow} />
-            </TouchableOpacity> */}
           </View>
         </View>
       </View>

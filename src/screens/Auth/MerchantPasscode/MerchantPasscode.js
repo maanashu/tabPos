@@ -109,7 +109,7 @@ export function MerchantPasscode({ route }) {
         <View style={styles.verifyContainer}>
           <Spacer space={SH(25)} />
 
-          <Text style={styles.heading}>Verify your phone {'\n'} number</Text>
+          <Text style={styles.heading}>Let’s Verify your phone {'\n'} number</Text>
           <Spacer space={SH(10)} />
           <Text style={styles.subHeading}>{strings.passcode.heading}</Text>
 

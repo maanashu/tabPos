@@ -8,6 +8,8 @@ import {
   FlatList,
   ScrollView,
   StyleSheet,
+  ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
@@ -31,6 +33,8 @@ import { digits } from '@/utils/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useRef } from 'react';
 import { Images } from '@/assets/new_icon';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 const windowWidth = Dimensions.get('window').width;
 
 export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
@@ -66,6 +70,9 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
     const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
+  const isLoadingTimeSlot = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_TIME_SLOTS], state)
+  );
 
   const renderWeekItem = ({ item, index }) => (
     <TouchableOpacity
@@ -188,164 +195,171 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
 
   return (
     <KeyboardAwareScrollView
-      contentContainerStyle={{ paddingBottom: ms(30) }}
+      contentContainerStyle={{ flex: Platform.OS === 'android' ? 0 : 1, justifyContent: 'center' }}
       showsVerticalScrollIndicator={false}
-      style={comeFrom === 'product' ? styles.customProductCon : [styles.customProductCon]}
     >
-      <View style={styles.headerConCustomProduct}>
-        <Image source={Images.addProduct} style={styles.plusIcon} />
-        <Text style={styles.addManually}>Add New Product {'\n'} Manually</Text>
-      </View>
-      <TextInput
-        placeholder={comeFrom == 'product' ? 'Product Name' : 'Service Name'}
-        style={styles.productNameInput}
-        placeholderTextColor={COLORS.placeHoldeText}
-        value={productName}
-        onChangeText={setProductName}
-      />
-      <Spacer space={SH(15)} />
-      <View style={styles.dollarAddCon}>
-        <Image source={dollar} style={styles.dollar} />
-        <TextInput
-          placeholder="0.00"
-          style={styles.dollarInput}
-          placeholderTextColor={COLORS.placeHoldeText}
-          keyboardType="number-pad"
-          value={amount}
-          onChangeText={setAmount}
-        />
-        <Text style={styles.usd}>USD</Text>
-      </View>
-      <Spacer space={SH(15)} />
-      {comeFrom == 'product' ? (
-        <View style={[styles.upcInputContainer]}>
-          <TextInput
-            placeholder="UPC Code"
-            style={styles.upcInput}
-            placeholderTextColor={COLORS.placeHoldeText}
-            value={upcCode}
-            onChangeText={setUpcCode}
-            keyboardType="number-pad"
-            ref={textInputRef}
-          />
-          <TouchableOpacity onPress={() => textInputRef.current.focus()}>
-            <Image source={scn} style={styles.scnStyle} />
-          </TouchableOpacity>
+      <View style={comeFrom === 'product' ? styles.customProductCon : [styles.customProductCon]}>
+        <View style={styles.headerConCustomProduct}>
+          <Image source={Images.addProduct} style={styles.plusIcon} />
+          <Text style={styles.addManually}>Add New Product {'\n'} Manually</Text>
         </View>
-      ) : null}
-      <Spacer space={SH(15)} />
-      <View style={styles.addNotesCon}>
-        <Image source={Images.addNotesIcon} style={styles.dollar} />
         <TextInput
-          placeholder="Add Notes"
-          style={styles.dollarInput}
+          placeholder={comeFrom == 'product' ? 'Product Name' : 'Service Name'}
+          style={styles.productNameInput}
           placeholderTextColor={COLORS.placeHoldeText}
-          value={notes}
-          onChangeText={setNotes}
+          value={productName}
+          onChangeText={setProductName}
         />
-      </View>
-      <Spacer space={SH(15)} />
-      {comeFrom == 'product' ? (
-        <View style={styles.countingmainCon}>
-          <View style={styles.counterMainCon}>
-            <TouchableOpacity
-              onPress={() => setCount(count - 1)}
-              disabled={count == 1 ? true : false}
-              style={styles.minusCon}
-            >
-              <Image source={minus} style={styles.plusButton} />
+        <Spacer space={SH(15)} />
+        <View style={styles.dollarAddCon}>
+          <Image source={dollar} style={styles.dollar} />
+          <TextInput
+            placeholder="0.00"
+            style={styles.dollarInput}
+            placeholderTextColor={COLORS.placeHoldeText}
+            keyboardType="number-pad"
+            value={amount}
+            onChangeText={setAmount}
+          />
+          <Text style={styles.usd}>USD</Text>
+        </View>
+        <Spacer space={SH(15)} />
+        {comeFrom == 'product' ? (
+          <View style={[styles.upcInputContainer]}>
+            <TextInput
+              placeholder="UPC Code"
+              style={styles.upcInput}
+              placeholderTextColor={COLORS.placeHoldeText}
+              value={upcCode}
+              onChangeText={setUpcCode}
+              keyboardType="number-pad"
+              ref={textInputRef}
+            />
+            <TouchableOpacity onPress={() => textInputRef.current.focus()}>
+              <Image source={Images.homeScan} style={styles.scnStyle} />
             </TouchableOpacity>
-            <View style={styles.oneCon}>
-              <Text style={styles.zeroText}>{count}</Text>
+          </View>
+        ) : null}
+        <Spacer space={SH(15)} />
+        <View style={styles.addNotesCon}>
+          <Image source={Images.addNotesIcon} style={styles.dollar} />
+          <TextInput
+            placeholder="Add Notes"
+            style={styles.dollarInput}
+            placeholderTextColor={COLORS.placeHoldeText}
+            value={notes}
+            onChangeText={setNotes}
+          />
+        </View>
+        <Spacer space={SH(15)} />
+        {comeFrom == 'product' ? (
+          <View style={styles.countingmainCon}>
+            <View style={styles.counterMainCon}>
+              <TouchableOpacity
+                onPress={() => setCount(count - 1)}
+                disabled={count == 1 ? true : false}
+                style={styles.minusCon}
+              >
+                <Image source={minus} style={styles.plusButton} />
+              </TouchableOpacity>
+              <View style={styles.oneCon}>
+                <Text style={styles.zeroText}>{count}</Text>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => setCount(count + 1)}
+                style={styles.minusCon}
+                disabled={comeFrom == 'product' ? false : true}
+              >
+                <Image source={plus} style={styles.plusButton} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 10,
+              }}
+            >
+              <MonthYearPicker
+                dateType={DATE_TYPE.MONTH}
+                placeholder={'Select Month'}
+                containerStyle={{ marginRight: 10 }}
+                defaultValue={moment().month() + 1}
+                defaultYear={selectedYearData?.value ?? moment().year()}
+                onSelect={(monthData) => {
+                  setselectedMonthData(monthData);
+                }}
+              />
+              <MonthYearPicker
+                dateType={DATE_TYPE.YEAR}
+                placeholder={'Select Year'}
+                defaultValue={moment().year()}
+                onSelect={(yearData) => {
+                  setselectedYearData(yearData);
+                }}
+              />
             </View>
 
-            <TouchableOpacity
-              onPress={() => setCount(count + 1)}
-              style={styles.minusCon}
-              disabled={comeFrom == 'product' ? false : true}
+            <View
+              style={{
+                marginTop: SH(10),
+                borderWidth: 1,
+                borderColor: COLORS.solidGrey,
+                width: '100%',
+                borderRadius: ms(5),
+              }}
             >
-              <Image source={plus} style={styles.plusButton} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      ) : (
-        <View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 10,
-            }}
-          >
-            <MonthYearPicker
-              dateType={DATE_TYPE.MONTH}
-              placeholder={'Select Month'}
-              containerStyle={{ marginRight: 10 }}
-              defaultValue={moment().month() + 1}
-              defaultYear={selectedYearData?.value ?? moment().year()}
-              onSelect={(monthData) => {
-                setselectedMonthData(monthData);
-              }}
-            />
-            <MonthYearPicker
-              dateType={DATE_TYPE.YEAR}
-              placeholder={'Select Year'}
-              defaultValue={moment().year()}
-              onSelect={(yearData) => {
-                setselectedYearData(yearData);
-              }}
-            />
-          </View>
+              <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
 
-          <View
-            style={{
-              marginTop: SH(10),
-              borderWidth: 1,
-              borderColor: COLORS.solidGrey,
-              width: '100%',
-              borderRadius: ms(5),
-            }}
-          >
-            <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
-
-            <FlatList
-              data={timeSlotsData || []}
-              numColumns={4}
-              renderItem={renderSlotItem}
-              ListEmptyComponent={() => (
-                <View
-                  style={{
-                    height: ms(50),
-                    paddingHorizontal: ms(10),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
-                    There are no slots available for this day
-                  </Text>
+              {isLoadingTimeSlot ? (
+                <View style={{ paddingVertical: ms(25) }}>
+                  <ActivityIndicator size={'large'} color={COLORS.navy_blue} />
                 </View>
+              ) : (
+                <FlatList
+                  data={timeSlotsData || []}
+                  numColumns={4}
+                  renderItem={renderSlotItem}
+                  ListEmptyComponent={() => (
+                    <View
+                      style={{
+                        height: ms(50),
+                        paddingHorizontal: ms(10),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
+                        There are no slots available for this day
+                      </Text>
+                    </View>
+                  )}
+                />
               )}
-            />
+            </View>
           </View>
-        </View>
-      )}
+        )}
 
-      <Spacer space={SH(20)} />
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <TouchableOpacity style={styles.cancelButtonCon} onPress={crossHandler}>
-          <Text style={styles.cancelText}>{'Cancel'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.addToCartButtonCon} onPress={() => customProduct()}>
-          <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add To Cart'}</Text>
-          <Image source={Images.addProduct} style={styles.plusIconAdd} />
-        </TouchableOpacity>
+        <Spacer space={SH(20)} />
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <TouchableOpacity style={styles.cancelButtonCon} onPress={crossHandler}>
+            <Text style={styles.cancelText}>{'Cancel'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.addToCartButtonCon} onPress={() => customProduct()}>
+            <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add To Cart'}</Text>
+            <Image source={Images.addProduct} style={styles.plusIconAdd} />
+          </TouchableOpacity>
+        </View>
       </View>
     </KeyboardAwareScrollView>
   );
@@ -359,7 +373,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: ms(15),
     paddingVertical: ms(12),
-    paddingHorizontal: ms(30),
+    paddingHorizontal: ms(15),
   },
   headerConCustomProduct: {
     height: ms(80),
@@ -504,8 +518,8 @@ const styles = StyleSheet.create({
     fontSize: ms(10),
   },
   scnStyle: {
-    width: SW(15),
-    height: SW(16),
+    width: SW(12),
+    height: SW(12),
     resizeMode: 'contain',
     marginRight: ms(10),
   },

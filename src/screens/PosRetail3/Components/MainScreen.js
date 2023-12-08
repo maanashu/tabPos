@@ -64,6 +64,7 @@ import {
   getAllCart,
   getAllCartReset,
   addProductFrom,
+  addServiceFrom,
 } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -523,6 +524,7 @@ export function MainScreen({
     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
       // setAddServiceCartModal(true)
       addServiceScreenShow();
+      dispatch(addServiceFrom('main'));
     }
   };
 
@@ -1066,7 +1068,12 @@ export function MainScreen({
                               </Text>
                             </View>
                             <Spacer space={SH(7)} />
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
                               <Image source={Images.serviceTime} style={styles.calendarStyle} />
                               {item.supplies?.[0]?.approx_service_time == null ? (
                                 <Text numberOfLines={1} style={styles.productDes}>
@@ -1345,40 +1352,36 @@ export function MainScreen({
       <ReactNativeModal
         animationType="fade"
         transparent={true}
-        isVisible={cartModal || numPadModal}
+        isVisible={cartModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
         backdropOpacity={0.9}
         backdropColor={COLORS.row_grey}
+        onBackdropPress={() => {
+          setCartModal(false);
+        }}
+        onBackButtonPress={() => {
+          setCartModal(false);
+        }}
       >
-        {cartModal ? (
-          <CartListModal
-            cartQtyUpdate={cartQtyUpdate}
-            clearCart={eraseClearCart}
-            checkOutHandler={() => {
-              // bulkCart();
-              checkOutHandler();
-            }}
-            CloseCartModal={() => {
-              // bulkCart();
-              setCartModal(false);
-            }}
-            customAddBtn={() => {
-              bulkCart();
-              setCartModal(false);
-              setNumPadModal(true);
-              setCustomProductOpen('product');
-            }}
-          />
-        ) : (
-          // <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-          <CustomProductAdd
-            crossHandler={() => setNumPadModal(false)}
-            comeFrom={customProductOpen}
-            sellerID={sellerID}
-          />
-          // </KeyboardAvoidingView>
-        )}
+        <CartListModal
+          cartQtyUpdate={cartQtyUpdate}
+          clearCart={eraseClearCart}
+          checkOutHandler={() => {
+            // bulkCart();
+            checkOutHandler();
+          }}
+          CloseCartModal={() => {
+            // bulkCart();
+            setCartModal(false);
+          }}
+          customAddBtn={() => {
+            bulkCart();
+            setCartModal(false);
+            setNumPadModal(true);
+            setCustomProductOpen('product');
+          }}
+        />
       </ReactNativeModal>
 
       {/* cart list modal end */}
@@ -1387,25 +1390,55 @@ export function MainScreen({
       <ReactNativeModal
         animationType="fade"
         transparent={true}
-        isVisible={serviceCartModal || numPadModal}
+        isVisible={numPadModal}
+        backdropOpacity={0.9}
+        backdropColor={COLORS.row_grey}
+        onBackdropPress={() => {
+          setNumPadModal(false);
+        }}
+        onBackButtonPress={() => {
+          setNumPadModal(false);
+        }}
+      >
+        <CustomProductAdd
+          crossHandler={() => setNumPadModal(false)}
+          comeFrom={customProductOpen}
+          sellerID={sellerID}
+        />
+      </ReactNativeModal>
+
+      {/* cart list modal end */}
+
+      {/* cart list modal start */}
+      <ReactNativeModal
+        animationType="fade"
+        transparent={true}
+        isVisible={serviceCartModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        backdropOpacity={0.6}
+        backdropOpacity={0.9}
+        backdropColor={COLORS.row_grey}
+        onBackdropPress={() => {
+          setServiceCartModal(false);
+        }}
+        onBackButtonPress={() => {
+          setServiceCartModal(false);
+        }}
       >
-        {serviceCartModal ? (
-          <ServiceCartListModal
-            clearCart={() => {
-              dispatch(clearServiceAllCart()), setServiceCartModal(false);
-            }}
-            checkOutHandler={checkOutServiceHandler}
-            CloseCartModal={() => setServiceCartModal(false)}
-            customAddBtn={() => {
-              setServiceCartModal(false);
-              setNumPadModal(true);
-              setCustomProductOpen('service');
-            }}
-          />
-        ) : (
+        {/* {serviceCartModal ? ( */}
+        <ServiceCartListModal
+          clearCart={() => {
+            dispatch(clearServiceAllCart()), setServiceCartModal(false);
+          }}
+          checkOutHandler={checkOutServiceHandler}
+          CloseCartModal={() => setServiceCartModal(false)}
+          customAddBtn={() => {
+            setServiceCartModal(false);
+            setNumPadModal(true);
+            setCustomProductOpen('service');
+          }}
+        />
+        {/* ) : (
           <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
             <CustomProductAdd
               crossHandler={() => setNumPadModal(false)}
@@ -1413,7 +1446,7 @@ export function MainScreen({
               sellerID={sellerID}
             />
           </KeyboardAvoidingView>
-        )}
+        )} */}
       </ReactNativeModal>
 
       {/* cart list modal end */}

@@ -67,8 +67,6 @@ export function Shipping() {
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
 
-  console.log('sdjklsadas', ordersList?.length);
-
   useFocusEffect(
     React.useCallback(() => {
       dispatch(orderStatusCount());

@@ -8,11 +8,17 @@ const windowHeight = Dimensions.get('window').height;
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
+    marginVertical: ms(5),
+    borderRadius: ms(10),
+    marginRight: ms(10),
   },
   bgWhitecontainer: {
     flex: 1,
     backgroundColor: COLORS.white,
+    marginVertical: ms(15),
+    borderRadius: ms(10),
+    marginRight: ms(10),
   },
   containerWhite: {
     flex: 1,
@@ -28,11 +34,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerMainView: {
-    width: windowWidth,
-    paddingHorizontal: SW(16),
-    alignSelf: 'center',
+    // width: windowWidth,
+    paddingHorizontal: ms(16),
+    // alignSelf: 'center',
     justifyContent: 'space-between',
-    paddingVertical: SH(18),
+    paddingVertical: ms(10),
     flexDirection: 'row',
   },
   headerMianViewbottomRow: {
@@ -49,28 +55,47 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   truckStyle: {
-    width: SH(28),
-    height: SH(28),
+    width: ms(28),
+    height: ms(28),
     resizeMode: 'contain',
   },
+  userStyle: {
+    width: ms(15),
+    height: ms(15),
+    resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
+  },
   deliveryText: {
-    fontFamily: Fonts.MaisonRegular,
-    color: COLORS.solid_grey,
-    fontSize: ms(10),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
+    fontSize: ms(14),
     paddingLeft: SW(2),
   },
   searchView: {
-    height: SH(45),
-    borderRadius: ms(4),
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 10,
-    backgroundColor: COLORS.white,
+    // height: SH(45),
+    // borderRadius: ms(15),
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // paddingLeft: 10,
+    // borderWidth: 1,
+    // borderColor: COLORS.row_grey,
+    // marginRight: ms(5),
   },
   searchImage: {
-    width: SH(20),
-    height: SH(20),
+    width: ms(14),
+    height: ms(14),
     resizeMode: 'contain',
+  },
+  searchContainer: {
+    marginVertical: ms(10),
+    flexDirection: 'row',
+    height: SH(45),
+    borderRadius: ms(15),
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: ms(10),
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
   },
   textInputStyles: {
     height: ms(45),
@@ -82,20 +107,20 @@ export const styles = StyleSheet.create({
     margin: 0,
   },
   scnStyle: {
-    width: SW(13),
-    height: SW(14),
+    width: ms(13),
+    height: ms(14),
     resizeMode: 'contain',
   },
   walletHomeBodyCon: {
     // height: windowHeight * 0.915,
     flex: 1,
-    marginRight: ms(10),
+    marginHorizontal: ms(5),
     backgroundColor: COLORS.white,
     borderRadius: ms(20),
     marginTop: ms(3),
     marginBottom: ms(4),
     paddingHorizontal: ms(10),
-    paddingVertical: ms(12),
+    paddingVertical: ms(15),
   },
   trancationHeading: {
     fontFamily: Fonts.SemiBold,
@@ -111,36 +136,33 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  calendarStyle: {
-    width: SW(6),
-    height: SW(6),
-    resizeMode: 'contain',
-    tintColor: COLORS.darkGray,
-  },
   custometrCon: {
-    width: Platform.OS === 'android' ? ms(175) : ms(135),
-    height: SH(120),
+    width: Platform.OS === 'android' ? ms(165) : ms(130),
+    // height: ms(94),
     borderRadius: 10,
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.white,
     // justifyContent: 'center',
     // alignItems: 'center',
-    paddingLeft: ms(10),
-    paddingVertical: ms(8),
+    // marginHorizontal: ms(5),
+    paddingHorizontal: ms(15),
+    paddingVertical: ms(10),
+    // flex: 1,
   },
   contentContainerStyle: {
-    marginTop: ms(15),
+    // marginTop: ms(15),
     flex: 1,
     justifyContent: 'space-between',
   },
   newCustomer: {
-    width: SH(36),
-    height: SH(36),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
   },
   customerCount: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
     fontSize: ms(12),
+    marginTop: ms(10),
   },
   newCustomerHeading: {
     fontFamily: Fonts.Regular,
@@ -158,7 +180,7 @@ export const styles = StyleSheet.create({
   },
   viewAll: {
     fontFamily: Fonts.Regular,
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SF(14),
   },
   transactions: {
@@ -169,14 +191,6 @@ export const styles = StyleSheet.create({
 
   //wallet 1 style
 
-  headerMainView: {
-    width: windowWidth,
-    paddingHorizontal: SW(16),
-    alignSelf: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: SH(18),
-    flexDirection: 'row',
-  },
   backView: {
     width: SW(25),
     height: SW(12),
@@ -196,47 +210,12 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     paddingRight: 10,
   },
-  deliveryView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  deliveryText: {
-    fontFamily: Fonts.MaisonRegular,
-    color: COLORS.solid_grey,
-    fontSize: SF(18),
-    paddingLeft: SW(4),
-  },
-  truckStyle: {
-    width: SH(28),
-    height: SH(28),
+  walletIcon: {
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
   },
-  // searchView: {
-  //   // borderWidth: 1,
-  //   // width: SW(65),
-  //   height: SH(38),
-  //   // borderRadius: 30,
-  //   borderColor: COLORS.row_grey,
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   paddingLeft: 10,
-  //   backgroundColor: COLORS.white,
-  // },
-  searchImage: {
-    width: SH(20),
-    height: SH(20),
-    resizeMode: 'contain',
-  },
-  // textInputStyles: {
-  //   width: SW(75),
-  //   // marginLeft: 10,
-  //   fontFamily: Fonts.Italic,
-  //   // borderWidth: 3,
-  //   fontSize: SF(15),
-  //   paddingLeft: 5,
-  //   padding: 0,
-  //   right: 0,
-  // },
   walletMainCon: {
     backgroundColor: COLORS.textInputBackground,
     borderRadius: 10,
@@ -251,12 +230,14 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(12),
   },
   allTypeCon: {
-    backgroundColor: COLORS.textInputBackground,
-    justifyContent: 'center',
-    paddingHorizontal: moderateScale(12),
+    // backgroundColor: COLORS.textInputBackground,
+    justifyContent: 'space-between',
+    paddingLeft: ms(10),
+    flexDirection: 'row',
+    paddingRight: ms(10),
   },
   byDayCon: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     borderRadius: 3,
     marginHorizontal: moderateScale(3),
   },
@@ -280,17 +261,17 @@ export const styles = StyleSheet.create({
   },
   transationPrice: {
     fontFamily: Fonts.SemiBold,
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SF(34),
   },
   trancationHeading: {
     fontFamily: Fonts.MaisonBold,
-    color: COLORS.black,
+    color: COLORS.navy_blue,
     fontSize: SF(18),
   },
   totalTranStyle: {
     fontFamily: Fonts.MaisonBold,
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SF(18),
   },
   jbrCoinCon: {
@@ -343,10 +324,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   backButtonArrow: {
-    width: SW(12),
-    height: SW(8),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
-    tintColor: COLORS.dark_grey,
+    tintColor: COLORS.navy_blue,
   },
   backTextStyle: {
     color: COLORS.dark_grey,
@@ -360,39 +341,43 @@ export const styles = StyleSheet.create({
     fontSize: SF(18),
   },
   jbrTypeCon: {
-    backgroundColor: COLORS.textInputBackground,
-    height: SH(55),
+    // backgroundColor: COLORS.textInputBackground,
+    // height: SH(55),
     justifyContent: 'center',
-    paddingHorizontal: moderateScale(8),
+    paddingHorizontal: moderateScale(0),
+    // position: 'absolute',
+    // top: 0,
+    // right: 0,
   },
   allJbrCon: {
     borderWidth: 1,
-    height: SH(35),
-    width: SW(30),
+    height: ms(20),
+    width: ms(44),
     borderRadius: 7,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: moderateScale(4),
     marginVertical: verticalScale(4),
+    borderRadius: ms(15),
+    marginRight: ms(5),
+    // paddingVertical: ms(5),
+    // paddingHorizontal: ms(8),
   },
   allJbrConBluish: {
-    borderColor: COLORS.primary,
+    borderColor: COLORS.navy_blue,
   },
   allJbrText: {
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
+    textAlign: 'center',
   },
   allJbrTextbluish: {
     fontFamily: Fonts.SemiBold,
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
   },
   orderTypeCon: {
     height: SH(55),
     justifyContent: 'center',
     paddingHorizontal: moderateScale(12),
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderColor: COLORS.solidGrey,
   },
   datePickerCon: {
     borderWidth: 1,
@@ -406,10 +391,10 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   calendarStyle: {
-    width: SW(5),
-    height: SW(5),
+    width: ms(15),
+    height: ms(15),
     resizeMode: 'contain',
-    alignSelf: 'center',
+    tintColor: COLORS.navy_blue,
   },
   datePlaceholder: {
     fontFamily: Fonts.Regular,
@@ -466,11 +451,11 @@ export const styles = StyleSheet.create({
   },
   dropDownContainerStyle: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.transparent,
     borderRadius: 7,
     ...ShadowStyles.shadow,
     backgroundColor: COLORS.white,
-    top: Platform.OS === 'android' ? 30 : 32,
+    top: Platform.OS === 'android' ? 30 : 35,
     zIndex: Platform.OS === 'ios' ? 100 : 1,
   },
   placeholderStyle: {
@@ -484,12 +469,12 @@ export const styles = StyleSheet.create({
     color: COLORS.black,
   },
   containerStylePagination: {
-    width: SW(25),
+    width: ms(35),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,
-    borderRadius: 3,
-    borderColor: COLORS.solidGrey,
+    borderRadius: ms(5),
+    borderColor: COLORS.light_purple,
     backgroundColor: COLORS.white,
     color: COLORS.solidGrey,
   },
@@ -497,14 +482,15 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.washGrey,
     height: SH(40),
     justifyContent: 'center',
-    borderRadius: 4,
+    borderRadius: ms(5),
+    marginRight: ms(2),
   },
   jbrListCon: {
     borderBottomWidth: 1,
     borderColor: COLORS.solidGrey,
   },
   unionConWhite: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.sky_grey,
     height: SH(40),
     justifyContent: 'center',
     borderRadius: 4,
@@ -516,10 +502,11 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(12),
   },
   paginationCount: {
-    fontSize: SF(14),
-    fontFamily: Fonts.Regular,
-    color: COLORS.black,
-    paddingHorizontal: moderateScale(12),
+    fontSize: ms(7),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
+    marginRight: ms(3),
+    marginLeft: ms(7),
   },
   head: {
     height: SH(50),
@@ -605,7 +592,7 @@ export const styles = StyleSheet.create({
   },
   jfrText: {
     fontSize: SF(16),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
   },
   boxText: {
@@ -628,11 +615,6 @@ export const styles = StyleSheet.create({
     height: SW(11),
     resizeMode: 'contain',
     borderRadius: 50,
-  },
-  leftBackStyle: {
-    width: SW(8),
-    height: SW(8),
-    resizeMode: 'contain',
   },
   orderNoStyle: {
     fontSize: SF(20),
@@ -661,7 +643,7 @@ export const styles = StyleSheet.create({
   },
   rewardPointStyle: {
     fontSize: SF(16),
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
   },
   onexstyle: {
@@ -691,7 +673,7 @@ export const styles = StyleSheet.create({
   darkPricestyle: {
     fontSize: SF(26),
     fontFamily: Fonts.SemiBold,
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
   },
   payDoneText: {
     fontSize: SF(14),
@@ -701,7 +683,7 @@ export const styles = StyleSheet.create({
   jbrWalllettext: {
     fontSize: SF(14),
     fontFamily: Fonts.Regular,
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     alignSelf: 'center',
   },
   viaText: {
@@ -739,7 +721,7 @@ export const styles = StyleSheet.create({
   customerHeading: {
     fontSize: SF(18),
     fontFamily: Fonts.MaisonBold,
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
   },
   cusAddText: {
     fontSize: SF(14),
@@ -787,7 +769,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     width: SW(107),
     alignSelf: 'center',
     borderRadius: 5,
@@ -888,7 +870,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
   },
   pointCon: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     borderBottomLeftRadius: 20,
     position: 'absolute',
     top: -1,
@@ -957,7 +939,7 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.MaisonRegular,
   },
   paidContainer: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.navy_blue,
     borderRadius: 3,
     marginHorizontal: moderateScale(5),
   },
@@ -1052,10 +1034,7 @@ export const styles = StyleSheet.create({
 
   tableDataHeaderCon: {
     height: SH(50),
-    backgroundColor: COLORS.textInputBackground,
     textAlign: 'center',
-    borderTopWidth: 1,
-    borderColor: COLORS.solidGrey,
     paddingHorizontal: moderateScale(10),
     justifyContent: 'center',
     alignItems: 'center',
@@ -1064,19 +1043,20 @@ export const styles = StyleSheet.create({
   },
   tableHeaderLeft: {
     flexDirection: 'row',
-    width: windowWidth / 7.5,
+    width: windowWidth / 9,
+    alignItems: 'center',
   },
   tableHeaderRight: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: windowWidth * 0.75,
+    width: Platform.OS === 'android' ? windowWidth * 0.74 : windowWidth * 0.7,
     alignContent: 'center',
     alignItems: 'center',
 
     // paddingRight: Platform.OS === 'ios' ? 40 : 0,
   },
   tableTextHea: {
-    color: COLORS.dark_grey,
+    color: COLORS.lavender,
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(13),
     letterSpacing: -1,
@@ -1102,7 +1082,7 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    width: windowWidth / 8,
+    width: windowWidth / 7,
     marginTop: SF(2),
   },
   tableTextDataCom: {
@@ -1112,7 +1092,7 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
   },
   tableTextHeaFirst: {
-    color: COLORS.dark_grey,
+    color: COLORS.lavender,
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(14),
     letterSpacing: -1,
@@ -1144,13 +1124,16 @@ export const styles = StyleSheet.create({
     borderRadius: 50,
   },
   tableDataCon: {
-    height: SH(55),
-    borderBottomWidth: 1,
-    borderColor: COLORS.solidGrey,
+    // height: SH(55),
+    borderWidth: ms(1),
+    borderColor: COLORS.light_purple,
     justifyContent: 'center',
-
+    paddingHorizontal: ms(12),
+    marginVertical: ms(5),
+    borderRadius: ms(25),
+    marginHorizontal: ms(12),
+    paddingVertical: ms(5),
     alignItems: 'center',
-    paddingHorizontal: moderateScale(20),
   },
   indicatorstyle: {
     // borderWidth:1,
@@ -1162,11 +1145,6 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: COLORS.solidGrey,
     paddingVertical: verticalScale(5),
-  },
-  leftBackStyle: {
-    width: SW(9),
-    height: SW(9),
-    resizeMode: 'contain',
   },
   orderNoStyle: {
     fontSize: SF(20),
@@ -1252,7 +1230,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   detailText: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
     paddingHorizontal: moderateScale(10),
@@ -1389,7 +1367,7 @@ export const styles = StyleSheet.create({
     ...ShadowStyles.shadow,
   },
   userNotFound: {
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.MaisonRegular,
     fontSize: SF(20),
     alignSelf: 'center',
@@ -1399,7 +1377,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   tableHeight: {
-    height: windowHeight * 0.53,
+    height: windowHeight * 0.72,
   },
 
   //Date Picker style
@@ -1420,12 +1398,6 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     paddingHorizontal: moderateScale(7),
     justifyContent: 'center',
-  },
-  calendarStyle: {
-    width: SW(5),
-    height: SW(5),
-    resizeMode: 'contain',
-    tintColor: COLORS.darkGray,
   },
   datePlaceholder: {
     fontFamily: Fonts.Regular,
@@ -1476,14 +1448,12 @@ export const styles = StyleSheet.create({
   headerView: {
     flexDirection: 'row',
     // padding: SW(2),
-    height: SH(28),
-    paddingHorizontal: ms(3),
+    // height: SH(28),
+    padding: ms(8),
     alignItems: 'center',
-    backgroundColor: COLORS.white,
-    marginHorizontal: SW(5),
-    borderRadius: 3,
-    borderColor: COLORS.gerySkies,
-    borderWidth: 1,
+    backgroundColor: COLORS.sky_grey,
+    marginLeft: ms(10),
+    borderRadius: ms(20),
   },
   dateText: {
     fontFamily: Fonts.Regular,

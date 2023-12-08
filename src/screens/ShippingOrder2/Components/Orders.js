@@ -88,18 +88,21 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
               {item?.shipping_details?.title}
               {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
             </Text>
-            <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
+            {/* <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
               <Image source={thunder} style={[styles.pinImageStyle]} />
               <Text style={[styles.distanceTextStyle, { color: COLORS.dark_yellow }]}>
                 {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
                   item?.preffered_delivery_end_time ?? '00.00'
                 }`}
               </Text>
-            </View>
+            </View> */}
           </View>
         </View>
 
-        <TouchableOpacity style={[styles.orderDetailStyle, { width: SH(24) }]}>
+        <TouchableOpacity
+          onPress={() => onViewAllHandler(item.id)}
+          style={[styles.orderDetailStyle, { width: SH(24) }]}
+        >
           <Image
             source={arrowRightTop}
             style={{ height: ms(13), width: ms(13), tintColor: COLORS.primaryDark }}
@@ -167,7 +170,7 @@ export default memo(Orders);
 const styles = StyleSheet.create({
   orderRowStyle: {
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 10,
     height: SH(65),
     marginVertical: 10,
     flexDirection: 'row',
@@ -215,12 +218,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   orderToReviewView: {
-    borderRadius: ms(20),
+    borderRadius: ms(10),
     backgroundColor: COLORS.white,
     // height: height / 2.35,
-    paddingBottom: ms(10),
-    flex: 0.48,
-    marginBottom: ms(10),
+    // paddingBottom: ms(10),
+    flex: 0.495,
+    // marginBottom: ms(10),
   },
   headingRowStyle: {
     flexDirection: 'row',

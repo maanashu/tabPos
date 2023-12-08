@@ -13,9 +13,11 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   leftMainViewStyle: {
-    flex: 0.28,
-    marginRight: SH(15),
+    flex: 0.24,
     justifyContent: 'space-between',
+  },
+  gapView: {
+    flex: 0.011,
   },
   todayShippingViewStyle: {
     flex: 0.2,
@@ -25,12 +27,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   orderConversionViewStyle: {
-    flex: 0.5,
+    flex: 0.4,
   },
   centerMainViewStyle: {
     flex: 0.64,
     justifyContent: 'space-between',
-    marginRight: 15,
   },
   centerDividerViewStyle: {
     flex: 1,
@@ -41,25 +42,27 @@ const styles = StyleSheet.create({
     flex: 0.45,
   },
   drawerMainViewStyle: {
-    flex: 0.07,
+    flex: 0.06,
     marginTop: SH(15),
   },
   centerViewStyle: {
     flexDirection: 'row',
     flex: 1,
-    paddingBottom: ms(10),
+    // paddingBottom: ms(10),
+
+    justifyContent: 'space-evenly',
   },
   orderListMainView: {
     flex: 0.45,
     marginTop: SH(15),
-    marginHorizontal: SH(15),
+    // marginHorizontal: SH(15),
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   orderDetailMainView: {
-    flex: 0.47,
+    flex: 0.45,
     marginTop: SH(15),
-    marginRight: SH(15),
+    // marginRight: SH(15),
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -79,6 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+
     // justifyContent: 'space-between',
   },
 
@@ -292,7 +296,7 @@ const styles = StyleSheet.create({
     paddingLeft: SW(6),
   },
   backView: {
-    marginTop: 10,
+    marginTop: 20,
     marginLeft: 18,
     width: ms(60),
     borderRadius: 5,
@@ -311,7 +315,7 @@ const styles = StyleSheet.create({
   },
   orderDetailView: {
     backgroundColor: COLORS.white,
-    borderRadius: ms(20),
+    borderRadius: ms(10),
     flex: 1,
   },
   userDetailView: {
@@ -343,7 +347,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   userNameView: {
-    paddingLeft: 10,
+    justifyContent: 'center',
+    // paddingLeft: 10,
   },
   orderproductView: {
     borderWidth: 1,
@@ -378,7 +383,7 @@ const styles = StyleSheet.create({
     color: COLORS.textBlue,
   },
   acceptButtonView: {
-    height: SH(48),
+    height: SH(45),
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 100,
@@ -395,7 +400,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   declineButtonStyle: {
-    height: SH(48),
+    height: SH(45),
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1.5,

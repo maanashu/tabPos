@@ -25,13 +25,13 @@ export const styles = StyleSheet.create({
   totalProductCon: {
     backgroundColor: COLORS.white,
     // width: Platform.OS === 'android' ? SW(300) : SW(400),
-    width: Platform.OS === 'android' ? windowWidth * 0.268 : windowWidth * 0.264,
-    height: Platform.OS === 'android' ? windowHeight * 0.29 : windowHeight * 0.28,
+    width: Platform.OS === 'android' ? windowWidth * 0.268 : windowWidth * 0.265,
+    height: Platform.OS === 'android' ? windowHeight * 0.29 : windowHeight * 0.285,
     resizeMode: 'contain',
     // ...ShadowStyles.shadow2,
     borderRadius: 10,
     paddingHorizontal: moderateScale(10),
-    marginHorizontal: moderateScale(5),
+    marginRight: ms(6),
     marginVertical: verticalScale(2),
     marginTop: Platform.OS === 'android' ? verticalScale(4.5) : verticalScale(6),
   },
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: ms(30),
     width: windowWidth * 0.06,
-    height: Platform.OS === 'ios' ? windowHeight * 0.875 : windowHeight - ms(120),
+    height: windowHeight - ms(120),
     paddingVertical: verticalScale(6),
     alignItems: 'center',
     // alignSelf: 'center',
@@ -198,7 +198,7 @@ export const styles = StyleSheet.create({
     width: ms(70),
   },
   tableHeaderView: {
-    height: Platform.OS === 'ios' ? ms(80) : ms(80),
+    height: ms(80),
     justifyContent: 'center',
     width: ms(70),
   },
@@ -320,15 +320,15 @@ export const styles = StyleSheet.create({
     // marginLeft: ms(5),
   },
   bullets: {
-    height: SH(7),
-    width: SH(7),
-    borderRadius: SW(7),
+    height: ms(4),
+    width: ms(4),
+    borderRadius: ms(7),
     backgroundColor: COLORS.navy_blue,
-    marginRight: ms(3),
+    marginRight: ms(2),
   },
   bulletText: {
     color: COLORS.darkBlue,
-    fontSize: SF(12),
+    fontSize: ms(5),
     // marginRight: SW(5),
   },
   listLoader: {
@@ -341,7 +341,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   listView: {
-    // height: Platform.OS === 'ios' ? ms(202) : ms(288),
+    height: Platform.OS === 'ios' ? ms(265) : ms(288),
     // width:
     //   Platform.OS === 'ios'
     //     ? Dimensions.get('window').width - ms(80)
@@ -386,7 +386,7 @@ export const styles = StyleSheet.create({
     marginRight: ms(5),
     borderRadius: ms(10),
     flex: 1,
-    paddingHorizontal: ms(12),
+    paddingHorizontal: ms(10),
     paddingVertical: ms(10),
   },
   imageStyle: {
@@ -423,12 +423,13 @@ export const styles = StyleSheet.create({
     borderRadius: SW(5),
   },
   calendarView: {
-    position: 'absolute',
-    right: ms(0),
-    top: ms(10),
+    // position: 'absolute',
+    // right: ms(0),
+    // top: ms(5),
     height: ms(20),
     alignItems: 'center',
     flexDirection: 'row',
+    marginRight: ms(48),
   },
   reviewView: {
     borderColor: COLORS.light_blue2,

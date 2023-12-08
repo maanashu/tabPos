@@ -11,12 +11,17 @@ export const KeyPadButton = ({ value, onPress }) => {
 
     return (
       <TouchableOpacity
-        style={[styles.keyPadButton, { backgroundColor: '#E1E3E4' }]}
+        style={[styles.keyPadButton, { backgroundColor: COLORS.sky_grey }]}
         onPress={() => onPress(value)}
       >
         <Image
           source={imageSource}
-          style={{ resizeMode: 'contain', height: SH(20), width: SH(20) }}
+          style={{
+            resizeMode: 'contain',
+            height: SH(17),
+            width: SH(17),
+            tintColor: COLORS.navy_blue,
+          }}
         />
       </TouchableOpacity>
     );
@@ -35,7 +40,7 @@ const styles = StyleSheet.create({
     height: SH(60),
     width: SH(60),
     borderRadius: SH(30),
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
     justifyContent: 'center',
     alignItems: 'center',
     margin: SH(20),
@@ -44,6 +49,6 @@ const styles = StyleSheet.create({
   keyPadText: {
     fontSize: SH(28),
     fontFamily: Fonts.Medium,
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
   },
 });

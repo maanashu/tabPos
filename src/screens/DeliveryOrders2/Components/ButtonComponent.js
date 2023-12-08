@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ActivityIndicator } fr
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
-import { Fonts, PickupRight } from '@/assets';
+import { arrowRightTop, Fonts, PickupRight } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import { TYPES } from '@/Types/AnalyticsTypes';
@@ -31,27 +31,83 @@ const ButtonComponent = ({ selected, orderData, declineHandler, acceptHandler, t
       {(selected === '0' || selected === '1' || selected === '2') && (
         <TouchableOpacity
           onPress={() => acceptHandler(orderData?.id)}
-          style={styles.acceptButtonView}
+          style={[
+            styles.acceptButtonView,
+            {
+              backgroundColor: selected == '2' ? COLORS.sky_blue : COLORS.navy_blue,
+            },
+          ]}
         >
-          <Text style={styles.acceptTextStyle}>
-            {selected === '0'
-              ? strings.buttonStatus.reviewButton
-              : selected === '1'
-              ? strings.buttonStatus.preparedButton
-              : selected === '2'
-              ? strings.buttonStatus.prepareButton
-              : ''}
-          </Text>
-          <Image source={PickupRight} style={styles.pickUpButtonStyle} />
+          {selected == '2' ? (
+            <>
+              <Text style={[styles.acceptTextStyle, { position: 'absolute', left: ms(10) }]}>
+                {strings.buttonStatus.prepareButton}
+              </Text>
+
+              <Image
+                source={PickupRight}
+                style={[
+                  styles.pickUpButtonStyle,
+                  {
+                    width: ms(16),
+                    height: ms(16),
+                    tintColor: COLORS.white,
+                    position: 'absolute',
+                    right: ms(10),
+                  },
+                ]}
+              />
+            </>
+          ) : (
+            <>
+              <Text style={styles.acceptTextStyle}>
+                {selected === '0'
+                  ? strings.buttonStatus.reviewButton
+                  : selected === '1'
+                  ? strings.buttonStatus.preparedButton
+                  : selected === '2'
+                  ? strings.buttonStatus.prepareButton
+                  : ''}
+              </Text>
+              <Image
+                source={arrowRightTop}
+                style={[
+                  styles.pickUpButtonStyle,
+                  { width: ms(12), height: ms(12), tintColor: COLORS.sky_blue },
+                ]}
+              />
+            </>
+          )}
         </TouchableOpacity>
       )}
 
       {selected >= '3' && orderStatus !== 7 && orderStatus !== 8 && (
-        <TouchableOpacity onPress={() => trackHandler()} style={[styles.acceptButtonView]}>
+        <TouchableOpacity
+          onPress={() => trackHandler()}
+          style={[styles.acceptButtonView, { backgroundColor: COLORS.sky_blue }]}
+        >
           {isProductDetailLoading ? (
             <ActivityIndicator size={'small'} color={COLORS.white} />
           ) : (
-            <Text style={styles.acceptTextStyle}>{strings.buttonStatus.prepareButton}</Text>
+            <>
+              <Text style={[styles.acceptTextStyle, { position: 'absolute', left: ms(10) }]}>
+                {strings.buttonStatus.prepareButton}
+              </Text>
+
+              <Image
+                source={PickupRight}
+                style={[
+                  styles.pickUpButtonStyle,
+                  {
+                    width: ms(16),
+                    height: ms(16),
+                    tintColor: COLORS.white,
+                    position: 'absolute',
+                    right: ms(10),
+                  },
+                ]}
+              />
+            </>
           )}
         </TouchableOpacity>
       )}
@@ -85,36 +141,38 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   declineButtonStyle: {
-    height: SH(48),
+    height: SH(45),
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1.5,
-    borderColor: COLORS.primary,
-    borderRadius: 5,
+    borderColor: COLORS.navy_blue,
+    borderRadius: ms(30),
     paddingHorizontal: ms(12),
+    flex: 1,
   },
   declineTextStyle: {
     textAlign: 'center',
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(16),
-    color: COLORS.primary,
+    fontSize: SF(12),
+    color: COLORS.navy_blue,
   },
   acceptButtonView: {
     height: SH(45),
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: ms(100),
-    backgroundColor: COLORS.sky_blue,
+    backgroundColor: COLORS.navy_blue,
     marginLeft: 10,
     paddingHorizontal: ms(12),
     flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-between',
+    flex: 1,
+    // width: '100%',
+    // justifyContent: 'space-between',
   },
   acceptTextStyle: {
     textAlign: 'center',
     fontFamily: Fonts.SemiBold,
-    fontSize: SF(16),
+    fontSize: SF(12),
     color: COLORS.white,
   },
   pickUpButtonStyle: {

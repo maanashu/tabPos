@@ -60,7 +60,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
 
   return (
     <ScrollView style={{ flex: 1 }}>
-      <View style={styles.firstRowStyleNew}>
+      <View style={styles.firstRowStyleInvoice}>
         <View style={styles.storeDetailView}>
           <Text style={style.storeNameText}>
             {`${orderDetail?.seller_details?.organization_name}` ?? '-'}
@@ -176,7 +176,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
             style={[style._barCodeImage, { tintColor: COLORS.navy_blue }]}
           />
         </View>
-
+        <View style={{ flex: 0.02 }} />
         <View style={styles.mapMainView}>
           <MapView
             customMapStyle={mapCustomStyle}

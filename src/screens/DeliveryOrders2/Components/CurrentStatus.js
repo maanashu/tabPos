@@ -95,7 +95,7 @@ export default memo(CurrentStatus);
 
 const styles = StyleSheet.create({
   currentStatusView: {
-    flex: 1.8,
+    flex: 1,
     paddingTop: 15,
     borderRadius: ms(10),
     paddingBottom: ms(5),

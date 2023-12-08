@@ -47,11 +47,12 @@ export default memo(TodayShippingStatus);
 
 const styles = StyleSheet.create({
   shippingStatusViewStyle: {
-    borderRadius: ms(16),
+    borderRadius: ms(10),
     marginTop: SH(15),
     paddingVertical: ms(12),
     alignItems: 'flex-start',
     backgroundColor: COLORS.white,
+    flex: 1,
   },
   shippingStatusText: {
     fontSize: SF(16),

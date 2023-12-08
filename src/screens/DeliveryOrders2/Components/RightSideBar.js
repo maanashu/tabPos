@@ -113,11 +113,13 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
           style={{
             flexDirection: 'row',
             backgroundColor: COLORS.light_sky,
-            justifyContent: 'space-around',
+            // justifyContent: 'space-around',
             alignItems: 'center',
-            height: '100%',
+            height: '95%',
             borderRadius: ms(20),
             width: '90%',
+            marginBottom: ms(4),
+            paddingHorizontal: ms(6),
           }}
           onPress={handleShowMenu}
         >
@@ -130,6 +132,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               color: COLORS.navy_blue,
               fontSize: SF(14),
               fontFamily: Fonts.MaisonRegular,
+              marginLeft: ms(6),
             }}
           >
             Collapse
@@ -153,6 +156,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(4),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -179,6 +183,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              // marginVertical: ms(4),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -207,6 +212,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(4),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -235,6 +241,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
               width: '15%',
               alignItems: 'center',
               justifyContent: 'center',
+              marginVertical: ms(4),
             }}
           >
             <Image source={item?.image} style={[styles.sideBarImage]} />
@@ -259,7 +266,7 @@ const RightSideBar = ({ renderDrawer, viewAllOrder, fullDrawerPress }) => {
   const renderDrawerFull = ({ item }) => (
     <TouchableOpacity
       disabled={item?.count > 0 ? false : true}
-      style={[{ marginVertical: ms(2) }]}
+      style={[{ marginVertical: ms(3) }]}
       onPress={() =>
         // onPressDrawerHandler(item?.key)
         {
@@ -303,7 +310,7 @@ const styles = StyleSheet.create({
   rightSideView: {
     borderRadius: ms(30),
     alignItems: 'center',
-    width: width * 0.06,
+    // width: width * 0.055,
     backgroundColor: COLORS.white,
     paddingVertical: verticalScale(8),
   },
@@ -381,10 +388,10 @@ const styles = StyleSheet.create({
     color: COLORS.textBlue,
   },
   fullSideModal: {
-    width: ms(180),
+    width: ms(200),
     position: 'absolute',
     right: ms(0),
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'flex-start',
     paddingStart: ms(10),
     ...ShadowStyles.shadow,

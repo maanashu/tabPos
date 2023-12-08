@@ -29,6 +29,16 @@ import {
   blankCheckBox,
   onlinecustomer,
   returnedOrders,
+  newCalendar,
+  scanNew,
+  mark,
+  newCheck,
+  newUsers,
+  newCustomerUser,
+  newReturningCustomer,
+  onlineUser,
+  newWalkingCustomer,
+  calendarDrawer,
 } from '@/assets';
 import { DaySelector, InvoiceDetail, ScreenWrapper } from '@/components';
 import { moderateScale, ms } from 'react-native-size-matters';
@@ -60,6 +70,8 @@ import Modal from 'react-native-modal';
 import CustomerListView from './Components/CustomerListView';
 import { debounce } from 'lodash';
 import { Spacer } from '@mPOS/components';
+import CalendarPickerModal from '@/components/CalendarPickerModal';
+import moment from 'moment';
 
 export function Customers2() {
   const mapRef = useRef(null);
@@ -101,13 +113,44 @@ export function Customers2() {
   const [onlineCustomerCheck, setOnlineCustomerCheck] = useState(true);
   const [walkCustomerCheck, setWalkCustomerCheck] = useState(true);
 
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const startDate = selectedStartDate ? selectedStartDate.toString() : '';
+  const endDate = selectedEndDate ? selectedEndDate.toString() : '';
+  const startDated = moment(startDate).format('YYYY-MM-DD');
+  const endDated = moment(endDate).format('YYYY-MM-DD');
+  const [selectDate, setSelectDate] = useState('');
+  const maxDate = new Date(2030, 6, 3);
+
   const closeHandler = () => {
     setInvoiceDetail(false);
     setUserProfile(true);
   };
+  const filterHandler = () => {
+    if (time === undefined) {
+      return {
+        start_date: startDated,
+        end_date: endDated,
+      };
+    } else {
+      return {
+        filter: time,
+      };
+    }
+  };
+
+  const data = filterHandler();
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     dispatch(getCustomer(data, sellerID));
+  //   }, [selectTime, selectDate])
+  // );
 
   const onPresFun = (value) => {
-    dispatch(getCustomer(value, sellerID));
+    setSelectedStartDate('');
+    setSelectedEndDate('');
   };
 
   useEffect(() => {
@@ -117,9 +160,9 @@ export function Customers2() {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(getCustomer(time, sellerID));
+      dispatch(getCustomer(data, sellerID));
     }
-  }, [isFocused]);
+  }, [isFocused, selectTime, selectDate]);
 
   const onSearchAppoinment = (searchText) => {
     if (searchText != '') {
@@ -146,41 +189,69 @@ export function Customers2() {
     {
       customertype: 'New Customers',
       count: allCustomerObject?.newCustomer ?? 0,
-      img: newCustomer,
+      img: newCustomerUser,
       id: '1',
       type: 'new_customers',
       cID: 2,
-      color: COLORS.cream_yellow,
+      backgroundColor: COLORS.cream_yellow,
+      color: COLORS.redish_brown,
     },
     {
       customertype: 'Returning Customers',
       count: allCustomerObject?.returningCustomer ?? 0,
-      img: returnCustomer,
+      img: newReturningCustomer,
       id: '2',
       type: 'returning_customers',
       cID: 3,
-      color: COLORS.light_purple,
+      backgroundColor: COLORS.light_purple,
+      color: COLORS.navy_blue,
     },
     {
       customertype: 'Online Customers',
       count: allCustomerObject?.onlineCustomers ?? 0,
-      img: onlineCutomer,
+      img: onlineUser,
       id: '3',
       type: 'online_customers',
       cID: 4,
-      color: COLORS.light_green,
+      backgroundColor: COLORS.light_green,
+      color: COLORS.medium_green,
     },
     {
       customertype: 'Walkin Customers',
       count: allCustomerObject?.walkingCustomers ?? 0,
-      img: walkinCustomer,
+      img: newWalkingCustomer,
       id: '4',
       type: 'walkin_customers',
       cID: 5,
-      color: COLORS.light_skyblue,
+      backgroundColor: COLORS.light_skyblue,
+      color: COLORS.torquoise,
     },
   ];
+
   const onLoad = useSelector((state) => isLoadingSelector([TYPES.GET_ORDER_DATA], state));
+
+  const onDateChange = (date, type) => {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    if (type === 'END_DATE') {
+      setSelectedEndDate(formattedDate);
+    } else {
+      setSelectedStartDate(formattedDate);
+      setSelectedEndDate(null);
+    }
+  };
+  const onSelect = () => {
+    if (!selectedStartDate && !selectedEndDate) {
+      alert('Please Select Date');
+    } else if (selectedStartDate && selectedEndDate) {
+      setShowCalendarModal(false);
+      setSelectTime('');
+      setSelectId('');
+      setSelectDate(!selectDate);
+    } else {
+      alert('Please Select End Date');
+    }
+  };
+
   const onViewUser = (id, type, count) => {
     if (count == 0) {
       Toast.show({
@@ -195,6 +266,7 @@ export function Customers2() {
       setAllUsers(true);
     }
   };
+
   const bodyView = () => {
     if (userDetails) {
       return (
@@ -309,7 +381,7 @@ export function Customers2() {
         <View style={{ flex: 1 }}>
           <View style={styles.headerMainView}>
             <View style={styles.deliveryView}>
-              <Image source={users} style={[styles.truckStyle]} />
+              <Image source={newUsers} style={[styles.userStyle]} />
               <Text style={styles.deliveryText}>{'Total Customers'}</Text>
             </View>
             <View style={styles.deliveryView}>
@@ -319,11 +391,32 @@ export function Customers2() {
                 setSelectId={setSelectId}
                 setSelectTime={setSelectTime}
               />
+
+              <TouchableOpacity
+                onPress={() => setShowCalendarModal(!showCalendarModal)}
+                style={[
+                  styles.headerView,
+                  {
+                    backgroundColor: selectedStartDate ? COLORS.navy_blue : COLORS.sky_grey,
+                  },
+                ]}
+              >
+                <Image
+                  source={calendarDrawer}
+                  style={[
+                    styles.calendarStyle,
+                    {
+                      tintColor: selectedStartDate ? COLORS.sky_grey : COLORS.navy_blue,
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+
               <TouchableOpacity
                 onPress={() =>
                   navigate(NAVIGATION.notificationsList, { screen: NAVIGATION.customers2 })
                 }
-                style={{ marginHorizontal: ms(10) }}
+                style={{ marginHorizontal: ms(5) }}
               >
                 <Image source={bellDrawer} style={styles.truckStyle} />
               </TouchableOpacity>
@@ -336,28 +429,32 @@ export function Customers2() {
                 }}
               >
                 <Image source={searchDrawer} style={styles.searchImage} />
-                {/* <View
-                  style={{
-                    height: SH(40),
-                    width: SW(70),
-                    paddingLeft: 5,
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Text
-                    style={{ color: COLORS.darkGray, fontSize: ms(10), fontFamily: Fonts.Regular }}
-                  >
-                    {strings.deliveryOrders.search}
-                  </Text>
-                </View> */}
-                {/* <TextInput
-                  placeholder={strings.deliveryOrders.search}
-                  style={styles.textInputStyles}
-                  placeholderTextColor={COLORS.darkGray}
-                /> */}
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.searchView, { marginLeft: ms(10) }]}
+                onPress={() => {
+                  setShowSearchModal(true);
+                  setSearchedCustomer([]);
+                  setSearchedText('');
+                }}
+              >
+                <Image source={scanNew} style={styles.searchImage} />
               </TouchableOpacity>
             </View>
           </View>
+
+          <Text
+            style={{
+              fontSize: ms(9),
+              color: COLORS.navy_light_blue,
+              position: 'absolute',
+              top: ms(35),
+              left: ms(35),
+            }}
+          >
+            {'All the following data is gathered weekly.'}
+          </Text>
+
           <View style={styles.homeBodyCon}>
             <View>
               <FlatList
@@ -365,16 +462,22 @@ export function Customers2() {
                 extraData={newCustomerData}
                 renderItem={({ item, index }) => {
                   return (
-                    <View style={[styles.custometrCon, { backgroundColor: item.color }]}>
+                    <View style={[styles.custometrCon, { backgroundColor: item.backgroundColor }]}>
                       <TouchableOpacity
                         onPress={() => onViewUser(item.cID, item.type, item?.count)}
                         style={{ alignItems: 'flex-start' }}
                       >
-                        <Image source={item.img} style={[styles.newCustomer]} />
-                        <Spacer space={ms(10)} />
+                        <Image
+                          source={item.img}
+                          style={[styles.newCustomer, { tintColor: item?.color }]}
+                        />
 
-                        <Text style={styles.customerCount}>{item.count}</Text>
-                        <Text style={styles.newCustomerHeading}>{item.customertype}</Text>
+                        <Text style={[styles.customerCount, { color: item?.color }]}>
+                          {item.count}
+                        </Text>
+                        <Text style={[styles.newCustomerHeading, { color: item?.color }]}>
+                          {item.customertype}
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   );
@@ -382,6 +485,8 @@ export function Customers2() {
                 keyExtractor={(item) => item.id}
                 horizontal
                 scrollEnabled={false}
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.contentContainerStyle}
               />
             </View>
 
@@ -397,40 +502,68 @@ export function Customers2() {
               <View style={styles.flexRow}>
                 <TouchableOpacity
                   style={styles.checkboxViewStyle}
-                  onPress={() => setWalkCustomerCheck((prev) => !prev)}
+                  onPress={() => setNewCustomerCheck((prev) => !prev)}
                 >
-                  <Image
-                    source={walkCustomerCheck ? incomingOrders : blankCheckBox}
-                    style={styles.checkboxIconStyle}
-                  />
-                  <Text style={[styles.varientTextStyle, { color: COLORS.aqua }]}>
-                    Wallking customer
+                  <View
+                    style={[
+                      styles.imageView,
+                      { borderColor: COLORS.medium_yellow, backgroundColor: COLORS.light_yellow },
+                    ]}
+                  >
+                    <Image
+                      source={newCustomerCheck ? newCheck : blankCheckBox}
+                      style={[
+                        styles.checkboxIconStyle,
+                        { tintColor: newCustomerCheck ? COLORS.yellow : COLORS.transparent },
+                      ]}
+                    />
+                  </View>
+                  <Text style={[styles.varientTextStyle, { color: COLORS.yellow }]}>
+                    New Customers
                   </Text>
+                  {/* returnedOrders */}
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.checkboxViewStyle}
                   onPress={() => setOnlineCustomerCheck((prev) => !prev)}
                 >
-                  <Image
-                    source={onlineCustomerCheck ? onlinecustomer : blankCheckBox}
-                    style={[styles.checkboxIconStyle]}
-                  />
-                  <Text style={[styles.varientTextStyle, { color: COLORS.success_green }]}>
+                  <View style={styles.imageView}>
+                    <Image
+                      source={onlineCustomerCheck ? newCheck : blankCheckBox}
+                      style={[
+                        styles.checkboxIconStyle,
+                        {
+                          tintColor: onlineCustomerCheck ? COLORS.medium_green : COLORS.transparent,
+                        },
+                      ]}
+                    />
+                  </View>
+                  <Text style={[styles.varientTextStyle, { color: COLORS.medium_green }]}>
                     Online Customers
                   </Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
-                  style={styles.checkboxViewStyle}
-                  onPress={() => setNewCustomerCheck((prev) => !prev)}
+                  style={[styles.checkboxViewStyle, { marginRight: 0 }]}
+                  onPress={() => setWalkCustomerCheck((prev) => !prev)}
                 >
-                  <Image
-                    source={newCustomerCheck ? returnedOrders : blankCheckBox}
-                    style={[styles.checkboxIconStyle]}
-                  />
-                  <Text style={[styles.varientTextStyle, { color: COLORS.yellow }]}>
-                    New Customers
+                  <View
+                    style={[
+                      styles.imageView,
+                      { borderColor: COLORS.aqua, backgroundColor: COLORS.light_sky },
+                    ]}
+                  >
+                    <Image
+                      source={walkCustomerCheck ? newCheck : blankCheckBox}
+                      style={[
+                        styles.checkboxIconStyle,
+                        { tintColor: walkCustomerCheck ? COLORS.aqua : COLORS.transparent },
+                      ]}
+                    />
+                  </View>
+                  <Text style={[styles.varientTextStyle, { color: COLORS.aqua }]}>
+                    Wallking customer
                   </Text>
-                  {/* returnedOrders */}
                 </TouchableOpacity>
               </View>
             </View>
@@ -445,6 +578,7 @@ export function Customers2() {
       );
     }
   };
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>{bodyView()}</View>
@@ -472,11 +606,11 @@ export function Customers2() {
             >
               <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
             </TouchableOpacity>
-            <View style={[styles.searchView, { marginVertical: ms(10) }]}>
-              <Image source={search_light} style={styles.searchImage} />
+            <View style={[styles.searchContainer]}>
+              <Image source={searchDrawer} style={styles.searchImage} />
               <TextInput
                 placeholder={strings.deliveryOrders.search}
-                style={styles.textInputStyle}
+                style={[styles.textInputStyle, { fontSize: ms(10), marginHorizontal: ms(5) }]}
                 placeholderTextColor={COLORS.darkGray}
                 value={searchedText}
                 onChangeText={(searchText) => {
@@ -500,6 +634,42 @@ export function Customers2() {
             />
           </View>
         </KeyboardAvoidingView>
+      </Modal>
+
+      {onLoad ? (
+        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
+          <ActivityIndicator color={COLORS.navy_blue} size="large" style={styles.loader} />
+        </View>
+      ) : null}
+      <Modal
+        isVisible={showCalendarModal}
+        statusBarTranslucent
+        animationIn={'fadeIn'}
+        animationInTiming={600}
+        animationOutTiming={300}
+        onBackdropPress={() => setShowCalendarModal(false)}
+      >
+        <View style={styles.calendarModalView}>
+          <CalendarPickerModal
+            onPress={() => setShowCalendarModal(false)}
+            // onDateChange={onChangeDate}
+            // onSelectedDate={() => onDateApply(formattedDate)}
+            // selectedStartDate={formattedDate}
+            maxDate={maxDate}
+            // onCancelPress={onCancelPressCalendar}
+            allowRangeSelection={true}
+            onDateChange={onDateChange}
+            // handleOnPressNext={handleOnPressNext}
+            onSelectedDate={onSelect}
+            onCancelPress={() => {
+              setShowCalendarModal(false);
+              // setSelectedStartDate('');
+              // setSelectedEndDate('');
+              // setSelectId(2);
+              // setSelectTime({ value: 'week' });
+            }}
+          />
+        </View>
       </Modal>
     </ScreenWrapper>
   );

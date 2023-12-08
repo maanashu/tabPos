@@ -165,10 +165,10 @@ export const getOrderUser = (data) => async (dispatch) => {
     dispatch(getOrderUserError(error.message));
   }
 };
-export const getCustomer = (time, sellerID) => async (dispatch) => {
+export const getCustomer = (data, sellerID) => async (dispatch) => {
   dispatch(getCustomersRequest());
   try {
-    const res = await CustomersController.getCustomers(time, sellerID);
+    const res = await CustomersController.getCustomers(data, sellerID);
     dispatch(getCustomersSuccess(res?.payload));
   } catch (error) {
     dispatch(getCustomersError(error.message));

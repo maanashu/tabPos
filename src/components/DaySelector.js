@@ -59,6 +59,7 @@ export function DaySelector({ setSelectTime, selectId, setSelectId, onPresFun })
       renderItem={selectItem}
       keyExtractor={(item) => item.id}
       horizontal
+      style={{ backgroundColor: COLORS.sky_grey, paddingVertical: ms(5), borderRadius: ms(15) }}
     />
   );
 }

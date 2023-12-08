@@ -1568,7 +1568,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log(error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',

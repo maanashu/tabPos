@@ -125,7 +125,6 @@ export function Security() {
           app_name: 'pos',
           google_authenticator_status: factorEnable,
         };
-        console.log('UPDATE poopooopop', data);
         dispatch(upadteApi(data));
         dispatch(getSettings());
         setSixDigit(false);

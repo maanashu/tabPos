@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { moderateScale, ms, scale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -27,43 +27,41 @@ export const styles = StyleSheet.create({
   },
   posUserNot: {
     fontSize: SF(25),
-    fontFamily: Fonts.MaisonRegular,
-    color: COLORS.primary,
+    fontFamily: Fonts.Medium,
+    color: COLORS.red,
     alignSelf: 'center',
   },
   profileImage: {
-    width: SH(100),
-    height: SH(100),
+    width: ms(50),
+    height: ms(50),
     borderRadius: SH(50),
     borderWidth: 0.5,
     borderColor: COLORS.solidGrey,
   },
   firstName: {
-    fontSize: SH(16),
+    fontSize: ms(10),
     fontFamily: Fonts.SemiBold,
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
   },
   role: {
-    fontSize: SH(14),
-    fontFamily: Fonts.SemiBold,
-    color: COLORS.primary,
-    width: SH(270),
+    fontSize: ms(9),
+    fontFamily: Fonts.Medium,
+    color: COLORS.lavender,
     textAlign: 'center',
   },
   dateTime: {
-    fontSize: SH(12),
-    color: COLORS.solid_grey,
+    fontSize: ms(7),
+    color: COLORS.lavender,
     fontFamily: Fonts.Regular,
   },
   posUserCon: {
     backgroundColor: COLORS.white,
     alignItems: 'center',
-    marginVertical: SH(25),
-    marginHorizontal: SH(15),
-    paddingHorizontal: SH(24),
+    marginVertical: ms(7),
+    marginRight: ms(10),
     paddingVertical: SH(30),
-    width: Platform.OS === 'ios' ? ms(140) : ms(190),
-    borderRadius: 30,
+    borderRadius: ms(18),
+    flex: 0.25,
   },
   posLoginHeader: {
     color: COLORS.black,
@@ -86,27 +84,7 @@ export const styles = StyleSheet.create({
     height: SH(20),
     resizeMode: 'contain',
   },
-  logoutCon: {
-    borderWidth: 1,
-    borderColor: COLORS.dark_grey,
-    width: SW(40),
-    height: SW(12),
-    borderRadius: 3,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logOut: {
-    fontSize: SH(14),
-    color: COLORS.solid_grey,
-    fontFamily: Fonts.SemiBold,
-  },
-  powerAuth: {
-    width: SW(5),
-    height: SW(5),
-    resizeMode: 'contain',
-    marginRight: 4,
-  },
+
   verifyContainerSix: {
     width: windowWidth * 0.45,
     height: windowHeight * 0.8,
@@ -153,5 +131,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  welcomeTo: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(15),
+    color: COLORS.navy_blue,
+    marginVertical: ms(20),
   },
 });
