@@ -212,6 +212,7 @@ export function Staff() {
       }
     } else {
       const res = await dispatch(getStaffDetail(staffId));
+
       if (res?.type === 'STAFF_DETAIL_SUCCESS') {
         setStaffDetail(true);
       } else {

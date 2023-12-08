@@ -100,6 +100,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
   },
+  taxDesc: {
+    fontSize: SF(10),
+    fontFamily: Fonts.Regular,
+    color: COLORS.navy_blue,
+  },
 
   // setting security css start
   securityMainCon: {
@@ -1671,6 +1676,21 @@ export const styles = StyleSheet.create({
     // marginHorizontal: SW(10),
     marginVertical: 10,
   },
+  textInputViewTex: {
+    paddingHorizontal: SW(4),
+    borderWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: windowHeight * 0.06,
+
+    backgroundColor: COLORS.input_bg,
+    borderRadius: 50,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
+    // marginHorizontal: SW(10),
+    marginVertical: 10,
+  },
   dropDownIcon: {
     width: 7,
     height: 7,
@@ -1717,9 +1737,10 @@ export const styles = StyleSheet.create({
     width: ms(50),
     height: ms(20),
     borderRadius: ms(3),
-    marginLeft: ms(20),
+    // marginLeft: ms(20),
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: ms(20),
   },
   requestText: {
     color: COLORS.white,

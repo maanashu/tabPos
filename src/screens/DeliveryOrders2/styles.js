@@ -690,13 +690,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
     // justifyContent: 'space-around',
   },
   containerFull: {
     flex: 1,
 
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
     // justifyContent: 'space-around',
   },
   leftMainViewStyle: {
