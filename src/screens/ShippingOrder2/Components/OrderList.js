@@ -154,7 +154,7 @@ const OrderList = ({
   );
 
   const renderOrderToReviewNew = ({ item }) => {
-    if (selectedStatus !== '7,8') {
+    if (selectedStatus == '7,8') {
       return (
         <TouchableOpacity
           onPress={() => {
