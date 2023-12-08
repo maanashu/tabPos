@@ -38,7 +38,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const userId = selectedPosStaffCompleteData?.user_id;
   const customerDetails = userId != null ? userDetails : invitedUserDetails;
   const userAddress = userDetails?.current_address;
-  const appointmentDetail = selectedPosStaffCompleteData?.appointment_details[0];
+  const appointmentDetail = selectedPosStaffCompleteData;
   const posUserDetails = selectedPosStaffCompleteData?.pos_user_details?.user?.user_profiles;
   const posUserRole =
     selectedPosStaffCompleteData?.pos_user_details?.user?.user_roles[0]?.role?.name || ' ';
@@ -232,7 +232,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
             <Text style={[styles._eventTitle, { marginBottom: ms(2) }]}>Service Charge:</Text>
             <View style={styles.subtotalContainers}>
               <Text style={styles._eventTitle}>Sub Total</Text>
-              <Text style={styles._eventTitle}>${selectedPosStaffCompleteData?.actual_amount}</Text>
+              <Text style={styles._eventTitle}>${selectedPosStaffCompleteData?.actual_price}</Text>
             </View>
             <View style={styles.subtotalContainers}>
               <Text style={styles._eventTitle}>Discount</Text>
@@ -252,9 +252,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 <View style={styles.paidContainer}>
                   <Text style={styles.paidText}>Paid</Text>
                 </View>
-                <Text
-                  style={styles.totalTile}
-                >{`$${selectedPosStaffCompleteData?.payable_amount}`}</Text>
+                <Text style={styles.totalTile}>{`$${selectedPosStaffCompleteData?.price}`}</Text>
               </View>
             </View>
             <Text style={styles.invoiceTxt}>

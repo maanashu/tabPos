@@ -52,7 +52,7 @@ const ReScheduleDetailModal = ({
   const estimatedServiceTime = appointmentData?.approx_service_time;
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const appointmentDetail = appointmentData?.appointment_details[0];
+  const appointmentDetail = appointmentData;
   const posUserDetails = appointmentData?.pos_user_details;
   const [selectedTimeSlotIndex, setselectedTimeSlotIndex] = useState(null);
   const getCalenderData = useSelector(getAppointmentSelector);
@@ -211,7 +211,7 @@ const ReScheduleDetailModal = ({
   };
 
   const handleCancelAppointment = () => {
-    const appointmentID = appointmentDetail?.appointment_id ?? '';
+    const appointmentID = appointmentDetail?.id ?? '';
     dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
     setShowRescheduleModal(false);
     setshowEventDetailModal(false);
@@ -303,7 +303,7 @@ const ReScheduleDetailModal = ({
                   </Text>
                 </View>
                 <Text style={[styles.selected, { fontSize: ms(12) }]}>
-                  {`$${appointmentData?.payable_amount}`}
+                  {`$${appointmentData?.price}`}
                 </Text>
               </View>
               <Spacer space={ms(10)} />

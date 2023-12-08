@@ -218,7 +218,7 @@ export function Booking() {
         const endDateTime = new Date(booking.end_date_time);
 
         return {
-          title: booking.appointment_details[0]?.product_name || 'NULL',
+          title: booking?.product_name || 'NULL',
           start: startDateTime,
           end: endDateTime,
           completeData: booking,

@@ -84,6 +84,7 @@ import { ServiceCartListModal } from './ServiceCartListModal ';
 import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 import { Images } from '@/assets/new_icon';
 import { imageSource } from '@/utils/GlobalMethods';
+import CustomAlert from '@/components/CustomAlert';
 
 export function MainScreen({
   cartScreenHandler,
@@ -508,19 +509,15 @@ export function MainScreen({
 
   const productFun = async (productId, index, item) => {
     if (onlyServiceCartArray?.length > 0) {
-      Alert.alert('Please clear service cart', [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+      CustomAlert({
+        title: 'Alert',
+        description: 'Please clear service cart',
+        yesButtonTitle: 'Clear cart',
+        noButtonTitle: 'Cancel',
+        onYesPress: () => {
+          dispatch(clearAllCart());
         },
-        {
-          text: 'OK',
-          onPress: () => {
-            dispatch(getAllCart());
-          },
-        },
-      ]);
+      });
     } else {
       bulkCart();
       const isProductMatchArray = localCartArray?.find((data) => data.product_id === item.id);
@@ -547,19 +544,15 @@ export function MainScreen({
 
   const serviceFun = async (serviceId, index) => {
     if (onlyProductCartArray?.length > 0) {
-      Alert.alert('Please clear product cart', [
-        {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+      CustomAlert({
+        title: 'Alert',
+        description: 'Please clear product cart',
+        yesButtonTitle: 'Clear cart',
+        noButtonTitle: 'Cancel',
+        onYesPress: () => {
+          dispatch(clearAllCart());
         },
-        {
-          text: 'OK',
-          onPress: () => {
-            dispatch(getAllCart());
-          },
-        },
-      ]);
+      });
     } else {
       const res = await dispatch(getOneService(sellerID, serviceId));
       if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
