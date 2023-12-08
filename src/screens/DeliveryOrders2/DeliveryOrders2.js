@@ -613,7 +613,13 @@ export function DeliveryOrders2({ route }) {
       );
   };
   return (
-    <View style={{ backgroundColor: COLORS.sky_grey, flex: 1, paddingRight: ms(5) }}>
+    <View
+      style={{
+        backgroundColor: COLORS.sky_grey,
+        flex: 1,
+        paddingRight: ms(6),
+      }}
+    >
       {!trackingView ? (
         <>
           <Spacer space={SH(15)} backgroundColor={COLORS.sky_grey} />
