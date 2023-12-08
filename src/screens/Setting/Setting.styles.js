@@ -3,6 +3,7 @@ import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
 import { verticalScale, moderateScale, scale, ms } from 'react-native-size-matters';
+import { height, width } from '@/theme/ScalerDimensions';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -108,13 +109,11 @@ export const styles = StyleSheet.create({
 
   // setting security css start
   securityMainCon: {
-    // borderWidth: 2,
-    // borderColor: COLORS.sky_blue,
+    borderColor: COLORS.light_purple,
     borderRadius: 20,
-    // height: windowHeight * 0.33,
-    // paddingVertical: ms(15),
-    // paddingHorizontal: ms(20),
-    // marginHorizontal: ms(15),
+    paddingVertical: ms(15),
+    borderWidth: 1,
+    paddingHorizontal: ms(15),
   },
   securityStaffMainCon: {
     // borderWidth: 1,
@@ -164,6 +163,11 @@ export const styles = StyleSheet.create({
   shippingPickupHeading: {
     fontSize: ms(13),
     fontFamily: Fonts.MaisonBold,
+    color: COLORS.navy_blue,
+  },
+  shippingHeadingText: {
+    fontSize: SF(20),
+    fontFamily: Fonts.Medium,
     color: COLORS.navy_blue,
   },
   walletHeading: {
@@ -242,11 +246,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   locationsView: {
-    borderRadius: SH(20),
+    borderRadius: 15,
     paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(4),
     marginVertical: verticalScale(3),
-    height: SH(90),
+    height: height * 0.075,
     backgroundColor: COLORS.sky_grey,
     justifyContent: 'center',
   },
@@ -347,8 +351,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: ms(5),
-    top: ms(0),
+    right: ms(8),
   },
   modalDataCon: {
     width: windowWidth * 0.38,
@@ -681,8 +684,8 @@ export const styles = StyleSheet.create({
   },
   basicContainer: (item) => {
     return {
-      width: windowWidth * 0.19,
-      borderRadius: 20,
+      width: windowWidth * 0.18,
+      borderRadius: 10,
       backgroundColor: COLORS.white,
       padding: 12,
       marginHorizontal: moderateScale(3),
@@ -790,8 +793,8 @@ export const styles = StyleSheet.create({
   },
   selectHead: {
     fontSize: SF(18),
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.solid_grey,
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
   },
   cntryCrossButton: {
     width: SW(7),
@@ -808,12 +811,12 @@ export const styles = StyleSheet.create({
   },
   countryNameCon: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    height: SW(14),
-    borderRadius: 5,
+    // height: SW(14),
+    borderRadius: 20,
     paddingLeft: moderateScale(10),
     justifyContent: 'center',
-    marginBottom: 5,
+    marginBottom: 8,
+    paddingVertical: 15,
   },
   blankCircle: {
     width: SW(7),
@@ -830,24 +833,29 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
-    marginHorizontal: moderateScale(10),
+    marginRight: moderateScale(10),
   },
   cancelbuttonCon: {
-    width: SW(28),
-    height: SW(12),
-    backgroundColor: COLORS.washGrey,
-    borderRadius: 5,
+    width: width * 0.127,
+    height: height * 0.05,
+    backgroundColor: COLORS.sky_grey,
+    borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 20,
   },
   nextbuttonCon: {
-    backgroundColor: COLORS.primary,
+    width: width * 0.127,
+    height: height * 0.05,
+    backgroundColor: COLORS.navy_blue,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   cancel: {
-    fontSize: SF(14),
+    fontSize: ms(9),
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
   },
   next: {
     color: COLORS.white,
@@ -1089,8 +1097,8 @@ export const styles = StyleSheet.create({
   },
   container1: {
     backgroundColor: 'white',
-    borderRadius: 15,
-    width: windowWidth * 0.45,
+    borderRadius: 20,
+    width: windowWidth * 0.33,
     height: windowHeight * 0.6,
     alignSelf: 'center',
     position: 'absolute',
@@ -1108,26 +1116,26 @@ export const styles = StyleSheet.create({
 
   legalViewStyle: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 10,
+    borderColor: COLORS.light_purple,
+    borderRadius: 15,
     paddingVertical: moderateScale(10),
     paddingHorizontal: moderateScale(5),
     // justifyContent: 'center',
     marginBottom: 5,
-    width: windowWidth * 0.22,
-    // height: windowHeight * 0.37,
+    width: windowWidth * 0.19,
+    height: windowHeight * 0.38,
     marginTop: SW(4),
     marginHorizontal: SW(1.9),
     // marginLeft: SW(4),
   },
   legalView: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    padding: moderateScale(10),
+    borderColor: COLORS.light_purple,
+    padding: moderateScale(5),
     marginBottom: 5,
     marginHorizontal: ms(1),
-    height: windowHeight * 0.25,
-    borderRadius: 10,
+    height: windowHeight * 0.225,
+    borderRadius: 15,
   },
   calendarImageStyle: {
     width: SW(6),
@@ -1145,7 +1153,7 @@ export const styles = StyleSheet.create({
   },
   activeTextStyle: {
     fontSize: SF(11),
-    fontFamily: Fonts.MaisonBold,
+    fontFamily: Fonts.Medium,
     color: COLORS.green,
     marginLeft: SW(2),
   },
@@ -1156,14 +1164,18 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     marginLeft: SW(2),
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    color: COLORS.lavender,
   },
   dateViewStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: SW(2),
+    alignItems: 'center',
   },
   activebuttonStyle: {
+    width: SW(23),
+    height: SW(7),
+    borderRadius: 30,
     width: SW(24),
     height: SW(8),
     borderWidth: 1,
@@ -1172,6 +1184,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: COLORS.light_green,
     backgroundColor: COLORS.soft_green,
   },
   redActiveButton: {

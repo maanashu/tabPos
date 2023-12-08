@@ -18,8 +18,6 @@ import Toast from 'react-native-toast-message';
 import Slider from '@react-native-community/slider';
 import Modal from 'react-native-modal';
 import {
-  addIcon,
-  backArrow,
   crossButton,
   dropdown,
   email,
@@ -30,8 +28,6 @@ import {
   shieldPerson,
   staffImage,
   userImage,
-  vector,
-  vectorOff,
   EyeHide,
   EyeShow,
   arrowRightTop,
@@ -61,7 +57,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import DropDownPicker from 'react-native-dropdown-picker';
 import { creatPostUser, getPosUserRole } from '@/actions/AppointmentAction';
 import { digits, emailReg } from '@/utils/validators';
-import { getAppointmentSelector, getPosUserRoles } from '@/selectors/AppointmentSelector';
+import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';

@@ -265,6 +265,7 @@ export const en = {
     rewards: 'Rewards',
   },
   settings: {
+    policies: 'Policies',
     activeInMarket: "Active in the markets they've been added to and visible to customers.",
     agreements: 'Agreements',
     security: 'Security',

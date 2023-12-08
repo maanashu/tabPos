@@ -67,6 +67,8 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { Loader } from '@/components/Loader';
 import WalletInvoice from './Components/WalletInvoice';
+import { height, width } from '@/theme/ScalerDimensions';
+import { Images } from '@/assets/new_icon';
 
 export function Wallet2() {
   const mapRef = useRef(null);
