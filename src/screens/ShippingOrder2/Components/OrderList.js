@@ -168,7 +168,7 @@ const OrderList = ({
             {
               backgroundColor: item?.id === orderId ? COLORS.transparent : COLORS.transparent,
               borderColor: item?.id === orderId ? COLORS.light_purple : COLORS.neutral_blue,
-              padding: ms(4),
+              padding: ms(5),
             },
           ]}
         >
@@ -178,7 +178,7 @@ const OrderList = ({
             }}
           >
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(60) }]}>
                 <Text numberOfLines={1} style={styles.nameTextStyle}>
                   {item?.user_details?.firstname ?? '-'}
                 </Text>
@@ -200,7 +200,7 @@ const OrderList = ({
             </View>
 
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }, { width: ms(70) }]}>
+              <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }, { width: ms(60) }]}>
                 <Text numberOfLines={1} style={styles.nameTextStyle}>
                   {item?.order_details?.length > 1
                     ? `${item?.order_details?.length} Items`
@@ -253,7 +253,9 @@ const OrderList = ({
             </View>
 
             <View style={[styles.rowContainerStyle, { marginVertical: ms(1) }]}>
-              <View style={styles.shippingTypeImage}></View>
+              <View
+                style={[styles.shippingTypeImage, { borderWidth: 0, borderColor: 'transparent' }]}
+              ></View>
               <View style={[styles.orderDetailStyle, { width: ms(80) }]}>
                 <Text numberOfLines={1} style={styles.nameTextStyle}>
                   {'Cancelled by'}
@@ -284,7 +286,7 @@ const OrderList = ({
             }}
           >
             <View style={[styles.rowContainerStyle, { marginVertical: ms(2) }]}>
-              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(60) }]}>
                 <Text style={styles.nameTextStyle}>{'Cancelled at'}</Text>
                 <View
                   style={[
@@ -338,7 +340,7 @@ const OrderList = ({
               backgroundColor: item?.id === orderId ? COLORS.transparent : COLORS.transparent,
               borderColor: item?.id === orderId ? COLORS.light_purple : COLORS.neutral_blue,
 
-              padding: ms(4),
+              padding: ms(5),
             },
           ]}
         >
@@ -367,7 +369,7 @@ const OrderList = ({
             }}
           >
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(60) }]}>
                 <Text numberOfLines={1} style={styles.nameTextStyle}>
                   {item?.user_details?.firstname ?? '-'}
                 </Text>
@@ -389,7 +391,7 @@ const OrderList = ({
             </View>
 
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }, { width: ms(70) }]}>
+              <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }, { width: ms(60) }]}>
                 <Text numberOfLines={1} style={styles.nameTextStyle}>
                   {item?.order_details?.length > 1
                     ? `${item?.order_details?.length} Items`
@@ -425,7 +427,7 @@ const OrderList = ({
                 }
                 style={[styles.shippingTypeImage, { margin: 2 }]}
               />
-              <View style={[styles.orderDetailStyle, { width: ms(80) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
                 <Text numberOfLines={2} style={[styles.nameTextStyle, { marginBottom: ms(10) }]}>
                   {item?.shipping_details?.title}
                   {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
@@ -443,7 +445,7 @@ const OrderList = ({
 
             <View style={[styles.rowContainerStyle, { marginVertical: ms(1) }]}>
               <View style={[styles.shippingTypeImage, { borderWidth: 0 }]}></View>
-              <View style={[styles.orderDetailStyle, { width: ms(80) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
                 <Text style={styles.nameTextStyle}>
                   {'Shipped'}
                   {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
