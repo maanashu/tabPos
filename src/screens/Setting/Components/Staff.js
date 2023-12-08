@@ -380,9 +380,14 @@ export function Staff() {
                       style={styles.profileImageStaff}
                     />
                     <View style={styles.litMorecon}>
-                      <Text
-                        style={styles.staffName}
-                      >{`${data?.user?.user_profiles?.firstname} ${data?.user?.user_profiles?.lastname} `}</Text>
+                      <Text style={styles.staffName}>
+                        {data?.user?.user_profiles?.firstname
+                          ? data.user.user_profiles.lastname
+                            ? `${data.user.user_profiles.firstname} ${data.user.user_profiles.lastname}`
+                            : data.user.user_profiles.firstname
+                          : ''}
+                      </Text>
+
                       <View style={styles.dispalyRow}>
                         <Image
                           source={shieldPerson}

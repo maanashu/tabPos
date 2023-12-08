@@ -309,6 +309,7 @@ export const en = {
     locationsubhead:
       'An extra layer to boost your team members account security. A verification code will be required in addition to password each time you sign in.',
     plans: 'Plans',
+    CurrentPlan: 'Current Plan',
     yourPlan: 'Your Plan',
     basic: 'Basic',
     everyThingNeed: 'Everything you need to create a store, ship products, and process payments',

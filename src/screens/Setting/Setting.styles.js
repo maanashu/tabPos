@@ -130,6 +130,13 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     // padding: 15,
   },
+  securityBodyConNew: {
+    // flex: 1,
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    // padding: 15,
+  },
   securityLogo: {
     width: SW(8),
     height: SW(8),
@@ -206,6 +213,16 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(12),
     marginVertical: verticalScale(3),
     height: SH(70),
+    borderWidth: 0.4,
+    justifyContent: 'center',
+    backgroundColor: COLORS.sky_grey,
+  },
+  twoStepMemberConNew: {
+    borderColor: COLORS.light_purple,
+    borderRadius: SH(20),
+    paddingHorizontal: moderateScale(12),
+    marginVertical: verticalScale(3),
+    height: SH(70),
     justifyContent: 'center',
     backgroundColor: COLORS.sky_grey,
   },
@@ -235,10 +252,11 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.38,
   },
   teamMember: {
-    width: SW(8),
-    height: SW(8),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
     marginRight: SW(8),
+    borderRadius: 100,
   },
   locationPinStyle: {
     width: ms(15),
@@ -324,8 +342,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    right: ms(8),
-    top: ms(8),
+    right: ms(5),
+    top: ms(0),
   },
   modalDataCon: {
     width: windowWidth * 0.38,
@@ -658,8 +676,8 @@ export const styles = StyleSheet.create({
   },
   basicContainer: (item) => {
     return {
-      width: windowWidth * 0.2,
-      borderRadius: 10,
+      width: windowWidth * 0.19,
+      borderRadius: 20,
       backgroundColor: COLORS.white,
       padding: 12,
       marginHorizontal: moderateScale(3),
@@ -1263,15 +1281,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLORS.sky_grey,
     borderRadius: 15,
-    padding: 10,
+    padding: 15,
   },
   profileBodycon: {
-    width: windowWidth * 0.38,
+    flex: 0.6,
+
     borderRightWidth: 1,
     borderColor: COLORS.solidGrey,
   },
   profileBodycon2: {
-    width: windowWidth * 0.27,
+    flex: 0.4,
     borderRightWidth: 0,
   },
   profileImageStaff: {
@@ -1753,7 +1772,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.navy_blue,
   },
   subscribedView: {
-    height: ms(37),
+    height: ms(33),
     width: ms(100),
     backgroundColor: COLORS.light_skyblue,
     borderRadius: ms(20),

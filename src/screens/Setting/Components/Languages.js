@@ -236,7 +236,10 @@ export function Languages() {
       <View style={[styles.flexRow, { height: SW(8), alignSelf: 'flex-end' }]}>
         <View style={{ zIndex: 99 }}>
           <TouchableOpacity
-            style={[styles.addNewButtonCon, { position: null, right: 0 }]}
+            style={[
+              styles.addNewButtonCon,
+              { position: null, right: 0, backgroundColor: COLORS.navy_blue },
+            ]}
             onPress={
               () => Alert.alert('Coming soon')
               // setShowModal(true)
