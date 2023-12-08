@@ -404,6 +404,7 @@ export { default as arrowDown } from '@/assets/new_icon/ic_drawer/arrowDown.png'
 export { default as calendarDrawer } from '@/assets/new_icon/ic_drawer/CalendarDrawer.png';
 export { default as userOutlineDrawer } from '@/assets/new_icon/ic_drawer/userOutline.png';
 export { default as arrowLeftUp } from '@/assets/new_icon/ic_drawer/ArrowLeftUp.png';
+//analytics
 export { default as backIcon } from '@/assets/new_icon/ic_analytic/backIcon.png';
 export { default as inventory } from '@/assets/new_icon/ic_analytic/inventory.png';
 export { default as posOrders } from '@/assets/new_icon/ic_analytic/posOrders.png';
@@ -415,7 +416,13 @@ export { default as totalCostIcon } from '@/assets/new_icon/ic_analytic/totalCos
 export { default as totalOrder } from '@/assets/new_icon/ic_analytic/totalOrder.png';
 export { default as verifyGreen } from '@/assets/new_icon/Auth_icons/verify_green.png';
 export { default as deliveryIcon } from '@/assets/new_icon/ic_analytic/delivery.png';
-
+export { default as inventory_value } from '@/assets/new_icon/ic_analytic/inventory_value.png';
+export { default as margin_profit } from '@/assets/new_icon/ic_analytic/margin_profit.png';
+export { default as order_frequency } from '@/assets/new_icon/ic_analytic/order_frequency.png';
+export { default as total_inventory } from '@/assets/new_icon/ic_analytic/total_inventory.png';
+export { default as total_orders } from '@/assets/new_icon/ic_analytic/total_orders.png';
+export { default as total_volume } from '@/assets/new_icon/ic_analytic/total_volume.png';
+export { default as unit_sold } from '@/assets/new_icon/ic_analytic/unit_sold.png';
 // home screen new icons
 export { default as newLogo } from '@/assets/new_icon/Auth_icons/Logo.png';
 export { default as sunIcon } from '@/assets/new_icon/Auth_icons/Sun.png';

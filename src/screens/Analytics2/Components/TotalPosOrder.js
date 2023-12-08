@@ -14,11 +14,15 @@ import { styles } from '../Analytics2.styles';
 import {
   backArrow2,
   channel,
+  deliveryIcon,
   locationSales,
+  order_frequency,
   profitIcon,
+  soldProduct,
   totalOrder,
   totalOrders,
   totalSales,
+  total_orders,
 } from '@/assets';
 import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
@@ -192,14 +196,14 @@ export function TotalPosOrder({ onPressReview }) {
       </View>
       <View style={styles.headerContainer}>
         <HeaderView
-          image={locationSales}
+          image={total_orders}
           text={'Total Orders'}
           count={posGraph?.ordersOverView?.total_orders}
           style={{ marginHorizontal: ms(5) }}
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={channel}
+          image={order_frequency}
           text={'Order Frequency'}
           count={
             posGraph?.ordersOverView?.order_frequency
@@ -209,7 +213,7 @@ export function TotalPosOrder({ onPressReview }) {
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={totalOrders}
+          image={deliveryIcon}
           text={'Average Order Value'}
           count={
             posGraph?.ordersOverView?.averageValue
@@ -221,7 +225,7 @@ export function TotalPosOrder({ onPressReview }) {
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={totalSales}
+          image={soldProduct}
           text={'Total Sales'}
           count={
             posGraph?.ordersOverView?.total_sales_or_actual_amount

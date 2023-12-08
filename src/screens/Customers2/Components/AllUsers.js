@@ -364,9 +364,9 @@ const AllUsers = ({
         </View>
       </View>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: ms(2.7) }}>
         {/* Date and Area section */}
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
           <TouchableOpacity
             style={[
               styles.datePickerCon,
@@ -454,12 +454,21 @@ const AllUsers = ({
 
         {/*Calendar pagination section */}
         <View
-          style={[styles.jbrTypeCon, { opacity: payloadLength === 0 ? 0.4 : 1 }]}
+          style={[
+            styles.jbrTypeCon,
+            { opacity: payloadLength === 0 ? 0.4 : 1, paddingHorizontal: ms(10.5) },
+          ]}
           pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
         >
-          <View style={styles.paginationEnd}>
-            <Text style={[styles.paginationCount]}>{strings.customers.showResult}</Text>
-            <View style={{ marginHorizontal: moderateScale(10) }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={[styles.paginationCount]}>Showing Results</Text>
+            <View style={{ marginHorizontal: moderateScale(2) }}>
               <DropDownPicker
                 ArrowUpIconComponent={({ style }) => (
                   <Image source={dropdown2} style={styles.dropDownIconPagination} />
@@ -484,7 +493,6 @@ const AllUsers = ({
                 setItems={setPaginationModalItems}
                 placeholder="10"
                 placeholderStyle={styles.placeholderStylePagination}
-                // onSelectItem={item => selectedNo(item.value)}
               />
             </View>
             <TouchableOpacity
@@ -535,7 +543,7 @@ const AllUsers = ({
             </View>
             <View
               style={{
-                width: ms(60),
+                width: ms(50),
                 marginRight: ms(7),
               }}
             >
@@ -550,6 +558,7 @@ const AllUsers = ({
                 </Text>
               )}
             </View>
+
             <View
               style={[
                 styles.unionCon,

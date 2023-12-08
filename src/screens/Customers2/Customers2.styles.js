@@ -257,10 +257,10 @@ export const styles = StyleSheet.create({
     // backgroundColor: COLORS.textInputBackground,
     // height: SH(55),
     justifyContent: 'center',
-    paddingHorizontal: moderateScale(8),
-    position: 'absolute',
-    top: 0,
-    right: 0,
+    paddingHorizontal: moderateScale(0),
+    // position: 'absolute',
+    // top: 0,
+    // right: 0,
   },
   paginationEnd: {
     flexDirection: 'row',
@@ -272,12 +272,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(5),
   },
-  paginationCount: {
-    fontSize: SF(14),
-    fontFamily: Fonts.Regular,
-    color: COLORS.black,
-    paddingHorizontal: moderateScale(12),
-  },
   dropDownIconPagination: {
     width: SW(4),
     height: SW(4),
@@ -287,11 +281,11 @@ export const styles = StyleSheet.create({
   dropdown: {
     alignSelf: 'center',
     backgroundColor: 'transparent',
-    borderColor: COLORS.transparent,
+    borderColor: 'transparent',
     zIndex: Platform.OS === 'ios' ? 100 : 0,
   },
   containerStylePagination: {
-    width: ms(40),
+    width: ms(45),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,
@@ -312,29 +306,26 @@ export const styles = StyleSheet.create({
   listItemLabelStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    color: COLORS.navy_blue,
   },
   labelStyle: {
-    fontSize: SF(14),
-    fontFamily: Fonts.Medium,
-    color: COLORS.navy_blue,
-  },
-  selectedItemLabelStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    color: COLORS.navy_blue,
+  },
+  selectedItemLabelStyle: {
+    fontSize: SF(13),
+    fontFamily: Fonts.MaisonBold,
   },
   placeholderStylePagination: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    color: COLORS.navy_blue,
+    color: COLORS.black,
   },
   unionCon: {
-    backgroundColor: COLORS.sky_grey,
+    backgroundColor: COLORS.washGrey,
     height: SH(40),
     justifyContent: 'center',
     borderRadius: ms(5),
-    marginRight: ms(7),
+    marginRight: ms(2),
   },
   unionStyle: {
     width: SW(5),
@@ -343,10 +334,11 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(12),
   },
   paginationCount: {
-    fontSize: ms(10),
-    fontFamily: Fonts.Regular,
+    fontSize: ms(7),
+    fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
-    paddingHorizontal: ms(3),
+    marginRight: ms(3),
+    marginLeft: ms(7),
   },
   tableDataHeaderCon: {
     height: SH(50),
