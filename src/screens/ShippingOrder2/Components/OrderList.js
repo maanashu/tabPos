@@ -80,11 +80,13 @@ const OrderList = ({
       </View>
 
       <View style={styles.rowContainerStyle}>
-        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2, width: undefined }]}>
-          <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
+        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2, width: ms(60) }]}>
+          <Text numberOfLines={1} style={styles.nameTextStyle}>
+            {item?.user_details?.firstname ?? '-'}
+          </Text>
           <View style={[styles.locationViewStyle, { backgroundColor: COLORS.tip_back }]}>
             <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
-            <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
+            <Text numberOfLines={2} style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
               {item?.distance ? `${item.distance} miles` : '0'}
             </Text>
           </View>
@@ -92,8 +94,8 @@ const OrderList = ({
       </View>
 
       <View style={styles.rowContainerStyle}>
-        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2, width: undefined }]}>
-          <Text style={styles.nameTextStyle}>
+        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2, width: ms(50) }]}>
+          <Text numberOfLines={1} style={styles.nameTextStyle}>
             {item?.order_details?.length > 1
               ? `${item?.order_details?.length} Items`
               : `${item?.order_details?.length} Item`}
@@ -101,7 +103,7 @@ const OrderList = ({
 
           <View style={[styles.locationViewStyle, { backgroundColor: COLORS.alarm_success_50 }]}>
             <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
-            <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+            <Text numberOfLines={2} style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
               {item?.payable_amount ?? '00'}
             </Text>
           </View>
@@ -113,8 +115,8 @@ const OrderList = ({
           source={item?.shipping_details?.image ? { uri: item?.shipping_details?.image } : fedexNew}
           style={[styles.shippingTypeImage, { margin: 2 }]}
         />
-        <View style={[styles.orderDetailStyle, { width: undefined }]}>
-          <Text style={[styles.nameTextStyle]}>
+        <View style={[styles.orderDetailStyle, { width: ms(60) }]}>
+          <Text numberOfLines={2} style={[styles.nameTextStyle]}>
             {item?.shipping_details?.title}
             {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
           </Text>
@@ -166,7 +168,7 @@ const OrderList = ({
             {
               backgroundColor: item?.id === orderId ? COLORS.transparent : COLORS.transparent,
               borderColor: item?.id === orderId ? COLORS.light_purple : COLORS.neutral_blue,
-              padding: ms(4),
+              padding: ms(5),
             },
           ]}
         >
@@ -176,8 +178,10 @@ const OrderList = ({
             }}
           >
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <View style={[styles.orderDetailStyle, { width: undefined }]}>
-                <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
+              <View style={[styles.orderDetailStyle, { width: ms(60) }]}>
+                <Text numberOfLines={1} style={styles.nameTextStyle}>
+                  {item?.user_details?.firstname ?? '-'}
+                </Text>
                 <View
                   style={[
                     styles.locationViewStyle,
@@ -185,7 +189,10 @@ const OrderList = ({
                   ]}
                 >
                   <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
-                  <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
+                  <Text
+                    numberOfLines={2}
+                    style={[styles.distanceTextStyle, { color: COLORS.purple }]}
+                  >
                     {item?.distance ? `${item.distance} miles` : '0'}
                   </Text>
                 </View>
@@ -193,10 +200,8 @@ const OrderList = ({
             </View>
 
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <View
-                style={[styles.orderDetailStyle, { paddingHorizontal: 2 }, { width: undefined }]}
-              >
-                <Text style={styles.nameTextStyle}>
+              <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }, { width: ms(60) }]}>
+                <Text numberOfLines={1} style={styles.nameTextStyle}>
                   {item?.order_details?.length > 1
                     ? `${item?.order_details?.length} Items`
                     : `${item?.order_details?.length} Item`}
@@ -209,7 +214,10 @@ const OrderList = ({
                   ]}
                 >
                   <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
-                  <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+                  <Text
+                    numberOfLines={2}
+                    style={[styles.distanceTextStyle, { color: COLORS.green_new }]}
+                  >
                     {item?.payable_amount ?? '00'}
                   </Text>
                 </View>
@@ -221,15 +229,15 @@ const OrderList = ({
               flex: 2,
             }}
           >
-            <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
+            <View style={[styles.rowContainerStyle, { marginVertical: ms(2) }]}>
               <Image
                 source={
                   item?.shipping_details?.image ? { uri: item?.shipping_details?.image } : fedexNew
                 }
                 style={[styles.shippingTypeImage, { margin: 2 }]}
               />
-              <View style={[styles.orderDetailStyle, { width: undefined }]}>
-                <Text style={[styles.nameTextStyle, { marginBottom: ms(10) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(80) }]}>
+                <Text numberOfLines={2} style={[styles.nameTextStyle, { marginBottom: ms(10) }]}>
                   {item?.shipping_details?.title}
                   {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
                 </Text>
@@ -244,10 +252,14 @@ const OrderList = ({
               </View>
             </View>
 
-            <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <View style={styles.shippingTypeImage}></View>
-              <View style={[styles.orderDetailStyle, { width: undefined }]}>
-                <Text style={styles.nameTextStyle}>{'Cancelled by'}</Text>
+            <View style={[styles.rowContainerStyle, { marginVertical: ms(1) }]}>
+              <View
+                style={[styles.shippingTypeImage, { borderWidth: 0, borderColor: 'transparent' }]}
+              ></View>
+              <View style={[styles.orderDetailStyle, { width: ms(80) }]}>
+                <Text numberOfLines={1} style={styles.nameTextStyle}>
+                  {'Cancelled by'}
+                </Text>
                 <View
                   style={[
                     styles.locationViewStyle,
@@ -255,7 +267,10 @@ const OrderList = ({
                   ]}
                 >
                   <Image source={userSolid} style={[styles.pinImageStyle]} />
-                  <Text style={[styles.distanceTextStyle, { color: COLORS.base_gray_600 }]}>
+                  <Text
+                    numberOfLines={2}
+                    style={[styles.distanceTextStyle, { color: COLORS.base_gray_600 }]}
+                  >
                     {/* {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
                           item?.preffered_delivery_end_time ?? '00.00'
                         }`} */}
@@ -270,8 +285,8 @@ const OrderList = ({
               flex: 1.5,
             }}
           >
-            <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <View style={[styles.orderDetailStyle, { width: undefined }]}>
+            <View style={[styles.rowContainerStyle, { marginVertical: ms(2) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(60) }]}>
                 <Text style={styles.nameTextStyle}>{'Cancelled at'}</Text>
                 <View
                   style={[
@@ -280,7 +295,10 @@ const OrderList = ({
                   ]}
                 >
                   <Image source={packageCancelled} style={[styles.pinImageStyle]} />
-                  <Text style={[styles.distanceTextStyle, { color: COLORS.alert_red }]}>
+                  <Text
+                    numberOfLines={2}
+                    style={[styles.distanceTextStyle, { color: COLORS.alert_red }]}
+                  >
                     {/* {item?.distance ? `${item.distance} miles` : '0'} */}
                     {'21 Oct 23 00:10:35 hrs'}
                   </Text>
@@ -322,7 +340,7 @@ const OrderList = ({
               backgroundColor: item?.id === orderId ? COLORS.transparent : COLORS.transparent,
               borderColor: item?.id === orderId ? COLORS.light_purple : COLORS.neutral_blue,
 
-              padding: ms(4),
+              padding: ms(5),
             },
           ]}
         >
@@ -351,8 +369,10 @@ const OrderList = ({
             }}
           >
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <View style={[styles.orderDetailStyle, { width: undefined }]}>
-                <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
+              <View style={[styles.orderDetailStyle, { width: ms(60) }]}>
+                <Text numberOfLines={1} style={styles.nameTextStyle}>
+                  {item?.user_details?.firstname ?? '-'}
+                </Text>
                 <View
                   style={[
                     styles.locationViewStyle,
@@ -360,7 +380,10 @@ const OrderList = ({
                   ]}
                 >
                   <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
-                  <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
+                  <Text
+                    numberOfLines={2}
+                    style={[styles.distanceTextStyle, { color: COLORS.purple }]}
+                  >
                     {item?.distance ? `${item.distance} miles` : '0'}
                   </Text>
                 </View>
@@ -368,10 +391,8 @@ const OrderList = ({
             </View>
 
             <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
-              <View
-                style={[styles.orderDetailStyle, { paddingHorizontal: 2 }, { width: undefined }]}
-              >
-                <Text style={styles.nameTextStyle}>
+              <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }, { width: ms(60) }]}>
+                <Text numberOfLines={1} style={styles.nameTextStyle}>
                   {item?.order_details?.length > 1
                     ? `${item?.order_details?.length} Items`
                     : `${item?.order_details?.length} Item`}
@@ -384,7 +405,10 @@ const OrderList = ({
                   ]}
                 >
                   <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
-                  <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+                  <Text
+                    numberOfLines={2}
+                    style={[styles.distanceTextStyle, { color: COLORS.green_new }]}
+                  >
                     {item?.payable_amount ?? '00'}
                   </Text>
                 </View>
@@ -396,15 +420,15 @@ const OrderList = ({
               flex: 3,
             }}
           >
-            <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
+            <View style={[styles.rowContainerStyle, { marginVertical: ms(2) }]}>
               <Image
                 source={
                   item?.shipping_details?.image ? { uri: item?.shipping_details?.image } : fedexNew
                 }
                 style={[styles.shippingTypeImage, { margin: 2 }]}
               />
-              <View style={[styles.orderDetailStyle, { width: undefined }]}>
-                <Text style={[styles.nameTextStyle, { marginBottom: ms(10) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
+                <Text numberOfLines={2} style={[styles.nameTextStyle, { marginBottom: ms(10) }]}>
                   {item?.shipping_details?.title}
                   {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
                 </Text>
@@ -419,9 +443,9 @@ const OrderList = ({
               </View>
             </View>
 
-            <View style={[styles.rowContainerStyle, { marginVertical: ms(3) }]}>
+            <View style={[styles.rowContainerStyle, { marginVertical: ms(1) }]}>
               <View style={[styles.shippingTypeImage, { borderWidth: 0 }]}></View>
-              <View style={[styles.orderDetailStyle, { width: undefined }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
                 <Text style={styles.nameTextStyle}>
                   {'Shipped'}
                   {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
@@ -436,7 +460,10 @@ const OrderList = ({
                     source={clock}
                     style={[styles.pinImageStyle, { tintColor: COLORS.dark_yellow }]}
                   />
-                  <Text style={[styles.distanceTextStyle, { color: COLORS.dark_yellow }]}>
+                  <Text
+                    numberOfLines={2}
+                    style={[styles.distanceTextStyle, { color: COLORS.dark_yellow }]}
+                  >
                     {/* {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
                   item?.preffered_delivery_end_time ?? '00.00'
                 }`} */}
@@ -492,7 +519,7 @@ const OrderList = ({
               : selectedStatus === '3'
               ? 'Printing Labels'
               : selectedStatus === '4'
-              ? strings.orderStatus.trackingOrders
+              ? strings.orderStatus.shipOrder
               : selectedStatus === '5'
               ? strings.orderStatus.deliveryOrder
               : selectedStatus === '7,8'
