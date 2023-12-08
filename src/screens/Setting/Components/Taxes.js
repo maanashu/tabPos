@@ -970,11 +970,12 @@ export function Taxes() {
 
   return (
     <View>
-      {/* <View style={[styles.flexRow, { height: SW(8) }]}>
+      <View style={[styles.flexRow, { height: SW(8) }]}>
         <Text style={styles.HeaderLabelText}>{strings.settings.taxes}</Text>
       </View>
-      <Spacer space={SH(20)} /> */}
-
+      <Spacer space={SH(10)} />
+      <Text style={styles.taxDesc}>{strings.settings.taxSubHead}</Text>
+      <Spacer space={SH(10)} />
       <View>{verifiedAreaFun()}</View>
 
       <Modal
