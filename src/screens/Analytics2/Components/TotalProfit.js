@@ -7,18 +7,22 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 import {
   Fonts,
   backArrow2,
+  deliveryIcon,
   locationSales,
   profit,
   profitIcon,
   revenueTotal,
   totalOrders,
   totalSales,
+  total_orders,
+  total_volume,
 } from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
@@ -30,6 +34,7 @@ import { COLORS } from '@/theme';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
 import { useDebouncedCallback } from 'use-lodash-debounce';
+import { height } from '@/theme/ScalerDimensions';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -114,7 +119,7 @@ export function TotalProfit({ sellerID, data }) {
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.total_orders}</Text>
       </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
+      <DataTable.Cell style={[styles.dateTableSetting, { marginHorizontal: ms(5) }]}>
         <Text style={styles.revenueDataText}>
           {item?.transaction < 0
             ? '-$' + Math.abs(item?.transaction)?.toFixed(2)
@@ -176,7 +181,7 @@ export function TotalProfit({ sellerID, data }) {
   return (
     <View
       style={{
-        height: '97%',
+        height: Platform.OS === 'android' ? '97%' : height - ms(50),
         backgroundColor: COLORS.white,
         borderRadius: ms(10),
         marginTop: ms(5),
@@ -199,7 +204,7 @@ export function TotalProfit({ sellerID, data }) {
       </View>
       <View style={styles.headerContainer}>
         <HeaderView
-          image={locationSales}
+          image={total_orders}
           text={'Total Orders'}
           count={
             analyticStatistics?.overView?.total_orders
@@ -210,7 +215,7 @@ export function TotalProfit({ sellerID, data }) {
           isLoading={profitStatisticsLoader}
         />
         <HeaderView
-          image={revenueTotal}
+          image={total_volume}
           text={'Total Volume'}
           count={
             analyticStatistics?.overView?.transaction
@@ -222,7 +227,7 @@ export function TotalProfit({ sellerID, data }) {
           isLoading={profitStatisticsLoader}
         />
         <HeaderView
-          image={totalOrders}
+          image={deliveryIcon}
           text={'Average order value'}
           count={
             analyticStatistics?.overView?.average_value
@@ -234,7 +239,7 @@ export function TotalProfit({ sellerID, data }) {
           isLoading={profitStatisticsLoader}
         />
         <HeaderView
-          image={profit}
+          image={profitIcon}
           text={'Gross Profit'}
           count={
             analyticStatistics?.overView?.profit_sum
@@ -265,7 +270,10 @@ export function TotalProfit({ sellerID, data }) {
                 <Text style={styles.revenueText}>Total Orders</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
+              <DataTable.Title
+                style={[styles.tableHeaderView, { marginHorizontal: ms(5) }]}
+                numberOfLines={2}
+              >
                 <Text style={styles.revenueText}>Total Volume</Text>
               </DataTable.Title>
 
@@ -289,12 +297,7 @@ export function TotalProfit({ sellerID, data }) {
               </DataTable.Title>
             </DataTable.Header>
 
-            <View
-              style={[
-                styles.mainListContainer,
-                { height: Platform.OS === 'ios' ? ms(245) : ms(288) },
-              ]}
-            >
+            <View style={styles.mainListContainer}>
               {/* {profitStatisticsLoader ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
@@ -305,7 +308,9 @@ export function TotalProfit({ sellerID, data }) {
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
               ) : (
-                <View style={styles.listView}>
+                <View
+                  style={[styles.listView, { height: Platform.OS === 'ios' ? ms(260) : ms(288) }]}
+                >
                   <FlatList
                     style={styles.listStyle}
                     data={analyticStatistics?.orderData?.data}

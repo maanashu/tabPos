@@ -34,6 +34,7 @@ import {
   bellDrawer,
   searchDrawer,
   scanNew,
+  calendarDrawer,
 } from '@/assets';
 import moment from 'moment';
 import { DaySelector, Spacer, TableDropdown } from '@/components';
@@ -80,7 +81,7 @@ export function WeeklyTransaction({
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const [paginationModalOpen, setPaginationModalOpen] = useState(false);
-  const [paginationModalValue, setPaginationModalValue] = useState(10);
+  const [paginationModalValue, setPaginationModalValue] = useState('10');
   const [paginationModalItems, setPaginationModalItems] = useState(PAGINATION_DATA);
 
   const [selectId, setSelectId] = useState(2);
@@ -183,9 +184,11 @@ export function WeeklyTransaction({
       dayWiseFilter: time,
       calendarDate: formatedDate,
       sellerID: sellerID,
+      start_date: startDated,
+      end_date: endDated,
     };
     dispatch(getTotalTraType(data));
-  }, [selectId, formatedDate]);
+  }, [selectId, formatedDate, time, startDated, endDated]);
 
   useEffect(() => {
     const data = {
@@ -377,121 +380,74 @@ export function WeeklyTransaction({
         </View>
       </View> */}
       {/* <ScrollView> */}
-      <View style={[styles.walletTranCon, { marginTop: ms(10) }]}>
-        <View style={styles.displayFlex}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <TouchableOpacity onPress={backHandler}>
-              <Image source={arrowLeftUp} style={styles.backButtonArrow} />
-            </TouchableOpacity>
-            <Text style={styles.trancationHeading}>{strings.wallet.totalTransections}</Text>
-          </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <View>
-              <DaySelector
-                onPresFun={onPresFun}
-                selectId={selectId}
-                setSelectId={setSelectId}
-                setSelectTime={setSelectTime}
-              />
-            </View>
-            <TouchableOpacity
-              onPress={() => setShow(!show)}
+      <View style={[styles.headerMainView, { paddingLeft: ms(5) }]}>
+        <View style={styles.deliveryView}>
+          <TouchableOpacity onPress={backHandler} style={{ marginRight: ms(5) }}>
+            <Image source={arrowLeftUp} style={styles.backButtonArrow} />
+          </TouchableOpacity>
+          <Text style={styles.deliveryText}>{strings.wallet.totalTransections}</Text>
+        </View>
+        <View style={styles.deliveryView}>
+          <DaySelector
+            onPresFun={onPresFun}
+            selectId={selectId}
+            setSelectId={setSelectId}
+            setSelectTime={setSelectTime}
+          />
+
+          <TouchableOpacity
+            onPress={() => setShow(!show)}
+            style={[
+              styles.headerView,
+              {
+                backgroundColor: selectedStartDate ? COLORS.navy_blue : COLORS.sky_grey,
+              },
+            ]}
+          >
+            <Image
+              source={calendarDrawer}
               style={[
-                styles.headerView,
+                styles.calendarStyle,
                 {
-                  backgroundColor: !selectedStartDate ? COLORS.sky_grey : COLORS.navy_blue,
+                  tintColor: selectedStartDate ? COLORS.sky_grey : COLORS.navy_blue,
                 },
               ]}
-            >
-              <Image
-                source={newCalendar}
-                style={[
-                  styles.calendarStyle,
-                  {
-                    tintColor: selectedStartDate ? COLORS.sky_grey : COLORS.navy_blue,
-                  },
-                ]}
-              />
-              {/* <Text style={startDate ? styles.dateText : styles.dateText2}>
-                {startDate
-                  ? moment(startDate).format('MMM D') +
-                    ' - ' +
-                    moment(endDate).format('MMM D, YYYY')
-                  : dateRange}
-              </Text> */}
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                navigate(NAVIGATION.notificationsList, {
-                  screen: NAVIGATION.wallet2,
-                })
-              }
-            >
-              <Image source={bellDrawer} style={[styles.truckStyle, { marginRight: ms(10) }]} />
-            </TouchableOpacity>
-            <Image source={searchDrawer} style={[styles.searchImage, { marginRight: ms(15) }]} />
-            <Image source={scanNew} style={[styles.scnStyle, { marginRight: ms(5) }]} />
+            />
+          </TouchableOpacity>
 
-            <Modal
-              isVisible={show}
-              statusBarTranslucent
-              animationIn={'fadeIn'}
-              animationInTiming={600}
-              animationOutTiming={300}
-              onBackdropPress={() => setShow(false)}
-            >
-              <View style={styles.calendarModalView}>
-                <CalendarPickerModal
-                  onPress={() => setShow(false)}
-                  // onDateChange={onChangeDate}
-                  // onSelectedDate={() => onDateApply(formattedDate)}
-                  // selectedStartDate={formattedDate}
-                  maxDate={maxDate}
-                  // onCancelPress={onCancelPressCalendar}
-                  allowRangeSelection={true}
-                  onDateChange={onDateChange}
-                  // handleOnPressNext={handleOnPressNext}
-                  onSelectedDate={onSelect}
-                  onCancelPress={() => {
-                    setShow(false);
-                    // setSelectedStartDate('');
-                    // setSelectedEndDate('');
-                    // setSelectId(2);
-                    // setSelectTime({ value: 'week' });
-                  }}
-                />
-
-                {/* <CalendarPickerModal
-                  onPress={() => {
-                    setShow(false);
-                    setDefaultDate();
-                    setSelectId(2);
-                    setFormatedDate();
-                    setSelectTime({ value: 'week' });
-                  }}
-                  onDateChange={onChangeDate}
-                  onSelectedDate={() => {
-                    setShow(false);
-                    setSelectId(0);
-                    setFormatedDate(date);
-                  }}
-                  maxDate={maxDate}
-                  selectedStartDate={defaultDate}
-                  onCancelPress={() => {
-                    setShow(false);
-                    // setFormatedDate();
-                    // setDate();
-                    // setSelectId(2);
-                    // setSelectTime({ value: 'week' });
-                  }}
-                /> */}
-              </View>
-            </Modal>
-          </View>
+          <TouchableOpacity
+            onPress={() =>
+              navigate(NAVIGATION.notificationsList, {
+                screen: NAVIGATION.wallet2,
+              })
+            }
+            style={{ marginHorizontal: ms(5) }}
+          >
+            <Image source={bellDrawer} style={styles.truckStyle} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.searchView}
+            // onPress={() => {
+            //   setShowSearchModal(true);
+            //   setSearchedCustomer([]);
+            //   setSearchedText('');
+            // }}
+          >
+            <Image source={searchDrawer} style={styles.searchImage} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.searchView, { marginLeft: ms(10) }]}
+            // onPress={() => {
+            //   setShowSearchModal(true);
+            //   setSearchedCustomer([]);
+            //   setSearchedText('');
+            // }}
+          >
+            <Image source={scanNew} style={styles.searchImage} />
+          </TouchableOpacity>
         </View>
       </View>
 
-      <Spacer space={ms(10)} />
       <View style={[styles.allTypeCon]}>
         <FlatList
           data={transactionArray}
@@ -522,7 +478,7 @@ export function WeeklyTransaction({
               placeholder="Order type"
               selected={orderTypeSelection}
               data={orderTypeArray}
-              containerStyle={{ width: ms(70) }}
+              containerStyle={{ width: Platform.OS === 'ios' ? ms(70) : ms(80) }}
             />
           </>
         </View>
@@ -831,6 +787,62 @@ export function WeeklyTransaction({
           </View>
         </Table>
       </View>
+
+      <Modal
+        isVisible={show}
+        statusBarTranslucent
+        animationIn={'fadeIn'}
+        animationInTiming={600}
+        animationOutTiming={300}
+        onBackdropPress={() => setShow(false)}
+      >
+        <View style={styles.calendarModalView}>
+          <CalendarPickerModal
+            onPress={() => setShow(false)}
+            // onDateChange={onChangeDate}
+            // onSelectedDate={() => onDateApply(formattedDate)}
+            // selectedStartDate={formattedDate}
+            maxDate={maxDate}
+            // onCancelPress={onCancelPressCalendar}
+            allowRangeSelection={true}
+            onDateChange={onDateChange}
+            // handleOnPressNext={handleOnPressNext}
+            onSelectedDate={onSelect}
+            onCancelPress={() => {
+              setShow(false);
+              // setSelectedStartDate('');
+              // setSelectedEndDate('');
+              // setSelectId(2);
+              // setSelectTime({ value: 'week' });
+            }}
+          />
+
+          {/* <CalendarPickerModal
+                  onPress={() => {
+                    setShow(false);
+                    setDefaultDate();
+                    setSelectId(2);
+                    setFormatedDate();
+                    setSelectTime({ value: 'week' });
+                  }}
+                  onDateChange={onChangeDate}
+                  onSelectedDate={() => {
+                    setShow(false);
+                    setSelectId(0);
+                    setFormatedDate(date);
+                  }}
+                  maxDate={maxDate}
+                  selectedStartDate={defaultDate}
+                  onCancelPress={() => {
+                    setShow(false);
+                    // setFormatedDate();
+                    // setDate();
+                    // setSelectId(2);
+                    // setSelectTime({ value: 'week' });
+                  }}
+                /> */}
+        </View>
+      </Modal>
 
       <Spacer space={SH(100)} />
     </View>

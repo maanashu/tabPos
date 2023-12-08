@@ -116,7 +116,7 @@ export const styles = StyleSheet.create({
   },
   _inputMain: {
     marginTop: ms(15),
-    width: ms(360),
+    // width: ms(360),
   },
   _inputSubView: {
     flexDirection: 'row',
@@ -274,14 +274,12 @@ export const styles = StyleSheet.create({
     marginTop: ms(12),
   },
   _sendRequest: {
+    flex: 1,
     height: ms(40),
-    paddingHorizontal: ms(10),
-    backgroundColor: COLORS.dark_grey,
-    borderRadius: ms(3),
+    backgroundColor: COLORS.navy_blue,
+    borderRadius: ms(22),
     justifyContent: 'center',
     alignContent: 'center',
-    // flex: 0.4,
-    marginLeft: ms(10),
   },
   _orContainer: {
     flexDirection: 'row',
@@ -303,7 +301,6 @@ export const styles = StyleSheet.create({
     fontSize: ms(8),
     color: COLORS.solid_grey,
     marginBottom: ms(10),
-    marginTop: ms(20),
   },
   itemLIistCon: {
     // width: windowWidth * 0.67,
@@ -417,7 +414,7 @@ export const styles = StyleSheet.create({
   holdCart: {
     color: COLORS.dark_grey,
     fontSize: SF(12),
-    fontFamily: Fonts.Medium,
+    fontFamily: Fonts.SemiBold,
     paddingHorizontal: moderateScale(3),
   },
 
@@ -510,13 +507,12 @@ export const styles = StyleSheet.create({
   },
 
   checkoutButtonSideBar: {
-    width: windowWidth * 0.22,
+    flex: 1,
     height: ms(35),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: COLORS.navy_blue,
-    alignSelf: 'center',
     borderRadius: ms(30),
     paddingVertical: verticalScale(1),
   },
@@ -526,10 +522,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Medium,
   },
   checkArrow: {
-    width: SW(10),
-    height: SW(4),
+    width: ms(15),
+    height: ms(15),
     resizeMode: 'contain',
     paddingHorizontal: moderateScale(6),
+    tintColor: COLORS.lavender,
   },
 
   // sideBar css end
@@ -977,11 +974,12 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     justifyContent: 'center',
     marginVertical: verticalScale(2),
+    paddingVertical: ms(4),
   },
   blueListDataText: {
     color: COLORS.navy_blue,
     fontSize: SF(13),
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.SemiBold,
   },
   columbiaMen: {
     width: ms(18),
@@ -1502,6 +1500,7 @@ export const styles = StyleSheet.create({
     color: COLORS.light_time,
     fontSize: ms(6),
     fontFamily: Fonts.Medium,
+    flex: 1,
   },
   addToCart: {
     width: ms(10),
@@ -1785,8 +1784,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   offerImage: {
-    width: ms(20),
-    height: ms(20),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
     borderRadius: ms(4),
   },
@@ -1817,13 +1816,13 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     position: 'absolute',
-    bottom: -50,
-    right: -50,
-    borderRadius: 10,
+    top: Platform.OS === 'ios' ? -10 : -50,
+    right: Platform.OS === 'ios' ? -10 : -50,
+    borderRadius: ms(15),
     padding: 18,
   },
   shortestCartListBody: {
-    width: windowWidth * 0.35,
+    flex: 1,
   },
   cartListIconBody: {
     width: windowWidth * 0.04,
@@ -1836,10 +1835,11 @@ export const styles = StyleSheet.create({
   },
   shortCartListData: {
     borderWidth: 1,
-    width: windowWidth * 0.35,
-    height: SH(48),
+    // width: windowWidth * 0.35,
+    flex: 1,
+    height: ms(40),
     borderRadius: 5,
-    borderColor: COLORS.solidGrey,
+    borderColor: COLORS.light_purple,
     justifyContent: 'center',
     marginVertical: verticalScale(2),
     paddingHorizontal: ms(5),
@@ -1858,7 +1858,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   shortCartListHeight: {
-    height: windowHeight * 0.7,
+    flex: 1,
   },
 
   //PHONE POPUP
@@ -1968,15 +1968,15 @@ export const styles = StyleSheet.create({
     marginTop: ms(3),
   },
   textInputView2: {
-    paddingHorizontal: SW(4),
     borderWidth: 0,
     alignItems: 'center',
     flexDirection: 'row',
     height: windowHeight * 0.08,
-    width: windowWidth * 0.25,
+    width: windowWidth * 0.35,
     borderWidth: 1,
-    borderColor: '#D8D8D8',
-    borderRadius: 5,
+    borderColor: COLORS.light_purple,
+    borderRadius: ms(22),
+    paddingHorizontal: ms(10),
   },
   dropDownIcon: {
     width: 7,
@@ -1991,8 +1991,14 @@ export const styles = StyleSheet.create({
   },
   textInputContainer: {
     color: COLORS.navy_blue,
-    fontSize: SF(16),
+    fontSize: ms(12),
     fontFamily: Fonts.Medium,
+  },
+  walletSearchContainer: {
+    color: COLORS.navy_blue,
+    fontSize: ms(9),
+    fontFamily: Fonts.Medium,
+    width: '100%',
   },
 
   jobrSaveView: {
@@ -2150,17 +2156,16 @@ export const styles = StyleSheet.create({
 
   // jbrcoin modal popup
   scanPopUpCon: {
-    width: ms(460),
-    height: ms(460),
+    width: ms(550),
+    height: ms(380),
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: ms(18),
   },
   scanPopHeader: {
-    borderBottomWidth: 1,
-    height: ms(35),
+    height: ms(30),
     paddingHorizontal: ms(15),
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'flex-end',
     borderColor: COLORS.solidGrey,
   },
@@ -2234,7 +2239,7 @@ export const styles = StyleSheet.create({
 
   cartHeaderLeftSide: {
     flexDirection: 'row',
-    width: windowWidth * 0.18,
+    width: windowWidth * 0.25,
   },
   cartHeaderRightSide: {
     flexDirection: 'row',
@@ -2250,7 +2255,8 @@ export const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: SF(14),
     fontFamily: Fonts.Medium,
-    width: windowWidth * 0.13,
+    // width: windowWidth * 0.13,
+    flex: 1,
   },
   cartBodyRightSide: {
     color: COLORS.solid_grey,
@@ -2279,8 +2285,8 @@ export const styles = StyleSheet.create({
     marginTop: ms(10),
   },
   shortServiceItalic: {
-    fontFamily: Fonts.Italic,
-    color: COLORS.solid_grey,
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
     fontSize: ms(6),
   },
   serviceCartImage: {
@@ -2447,18 +2453,18 @@ export const styles = StyleSheet.create({
   },
   productCartBody: {
     // borderWidth: 1,
-    width: Platform.OS === 'android' ? ms(82) : ms(60),
+    width: Platform.OS === 'android' ? ms(82) : ms(56),
     height: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
   },
   serviceCartRightBody: {
-    width: Platform.OS === 'android' ? ms(360) : ms(280),
+    width: Platform.OS === 'android' ? ms(290) : ms(220),
     height: ms(20),
     flexDirection: 'row',
   },
   serviceCartBody: {
-    width: Platform.OS === 'android' ? ms(68) : ms(52),
+    width: Platform.OS === 'android' ? ms(72) : ms(52),
     height: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
@@ -2621,7 +2627,7 @@ export const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderRightWidth: 1,
     height: SH(35),
-    width: ms(20),
+    width: ms(18),
     borderColor: COLORS.light_purple,
     justifyContent: 'center',
     alignItems: 'center',
@@ -2734,5 +2740,17 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     color: COLORS.white,
     fontSize: ms(11),
+  },
+  scanToPay: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
+    fontSize: ms(10),
+  },
+  scanpayBack: {
+    backgroundColor: COLORS.textInputBackground,
+    borderRadius: ms(22),
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(8),
+    marginVertical: ms(8),
   },
 });

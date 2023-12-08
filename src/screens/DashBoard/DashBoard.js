@@ -109,7 +109,6 @@ export function DashBoard({ navigation }) {
   const getDeliveryData = getDashboardData?.getOrderDeliveries?.data;
   const [orderDeliveriesData, setOrderDeleveriesData] = useState([]);
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
-
   const [trackingSession, setTrackingSession] = useState(false);
   const [amountCount, setAmountCount] = useState();
   const [trackNotes, setTrackNotes] = useState('');
@@ -375,7 +374,13 @@ export function DashBoard({ navigation }) {
 
   const trackinSessionModal = () => {
     return (
-      <Modal transparent={true} animationType={'fade'} isVisible={trackingSession}>
+      <Modal
+        transparent={true}
+        animationType={'fade'}
+        isVisible={trackingSession}
+        backdropColor={COLORS.row_grey}
+        backdropOpacity={0.9}
+      >
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
@@ -716,15 +721,9 @@ export function DashBoard({ navigation }) {
                       paddingHorizontal: SW(3),
                     }}
                   >
-                    <Text style={styles.searchTxtStyle}>New Orders</Text>
+                    <Text style={styles.searchTxtStyle}>{onLineOrder} New Orders</Text>
                   </View>
                 )}
-                {/* <TouchableOpacity
-                  style={styles.arrowBtnCon}
-                  
-                >
-                  <Image source={sellingArrow} style={styles.sellingArrow} />
-                </TouchableOpacity> */}
                 {index == 1 && (
                   <View style={styles.bellBack}>
                     <Image source={Images.bell} style={{ width: ms(15), height: ms(15) }} />

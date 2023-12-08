@@ -73,8 +73,12 @@ export class DeliveryController {
       const body = {
         status: data.status,
       };
+      console.log('endpoint', JSON.stringify(endpoint));
+
+      console.log('Body', JSON.stringify(body));
       HttpClient.put(endpoint, body)
         .then((response) => {
+          console.log('Accept error', JSON.stringify(response));
           Toast.show({
             position: 'bottom',
             type: 'success_toast',
@@ -84,6 +88,8 @@ export class DeliveryController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', JSON.stringify(error));
+
           Toast.show({
             position: 'bottom',
             type: 'error_toast',

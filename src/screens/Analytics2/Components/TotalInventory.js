@@ -7,10 +7,21 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { averageOrder, backArrow2, locationSales, profit, profitIcon, totalOrders } from '@/assets';
+import {
+  averageOrder,
+  backArrow2,
+  deliveryIcon,
+  inventory_value,
+  locationSales,
+  profit,
+  profitIcon,
+  totalOrders,
+  total_inventory,
+} from '@/assets';
 import { DataTable } from 'react-native-paper';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +33,7 @@ import { COLORS } from '@/theme';
 import { useRef } from 'react';
 import { getTotalInventory } from '@/actions/AnalyticsAction';
 import { useDebouncedCallback } from 'use-lodash-debounce';
+import { height } from '@/theme/ScalerDimensions';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -146,7 +158,7 @@ export function TotalInventory({ sellerID, data }) {
   return (
     <View
       style={{
-        height: '97%',
+        height: Platform.OS === 'android' ? '97%' : height - ms(50),
         backgroundColor: COLORS.white,
         borderRadius: ms(10),
         marginTop: ms(5),
@@ -169,7 +181,7 @@ export function TotalInventory({ sellerID, data }) {
       </View>
       <View style={styles.headerContainer}>
         <HeaderView
-          image={locationSales}
+          image={total_inventory}
           text={'Total Inventory'}
           count={
             totalInventory?.inventory_overview?.total_inventory
@@ -180,7 +192,7 @@ export function TotalInventory({ sellerID, data }) {
           isLoading={isInventoryLoading}
         />
         <HeaderView
-          image={averageOrder}
+          image={inventory_value}
           text={'Total Inventory Value'}
           count={
             totalInventory?.inventory_overview?.total_inventory_cost
@@ -190,7 +202,7 @@ export function TotalInventory({ sellerID, data }) {
           isLoading={isInventoryLoading}
         />
         <HeaderView
-          image={totalOrders}
+          image={deliveryIcon}
           text={'Average Order Value'}
           count={
             totalInventory?.inventory_overview?.average_value
@@ -200,7 +212,7 @@ export function TotalInventory({ sellerID, data }) {
           isLoading={isInventoryLoading}
         />
         <HeaderView
-          image={profit}
+          image={profitIcon}
           text={'Gross Profit'}
           count={
             totalInventory?.inventory_overview?.total_profit

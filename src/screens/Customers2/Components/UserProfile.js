@@ -168,11 +168,13 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={[styles.headerMainView]}>
-        <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
-          <Image source={arrowLeftUp} style={styles.backIconProfile} />
-          <Text style={[styles.deliveryText, { fontSize: ms(12) }]}>{'User Profile'}</Text>
-        </TouchableOpacity>
+      <View style={[styles.headerMainView, { paddingLeft: ms(10) }]}>
+        <View style={styles.deliveryView}>
+          <TouchableOpacity onPress={backHandler} style={{ marginRight: ms(5) }}>
+            <Image source={arrowLeftUp} style={styles.backButtonArrow} />
+          </TouchableOpacity>
+          <Text style={styles.deliveryText}>{'User Profile'}</Text>
+        </View>
         {/* <View style={styles.editButtonCon}>
           <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
         </View> */}
@@ -191,29 +193,35 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
           <View style={{ paddingHorizontal: moderateScale(10) }}>
             <Text style={styles.angelaText}>{data?.firstName}</Text>
             <Spacer space={SH(5)} />
-            <View style={styles.flexAlign}>
-              <Image source={new_location} style={styles.Phonelight} />
-              {userDetail?.user_details?.current_address ? (
+
+            {userDetail?.user_details?.current_address ? (
+              <View style={styles.flexAlign}>
+                <Image source={new_location} style={styles.Phonelight} />
+
                 <Text style={[styles.adressText, { width: windowWidth * 0.25 }]} numberOfLines={1}>
                   {data?.streetAdd} {data?.city} {data?.state} {data?.country}
                   {data?.postalCode}
                 </Text>
-              ) : null}
-            </View>
+              </View>
+            ) : null}
           </View>
         </View>
 
         <View style={{ flex: 1 }}>
           <Spacer space={SH(5)} />
-          <View style={styles.flexAlign}>
-            <Image source={new_phone} style={styles.Phonelight} />
-            <Text style={styles.adressText}>{data?.phoneNumber}</Text>
-          </View>
+          {userDetail?.user_details?.phone_number ? (
+            <View style={styles.flexAlign}>
+              <Image source={new_phone} style={styles.Phonelight} />
+              <Text style={styles.adressText}>{data?.phoneNumber}</Text>
+            </View>
+          ) : null}
           <Spacer space={SH(10)} />
-          <View style={styles.flexAlign}>
-            <Image source={new_email} style={styles.Phonelight} />
-            <Text style={styles.adressText}>{data?.userEmail}</Text>
-          </View>
+          {userDetail?.user_details?.email ? (
+            <View style={styles.flexAlign}>
+              <Image source={new_email} style={styles.Phonelight} />
+              <Text style={styles.adressText}>{data?.userEmail}</Text>
+            </View>
+          ) : null}
         </View>
 
         <View
@@ -265,9 +273,10 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
       <Spacer space={SH(10)} />
       <View style={styles.orderTypeCon}>
         <View style={styles.flexAlign}>
-          <View style={{ marginHorizontal: moderateScale(5) }}>
-            <TableDropdown placeholder="Month" selected={monthSelection} data={months} />
-            {/* <MonthYearPicker
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ marginHorizontal: moderateScale(5) }}>
+              <TableDropdown placeholder="Month" selected={monthSelection} data={months} />
+              {/* <MonthYearPicker
               showAllMonths={true}
               dateType={DATE_TYPE.MONTH}
               placeholder={'Month'}
@@ -279,14 +288,16 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
               }}
               dropdownStyle={{ height: SH(35), borderColor: COLORS.solidGrey }}
             /> */}
+            </View>
+            <>
+              <TableDropdown
+                placeholder="Store location"
+                selected={storeLocation}
+                data={storeLocationArray?.[0]}
+              />
+            </>
           </View>
-          <>
-            <TableDropdown
-              placeholder="Store location"
-              selected={storeLocation}
-              data={storeLocationArray?.[0]}
-            />
-          </>
+
           <View
             style={[styles.jbrTypeCon, { zIndex: -1, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
             pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
@@ -468,7 +479,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                 </Text>
               </View>
               <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
                   Store location
                 </Text>
               </View>
@@ -495,7 +506,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             </View>
           </View>
 
-          <View style={{ height: Platform.OS === 'android' ? ms(290) : ms(240) }}>
+          <View style={{ height: ms(290) }}>
             <ScrollView
               contentContainerStyle={{ flexGrow: 1 }}
               showsVerticalScrollIndicator={false}
@@ -551,7 +562,6 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                                   height: ms(17),
                                   resizeMode: 'contain',
                                   borderRadius: 50,
-                                  tintColor: COLORS.navy_blue,
                                 }}
                               />
                               <Text style={[styles.tableTextStyle]} numberOfLines={2}>
@@ -571,7 +581,6 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                                   width: ms(15),
                                   height: ms(15),
                                   resizeMode: 'contain',
-                                  tintColor: COLORS.navy_blue,
                                 }}
                               />
                               <Text style={styles.tableTextStyle}>
@@ -591,7 +600,6 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                                   width: ms(15),
                                   height: ms(15),
                                   resizeMode: 'contain',
-                                  tintColor: COLORS.navy_blue,
                                 }}
                               />
                               <Text style={[styles.tableTextStyle]}>

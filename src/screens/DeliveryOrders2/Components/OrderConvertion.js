@@ -65,8 +65,8 @@ const OrderConvertion = () => {
           /> */}
           <ProgressChart
             data={finalData}
-            width={ms(70)}
-            height={ms(70)}
+            width={ms(60)}
+            height={ms(60)}
             strokeWidth={ms(4)}
             radius={ms(18)}
             chartConfig={chartConfig}
@@ -175,7 +175,7 @@ export default memo(OrderConvertion);
 
 const styles = StyleSheet.create({
   orderConvertionView: {
-    flex: 1.4,
+    flex: 1,
     borderRadius: ms(10),
     paddingBottom: ms(10),
     backgroundColor: COLORS.white,

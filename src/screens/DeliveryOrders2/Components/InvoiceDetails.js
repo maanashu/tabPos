@@ -33,6 +33,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
   const getOrder = useSelector(getAnalytics);
   const getUserData = useSelector(getUser);
   const orderDetail = getOrder?.getOrderData;
+  console.log('dfdsfdsfds', JSON.stringify(orderDetail));
 
   useEffect(() => {
     dispatch(getOrderData(orderData?.order_id));
@@ -60,7 +61,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
 
   return (
     <ScrollView style={{ flex: 1 }}>
-      <View style={styles.firstRowStyleNew}>
+      <View style={styles.firstRowStyleInvoice}>
         <View style={styles.storeDetailView}>
           <Text style={style.storeNameText}>
             {`${orderDetail?.seller_details?.organization_name}` ?? '-'}
@@ -120,7 +121,22 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
               </Text>
             </View>
           )}
+          {/* {New Addition} */}
 
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{'Delivery Charges'}</Text>
+            <Text style={style._subTotalPrice}>
+              {`$` + `${parseFloat(orderDetail?.delivery_charge).toFixed(2)}`}
+            </Text>
+          </View>
+
+          <View style={style._horizontalLine} />
+
+          <View style={style._subTotalContainer}>
+            <Text style={style._substotalTile}>{'Tip'}</Text>
+            <Text style={style._subTotalPrice}>{`${formattedReturnPrice(orderDetail?.tips)}`}</Text>
+          </View>
+          {/* { Above New Addition} */}
           <View style={style._horizontalLine} />
 
           <View style={style._subTotalContainer}>
@@ -176,7 +192,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
             style={[style._barCodeImage, { tintColor: COLORS.navy_blue }]}
           />
         </View>
-
+        <View style={{ flex: 0.02 }} />
         <View style={styles.mapMainView}>
           <MapView
             customMapStyle={mapCustomStyle}

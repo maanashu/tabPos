@@ -308,7 +308,12 @@ const Graph = () => {
       <View>
         <Text style={styles.numberOrdersText}>{strings.deliveryOrders.orderNumber}</Text>
 
-        <View style={[styles.flexRow, { zIndex: 999, marginTop: ms(10), marginLeft: ms(20) }]}>
+        <View
+          style={[
+            styles.flexRow,
+            { marginTop: ms(10), alignItems: 'center', justifyContent: 'center' },
+          ]}
+        >
           <TouchableOpacity
             onPress={() => {
               setShowIncoming((prevShowIncoming) => {
@@ -446,64 +451,6 @@ const Graph = () => {
               segments={5}
             />
           )}
-          {/* <LineChart
-            withDots={false}
-            withVerticalLines={false}
-            data={{
-              labels: ['Jan', 'Mar', 'May', 'Jul', 'Sept', 'Nov', 'Dec'],
-              datasets: [
-                {
-                  data: [800, 810, 900, 810, 860, 890, 810],
-                  color: () => `rgba(70, 89, 181, 1)`,
-                  strokeWidth: 3,
-                },
-                {
-                  data: [500, 600, 550, 590, 630, 650, 700],
-                  color: () => `rgba(114, 51, 194, 1)`,
-                  strokeWidth: 3,
-                },
-                {
-                  data: [400, 450, 470, 420, 410, 480, 500],
-                  color: () => `rgba(240, 192, 26, 1)`,
-                  strokeWidth: 3,
-                },
-                {
-                  data: [100, 220, 190, 260, 240, 340, 370],
-                  color: () => `rgba(240, 68, 56, 1)`,
-                  strokeWidth: 3,
-                },
-              ].filter((el) => el),
-            }}
-            width={windowWidth * 0.5}
-            height={ms(160)}
-            // noOfSections={8}
-            chartConfig={{
-              backgroundColor: '#000',
-              backgroundGradientFrom: '#fff',
-              // backgroundGradientTo: '#f3edf7',
-              backgroundGradientTo: '#fff',
-              decimalPlaces: 0,
-              // horizontalLabelRotation: 45,
-              color: () => `rgba(39, 90, 255, 1)`,
-              labelColor: (opacity = 1) => `rgba(126, 138, 193, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-              propsForBackgroundLines: {
-                stroke: COLORS.sky_grey,
-                strokeDasharray: '', // solid background lines with no dashes
-              },
-            }}
-            bezier
-            style={{
-              marginVertical: 8,
-              // borderRadius: 16,
-            }}
-            withShadow={false}
-            fromZero
-            segments={5}
-          />
-           */}
 
           <Text style={styles.monthStyle}>{moment().format('MMMM')}</Text>
         </View>
@@ -517,23 +464,25 @@ export default memo(Graph);
 const styles = StyleSheet.create({
   graphViewStyle: {
     borderRadius: ms(10),
-    paddingBottom: 30,
+    // paddingBottom: 30,
     // height: twoEqualView,
     padding: 20,
+    alignItems: 'center',
 
-    width: windowWidth * 0.56,
+    // width: windowWidth * 0.56,
     backgroundColor: COLORS.white,
+    flex: 1,
   },
   numberOrdersText: {
     fontSize: SF(12),
     paddingTop: ms(16),
     paddingHorizontal: 20,
     color: COLORS.lavender,
-    fontFamily: Fonts.Bold,
+    fontFamily: Fonts.Regular,
 
     transform: [{ rotate: '-90deg' }],
     position: 'absolute',
-    left: ms(-50),
+    left: ms(-70),
     top: ms(100),
   },
   flexRow: {
@@ -543,7 +492,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   loaderView: {
-    height: twoEqualView,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.white,
@@ -574,5 +523,6 @@ const styles = StyleSheet.create({
     marginTop: ms(-10),
     fontSize: ms(8),
     color: COLORS.lavender,
+    fontFamily: Fonts.Regular,
   },
 });

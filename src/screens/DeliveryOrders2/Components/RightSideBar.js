@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
   rightSideView: {
     borderRadius: ms(30),
     alignItems: 'center',
-    width: width * 0.06,
+    // width: width * 0.055,
     backgroundColor: COLORS.white,
     paddingVertical: verticalScale(8),
   },
@@ -352,8 +352,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   backImageStyle: {
-    width: ms(14),
-    height: ms(14),
+    width: ms(12),
+    height: ms(12),
     resizeMode: 'contain',
     // top: ms(-2),
   },

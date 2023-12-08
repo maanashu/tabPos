@@ -12,7 +12,7 @@ import {
 import { useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { BarChart } from 'react-native-gifted-charts';
-import { Fonts, blankCheckBox, mark } from '@/assets';
+import { Fonts, blankCheckBox, mark, newCheck } from '@/assets';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { TYPES } from '@/Types/WalletTypes';
 import { graphOptions } from '@/constants/flatListData';
@@ -20,6 +20,7 @@ import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getWallet } from '@/selectors/WalletSelector';
 import { useEffect } from 'react';
+import { Images } from '@/assets/new_icon';
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 
@@ -272,8 +273,8 @@ const Graph = () => {
   }, [getTotalTraData]);
   return (
     <View style={styles.graphViewStyle}>
-      <View style={styles.flexRow}>
-        <TouchableOpacity
+      <View style={[styles.flexRow, { alignSelf: 'flex-end' }]}>
+        {/* <TouchableOpacity
           onPress={() => {
             setShowJBR((prevShowJBR) => {
               const newState = !prevShowJBR;
@@ -283,11 +284,22 @@ const Graph = () => {
           }}
           style={styles.checkboxViewStyle}
         >
-          <Image
-            source={showJBR ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showJBR && { tintColor: COLORS.lavenders }]}
-          />
-          <Text style={[styles.varientTextStyle, { color: COLORS.lavenders }]}>JBR Coin</Text>
+          <View
+            style={[
+              styles.imageView,
+              { borderColor: COLORS.navy_blue, backgroundColor: COLORS.light_purple },
+            ]}
+          >
+            <Image
+              source={showJBR ? newCheck : blankCheckBox}
+              style={[
+                styles.checkboxIconStyle,
+                { tintColor: showJBR ? COLORS.navy_blue : COLORS.transparent },
+              ]}
+            />
+          </View>
+
+          <Text style={[styles.varientTextStyle, { color: COLORS.navy_blue }]}>JBR Coin</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -300,12 +312,26 @@ const Graph = () => {
           }}
           style={styles.checkboxViewStyle}
         >
-          <Image
-            source={showCash ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showCash && { tintColor: COLORS.bright_green }]}
-          />
-          <Text style={[styles.varientTextStyle, { color: COLORS.bright_green }]}>Cash</Text>
+          <View
+            style={[
+              styles.imageView,
+              { borderColor: COLORS.medium_green, backgroundColor: COLORS.light_green },
+            ]}
+          >
+            <Image
+              source={showCash ? newCheck : blankCheckBox}
+              style={[
+                styles.checkboxIconStyle,
+                {
+                  tintColor: showCash ? COLORS.medium_green : COLORS.transparent,
+                },
+              ]}
+            />
+          </View>
+
+          <Text style={[styles.varientTextStyle, { color: COLORS.medium_green }]}>Cash</Text>
         </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() => {
             setShowCard((prevShowJBR) => {
@@ -316,11 +342,24 @@ const Graph = () => {
           }}
           style={[styles.checkboxViewStyle, { marginRight: 0 }]}
         >
-          <Image
-            source={showCard ? mark : blankCheckBox}
-            style={[styles.checkboxIconStyle, showCard && { tintColor: COLORS.sky_blue }]}
-          />
-          <Text style={[styles.varientTextStyle, { color: COLORS.sky_blue }]}>Credit Card</Text>
+          <View
+            style={[
+              styles.imageView,
+              { borderColor: COLORS.aqua, backgroundColor: COLORS.light_sky },
+            ]}
+          >
+            <Image
+              source={showCard ? newCheck : blankCheckBox}
+              style={[
+                styles.checkboxIconStyle,
+                {
+                  tintColor: showCard ? COLORS.aqua : COLORS.transparent,
+                },
+              ]}
+            />
+          </View>
+
+          <Text style={[styles.varientTextStyle, { color: COLORS.aqua }]}>Credit Card</Text>
         </TouchableOpacity>
       </View>
       {isLoad ? (
@@ -343,27 +382,26 @@ const Graph = () => {
         dateInterval={5}
       /> */}
 
-          <BarChart
-            data={modifyData}
-            barWidth={SW(3.5)}
-            // spacing={SW(35.2)}
-            roundedTop
-            // hideRules
-            xAxisThickness={1}
-            yAxisThickness={0}
-            xAxisType={'dashed'}
-            yAxisType={'dashed'}
-            xAxisColor={`rgba(39, 90, 255, 1)`}
-            yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
-            noOfSections={4}
-            // maxValue={100}
-            yAxisLength={350}
-            height={Platform.OS === 'android' ? ms(250) : ms(240)}
-            width={Dimensions.get('window').width * 0.8}
-            initialSpacing={SH(10)}
-          />
-        </View>
-      )}
+        <BarChart
+          data={modifyData}
+          barWidth={SW(3.5)}
+          // spacing={SW(35.2)}
+          roundedTop
+          // hideRules
+          xAxisThickness={1}
+          yAxisThickness={0}
+          xAxisType={'dashed'}
+          yAxisType={'dashed'}
+          xAxisColor={`rgba(39, 90, 255, 1)`}
+          yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
+          noOfSections={4}
+          // maxValue={100}
+          yAxisLength={350}
+          height={Platform.OS === 'android' ? ms(250) : ms(240)}
+          width={Dimensions.get('window').width * 0.8}
+          initialSpacing={SH(10)}
+        />
+      </View>
     </View>
   );
 };
@@ -378,7 +416,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     paddingVertical: ms(10),
     // marginTop: ms(10),
-    paddingBottom: ms(30),
+    // paddingBottom: ms(30),
   },
   numberOrdersText: {
     fontSize: SF(16),
@@ -404,24 +442,69 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
   },
   varientTextStyle: {
-    fontSize: ms(9),
+    fontSize: ms(7),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },
   checkboxIconStyle: {
-    width: ms(12),
-    height: ms(12),
+    width: ms(8),
+    height: ms(8),
     resizeMode: 'contain',
   },
   checkboxViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: ms(10),
+    marginRight: ms(5),
   },
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
     zIndex: 999,
     alignSelf: 'flex-end',
+    marginHorizontal: ms(5),
+  },
+  imageView: {
+    borderWidth: 1,
+    borderRadius: ms(3),
+    borderColor: COLORS.medium_green,
+    backgroundColor: COLORS.light_green,
+    marginHorizontal: ms(2),
+  },
+  jobrCoinCheckBoxStyle: {
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: COLORS.navy_blue,
+    height: ms(12),
+    width: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.light_purple,
+    marginRight: ms(3),
+  },
+  jobrCashCheckBoxStyle: {
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: COLORS.green_new,
+    height: ms(12),
+    width: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.soft_green,
+    marginRight: ms(3),
+  },
+  cardCheckBoxStyle: {
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: COLORS.aqua,
+    height: ms(12),
+    width: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.light_sky_blue,
+    marginRight: ms(3),
+  },
+  checkMarkStyle: {
+    height: ms(9),
+    width: ms(9),
   },
 });

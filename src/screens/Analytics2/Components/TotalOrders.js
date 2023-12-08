@@ -7,10 +7,21 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
-import { backArrow2, locationSales, profit, profitIcon, revenueTotal, totalOrders } from '@/assets';
+import {
+  backArrow2,
+  deliveryIcon,
+  locationSales,
+  profit,
+  profitIcon,
+  revenueTotal,
+  totalOrders,
+  total_orders,
+  total_volume,
+} from '@/assets';
 import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
 import { useSelector } from 'react-redux';
@@ -19,6 +30,7 @@ import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AnalyticsTypes';
+import { height } from '@/theme/ScalerDimensions';
 
 export function TotalOrders({ onPressReview }) {
   const getAnalyticsData = useSelector(getAnalytics);
@@ -102,7 +114,7 @@ export function TotalOrders({ onPressReview }) {
   return (
     <View
       style={{
-        height: '97%',
+        height: Platform.OS === 'android' ? '97%' : height - ms(50),
         backgroundColor: COLORS.white,
         borderRadius: ms(10),
         marginTop: ms(5),
@@ -125,14 +137,14 @@ export function TotalOrders({ onPressReview }) {
       </View>
       <View style={styles.headerContainer}>
         <HeaderView
-          image={locationSales}
+          image={total_orders}
           text={'Total Orders'}
           count={totalOrder?.ordersOverView?.total_orders}
           style={{ marginHorizontal: ms(5) }}
           isLoading={isTotalOrderLoading}
         />
         <HeaderView
-          image={revenueTotal}
+          image={total_volume}
           text={'Total Volume'}
           count={
             totalOrder?.ordersOverView?.total_volume
@@ -144,7 +156,7 @@ export function TotalOrders({ onPressReview }) {
           isLoading={isTotalOrderLoading}
         />
         <HeaderView
-          image={totalOrders}
+          image={deliveryIcon}
           text={'Average order value'}
           count={
             totalOrder?.ordersOverView?.averageValue
@@ -156,7 +168,7 @@ export function TotalOrders({ onPressReview }) {
           isLoading={isTotalOrderLoading}
         />
         <HeaderView
-          image={profit}
+          image={profitIcon}
           text={'Gross Profit'}
           count={
             totalOrder?.ordersOverView?.total_profit

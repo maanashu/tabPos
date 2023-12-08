@@ -7,17 +7,22 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
 import {
   backArrow2,
   channel,
+  deliveryIcon,
   locationSales,
+  order_frequency,
   profitIcon,
+  soldProduct,
   totalOrder,
   totalOrders,
   totalSales,
+  total_orders,
 } from '@/assets';
 import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
@@ -29,6 +34,7 @@ import { NAVIGATION } from '@/constants';
 import { navigate } from '@/navigation/NavigationRef';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { height } from '@/theme/ScalerDimensions';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -167,7 +173,7 @@ export function TotalPosOrder({ onPressReview }) {
   return (
     <View
       style={{
-        height: '97%',
+        height: Platform.OS === 'android' ? '97%' : height - ms(50),
         backgroundColor: COLORS.white,
         borderRadius: ms(10),
         marginTop: ms(5),
@@ -190,14 +196,14 @@ export function TotalPosOrder({ onPressReview }) {
       </View>
       <View style={styles.headerContainer}>
         <HeaderView
-          image={locationSales}
+          image={total_orders}
           text={'Total Orders'}
           count={posGraph?.ordersOverView?.total_orders}
           style={{ marginHorizontal: ms(5) }}
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={channel}
+          image={order_frequency}
           text={'Order Frequency'}
           count={
             posGraph?.ordersOverView?.order_frequency
@@ -207,7 +213,7 @@ export function TotalPosOrder({ onPressReview }) {
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={totalOrders}
+          image={deliveryIcon}
           text={'Average Order Value'}
           count={
             posGraph?.ordersOverView?.averageValue
@@ -219,7 +225,7 @@ export function TotalPosOrder({ onPressReview }) {
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={totalSales}
+          image={soldProduct}
           text={'Total Sales'}
           count={
             posGraph?.ordersOverView?.total_sales_or_actual_amount
@@ -242,15 +248,15 @@ export function TotalPosOrder({ onPressReview }) {
           scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
-            <DataTable.Header style={[styles.tableListHeader]}>
+            <DataTable.Header style={[styles.tableListHeader, { height: ms(40) }]}>
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Total POS Orders</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Average Order Value</Text>
               </DataTable.Title>
 

@@ -111,7 +111,13 @@ export const styles = StyleSheet.create({
     margin: 0,
   },
   homeBodyCon: {
-    marginLeft: ms(10),
+    flex: 1,
+    marginHorizontal: ms(5),
+    backgroundColor: COLORS.white,
+    borderRadius: ms(4),
+    marginBottom: ms(5),
+    paddingHorizontal: ms(10),
+    paddingVertical: ms(15),
   },
   totalCustomerCon: {
     flexDirection: 'row',
@@ -130,20 +136,21 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     // justifyContent: 'center',
     // alignItems: 'center',
-    marginRight: ms(10),
+    // marginHorizontal: ms(5),
     paddingHorizontal: ms(15),
     paddingVertical: ms(10),
     // flex: 1,
   },
   newCustomer: {
-    width: SH(36),
-    height: SH(36),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
   },
   customerCount: {
     fontFamily: Fonts.MaisonRegular,
     color: COLORS.solid_grey,
-    fontSize: SF(24),
+    fontSize: ms(12),
+    marginTop: ms(10),
   },
   newCustomerHeading: {
     fontFamily: Fonts.Regular,
@@ -151,8 +158,9 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
   },
   contentContainerStyle: {
-    // flex: 1,
-    // justifyContent: 'space-between',
+    // marginTop: ms(15),
+    flex: 1,
+    justifyContent: 'space-between',
   },
   totalCusPrimary: {
     fontFamily: Fonts.SemiBold,
@@ -249,10 +257,10 @@ export const styles = StyleSheet.create({
     // backgroundColor: COLORS.textInputBackground,
     // height: SH(55),
     justifyContent: 'center',
-    paddingHorizontal: moderateScale(8),
-    position: 'absolute',
-    top: 0,
-    right: 0,
+    paddingHorizontal: moderateScale(0),
+    // position: 'absolute',
+    // top: 0,
+    // right: 0,
   },
   paginationEnd: {
     flexDirection: 'row',
@@ -264,12 +272,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(5),
   },
-  paginationCount: {
-    fontSize: SF(14),
-    fontFamily: Fonts.Regular,
-    color: COLORS.black,
-    paddingHorizontal: moderateScale(12),
-  },
   dropDownIconPagination: {
     width: SW(4),
     height: SW(4),
@@ -279,11 +281,11 @@ export const styles = StyleSheet.create({
   dropdown: {
     alignSelf: 'center',
     backgroundColor: 'transparent',
-    borderColor: COLORS.transparent,
+    borderColor: 'transparent',
     zIndex: Platform.OS === 'ios' ? 100 : 0,
   },
   containerStylePagination: {
-    width: ms(40),
+    width: ms(45),
     height: SH(35),
     justifyContent: 'center',
     borderWidth: 1,
@@ -304,29 +306,26 @@ export const styles = StyleSheet.create({
   listItemLabelStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    color: COLORS.navy_blue,
   },
   labelStyle: {
-    fontSize: SF(14),
-    fontFamily: Fonts.Medium,
-    color: COLORS.navy_blue,
-  },
-  selectedItemLabelStyle: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    color: COLORS.navy_blue,
+  },
+  selectedItemLabelStyle: {
+    fontSize: SF(13),
+    fontFamily: Fonts.MaisonBold,
   },
   placeholderStylePagination: {
     fontSize: SF(12),
     fontFamily: Fonts.Regular,
-    color: COLORS.navy_blue,
+    color: COLORS.black,
   },
   unionCon: {
-    backgroundColor: COLORS.sky_grey,
+    backgroundColor: COLORS.washGrey,
     height: SH(40),
     justifyContent: 'center',
     borderRadius: ms(5),
-    marginRight: ms(7),
+    marginRight: ms(2),
   },
   unionStyle: {
     width: SW(5),
@@ -335,10 +334,11 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(12),
   },
   paginationCount: {
-    fontSize: ms(10),
-    fontFamily: Fonts.Regular,
+    fontSize: ms(7),
+    fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
-    paddingHorizontal: ms(3),
+    marginRight: ms(3),
+    marginLeft: ms(7),
   },
   tableDataHeaderCon: {
     height: SH(50),
@@ -404,7 +404,7 @@ export const styles = StyleSheet.create({
   lovingStyleData: {
     width: ms(22),
     height: ms(22),
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderRadius: 50,
   },
   tableTextDataName: {
@@ -464,9 +464,8 @@ export const styles = StyleSheet.create({
   lovingStyle: {
     width: ms(30),
     height: ms(30),
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     borderRadius: 50,
-    tintColor: COLORS.navy_blue,
   },
   angelaText: {
     fontFamily: Fonts.Medium,
@@ -545,7 +544,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   profileheaderChildView: {
-    width: Platform.OS === 'android' ? ms(100) : ms(83),
+    width: Platform.OS === 'android' ? ms(100) : ms(75),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(3),
@@ -586,7 +585,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   profilDetailChildView: {
-    width: Platform.OS === 'android' ? ms(115) : ms(95),
+    width: Platform.OS === 'android' ? ms(115) : ms(90),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(3),
@@ -610,7 +609,7 @@ export const styles = StyleSheet.create({
     padding: 0,
   },
   varientTextStyle: {
-    fontSize: SF(11),
+    fontSize: ms(7),
     color: COLORS.darkGray,
     fontFamily: Fonts.Regular,
   },
@@ -647,5 +646,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.sky_grey,
     marginLeft: ms(10),
     borderRadius: ms(20),
+  },
+  backButtonArrow: {
+    width: ms(18),
+    height: ms(18),
+    resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
   },
 });

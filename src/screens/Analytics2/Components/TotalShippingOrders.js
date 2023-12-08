@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
@@ -14,10 +15,14 @@ import {
   Fonts,
   backArrow2,
   channel,
+  deliveryIcon,
   locationSales,
+  order_frequency,
   profitIcon,
+  soldProduct,
   totalOrders,
   totalSales,
+  total_orders,
 } from '@/assets';
 import { COLORS } from '@/theme';
 import { DataTable } from 'react-native-paper';
@@ -27,6 +32,7 @@ import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { height } from '@/theme/ScalerDimensions';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -143,7 +149,7 @@ export function TotalShippingOrders({ onPressReview }) {
   return (
     <View
       style={{
-        height: '97%',
+        height: Platform.OS === 'android' ? '97%' : height - ms(50),
         backgroundColor: COLORS.white,
         borderRadius: ms(10),
         marginTop: ms(5),
@@ -166,14 +172,14 @@ export function TotalShippingOrders({ onPressReview }) {
       </View>
       <View style={styles.headerContainer}>
         <HeaderView
-          image={locationSales}
+          image={total_orders}
           text={'Total Orders'}
           count={shippingGraph?.ordersOverView?.total_orders}
           style={{ marginHorizontal: ms(5) }}
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={channel}
+          image={order_frequency}
           text={'Order Frequency'}
           count={
             shippingGraph?.ordersOverView?.order_frequency
@@ -183,7 +189,7 @@ export function TotalShippingOrders({ onPressReview }) {
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={totalOrders}
+          image={deliveryIcon}
           text={'Average Order Value'}
           count={
             shippingGraph?.ordersOverView?.averageValue
@@ -193,7 +199,7 @@ export function TotalShippingOrders({ onPressReview }) {
           isLoading={isAnalyticOrderGraphLoading}
         />
         <HeaderView
-          image={totalSales}
+          image={soldProduct}
           text={'Total Sales'}
           count={
             shippingGraph?.ordersOverView?.total_sales_or_actual_amount
@@ -222,7 +228,7 @@ export function TotalShippingOrders({ onPressReview }) {
                 <Text style={styles.revenueText}>Total Shipping Orders</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting} numberOfLines={2}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Average Order Value</Text>
               </DataTable.Title>
 

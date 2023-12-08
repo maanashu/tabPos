@@ -49,7 +49,7 @@ const OrderDetail = ({
             onPress={() => declineHandler(userDetail?.id)}
             style={[
               styles.declineButtonStyle,
-              { width: ms(80), borderRadius: ms(30), borderColor: COLORS.navy_blue },
+              { borderRadius: ms(30), borderColor: COLORS.navy_blue },
             ]}
           >
             <Text style={[styles.declineTextStyle, { color: COLORS.navy_blue }]}>
@@ -61,7 +61,6 @@ const OrderDetail = ({
             style={[
               styles.acceptButtonView,
               {
-                width: ms(80),
                 borderRadius: ms(30),
                 backgroundColor: COLORS.navy_blue,
                 flexDirection: 'row',
@@ -165,29 +164,37 @@ const OrderDetail = ({
         <View
           style={{
             flexDirection: 'row',
-            margin: ms(8),
+            // margin: ms(8),
             alignItems: 'center',
-            paddingEnd: ms(10),
+            justifyContent: 'space-between',
+            padding: ms(10),
           }}
         >
-          <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.8 }]}>
-            <Image
-              source={profileImage ? { uri: profileImage } : userImage}
-              style={styles.userImageStyle}
-            />
+          <View style={[styles.locationViewStyle, { justifyContent: 'space-evenly', flex: 1 }]}>
+            <View style={{ flex: 0.2 }}>
+              <Image
+                source={profileImage ? { uri: profileImage } : userImage}
+                style={styles.userImageStyle}
+              />
+            </View>
 
-            <View style={styles.userNameView}>
-              <Text style={[styles.totalTextStyle, { padding: 0, color: COLORS.navy_blue }]}>
+            <View style={[styles.userNameView, { flex: 0.8 }]}>
+              <Text
+                numberOfLines={1}
+                style={[styles.totalTextStyle, { padding: 0, color: COLORS.navy_blue }]}
+              >
                 {userDetail?.user_details?.firstname ? userDetail?.user_details?.firstname : '-'}
               </Text>
 
               <Text
+                numberOfLines={1}
                 style={[styles.badgetext, { fontFamily: Fonts.Medium, color: COLORS.lavender }]}
               >
                 {`${userDetail?.address}, ${userDetail?.city}`}
               </Text>
 
               <Text
+                numberOfLines={1}
                 style={[styles.badgetext, { fontFamily: Fonts.Medium, color: COLORS.lavender }]}
               >
                 {`${userDetail?.state}, ${userDetail?.country}`}
@@ -195,7 +202,17 @@ const OrderDetail = ({
             </View>
           </View>
 
-          <View style={[styles.locationViewStyle, { paddingHorizontal: ms(10), flex: 0.5 }]}>
+          <View
+            style={[
+              styles.locationViewStyle,
+              {
+                flex: 1,
+
+                alignItems: 'center',
+                justifyContent: 'center',
+              },
+            ]}
+          >
             {/* <Image source={scooter} style={styles.scooterImageStyle} /> */}
             <Image
               source={
@@ -216,11 +233,13 @@ const OrderDetail = ({
               ]}
             />
 
-            <View style={[styles.userNameView, { paddingLeft: 5 }]}>
+            <View style={[styles.userNameView, { marginHorizontal: 2, width: ms(90) }]}>
               <Text
+                numberOfLines={2}
                 style={{
                   fontFamily: Fonts.Medium,
                   fontSize: SF(10),
+                  // width: '100%',
                   color: COLORS.navy_blue,
                 }}
               >
@@ -228,7 +247,7 @@ const OrderDetail = ({
                 {/* {userDetail?.invoice?.delivery_date ??
                   moment(userDetail?.created_at).format('DD MMM YYYY')} */}
               </Text>
-              <View
+              {/* <View
                 style={[
                   styles.locationViewStyle,
                   {
@@ -254,7 +273,7 @@ const OrderDetail = ({
                     ? userDetail?.preffered_delivery_end_time
                     : '00.00'}
                 </Text>
-              </View>
+              </View> */}
             </View>
           </View>
         </View>

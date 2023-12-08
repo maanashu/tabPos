@@ -165,11 +165,13 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={[styles.headerMainView]}>
-        <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
-          <Image source={arrowLeftUp} style={styles.backIconProfile} />
-          <Text style={[styles.deliveryText, { fontSize: ms(12) }]}>{'User Details'}</Text>
-        </TouchableOpacity>
+      <View style={[styles.headerMainView, { paddingLeft: ms(10) }]}>
+        <View style={styles.deliveryView}>
+          <TouchableOpacity onPress={backHandler} style={{ marginRight: ms(5) }}>
+            <Image source={arrowLeftUp} style={styles.backButtonArrow} />
+          </TouchableOpacity>
+          <Text style={styles.deliveryText}>{'User Detail'}</Text>
+        </View>
         {/* <View style={styles.editButtonCon}>
           <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
         </View> */}
@@ -188,30 +190,37 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
           <View style={{ paddingHorizontal: moderateScale(10) }}>
             <Text style={styles.angelaText}>{data?.firstName}</Text>
             <Spacer space={SH(5)} />
-            <View style={styles.flexAlign}>
-              <Image source={new_location} style={styles.Phonelight} />
-              {userDetail?.user_details?.current_address ? (
+
+            {userDetail?.user_details?.current_address ? (
+              <View style={styles.flexAlign}>
+                <Image source={new_location} style={styles.Phonelight} />
+
                 <Text style={[styles.adressText, { width: windowWidth * 0.25 }]} numberOfLines={1}>
                   {data?.streetAdd} {data?.city} {data?.state} {data?.country}
                   {data?.postalCode}
                 </Text>
-              ) : null}
-            </View>
+              </View>
+            ) : null}
           </View>
         </View>
 
         <View style={{ flex: 1 }}>
           <Spacer space={SH(5)} />
-          <View style={styles.flexAlign}>
-            <Image source={new_phone} style={styles.Phonelight} />
-            <Text style={styles.adressText}>{data?.phoneNumber}</Text>
-          </View>
+          {userDetail?.user_details?.phone_number ? (
+            <View style={styles.flexAlign}>
+              <Image source={new_phone} style={styles.Phonelight} />
+              <Text style={styles.adressText}>{data?.phoneNumber}</Text>
+            </View>
+          ) : null}
           <Spacer space={SH(10)} />
-          <View style={styles.flexAlign}>
-            <Image source={new_email} style={styles.Phonelight} />
-            <Text style={styles.adressText}>{data?.userEmail}</Text>
-          </View>
+          {userDetail?.user_details?.email ? (
+            <View style={styles.flexAlign}>
+              <Image source={new_email} style={styles.Phonelight} />
+              <Text style={styles.adressText}>{data?.userEmail}</Text>
+            </View>
+          ) : null}
         </View>
+
         <View
           style={{
             flex: 1,
@@ -260,17 +269,18 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
       <Spacer space={SH(10)} />
       <View style={styles.orderTypeCon}>
         <View style={styles.flexAlign}>
-          <View style={{ marginHorizontal: moderateScale(5) }}>
-            <TableDropdown placeholder="Month" selected={monthSelection} data={months} />
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ marginHorizontal: moderateScale(5) }}>
+              <TableDropdown placeholder="Month" selected={monthSelection} data={months} />
+            </View>
+            <>
+              <TableDropdown
+                placeholder="Store location"
+                selected={storeLocation}
+                data={storeLocationArray?.[0]}
+              />
+            </>
           </View>
-          <>
-            <TableDropdown
-              placeholder="Store location"
-              selected={storeLocation}
-              data={storeLocationArray?.[0]}
-            />
-          </>
-
           <View
             style={[styles.jbrTypeCon, { zIndex: -1, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
             pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
@@ -479,8 +489,11 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
             </View>
           </View>
 
-          <View style={{ height: Platform.OS === 'android' ? ms(290) : ms(240) }}>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <View style={{ height: ms(290) }}>
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              showsVerticalScrollIndicator={false}
+            >
               {/* {
               isOrderUserLoading ? (
                 <View style={{ marginTop: 100 }}>

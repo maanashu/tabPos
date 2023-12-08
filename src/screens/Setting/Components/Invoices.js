@@ -79,7 +79,7 @@ export function Invoices() {
                 <Spacer space={SH(10)} />
                 <Text style={styles.securitysubhead}>{strings.settings.invoiveSubHeading}</Text>
                 <Spacer space={SH(20)} />
-                <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
+                <View style={[styles.twoStepMemberConNew, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
                       <Image source={Images.phoneMsgIcon} style={styles.teamMember} />
@@ -100,7 +100,7 @@ export function Invoices() {
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
+                <View style={[styles.twoStepMemberConNew, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
                       <Image source={Images.emailBlueIcon} style={styles.teamMember} />
@@ -121,7 +121,7 @@ export function Invoices() {
                     </TouchableOpacity>
                   </View>
                 </View>
-                <View style={[styles.twoStepMemberCon, { borderWidth: 0 }]}>
+                <View style={[styles.twoStepMemberConNew, { borderWidth: 0 }]}>
                   <View style={styles.flexRow}>
                     <View style={styles.dispalyRow}>
                       <Image source={Images.printerIcon} style={styles.teamMember} />

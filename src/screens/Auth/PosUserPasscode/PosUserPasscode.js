@@ -94,61 +94,61 @@ export function PosUserPasscode({ route }) {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.container}>
-        <View style={{ alignItems: 'center' }}>
+        {/* <View style={{ alignItems: 'center' }}>
           <Text style={styles.welcomeTo}>
             Welcome to <Text style={{ fontFamily: Fonts.SemiBold }}>JOBR POS</Text>
           </Text>
-        </View>
+        </View> */}
 
         <View style={styles.verifyContainer}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Spacer space={SH(16)} />
+          {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+          <Spacer space={SH(16)} />
 
-            <View style={{ alignItems: 'center' }}>
-              <Image
-                source={
-                  posuser.user?.user_profiles?.profile_photo
-                    ? { uri: posuser.user?.user_profiles?.profile_photo }
-                    : userImage
-                }
-                style={styles.profileImage}
-              />
-
-              <Spacer space={SH(10)} />
-              <Text style={styles.firstName} numberOfLines={1}>
-                {`${posuser.user?.user_profiles?.firstname} ${posuser.user?.user_profiles?.lastname} `}
-              </Text>
-              <Spacer space={SH(6)} />
-              <Text style={styles.role} numberOfLines={1}>
-                {posuser.user?.user_roles?.length > 0
-                  ? posuser.user?.user_roles?.map((item) => item.role?.name)
-                  : 'admin'}
-              </Text>
-            </View>
-            <Spacer space={SH(16)} />
-
-            <CodeField
-              ref={ref}
-              {...prop}
-              value={value}
-              onChangeText={setValue}
-              cellCount={CELL_COUNT}
-              rootStyle={styles.alignSelfCenter}
-              showSoftInputOnFocus={false}
-              keyboardType={'number-pad'}
-              textContentType={'oneTimeCode'}
-              renderCell={renderCell}
+          <View style={{ alignItems: 'center' }}>
+            <Image
+              source={
+                posuser.user?.user_profiles?.profile_photo
+                  ? { uri: posuser.user?.user_profiles?.profile_photo }
+                  : userImage
+              }
+              style={styles.profileImage}
             />
 
-            <VirtualKeyBoard
-              maxCharLength={4}
-              enteredValue={value}
-              setEnteredValue={setValue}
-              isButtonLoading={isLoading}
-              onPressContinueButton={passcodeHandler}
-            />
-            <Spacer space={SH(20)} />
-          </ScrollView>
+            <Spacer space={SH(10)} />
+            <Text style={styles.firstName} numberOfLines={1}>
+              {`${posuser.user?.user_profiles?.firstname} ${posuser.user?.user_profiles?.lastname} `}
+            </Text>
+            <Spacer space={SH(6)} />
+            <Text style={styles.role} numberOfLines={1}>
+              {posuser.user?.user_roles?.length > 0
+                ? posuser.user?.user_roles?.map((item) => item.role?.name)
+                : 'admin'}
+            </Text>
+          </View>
+          <Spacer space={SH(16)} />
+
+          <CodeField
+            ref={ref}
+            {...prop}
+            value={value}
+            onChangeText={setValue}
+            cellCount={CELL_COUNT}
+            rootStyle={styles.alignSelfCenter}
+            showSoftInputOnFocus={false}
+            keyboardType={'number-pad'}
+            textContentType={'oneTimeCode'}
+            renderCell={renderCell}
+          />
+
+          <VirtualKeyBoard
+            maxCharLength={4}
+            enteredValue={value}
+            setEnteredValue={setValue}
+            isButtonLoading={isLoading}
+            onPressContinueButton={passcodeHandler}
+          />
+          <Spacer space={SH(20)} />
+          {/* </ScrollView> */}
         </View>
       </View>
     </View>

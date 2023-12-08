@@ -212,6 +212,8 @@ const AllUsers = ({
       setShowCalendarModal(false);
       setSelectTime('');
       setSelectId('');
+      setFormatedDate();
+      setDate();
       setSelectDate(!selectDate);
     } else {
       alert('Please Select End Date');
@@ -296,14 +298,13 @@ const AllUsers = ({
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.headerMainView}>
-        <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
-          <Image source={arrowLeftUp} style={styles.backIcon} />
-          <View style={styles.deliveryView}>
-            {/* <Image source={newUsers} style={[styles.userStyle]} /> */}
-            <Text style={styles.deliveryText}>{'Users'}</Text>
-          </View>
-        </TouchableOpacity>
+      <View style={[styles.headerMainView, { paddingLeft: ms(5) }]}>
+        <View style={styles.deliveryView}>
+          <TouchableOpacity onPress={backHandler} style={{ marginRight: ms(5) }}>
+            <Image source={arrowLeftUp} style={styles.backButtonArrow} />
+          </TouchableOpacity>
+          <Text style={styles.deliveryText}>{'Users'}</Text>
+        </View>
         <View style={styles.deliveryView}>
           <DaySelector
             onPresFun={onPresFun}
@@ -334,15 +335,12 @@ const AllUsers = ({
 
           <TouchableOpacity
             onPress={() =>
-              navigate(NAVIGATION.notificationsList, {
-                screen: NAVIGATION.customers2,
-              })
+              navigate(NAVIGATION.notificationsList, { screen: NAVIGATION.customers2 })
             }
-            style={{ marginRight: ms(10) }}
+            style={{ marginHorizontal: ms(5) }}
           >
-            <Image source={bellDrawer} style={[styles.truckStyle]} />
+            <Image source={bellDrawer} style={styles.truckStyle} />
           </TouchableOpacity>
-
           <TouchableOpacity
             style={styles.searchView}
             onPress={() => {
@@ -353,9 +351,8 @@ const AllUsers = ({
           >
             <Image source={searchDrawer} style={styles.searchImage} />
           </TouchableOpacity>
-
           <TouchableOpacity
-            style={[styles.searchView, { marginHorizontal: ms(10) }]}
+            style={[styles.searchView, { marginLeft: ms(10) }]}
             onPress={() => {
               setShowSearchModal(true);
               setSearchedCustomer([]);
@@ -367,9 +364,9 @@ const AllUsers = ({
         </View>
       </View>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: ms(2.7) }}>
         {/* Date and Area section */}
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
           <TouchableOpacity
             style={[
               styles.datePickerCon,
@@ -457,12 +454,21 @@ const AllUsers = ({
 
         {/*Calendar pagination section */}
         <View
-          style={[styles.jbrTypeCon, { opacity: payloadLength === 0 ? 0.4 : 1 }]}
+          style={[
+            styles.jbrTypeCon,
+            { opacity: payloadLength === 0 ? 0.4 : 1, paddingHorizontal: ms(10.5) },
+          ]}
           pointerEvents={payloadLength === 0 ? 'none' : 'auto'}
         >
-          <View style={styles.paginationEnd}>
-            <Text style={[styles.paginationCount]}>{strings.customers.showResult}</Text>
-            <View style={{ marginHorizontal: moderateScale(10) }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={[styles.paginationCount]}>Showing Results</Text>
+            <View style={{ marginHorizontal: moderateScale(2) }}>
               <DropDownPicker
                 ArrowUpIconComponent={({ style }) => (
                   <Image source={dropdown2} style={styles.dropDownIconPagination} />
@@ -487,7 +493,6 @@ const AllUsers = ({
                 setItems={setPaginationModalItems}
                 placeholder="10"
                 placeholderStyle={styles.placeholderStylePagination}
-                // onSelectItem={item => selectedNo(item.value)}
               />
             </View>
             <TouchableOpacity
@@ -538,7 +543,7 @@ const AllUsers = ({
             </View>
             <View
               style={{
-                width: ms(60),
+                width: ms(50),
                 marginRight: ms(7),
               }}
             >
@@ -553,6 +558,7 @@ const AllUsers = ({
                 </Text>
               )}
             </View>
+
             <View
               style={[
                 styles.unionCon,

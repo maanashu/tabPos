@@ -677,7 +677,11 @@ export function CartScreen({
                 <TouchableOpacity
                   style={[
                     styles.checkoutButtonSideBar,
-                    { opacity: cartData?.poscart_products?.length > 0 ? 1 : 0.7 },
+                    {
+                      opacity: cartData?.poscart_products?.length > 0 ? 1 : 0.7,
+                      height: ms(35),
+                      flex: 0,
+                    },
                   ]}
                   onPress={() => {
                     beforeDiscountCartLoad();

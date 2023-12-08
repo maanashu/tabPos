@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: ms(25),
     paddingHorizontal: ms(10),
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
 
     // flex: 0.98,
   },

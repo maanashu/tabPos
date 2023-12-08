@@ -19,7 +19,12 @@ import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { TextInput } from 'react-native-gesture-handler';
 import CountryPicker from 'react-native-country-picker-modal';
 import { strings } from '@/localization';
-import { attachServiceCustomer, getUserDetail, getUserDetailSuccess } from '@/actions/RetailAction';
+import {
+  attachCustomer,
+  attachServiceCustomer,
+  getUserDetail,
+  getUserDetailSuccess,
+} from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { useCallback } from 'react';
@@ -31,7 +36,8 @@ import { Images } from '@/assets/new_icon';
 export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-  const cartServiceData = getRetailData?.getserviceCart;
+  const cartServiceData = getRetailData?.getAllCart;
+  console.log('cartServiceData', cartServiceData);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
@@ -90,7 +96,8 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
         firstName: firstName,
         lastName: lastName,
       };
-      dispatch(attachServiceCustomer(data));
+      dispatch(attachCustomer(data));
+      // dispatch(attachServiceCustomer(data));
       // const data = {
       //   userPhoneNo: searchCustomer,
       //   userFirstname: firstName,
@@ -114,7 +121,9 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
           userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
           customerAdd: 'customerAdd',
         };
-    dispatch(attachServiceCustomer(data));
+    console.log('data', data);
+    // dispatch(attachServiceCustomer(data));
+    dispatch(attachCustomer(data));
     // dispatch(attachCustomerInService(data));
     clearInput();
     crossHandler();
