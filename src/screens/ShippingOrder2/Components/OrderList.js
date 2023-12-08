@@ -154,7 +154,7 @@ const OrderList = ({
   );
 
   const renderOrderToReviewNew = ({ item }) => {
-    if (selectedStatus == '7,8') {
+    if (selectedStatus !== '7,8') {
       return (
         <TouchableOpacity
           onPress={() => {
@@ -236,7 +236,7 @@ const OrderList = ({
                 }
                 style={[styles.shippingTypeImage, { margin: 2 }]}
               />
-              <View style={[styles.orderDetailStyle, { width: ms(80) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
                 <Text numberOfLines={2} style={[styles.nameTextStyle, { marginBottom: ms(10) }]}>
                   {item?.shipping_details?.title}
                   {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
@@ -256,7 +256,7 @@ const OrderList = ({
               <View
                 style={[styles.shippingTypeImage, { borderWidth: 0, borderColor: 'transparent' }]}
               ></View>
-              <View style={[styles.orderDetailStyle, { width: ms(80) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
                 <Text numberOfLines={1} style={styles.nameTextStyle}>
                   {'Cancelled by'}
                 </Text>
@@ -286,7 +286,7 @@ const OrderList = ({
             }}
           >
             <View style={[styles.rowContainerStyle, { marginVertical: ms(2) }]}>
-              <View style={[styles.orderDetailStyle, { width: ms(60) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
                 <Text style={styles.nameTextStyle}>{'Cancelled at'}</Text>
                 <View
                   style={[
@@ -300,7 +300,8 @@ const OrderList = ({
                     style={[styles.distanceTextStyle, { color: COLORS.alert_red }]}
                   >
                     {/* {item?.distance ? `${item.distance} miles` : '0'} */}
-                    {'21 Oct 23 00:10:35 hrs'}
+                    {'21 Oct 23'}
+                    {' 00:10:35 hrs'}
                   </Text>
                 </View>
               </View>
@@ -427,7 +428,7 @@ const OrderList = ({
                 }
                 style={[styles.shippingTypeImage, { margin: 2 }]}
               />
-              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(80) }]}>
                 <Text numberOfLines={2} style={[styles.nameTextStyle, { marginBottom: ms(10) }]}>
                   {item?.shipping_details?.title}
                   {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
@@ -445,7 +446,7 @@ const OrderList = ({
 
             <View style={[styles.rowContainerStyle, { marginVertical: ms(1) }]}>
               <View style={[styles.shippingTypeImage, { borderWidth: 0 }]}></View>
-              <View style={[styles.orderDetailStyle, { width: ms(70) }]}>
+              <View style={[styles.orderDetailStyle, { width: ms(80) }]}>
                 <Text style={styles.nameTextStyle}>
                   {'Shipped'}
                   {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
@@ -467,7 +468,7 @@ const OrderList = ({
                     {/* {`${item?.preffered_delivery_start_time ?? '00.00'} - ${
                   item?.preffered_delivery_end_time ?? '00.00'
                 }`} */}
-                    {'Yesterday 28,Oct,2023 10:41 am'}
+                    {'Today 28 Oct,2023 | 10:41 am'}
                   </Text>
                 </View>
               </View>
@@ -657,7 +658,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: SF(7.2),
     color: COLORS.dark_grey,
-    paddingHorizontal: 5,
+    paddingHorizontal: 3,
   },
   locationViewStyle: {
     flexDirection: 'row',
