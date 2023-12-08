@@ -90,7 +90,6 @@ export const loginPosUser = (data) => async (dispatch) => {
     dispatch(loginPosUserSuccess(res?.payload));
     dispatch(getSettings());
     dispatch(getProfile(res?.payload?.id));
-    console.log('--------------------', res);
     return res?.payload;
   } catch (error) {
     return dispatch(loginPosUserError(error));

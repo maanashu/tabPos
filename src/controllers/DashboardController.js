@@ -39,7 +39,6 @@ export class DashboardController {
       const body = {
         seller_id: sellerID,
       };
-      console.log('12333', endpoint);
       HttpClient.post(endpoint, body)
         .then((response) => {
           resolve(response);
@@ -131,7 +130,6 @@ export class DashboardController {
     return new Promise((resolve, reject) => {
       const endpoint =
         ORDER_URL + ApiOrderInventory.getTotalSale + `?seller_id=${sellerID}&filter=today`;
-      console.log('-----------', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -152,7 +150,6 @@ export class DashboardController {
   static async posLoginDetail() {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.posLoginDetail;
-      console.log('--------------', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

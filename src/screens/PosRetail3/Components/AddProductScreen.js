@@ -74,7 +74,6 @@ export const AddProductScreen = ({ backHandler }) => {
         supplyPriceID: productDetail?.supplies?.[0]?.supply_prices[0]?.id,
         // offerId: offerId,
       };
-      console.log('data', data);
       // openFrom === 'main' && addToLocalCart(productItem, productIndex, count);
       dispatch(addTocart(data));
       backHandler();
@@ -112,7 +111,6 @@ export const AddProductScreen = ({ backHandler }) => {
           supplyPriceID: productDetail?.supplies?.[0]?.supply_prices[0]?.id,
           supplyVariantId: res?.payload?.id,
         };
-        console.log('Data', Data);
         if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
           // setAddToCartLoader(true);
 
@@ -138,9 +136,9 @@ export const AddProductScreen = ({ backHandler }) => {
         styles.selectColorItem,
         {
           backgroundColor: item?.name,
-          width: style ? ms(50) : ms(15),
+          width: style ? ms(50) : ms(20),
           borderColor: style ? COLORS.light_purple : 'transparent',
-          height: style ? ms(18) : ms(15),
+          height: style ? ms(18) : ms(20),
         },
       ]}
       onPress={onPress}
@@ -281,7 +279,7 @@ export const AddProductScreen = ({ backHandler }) => {
               </View>
             )}
             {sizeArray?.[0]?.values?.length > 0 && (
-              <View style={{ marginTop: ms(15) }}>
+              <View style={{ marginTop: ms(7) }}>
                 <Text style={[styles.productName, { fontSize: ms(10) }]}>{'Size'}</Text>
                 <FlatList
                   data={sizeArray?.[0]?.values}
@@ -367,7 +365,7 @@ export const AddProductScreen = ({ backHandler }) => {
               ))}
             </View>
 
-            <View style={{ marginTop: ms(20), flex: 1 }}>
+            <View style={{ marginTop: ms(10), flex: 1 }}>
               <Text style={styles.addNewProduct}>{'Stock on hand'}</Text>
               <View style={styles.stockOnHandCon}>
                 <View>
@@ -526,7 +524,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   productName: {
-    fontSize: ms(13),
+    fontSize: ms(12),
     color: COLORS.navy_blue,
     fontFamily: Fonts.Medium,
   },
@@ -633,7 +631,7 @@ export const styles = StyleSheet.create({
     borderRadius: ms(8),
     borderColor: COLORS.light_purple,
     height: ms(25),
-    maxWidth: ms(95),
+    maxWidth: ms(105),
     flexShrink: 1,
     flexDirection: 'row',
     justifyContent: 'center',

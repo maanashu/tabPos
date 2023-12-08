@@ -207,8 +207,8 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
   },
   scnStyle: {
-    width: SW(16),
-    height: SW(17),
+    width: ms(25),
+    height: ms(25),
     resizeMode: 'contain',
   },
   storeCardCon: {
@@ -234,7 +234,7 @@ export const styles = StyleSheet.create({
   searchTxtStyle: {
     color: COLORS.sky_blue,
     fontSize: SF(12),
-    fontFamily: Fonts.MaisonRegular,
+    fontFamily: Fonts.Medium,
   },
   sellingArrow: {
     width: SW(10),

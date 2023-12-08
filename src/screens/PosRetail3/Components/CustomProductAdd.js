@@ -236,7 +236,7 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
               ref={textInputRef}
             />
             <TouchableOpacity onPress={() => textInputRef.current.focus()}>
-              <Image source={scn} style={styles.scnStyle} />
+              <Image source={Images.homeScan} style={styles.scnStyle} />
             </TouchableOpacity>
           </View>
         ) : null}
@@ -518,8 +518,8 @@ const styles = StyleSheet.create({
     fontSize: ms(10),
   },
   scnStyle: {
-    width: SW(15),
-    height: SW(16),
+    width: SW(12),
+    height: SW(12),
     resizeMode: 'contain',
     marginRight: ms(10),
   },

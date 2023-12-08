@@ -297,11 +297,11 @@ export function CartServiceScreen({
                   <Text style={styles.ItemHeader}>Item</Text>
                 </View>
                 <View style={styles.serviceCartRightBody}>
-                  <View style={styles.serviceCartBody}>
+                  {/* <View style={styles.serviceCartBody}>
                     <Text style={styles.cartHeaderBodyRighSide} numberOfLines={1}>
                       Staff Name
                     </Text>
-                  </View>
+                  </View> */}
                   <View style={styles.serviceCartBody}>
                     <Text style={styles.cartHeaderBodyRighSide} numberOfLines={1}>
                       Unit Price
@@ -326,7 +326,7 @@ export function CartServiceScreen({
                 {arr?.map((item, index) => (
                   <View key={index}>
                     {item?.appointment_cart_products?.map((data, ind) => (
-                      <View style={[styles.blueListData, { height: SH(70) }]} key={ind}>
+                      <View style={[styles.blueListData]} key={ind}>
                         <View style={styles.displayflex}>
                           <View style={[styles.cartHeaderLeftSide, { alignItems: 'center' }]}>
                             <Text
@@ -351,62 +351,54 @@ export function CartServiceScreen({
                                 />
                               </View>
 
-                              <View style={{ marginLeft: ms(2) }}>
+                              <View style={{ marginLeft: ms(2), flex: 1 }}>
                                 <Text
-                                  style={[
-                                    styles.holdCart,
-                                    { color: COLORS.navy_blue, width: SW(40) },
-                                  ]}
+                                  style={[styles.holdCart, { color: COLORS.navy_blue }]}
+                                  numberOfLines={2}
                                 >
                                   {data.product_details?.name}
                                 </Text>
-                                <Text
-                                  style={[styles.sukNumber, { width: SW(20) }]}
-                                  numberOfLines={1}
-                                >
+                                <Text style={[styles.sukNumber]} numberOfLines={1}>
                                   {moment(data?.date).format('LL')} @
                                   {data?.start_time + '-' + data?.end_time}
                                 </Text>
 
-                                {data?.product_details?.supply?.approx_service_time == null ? (
+                                {/* {data?.product_details?.supply?.approx_service_time == null ? (
                                   <Text style={styles.sukNumber}>Estimated Time Not found</Text>
                                 ) : (
                                   <Text style={styles.sukNumber}>
                                     Est: {data?.product_details?.supply?.approx_service_time} min
                                   </Text>
+                                )} */}
+
+                                {Object.keys(data?.pos_user_details)?.length > 0 && (
+                                  <View
+                                    style={{
+                                      borderWidth: 1,
+                                      flexDirection: 'row',
+                                      alignItems: 'center',
+                                      flex: 1,
+                                      marginVertical: ms(5),
+                                    }}
+                                  >
+                                    <Image
+                                      source={
+                                        {
+                                          uri: data?.pos_user_details?.user?.user_profiles
+                                            ?.profile_photo,
+                                        } ?? userImage
+                                      }
+                                      style={styles.offerImage}
+                                    />
+                                    <Text style={styles.blueListDataText} numberOfLines={1}>
+                                      {data?.pos_user_details?.user?.user_profiles?.firstname}
+                                    </Text>
+                                  </View>
                                 )}
                               </View>
                             </View>
                           </View>
                           <View style={styles.serviceCartRightBody}>
-                            <View style={styles.serviceCartBody}>
-                              <View
-                                style={[
-                                  styles.cartBodyRightSide,
-                                  {
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    paddingLeft: ms(0),
-                                    opacity: cartIndex === ind && cartEditItem ? 0.3 : 1,
-                                    width: ms(60),
-                                    paddingRight: 30,
-                                  },
-                                ]}
-                              >
-                                <Image
-                                  source={
-                                    {
-                                      uri: data?.pos_user_details?.user?.user_profiles
-                                        ?.profile_photo,
-                                    } ?? userImage
-                                  }
-                                  style={styles.offerImage}
-                                />
-                                <Text style={styles.blueListDataText} numberOfLines={1}>
-                                  {data?.pos_user_details?.user?.user_profiles?.firstname}
-                                </Text>
-                              </View>
-                            </View>
                             <View style={styles.serviceCartBody}>
                               {cartIndex === ind && cartEditItem ? (
                                 <TextInput
@@ -676,7 +668,11 @@ export function CartServiceScreen({
                 <TouchableOpacity
                   style={[
                     styles.checkoutButtonSideBar,
-                    { opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7 },
+                    {
+                      opacity: cartServiceData?.appointment_cart_products?.length > 0 ? 1 : 0.7,
+                      height: ms(35),
+                      flex: 0,
+                    },
                   ]}
                   // onPress={() => {
                   //   backCartLoad();

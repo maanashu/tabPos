@@ -1,21 +1,10 @@
 import React from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Platform, Text, View } from 'react-native';
 
 import { COLORS, SF, SH, SW } from '@/theme';
-import { Spacer } from '@/components';
 
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
-import {
-  borderCross,
-  bucket,
-  checkArrow,
-  crossButton,
-  holdCart,
-  minus,
-  plus,
-  sideEarser,
-  sideKeyboard,
-} from '@/assets';
+import { borderCross, minus, plus } from '@/assets';
 import { TouchableOpacity } from 'react-native';
 import { Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -32,18 +21,15 @@ import {
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { getCartLength } from '@/selectors/CartSelector';
 import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
 import { ms } from 'react-native-size-matters';
+import { Images } from '@/assets/new_icon';
+import { useEffect } from 'react';
 
-export function CartListModal({
-  checkOutHandler,
-  CloseCartModal,
-  clearCart,
-  cartQtyUpdate,
-  customAddBtn,
-}) {
+export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate }) {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
@@ -53,47 +39,8 @@ export function CartListModal({
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const CART_LENGTH = useSelector(getCartLength);
-  const cartStatusHandler = () => {
-    const data =
-      holdProductArray?.length > 0
-        ? {
-            status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
-            cartId: holdProductArray?.[0]?.id,
-          }
-        : {
-            status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
-            cartId: getRetailData?.getAllCart?.id,
-          };
-    dispatch(changeStatusProductCart(data));
-  };
 
   const updateQuantity = (cartId, productId, operation, index) => {
-    // const updatedArr = [...arr];
-
-    // const cartItem = updatedArr
-    //   .find(item => item.id === cartId)
-    //   ?.poscart_products.find(product => product.id === productId);
-
-    // if (cartItem) {
-    //   if (operation === '+') {
-    //     cartItem.qty += 1;
-    //   } else if (operation === '-') {
-    //     cartItem.qty -= 1;
-    //   }
-    //   const data = {
-    //     seller_id: cartItem?.product_details?.supply?.seller_id,
-    //     supplyId: cartItem?.supply_id,
-    //     supplyPriceID: cartItem?.supply_price_id,
-    //     product_id: cartItem?.product_id,
-    //     service_id: cartItem?.service_id,
-    //     qty: cartItem?.qty,
-    //   };
-    //   dispatch(addTocart(data));
-    //   // dispatch(createCartAction(withoutVariantObject));
-    // }
-
-    //Mukul code----->
-
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
@@ -122,12 +69,6 @@ export function CartListModal({
     }, 1000);
   };
   const removeOneCartHandler = (productId, index) => {
-    // const data = {
-    //   cartId: cartData?.id,
-    //   productId: productId,
-    // };
-    // dispatch(clearOneCart(data));
-
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
@@ -142,13 +83,20 @@ export function CartListModal({
     dispatch(updateCartLength(CART_LENGTH - 1));
     dispatch(getAllCartSuccess(DATA));
   };
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => {
-        updateQty();
-      };
-    }, [])
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     return () => {
+  //       updateQty();
+  //     };
+  //   }, [])
+  // );
+  useEffect(() => {
+    if (!isFocused) {
+      updateQty();
+      alert('fghjmk,.');
+    }
+  }, [isFocused]);
+
   const updateQty = () => {
     var arr = getRetailData?.getAllCart;
     if (arr?.poscart_products?.length > 0) {
@@ -176,34 +124,21 @@ export function CartListModal({
     clearCart();
     // dispatch(clearAllCart())
   };
-  const onClosModal = () => {
-    // updateQty()
-    // CloseCartModal()
+
+  const formattedReturnPrice = (price) => {
+    // Convert price to a number, defaulting to 0 if it's falsy or not a number
+    const numericPrice = parseFloat(price) || 0;
+
+    // Format the numeric price with 2 decimal places
+    const formattedPrice = numericPrice.toFixed(2);
+
+    // Determine the sign and prepend accordingly
+    const sign = numericPrice == 0 ? '' : '-';
+
+    return `${sign}$${formattedPrice}`;
   };
   return (
     <View style={styles.cartListModalView}>
-      <View style={styles.displayRow}>
-        <TouchableOpacity style={styles.bucketBackgorund}>
-          <Image source={bucket} style={[styles.sideBarImage, { tintColor: COLORS.primary }]} />
-          <View style={[styles.bucketBadge, styles.bucketBadgePrimary]}>
-            <Text style={[styles.badgetext, { color: COLORS.white }]}>
-              {cartData?.poscart_products?.length ?? '0'}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <Text style={styles.carttoAdd}>Cart</Text>
-        <TouchableOpacity
-          disabled={isLoading}
-          style={styles.crossView}
-          onPress={() => {
-            updateQty();
-            CloseCartModal();
-          }}
-        >
-          <Image source={crossButton} style={[styles.crossImage]} />
-        </TouchableOpacity>
-      </View>
-
       {isLoading ? (
         <ActivityIndicator size={'large'} animating color={COLORS.primary} />
       ) : (
@@ -216,7 +151,7 @@ export function CartListModal({
         >
           <View style={styles.shortestCartListBody}>
             <View style={styles.shortCartListHeight}>
-              <ScrollView>
+              <ScrollView showsVerticalScrollIndicator={false}>
                 {arr?.map((item, index) => (
                   <View key={index}>
                     {item?.poscart_products?.map((data, ind) => (
@@ -229,10 +164,19 @@ export function CartListModal({
                                 alignItems: 'center',
                               }}
                             >
-                              <Image
-                                source={{ uri: data.product_details?.image }}
-                                style={styles.columbiaMen}
-                              />
+                              <View
+                                style={{
+                                  padding: ms(4),
+                                  borderRadius: ms(5),
+                                  backgroundColor: COLORS.textInputBackground,
+                                }}
+                              >
+                                <Image
+                                  source={{ uri: data.product_details?.image }}
+                                  style={styles.columbiaMen}
+                                />
+                              </View>
+
                               <View style={{ marginLeft: 10 }}>
                                 <Text
                                   style={[styles.blueListDataText, { width: SW(35) }]}
@@ -254,22 +198,22 @@ export function CartListModal({
                             <View style={styles.listCountCon}>
                               <TouchableOpacity
                                 style={{
-                                  width: SW(10),
+                                  width: ms(10),
                                   alignItems: 'center',
+                                  justifyContent: 'center',
                                 }}
                                 onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
+                                disabled={data.qty == 1 ? true : false}
                               >
                                 <Image source={minus} style={styles.minus} />
                               </TouchableOpacity>
-                              <Text>{data.qty}</Text>
-                              {/* {isLoading ? (
-                          <ActivityIndicator size="small" color={COLORS.primary} />
-                        ) : (
-                          <Text>{data.qty}</Text>
-                        )} */}
+                              <View style={styles.dataQtyCon}>
+                                <Text style={styles.dataQty}>{data.qty}</Text>
+                              </View>
+
                               <TouchableOpacity
                                 style={{
-                                  width: SW(10),
+                                  width: ms(11),
                                   alignItems: 'center',
                                 }}
                                 onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
@@ -278,7 +222,7 @@ export function CartListModal({
                               </TouchableOpacity>
                             </View>
                             <Text style={styles.blueListDataText}>
-                              ${' '}
+                              $
                               {(
                                 data.product_details?.supply?.supply_prices?.selling_price *
                                 data?.qty
@@ -304,68 +248,54 @@ export function CartListModal({
               </ScrollView>
             </View>
 
-            <View style={{ flex: 1 }} />
-            <View style={styles.displayflex}>
-              <View>
-                <Text style={styles.blueListDataText}>Item Value</Text>
-
-                <Text style={[styles.productPrice, { fontSize: SF(20) }]}>
-                  ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
-                </Text>
-              </View>
-              <TouchableOpacity style={styles.checkoutButtonSideBar} onPress={checkOutHandler}>
-                <Text style={styles.checkoutText}>Checkout</Text>
-                <Image source={checkArrow} style={styles.checkArrow} />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <View style={styles.cartListIconBody}>
-            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-              <TouchableOpacity onPress={customAddBtn}>
-                <Image
-                  source={plus}
-                  style={[styles.sideBarImage, { tintColor: COLORS.gerySkies }]}
-                />
-              </TouchableOpacity>
-              <Spacer space={SH(20)} />
-              <TouchableOpacity onPress={() => eraseClearCart()}>
-                <Image
-                  source={sideEarser}
-                  style={[styles.sideBarImage, { tintColor: COLORS.dark_grey }]}
-                />
-              </TouchableOpacity>
-              <Spacer space={SH(20)} />
-              <TouchableOpacity
-                onPress={cartStatusHandler}
-                // disabled={getRetailData?.getAllCart?.id === 'undefined' ? false : true}
+            <View
+              style={{
+                height: Platform.OS === 'ios' ? ms(108) : ms(132),
+                paddingHorizontal: ms(30),
+              }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  borderTopWidth: 1,
+                  paddingTop: ms(5),
+                  borderColor: COLORS.light_purple,
+                }}
               >
-                <Image
-                  source={holdCart}
-                  style={
-                    holdProductArray?.length > 0
-                      ? [styles.sideBarImage, { tintColor: COLORS.primary }]
-                      : styles.sideBarImage
-                  }
-                />
-                <View
-                  style={
-                    holdProductArray?.length > 0
-                      ? [styles.holdBadge, styles.holdBadgePrimary]
-                      : styles.holdBadge
-                  }
-                >
-                  <Text
-                    style={
-                      holdProductArray?.length > 0
-                        ? [styles.holdBadgetext, { color: COLORS.white }]
-                        : styles.holdBadgetext
-                    }
-                  >
-                    {holdProductArray?.length}
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>Sub Total</Text>
+                  <Text style={styles.subTotalDollar}>
+                    ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
                   </Text>
                 </View>
-              </TouchableOpacity>
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>{`Discount ${
+                    cartData?.discount_flag === 'percentage' ? '(%)' : ''
+                  } `}</Text>
+                  <Text style={[styles.subTotalDollar, { color: COLORS.red }]}>
+                    {formattedReturnPrice(cartData?.amount?.discount)}
+                  </Text>
+                </View>
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.subTotal}>Total Taxes</Text>
+                  <Text style={styles.subTotalDollar}>
+                    ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
+                <View style={[styles.displayflex2, styles.paddVertical]}>
+                  <Text style={styles.itemValue}>Total</Text>
+                  <Text style={styles.itemValue}>
+                    ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  style={[styles.checkoutButtonSideBar, { marginTop: ms(7) }]}
+                  onPress={checkOutHandler}
+                >
+                  <Text style={styles.checkoutText}>Proceed to checkout</Text>
+                  <Image source={Images.arrowUpRightIcon} style={styles.checkArrow} />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>

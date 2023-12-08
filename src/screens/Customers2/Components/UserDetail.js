@@ -165,11 +165,13 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={[styles.headerMainView]}>
-        <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
-          <Image source={arrowLeftUp} style={styles.backIconProfile} />
-          <Text style={[styles.deliveryText, { fontSize: ms(12) }]}>{'User Details'}</Text>
-        </TouchableOpacity>
+      <View style={[styles.headerMainView, { paddingLeft: ms(10) }]}>
+        <View style={styles.deliveryView}>
+          <TouchableOpacity onPress={backHandler} style={{ marginRight: ms(5) }}>
+            <Image source={arrowLeftUp} style={styles.backButtonArrow} />
+          </TouchableOpacity>
+          <Text style={styles.deliveryText}>{'User Detail'}</Text>
+        </View>
         {/* <View style={styles.editButtonCon}>
           <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
         </View> */}
@@ -479,8 +481,11 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
             </View>
           </View>
 
-          <View style={{ height: Platform.OS === 'android' ? ms(290) : ms(240) }}>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <View style={{ height: ms(290) }}>
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              showsVerticalScrollIndicator={false}
+            >
               {/* {
               isOrderUserLoading ? (
                 <View style={{ marginTop: 100 }}>

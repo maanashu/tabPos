@@ -442,6 +442,19 @@ export function Customers2() {
               </TouchableOpacity>
             </View>
           </View>
+
+          <Text
+            style={{
+              fontSize: ms(9),
+              color: COLORS.navy_light_blue,
+              position: 'absolute',
+              top: ms(35),
+              left: ms(35),
+            }}
+          >
+            {'All the following data is gathered weekly.'}
+          </Text>
+
           <View style={styles.homeBodyCon}>
             <View>
               <FlatList
@@ -458,7 +471,6 @@ export function Customers2() {
                           source={item.img}
                           style={[styles.newCustomer, { tintColor: item?.color }]}
                         />
-                        <Spacer space={ms(10)} />
 
                         <Text style={[styles.customerCount, { color: item?.color }]}>
                           {item.count}
@@ -474,6 +486,7 @@ export function Customers2() {
                 horizontal
                 scrollEnabled={false}
                 showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.contentContainerStyle}
               />
             </View>
 
@@ -499,7 +512,10 @@ export function Customers2() {
                   >
                     <Image
                       source={newCustomerCheck ? newCheck : blankCheckBox}
-                      style={[styles.checkboxIconStyle, { tintColor: COLORS.yellow }]}
+                      style={[
+                        styles.checkboxIconStyle,
+                        { tintColor: newCustomerCheck ? COLORS.yellow : COLORS.transparent },
+                      ]}
                     />
                   </View>
                   <Text style={[styles.varientTextStyle, { color: COLORS.yellow }]}>
@@ -514,7 +530,12 @@ export function Customers2() {
                   <View style={styles.imageView}>
                     <Image
                       source={onlineCustomerCheck ? newCheck : blankCheckBox}
-                      style={[styles.checkboxIconStyle, { tintColor: COLORS.medium_green }]}
+                      style={[
+                        styles.checkboxIconStyle,
+                        {
+                          tintColor: onlineCustomerCheck ? COLORS.medium_green : COLORS.transparent,
+                        },
+                      ]}
                     />
                   </View>
                   <Text style={[styles.varientTextStyle, { color: COLORS.medium_green }]}>
@@ -523,7 +544,7 @@ export function Customers2() {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={styles.checkboxViewStyle}
+                  style={[styles.checkboxViewStyle, { marginRight: 0 }]}
                   onPress={() => setWalkCustomerCheck((prev) => !prev)}
                 >
                   <View
@@ -534,7 +555,10 @@ export function Customers2() {
                   >
                     <Image
                       source={walkCustomerCheck ? newCheck : blankCheckBox}
-                      style={[styles.checkboxIconStyle, { tintColor: COLORS.aqua }]}
+                      style={[
+                        styles.checkboxIconStyle,
+                        { tintColor: walkCustomerCheck ? COLORS.aqua : COLORS.transparent },
+                      ]}
                     />
                   </View>
                   <Text style={[styles.varientTextStyle, { color: COLORS.aqua }]}>

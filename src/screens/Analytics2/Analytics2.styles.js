@@ -198,7 +198,7 @@ export const styles = StyleSheet.create({
     width: ms(70),
   },
   tableHeaderView: {
-    height: Platform.OS === 'ios' ? ms(80) : ms(80),
+    height: ms(80),
     justifyContent: 'center',
     width: ms(70),
   },
@@ -341,7 +341,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   listView: {
-    // height: Platform.OS === 'ios' ? ms(202) : ms(288),
+    height: Platform.OS === 'ios' ? ms(265) : ms(288),
     // width:
     //   Platform.OS === 'ios'
     //     ? Dimensions.get('window').width - ms(80)
@@ -386,7 +386,7 @@ export const styles = StyleSheet.create({
     marginRight: ms(5),
     borderRadius: ms(10),
     flex: 1,
-    paddingHorizontal: ms(12),
+    paddingHorizontal: ms(10),
     paddingVertical: ms(10),
   },
   imageStyle: {

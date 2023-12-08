@@ -168,11 +168,13 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={[styles.headerMainView]}>
-        <TouchableOpacity style={styles.deliveryView} onPress={backHandler}>
-          <Image source={arrowLeftUp} style={styles.backIconProfile} />
-          <Text style={[styles.deliveryText, { fontSize: ms(12) }]}>{'User Profile'}</Text>
-        </TouchableOpacity>
+      <View style={[styles.headerMainView, { paddingLeft: ms(10) }]}>
+        <View style={styles.deliveryView}>
+          <TouchableOpacity onPress={backHandler} style={{ marginRight: ms(5) }}>
+            <Image source={arrowLeftUp} style={styles.backButtonArrow} />
+          </TouchableOpacity>
+          <Text style={styles.deliveryText}>{'User Profile'}</Text>
+        </View>
         {/* <View style={styles.editButtonCon}>
           <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
         </View> */}
@@ -468,7 +470,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                 </Text>
               </View>
               <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader} numberOfLines={1}>
+                <Text style={styles.tableTextHeader} numberOfLines={2}>
                   Store location
                 </Text>
               </View>
@@ -495,7 +497,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             </View>
           </View>
 
-          <View style={{ height: Platform.OS === 'android' ? ms(290) : ms(240) }}>
+          <View style={{ height: ms(290) }}>
             <ScrollView
               contentContainerStyle={{ flexGrow: 1 }}
               showsVerticalScrollIndicator={false}
@@ -551,7 +553,6 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                                   height: ms(17),
                                   resizeMode: 'contain',
                                   borderRadius: 50,
-                                  tintColor: COLORS.navy_blue,
                                 }}
                               />
                               <Text style={[styles.tableTextStyle]} numberOfLines={2}>
@@ -571,7 +572,6 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                                   width: ms(15),
                                   height: ms(15),
                                   resizeMode: 'contain',
-                                  tintColor: COLORS.navy_blue,
                                 }}
                               />
                               <Text style={styles.tableTextStyle}>
@@ -591,7 +591,6 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                                   width: ms(15),
                                   height: ms(15),
                                   resizeMode: 'contain',
-                                  tintColor: COLORS.navy_blue,
                                 }}
                               />
                               <Text style={[styles.tableTextStyle]}>

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { Spacer } from '@/components';
 import { styles } from '../Analytics2.styles';
@@ -29,6 +30,7 @@ import { NAVIGATION } from '@/constants';
 import { navigate } from '@/navigation/NavigationRef';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { height } from '@/theme/ScalerDimensions';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -167,7 +169,7 @@ export function TotalPosOrder({ onPressReview }) {
   return (
     <View
       style={{
-        height: '97%',
+        height: Platform.OS === 'android' ? '97%' : height - ms(50),
         backgroundColor: COLORS.white,
         borderRadius: ms(10),
         marginTop: ms(5),
@@ -242,15 +244,15 @@ export function TotalPosOrder({ onPressReview }) {
           scrollEnabled={false}
         >
           <DataTable style={styles.tableView}>
-            <DataTable.Header style={[styles.tableListHeader]}>
+            <DataTable.Header style={[styles.tableListHeader, { height: ms(40) }]}>
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Date</Text>
               </DataTable.Title>
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Total POS Orders</Text>
               </DataTable.Title>
 
-              <DataTable.Title style={styles.dateTableSetting}>
+              <DataTable.Title style={styles.tableHeaderView} numberOfLines={2}>
                 <Text style={styles.revenueText}>Average Order Value</Text>
               </DataTable.Title>
 
