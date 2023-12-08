@@ -1316,7 +1316,7 @@ export function MainScreen({
                     onPress={() => {
                       bulkCart();
                       setNumPadModal((prev) => !prev);
-                      setCustomProductOpen('product');
+                      setCustomProductOpen('service');
                     }}
                   >
                     <Image source={Images.addProduct} style={styles.sideBarImage} />
