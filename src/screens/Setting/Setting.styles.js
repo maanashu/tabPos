@@ -115,6 +115,13 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: ms(15),
   },
+  securityMainConNew: {
+    borderColor: COLORS.light_purple,
+    borderRadius: 20,
+    paddingVertical: ms(15),
+    // borderWidth: 1,
+    paddingHorizontal: ms(15),
+  },
   securityStaffMainCon: {
     // borderWidth: 1,
     // borderColor: COLORS.solidGrey,
@@ -684,7 +691,7 @@ export const styles = StyleSheet.create({
   },
   basicContainer: (item) => {
     return {
-      width: windowWidth * 0.18,
+      width: windowWidth * 0.2,
       borderRadius: 10,
       backgroundColor: COLORS.white,
       padding: 12,

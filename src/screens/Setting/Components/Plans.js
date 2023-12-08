@@ -260,12 +260,12 @@ export function Plans() {
           style={{
             borderWidth: 1.5,
             borderColor: COLORS.sky_blue,
-            padding: ms(12),
+            // padding: ms(12),
             borderRadius: ms(12),
           }}
         >
           <Spacer space={SH(20)} />
-          <View style={styles.securityMainCon}>
+          <View style={styles.securityMainConNew}>
             <View style={[styles.flexRow, { alignItems: 'flex-start' }]}>
               <View style={{}}>
                 <Text style={[styles.basic, { fontSize: 26 }]}>{activePlan?.plan_id?.name}</Text>
