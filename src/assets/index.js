@@ -395,7 +395,8 @@ export { default as arrowUpRound } from '@/assets/new_icon/ic_drawer/arrowRoundU
 export { default as moneySearch } from '@/assets/new_icon/ic_drawer/moneySearch.png';
 export { default as removeMoney } from '@/assets/new_icon/ic_drawer/removeMoney.png';
 export { default as info } from '@/assets/new_icon/ic_drawer/info.png';
-export { default as plusDrawer } from '@/assets/new_icon/ic_drawer/plus.png';
+export { default as PlusCircle } from '@/assets/new_icon/ic_drawer/plusCircle.png';
+
 export { default as lockDrawer } from '@/assets/new_icon/ic_drawer/lock.png';
 export { default as addMoney } from '@/assets/new_icon/ic_drawer/addMoney.png';
 export { default as logOutDrawer } from '@/assets/new_icon/ic_drawer/logOut.png';

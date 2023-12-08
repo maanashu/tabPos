@@ -3,6 +3,7 @@ import { SW, SH, SF, ShadowStyles } from '@/theme';
 import { COLORS } from '@/theme';
 import { Fonts } from '@/assets';
 import { verticalScale, moderateScale, scale, ms } from 'react-native-size-matters';
+import { height, width } from '@/theme/ScalerDimensions';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -100,16 +101,26 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
   },
+  taxDesc: {
+    fontSize: SF(10),
+    fontFamily: Fonts.Regular,
+    color: COLORS.navy_blue,
+  },
 
   // setting security css start
   securityMainCon: {
-    // borderWidth: 2,
-    // borderColor: COLORS.sky_blue,
+    borderColor: COLORS.light_purple,
     borderRadius: 20,
-    // height: windowHeight * 0.33,
-    // paddingVertical: ms(15),
-    // paddingHorizontal: ms(20),
-    // marginHorizontal: ms(15),
+    paddingVertical: ms(15),
+    borderWidth: 1,
+    paddingHorizontal: ms(15),
+  },
+  securityMainConNew: {
+    borderColor: COLORS.light_purple,
+    borderRadius: 20,
+    paddingVertical: ms(15),
+    // borderWidth: 1,
+    paddingHorizontal: ms(15),
   },
   securityStaffMainCon: {
     // borderWidth: 1,
@@ -130,6 +141,13 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     // padding: 15,
   },
+  securityBodyConNew: {
+    // flex: 1,
+    borderWidth: 1,
+    borderColor: COLORS.solidGrey,
+    borderRadius: 10,
+    // padding: 15,
+  },
   securityLogo: {
     width: SW(8),
     height: SW(8),
@@ -140,8 +158,23 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   twoStepText: {
-    fontSize: SF(24),
+    fontSize: ms(10),
     fontFamily: Fonts.MaisonBold,
+    color: COLORS.navy_blue,
+  },
+  shiipingBorderStyle: {
+    borderWidth: 0.5,
+    padding: ms(10),
+    borderColor: COLORS.light_purple,
+  },
+  shippingPickupHeading: {
+    fontSize: ms(13),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.navy_blue,
+  },
+  shippingHeadingText: {
+    fontSize: SF(20),
+    fontFamily: Fonts.Medium,
     color: COLORS.navy_blue,
   },
   walletHeading: {
@@ -186,6 +219,26 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(12),
     marginVertical: verticalScale(3),
     height: SH(70),
+    borderWidth: 0.4,
+    justifyContent: 'center',
+    // backgroundColor: COLORS.sky_grey,
+  },
+  twoStepMemberConNew: {
+    borderColor: COLORS.light_purple,
+    borderRadius: SH(20),
+    paddingHorizontal: moderateScale(12),
+    marginVertical: verticalScale(3),
+    height: SH(70),
+    borderWidth: 0.4,
+    justifyContent: 'center',
+    backgroundColor: COLORS.sky_grey,
+  },
+  twoStepMemberConNew: {
+    borderColor: COLORS.light_purple,
+    borderRadius: SH(20),
+    paddingHorizontal: moderateScale(12),
+    marginVertical: verticalScale(3),
+    height: SH(70),
     justifyContent: 'center',
     backgroundColor: COLORS.sky_grey,
   },
@@ -200,11 +253,11 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   locationsView: {
-    borderRadius: SH(20),
+    borderRadius: 15,
     paddingHorizontal: moderateScale(12),
     paddingVertical: verticalScale(4),
     marginVertical: verticalScale(3),
-    height: SH(90),
+    height: height * 0.075,
     backgroundColor: COLORS.sky_grey,
     justifyContent: 'center',
   },
@@ -215,10 +268,11 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.38,
   },
   teamMember: {
-    width: SW(8),
-    height: SW(8),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
     marginRight: SW(8),
+    borderRadius: 100,
   },
   locationPinStyle: {
     width: ms(15),
@@ -305,7 +359,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     right: ms(8),
-    top: ms(8),
   },
   modalDataCon: {
     width: windowWidth * 0.38,
@@ -747,8 +800,8 @@ export const styles = StyleSheet.create({
   },
   selectHead: {
     fontSize: SF(18),
-    fontFamily: Fonts.MaisonBold,
-    color: COLORS.solid_grey,
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
   },
   cntryCrossButton: {
     width: SW(7),
@@ -765,12 +818,12 @@ export const styles = StyleSheet.create({
   },
   countryNameCon: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    height: SW(14),
-    borderRadius: 5,
+    // height: SW(14),
+    borderRadius: 20,
     paddingLeft: moderateScale(10),
     justifyContent: 'center',
-    marginBottom: 5,
+    marginBottom: 8,
+    paddingVertical: 15,
   },
   blankCircle: {
     width: SW(7),
@@ -787,24 +840,29 @@ export const styles = StyleSheet.create({
     width: SW(10),
     height: SW(10),
     resizeMode: 'contain',
-    marginHorizontal: moderateScale(10),
+    marginRight: moderateScale(10),
   },
   cancelbuttonCon: {
-    width: SW(28),
-    height: SW(12),
-    backgroundColor: COLORS.washGrey,
-    borderRadius: 5,
+    width: width * 0.127,
+    height: height * 0.05,
+    backgroundColor: COLORS.sky_grey,
+    borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 20,
   },
   nextbuttonCon: {
-    backgroundColor: COLORS.primary,
+    width: width * 0.127,
+    height: height * 0.05,
+    backgroundColor: COLORS.navy_blue,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
   cancel: {
-    fontSize: SF(14),
+    fontSize: ms(9),
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
   },
   next: {
     color: COLORS.white,
@@ -1046,8 +1104,8 @@ export const styles = StyleSheet.create({
   },
   container1: {
     backgroundColor: 'white',
-    borderRadius: 15,
-    width: windowWidth * 0.45,
+    borderRadius: 20,
+    width: windowWidth * 0.33,
     height: windowHeight * 0.6,
     alignSelf: 'center',
     position: 'absolute',
@@ -1065,26 +1123,26 @@ export const styles = StyleSheet.create({
 
   legalViewStyle: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    borderRadius: 10,
+    borderColor: COLORS.light_purple,
+    borderRadius: 15,
     paddingVertical: moderateScale(10),
     paddingHorizontal: moderateScale(5),
     // justifyContent: 'center',
     marginBottom: 5,
     width: windowWidth * 0.19,
-    height: windowHeight * 0.37,
+    height: windowHeight * 0.38,
     marginTop: SW(4),
     marginHorizontal: SW(1.9),
     // marginLeft: SW(4),
   },
   legalView: {
     borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    padding: moderateScale(10),
+    borderColor: COLORS.light_purple,
+    padding: moderateScale(5),
     marginBottom: 5,
     marginHorizontal: ms(1),
-    height: windowHeight * 0.25,
-    borderRadius: 10,
+    height: windowHeight * 0.225,
+    borderRadius: 15,
   },
   calendarImageStyle: {
     width: SW(6),
@@ -1102,7 +1160,7 @@ export const styles = StyleSheet.create({
   },
   activeTextStyle: {
     fontSize: SF(11),
-    fontFamily: Fonts.MaisonBold,
+    fontFamily: Fonts.Medium,
     color: COLORS.green,
     marginLeft: SW(2),
   },
@@ -1113,14 +1171,18 @@ export const styles = StyleSheet.create({
     fontSize: SF(12),
     marginLeft: SW(2),
     fontFamily: Fonts.Regular,
-    color: COLORS.dark_grey,
+    color: COLORS.lavender,
   },
   dateViewStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: SW(2),
+    alignItems: 'center',
   },
   activebuttonStyle: {
+    width: SW(23),
+    height: SW(7),
+    borderRadius: 30,
     width: SW(24),
     height: SW(8),
     borderWidth: 1,
@@ -1129,6 +1191,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: COLORS.light_green,
     backgroundColor: COLORS.soft_green,
   },
   redActiveButton: {
@@ -1243,15 +1306,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: COLORS.sky_grey,
     borderRadius: 15,
-    padding: 10,
+    padding: 15,
   },
   profileBodycon: {
-    width: windowWidth * 0.38,
+    flex: 0.6,
+
     borderRightWidth: 1,
     borderColor: COLORS.solidGrey,
   },
   profileBodycon2: {
-    width: windowWidth * 0.27,
+    flex: 0.4,
     borderRightWidth: 0,
   },
   profileImageStaff: {
@@ -1382,12 +1446,12 @@ export const styles = StyleSheet.create({
   },
   addStaffModalCon: {
     width: windowWidth * 0.5,
-    height: windowHeight * 0.94,
+    height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: 30,
     // paddingHorizontal: moderateScale(15),
-    paddingVertical: verticalScale(10),
+    paddingVertical: verticalScale(24),
   },
   invoice: {
     fontFamily: Fonts.Medium,
@@ -1478,7 +1542,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
   },
   shippingBodyCon: {
-    height: windowHeight * 0.83,
+    height: windowHeight * 0.8,
   },
   flagCon: {
     borderWidth: 1,
@@ -1632,6 +1696,21 @@ export const styles = StyleSheet.create({
     // marginHorizontal: SW(10),
     marginVertical: 10,
   },
+  textInputViewTex: {
+    paddingHorizontal: SW(4),
+    borderWidth: 0,
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: windowHeight * 0.06,
+
+    backgroundColor: COLORS.input_bg,
+    borderRadius: 50,
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
+    // marginHorizontal: SW(10),
+    marginVertical: 10,
+  },
   dropDownIcon: {
     width: 7,
     height: 7,
@@ -1678,9 +1757,10 @@ export const styles = StyleSheet.create({
     width: ms(50),
     height: ms(20),
     borderRadius: ms(3),
-    marginLeft: ms(20),
+    // marginLeft: ms(20),
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: ms(20),
   },
   requestText: {
     color: COLORS.white,
@@ -1733,7 +1813,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.navy_blue,
   },
   subscribedView: {
-    height: ms(37),
+    height: ms(33),
     width: ms(100),
     backgroundColor: COLORS.light_skyblue,
     borderRadius: ms(20),

@@ -352,8 +352,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   backImageStyle: {
-    width: ms(14),
-    height: ms(14),
+    width: ms(12),
+    height: ms(12),
     resizeMode: 'contain',
     // top: ms(-2),
   },

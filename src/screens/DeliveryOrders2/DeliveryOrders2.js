@@ -613,15 +613,18 @@ export function DeliveryOrders2({ route }) {
       );
   };
   return (
-    <>
+    <View
+      style={{
+        backgroundColor: COLORS.sky_grey,
+        flex: 1,
+        paddingRight: ms(6),
+      }}
+    >
       {!trackingView ? (
         <>
-          {/* <Header {...{ viewAllOrder, setViewAllOrder, setIsBack }} />
-
-          <Spacer space={SH(20)} /> */}
-          <Spacer space={SH(15)} backgroundColor={COLORS.textInputBackground} />
+          <Spacer space={SH(15)} backgroundColor={COLORS.sky_grey} />
           <NewHeader invoiceNo={userDetail?.invoices?.invoice_number ?? 0} />
-          <Spacer space={SH(5)} backgroundColor={COLORS.textInputBackground} />
+          <Spacer space={SH(5)} backgroundColor={COLORS.sky_grey} />
           {viewAllOrder ? (
             <SafeAreaView style={[styles.container, { justifyContent: 'space-evenly' }]}>
               <>
@@ -821,11 +824,14 @@ export function DeliveryOrders2({ route }) {
         </>
       ) : (
         <>
-          <Spacer space={SH(15)} backgroundColor={COLORS.textInputBackground} />
+          <Spacer space={SH(15)} backgroundColor={COLORS.sky_grey} />
           <NewHeader invoiceNo={userDetail?.invoices?.invoice_number ?? 0} />
 
           <SafeAreaView
-            style={[styles.containerFull, { flexDirection: 'row', justifyContent: 'space-evenly' }]}
+            style={[
+              styles.containerFull,
+              { flexDirection: 'row', justifyContent: 'space-evenly', marginRight: ms(6) },
+            ]}
           >
             <View style={[styles.firstRowStyleMain]}>
               <InvoiceDetails
@@ -839,7 +845,7 @@ export function DeliveryOrders2({ route }) {
               />
             </View>
             <View style={[styles.drawerMainViewStyle]}>
-              <Spacer space={SH(15)} backgroundColor={COLORS.textInputBackground} />
+              <Spacer space={SH(15)} backgroundColor={COLORS.sky_grey} />
               <RightSideBar
                 {...{
                   renderDrawer,
@@ -889,6 +895,6 @@ export function DeliveryOrders2({ route }) {
           />
         </View>
       </Modal>
-    </>
+    </View>
   );
 }

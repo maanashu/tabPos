@@ -16,7 +16,7 @@ import {
   dropOff,
   store,
 } from '@/assets';
-import { verticalScale } from 'react-native-size-matters';
+import { ms, verticalScale } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
@@ -32,6 +32,7 @@ export function Shipping() {
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const getSettingData = useSelector(getSetting);
   const shippingpickupData = getSettingData?.getShippingPickup;
+  console.log('shiping data: ' + JSON.stringify(shippingpickupData));
 
   const convertShippinDataToArr = () => {
     let arr = [];
@@ -62,19 +63,25 @@ export function Shipping() {
 
   return (
     <View>
-      <View style={[styles.flexRow, { height: SW(8) }]}>
+      {/* <View style={[styles.flexRow, { height: SW(8) }]}>
         <Text style={styles.HeaderLabelText}>{strings.shipping.shipping}</Text>
       </View>
-      <Spacer space={SH(20)} />
+      <Spacer space={SH(20)} /> */}
       <View style={[styles.shippingBodyCon]}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {/* local pickup address */}
-          <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
+          <View
+            style={[
+              styles.securityMainCon,
+              { marginVertical: verticalScale(ms(2)) },
+              styles.shiipingBorderStyle,
+            ]}
+          >
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={Images.marketplaceIcon} style={styles.securityLogo} />
+              <Image source={Images.localPickup} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={styles.twoStepText}>{strings.shipping.local}</Text>
+                  <Text style={styles.shippingHeadingText}>{strings.shipping.local}</Text>
                   <TouchableOpacity
                     disabled={true}
                     onPress={() =>
@@ -87,10 +94,10 @@ export function Shipping() {
                     // disabled={item.is_active ? false : true}
                     style={{ opacity: 0.5 }}
                   >
-                    <Image
+                    {/* <Image
                       source={shippingpickupData?.local_pickup?.[0]?.is_active ? vector : vectorOff}
                       style={styles.toggleSecurityLarge}
-                    />
+                    /> */}
                   </TouchableOpacity>
                 </View>
                 <Spacer space={SH(10)} />
@@ -112,7 +119,7 @@ export function Shipping() {
                         <Image source={locationIcon} style={styles.toggleSecurity} />
 
                         <View style={styles.twoStepVerifiCon}>
-                          <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                          <Text style={[styles.twoStepText]}>
                             {merchantDetails?.user_profiles?.organization_name}
                           </Text>
                           <Text
@@ -153,12 +160,18 @@ export function Shipping() {
             </View>
           </View>
           {/*jobrdelivery address */}
-          <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
+          <View
+            style={[
+              styles.securityMainCon,
+              { marginVertical: verticalScale(3) },
+              styles.shiipingBorderStyle,
+            ]}
+          >
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={Images.postMotorIcon} style={styles.securityLogo} />
+              <Image source={Images.bikeDelivery} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={styles.twoStepText}>{strings.shipping.jobrDelivery}</Text>
+                  <Text style={styles.shippingHeadingText}>{strings.shipping.jobrDelivery}</Text>
 
                   <TouchableOpacity
                     disabled={true}
@@ -172,12 +185,12 @@ export function Shipping() {
                     // disabled={item.is_active ? false : true}
                     style={{ opacity: 0.5 }}
                   >
-                    <Image
+                    {/* <Image
                       source={
                         shippingpickupData?.jobr_delivery?.[0]?.is_active ? vector : vectorOff
                       }
                       style={styles.toggleSecurityLarge}
-                    />
+                    /> */}
                   </TouchableOpacity>
                 </View>
                 <Spacer space={SH(10)} />
@@ -199,7 +212,7 @@ export function Shipping() {
                         <Image source={locationIcon} style={styles.toggleSecurity} />
 
                         <View style={styles.twoStepVerifiCon}>
-                          <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                          <Text style={[styles.twoStepText]}>
                             {merchantDetails?.user_profiles?.organization_name}
                           </Text>
                           <Text
@@ -236,12 +249,18 @@ export function Shipping() {
           </View>
 
           {/*local drop off address */}
-          <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
+          <View
+            style={[
+              styles.securityMainCon,
+              { marginVertical: verticalScale(3) },
+              styles.shiipingBorderStyle,
+            ]}
+          >
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={Images.deliveryHandIcon} style={styles.securityLogo} />
+              <Image source={Images.localDropOff} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={styles.twoStepText}>{strings.shipping.localOff}</Text>
+                  <Text style={styles.shippingHeadingText}>{strings.shipping.localOff}</Text>
 
                   <TouchableOpacity
                     disabled={true}
@@ -255,12 +274,12 @@ export function Shipping() {
                     // disabled={item.is_active ? false : true}
                     style={{ opacity: 0.5 }}
                   >
-                    <Image
+                    {/* <Image
                       source={
                         shippingpickupData?.local_drop_off?.[0]?.is_active ? vector : vectorOff
                       }
                       style={styles.toggleSecurityLarge}
-                    />
+                    /> */}
                   </TouchableOpacity>
                 </View>
                 <Spacer space={SH(10)} />
@@ -282,7 +301,7 @@ export function Shipping() {
                         <Image source={locationIcon} style={styles.toggleSecurity} />
 
                         <View style={styles.twoStepVerifiCon}>
-                          <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                          <Text style={[styles.twoStepText]}>
                             {merchantDetails?.user_profiles?.organization_name}
                           </Text>
                           <Text
@@ -320,12 +339,18 @@ export function Shipping() {
           </View>
 
           {/*shipping address */}
-          <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
+          <View
+            style={[
+              styles.securityMainCon,
+              { marginVertical: verticalScale(3) },
+              styles.shiipingBorderStyle,
+            ]}
+          >
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-              <Image source={Images.planeIcon} style={styles.securityLogo} />
+              <Image source={Images.Plane} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={styles.twoStepText}>{strings.shipping.shippingText}</Text>
+                  <Text style={styles.shippingHeadingText}>{strings.shipping.shippingText}</Text>
 
                   <TouchableOpacity
                     disabled={true}
@@ -339,10 +364,10 @@ export function Shipping() {
                     // disabled={item.is_active ? false : true}
                     style={{ opacity: 0.5 }}
                   >
-                    <Image
+                    {/* <Image
                       source={shippingpickupData?.shipping?.[0]?.is_active ? vector : vectorOff}
                       style={styles.toggleSecurityLarge}
-                    />
+                    /> */}
                   </TouchableOpacity>
                 </View>
                 <Spacer space={SH(10)} />
@@ -400,12 +425,12 @@ export function Shipping() {
           </View>
 
           {/*store address */}
-          <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
+          {/* <View style={[styles.securityMainCon, { marginVertical: verticalScale(3) }]}>
             <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
               <Image source={store} style={styles.securityLogo} />
               <View style={styles.twoStepVerifiCon}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={styles.twoStepText}>{strings.shipping.store}</Text>
+                  <Text style={styles.shippingHeadingText}>{strings.shipping.store}</Text>
 
                   <TouchableOpacity
                     disabled={true}
@@ -416,13 +441,9 @@ export function Shipping() {
                         'store_type'
                       )
                     }
-                    // disabled={item.is_active ? false : true}
                     style={{ opacity: 0.5 }}
                   >
-                    <Image
-                      source={shippingpickupData?.store_type?.[0]?.is_active ? vector : vectorOff}
-                      style={styles.toggleSecurityLarge}
-                    />
+              
                   </TouchableOpacity>
                 </View>
                 <Spacer space={SH(10)} />
@@ -442,7 +463,7 @@ export function Shipping() {
                         <Image source={locationIcon} style={styles.toggleSecurity} />
 
                         <View style={styles.twoStepVerifiCon}>
-                          <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
+                          <Text style={[styles.twoStepText]}>
                             {merchantDetails?.user_profiles?.organization_name}
                           </Text>
                           <Text
@@ -452,32 +473,16 @@ export function Shipping() {
                             {item.street_address}
                           </Text>
                         </View>
-                        {/* <TouchableOpacity
-                          onPress={() => addressUpdate(item?.id, item?.is_active)}
-                          // disabled={item.is_active ? false : true}
-                          style={styles.deleteButton}
-                        >
-                          <Text style={styles.deleteText}>Delete</Text>
-                         
-                        </TouchableOpacity> */}
+               
                       </View>
                     </View>
                   </View>
                 ))}
               </View>
 
-              {/* <TouchableOpacity
-            // onPress={() => {
-            //   addressUpdate(item.id, item.is_active), defaultUpdate(item);
-            // }}
-            >
-              <Image
-                source={item.is_active ? toggleOn : vectorOff}
-                style={styles.toggleSecurityLarge}
-              />
-            </TouchableOpacity> */}
+         
             </View>
-          </View>
+          </View> */}
         </ScrollView>
       </View>
     </View>

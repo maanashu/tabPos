@@ -467,6 +467,7 @@ const styles = StyleSheet.create({
     // paddingBottom: 30,
     // height: twoEqualView,
     padding: 20,
+    alignItems: 'center',
 
     // width: windowWidth * 0.56,
     backgroundColor: COLORS.white,
@@ -477,11 +478,11 @@ const styles = StyleSheet.create({
     paddingTop: ms(16),
     paddingHorizontal: 20,
     color: COLORS.lavender,
-    fontFamily: Fonts.Bold,
+    fontFamily: Fonts.Regular,
 
     transform: [{ rotate: '-90deg' }],
     position: 'absolute',
-    left: ms(-50),
+    left: ms(-70),
     top: ms(100),
   },
   flexRow: {
@@ -522,5 +523,6 @@ const styles = StyleSheet.create({
     marginTop: ms(-10),
     fontSize: ms(8),
     color: COLORS.lavender,
+    fontFamily: Fonts.Regular,
   },
 });

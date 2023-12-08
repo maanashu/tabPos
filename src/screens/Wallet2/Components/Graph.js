@@ -20,6 +20,7 @@ import { getDelivery } from '@/selectors/DeliverySelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getWallet } from '@/selectors/WalletSelector';
 import { useEffect } from 'react';
+import { Images } from '@/assets/new_icon';
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 
@@ -272,8 +273,8 @@ const Graph = () => {
   }, [getTotalTraData]);
   return (
     <View style={styles.graphViewStyle}>
-      <View style={styles.flexRow}>
-        <TouchableOpacity
+      <View style={[styles.flexRow, { alignSelf: 'flex-end' }]}>
+        {/* <TouchableOpacity
           onPress={() => {
             setShowJBR((prevShowJBR) => {
               const newState = !prevShowJBR;
@@ -381,27 +382,26 @@ const Graph = () => {
         dateInterval={5}
       /> */}
 
-          <BarChart
-            data={modifyData}
-            barWidth={SW(3.5)}
-            // spacing={SW(35.2)}
-            roundedTop
-            // hideRules
-            xAxisThickness={1}
-            yAxisThickness={0}
-            xAxisType={'dashed'}
-            yAxisType={'dashed'}
-            xAxisColor={`rgba(39, 90, 255, 1)`}
-            yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
-            noOfSections={4}
-            // maxValue={100}
-            yAxisLength={350}
-            height={Platform.OS === 'android' ? ms(250) : ms(240)}
-            width={Dimensions.get('window').width * 0.8}
-            initialSpacing={SH(10)}
-          />
-        </View>
-      )}
+        <BarChart
+          data={modifyData}
+          barWidth={SW(3.5)}
+          // spacing={SW(35.2)}
+          roundedTop
+          // hideRules
+          xAxisThickness={1}
+          yAxisThickness={0}
+          xAxisType={'dashed'}
+          yAxisType={'dashed'}
+          xAxisColor={`rgba(39, 90, 255, 1)`}
+          yAxisTextStyle={{ color: COLORS.darkGray, fontSize: 11 }}
+          noOfSections={4}
+          // maxValue={100}
+          yAxisLength={350}
+          height={Platform.OS === 'android' ? ms(250) : ms(240)}
+          width={Dimensions.get('window').width * 0.8}
+          initialSpacing={SH(10)}
+        />
+      </View>
     </View>
   );
 };
@@ -469,5 +469,42 @@ const styles = StyleSheet.create({
     borderColor: COLORS.medium_green,
     backgroundColor: COLORS.light_green,
     marginHorizontal: ms(2),
+  },
+  jobrCoinCheckBoxStyle: {
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: COLORS.navy_blue,
+    height: ms(12),
+    width: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.light_purple,
+    marginRight: ms(3),
+  },
+  jobrCashCheckBoxStyle: {
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: COLORS.green_new,
+    height: ms(12),
+    width: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.soft_green,
+    marginRight: ms(3),
+  },
+  cardCheckBoxStyle: {
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: COLORS.aqua,
+    height: ms(12),
+    width: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.light_sky_blue,
+    marginRight: ms(3),
+  },
+  checkMarkStyle: {
+    height: ms(9),
+    width: ms(9),
   },
 });

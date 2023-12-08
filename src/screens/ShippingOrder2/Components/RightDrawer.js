@@ -39,65 +39,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
 
   // console.log(JSON.stringify(orderStatusCountData), 'order drawer backend values');
 
-  // const statusCount = useMemo(
-  //   () => [
-  //     {
-  //       key: '0',
-  //       image: task,
-  //       title: 'Orders to Review',
-  //       count: orderStatusCountData?.[0]?.count ?? '0',
-  //     },
-  //     // {
-  //     //   key: '1',
-  //     //   image: drawerdeliveryTruck,
-  //     //   title: 'Accepted',
-  //     //   count: orderStatusCountData?.[1]?.count ?? '0',
-  //     // },
-  //     // {
-  //     //   key: '2',
-  //     //   image: timer,
-  //     //   title: 'Order Preparing ',
-  //     //   count: orderStatusCountData?.[2]?.count ?? '0',
-  //     // },
-  //     {
-  //       key: '3',
-  //       image: Group,
-  //       title: 'Printing Label',
-  //       count: orderStatusCountData?.[3]?.count ?? '0',
-  //     },
-  //     {
-  //       key: '4',
-  //       image: Delivery,
-  //       title: 'Shipped',
-  //       count: orderStatusCountData?.[4]?.count ?? '0',
-  //     },
-  //     {
-  //       key: '5',
-  //       image: Cart,
-  //       title: 'Delivered',
-  //       count: orderStatusCountData?.[6]?.count ?? '0',
-  //     },
-  //     {
-  //       key: '7,8',
-  //       image: NoCard,
-  //       title: 'Rejected/Cancelled',
-  //       count: orderStatusCountData?.[6]?.count ?? '0',
-  //     },
-  //     {
-  //       key: '9',
-  //       image: ReturnTruck,
-  //       title: 'Returned',
-  //       count: orderStatusCountData?.[8]?.count ?? '0',
-  //     },
-  //   ],
-  //   [orderStatusCountData]
-  // );
-
-  const handleShowMenu = () => {
-    setShowFullSideMenu(!showFullSideMenu);
-  };
-
-  const statusCountNew = useMemo(
+  const statusCount = useMemo(
     () => [
       {
         key: '0',
@@ -105,18 +47,18 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         title: 'Orders to Review',
         count: orderStatusCountData?.[0]?.count ?? '0',
       },
-      {
-        key: '1',
-        image: orderAccepted,
-        title: 'Orders Accepted',
-        count: orderStatusCountData?.[1]?.count ?? '0',
-      },
-      {
-        key: '2',
-        image: orderPrepared,
-        title: 'Order Preparing ',
-        count: orderStatusCountData?.[2]?.count ?? '0',
-      },
+      // {
+      //   key: '1',
+      //   image: drawerdeliveryTruck,
+      //   title: 'Accepted',
+      //   count: orderStatusCountData?.[1]?.count ?? '0',
+      // },
+      // {
+      //   key: '2',
+      //   image: timer,
+      //   title: 'Order Preparing ',
+      //   count: orderStatusCountData?.[2]?.count ?? '0',
+      // },
       {
         key: '3',
         image: printingLabelDrawer,
@@ -126,14 +68,14 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
       {
         key: '4',
         image: trackDelivery,
-        title: 'Track Delivery',
+        title: 'Shipped',
         count: orderStatusCountData?.[4]?.count ?? '0',
       },
       {
         key: '5',
         image: deliverySending,
         title: 'Delivered',
-        count: orderStatusCountData?.[5]?.count ?? '0',
+        count: orderStatusCountData?.[6]?.count ?? '0',
       },
       {
         key: '7,8',
@@ -145,11 +87,69 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         key: '9',
         image: deliveryBack,
         title: 'Returned',
-        count: orderStatusCountData?.[7]?.count ?? '0',
+        count: orderStatusCountData?.[8]?.count ?? '0',
       },
     ],
     [orderStatusCountData]
   );
+
+  const handleShowMenu = () => {
+    setShowFullSideMenu(!showFullSideMenu);
+  };
+
+  // const statusCountNew = useMemo(
+  //   () => [
+  //     {
+  //       key: '0',
+  //       image: ordersReview,
+  //       title: 'Orders to Review',
+  //       count: orderStatusCountData?.[0]?.count ?? '0',
+  //     },
+  //     {
+  //       key: '1',
+  //       image: orderAccepted,
+  //       title: 'Orders Accepted',
+  //       count: orderStatusCountData?.[1]?.count ?? '0',
+  //     },
+  //     {
+  //       key: '2',
+  //       image: orderPrepared,
+  //       title: 'Order Preparing ',
+  //       count: orderStatusCountData?.[2]?.count ?? '0',
+  //     },
+  //     {
+  //       key: '3',
+  //       image: printingLabelDrawer,
+  //       title: 'Printing Label',
+  //       count: orderStatusCountData?.[3]?.count ?? '0',
+  //     },
+  //     {
+  //       key: '4',
+  //       image: trackDelivery,
+  //       title: 'Track Delivery',
+  //       count: orderStatusCountData?.[4]?.count ?? '0',
+  //     },
+  //     {
+  //       key: '5',
+  //       image: deliverySending,
+  //       title: 'Delivered',
+  //       count: orderStatusCountData?.[5]?.count ?? '0',
+  //     },
+  //     {
+  //       key: '7,8',
+  //       image: deliveryClose,
+  //       title: 'Rejected/Cancelled',
+  //       count: orderStatusCountData?.[6]?.count ?? '0',
+  //     },
+  //     {
+  //       key: '9',
+  //       image: deliveryBack,
+  //       title: 'Returned',
+  //       count: orderStatusCountData?.[7]?.count ?? '0',
+  //     },
+  //   ],
+  //   [orderStatusCountData]
+  // );
 
   const showBadge = (item) => {
     const blueBackground = openShippingOrders === item?.key ? COLORS.primary : COLORS.darkGray;
@@ -450,7 +450,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
   return (
     <View style={[styles.rightSideView, showFullSideMenu && styles.fullSideModal]}>
       <FlatList
-        data={statusCountNew}
+        data={statusCount}
         ListHeaderComponent={renderHeaderDrawer}
         renderItem={showFullSideMenu ? renderDrawerFull : renderDrawer}
         keyExtractor={(item) => item?.key?.toString()}
@@ -505,13 +505,13 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   sideBarImage: {
-    width: ms(18),
-    height: ms(18),
+    width: ms(15),
+    height: ms(15),
     resizeMode: 'contain',
   },
   backImageStyle: {
-    width: ms(14),
-    height: ms(14),
+    width: ms(12),
+    height: ms(12),
     resizeMode: 'contain',
     // top: ms(-2),
   },

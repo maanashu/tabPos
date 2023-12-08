@@ -18,8 +18,6 @@ import Toast from 'react-native-toast-message';
 import Slider from '@react-native-community/slider';
 import Modal from 'react-native-modal';
 import {
-  addIcon,
-  backArrow,
   crossButton,
   dropdown,
   email,
@@ -30,8 +28,6 @@ import {
   shieldPerson,
   staffImage,
   userImage,
-  vector,
-  vectorOff,
   EyeHide,
   EyeShow,
   arrowRightTop,
@@ -61,13 +57,14 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import DropDownPicker from 'react-native-dropdown-picker';
 import { creatPostUser, getPosUserRole } from '@/actions/AppointmentAction';
 import { digits, emailReg } from '@/utils/validators';
-import { getAppointmentSelector, getPosUserRoles } from '@/selectors/AppointmentSelector';
+import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { TYPES } from '@/Types/SettingTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useRef } from 'react';
 import { useCallback } from 'react';
 import { RefreshControl } from 'react-native';
 import { Images } from '@/assets/new_icon';
+
 const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
@@ -211,6 +208,7 @@ export function Staff() {
       }
     } else {
       const res = await dispatch(getStaffDetail(staffId));
+
       if (res?.type === 'STAFF_DETAIL_SUCCESS') {
         setStaffDetail(true);
       } else {
@@ -292,7 +290,7 @@ export function Staff() {
             />
           </View>
         </TouchableOpacity>
-        {isLastItem && (
+        {/* {isLastItem && (
           <TouchableOpacity
             onPress={() => setStaffModal(!staffModal)}
             activeOpacity={0.3}
@@ -301,7 +299,7 @@ export function Staff() {
             <Image source={Images.plusCircleIcon} style={styles.plusIconStyle} />
             <Text style={styles.addNew1}>{strings.settings.addStaff}</Text>
           </TouchableOpacity>
-        )}
+        )} */}
       </View>
     );
   };
@@ -379,9 +377,14 @@ export function Staff() {
                       style={styles.profileImageStaff}
                     />
                     <View style={styles.litMorecon}>
-                      <Text
-                        style={styles.staffName}
-                      >{`${data?.user?.user_profiles?.firstname} ${data?.user?.user_profiles?.lastname} `}</Text>
+                      <Text style={styles.staffName}>
+                        {data?.user?.user_profiles?.firstname
+                          ? data.user.user_profiles.lastname
+                            ? `${data.user.user_profiles.firstname} ${data.user.user_profiles.lastname}`
+                            : data.user.user_profiles.firstname
+                          : ''}
+                      </Text>
+
                       <View style={styles.dispalyRow}>
                         <Image
                           source={shieldPerson}
@@ -449,9 +452,7 @@ export function Staff() {
                     return (
                       <View style={styles.hourlyRateView}>
                         <Text style={styles.joinDateDark}>{item?.title}</Text>
-                        <HorizontalLine
-                          style={{ marginBottom: 10, marginTop: 10, width: '100%' }}
-                        />
+
                         <Text style={styles.hourRateLigh}>{item?.data}</Text>
                       </View>
                     );
@@ -466,9 +467,7 @@ export function Staff() {
                     return (
                       <View style={[styles.hourlyRateView, { width: windowWidth * 0.19 }]}>
                         <Text style={styles.joinDateDark}>{item?.title}</Text>
-                        <HorizontalLine
-                          style={{ marginBottom: 10, marginTop: 10, width: '100%' }}
-                        />
+
                         <Text style={styles.hourRateLigh}>{item?.data}</Text>
                       </View>
                     );
@@ -770,7 +769,7 @@ export function Staff() {
                   />
 
                   <TouchableOpacity
-                    style={[styles.rowAligned, { marginLeft: SW(15) }]}
+                    style={[styles.rowAligned, { marginLeft: SW(5) }]}
                     onPress={() => setStaffModal(!staffModal)}
                   >
                     <View
@@ -1042,6 +1041,15 @@ export function Staff() {
       >
         {!isColorModal ? (
           <View pointerEvents={isLoading ? 'none' : 'auto'} style={[styles.addStaffModalCon]}>
+            <Text
+              style={[
+                styles.phoneText,
+                { textAlign: 'center', fontSize: ms(12), fontFamily: Fonts.Bold },
+              ]}
+            >
+              {'Add New Store Employee'}
+            </Text>
+
             <KeyboardAwareScrollView
               keyboardShouldPersistTaps={'always'}
               contentContainerStyle={{ padding: SW(10) }}
