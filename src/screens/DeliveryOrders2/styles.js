@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   sideBarImage: {
-    width: SW(14),
-    height: SW(14),
+    width: ms(23),
+    height: ms(23),
     resizeMode: 'contain',
   },
   shippingDrawerTitleText: {
