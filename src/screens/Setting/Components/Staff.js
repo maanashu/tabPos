@@ -68,6 +68,7 @@ import { useRef } from 'react';
 import { useCallback } from 'react';
 import { RefreshControl } from 'react-native';
 import { Images } from '@/assets/new_icon';
+
 const windowWidth = Dimensions.get('window').width;
 
 moment.suppressDeprecationWarnings = true;
@@ -292,7 +293,7 @@ export function Staff() {
             />
           </View>
         </TouchableOpacity>
-        {isLastItem && (
+        {/* {isLastItem && (
           <TouchableOpacity
             onPress={() => setStaffModal(!staffModal)}
             activeOpacity={0.3}
@@ -301,7 +302,7 @@ export function Staff() {
             <Image source={Images.plusCircleIcon} style={styles.plusIconStyle} />
             <Text style={styles.addNew1}>{strings.settings.addStaff}</Text>
           </TouchableOpacity>
-        )}
+        )} */}
       </View>
     );
   };
@@ -449,9 +450,7 @@ export function Staff() {
                     return (
                       <View style={styles.hourlyRateView}>
                         <Text style={styles.joinDateDark}>{item?.title}</Text>
-                        <HorizontalLine
-                          style={{ marginBottom: 10, marginTop: 10, width: '100%' }}
-                        />
+
                         <Text style={styles.hourRateLigh}>{item?.data}</Text>
                       </View>
                     );
@@ -466,9 +465,7 @@ export function Staff() {
                     return (
                       <View style={[styles.hourlyRateView, { width: windowWidth * 0.19 }]}>
                         <Text style={styles.joinDateDark}>{item?.title}</Text>
-                        <HorizontalLine
-                          style={{ marginBottom: 10, marginTop: 10, width: '100%' }}
-                        />
+
                         <Text style={styles.hourRateLigh}>{item?.data}</Text>
                       </View>
                     );
@@ -770,7 +767,7 @@ export function Staff() {
                   />
 
                   <TouchableOpacity
-                    style={[styles.rowAligned, { marginLeft: SW(15) }]}
+                    style={[styles.rowAligned, { marginLeft: SW(5) }]}
                     onPress={() => setStaffModal(!staffModal)}
                   >
                     <View
@@ -1042,6 +1039,15 @@ export function Staff() {
       >
         {!isColorModal ? (
           <View pointerEvents={isLoading ? 'none' : 'auto'} style={[styles.addStaffModalCon]}>
+            <Text
+              style={[
+                styles.phoneText,
+                { textAlign: 'center', fontSize: ms(12), fontFamily: Fonts.Bold },
+              ]}
+            >
+              {'Add New Store Employee'}
+            </Text>
+
             <KeyboardAwareScrollView
               keyboardShouldPersistTaps={'always'}
               contentContainerStyle={{ padding: SW(10) }}

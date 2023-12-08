@@ -57,6 +57,7 @@ import {
   arrowUpRound,
   arrowDownRound,
   arrowRightTop,
+  PlusCircle,
 } from '@/assets';
 import {
   endTrackingSession,
@@ -1337,10 +1338,15 @@ export function Management() {
                 style={styles.addCashViewNew}
               >
                 <Text style={styles.sessionHistoryTextNew}>{strings.management.addCash}</Text>
-                {/* <Image
-                  source={plus}
-                  style={{ height: SH(30), width: SW(30), resizeMode: 'contain' }}
-                /> */}
+                <Image
+                  source={PlusCircle}
+                  style={{
+                    height: ms(20),
+                    width: ms(20),
+                    resizeMode: 'contain',
+                    marginHorizontal: ms(4),
+                  }}
+                />
               </TouchableOpacity>
             </View>
             <Spacer space={SH(35)} />
@@ -1666,7 +1672,7 @@ export function Management() {
             <Text style={styles.sessionHistoryTextNew}>{strings.management.closeBatch}</Text>
             <Image source={crossDrawer} style={styles.crossImage} />
           </TouchableOpacity>
-          <Spacer space={SH(40)} />
+          <Spacer space={SH(10)} />
         </View>
       );
     } else if (closeBatch) {

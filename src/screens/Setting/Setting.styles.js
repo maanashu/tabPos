@@ -140,7 +140,17 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   twoStepText: {
-    fontSize: SF(24),
+    fontSize: ms(10),
+    fontFamily: Fonts.MaisonBold,
+    color: COLORS.navy_blue,
+  },
+  shiipingBorderStyle: {
+    borderWidth: 0.5,
+    padding: ms(10),
+    borderColor: COLORS.light_purple,
+  },
+  shippingPickupHeading: {
+    fontSize: ms(13),
     fontFamily: Fonts.MaisonBold,
     color: COLORS.navy_blue,
   },
@@ -181,6 +191,16 @@ export const styles = StyleSheet.create({
     color: COLORS.navy_blue,
   },
   twoStepMemberCon: {
+    borderColor: COLORS.light_purple,
+    borderRadius: SH(20),
+    paddingHorizontal: moderateScale(12),
+    marginVertical: verticalScale(3),
+    height: SH(70),
+    borderWidth: 0.4,
+    justifyContent: 'center',
+    // backgroundColor: COLORS.sky_grey,
+  },
+  twoStepMemberConNew: {
     borderColor: COLORS.light_purple,
     borderRadius: SH(20),
     paddingHorizontal: moderateScale(12),
@@ -1071,8 +1091,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(5),
     // justifyContent: 'center',
     marginBottom: 5,
-    width: windowWidth * 0.19,
-    height: windowHeight * 0.37,
+    width: windowWidth * 0.22,
+    // height: windowHeight * 0.37,
     marginTop: SW(4),
     marginHorizontal: SW(1.9),
     // marginLeft: SW(4),
@@ -1382,12 +1402,12 @@ export const styles = StyleSheet.create({
   },
   addStaffModalCon: {
     width: windowWidth * 0.5,
-    height: windowHeight * 0.94,
+    height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: 30,
     // paddingHorizontal: moderateScale(15),
-    paddingVertical: verticalScale(10),
+    paddingVertical: verticalScale(24),
   },
   invoice: {
     fontFamily: Fonts.Medium,
@@ -1478,7 +1498,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
   },
   shippingBodyCon: {
-    height: windowHeight * 0.83,
+    height: windowHeight * 0.8,
   },
   flagCon: {
     borderWidth: 1,
