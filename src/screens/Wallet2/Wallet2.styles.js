@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   searchContainer: {
-    marginVertical: ms(10),
+    marginTop: ms(10),
     flexDirection: 'row',
     height: SH(45),
     borderRadius: ms(15),
@@ -350,7 +350,7 @@ export const styles = StyleSheet.create({
   allJbrCon: {
     borderWidth: 1,
     height: ms(20),
-    width: ms(44),
+    // width: ms(44),
     borderRadius: 7,
     justifyContent: 'center',
     alignItems: 'center',
@@ -358,7 +358,7 @@ export const styles = StyleSheet.create({
     borderRadius: ms(15),
     marginRight: ms(5),
     // paddingVertical: ms(5),
-    // paddingHorizontal: ms(8),
+    paddingHorizontal: ms(5),
   },
   allJbrConBluish: {
     borderColor: COLORS.navy_blue,
@@ -954,13 +954,13 @@ export const styles = StyleSheet.create({
     marginVertical: moderateScale(5),
   },
   textInputStyle: {
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
-    height: SH(200),
-    width: windowWidth * 0.38,
-    borderRadius: 10,
-    backgroundColor: COLORS.textInputBackground,
-    paddingVertical: verticalScale(4),
+    height: SH(40),
+    width: '100%',
+    fontFamily: Fonts.Italic,
+    fontSize: SF(12),
+    paddingLeft: 5,
+    margin: 0,
+    padding: 0,
   },
   textInputNote: {
     color: COLORS.black,
@@ -1080,7 +1080,7 @@ export const styles = StyleSheet.create({
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,
     fontSize: SF(14),
-    width: windowWidth / 7,
+    width: windowWidth / ms(7),
     marginTop: SF(2),
   },
   tableTextDataCom: {
