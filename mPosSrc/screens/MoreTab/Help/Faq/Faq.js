@@ -15,39 +15,6 @@ import { getSupportData } from '@/selectors/SupportSelector';
 export function Faq() {
   const dispatch = useDispatch();
   const supportData = useSelector(getSupportData);
-  console.log('fQ', supportData?.faq);
-  const helpTypeData = [
-    {
-      title: 'My support request',
-      id: 1,
-      img: Images.supportEmail,
-      navigation: MPOS_NAVIGATION.supportRequest,
-    },
-    {
-      title: 'Past orders',
-      id: 2,
-      img: Images.bagOrders,
-      // navigation:MPOS_NAVIGATION.pastOrders
-    },
-    {
-      title: 'My account',
-      id: 3,
-      img: Images.userProfileIcon,
-      // navigation:MPOS_NAVIGATION.faq
-    },
-    {
-      title: 'Report other issue',
-      id: 4,
-      img: Images.infoGrey,
-      // navigation:MPOS_NAVIGATION.needMoreHelp
-    },
-    {
-      title: 'FAQ',
-      id: 5,
-      img: Images.menuDots,
-      // navigation:MPOS_NAVIGATION.faq
-    },
-  ];
 
   useEffect(() => {
     dispatch(getFaqList());

@@ -48,10 +48,14 @@ export function Support({ setScreen }) {
   const getUserData = useSelector(getUser);
 
   const profileData = getData?.getProfile;
-  const emailID = getData?.getProfile?.email ?? '';
-  const username = profileData?.user_profiles?.username ?? '';
+  const emailID = getUserData?.posLoginData?.email || '';
+  const username =
+    getData?.getProfile?.user_profiles?.username ||
+    getData?.getProfile?.user_profiles?.firstname +
+      ' ' +
+      getData?.getProfile?.user_profiles?.lastname;
 
-  const [firstName, setFirstName] = useState(capitalizeFirstLetter(username));
+  const [firstName, setFirstName] = useState(username);
   const [email, setEmail] = useState(emailID ?? '');
 
   const [isSocketConnected, setIsSocketConnected] = useState(false);
@@ -170,7 +174,7 @@ export function Support({ setScreen }) {
           console.log('ticket body-,', JSON.stringify(data));
           const socketData = {
             sender_id: getUserData?.posLoginData?.uuid,
-            // recipient_id: subjectValue.toString(),
+            recipient_id: subjectValue.toString(),
             chatHeadType: 'inquiry',
             ticket_id: res?.payload?.id.toString(),
             media_type: 'text',
@@ -178,7 +182,7 @@ export function Support({ setScreen }) {
           };
           socket.emit('send_message', socketData);
           socket.on('send_message', (message) => {
-            console.log('send msg payload: ' + JSON.stringify(message));
+            console.log('first message sent: ' + JSON.stringify(message));
             setChatHeadId(message?.data?.chathead_id);
           });
         })
@@ -373,6 +377,7 @@ export function Support({ setScreen }) {
           enableDismissOnClose
           enablePanDownToClose
           backdropComponent={CustomBackdrop}
+          detached
         >
           <View
             style={{
