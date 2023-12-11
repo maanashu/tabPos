@@ -766,7 +766,13 @@ export function DeliveryOrders2({ route }) {
             </SafeAreaView>
           ) : (
             <SafeAreaView
-              style={[styles.container, { alignSelf: 'center', justifyContent: 'space-evenly' }]}
+              style={[
+                styles.container,
+                {
+                  alignSelf: 'center',
+                  justifyContent: 'space-evenly',
+                },
+              ]}
             >
               <View style={styles.leftMainViewStyle}>
                 <View style={styles.todayShippingViewStyle}>
