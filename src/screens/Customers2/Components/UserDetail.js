@@ -453,7 +453,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
               <View style={[styles.profilDetailChildView, { alignItems: 'flex-start' }]}>
                 <View style={{ flexDirection: 'row' }}>
                   <Text style={[styles.tableTextHeader, { marginRight: ms(30) }]}>#</Text>
-                  <Text style={styles.tableTextHeader}>Order id#</Text>
+                  <Text style={styles.tableTextHeader}>Order id</Text>
                 </View>
               </View>
               <View style={styles.profilDetailChildView}>
@@ -524,7 +524,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
                         </View>
                         <View style={styles.profilDetailChildView}>
                           <Text style={styles.tableTextData}>
-                            {item.created_at ? moment(item.created_at).format('ll') : ''}
+                            {item.created_at ? moment(item.created_at).format('DD/MM/YYYY') : ''}
                           </Text>
                         </View>
                         <View style={styles.profilDetailChildView}>
@@ -553,14 +553,28 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
                               styles.saleTypeButtonCon,
                               {
                                 backgroundColor:
-                                  DELIVERY_MODE[item?.delivery_option] === 'Delivery' ||
-                                  DELIVERY_MODE[item?.delivery_option] === 'Shipping'
-                                    ? COLORS.marshmallow
-                                    : COLORS.navy_blue,
+                                  DELIVERY_MODE[item?.delivery_option] === 'Delivery'
+                                    ? COLORS.tip_back
+                                    : DELIVERY_MODE[item?.delivery_option] === 'Shipping'
+                                    ? COLORS.light_skyblue
+                                    : COLORS.input_border,
                               },
                             ]}
                           >
-                            <Text style={[styles.tableTextData, { color: COLORS.white }]}>
+                            <Text
+                              style={[
+                                styles.tableTextData,
+                                {
+                                  color:
+                                    DELIVERY_MODE[item?.delivery_option] === 'Delivery'
+                                      ? COLORS.purple
+                                      : DELIVERY_MODE[item?.delivery_option] === 'Shipping'
+                                      ? COLORS.dark_skyblue
+                                      : COLORS.navy_blue,
+                                  paddingLeft: 0,
+                                },
+                              ]}
+                            >
                               {DELIVERY_MODE[item?.delivery_option]}
                             </Text>
                           </View>

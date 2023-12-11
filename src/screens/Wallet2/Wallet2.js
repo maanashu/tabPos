@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { styles } from '@/screens/Wallet2/Wallet2.styles';
@@ -33,6 +34,7 @@ import {
   new_JBR_coin,
   new_visa,
   new_cash,
+  crossButton,
 } from '@/assets';
 import moment from 'moment';
 import { debounce } from 'lodash';
@@ -124,6 +126,8 @@ export function Wallet2() {
   const maxDate = new Date(2030, 6, 3);
   const formateDate = { start_date: startDated, end_date: endDated };
 
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [searchedText, setSearchedText] = useState('');
   const onPresFun1 = (value) => {
     // setShow(false);
     // setDate(new Date());
@@ -297,6 +301,7 @@ export function Wallet2() {
     setInvoiceDetail(false);
     setWeeklyTrasaction(true);
   };
+
   const onSearchInvoiceHandler = (text) => {
     if (text.includes('Invoice_') || text.includes('invoice_')) {
       dispatch(scanBarCode(text));
@@ -306,10 +311,12 @@ export function Wallet2() {
           // alert('ok');
           setInvoiceView(true);
           setWalletHome(false);
+          setShowSearchModal(false);
         })
       );
     }
   };
+
   const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
   const bodyView = () => {
     if (invoiceDetail) {
@@ -369,21 +376,19 @@ export function Wallet2() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.searchView}
-                // onPress={() => {
-                //   setShowSearchModal(true);
-                //   setSearchedCustomer([]);
-                //   setSearchedText('');
-                // }}
+                onPress={() => {
+                  setShowSearchModal(true);
+                  setSearchedText('');
+                }}
               >
                 <Image source={searchDrawer} style={styles.searchImage} />
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.searchView, { marginLeft: ms(10) }]}
-                // onPress={() => {
-                //   setShowSearchModal(true);
-                //   setSearchedCustomer([]);
-                //   setSearchedText('');
-                // }}
+                onPress={() => {
+                  setShowSearchModal(true);
+                  setSearchedText('');
+                }}
               >
                 <Image source={scanNew} style={styles.searchImage} />
               </TouchableOpacity>
@@ -475,8 +480,8 @@ export function Wallet2() {
           // selectId={selectId}
           // setSelectId={setSelectId}
           // setSelectTime={setSelectTime}
-          setSelectDate={setSelectDate}
-          selectDate={selectDate}
+          //    setSelectDate={setSelectDate}
+          //   selectDate={selectDate}
           // setSelectedEndDate={setSelectedEndDate}
           // setSelectedStartDate={setSelectDate}
           // startDatefilter={startDate}
@@ -512,7 +517,7 @@ export function Wallet2() {
                   })
                 }
               >
-                <Image source={bell} style={[styles.truckStyle, { right: 20 }]} />
+                <Image source={bellDrawer} style={[styles.truckStyle, { right: 20 }]} />
               </TouchableOpacity>
               <View style={styles.searchView}>
                 <View style={styles.flexAlign}>
@@ -589,6 +594,54 @@ export function Wallet2() {
             }}
           />
         </View>
+      </Modal>
+
+      <Modal isVisible={showSearchModal}>
+        <KeyboardAvoidingView style={{ flex: 1 }}>
+          <View
+            style={{
+              // marginHorizontal: ms(40),
+              // marginVertical: ms(40),
+              backgroundColor: 'white',
+              borderRadius: ms(5),
+              paddingHorizontal: ms(20),
+              paddingVertical: ms(20),
+              minHeight: '40%',
+              position: 'absolute',
+              top: ms(20),
+              width: '30%',
+              right: ms(0),
+            }}
+          >
+            <TouchableOpacity
+              style={{ position: 'absolute', top: ms(5), right: ms(7) }}
+              onPress={() => setShowSearchModal(false)}
+            >
+              <Image source={crossButton} style={{ height: ms(20), width: ms(20) }} />
+            </TouchableOpacity>
+            <View style={[styles.searchContainer]}>
+              <Image source={searchDrawer} style={styles.searchImage} />
+              <TextInput
+                placeholder={strings.deliveryOrders.search}
+                style={[styles.textInputStyle, { fontSize: ms(10), marginHorizontal: ms(5) }]}
+                placeholderTextColor={COLORS.darkGray}
+                value={searchedText}
+                onChangeText={(searchText) => {
+                  // const debouncedSearchInvoice = useCallback(debounce(onSearchInvoiceHandler, 800), []);
+                  setSearchedText(searchText);
+                  debouncedSearchInvoice(searchText);
+                }}
+              />
+            </View>
+            {onSeachLoad && (
+              <ActivityIndicator
+                color={COLORS.navy_blue}
+                size="small"
+                style={{ marginTop: ms(20) }}
+              />
+            )}
+          </View>
+        </KeyboardAvoidingView>
       </Modal>
     </ScreenWrapper>
   );

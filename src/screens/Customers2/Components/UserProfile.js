@@ -39,7 +39,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { styles } from '@/screens/Customers2/Customers2.styles';
 import { moderateScale } from 'react-native-size-matters';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Table } from 'react-native-table-component';
+import { Col, Table } from 'react-native-table-component';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getCustomers } from '@/selectors/CustomersSelector';
@@ -387,7 +387,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                 }}
               >
                 {isOrderUserLoading ? (
-                  <ActivityIndicator size="small" />
+                  <ActivityIndicator size="small" color={COLORS.navy_blue} />
                 ) : (
                   <Text
                     style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}
@@ -470,7 +470,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
               <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}>
                 <View style={{ flexDirection: 'row' }}>
                   <Text style={[styles.tableTextHeader, { marginRight: ms(25) }]}>#</Text>
-                  <Text style={styles.tableTextHeader}>Order id#</Text>
+                  <Text style={styles.tableTextHeader}>Order id</Text>
                 </View>
               </View>
               <View style={styles.profileheaderChildView}>
@@ -513,7 +513,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
             >
               {isOrderUserLoading ? (
                 <View style={{ marginTop: 100 }}>
-                  <ActivityIndicator size="large" color={COLORS.indicator} />
+                  <ActivityIndicator size="large" color={COLORS.navy_blue} />
                 </View>
               ) : ordersByUser?.length === 0 ? (
                 <View style={{ marginTop: 80 }}>
@@ -539,7 +539,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                         </View>
                         <View style={styles.profileheaderChildView}>
                           <Text style={styles.tableTextData}>
-                            {item.created_at ? moment(item.created_at).format('ll') : ''}
+                            {item.created_at ? moment(item.created_at).format('DD/MM/YYYY') : ''}
                           </Text>
                         </View>
                         <View style={styles.profileheaderChildView}>
@@ -624,17 +624,26 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                               styles.saleTypeButtonCon,
                               {
                                 backgroundColor:
-                                  DELIVERY_MODE[item?.delivery_option] === 'Delivery' ||
-                                  DELIVERY_MODE[item?.delivery_option] === 'Shipping'
-                                    ? COLORS.marshmallow
-                                    : COLORS.navy_blue,
+                                  DELIVERY_MODE[item?.delivery_option] === 'Delivery'
+                                    ? COLORS.tip_back
+                                    : DELIVERY_MODE[item?.delivery_option] === 'Shipping'
+                                    ? COLORS.light_skyblue
+                                    : COLORS.input_border,
                               },
                             ]}
                           >
                             <Text
                               style={[
                                 styles.tableTextData,
-                                { color: COLORS.white, paddingLeft: 0 },
+                                {
+                                  color:
+                                    DELIVERY_MODE[item?.delivery_option] === 'Delivery'
+                                      ? COLORS.purple
+                                      : DELIVERY_MODE[item?.delivery_option] === 'Shipping'
+                                      ? COLORS.dark_skyblue
+                                      : COLORS.navy_blue,
+                                  paddingLeft: 0,
+                                },
                               ]}
                             >
                               {DELIVERY_MODE[item?.delivery_option]}
