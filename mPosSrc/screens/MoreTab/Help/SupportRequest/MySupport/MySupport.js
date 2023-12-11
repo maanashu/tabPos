@@ -127,8 +127,8 @@ export function MySupport() {
             contentContainerStyle={{
               justifyContent: tickets?.length > 0 ? 'flex-start' : 'center',
             }}
-            data={tickets || []}
-            extraData={tickets || []}
+            data={tickets?.reverse() || []}
+            extraData={tickets?.reverse() || []}
             renderItem={renderItem}
             // keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
