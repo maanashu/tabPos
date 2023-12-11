@@ -614,23 +614,19 @@ export class RetailController {
         order_amount: orderAmountstrfy,
         // discount_desc: data.descriptionDis,
       };
-      console.log('endpoint', endpoint);
-      console.log('body', body);
       HttpClient.put(endpoint, body)
         .then((response) => {
-          console.log('response1234', response);
-          if (response?.msg === 'Appointment detail updated!') {
+          if (response?.msg === 'PosCart updated!') {
             Toast.show({
               text2: 'Discount add succesfully',
               position: 'bottom',
               type: 'success_toast',
               visibilityTime: 1500,
             });
-            resolve(response);
           }
+          resolve(response);
         })
         .catch((error) => {
-          console.log('error1234', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -1146,18 +1142,12 @@ export class RetailController {
   static async createBulkCart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
-      console.log('endpoint', endpoint);
-      // const body = { ...data, product_type: 'product' };
-      // console.log('endpoint', endpoint);
-      console.log('endpoint', endpoint);
-      console.log('data', data);
+
       HttpClient.post(endpoint, data)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           // error?.msg &&
           //   Toast.show({
           //     position: 'bottom',
@@ -1588,11 +1578,9 @@ export class RetailController {
       HttpClient.post(endpoint, body)
 
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',

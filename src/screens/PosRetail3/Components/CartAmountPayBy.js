@@ -185,7 +185,6 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
-  console.log('selectedTipAmount', selectedTipAmount);
   // useEffect(() => {
   //   setSelectedTipIndex(tipsSelected);
   //   setSelectedTipAmount(
@@ -526,6 +525,41 @@ export const CartAmountPayBy = ({
     }
   };
 
+  const attachUserByEmail = async (customerEmail) => {
+    if (customerEmail === '') {
+      alert('Please Enter Email');
+    } else if (customerEmail && emailReg.test(customerEmail) === false) {
+      alert('Please Enter valid Email');
+    } else {
+      const data = {
+        cartId: cartid,
+        phoneEmail: customerEmail,
+      };
+      const res = await dispatch(attachCustomer(data));
+      if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+        onPressPaymentMethod({
+          method: 'PayBy' + selectedPaymentMethod,
+          index: selectedPaymentIndex,
+        });
+        setEmailModal(false);
+      }
+    }
+    // else {
+    //   const data = {
+    //     cartId: servicCartId,
+    //     phoneEmail: customerEmail,
+    //   };
+    //   const res = await dispatch(attachServiceCustomer(data));
+    //   if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
+    //     onPressPaymentMethod({
+    //       method: 'PayBy' + selectedPaymentMethod,
+    //       index: selectedPaymentIndex,
+    //     });
+    //     setEmailModal(false);
+    //   }
+    // }
+  };
+
   // const attachUserByPhone = async (customerNo) => {
   //   if (customerNo === '') {
   //     alert('Please Enter Phone Number');
@@ -560,39 +594,39 @@ export const CartAmountPayBy = ({
   //   }
   // };
 
-  const attachUserByEmail = async (customerEmail) => {
-    if (customerEmail === '') {
-      alert('Please Enter Email');
-    } else if (customerEmail && emailReg.test(customerEmail) === false) {
-      alert('Please Enter valid Email');
-    } else if (cartType == 'Product') {
-      const data = {
-        cartId: cartid,
-        phoneEmail: customerEmail,
-      };
-      const res = await dispatch(attachCustomer(data));
-      if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
-        onPressPaymentMethod({
-          method: 'PayBy' + selectedPaymentMethod,
-          index: selectedPaymentIndex,
-        });
-        setEmailModal(false);
-      }
-    } else {
-      const data = {
-        cartId: servicCartId,
-        phoneEmail: customerEmail,
-      };
-      const res = await dispatch(attachServiceCustomer(data));
-      if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
-        onPressPaymentMethod({
-          method: 'PayBy' + selectedPaymentMethod,
-          index: selectedPaymentIndex,
-        });
-        setEmailModal(false);
-      }
-    }
-  };
+  // const attachUserByEmail = async (customerEmail) => {
+  //   if (customerEmail === '') {
+  //     alert('Please Enter Email');
+  //   } else if (customerEmail && emailReg.test(customerEmail) === false) {
+  //     alert('Please Enter valid Email');
+  //   } else if (cartType == 'Product') {
+  //     const data = {
+  //       cartId: cartid,
+  //       phoneEmail: customerEmail,
+  //     };
+  //     const res = await dispatch(attachCustomer(data));
+  //     if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+  //       onPressPaymentMethod({
+  //         method: 'PayBy' + selectedPaymentMethod,
+  //         index: selectedPaymentIndex,
+  //       });
+  //       setEmailModal(false);
+  //     }
+  //   } else {
+  //     const data = {
+  //       cartId: servicCartId,
+  //       phoneEmail: customerEmail,
+  //     };
+  //     const res = await dispatch(attachServiceCustomer(data));
+  //     if (res?.type === 'ATTACH_SERVICE_CUSTOMER_SUCCESS') {
+  //       onPressPaymentMethod({
+  //         method: 'PayBy' + selectedPaymentMethod,
+  //         index: selectedPaymentIndex,
+  //       });
+  //       setEmailModal(false);
+  //     }
+  //   }
+  // };
 
   const closeHandler = () => {
     setSelectedRecipeIndex(null);
@@ -644,8 +678,8 @@ export const CartAmountPayBy = ({
         setQrPopUp(false);
       }
     };
-
-    dispatch(createServiceOrder(data, callback));
+    dispatch(createOrder(data, callback));
+    // dispatch(createServiceOrder(data, callback));
     dispatch(requestCheckSuccess(''));
     setsendRequest(false);
   };

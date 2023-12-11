@@ -15,7 +15,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { CustomHeader } from './CustomHeader';
 import { Spacer } from '@/components';
-import { SH } from '@/theme';
+import { COLORS, SH } from '@/theme';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -222,7 +222,7 @@ export const FinalPaymentScreen = ({
               <Image source={logo_full} style={styles.logoFull} />
               <Image
                 source={{ uri: cartData?.barcode } ?? barcode}
-                style={[styles._barCodeImage, { alignSelf: 'center' }]}
+                style={[styles._barCodeImage, { alignSelf: 'center', tintColor: COLORS.navy_blue }]}
               />
             </View>
           </View>

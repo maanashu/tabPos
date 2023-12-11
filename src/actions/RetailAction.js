@@ -331,7 +331,7 @@ const addServiceDiscountToCartRequest = () => ({
 
 const addServiceDiscountToCartSuccess = () => ({
   type: TYPES.ADD_SERVICE_DISCOUNT_SUCCESS,
-  payload: {},
+  payload: null,
 });
 
 const addServiceDiscountToCartError = (error) => ({

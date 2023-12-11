@@ -62,7 +62,6 @@ export function CartServiceScreen({
   // const cartServiceData = getRetailData?.getserviceCart;
 
   const cartServiceData = getRetailData?.getAllCart;
-  console.log('cartServiceData', JSON.stringify(cartServiceData));
   // const cartServiceId = getRetailData?.getserviceCart?.id;
   const cartServiceId = getRetailData?.getAllCart?.id;
   // let arr = [getRetailData?.getserviceCart];

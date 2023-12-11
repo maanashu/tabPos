@@ -408,20 +408,32 @@ export function MainScreen({
     }
   }, [cartLength]);
   const checkAttributes = async (item, index, cartQty) => {
-    if (item?.supplies?.[0]?.attributes?.length !== 0) {
-      bulkCart();
-      const res = await dispatch(getOneProduct(sellerID, item?.id));
-      if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-        setSelectedItemQty(item?.cart_qty);
-        setSelectedItem(item);
-        // setAddCartModal(true);
-        setProductIndex(index);
-        setProductItem(item);
-        addProductscreenShow();
-        dispatch(addProductFrom('main'));
-      }
+    if (onlyServiceCartArray?.length > 0) {
+      CustomAlert({
+        title: 'Alert',
+        description: 'Please clear service cart',
+        yesButtonTitle: 'Clear cart',
+        noButtonTitle: 'Cancel',
+        onYesPress: () => {
+          dispatch(clearAllCart());
+        },
+      });
     } else {
-      onClickAddCart(item, index, cartQty);
+      if (item?.supplies?.[0]?.attributes?.length !== 0) {
+        bulkCart();
+        const res = await dispatch(getOneProduct(sellerID, item?.id));
+        if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+          setSelectedItemQty(item?.cart_qty);
+          setSelectedItem(item);
+          // setAddCartModal(true);
+          setProductIndex(index);
+          setProductItem(item);
+          addProductscreenShow();
+          dispatch(addProductFrom('main'));
+        }
+      } else {
+        onClickAddCart(item, index, cartQty);
+      }
     }
   };
   const onClickAddCart = (item, index, cartQty, supplyVarientId) => {
@@ -643,8 +655,8 @@ export function MainScreen({
               ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
             </Text>
             <TouchableOpacity
-              onPress={() => productFun(item.id, index, item)}
-              // onPress={() => checkAttributes(item, index, cartAddQty)}
+              // onPress={() => productFun(item.id, index, item)}
+              onPress={() => checkAttributes(item, index, cartAddQty)}
               style={styles.offerImagebackground}
             >
               <FastImage
