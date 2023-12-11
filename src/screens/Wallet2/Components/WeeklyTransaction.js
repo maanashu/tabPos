@@ -57,6 +57,7 @@ import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import { useIsFocused } from '@react-navigation/native';
 
 export function WeeklyTransaction({
   backHandler,
@@ -66,10 +67,11 @@ export function WeeklyTransaction({
   // setSelectTime,
   // selectId,
   // setSelectId,
-  selectDate,
-  setSelectDate,
+  // selectDate,
+  // setSelectDate,
 }) {
   const mapRef = useRef(null);
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getWalletData = useSelector(getWallet);
@@ -118,7 +120,7 @@ export function WeeklyTransaction({
   const endDate = selectedEndDate ? selectedEndDate.toString() : '';
   const startDated = moment(startDate).format('YYYY-MM-DD');
   const endDated = moment(endDate).format('YYYY-MM-DD');
-  // const [selectDate, setSelectDate] = useState('');
+  const [selectDate, setSelectDate] = useState('');
 
   const currentStartDate = moment().startOf('month').format('MMM D');
   const currentEndDate = moment().endOf('month').format('MMM D, YYYY');
@@ -145,6 +147,12 @@ export function WeeklyTransaction({
   const orderPayloadLength = Object.keys(getWalletData?.getTotakTraDetail)?.length;
 
   const startIndex = (page - 1) * paginationModalValue + 1;
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getTotalTra(time, sellerID, formateDate));
+    }
+  }, [isFocused, selectDate, time]);
 
   const transactionArray = [
     {
@@ -386,20 +394,24 @@ export function WeeklyTransaction({
             <Image source={arrowLeftUp} style={styles.backButtonArrow} />
           </TouchableOpacity>
           <Text style={styles.deliveryText}>{strings.wallet.totalTransections}</Text>
-          <Text
-            style={[
-              styles.deliveryText,
-              {
-                color: COLORS.aqua,
-                fontSize: ms(18),
-                alignSelf: 'flex-start',
-                fontFamily: Fonts.Medium,
-              },
-            ]}
-          >
-            {'$'}
-            {getTotalTraData?.data?.total.toFixed(2) ?? '0'}
-          </Text>
+          {isTotalTraLoad ? (
+            <ActivityIndicator size="small" color={COLORS.navy_blue} />
+          ) : (
+            <Text
+              style={[
+                styles.deliveryText,
+                {
+                  color: COLORS.aqua,
+                  fontSize: ms(18),
+                  alignSelf: 'flex-start',
+                  fontFamily: Fonts.Medium,
+                },
+              ]}
+            >
+              {'$'}
+              {getTotalTraData?.data?.total.toFixed(2) ?? '0'}
+            </Text>
+          )}
         </View>
         <View style={styles.deliveryView}>
           <DaySelector
@@ -703,7 +715,9 @@ export function WeeklyTransaction({
                 <Text style={styles.tableTextHea}>Amount</Text>
                 {/* <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text> */}
 
-                <Text style={[styles.tableTextHea, { paddingHorizontal: 25 }]}>Status</Text>
+                <Text style={[styles.tableTextHea, { paddingLeft: ms(12), paddingRight: ms(24) }]}>
+                  Status
+                </Text>
               </View>
             </View>
           </View>
