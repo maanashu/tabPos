@@ -141,14 +141,12 @@ export function MainScreen({
   const products = getRetailData?.products;
   const cartData = getRetailData?.getAllCart;
 
-  console.log(JSON.stringify(cartData));
   const onlyProductCartArray = cartData?.poscart_products?.filter(
     (item) => item?.product_type === 'product'
   );
   const onlyServiceCartArray = cartData?.poscart_products?.filter(
     (item) => item?.product_type === 'service'
   );
-  console.log('---------', onlyProductCartArray, onlyServiceCartArray);
   const productCartArray = getRetailData?.getAllProductCart;
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
@@ -165,7 +163,7 @@ export function MainScreen({
   const [showProductsFrom, setshowProductsFrom] = useState();
   const mainProductArray = getRetailData?.getMainProduct?.data;
   const mainServicesArray = getRetailData?.getMainServices?.data;
-  const servicecCart = getRetailData?.getserviceCart?.appointment_cart_products ?? [];
+  const servicecCart = getRetailData?.getAllCart?.poscart_products ?? [];
 
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
@@ -353,6 +351,7 @@ export function MainScreen({
     if (isFocus) {
       if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
         const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
+          product_type: 'product',
           product_id: obj.product_id,
           qty: obj.qty,
           supply_id: obj.supply_id,
@@ -432,6 +431,7 @@ export function MainScreen({
 
     const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
     const DATA = {
+      product_type: 'product',
       product_id: item?.id,
       qty: 1,
       supply_id: item?.supplies?.[0]?.id,
@@ -474,6 +474,7 @@ export function MainScreen({
     const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
 
     const DATA = {
+      product_type: 'product',
       product_id: item?.id,
       qty: cartQty,
       supply_id: item?.supplies?.[0]?.id,
@@ -642,6 +643,7 @@ export function MainScreen({
               ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
             </Text>
             <TouchableOpacity
+              onPress={() => productFun(item.id, index, item)}
               // onPress={() => checkAttributes(item, index, cartAddQty)}
               style={styles.offerImagebackground}
             >
@@ -1172,9 +1174,19 @@ export function MainScreen({
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
-                    disabled={cartLength > 0 ? false : true}
+                    // disabled={cartLength > 0 ? false : true}
                     onPress={() => {
-                      bulkCart(), setCartModal(true);
+                      onlyServiceCartArray?.length > 0
+                        ? CustomAlert({
+                            title: 'Alert',
+                            description: 'Please clear service cart',
+                            yesButtonTitle: 'Clear cart',
+                            noButtonTitle: 'Cancel',
+                            onYesPress: () => {
+                              dispatch(clearAllCart());
+                            },
+                          })
+                        : (bulkCart(), setCartModal(true));
                     }}
                   >
                     <Image
@@ -1206,9 +1218,19 @@ export function MainScreen({
                   <Spacer space={SH(25)} />
                   <TouchableOpacity
                     onPress={() => {
-                      bulkCart();
-                      setNumPadModal((prev) => !prev);
-                      setCustomProductOpen('product');
+                      onlyServiceCartArray?.length > 0
+                        ? CustomAlert({
+                            title: 'Alert',
+                            description: 'Please clear service cart',
+                            yesButtonTitle: 'Clear cart',
+                            noButtonTitle: 'Cancel',
+                            onYesPress: () => {
+                              dispatch(clearAllCart());
+                            },
+                          })
+                        : (bulkCart(),
+                          setNumPadModal((prev) => !prev),
+                          setCustomProductOpen('product'));
                     }}
                   >
                     <Image source={Images.addProduct} style={styles.sideBarImage} />
@@ -1231,7 +1253,20 @@ export function MainScreen({
                   </TouchableOpacity>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
-                    onPress={cartStatusHandler}
+                    onPress={() => {
+                      onlyServiceCartArray?.length > 0
+                        ? CustomAlert({
+                            title: 'Alert',
+                            description: 'Please clear service cart',
+                            yesButtonTitle: 'Clear cart',
+                            noButtonTitle: 'Cancel',
+                            onYesPress: () => {
+                              dispatch(clearAllCart());
+                            },
+                          })
+                        : cartStatusHandler();
+                    }}
+
                     // disabled={holdProductArray?.length > 0 ? false : true}
                   >
                     <Image
@@ -1263,12 +1298,21 @@ export function MainScreen({
                 </View>
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
-                  disabled={cartLength > 0 ? false : true}
                   onPress={() => {
-                    bulkCart();
-                    setTimeout(() => {
-                      cartScreenHandler();
-                    }, 200);
+                    onlyServiceCartArray?.length > 0
+                      ? CustomAlert({
+                          title: 'Alert',
+                          description: 'Please clear service cart',
+                          yesButtonTitle: 'Clear cart',
+                          noButtonTitle: 'Cancel',
+                          onYesPress: () => {
+                            dispatch(clearAllCart());
+                          },
+                        })
+                      : (bulkCart(),
+                        setTimeout(() => {
+                          cartScreenHandler();
+                        }, 200));
                   }}
                   style={styles.bucketBackgorund}
                 >
@@ -1280,9 +1324,20 @@ export function MainScreen({
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
-                    disabled={cartLength > 0 ? false : true}
+                    // disabled={cartLength > 0 ? true : false}
                     onPress={() => {
-                      bulkCart(), setCartModal(true);
+                      onlyProductCartArray?.length > 0
+                        ? CustomAlert({
+                            title: 'Alert',
+                            description: 'Please clear product cart',
+                            yesButtonTitle: 'Clear cart',
+                            noButtonTitle: 'Cancel',
+                            onYesPress: () => {
+                              dispatch(clearAllCart());
+                            },
+                          })
+                        : // bulkCart(),
+                          setCartModal(true);
                     }}
                   >
                     <Image
@@ -1314,9 +1369,18 @@ export function MainScreen({
                   <Spacer space={SH(25)} />
                   <TouchableOpacity
                     onPress={() => {
-                      bulkCart();
-                      setNumPadModal((prev) => !prev);
-                      setCustomProductOpen('service');
+                      onlyProductCartArray?.length > 0
+                        ? CustomAlert({
+                            title: 'Alert',
+                            description: 'Please clear product cart',
+                            yesButtonTitle: 'Clear cart',
+                            noButtonTitle: 'Cancel',
+                            onYesPress: () => {
+                              dispatch(clearAllCart());
+                            },
+                          })
+                        : // bulkCart(),
+                          (setNumPadModal((prev) => !prev), setCustomProductOpen('service'));
                     }}
                   >
                     <Image source={Images.addProduct} style={styles.sideBarImage} />
@@ -1324,8 +1388,8 @@ export function MainScreen({
 
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
-                    onPress={() => eraseClearCart()}
-                    disabled={cartLength > 0 ? false : true}
+                    // onPress={() => eraseClearCart()}
+                    onPress={() => dispatch(clearAllCart())}
                   >
                     <Image
                       source={Images.clearCart}
@@ -1371,14 +1435,27 @@ export function MainScreen({
                 </View>
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
-                  disabled={cartLength > 0 ? false : true}
+                  // disabled={cartLength > 0 ? false : true}
                   // onPress={() => {
                   //   bulkCart();
                   //   setTimeout(() => {
                   //     cartScreenHandler();
                   //   }, 200);
                   // }}
-                  onPress={cartServiceScreenHandler}
+                  onPress={() => {
+                    onlyProductCartArray?.length > 0
+                      ? CustomAlert({
+                          title: 'Alert',
+                          description: 'Please clear product cart',
+                          yesButtonTitle: 'Clear cart',
+                          noButtonTitle: 'Cancel',
+                          onYesPress: () => {
+                            dispatch(clearAllCart());
+                          },
+                        })
+                      : cartServiceScreenHandler();
+                  }}
+                  // onPress={}
                   style={styles.bucketBackgorund}
                 >
                   <Image source={Images.arrowLeftUp} style={styles.mainScreenArrow()} />

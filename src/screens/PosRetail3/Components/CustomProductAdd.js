@@ -186,7 +186,9 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
           date: selectedDate,
           startTime: selectedTimeSlotData?.start_time,
           endTime: selectedTimeSlotData?.end_time,
+          // product_type: 'service',
         };
+        // dispatch(customProductAdd(data));
         dispatch(customServiceAdd(data));
         crossHandler();
       }

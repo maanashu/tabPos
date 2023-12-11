@@ -58,6 +58,7 @@ import {
   Servicesqrcodestatus,
   getAllCart,
   getServiceCart,
+  getAllCartSuccess,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -71,6 +72,7 @@ import { getSetting } from '@/selectors/SettingSelector';
 import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
 import { CustomHeader } from './CustomHeader';
 import { Images } from '@/assets/new_icon';
+import { log } from 'react-native-reanimated';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -97,7 +99,6 @@ export const CartAmountPayBy = ({
   const getUserData = useSelector(getUser);
   const updateData = useSelector(getRetail).updateQuantityy;
   const getSettingData = useSelector(getSetting);
-  console.log('tipsSelected12344455', tipsSelected);
   // jbrcoin: getSettingData?.getSetting?.accept_jbr_coin_payment,
   // cash: getSettingData?.getSetting?.accept_cash_payment,
   // card: getSettingData?.getSetting?.accept_card_payment,
@@ -156,7 +157,6 @@ export const CartAmountPayBy = ({
   const servicCartId = getRetailData?.getserviceCart?.id;
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
-  console.log('selectedTipAmount', selectedTipAmount);
   const [selectedPaymentIndex, setSelectedPaymentIndex] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
@@ -185,15 +185,38 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
-  useEffect(() => {
-    setSelectedTipIndex(tipsSelected);
-    setSelectedTipAmount(
-      calculatePercentageValue(
-        cartData?.amount?.products_price,
-        tipsSelected === 0 ? 18 : tipsSelected === 1 ? 20 : tipsSelected === 2 ? 22 : '0.00'
-      )
-    );
-  }, []);
+  console.log('selectedTipAmount', selectedTipAmount);
+  // useEffect(() => {
+  //   setSelectedTipIndex(tipsSelected);
+  //   setSelectedTipAmount(
+  //     calculatePercentageValue(
+  //       cartData?.amount?.products_price,
+  //       tipsSelected === 0 ? 18 : tipsSelected === 1 ? 20 : tipsSelected === 2 ? 22 : '0.00'
+  //     )
+  //   );
+  // }, []);
+
+  // useEffect(() => {
+  //   var arr = getRetailData?.getAllCart;
+  //   arr.amount.tip = parseFloat(selectedTipAmount);
+
+  //   var DATA = {
+  //     payload: arr,
+  //   };
+  //   console.log('arr', arr);
+
+  //   dispatch(getAllCartSuccess(DATA));
+  // }, [cartData]);
+  const locallyTips = (tips) => {
+    var arr = getRetailData?.getAllCart;
+    arr.amount.tip = parseFloat(tips);
+    var DATA = {
+      payload: arr,
+    };
+    console.log('arr', arr);
+
+    dispatch(getAllCartSuccess(DATA));
+  };
 
   const invoiceData = [
     {
@@ -265,10 +288,9 @@ export const CartAmountPayBy = ({
   };
 
   const paymentShow = () => {
-    console.log('--------', formattedReturnPriceWithoutSign(cartData?.amount?.discount || '0.00'));
     const produdctPrice = cartData?.amount?.products_price || '0.00';
     const discount = formattedReturnPriceWithoutSign(cartData?.amount?.discount || '0.00');
-    const tips = selectedTipAmount || '0.00';
+    const tips = cartData?.amount?.tip || '0.00';
     const tax = cartData?.amount?.tax || '0.00';
 
     const payment =
@@ -660,15 +682,18 @@ export const CartAmountPayBy = ({
                 {TIPS_DATA.map((item, index) => (
                   <TouchableOpacity
                     onPress={() => {
+                      locallyTips();
                       const tipAmount = calculatePercentageValue(
                         cartData?.amount?.products_price,
                         item.title
                       );
+
                       {
                         item.percent === 'No, thanks'
                           ? setSelectedTipAmount('0.00')
                           : setSelectedTipAmount(tipAmount);
                       }
+                      locallyTips(tipAmount);
 
                       setSelectedTipIndex(index);
                     }}
@@ -926,7 +951,8 @@ export const CartAmountPayBy = ({
                 <Text style={styles._payTitle}>
                   {/* {formattedReturnPrice(cartData?.amount?.discount)} */}$
                   {/* {selectedTipAmount > 0 ? selectedTipAmount : cartData?.amount?.tip ? selectedTipAmount == '0.00' ?  || '0.00'} */}
-                  {selectedTipAmount || '0.00'}
+                  {/* {selectedTipAmount || '0.00'} */}
+                  {cartData?.amount?.tip?.toFixed(2) || '0.00'}
                 </Text>
               </View>
               <Spacer space={SH(10)} />
@@ -946,6 +972,7 @@ export const CartAmountPayBy = ({
                       ? totalPayAmount() ?? '0.00'
                       : paymentShow() || '0.00'} */}
                     {paymentShow() || '0.00'}
+                    {/* {cartData?.amount?.total_amount?.toFixed(2) || '0.00'} */}
                   </Text>
                 </View>
               </View>

@@ -55,7 +55,6 @@ export function Shipping() {
   const shippingTypeOrders = getShippingData?.todayCurrentStatus;
 
   const ordersList = getShippingData?.getReviewDef;
-  // console.log('SIPPING dataa', JSON.stringify(getShippingData));
 
   const [userDetail, setUserDetail] = useState(ordersList?.[0] ?? []);
   const [orderDetail, setOrderDetail] = useState(ordersList?.[0]?.order_details ?? []);

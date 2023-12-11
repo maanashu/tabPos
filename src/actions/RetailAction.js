@@ -1712,6 +1712,7 @@ export const customProductAdd = (data) => async (dispatch) => {
     dispatch(customProductAddSuccess(res));
     dispatch(getAllCart());
     dispatch(getMainProduct());
+    // dispatch(getMainServices());
   } catch (error) {
     dispatch(customProductAddError(error.message));
   }

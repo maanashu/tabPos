@@ -33,7 +33,6 @@ export const FinalPaymentScreen = ({
   const getUserData = useSelector(getUser);
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const reatilData = useSelector(getRetail);
-  console.log('cartData', JSON.stringify(cartData));
   const orderInvoice =
     cartType == 'Product' ? reatilData?.createOrder : reatilData?.createServiceOrder;
   const invoiceData = [

@@ -475,15 +475,11 @@ export class RetailController {
         qty: 1,
         ...(data?.offerId && { offer_id: data?.offerId }),
       };
-      console.log('body', body);
-      console.log('endpoint', endpoint);
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -604,7 +600,8 @@ export class RetailController {
 
   static async addServiceDiscountToCart(data) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart + `/${data.cartId}`;
+      // const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart + `/${data.cartId}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.addNotes + `/${data.cartId}`;
       const orderAmountstrfy = JSON.stringify(data.orderAmount);
       const discountInput = data.amountDis
         ? data.amountDis
@@ -617,8 +614,11 @@ export class RetailController {
         order_amount: orderAmountstrfy,
         // discount_desc: data.descriptionDis,
       };
+      console.log('endpoint', endpoint);
+      console.log('body', body);
       HttpClient.put(endpoint, body)
         .then((response) => {
+          console.log('response1234', response);
           if (response?.msg === 'Appointment detail updated!') {
             Toast.show({
               text2: 'Discount add succesfully',
@@ -630,6 +630,7 @@ export class RetailController {
           }
         })
         .catch((error) => {
+          console.log('error1234', error);
           Toast.show({
             text2: error.msg,
             position: 'bottom',
@@ -1145,11 +1146,18 @@ export class RetailController {
   static async createBulkCart(data) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.bulkCreate;
+      console.log('endpoint', endpoint);
+      // const body = { ...data, product_type: 'product' };
+      // console.log('endpoint', endpoint);
+      console.log('endpoint', endpoint);
+      console.log('data', data);
       HttpClient.post(endpoint, data)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           // error?.msg &&
           //   Toast.show({
           //     position: 'bottom',
@@ -1243,7 +1251,6 @@ export class RetailController {
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           Toast.show({
             position: 'bottom',
             type: 'success_toast',
@@ -1254,7 +1261,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           alert(error?.msg);
           Toast.show({
             position: 'bottom',
@@ -1542,6 +1548,8 @@ export class RetailController {
         qty: data?.qty,
         upc: data?.upc,
         ...(data?.notes && { description: data?.notes }),
+
+        // product_type: 'product',
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
@@ -1562,7 +1570,8 @@ export class RetailController {
   static async customServiceAdd(data) {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
-      const endpoint = ORDER_URL + ApiOrderInventory.customServiceAdd;
+      // const endpoint = ORDER_URL + ApiOrderInventory.customServiceAdd;
+      const endpoint = ORDER_URL + ApiOrderInventory.customProductAdd;
       const body = {
         seller_id: sellerID,
         price: data?.price,
@@ -1573,12 +1582,17 @@ export class RetailController {
         date: data?.date,
         start_time: data?.startTime,
         end_time: data?.endTime,
+
+        // product_type: 'service',
       };
       HttpClient.post(endpoint, body)
+
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
