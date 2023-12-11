@@ -252,7 +252,7 @@ export function Staff() {
             setData(item);
           }}
         >
-          <View style={styles.flexRow}>
+          <View style={[styles.flexRow]}>
             <View style={styles.dispalyRow}>
               <Image
                 source={
@@ -285,7 +285,13 @@ export function Staff() {
               source={Images.arrowUpRightIcon}
               style={[
                 styles.arrowStyle,
-                { alignSelf: 'flex-start', width: SW(8), height: SW(8), tintColor: undefined },
+                {
+                  alignSelf: 'flex-start',
+                  width: SW(8),
+                  height: SW(8),
+                  tintColor: undefined,
+                  marginRight: ms(10),
+                },
               ]}
             />
           </View>
