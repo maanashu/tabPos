@@ -49,7 +49,7 @@ export function PosRetail3() {
   const getAuth = useSelector(getAuthData);
   const getCartAmount = getRetailData?.getAllCart?.amount;
   const cartID2 = getRetailData?.getAllCart?.id;
-  const servicCartId = getRetailData?.getserviceCart?.id;
+  const servicCartId = getRetailData?.getAllCart?.id;
   const cartData = getRetailData?.getAllCart;
   const getCart = getRetailData?.getAllCart;
   const getServicecart = getRetailData?.getserviceCart;
@@ -81,6 +81,7 @@ export function PosRetail3() {
 
   const [cashPayDetail, setCashPayDetail] = useState();
   const [activeScreen, setActiveScreen] = useState();
+  const [selectTips, setSelectTips] = useState();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -464,6 +465,10 @@ export function PosRetail3() {
             setselectedScreen('PayByCard');
           }
         }}
+        selectValueTake={(paymentSelect, tipSelect) => {
+          // console.log('------', paymentSelect, tipSelect);
+          setSelectTips(tipSelect);
+        }}
         payNowByphone={(tip) => {
           selectTipAmount(tip);
         }}
@@ -481,6 +486,7 @@ export function PosRetail3() {
           setselectedScreen('FinalPaymentScreen');
           setCashPayDetail(data);
         }}
+        tipsSelected={selectTips}
       />
     ),
     ['PayByCard']: (
@@ -516,6 +522,7 @@ export function PosRetail3() {
         }}
         cartDatas={savedTempCartData}
         cartType={fromWhichCart}
+        // tipsSelected={selectTips}
       />
     ),
     // ['PayByJBRCoins']: (

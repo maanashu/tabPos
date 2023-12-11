@@ -422,8 +422,9 @@ export class RetailController {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.addTocart;
       const body = {
+        product_type: 'product',
         seller_id: data.seller_id,
-        service_id: data.service_id,
+        // service_id: data.service_id,
         product_id: data.product_id,
         qty: data.qty,
         supply_id: data.supplyId.toString(),
@@ -458,24 +459,31 @@ export class RetailController {
   static async addToServiceCart(data) {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
-      const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart;
+      // const endpoint = ORDER_URL + ApiOrderInventory.appintment_cart;
+      const endpoint = ORDER_URL + ApiOrderInventory.addTocart;
       const body = {
+        product_type: 'service',
         seller_id: sellerID,
         supply_id: data.supplyId.toString(),
         supply_price_id: data.supplyPriceID.toString(),
         product_id: data.product_id.toString(),
-        app_name: data?.appName,
+        // app_name: data?.appName,
         date: data?.date,
         start_time: data?.startTime,
         end_time: data?.endTime,
         pos_user_id: data?.posUserId,
+        qty: 1,
         ...(data?.offerId && { offer_id: data?.offerId }),
       };
+      console.log('body', body);
+      console.log('endpoint', endpoint);
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -1142,14 +1150,14 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          error?.msg &&
-            Toast.show({
-              position: 'bottom',
-              type: 'error_toast',
-              text2: error.msg,
-              text2: error?.msg,
-              visibilityTime: 2000,
-            });
+          // error?.msg &&
+          //   Toast.show({
+          //     position: 'bottom',
+          //     type: 'error_toast',
+          //     text2: error.msg,
+          //     text2: error?.msg,
+          //     visibilityTime: 2000,
+          //   });
           reject(error);
         });
     });
@@ -1207,7 +1215,8 @@ export class RetailController {
 
   static async attachServiceCustomer(data) {
     return new Promise(async (resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.attachServiceCustomer + `${data.cartId}`;
+      // const endpoint = ORDER_URL + ApiOrderInventory.attachServiceCustomer + `${data.cartId}`;
+      const endpoint = ORDER_URL + ApiOrderInventory.attachCustomer + `${data.cartId}`;
       const body = data?.invitationId
         ? {
             invitation_id: data?.invitationId,
@@ -1234,6 +1243,7 @@ export class RetailController {
           };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          console.log('response', response);
           Toast.show({
             position: 'bottom',
             type: 'success_toast',
@@ -1244,6 +1254,7 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           alert(error?.msg);
           Toast.show({
             position: 'bottom',

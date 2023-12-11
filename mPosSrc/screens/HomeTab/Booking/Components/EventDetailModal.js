@@ -38,7 +38,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const userId = selectedPosStaffCompleteData?.user_id;
   const customerDetails = userId != null ? userDetails : invitedUserDetails;
   const userAddress = userDetails?.current_address;
-  const appointmentDetail = selectedPosStaffCompleteData?.appointment_details[0];
+  const appointmentDetail = selectedPosStaffCompleteData;
   const posUserDetails = selectedPosStaffCompleteData?.pos_user_details?.user?.user_profiles;
   const posUserRole =
     selectedPosStaffCompleteData?.pos_user_details?.user?.user_roles[0]?.role?.name || ' ';

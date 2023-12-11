@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   sideBarImage: {
-    width: SW(14),
-    height: SW(14),
+    width: ms(23),
+    height: ms(23),
     resizeMode: 'contain',
   },
   shippingDrawerTitleText: {
@@ -690,13 +690,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
     // justifyContent: 'space-around',
   },
   containerFull: {
     flex: 1,
 
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
     // justifyContent: 'space-around',
   },
   leftMainViewStyle: {

@@ -52,25 +52,32 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
           </Text>
         </View>
 
-        <View style={[styles.orderDetailStyle, { width: undefined }]}>
-          <Text style={styles.nameTextStyle}>{item?.user_details?.firstname ?? '-'}</Text>
+        <View style={[styles.orderDetailStyle, { width: ms(90) }]}>
+          <Text numberOfLines={1} style={styles.nameTextStyle}>
+            {item?.user_details?.firstname ?? '-'}
+          </Text>
           <View style={[styles.locationViewStyle, { backgroundColor: COLORS.tip_back }]}>
             <Image source={pinShippingNew} style={[styles.pinImageStyle]} />
-            <Text style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
+            <Text numberOfLines={2} style={[styles.distanceTextStyle, { color: COLORS.purple }]}>
               {item?.distance ? `${item.distance} miles` : '0'}
             </Text>
           </View>
         </View>
 
-        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2, width: undefined }]}>
-          <Text style={styles.nameTextStyle}>
+        <View style={[styles.orderDetailStyle, { paddingHorizontal: 2, width: ms(70) }]}>
+          <Text numberOfLines={1} style={styles.nameTextStyle}>
             {item?.order_details?.length > 1
               ? `${item?.order_details?.length} Items`
               : `${item?.order_details?.length} Item`}
           </Text>
-          <View style={[styles.locationViewStyle, { backgroundColor: COLORS.alarm_success_50 }]}>
+          <View
+            style={[
+              styles.locationViewStyle,
+              { backgroundColor: COLORS.alarm_success_50, width: 'auto' },
+            ]}
+          >
             <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
-            <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
+            <Text numberOfLines={2} style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
               {item?.payable_amount ?? '00'}
             </Text>
           </View>
@@ -83,9 +90,10 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
             }
             style={[styles.shippingTypeImage, { margin: 2 }]}
           />
-          <View style={[styles.orderDetailStyle, { width: undefined }]}>
-            <Text style={[styles.nameTextStyle]}>
+          <View style={[styles.orderDetailStyle, { width: ms(90) }]}>
+            <Text numberOfLines={2} style={[styles.nameTextStyle]}>
               {item?.shipping_details?.title}
+
               {/* {item?.invoice?.delivery_date ?? moment(item?.created_at).format('DD MMM YYYY')} */}
             </Text>
             {/* <View style={[styles.locationViewStyle, { backgroundColor: COLORS.light_yellow }]}>
@@ -132,7 +140,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
             : selectedStatus === '3'
             ? 'Printing Labels'
             : selectedStatus === '4'
-            ? strings.orderStatus.trackingOrders
+            ? strings.orderStatus.shipOrder
             : selectedStatus === '5'
             ? strings.orderStatus.deliveryOrder
             : selectedStatus === '7,8'

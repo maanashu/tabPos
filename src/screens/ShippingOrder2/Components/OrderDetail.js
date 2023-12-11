@@ -233,8 +233,9 @@ const OrderDetail = ({
               ]}
             />
 
-            <View style={[styles.userNameView, { marginHorizontal: 2 }]}>
+            <View style={[styles.userNameView, { marginHorizontal: 2, width: ms(90) }]}>
               <Text
+                numberOfLines={2}
                 style={{
                   fontFamily: Fonts.Medium,
                   fontSize: SF(10),

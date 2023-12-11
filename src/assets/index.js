@@ -395,7 +395,8 @@ export { default as arrowUpRound } from '@/assets/new_icon/ic_drawer/arrowRoundU
 export { default as moneySearch } from '@/assets/new_icon/ic_drawer/moneySearch.png';
 export { default as removeMoney } from '@/assets/new_icon/ic_drawer/removeMoney.png';
 export { default as info } from '@/assets/new_icon/ic_drawer/info.png';
-export { default as plusDrawer } from '@/assets/new_icon/ic_drawer/plus.png';
+export { default as PlusCircle } from '@/assets/new_icon/ic_drawer/plusCircle.png';
+
 export { default as lockDrawer } from '@/assets/new_icon/ic_drawer/lock.png';
 export { default as addMoney } from '@/assets/new_icon/ic_drawer/addMoney.png';
 export { default as logOutDrawer } from '@/assets/new_icon/ic_drawer/logOut.png';
@@ -515,6 +516,18 @@ export { default as trackDelivery } from '@/assets/new_icon/ic_shipping/trackDel
 export { default as deliverySending } from '@/assets/new_icon/ic_shipping/deliverySending.png';
 export { default as deliveryClose } from '@/assets/new_icon/ic_shipping/deliveryClose.png';
 export { default as deliveryBack } from '@/assets/new_icon/ic_shipping/deliveryBack.png';
+
+//Appointment/Booking Icons
+
+export { default as bookings } from '@/assets/new_icon/appointments/bookings.png';
+export { default as bookingsCalender } from '@/assets/new_icon/appointments/bookingCalender.png';
+export { default as bookingsNotification } from '@/assets/new_icon/appointments/bookingsNotification.png';
+export { default as bookingsSearch } from '@/assets/new_icon/appointments/bookingsSearch.png';
+export { default as listview } from '@/assets/new_icon/appointments/listview.png';
+export { default as timeDurationIcon } from '@/assets/new_icon/appointments/timeDuration.png';
+export { default as editAppointmentIcon } from '@/assets/new_icon/appointments/editAppointment.png';
+export { default as checkInIcon } from '@/assets/new_icon/appointments/checkInIcon.png';
+export { default as circleTick } from '@/assets/new_icon/appointments/circleTick.png';
 
 /* Fonts */
 export const Fonts = {
