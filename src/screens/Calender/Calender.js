@@ -115,6 +115,8 @@ export function Calender() {
 
   const [showMiniCalendar, setshowMiniCalendar] = useState(false);
 
+  const [listViewSelectedDay, setListViewSelectedDay] = useState(null);
+
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
   const getAppointmentList2 = getAppointmentList?.filter((item) => item.status !== 3);
@@ -366,9 +368,10 @@ export function Calender() {
         }}
         onPress={() => {
           setCalendarDate(moment(item.fullDateFortheDay));
+          setListViewSelectedDay(item);
         }}
       >
-        <Text style={{ color: isSelected ? '#F5F6FC' : '#8D99D2', fontSize: ms(8) }}>
+        <Text style={{ color: isSelected ? '#F5F6FC' : COLORS.light_blue2, fontSize: ms(8) }}>
           {item.day}
         </Text>
       </TouchableOpacity>
@@ -558,19 +561,6 @@ export function Calender() {
               onPressListViewMode={onPressListViewMode}
             />
 
-            {calendarViewMode === CALENDAR_VIEW_MODES.LIST_VIEW && (
-              <View style={{ backgroundColor: COLORS.white, paddingHorizontal: ms(10) }}>
-                <FlatList
-                  showsHorizontalScrollIndicator={false}
-                  horizontal
-                  data={monthDays}
-                  keyExtractor={(_, index) => index.toString()}
-                  renderItem={renderMonthItem}
-                />
-                <Spacer space={ms(8)} />
-              </View>
-            )}
-
             <View style={styles._calendarContainer}>
               {calendarViewMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW ? (
                 <Calendar
@@ -623,6 +613,29 @@ export function Calender() {
                     borderBottomRightRadius: ms(10),
                   }}
                 >
+                  {/* List View Header */}
+                  <View style={{ backgroundColor: COLORS.white, paddingHorizontal: ms(10) }}>
+                    <FlatList
+                      showsHorizontalScrollIndicator={false}
+                      horizontal
+                      data={monthDays}
+                      keyExtractor={(_, index) => index.toString()}
+                      renderItem={renderMonthItem}
+                    />
+                    <Spacer space={ms(8)} />
+                    <View style={styles._mListViewDateHeaderContainer}>
+                      <Text style={styles._mListViewDayName}>
+                        {listViewSelectedDay?.dayName ?? moment().format('dddd')}
+                      </Text>
+                      <Spacer space={ms(5)} horizontal />
+                      <Text style={styles._mListViewDate}>
+                        {moment(listViewSelectedDay?.fullDateFortheDay).format('Do') ??
+                          moment().format('Do')}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/* List View Appointments */}
                   <FlatList
                     data={getAppointmentsByDate}
                     refreshControl={

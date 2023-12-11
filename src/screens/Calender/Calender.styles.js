@@ -1023,4 +1023,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: ms(5),
   },
+  _mListViewDate: { fontFamily: Fonts.Medium, fontSize: ms(12), color: COLORS.light_blue2 },
+  _mListViewDayName: { fontFamily: Fonts.Medium, fontSize: ms(20), color: COLORS.navy_blue },
+  _mListViewDateHeaderContainer: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginVertical: ms(10),
+  },
 });
