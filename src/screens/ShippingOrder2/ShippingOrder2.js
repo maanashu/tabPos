@@ -219,7 +219,7 @@ export function ShippingOrder2() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.sky_grey, paddingRight: ms(5) }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.sky_grey, paddingRight: ms(6) }}>
       {!openWebView ? (
         <>
           <Spacer space={SH(15)} />
