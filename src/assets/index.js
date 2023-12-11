@@ -517,6 +517,8 @@ export { default as timeDurationIcon } from '@/assets/new_icon/appointments/time
 export { default as editAppointmentIcon } from '@/assets/new_icon/appointments/editAppointment.png';
 export { default as checkInIcon } from '@/assets/new_icon/appointments/checkInIcon.png';
 export { default as circleTick } from '@/assets/new_icon/appointments/circleTick.png';
+export { default as leftArrow } from '@/assets/new_icon/appointments/leftArrow.png';
+export { default as rightArrow } from '@/assets/new_icon/appointments/rightArrow.png';
 
 /* Fonts */
 export const Fonts = {

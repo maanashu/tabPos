@@ -27,39 +27,36 @@ const _HourGuideCell = ({
   const theme = useTheme();
 
   const getCalendarCellStyle = React.useMemo(
-    () =>
-      typeof calendarCellStyle === 'function'
-        ? calendarCellStyle
-        : () => calendarCellStyle,
+    () => (typeof calendarCellStyle === 'function' ? calendarCellStyle : () => calendarCellStyle),
     [calendarCellStyle]
   );
 
   return (
     <TouchableWithoutFeedback
+      style={{ marginTop: 10 }}
       onPress={() => onPress(date.hour(hour).minute(0))}
     >
       <View
         style={[
           // u['border-l'],
           // u['border-b'],
-          { borderColor: theme.palette.gray['200'] },
-          { height: cellHeight + 12 },
+          { height: cellHeight + 12, borderColor: '#E4E6F2', borderWidth: 1, borderRadius: 10 },
           { ...getCalendarCellStyle(date.toDate(), index) },
         ]}
       >
-        {[1, 2, 3, 4].map(item => (
+        {[1, 2, 3, 4].map((item) => (
           <View
             key={item}
             style={[
               u['border-l'],
               u['border-b'],
               u['border-r'],
-              { borderColor: COLORS.textInputBackground },
               {
                 height: cellHeight / 4,
                 marginHorizontal: 3,
                 marginTop: 3,
                 borderRadius: 2,
+                borderColor: theme.palette.gray['200'],
               },
               { ...getCalendarCellStyle(date.toDate(), index) },
             ]}

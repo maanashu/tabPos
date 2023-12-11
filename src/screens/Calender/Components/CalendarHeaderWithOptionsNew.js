@@ -1,18 +1,13 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import {
-  leftlight,
-  arrowDown,
-  newCalendar,
-  rightlight,
   bookings,
   bookingsCalender,
-  bell,
-  search_light,
-  Fonts,
   bookingsNotification,
   bookingsSearch,
   listview,
+  leftArrow,
+  rightArrow,
 } from '@/assets';
 import { strings } from '@/localization';
 import { styles } from '@/screens/Calender/Calender.styles';
@@ -52,10 +47,13 @@ const CalendarHeaderWithOptions = ({
               onPress={onPressCalendarIcon}
               style={[styles.row, styles.rowHorizonCenter, styles.buttonCalender]}
             >
-              <Image source={bookingsCalender} style={styles.leftLight} />
+              <TouchableOpacity style={styles.arrowButtonStl} onPress={prevMonth}>
+                <Image source={leftArrow} style={styles.leftLight} />
+              </TouchableOpacity>
               <Text style={styles.monthlySchduleDate}>{`${getFormattedHeaderDate()}`}</Text>
-              <Spacer space={ms(12)} horizontal />
-              <Image source={arrowDown} style={styles.arrowDown} />
+              <TouchableOpacity style={styles.arrowButtonStl} onPress={nextMonth}>
+                <Image source={rightArrow} style={styles.leftLight} />
+              </TouchableOpacity>
             </TouchableOpacity>
             <Spacer space={ms(5)} horizontal />
 

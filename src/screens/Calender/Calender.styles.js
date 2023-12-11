@@ -369,7 +369,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(20),
   },
   arrowButtonStl: {
-    backgroundColor: COLORS.textInputBackground,
+    // backgroundColor: COLORS.textInputBackground,
     borderRadius: ms(2),
     paddingHorizontal: ms(3),
     paddingVertical: ms(2),
