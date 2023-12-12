@@ -319,10 +319,10 @@ export function MainScreen({
     }
   }, [products]);
 
-  useEffect(() => {
-    dispatch(getMainProduct());
-    dispatch(getMainServices());
-  }, [isClear]);
+  // useEffect(() => {
+  //   dispatch(getMainProduct());
+  //   dispatch(getMainServices());
+  // }, [isClear]);
 
   const onChangeFun = (search) => {
     setSearch(search);
@@ -1186,7 +1186,7 @@ export function MainScreen({
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
-                    // disabled={cartLength > 0 ? false : true}
+                    disabled={onlyProductCartArray?.length >= 1 || cartLength >= 1 ? false : true}
                     onPress={() => {
                       onlyServiceCartArray?.length > 0
                         ? CustomAlert({
@@ -1310,6 +1310,7 @@ export function MainScreen({
                 </View>
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
+                  disabled={onlyProductCartArray?.length >= 1 || cartLength >= 1 ? false : true}
                   onPress={() => {
                     onlyServiceCartArray?.length > 0
                       ? CustomAlert({
@@ -1336,7 +1337,7 @@ export function MainScreen({
                 <View style={{ flexDirection: 'column', alignItems: 'center' }}>
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
-                    // disabled={cartLength > 0 ? true : false}
+                    disabled={onlyServiceCartArray?.length >= 1 ? false : true}
                     onPress={() => {
                       onlyProductCartArray?.length > 0
                         ? CustomAlert({
@@ -1447,7 +1448,7 @@ export function MainScreen({
                 </View>
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
-                  // disabled={cartLength > 0 ? false : true}
+                  disabled={onlyServiceCartArray?.length >= 1 ? false : true}
                   // onPress={() => {
                   //   bulkCart();
                   //   setTimeout(() => {

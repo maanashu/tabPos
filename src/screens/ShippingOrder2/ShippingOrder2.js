@@ -154,7 +154,6 @@ export function ShippingOrder2() {
       status: status,
       sellerID: sellerID,
     };
-    console.log('SAdasas', data);
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg) {
