@@ -45,6 +45,7 @@ import { getOrderstatistics } from '@mPOS/actions/ShippingActions';
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 import moment from 'moment';
+import { CustomHeader } from '../PosRetail3/Components';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -222,7 +223,8 @@ export function ShippingOrder2() {
       {!openWebView ? (
         <>
           <Spacer space={SH(15)} />
-          <NewHeader />
+          {/* <NewHeader /> */}
+          <CustomHeader iconShow={false} />
           {!viewAllOrders ? (
             <SafeAreaView style={[styles.container, { justifyContent: 'space-evenly' }]}>
               <View style={styles.leftMainViewStyle}>

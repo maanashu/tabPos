@@ -72,6 +72,7 @@ import {
 import styles from './styles';
 import Header from './Components/Header';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
+import { CustomHeader } from '../PosRetail3/Components';
 
 export function DeliveryOrders2({ route }) {
   var screen;
@@ -623,7 +624,8 @@ export function DeliveryOrders2({ route }) {
       {!trackingView ? (
         <>
           <Spacer space={SH(15)} backgroundColor={COLORS.sky_grey} />
-          <NewHeader invoiceNo={userDetail?.invoices?.invoice_number ?? 0} />
+          {/* <NewHeader invoiceNo={userDetail?.invoices?.invoice_number ?? 0} /> */}
+          <CustomHeader iconShow={false} />
           <Spacer space={SH(5)} backgroundColor={COLORS.sky_grey} />
           {viewAllOrder ? (
             <SafeAreaView style={[styles.container, { justifyContent: 'space-evenly' }]}>

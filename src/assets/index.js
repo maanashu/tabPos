@@ -528,6 +528,8 @@ export { default as timeDurationIcon } from '@/assets/new_icon/appointments/time
 export { default as editAppointmentIcon } from '@/assets/new_icon/appointments/editAppointment.png';
 export { default as checkInIcon } from '@/assets/new_icon/appointments/checkInIcon.png';
 export { default as circleTick } from '@/assets/new_icon/appointments/circleTick.png';
+export { default as SubLine } from '@/assets/new_icon/ic_settings/SubLine.png';
+export { default as Flag } from '@/assets/new_icon/ic_settings/Flag.png';
 
 /* Fonts */
 export const Fonts = {
