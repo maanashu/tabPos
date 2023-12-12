@@ -25,6 +25,7 @@ import { FullScreenLoader, Header, ImageView, ScreenWrapper } from '@mPOS/compon
 import { debounce } from 'lodash';
 import {
   cartRun,
+  clearAllCart,
   createBulkcart,
   getAllCart,
   getBrand,
@@ -45,6 +46,7 @@ import { MPOS_NAVIGATION } from '@common/commonImports';
 import { getCartLength, getLocalCartArray } from '@/selectors/CartSelector';
 import { addLocalCart, clearLocalCart, updateCartLength } from '@/actions/CartAction';
 import { useIsFocused } from '@react-navigation/native';
+import CustomAlert from '@/components/CustomAlert';
 
 export function RetailProducts(props) {
   const isFocus = useIsFocused();
@@ -55,7 +57,8 @@ export function RetailProducts(props) {
   const cartData = retailData?.getAllCart;
   const productCartArray = retailData?.getAllProductCart;
   const productCart = retailData?.getAllCart?.poscart_products ?? [];
-  const productCartLength = productCart?.length;
+  const onlyProductCartArray = productCart?.filter((item) => item?.product_type === 'product');
+  const onlyServiceCartArray = productCart?.filter((item) => item?.product_type === 'service');
   const productData = retailData?.getMainProduct;
   const addProductCartRef = useRef(null);
   const productDetailRef = useRef(null);
@@ -148,6 +151,7 @@ export function RetailProducts(props) {
     if (isFocus) {
       if (retailData?.getAllCart?.poscart_products?.length > 0) {
         const cartmatchId = retailData?.getAllCart?.poscart_products?.map((obj) => ({
+          product_type: 'product',
           product_id: obj.product_id,
           qty: obj.qty,
           supply_id: obj.supply_id,
@@ -168,6 +172,7 @@ export function RetailProducts(props) {
   const cartQtyUpdate = () => {
     if (retailData?.getAllCart?.poscart_products?.length > 0) {
       const cartmatchId = retailData?.getAllCart?.poscart_products?.map((obj) => ({
+        product_type: 'product',
         product_id: obj.product_id,
         qty: obj.qty,
         supply_id: obj.supply_id,
@@ -180,18 +185,30 @@ export function RetailProducts(props) {
     }
   };
   const checkAttributes = async (item, index, cartQty) => {
-    if (item?.supplies?.[0]?.attributes?.length !== 0) {
-      bulkCart();
-      const res = await dispatch(getOneProduct(sellerID, item.id));
-      if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-        addProductCartRef.current.present();
-        setSelectedItemQty(item?.cart_qty);
-        setSelectedItem(item);
-        setProductIndex(index);
-        setProductItem(item);
-      }
+    if (onlyServiceCartArray?.length >= 1) {
+      CustomAlert({
+        title: 'Alert',
+        description: 'Please clear service cart',
+        yesButtonTitle: 'Clear cart',
+        noButtonTitle: 'Cancel',
+        onYesPress: () => {
+          dispatch(clearAllCart());
+        },
+      });
     } else {
-      onClickAddCart(item, index, cartQty);
+      if (item?.supplies?.[0]?.attributes?.length !== 0) {
+        bulkCart();
+        const res = await dispatch(getOneProduct(sellerID, item.id));
+        if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+          addProductCartRef.current.present();
+          setSelectedItemQty(item?.cart_qty);
+          setSelectedItem(item);
+          setProductIndex(index);
+          setProductItem(item);
+        }
+      } else {
+        onClickAddCart(item, index, cartQty);
+      }
     }
   };
   const onClickAddCart = (item, index, cartQty, supplyVarientId) => {
@@ -199,6 +216,7 @@ export function RetailProducts(props) {
     const cartArray = selectedCartItem;
     const existingItemIndex = cartArray.findIndex((cartItem) => cartItem.product_id === item?.id);
     const DATA = {
+      product_type: 'product',
       product_id: item?.id,
       qty: 1,
       supply_id: item?.supplies?.[0]?.id,
@@ -291,13 +309,26 @@ export function RetailProducts(props) {
     return (
       <TouchableOpacity
         onPress={async () => {
-          const res = await dispatch(getOneProduct(sellerID, item.id));
-          if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
-            addProductCartRef.current.present();
-            setSelectedItemQty(updatedItem?.cart_qty);
-            setSelectedItem(item);
-            setProductIndex(index);
-            setProductItem(item);
+          if (onlyServiceCartArray?.length >= 1) {
+            CustomAlert({
+              title: 'Alert',
+              description: 'Please clear service cart',
+              yesButtonTitle: 'Clear cart',
+              noButtonTitle: 'Cancel',
+              onYesPress: () => {
+                dispatch(clearAllCart());
+              },
+            });
+          } else {
+            bulkCart();
+            const res = await dispatch(getOneProduct(sellerID, item.id));
+            if (res?.type === 'GET_ONE_PRODUCT_SUCCESS') {
+              addProductCartRef.current.present();
+              setSelectedItemQty(updatedItem?.cart_qty);
+              setSelectedItem(item);
+              setProductIndex(index);
+              setProductItem(item);
+            }
           }
         }}
         style={[styles.productDetailMainView, { marginTop: index === 0 ? ms(0) : ms(5) }]}
@@ -353,7 +384,10 @@ export function RetailProducts(props) {
   };
 
   const isLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_ONE_PRODUCT, TYPES.ADDCART, TYPES.GET_ALL_CART], state)
+    isLoadingSelector(
+      [TYPES.GET_ONE_PRODUCT, TYPES.ADDCART, TYPES.GET_ALL_CART, TYPES.GET_CLEAR_ALL_CART],
+      state
+    )
   );
   const categoryLoad = useSelector((state) => isLoadingSelector([TYPES.GET_CATEGORY], state));
   const subCategoryLoad = useSelector((state) =>

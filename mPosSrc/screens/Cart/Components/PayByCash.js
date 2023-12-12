@@ -18,7 +18,9 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
-  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  // const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getAllCart;
+
   const productDetail = retailData?.getOneProduct;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
   const [keyboardStatus, setKeyboardStatus] = useState('60%');
@@ -59,35 +61,52 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
     )
   );
 
+  // const createOrderHandler = () => {
+  //   if (amount && digitWithDot.test(amount) === false) {
+  //     CustomErrorToast({ message: 'Please enter valid amount' });
+  //   } else {
+  //     if (presentCart === 'product') {
+  //       const data = {
+  //         cartid: cartData.id,
+  //         tips: amount === undefined || amount === '' ? cashRate : amount,
+  //         modeOfPayment: 'cash',
+  //       };
+  //       const callback = (response) => {
+  //         if (response) {
+  //           payByCashhandler(saveCartData, data);
+  //         }
+  //       };
+  //       dispatch(createOrder(data, callback));
+  //     } else {
+  //       const data = {
+  //         serviceCartId: cartData.id,
+  //         tips: amount === undefined || amount === '' ? cashRate : amount,
+  //         modeOfPayment: 'cash',
+  //       };
+  //       const callback = (response) => {
+  //         if (response) {
+  //           payByCashhandler(saveCartData, data);
+  //         }
+  //       };
+  //       dispatch(createServiceOrder(data, callback));
+  //     }
+  //   }
+  // };
   const createOrderHandler = () => {
     if (amount && digitWithDot.test(amount) === false) {
       CustomErrorToast({ message: 'Please enter valid amount' });
     } else {
-      if (presentCart === 'product') {
-        const data = {
-          cartid: cartData.id,
-          tips: amount === undefined || amount === '' ? cashRate : amount,
-          modeOfPayment: 'cash',
-        };
-        const callback = (response) => {
-          if (response) {
-            payByCashhandler(saveCartData, data);
-          }
-        };
-        dispatch(createOrder(data, callback));
-      } else {
-        const data = {
-          serviceCartId: cartData.id,
-          tips: amount === undefined || amount === '' ? cashRate : amount,
-          modeOfPayment: 'cash',
-        };
-        const callback = (response) => {
-          if (response) {
-            payByCashhandler(saveCartData, data);
-          }
-        };
-        dispatch(createServiceOrder(data, callback));
-      }
+      const data = {
+        cartid: cartData.id,
+        tips: amount === undefined || amount === '' ? cashRate : amount,
+        modeOfPayment: 'cash',
+      };
+      const callback = (response) => {
+        if (response) {
+          payByCashhandler(saveCartData, data);
+        }
+      };
+      dispatch(createOrder(data, callback));
     }
   };
 

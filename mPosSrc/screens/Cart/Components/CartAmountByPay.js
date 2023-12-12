@@ -58,7 +58,9 @@ const CartAmountByPay = ({
   const presentCart = retailData?.cartFrom;
   const productDetail = retailData?.getOneProduct;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
-  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  // const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getAllCart;
+
   const getTips = retailData?.getTips;
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
@@ -173,12 +175,12 @@ const CartAmountByPay = ({
     const data = {
       tip: selectedTipAmount.toString(),
       cartId: cartData.id,
-      ...(presentCart === 'service' && { services: 'services' }),
+      // ...(presentCart === 'service' && { services: 'services' }),
     };
     const res = await dispatch(updateCartByTip(data));
     if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
       cashPayNowHandler();
-      presentCart === 'product' ? dispatch(getAllCart()) : dispatch(getServiceCart());
+      presentCart === 'product' ? dispatch(getAllCart()) : dispatch(getAllCart());
     }
   };
 
@@ -446,7 +448,7 @@ const CartAmountByPay = ({
                       const data = {
                         tip: selectedTipAmount.toString(),
                         cartId: cartData.id,
-                        ...(presentCart === 'service' && { services: 'services' }),
+                        // ...(presentCart === 'service' && { services: 'services' }),
                       };
                       const res = await dispatch(updateCartByTip(data));
                       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
@@ -455,10 +457,8 @@ const CartAmountByPay = ({
                           phoneNo: phoneNumber,
                           countryCode: countryCode,
                         };
-                        const res =
-                          (await presentCart) === 'product'
-                            ? dispatch(attachCustomer(data))
-                            : dispatch(attachServiceCustomer(data));
+                        const res = await dispatch(attachCustomer(data));
+                        // : dispatch(attachServiceCustomer(data));
                         if (
                           res?.type === 'ATTACH_CUSTOMER_SUCCESS' ||
                           'ATTACH_SERVICE_CUSTOMER_SUCCESS'
@@ -519,7 +519,7 @@ const CartAmountByPay = ({
                       const data = {
                         tip: selectedTipAmount.toString(),
                         cartId: cartData.id,
-                        ...(presentCart === 'service' && { services: 'services' }),
+                        // ...(presentCart === 'service' && { services: 'services' }),
                       };
                       const res = await dispatch(updateCartByTip(data));
                       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
@@ -527,10 +527,8 @@ const CartAmountByPay = ({
                           cartId: cartData?.id,
                           phoneEmail: email,
                         };
-                        const res =
-                          (await presentCart) === 'product'
-                            ? dispatch(attachCustomer(data))
-                            : dispatch(attachServiceCustomer(data));
+                        const res = await dispatch(attachCustomer(data));
+                        // : dispatch(attachServiceCustomer(data));
                         if (
                           res?.type === 'ATTACH_CUSTOMER_SUCCESS' ||
                           'ATTACH_SERVICE_CUSTOMER_SUCCESS'
@@ -567,7 +565,7 @@ const CartAmountByPay = ({
                 const data = {
                   tip: selectedTipAmount.toString(),
                   cartId: cartData.id,
-                  ...(presentCart === 'service' && { services: 'services' }),
+                  // ...(presentCart === 'service' && { services: 'services' }),
                 };
                 const res = await dispatch(updateCartByTip(data));
                 if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {

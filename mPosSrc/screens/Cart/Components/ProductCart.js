@@ -52,6 +52,7 @@ import AddProductCart from '@mPOS/screens/HomeTab/RetailProducts/Components/AddP
 import ProductDetails from '@mPOS/screens/HomeTab/RetailProducts/Components/ProductDetails';
 import { updateCartLength } from '@/actions/CartAction';
 import { getCartLength } from '@/selectors/CartSelector';
+import CustomAlert from '@/components/CustomAlert';
 
 export function ProductCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -77,6 +78,11 @@ export function ProductCart({ cartChangeHandler }) {
   const [productCustomerAdd, setProductCustomerAdd] = useState(false);
   const productCartArray = retailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
+
+  const poscart = productCartData?.poscart_products;
+
+  const onlyServiceCartArray = poscart?.filter((item) => item?.product_type === 'service');
+  const onlyProductCartArray = poscart?.filter((item) => item?.product_type === 'product');
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -280,20 +286,38 @@ export function ProductCart({ cartChangeHandler }) {
         <TouchableOpacity
           style={styles.serviceCart}
           onPress={() => {
-            beforeDiscountCartLoad();
-            cartChangeHandler();
+            if (onlyProductCartArray?.length >= 1) {
+              CustomAlert({
+                title: 'Alert',
+                description: 'Please clear product cart',
+                yesButtonTitle: 'Clear cart',
+                noButtonTitle: 'Cancel',
+                onYesPress: () => {
+                  dispatch(clearAllCart());
+                },
+              });
+            } else {
+              beforeDiscountCartLoad();
+              cartChangeHandler();
+            }
           }}
         >
           <Text style={styles.serviceCartText}>{'Service Cart'}</Text>
         </TouchableOpacity>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.5,
+              opacity: onlyProductCartArray?.length > 0 ? 1 : 0.5,
             }}
-            pointerEvents={productCartData?.poscart_products?.length > 0 ? 'auto' : 'none'}
+            pointerEvents={onlyProductCartArray?.length > 0 ? 'auto' : 'none'}
           >
             <TouchableOpacity
               style={styles.headerImagecCon}
@@ -366,8 +390,8 @@ export function ProductCart({ cartChangeHandler }) {
         <View style={styles._flatListContainer}>
           <SwipeListView
             showsVerticalScrollIndicator={false}
-            data={productCartData?.poscart_products}
-            extraData={productCartData?.poscart_products}
+            data={onlyProductCartArray}
+            extraData={onlyProductCartArray}
             keyExtractor={(_, index) => index.toString()}
             renderItem={(data, index) => {
               const productSize = data?.item?.product_details?.supply?.attributes?.filter(
@@ -580,14 +604,14 @@ export function ProductCart({ cartChangeHandler }) {
             style={[
               styles.payNowcon,
               {
-                opacity: productCartData?.poscart_products?.length > 0 ? 1 : 0.7,
+                opacity: onlyProductCartArray?.length > 0 ? 1 : 0.7,
               },
             ]}
             onPress={() => {
               beforeDiscountCartLoad();
               payNowHandler();
             }}
-            disabled={productCartData?.poscart_products?.length > 0 ? false : true}
+            disabled={onlyProductCartArray?.length > 0 ? false : true}
           >
             <Text style={styles.payNowText}>{strings.cart.payNow}</Text>
             <Image source={Images.buttonArrow} style={styles.buttonArrow} />

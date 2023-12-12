@@ -29,6 +29,7 @@ import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import {
   changeStatusProductCart,
   changeStatusServiceCart,
+  clearAllCart,
   clearServiceAllCart,
   getAllCart,
   getAllProductCart,
@@ -56,12 +57,13 @@ import AvailableOffer from './AvailableOffer';
 import { AddServiceCartModal } from '@mPOS/screens/HomeTab/Services/AddServiceCart';
 import AddServiceCart from '@mPOS/screens/HomeTab/RetailServices/Components/AddServiceCart';
 import moment from 'moment';
+import CustomAlert from '@/components/CustomAlert';
 
 export function ServiceCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
-  const serviceCartData = retailData?.getserviceCart;
+  const serviceCartData = retailData?.getAllCart;
   const payByCashRef = useRef(null);
   const availableOfferRef = useRef(null);
   const addServiceCartRef = useRef(null);
@@ -77,25 +79,33 @@ export function ServiceCart({ cartChangeHandler }) {
   const [orderCreateData, setOrderCreateData] = useState();
   const [saveCart, setSaveCart] = useState();
   const [productCustomerAdd, setProductCustomerAdd] = useState(false);
-  const serviceCartArray = retailData?.getAllServiceCart;
+  const serviceCartArray = retailData?.getAllProductCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
   const CART_LENGTH = useSelector(getServiceCartLength);
+  const poscart = serviceCartData?.poscart_products || [];
+  const onlyServiceCartArray = poscart?.filter((item) => item?.product_type === 'service');
+  const onlyProductCartArray = poscart?.filter((item) => item?.product_type === 'product');
+  const productCartArray = retailData?.getAllProductCart;
+  const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
-        TYPES.ADD_SERVICE_NOTES_CART,
+        TYPES.ADDNOTES,
         TYPES.ADD_SERVICE_DISCOUNT,
-        TYPES.GET_SERVICE_CART,
+        // TYPES.GET_SERVICE_CART,
         TYPES.SERVICE_UPDATE_PRICE,
         TYPES.CUSTOM_PRODUCT_ADD,
-        TYPES.GET_ALL_SERVICE_CART,
+        TYPES.GET_ALL_CART,
+        // TYPES.GET_ALL_SERVICE_CART,
         TYPES.UPDATE_CART_BY_TIP,
         TYPES.ATTACH_SERVICE_CUSTOMER,
         TYPES.CHANGE_STATUS_SERVICE_CART,
-        TYPES.CLEAR_SERVICE_ALL_CART,
+        // TYPES.CLEAR_SERVICE_ALL_CART,
         TYPES.CUSTOM_SERVICE_ADD,
         TYPES.GET_AVAILABLE_OFFER,
-        TYPES.GET_AVAILABLE_OFFER,
+        TYPES.ATTACH_CUSTOMER,
+        TYPES.PRODUCT_UPDATE_PRICE,
+        TYPES.CHANGE_STATUS_PRODUCT_CART,
       ],
       state
     )
@@ -108,8 +118,10 @@ export function ServiceCart({ cartChangeHandler }) {
   // );
 
   useEffect(() => {
-    dispatch(getServiceCart());
-    dispatch(getAllServiceCart());
+    dispatch(getAllCart());
+    dispatch(getAllProductCart());
+    // dispatch(getServiceCart());
+    // dispatch(getAllServiceCart());
     if (!isFocused) {
       backCartLoad();
     }
@@ -188,24 +200,38 @@ export function ServiceCart({ cartChangeHandler }) {
   };
 
   // hold product Function
+  // const cartStatusHandler = () => {
+  //   const data =
+  //     holdServiceArray?.length > 0
+  //       ? {
+  //           status: !holdServiceArray?.[0]?.is_on_hold,
+  //           cartId: holdServiceArray?.[0]?.id,
+  //         }
+  //       : {
+  //           status: !serviceCartData?.is_on_hold,
+  //           cartId: serviceCartData?.id,
+  //         };
+  //   dispatch(changeStatusServiceCart(data));
+  // };
+
   const cartStatusHandler = () => {
     const data =
-      holdServiceArray?.length > 0
+      holdProductArray?.length > 0
         ? {
-            status: !holdServiceArray?.[0]?.is_on_hold,
-            cartId: holdServiceArray?.[0]?.id,
+            status: !holdProductArray?.[0]?.is_on_hold,
+            cartId: holdProductArray?.[0]?.id,
           }
         : {
             status: !serviceCartData?.is_on_hold,
             cartId: serviceCartData?.id,
           };
-    dispatch(changeStatusServiceCart(data));
+    dispatch(changeStatusProductCart(data));
   };
 
   const backCartLoad = () => {
     const arr = serviceCartData;
     // if (arr?.appointment_cart_products?.length > 0) {
-    const products = arr?.appointment_cart_products?.map((item) => ({
+    const products = arr?.poscart_products?.map((item) => ({
       product_id: item?.product_id,
       qty: item?.qty,
     }));
@@ -223,11 +249,11 @@ export function ServiceCart({ cartChangeHandler }) {
     return percentageValue.toFixed(2) ?? 0.0;
   }
   const removeOneCartHandler = (index) => {
-    var arr = retailData?.getserviceCart;
-    if (arr?.appointment_cart_products.length == 1 && index == 0) {
+    var arr = retailData?.getAllCart;
+    if (arr?.poscart_products?.length == 1 && index == 0) {
       dispatch(clearServiceAllCart());
     } else {
-      const product = arr?.appointment_cart_products[index];
+      const product = arr?.poscart_products[index];
       const productPrice = product?.product_details?.supply?.supply_prices?.selling_price;
       if (product?.qty > 0) {
         // arr.amount.total_amount -= productPrice * product.qty;
@@ -253,8 +279,20 @@ export function ServiceCart({ cartChangeHandler }) {
         <TouchableOpacity
           style={styles.serviceCart}
           onPress={() => {
-            backCartLoad();
-            cartChangeHandler();
+            if (onlyServiceCartArray?.length >= 1) {
+              CustomAlert({
+                title: 'Alert',
+                description: 'Please clear service cart',
+                yesButtonTitle: 'Clear cart',
+                noButtonTitle: 'Cancel',
+                onYesPress: () => {
+                  dispatch(clearAllCart());
+                },
+              });
+            } else {
+              backCartLoad();
+              cartChangeHandler();
+            }
           }}
         >
           <Text style={styles.serviceCartText}>{'Product Cart'}</Text>
@@ -264,9 +302,9 @@ export function ServiceCart({ cartChangeHandler }) {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              opacity: serviceCartData?.appointment_cart_products?.length > 0 ? 1 : 0.5,
+              opacity: onlyServiceCartArray?.length > 0 ? 1 : 0.5,
             }}
-            pointerEvents={serviceCartData?.appointment_cart_products?.length > 0 ? 'auto' : 'none'}
+            pointerEvents={onlyServiceCartArray?.length > 0 ? 'auto' : 'none'}
           >
             <TouchableOpacity
               style={styles.headerImagecCon}
@@ -336,8 +374,8 @@ export function ServiceCart({ cartChangeHandler }) {
         <View style={styles._flatListContainer}>
           <SwipeListView
             showsVerticalScrollIndicator={false}
-            data={serviceCartData?.appointment_cart_products}
-            extraData={serviceCartData?.appointment_cart_products}
+            data={onlyServiceCartArray}
+            extraData={onlyServiceCartArray}
             keyExtractor={(data, index) => data?.item?.id}
             renderItem={(data, ind) => {
               return (
@@ -513,14 +551,14 @@ export function ServiceCart({ cartChangeHandler }) {
             style={[
               styles.payNowcon,
               {
-                opacity: serviceCartData?.appointment_cart_products?.length > 0 ? 1 : 0.7,
+                opacity: onlyServiceCartArray?.length >= 1 ? 1 : 0.7,
               },
             ]}
             onPress={() => {
               backCartLoad();
               payNowHandler();
             }}
-            disabled={serviceCartData?.appointment_cart_products?.length > 0 ? false : true}
+            disabled={onlyServiceCartArray?.length >= 1 ? false : true}
           >
             <Text style={styles.payNowText}>{strings.cart.payNow}</Text>
             <Image source={Images.buttonArrow} style={styles.buttonArrow} />
@@ -586,7 +624,7 @@ export function ServiceCart({ cartChangeHandler }) {
       <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
 
-      {/* <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} /> */}
+      <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} />
 
       <AvailableOffer
         availableOfferRef={availableOfferRef}
