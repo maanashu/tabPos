@@ -99,7 +99,6 @@ export function Login(props) {
         if (twoFactorEnabled) {
           navigate(MPOS_NAVIGATION.twoFactorLogin, { userResponse: res });
         } else {
-          // console.log('res', JSON.stringify(res));
           dispatch(loginPosUserSuccess(res));
           dispatch(getSettings());
           dispatch(getProfile(res?.id));

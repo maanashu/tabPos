@@ -37,7 +37,6 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartServiceData = getRetailData?.getAllCart;
-  console.log('cartServiceData', cartServiceData);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
@@ -121,7 +120,6 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
           userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
           customerAdd: 'customerAdd',
         };
-    console.log('data', data);
     // dispatch(attachServiceCustomer(data));
     dispatch(attachCustomer(data));
     // dispatch(attachCustomerInService(data));

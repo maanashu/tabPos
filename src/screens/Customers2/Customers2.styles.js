@@ -556,10 +556,9 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   saleTypeButtonCon: {
-    paddingHorizontal: ms(5),
-    paddingVertical: ms(1),
+    paddingHorizontal: ms(10),
+    paddingVertical: ms(2),
     borderRadius: ms(10),
-    paddingVertical: ms(1),
   },
   scnStyle: {
     width: SW(13),

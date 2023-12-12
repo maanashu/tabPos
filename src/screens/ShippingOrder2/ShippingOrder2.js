@@ -154,7 +154,6 @@ export function ShippingOrder2() {
       status: status,
       sellerID: sellerID,
     };
-    console.log('SAdasas', data);
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg) {
@@ -219,7 +218,7 @@ export function ShippingOrder2() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.sky_grey, paddingRight: ms(5) }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.sky_grey, paddingRight: ms(6) }}>
       {!openWebView ? (
         <>
           <Spacer space={SH(15)} />

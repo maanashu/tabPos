@@ -57,6 +57,7 @@ import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import { useIsFocused } from '@react-navigation/native';
 
 export function WeeklyTransaction({
   backHandler,
@@ -66,10 +67,11 @@ export function WeeklyTransaction({
   // setSelectTime,
   // selectId,
   // setSelectId,
-  selectDate,
-  setSelectDate,
+  // selectDate,
+  // setSelectDate,
 }) {
   const mapRef = useRef(null);
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getWalletData = useSelector(getWallet);
@@ -118,7 +120,7 @@ export function WeeklyTransaction({
   const endDate = selectedEndDate ? selectedEndDate.toString() : '';
   const startDated = moment(startDate).format('YYYY-MM-DD');
   const endDated = moment(endDate).format('YYYY-MM-DD');
-  // const [selectDate, setSelectDate] = useState('');
+  const [selectDate, setSelectDate] = useState('');
 
   const currentStartDate = moment().startOf('month').format('MMM D');
   const currentEndDate = moment().endOf('month').format('MMM D, YYYY');
@@ -145,6 +147,12 @@ export function WeeklyTransaction({
   const orderPayloadLength = Object.keys(getWalletData?.getTotakTraDetail)?.length;
 
   const startIndex = (page - 1) * paginationModalValue + 1;
+
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(getTotalTra(time, sellerID, formateDate));
+    }
+  }, [isFocused, selectDate, time]);
 
   const transactionArray = [
     {
@@ -334,15 +342,15 @@ export function WeeklyTransaction({
     >
       {
         <Text style={[styles.allJbrText, { color, fontFamily }]}>
-          {item.type}{' '}
+          {item.type}
           {isTotalTraType ? (
             <ActivityIndicator
               size="small"
-              color={COLORS.navy_light_blue}
+              color={COLORS.sky_blue}
               style={{ alignSelf: 'center' }}
             />
           ) : (
-            '(' + item.count + ')'
+            <Text style={{ color: COLORS.sky_blue }}> ({item.count})</Text>
           )}
         </Text>
       }
@@ -386,6 +394,24 @@ export function WeeklyTransaction({
             <Image source={arrowLeftUp} style={styles.backButtonArrow} />
           </TouchableOpacity>
           <Text style={styles.deliveryText}>{strings.wallet.totalTransections}</Text>
+          {isTotalTraLoad ? (
+            <ActivityIndicator size="small" color={COLORS.navy_blue} />
+          ) : (
+            <Text
+              style={[
+                styles.deliveryText,
+                {
+                  color: COLORS.aqua,
+                  fontSize: ms(18),
+                  alignSelf: 'flex-start',
+                  fontFamily: Fonts.Medium,
+                },
+              ]}
+            >
+              {'$'}
+              {getTotalTraData?.data?.total.toFixed(2) ?? '0'}
+            </Text>
+          )}
         </View>
         <View style={styles.deliveryView}>
           <DaySelector
@@ -570,12 +596,16 @@ export function WeeklyTransaction({
             </View>
             <View
               style={{
-                width: ms(50),
+                // width: ms(50),
                 marginRight: ms(7),
               }}
             >
               {isTotalTradetail ? (
-                <ActivityIndicator size="small" color={COLORS.navy_blue} />
+                <ActivityIndicator
+                  size="small"
+                  color={COLORS.navy_blue}
+                  style={{ width: ms(50) }}
+                />
               ) : (
                 <Text
                   style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}
@@ -664,6 +694,12 @@ export function WeeklyTransaction({
                 <Text numberOfLines={1} style={styles.tableTextHea}>
                   Invoice ID
                 </Text>
+                <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
+                  starts
+                </Text>
+                <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
+                  Transaction id
+                </Text>
                 <View style={styles.flexAlign}>
                   <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
                     Transaction type
@@ -679,7 +715,9 @@ export function WeeklyTransaction({
                 <Text style={styles.tableTextHea}>Amount</Text>
                 {/* <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text> */}
 
-                <Text style={[styles.tableTextHea, { paddingHorizontal: 25 }]}>Status</Text>
+                <Text style={[styles.tableTextHea, { paddingLeft: ms(12), paddingRight: ms(24) }]}>
+                  Status
+                </Text>
               </View>
             </View>
           </View>
@@ -717,11 +755,6 @@ export function WeeklyTransaction({
                                 ? moment(item.created_at).format('ll')
                                 : 'date not found'}
                             </Text>
-                            {/* <Text style={[styles.tableTextData, { color: COLORS.gerySkies }]}>
-                              {item.created_at
-                                ? moment(item.created_at).format('h:mm A')
-                                : 'date not found'}
-                            </Text> */}
                           </View>
                         </View>
                         <View style={styles.tableHeaderRight}>
@@ -732,12 +765,21 @@ export function WeeklyTransaction({
                               ? item?.return_detail?.invoices?.invoice_number
                               : item?.invoices?.invoice_number}
                           </Text>
-                          {/* <Spacer horizontal space={ms(10)} /> */}
-                          <Text style={styles.tableTextData}>
-                            {DELIVERY_MODE[item?.delivery_option]}
+                          <Text style={[styles.tableTextData, { marginLeft: ms(-30) }]}>
+                            {item.created_at
+                              ? moment(item.created_at).format('h:mm A')
+                              : 'date not found'}
                           </Text>
-
-                          <Text style={[styles.tableTextData, { marginLeft: ms(30) }]}>
+                          <Text style={[styles.tableTextData, { marginLeft: ms(-35) }]}>
+                            {item?.transaction_id}
+                          </Text>
+                          {/* <Spacer horizontal space={ms(10)} /> */}
+                          <View>
+                            <Text style={[styles.tableTextData, { textAlign: 'center' }]}>
+                              {DELIVERY_MODE[item?.delivery_option]}
+                            </Text>
+                          </View>
+                          <Text style={[styles.tableTextData, { textAlign: 'center' }]}>
                             {item?.mode_of_payment}
                           </Text>
                           {/* <Spacer horizontal space={Platform.OS == 'ios' ? ms(15) : ms(15)} /> */}
@@ -745,7 +787,10 @@ export function WeeklyTransaction({
                           <Text
                             style={[
                               styles.tableTextData,
-                              { fontFamily: Fonts.SemiBold, color: COLORS.lavender },
+                              {
+                                fontFamily: Fonts.SemiBold,
+                                color: COLORS.lavender,
+                              },
                             ]}
                           >
                             ${item?.payable_amount ?? '0'}
@@ -763,15 +808,33 @@ export function WeeklyTransaction({
                             style={{
                               width: ms(70),
                               borderRadius: ms(10),
-                              backgroundColor: COLORS.navy_blue,
+                              backgroundColor:
+                                item.status === 'Delivered'
+                                  ? COLORS.tip_back
+                                  : item.status === 'Shipping'
+                                  ? COLORS.light_skyblue
+                                  : COLORS.input_border,
                               alignItems: 'center',
                               // height: SH(24),
                               justifyContent: 'center',
-                              marginLeft: ms(-35),
+                              marginLeft: ms(-50),
                               paddingVertical: ms(3),
                             }}
                           >
-                            <Text style={[styles.tableTextDataCom, { textAlign: 'center' }]}>
+                            <Text
+                              style={[
+                                styles.tableTextDataCom,
+                                {
+                                  textAlign: 'center',
+                                  color:
+                                    item.status === 'Delivered'
+                                      ? COLORS.purple
+                                      : item.status === 'Shipping'
+                                      ? COLORS.dark_skyblue
+                                      : COLORS.navy_blue,
+                                },
+                              ]}
+                            >
                               {item?.is_returned_order && statusFun(item.status) === 'Delivered'
                                 ? 'Returned'
                                 : statusFun(item.status)}

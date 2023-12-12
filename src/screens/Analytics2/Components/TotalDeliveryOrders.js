@@ -244,12 +244,7 @@ export function TotalDeliveryOrders({ onPressReview }) {
               </DataTable.Title>
             </DataTable.Header>
 
-            <View
-              style={[
-                styles.mainListContainer,
-                { height: Platform.OS === 'ios' ? ms(245) : ms(288) },
-              ]}
-            >
+            <View style={styles.mainListContainer}>
               {isAnalyticOrderGraphLoading ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
@@ -259,7 +254,9 @@ export function TotalDeliveryOrders({ onPressReview }) {
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
               ) : (
-                <View style={styles.listView}>
+                <View
+                  style={[styles.listView, { height: Platform.OS === 'ios' ? ms(260) : ms(288) }]}
+                >
                   <FlatList
                     style={styles.listStyle}
                     data={deliveryGraph?.ordersListData}

@@ -29,6 +29,8 @@ import {
   getAllCart,
   getAllProductCart,
   getAllServiceCart,
+  getMainProduct,
+  getMainServices,
   getServiceCart,
 } from '@/actions/RetailAction';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -53,7 +55,7 @@ export function PosRetail3() {
   const cartData = getRetailData?.getAllCart;
   const getCart = getRetailData?.getAllCart;
   const getServicecart = getRetailData?.getserviceCart;
-  const getServiceCartAmount = getRetailData?.getserviceCart?.amount;
+  const getServiceCartAmount = getRetailData?.getAllCart?.amount;
   const finalAmountForDiscount =
     cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
   const finalServiceAmountForDiscount =
@@ -66,7 +68,7 @@ export function PosRetail3() {
   const [paymentMethod, setpaymentMethod] = useState('Cash');
   const [addNotes, setAddNotes] = useState(false);
   const [notes, setNotes] = useState(getRetailData?.getAllCart?.notes);
-  const [serviceNotes, setServiceNotes] = useState(getRetailData?.getserviceCart?.notes);
+  const [serviceNotes, setServiceNotes] = useState(getRetailData?.getAllCart?.notes);
   const [addDiscount, setAddDiscount] = useState(false);
   const [addServiceDiscount, setAddServiceDiscount] = useState(false);
   const [page, setPage] = useState(1);
@@ -89,6 +91,11 @@ export function PosRetail3() {
       // return () => setselectedScreen('CartAmountPayBy');
     }, [])
   );
+
+  useEffect(() => {
+    dispatch(getMainProduct());
+    dispatch(getMainServices());
+  }, []);
 
   // service Add discount start
 
@@ -125,32 +132,24 @@ export function PosRetail3() {
   );
 
   useEffect(() => {
-    setServiceNotes(getServicecart?.notes);
-    setServiceDescriptionDis(
-      getServicecart?.discount_desc === null ? 'Discount' : getServicecart?.discount_desc
-    );
-    setServicePercentageCheck(getServicecart?.discount_flag === 'percentage' ? true : false);
-    setServiceAmountCheck(getServicecart?.discount_flag === 'amount' ? true : false);
-    setServiceDiscountCheck(getServicecart?.discount_flag === 'code' ? true : false);
-    setServiceAmountDis(
-      getServicecart?.discount_flag === 'amount' ? getServicecart?.discount_value : ''
-    );
-    setServicePercentDis(
-      getServicecart?.discount_flag === 'percentage' ? getServicecart?.discount_value : ''
-    );
-    setServiceDiscountCode(
-      getServicecart?.discount_flag === 'code' ? getServicecart?.discount_value : ''
-    );
+    setServiceNotes(getCart?.notes);
+    setServiceDescriptionDis(getCart?.discount_desc === null ? 'Discount' : getCart?.discount_desc);
+    setServicePercentageCheck(getCart?.discount_flag === 'percentage' ? true : false);
+    setServiceAmountCheck(getCart?.discount_flag === 'amount' ? true : false);
+    setServiceDiscountCheck(getCart?.discount_flag === 'code' ? true : false);
+    setServiceAmountDis(getCart?.discount_flag === 'amount' ? getCart?.discount_value : '');
+    setServicePercentDis(getCart?.discount_flag === 'percentage' ? getCart?.discount_value : '');
+    setServiceDiscountCode(getCart?.discount_flag === 'code' ? getCart?.discount_value : '');
     setServiceValue(
-      getServicecart?.discount_flag === 'amount'
+      getCart?.discount_flag === 'amount'
         ? 'amount'
-        : getServicecart?.discount_flag === 'percentage'
+        : getCart?.discount_flag === 'percentage'
         ? 'percentage'
-        : getServicecart?.discount_flag === 'code'
+        : getCart?.discount_flag === 'code'
         ? 'code'
         : ''
     );
-  }, [getRetailData?.getserviceCart]);
+  }, [getRetailData?.getAllCart]);
 
   const clearServiceInput = () => {
     setServiceNotes('');
@@ -174,7 +173,7 @@ export function PosRetail3() {
       //  ||percentDis > finalServiceAmountForDiscount
     ) {
       alert('Please enter discount less then total amount');
-    } else if (!getRetailData?.getserviceCart?.id) {
+    } else if (!getRetailData?.getAllCart?.id) {
       alert(strings.posSale.addItemCart);
     } else if (serviceValue === '') {
       alert(strings.posSale.discountType);
@@ -190,12 +189,13 @@ export function PosRetail3() {
         percentDis: servicePercentDis,
         discountCode: serviceDiscountCode,
         value: serviceValue,
-        cartId: getRetailData?.getserviceCart?.id,
+        cartId: getRetailData?.getAllCart?.id,
         orderAmount: getServiceCartAmount?.total_amount,
         descriptionDis: serviceDescriptionDis,
       };
 
       dispatch(addServiceDiscountToCart(data));
+      // dispatch(addDiscountToCart(data));
       clearServiceInput();
       setAddServiceDiscount(false);
     }
@@ -235,9 +235,9 @@ export function PosRetail3() {
 
   useEffect(() => {
     dispatch(getAllCart());
-    dispatch(getServiceCart());
+    // dispatch(getServiceCart());
     dispatch(getAllProductCart());
-    dispatch(getAllServiceCart());
+    // dispatch(getAllServiceCart());
   }, [isFocus]);
   useEffect(() => {
     setNotes(getCart?.notes);
@@ -296,7 +296,6 @@ export function PosRetail3() {
         cartId: cartID2,
         orderAmount: getCartAmount?.total_amount,
         descriptionDis: descriptionDis,
-        // descriptionDis:'discount title'
       };
       dispatch(addDiscountToCart(data));
       clearInput();
@@ -696,6 +695,7 @@ export function PosRetail3() {
                 <TouchableOpacity
                   style={[styles.holdCartCon, styles.addNotesBtn, { borderWidth: 0 }]}
                   onPress={() => saveServiceDiscountHandler()}
+                  // onPress={() => saveDiscountHandler()}
                 >
                   <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
                 </TouchableOpacity>
@@ -729,7 +729,8 @@ export function PosRetail3() {
                         cartId: servicCartId,
                         notes: serviceNotes,
                       };
-                      dispatch(addServiceNotescart(data));
+                      // dispatch(addServiceNotescart(data));
+                      dispatch(addNotescart(data));
                       setServiceNotes('');
                       setAddServiceNotes(false);
                     }

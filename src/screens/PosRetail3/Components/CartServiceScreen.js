@@ -23,11 +23,13 @@ import {
   changeStatusServiceCart,
   clearAllCart,
   clearServiceAllCart,
+  getAllCartSuccess,
   getAvailableOffer,
   getOneService,
   getServiceCartSuccess,
   getUserDetailSuccess,
   serviceUpdatePrice,
+  updateCartQty,
   updateServiceCartQty,
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -37,7 +39,7 @@ import moment from 'moment';
 import { ms } from 'react-native-size-matters';
 import { AddServiceCartModal } from './AddServiceCartModal';
 import { useEffect } from 'react';
-import { updateServiceCartLength } from '@/actions/CartAction';
+import { updateCartLength, updateServiceCartLength } from '@/actions/CartAction';
 import { getServiceCartLength } from '@/selectors/CartSelector';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { CustomProductAdd } from './CustomProductAdd';
@@ -60,7 +62,6 @@ export function CartServiceScreen({
   // const cartServiceData = getRetailData?.getserviceCart;
 
   const cartServiceData = getRetailData?.getAllCart;
-  console.log('cartServiceData', JSON.stringify(cartServiceData));
   // const cartServiceId = getRetailData?.getserviceCart?.id;
   const cartServiceId = getRetailData?.getAllCart?.id;
   // let arr = [getRetailData?.getserviceCart];
@@ -81,26 +82,49 @@ export function CartServiceScreen({
   const [cartProductId, setCartProductId] = useState();
   const [numPadModal, setNumPadModal] = useState(false);
   const [newCustomerModal, setNewCustomerModal] = useState(false);
+  const cartData = getRetailData?.getAllCart;
+  const productCartArray = getRetailData?.getAllProductCart;
+  const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
+
+  const onlyProductCartArray = cartData?.poscart_products?.filter(
+    (item) => item?.product_type === 'product'
+  );
+  const onlyServiceCartArray = cartData?.poscart_products?.filter(
+    (item) => item?.product_type === 'service'
+  );
 
   const availableOfferLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
   );
 
   const backCartLoad = () => {
-    var arr = getRetailData?.getserviceCart;
-    if (arr?.appointment_cart_products?.length > 0) {
-      const products = arr?.appointment_cart_products?.map((item) => ({
+    // var arr = getRetailData?.getserviceCart;
+    // if (arr?.appointment_cart_products?.length > 0) {
+    //   const products = arr?.appointment_cart_products?.map((item) => ({
+    //     product_id: item?.product_id,
+    //     qty: item?.qty,
+    //   }));
+    //   const data = {
+    //     updated_products: products,
+    //   };
+    //   dispatch(updateServiceCartQty(data, arr.id));
+    // }
+    // // else {
+    // //   clearCartHandler();
+    // // }
+    var arr = getRetailData?.getAllCart;
+    if (arr?.poscart_products?.length > 0) {
+      const products = arr?.poscart_products.map((item) => ({
         product_id: item?.product_id,
         qty: item?.qty,
       }));
       const data = {
         updated_products: products,
       };
-      dispatch(updateServiceCartQty(data, arr.id));
+      dispatch(updateCartQty(data, arr.id));
+    } else {
+      // clearCartHandler();
     }
-    // else {
-    //   clearCartHandler();
-    // }
   };
 
   const payNowHandler = () => {
@@ -112,6 +136,7 @@ export function CartServiceScreen({
         visibilityTime: 1500,
       });
     } else if (Object.keys(cartServiceData?.user_details)?.length === 0) {
+      backCartLoad();
       setNewCustomerModal(true);
       // Toast.show({
       //   text2: 'Please attach the customer',
@@ -152,27 +177,27 @@ export function CartServiceScreen({
   }
 
   const removeOneCartHandler = (productId, index) => {
-    var arr = getRetailData?.getserviceCart;
-    if (arr?.appointment_cart_products.length == 1 && index == 0) {
+    var arr = getRetailData?.getAllCart;
+    if (arr?.poscart_products.length == 1 && index == 0) {
       clearCartHandler();
     } else {
-      const product = arr.appointment_cart_products[index];
+      const product = arr?.poscart_products[index];
+      // const productPrice = product.product_details.price;
       const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
       if (product.qty > 0) {
-        // arr.amount.total_amount -= productPrice * product.qty;
+        arr.amount.total_amount -= productPrice * product.qty;
         arr.amount.products_price -= productPrice * product.qty;
-        arr.appointment_cart_products.splice(index, 1);
+        arr?.poscart_products.splice(index, 1);
       }
       const totalAmount = arr.amount.products_price;
       const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-      arr.amount.tax = parseFloat(TAX);
-      arr.amount.total_amount = arr.amount.products_price + arr.amount.tax;
-
+      arr.amount.tax = parseFloat(TAX); // Update tax value
+      arr.amount.total_amount = totalAmount + parseFloat(TAX);
       var DATA = {
         payload: arr,
       };
-      dispatch(updateServiceCartLength(CART_LENGTH - 1));
-      dispatch(getServiceCartSuccess(DATA));
+      dispatch(updateCartLength(CART_LENGTH - 1));
+      dispatch(getAllCartSuccess(DATA));
     }
   };
 
@@ -218,17 +243,16 @@ export function CartServiceScreen({
   // hold cart Function
   const serviceCartStatusHandler = () => {
     backCartLoad();
-    const data =
-      holdServiceArray?.length > 0
-        ? {
-            status: holdServiceArray?.[0]?.is_on_hold === false ? true : false,
-            cartId: holdServiceArray?.[0]?.id,
-          }
-        : {
-            status: getRetailData?.getserviceCart?.is_on_hold === false ? true : false,
-            cartId: getRetailData?.getserviceCart?.id,
-          };
-    dispatch(changeStatusServiceCart(data));
+    holdProductArray?.length > 0
+      ? {
+          status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
+          cartId: holdProductArray?.[0]?.id,
+        }
+      : {
+          status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+          cartId: getRetailData?.getAllCart?.id,
+        };
+    dispatch(changeStatusProductCart(data));
   };
 
   const clearCartHandler = () => {

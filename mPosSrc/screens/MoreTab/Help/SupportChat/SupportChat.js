@@ -73,7 +73,7 @@ export const SupportChat = (props) => {
     });
 
     socket.on('get_messages', (message) => {
-      console.log('messages', message?.data?.data?.[0]?.recipient_id);
+      console.log('messages', message?.data?.data?.[0]);
       setRecipientId(message?.data?.data?.[0]?.recipient_id);
       setMessageHeadId(message?.data?.data?.[0]?.chathead_id);
       const arr = message?.data?.data.map((item) => {
@@ -99,24 +99,23 @@ export const SupportChat = (props) => {
       chatHeadType: 'directchat',
       sender_id: user?.posLoginData?.uuid,
     };
-    console.log('params: ' + JSON.stringify(params));
+    console.log('payload ' + JSON.stringify(params));
     socket.emit('send_message', params);
 
     socket.on('send_message', (msg) => {
-      console.log('sending message', msg);
+      console.log('message sent console', msg);
       setMessageHeadId(msg?.data?.chathead_id);
-    });
-
-    socket.on(`JobrUser_${messageHeadId}_room`, (data) => {
-      console.log('room resp', data);
-      const newMsg = {
-        _id: data?.data?._id,
-        text: data?.data?.content,
-        user: {
-          _id: data?.data?.sender_id,
-        },
-      };
-      setMessages([...messagesData, newMsg]);
+      socket.on(`JobrUser_${messageHeadId || msg?.data?.chathead_id}_room`, (data) => {
+        console.log('room resp', data);
+        const newMsg = {
+          _id: data?.data?._id,
+          text: data?.data?.content,
+          user: {
+            _id: data?.data?.sender_id,
+          },
+        };
+        setMessages([...messagesData, newMsg]);
+      });
     });
   };
 

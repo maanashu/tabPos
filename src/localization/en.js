@@ -343,6 +343,7 @@ export const en = {
     taxSubHead:
       'If you haven’t already, create a shipping zone in the region(s) you’re liable in. Then, find the region in this list and select it to manage its tax settings. If you’re unsure about where you’re liable, check with a tax professional.',
     taxes: 'Taxes',
+    activeTaxPayInfo: 'Active Tax Payer Information',
     taxes: 'Taxes and duties',
     active: 'Active',
     activateStr: 'Activate',
@@ -377,7 +378,7 @@ export const en = {
     notApplied: 'Specify when this tax should not be applied.',
     addRule: 'Add exemption rule',
     save: 'Save',
-    taxexmption: 'Tax exemption name',
+    taxexmption: 'Tax Exemption Name',
     exempttax: 'Exempt tax',
     amount: 'Amount',
     introduction: 'Introduction',

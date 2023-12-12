@@ -282,7 +282,9 @@ export function TotalPosOrder({ onPressReview }) {
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
               ) : (
-                <View style={styles.listView}>
+                <View
+                  style={[styles.listView, { height: Platform.OS === 'ios' ? ms(260) : ms(288) }]}
+                >
                   <FlatList
                     style={styles.listStyle}
                     data={posGraph?.ordersListData}

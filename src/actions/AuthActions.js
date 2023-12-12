@@ -160,7 +160,6 @@ export const verifyOldPin = (pin) => async (dispatch) => {
   dispatch(verifyOldRequest());
   try {
     const res = await AuthController.verifyOldPin(pin);
-    console.log('asdasdasdadewqw', res);
     dispatch(verifyOldSuccess(res));
     return res;
   } catch (error) {

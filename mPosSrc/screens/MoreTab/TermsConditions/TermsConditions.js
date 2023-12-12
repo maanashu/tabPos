@@ -30,7 +30,6 @@ export function TermsConditions() {
 
   const getSettingData = useSelector(getSetting);
   const policyArray = getSettingData?.getSetting?.user_policies;
-  console.log('pocluasdasdasd', JSON.stringify(policyArray));
   useEffect(() => {
     dispatch(getSettings());
   }, []);
