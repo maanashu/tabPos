@@ -433,8 +433,20 @@ export function RetailProducts(props) {
           <Header
             backRequired
             backFunction={() => {
-              bulkCart();
-              goBack();
+              if (onlyServiceCartArray?.length >= 1) {
+                CustomAlert({
+                  title: 'Alert',
+                  description: 'Please clear service cart',
+                  yesButtonTitle: 'Clear cart',
+                  noButtonTitle: 'Cancel',
+                  onYesPress: () => {
+                    dispatch(clearAllCart());
+                  },
+                });
+              } else {
+                bulkCart();
+                goBack();
+              }
             }}
             title={`Back`}
             cartIcon
