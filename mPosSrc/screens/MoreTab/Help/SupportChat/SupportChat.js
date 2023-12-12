@@ -31,7 +31,6 @@ export const SupportChat = (props) => {
     });
 
     socket.on('send_message', (msg) => {
-      console.log('message sent console', msg);
       setMessageHeadId(msg?.data?.chathead_id);
     });
 
