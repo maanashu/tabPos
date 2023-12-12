@@ -1918,7 +1918,7 @@ export const styles = StyleSheet.create({
   //TAX STYLES
 
   activeText: {
-    fontSize: 14,
+    fontSize: ms(10),
     fontStyle: 'normal',
     fontWeight: '400',
     lineHeight: 20,
