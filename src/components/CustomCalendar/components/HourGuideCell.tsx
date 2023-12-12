@@ -48,15 +48,17 @@ const _HourGuideCell = ({
           <View
             key={item}
             style={[
-              u['border-l'],
-              u['border-b'],
-              u['border-r'],
+              // u['border-l'],
+              // u['border-b'],
+              // u['border-r'],
               {
                 height: cellHeight / 4,
                 marginHorizontal: 3,
                 marginTop: 3,
-                borderRadius: 2,
-                borderColor: theme.palette.gray['200'],
+                borderStyle: 'dotted',
+                borderRadius: 1,
+                borderWidth: 1,
+                borderColor: theme.palette.gray['300'],
               },
               { ...getCalendarCellStyle(date.toDate(), index) },
             ]}

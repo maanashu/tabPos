@@ -90,7 +90,7 @@ function _CalendarHeader<T extends ICalendarEventBase>({
             <View
               style={[
                 { height: cellHeight },
-                objHasContent(headerContentStyle) ? headerContentStyle : u['justify-between'],
+                objHasContent(headerContentStyle) ? headerContentStyle : {},
               ]}
             >
               <Text

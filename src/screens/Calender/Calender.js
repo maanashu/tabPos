@@ -569,6 +569,7 @@ export function Calender() {
                   date={calendarDate}
                   mode={calendarMode}
                   events={extractedAppointment}
+                  hourRowHeight={ms(50)}
                   height={windowHeight * 0.91}
                   {...(showEmployeeHeader
                     ? {
