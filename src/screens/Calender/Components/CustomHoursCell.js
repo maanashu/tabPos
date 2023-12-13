@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
   timeText: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(6),
-    color: COLORS.darkGray,
+    color: '#263682',
   },
   ampmText: {
     fontFamily: Fonts.Regular,
-    fontSize: ms(4),
-    color: COLORS.darkGray,
+    fontSize: ms(5),
+    color: '#263682',
   },
 });

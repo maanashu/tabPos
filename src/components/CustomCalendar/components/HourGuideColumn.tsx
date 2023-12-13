@@ -34,12 +34,7 @@ const _HourGuideColumn = ({
 
   const renderDefaultComponent = () => (
     <View style={{ height: cellHeight }}>
-      <Text
-        style={[
-          objHasContent(hourStyle) ? hourStyle : textStyle,
-          u['text-center'],
-        ]}
-      >
+      <Text style={[objHasContent(hourStyle) ? hourStyle : textStyle, u['text-center']]}>
         {formattedHour}
       </Text>
     </View>
@@ -48,9 +43,7 @@ const _HourGuideColumn = ({
   return (
     <>
       {hourComponent ? (
-        <View style={{ height: cellHeight + 12 }}>
-          {hourComponent(formattedHour)}
-        </View>
+        <View style={{ height: cellHeight + 12 }}>{hourComponent(formattedHour)}</View>
       ) : (
         renderDefaultComponent()
       )}

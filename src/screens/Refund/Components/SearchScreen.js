@@ -19,7 +19,7 @@ import ManualEntry from './ManualEntry';
 import { COLORS, SH, SW } from '@/theme';
 import ProductRefund from './ProductRefund';
 import ShowAttributes from './ShowAttributes';
-import { Fonts, scn, search_light } from '@/assets';
+import { Fonts, scanNew, scn, searchDrawer, search_light } from '@/assets';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import RecheckConfirmation from './RecheckConfirmation';
 import { getDashboard } from '@/selectors/DashboardSelector';
@@ -33,6 +33,7 @@ import {
 import ReturnOrderInvoice from './ReturnOrderInvoice';
 import { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
+import { CustomHeader } from '@/screens/PosRetail3/Components';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -111,15 +112,20 @@ export function SearchScreen(props) {
 
   return (
     <View style={styles.container}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Header />
+        <View style={{ flex: 0.85, marginHorizontal: ms(15) }}>
+          <CustomHeader />
+        </View>
+      </View>
       {!showProductRefund ? (
         <>
-          <Header />
-          <Spacer space={SH(20)} />
+          {/* <Spacer space={SH(20)} /> */}
           <View style={styles.leftViewStyle}>
             <View style={styles.textInputMainViewStyle}>
               <View style={styles.inputWraper}>
                 <View style={styles.displayRow}>
-                  <Image source={search_light} style={styles.searchStyle} />
+                  <Image source={searchDrawer} style={styles.searchStyle} />
                   <TextInput
                     value={sku}
                     ref={textInputRef}
@@ -129,10 +135,18 @@ export function SearchScreen(props) {
                       setSku(text);
                       debouncedSearchInvoice(text);
                     }}
+                    placeholderTextColor={COLORS.light_blue2}
                   />
                 </View>
-                <TouchableOpacity onPress={() => textInputRef.current.focus()}>
-                  <Image source={scn} style={styles.scnStyle} />
+                <TouchableOpacity
+                  onPress={() => textInputRef.current.focus()}
+                  style={{
+                    backgroundColor: COLORS.light_blue,
+                    padding: ms(5),
+                    borderRadius: ms(20),
+                  }}
+                >
+                  <Image source={scanNew} style={styles.scnStyle} />
                 </TouchableOpacity>
               </View>
 
@@ -217,12 +231,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: COLORS.white,
     marginHorizontal: ms(10),
-    borderWidth: 0.5,
-    borderRadius: 7,
+    borderWidth: 1,
+    borderRadius: ms(20),
     height: ms(35),
-    width: windowWidth / 2.3,
-    borderColor: COLORS.silver_solid,
+    // width: windowWidth / 2.3,
+    borderColor: COLORS.input_border,
     top: 20,
+    paddingHorizontal: ms(5),
   },
   displayRow: {
     flexDirection: 'row',
@@ -234,7 +249,7 @@ const styles = StyleSheet.create({
     width: SW(7),
     height: SW(7),
     resizeMode: 'contain',
-    marginHorizontal: moderateScale(5),
+    marginHorizontal: ms(8),
   },
   searchInput: {
     borderRadius: 7,
@@ -243,12 +258,12 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
     padding: 0,
     margin: 0,
+    color: COLORS.navy_blue,
   },
   scnStyle: {
-    width: SW(16),
-    height: SW(17),
+    width: ms(14),
+    height: ms(15),
     resizeMode: 'contain',
-    right: 5,
   },
   textInputMainViewStyle: {
     backgroundColor: COLORS.white,

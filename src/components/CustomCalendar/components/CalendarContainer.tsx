@@ -1,8 +1,8 @@
-import dayjs from 'dayjs'
-import React from 'react'
-import { TextStyle, ViewStyle } from 'react-native'
+import dayjs from 'dayjs';
+import React from 'react';
+import { TextStyle, ViewStyle } from 'react-native';
 
-import { MIN_HEIGHT } from '../commonStyles'
+import { MIN_HEIGHT } from '../commonStyles';
 import {
   CalendarCellStyle,
   CalendarCellTextStyle,
@@ -15,8 +15,8 @@ import {
   Mode,
   MonthHeaderRenderer,
   WeekNum,
-} from '../interfaces'
-import { useTheme } from '../theme/ThemeContext'
+} from '../interfaces';
+import { useTheme } from '../theme/ThemeContext';
 import {
   getDatesInMonth,
   getDatesInNextCustomDays,
@@ -25,84 +25,84 @@ import {
   getDatesInWeek,
   isAllDayEvent,
   modeToNum,
-} from '../utils/datetime'
-import { typedMemo } from '../utils/react'
-import { CalendarBody } from './CalendarBody'
-import { CalendarBodyForMonthView } from './CalendarBodyForMonthView'
-import { CalendarHeader } from './CalendarHeader'
-import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView'
+} from '../utils/datetime';
+import { typedMemo } from '../utils/react';
+import { CalendarBody } from './CalendarBody';
+import { CalendarBodyForMonthView } from './CalendarBodyForMonthView';
+import { CalendarHeader } from './CalendarHeader';
+import { CalendarHeaderForMonthView } from './CalendarHeaderForMonthView';
 
 export interface CalendarContainerProps<T extends ICalendarEventBase> {
   /**
    * To remove Hours Column from week View.
    */
-  hideHours?: Boolean
+  hideHours?: Boolean;
   /**
    * Events to be rendered. This is a required prop.
    */
-  events: T[]
+  events: T[];
 
   /**
    * The height of calendar component. This is a required prop.
    */
-  height: number
+  height: number;
 
   /**
    * The height of each hour row.
    */
-  hourRowHeight?: number
+  hourRowHeight?: number;
 
   /**
    * Adjusts the indentation of events that occur during the same time period. Defaults to 20 on web and 8 on mobile.
    */
-  overlapOffset?: number
+  overlapOffset?: number;
 
   /**
    * Custom style. It accepts styles or an array of styles, or a function that returns styles or an array of styles.
    */
-  eventCellStyle?: EventCellStyle<T>
-  calendarCellStyle?: CalendarCellStyle
-  calendarCellTextStyle?: CalendarCellTextStyle
-  calendarContainerStyle?: ViewStyle
-  headerContainerStyle?: ViewStyle
-  headerContentStyle?: ViewStyle
-  dayHeaderStyle?: ViewStyle
-  dayHeaderHighlightColor?: string
-  weekDayHeaderHighlightColor?: string
-  bodyContainerStyle?: ViewStyle
+  eventCellStyle?: EventCellStyle<T>;
+  calendarCellStyle?: CalendarCellStyle;
+  calendarCellTextStyle?: CalendarCellTextStyle;
+  calendarContainerStyle?: ViewStyle;
+  headerContainerStyle?: ViewStyle;
+  headerContentStyle?: ViewStyle;
+  dayHeaderStyle?: ViewStyle;
+  dayHeaderHighlightColor?: string;
+  weekDayHeaderHighlightColor?: string;
+  bodyContainerStyle?: ViewStyle;
 
   // Custom renderer
-  renderEvent?: EventRenderer<T>
-  renderHeader?: HeaderRenderer<T>
-  renderHeaderForMonthView?: MonthHeaderRenderer
+  renderEvent?: EventRenderer<T>;
+  renderHeader?: HeaderRenderer<T>;
+  renderHeaderForMonthView?: MonthHeaderRenderer;
 
-  ampm?: boolean
-  date?: Date
-  locale?: string
-  hideNowIndicator?: boolean
-  showAdjacentMonths?: boolean
-  mode?: Mode
-  scrollOffsetMinutes?: number
-  showTime?: boolean
+  ampm?: boolean;
+  date?: Date;
+  locale?: string;
+  hideNowIndicator?: boolean;
+  showAdjacentMonths?: boolean;
+  mode?: Mode;
+  scrollOffsetMinutes?: number;
+  showTime?: boolean;
 
-  swipeEnabled?: boolean
-  weekStartsOn?: WeekNum
-  onChangeDate?: DateRangeHandler
-  onPressCell?: (date: Date) => void
-  onPressDateHeader?: (date: Date) => void
-  onPressEvent?: (event: T) => void
-  weekEndsOn?: WeekNum
-  maxVisibleEventCount?: number
-  eventMinHeightForMonthView?: number
-  activeDate?: Date
-  headerComponent?: React.ReactElement | null
-  headerComponentStyle?: ViewStyle
+  swipeEnabled?: boolean;
+  weekStartsOn?: WeekNum;
+  onChangeDate?: DateRangeHandler;
+  onPressCell?: (date: Date) => void;
+  onPressDateHeader?: (date: Date) => void;
+  onPressEvent?: (event: T) => void;
+  weekEndsOn?: WeekNum;
+  maxVisibleEventCount?: number;
+  eventMinHeightForMonthView?: number;
+  activeDate?: Date;
+  headerComponent?: React.ReactElement | null;
+  headerComponentStyle?: ViewStyle;
   hourComponent?: (formattedHour: string) => React.ReactNode;
-  hourStyle?: TextStyle
-  showAllDayEventCell?: boolean
-  sortedMonthView?: boolean
-  moreLabel?: string
-  isEventOrderingEnabled?: boolean
+  hourStyle?: TextStyle;
+  showAllDayEventCell?: boolean;
+  sortedMonthView?: boolean;
+  moreLabel?: string;
+  isEventOrderingEnabled?: boolean;
 }
 
 function _CalendarContainer<T extends ICalendarEventBase>({
@@ -141,7 +141,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   activeDate,
   headerComponent = null,
   headerComponentStyle = {},
-  hourComponent ,
+  hourComponent,
   hourStyle = {},
   showAllDayEventCell = true,
   moreLabel = '{moreCount} More',
@@ -150,76 +150,76 @@ function _CalendarContainer<T extends ICalendarEventBase>({
   hideHours = false,
   isEventOrderingEnabled,
 }: CalendarContainerProps<T>) {
-  const [targetDate, setTargetDate] = React.useState(dayjs(date))
+  const [targetDate, setTargetDate] = React.useState(dayjs(date));
 
   React.useEffect(() => {
     if (date) {
-      setTargetDate(dayjs(date))
+      setTargetDate(dayjs(date));
     }
-  }, [date])
+  }, [date]);
 
   const allDayEvents = React.useMemo(
     () => events.filter((event) => isAllDayEvent(event.start, event.end)),
-    [events],
-  )
+    [events]
+  );
 
   const daytimeEvents = React.useMemo(
     () => events.filter((event) => !isAllDayEvent(event.start, event.end)),
-    [events],
-  )
+    [events]
+  );
 
   const getDateRange = React.useCallback(
     (date: dayjs.Dayjs) => {
       switch (mode) {
         case 'month':
-          return getDatesInMonth(date, locale)
+          return getDatesInMonth(date, locale);
         case 'week':
-          return getDatesInWeek(date, weekStartsOn, locale)
+          return getDatesInWeek(date, weekStartsOn, locale);
         case '3days':
-          return getDatesInNextThreeDays(date, locale)
+          return getDatesInNextThreeDays(date, locale);
         case 'day':
-          return getDatesInNextOneDay(date, locale)
+          return getDatesInNextOneDay(date, locale);
         case 'custom':
-          return getDatesInNextCustomDays(date, weekStartsOn, weekEndsOn, locale)
+          return getDatesInNextCustomDays(date, weekStartsOn, weekEndsOn, locale);
         default:
           throw new Error(
-            `[react-native-big-calendar] The mode which you specified "${mode}" is not supported.`,
-          )
+            `[react-native-big-calendar] The mode which you specified "${mode}" is not supported.`
+          );
       }
     },
-    [mode, locale, weekEndsOn, weekStartsOn],
-  )
+    [mode, locale, weekEndsOn, weekStartsOn]
+  );
 
   const cellHeight = React.useMemo(
     () => hourRowHeight || Math.max(height - 30, MIN_HEIGHT) / 24,
-    [height, hourRowHeight],
-  )
+    [height, hourRowHeight]
+  );
 
-  const theme = useTheme()
+  const theme = useTheme();
 
   const onSwipeHorizontal = React.useCallback(
     (direction: HorizontalDirection) => {
       if (!swipeEnabled) {
-        return
+        return;
       }
-      let nextTargetDate: dayjs.Dayjs
+      let nextTargetDate: dayjs.Dayjs;
       if ((direction === 'LEFT' && !theme.isRTL) || (direction === 'RIGHT' && theme.isRTL)) {
-        nextTargetDate = targetDate.add(modeToNum(mode, targetDate), 'day')
+        nextTargetDate = targetDate.add(modeToNum(mode, targetDate), 'day');
       } else {
         if (mode === 'month') {
-          nextTargetDate = targetDate.add(targetDate.date() * -1, 'day')
+          nextTargetDate = targetDate.add(targetDate.date() * -1, 'day');
         } else {
-          nextTargetDate = targetDate.add(modeToNum(mode, targetDate) * -1, 'day')
+          nextTargetDate = targetDate.add(modeToNum(mode, targetDate) * -1, 'day');
         }
       }
-      setTargetDate(nextTargetDate)
+      setTargetDate(nextTargetDate);
       if (onChangeDate) {
-        const nextDateRange = getDateRange(nextTargetDate)
-        onChangeDate([nextDateRange[0].toDate(), nextDateRange.slice(-1)[0].toDate()])
+        const nextDateRange = getDateRange(nextTargetDate);
+        onChangeDate([nextDateRange[0].toDate(), nextDateRange.slice(-1)[0].toDate()]);
       }
     },
-    [swipeEnabled, targetDate, mode, theme.isRTL, getDateRange, onChangeDate],
-  )
+    [swipeEnabled, targetDate, mode, theme.isRTL, getDateRange, onChangeDate]
+  );
 
   const commonProps = {
     cellHeight,
@@ -227,7 +227,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     mode,
     onPressEvent,
     hideHours,
-  }
+  };
 
   if (mode === 'month') {
     const headerProps = {
@@ -239,7 +239,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
       dayHeaderHighlightColor: dayHeaderHighlightColor,
       weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
       showAllDayEventCell: showAllDayEventCell,
-    }
+    };
     return (
       <React.Fragment>
         <HeaderComponentForMonthView {...headerProps} />
@@ -266,7 +266,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
           moreLabel={moreLabel}
         />
       </React.Fragment>
-    )
+    );
   }
 
   const headerProps = {
@@ -280,7 +280,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
     dayHeaderHighlightColor: dayHeaderHighlightColor,
     weekDayHeaderHighlightColor: weekDayHeaderHighlightColor,
     showAllDayEventCell: showAllDayEventCell,
-  }
+  };
 
   return (
     <React.Fragment>
@@ -308,7 +308,7 @@ function _CalendarContainer<T extends ICalendarEventBase>({
         isEventOrderingEnabled={isEventOrderingEnabled}
       />
     </React.Fragment>
-  )
+  );
 }
 
-export const CalendarContainer = typedMemo(_CalendarContainer)
+export const CalendarContainer = typedMemo(_CalendarContainer);

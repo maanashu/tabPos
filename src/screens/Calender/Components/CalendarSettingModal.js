@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Fonts, radioSelect, radioUnSelect } from '@/assets';
+import { Fonts, calendarSettingsIcon, crossButton } from '@/assets';
 import { COLORS, SF } from '@/theme';
 import { ms } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
@@ -12,6 +12,9 @@ import {
 } from '@/constants/enums';
 import { useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
+import { height, width } from '@/theme/ScalerDimensions';
+import { Images } from '@/assets/new_icon';
+import { Spacer } from '@/components';
 
 const CalendarSettingModal = ({
   isVisible,
@@ -31,13 +34,28 @@ const CalendarSettingModal = ({
     defaultSettingsForCalendar?.employee_color_set ?? EMPLOYEES_COLOR_SET_MODE.DEFAULT
   );
   return (
-    <Modal isVisible={isVisible}>
+    <Modal
+      isVisible={isVisible}
+      backdropOpacity={0.11}
+      style={{ position: 'absolute', right: width * 0.04, top: height * 0.05 }}
+    >
       <View style={styles.calendarSettingModalContainer}>
-        <Text style={styles.title}>Preference</Text>
-        <View style={styles.mainOptionTitleContainer} />
+        <View style={styles.preferanceHeader}>
+          <Image source={calendarSettingsIcon} resizeMode="contain" style={styles.settingIcon} />
+          <Text style={styles.title}>Preferences</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setIsVisible(false);
+            }}
+          >
+            <Image source={crossButton} resizeMode="contain" style={styles.settingIcon} />
+          </TouchableOpacity>
+        </View>
+        {/* <View style={styles.mainOptionTitleContainer} /> */}
 
         <View style={{ marginTop: ms(15) }}>
           <Text style={styles.substitle}>Default Calendar View</Text>
+          <Spacer space={ms(3)} />
 
           <View style={styles.subContainerCheckBox}>
             <TouchableOpacity
@@ -45,9 +63,15 @@ const CalendarSettingModal = ({
               style={styles.checkboxContainer}
             >
               <Image
-                source={defaultCalendarMode === CALENDAR_MODES.DAY ? radioSelect : radioUnSelect}
+                source={
+                  defaultCalendarMode === CALENDAR_MODES.DAY
+                    ? Images.radioFilled
+                    : Images.radioBlank
+                }
                 style={styles.checkboxIcon}
+                resizeMode="contain"
               />
+
               <Text style={styles.checkboxTitle}>Day View</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -55,8 +79,13 @@ const CalendarSettingModal = ({
               style={styles.checkboxContainer}
             >
               <Image
-                source={defaultCalendarMode === CALENDAR_MODES.WEEK ? radioSelect : radioUnSelect}
+                source={
+                  defaultCalendarMode === CALENDAR_MODES.WEEK
+                    ? Images.radioFilled
+                    : Images.radioBlank
+                }
                 style={styles.checkboxIcon}
+                resizeMode="contain"
               />
               <Text style={styles.checkboxTitle}>Week View</Text>
             </TouchableOpacity>
@@ -65,16 +94,23 @@ const CalendarSettingModal = ({
               style={styles.checkboxContainer}
             >
               <Image
-                source={defaultCalendarMode === CALENDAR_MODES.MONTH ? radioSelect : radioUnSelect}
+                source={
+                  defaultCalendarMode === CALENDAR_MODES.MONTH
+                    ? Images.radioFilled
+                    : Images.radioBlank
+                }
                 style={styles.checkboxIcon}
+                resizeMode="contain"
               />
               <Text style={styles.checkboxTitle}>Month View</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ marginTop: ms(15) }}>
+        <View style={styles.mainOptionTitleContainer} />
+        <View>
           <Text style={styles.substitle}>Time Format</Text>
 
+          <Spacer space={ms(3)} />
           <View style={styles.subContainerCheckBox}>
             <TouchableOpacity
               onPress={() => setDefaultTimeFormat(CALENDAR_TIME_FORMAT.TWELVE_HOUR)}
@@ -83,10 +119,11 @@ const CalendarSettingModal = ({
               <Image
                 source={
                   defaultTimeFormat === CALENDAR_TIME_FORMAT.TWELVE_HOUR
-                    ? radioSelect
-                    : radioUnSelect
+                    ? Images.radioFilled
+                    : Images.radioBlank
                 }
                 style={styles.checkboxIcon}
+                resizeMode="contain"
               />
               <Text style={styles.checkboxTitle}>12 Hours(AM/PM)</Text>
             </TouchableOpacity>
@@ -97,17 +134,22 @@ const CalendarSettingModal = ({
               <Image
                 source={
                   defaultTimeFormat === CALENDAR_TIME_FORMAT.TWENTY_FOUR_HOURS
-                    ? radioSelect
-                    : radioUnSelect
+                    ? Images.radioFilled
+                    : Images.radioBlank
                 }
                 style={styles.checkboxIcon}
+                resizeMode="contain"
               />
               <Text style={styles.checkboxTitle}>24 Hours</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ marginTop: ms(15) }}>
+        <View style={styles.mainOptionTitleContainer} />
+
+        <View>
           <Text style={styles.substitle}>Appointment Request</Text>
+
+          <Spacer space={ms(3)} />
 
           <View style={styles.subContainerCheckBox}>
             <TouchableOpacity
@@ -117,10 +159,11 @@ const CalendarSettingModal = ({
               <Image
                 source={
                   defaultAppointmentRequestMode === APPOINTMENT_REQUEST_MODE.MANUAL
-                    ? radioSelect
-                    : radioUnSelect
+                    ? Images.radioFilled
+                    : Images.radioBlank
                 }
                 style={styles.checkboxIcon}
+                resizeMode="contain"
               />
               <Text style={styles.checkboxTitle}>Accept Manually</Text>
             </TouchableOpacity>
@@ -131,18 +174,22 @@ const CalendarSettingModal = ({
               <Image
                 source={
                   defaultAppointmentRequestMode === APPOINTMENT_REQUEST_MODE.AUTOMATIC
-                    ? radioSelect
-                    : radioUnSelect
+                    ? Images.radioFilled
+                    : Images.radioBlank
                 }
                 style={styles.checkboxIcon}
+                resizeMode="contain"
               />
               <Text style={styles.checkboxTitle}>Accept Automatically</Text>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ marginTop: ms(15) }}>
+        <View style={styles.mainOptionTitleContainer} />
+
+        <View>
           <Text style={styles.substitle}>Employee's Color Set</Text>
 
+          <Spacer space={ms(3)} />
           <View style={styles.subContainerCheckBox}>
             <TouchableOpacity
               onPress={() => setDefaultEmployeesColorSet(EMPLOYEES_COLOR_SET_MODE.DEFAULT)}
@@ -151,10 +198,11 @@ const CalendarSettingModal = ({
               <Image
                 source={
                   defaultEmployeesColorSet === EMPLOYEES_COLOR_SET_MODE.DEFAULT
-                    ? radioSelect
-                    : radioUnSelect
+                    ? Images.radioFilled
+                    : Images.radioBlank
                 }
                 style={styles.checkboxIcon}
+                resizeMode="contain"
               />
               <Text style={styles.checkboxTitle}>Default</Text>
             </TouchableOpacity>
@@ -165,10 +213,11 @@ const CalendarSettingModal = ({
               <Image
                 source={
                   defaultEmployeesColorSet === EMPLOYEES_COLOR_SET_MODE.MANUAL
-                    ? radioSelect
-                    : radioUnSelect
+                    ? Images.radioFilled
+                    : Images.radioBlank
                 }
                 style={styles.checkboxIcon}
+                resizeMode="contain"
               />
               <Text style={styles.checkboxTitle}>Manual</Text>
             </TouchableOpacity>
@@ -182,7 +231,7 @@ const CalendarSettingModal = ({
             }}
             style={styles.declineBtnContainer}
           >
-            <Text style={styles.declineText}>Close</Text>
+            <Text style={styles.declineText}>Cancel</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -198,7 +247,12 @@ const CalendarSettingModal = ({
             }}
             style={[styles.acceptbtnContainer]}
           >
-            <Text style={styles.approveText}>Save</Text>
+            <Text style={styles.approveText}>Save Changes</Text>
+            <Image
+              source={Images.arrowUpRightIcon}
+              resizeMode="contain"
+              style={styles.arrowImage}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -210,12 +264,12 @@ export default CalendarSettingModal;
 
 const styles = StyleSheet.create({
   checkboxTitle: {
-    fontFamily: Fonts.Regular,
-    color: COLORS.darkGray,
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
     fontSize: ms(7),
     marginLeft: ms(5),
   },
-  checkboxIcon: { height: ms(10), width: ms(10), resizeMode: 'contain' },
+  checkboxIcon: { height: ms(10), width: ms(10) },
   checkboxContainer: { flexDirection: 'row', flex: 1 },
   subContainerCheckBox: {
     flexDirection: 'row',
@@ -224,20 +278,20 @@ const styles = StyleSheet.create({
     marginTop: ms(7),
   },
   substitle: {
-    fontFamily: Fonts.Regular,
-    color: COLORS.black,
-    fontSize: ms(7),
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
+    fontSize: ms(8),
   },
   mainOptionTitleContainer: {
-    height: 2,
+    height: 1,
     width: '100%',
-    backgroundColor: COLORS.textInputBackground,
-    marginVertical: ms(5),
+    backgroundColor: COLORS.light_purple,
+    marginVertical: ms(10),
   },
-  title: { fontFamily: Fonts.SemiBold, fontSize: ms(8), color: COLORS.black },
+  title: { fontFamily: Fonts.Medium, fontSize: ms(10), color: COLORS.navy_blue },
   calendarSettingModalContainer: {
     width: ms(290),
-    height: ms(300),
+    height: ms(310),
     backgroundColor: 'white',
     padding: ms(10),
     paddingVertical: ms(15),
@@ -251,21 +305,22 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   declineBtnContainer: {
-    height: ms(25),
+    height: ms(30),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.textInputBackground,
-    flex: 1,
-    borderRadius: ms(3),
+    backgroundColor: COLORS.input_border,
+    borderRadius: ms(30),
+    width: ms(110),
   },
   acceptbtnContainer: {
-    height: ms(25),
+    height: ms(30),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.primary,
-    flex: 1,
-    borderRadius: ms(3),
+    backgroundColor: COLORS.navy_blue,
+    borderRadius: ms(30),
     marginLeft: ms(8),
+    width: ms(110),
+    flexDirection: 'row',
   },
   approveText: {
     color: COLORS.white,
@@ -273,8 +328,25 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   declineText: {
-    fontFamily: Fonts.Regular,
+    fontFamily: Fonts.Medium,
     fontSize: ms(8),
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
+  },
+  preferanceHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  settingIcon: {
+    height: ms(18),
+    width: ms(18),
+    tintColor: COLORS.navy_blue,
+  },
+  arrowImage: {
+    height: 20,
+    width: 20,
+    tintColor: COLORS.sky_blue,
+    top: 1,
+    left: 3,
   },
 });

@@ -75,4 +75,9 @@ export const Images = {
   usersOutlineIcon: require('@/assets/new_icon/Settings/users_outline.png'),
   languageIcon: require('@/assets/new_icon/Settings/language_icon.png'),
   calendarIcon: require('@/assets/new_icon/Settings/calendar_outline.png'),
+  backIcon: require('@/assets/new_icon/appointments/backIcon.png'),
+  radioBlank: require('@/assets/new_icon/appointments/radioBlank.png'),
+  radioFilled: require('@/assets/new_icon/appointments/radioFilled.png'),
+  usersThree: require('@/assets/new_icon/appointments/usersThree.png'),
+  settingsOutline: require('@/assets/new_icon/appointments/settingsOutline.png'),
 };

@@ -12,7 +12,7 @@ const Price = ({ orderData, onPresshandler }) => {
   return (
     <View style={styles.subTotalView}>
       <View style={[styles.orderDetailsView, { paddingTop: 0 }]}>
-        <Text style={[styles.invoiceText, { color: COLORS.solid_grey }]}>
+        <Text style={[styles.invoiceText, { color: COLORS.light_blue2 }]}>
           {strings.deliveryOrders.subTotal}
         </Text>
         <Text style={[styles.totalTextStyle, { fontFamily: Fonts.MaisonBold }]}>
@@ -22,30 +22,24 @@ const Price = ({ orderData, onPresshandler }) => {
 
       <View style={styles.orderDetailsView}>
         <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.totalTextStyle2}>{'$'}</Text>
-          <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>
-            {orderData?.order?.discount ?? '0.0'}
-          </Text>
+          <Text style={[styles.totalTextStyle]}>{orderData?.order?.discount ?? '0.0'}</Text>
         </View>
       </View>
       <View style={styles.orderDetailsView}>
         <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.totalTextStyle2}>{'$'}</Text>
-          <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>
-            {orderData?.order?.tips ?? '0.0'}
-          </Text>
+          <Text style={[styles.totalTextStyle]}>{orderData?.order?.tips ?? '0.0'}</Text>
         </View>
       </View>
 
       <View style={styles.orderDetailsView}>
         <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.totalTextStyle2}>{'$'}</Text>
-          <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>
-            {orderData?.order?.tax}
-          </Text>
+          <Text style={[styles.totalTextStyle]}>{orderData?.order?.tax}</Text>
         </View>
       </View>
       {(orderData?.order?.delivery_charge !== '0' || orderData?.order?.shipping_charge !== '0') && (
@@ -55,9 +49,9 @@ const Price = ({ orderData, onPresshandler }) => {
               ? strings.deliveryOrders.deliveryCharges
               : strings.deliveryOrders.shippingCharges}
           </Text>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={styles.totalTextStyle2}>{'$'}</Text>
-            <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>
+            <Text style={[styles.totalTextStyle]}>
               {orderData?.order?.delivery_charge !== '0'
                 ? orderData?.order?.delivery_charge
                 : orderData?.order?.shipping_charge}
@@ -68,24 +62,26 @@ const Price = ({ orderData, onPresshandler }) => {
 
       <View style={styles.orderDetailsView}>
         <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.totalTextStyle2}>{'$'}</Text>
-          <Text style={[styles.totalTextStyle, { color: COLORS.darkGray }]}>{'0.00'}</Text>
+          <Text style={[styles.totalTextStyle]}>{'0.00'}</Text>
         </View>
       </View>
 
       <View style={styles.horizontalLine} />
 
       <View style={styles.orderDetailsView}>
-        <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
-        <View style={{ flexDirection: 'row' }}>
+        <Text style={[styles.totalText, { color: COLORS.black }]}>
+          {strings.deliveryOrders.total}
+        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text
             style={[
               styles.totalTextStyle2,
               {
                 fontFamily: Fonts.MaisonBold,
-                fontSize: SF(13),
-                color: COLORS.solid_grey,
+                fontSize: SF(18),
+                color: COLORS.navy_blue,
               },
             ]}
           >
@@ -111,7 +107,7 @@ const Price = ({ orderData, onPresshandler }) => {
           style={[
             styles.returnButtonStyle,
             {
-              backgroundColor: hasCheckedItem ? COLORS.primary : COLORS.white,
+              backgroundColor: hasCheckedItem ? COLORS.navy_blue : COLORS.white,
               borderWidth: hasCheckedItem ? 0 : 1,
             },
           ]}
@@ -119,7 +115,7 @@ const Price = ({ orderData, onPresshandler }) => {
           <Text
             style={[
               styles.returnTextStyle,
-              { color: hasCheckedItem ? COLORS.white : COLORS.dark_grey },
+              { color: hasCheckedItem ? COLORS.white : COLORS.navy_blue },
             ]}
           >
             {'Return All'}
@@ -135,12 +131,12 @@ export default memo(Price);
 const styles = StyleSheet.create({
   subTotalView: {
     paddingHorizontal: ms(10),
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.light_blue,
     paddingVertical: ms(8),
     width:
       Platform.OS === 'android'
-        ? Dimensions.get('window').width / 5
-        : Dimensions.get('window').width / 4.5,
+        ? Dimensions.get('window').width / 4
+        : Dimensions.get('window').width / 4,
     borderRadius: 10,
   },
   orderDetailsView: {
@@ -153,30 +149,30 @@ const styles = StyleSheet.create({
   invoiceText: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(12),
-    color: COLORS.darkGray,
+    color: COLORS.light_blue2,
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(7.2),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_light_blue,
     paddingTop: 0,
   },
   totalTextStyle2: {
     paddingTop: 0,
     fontSize: SF(12),
-    lineHeight: ms(8),
-    color: COLORS.darkGray,
+    // lineHeight: ms(8),
+    color: COLORS.navy_blue,
   },
   horizontalLine: {
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
+    borderWidth: 0.5,
+    borderColor: COLORS.navy_blue,
     borderStyle: 'dashed',
     marginTop: ms(5),
   },
   totalText: {
     fontFamily: Fonts.MaisonBold,
     fontSize: SF(18),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
   },
   locationViewStyle: {
     flexDirection: 'row',
@@ -188,7 +184,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1.5,
-    borderColor: COLORS.dark_grey,
+    borderColor: COLORS.navy_blue,
     borderRadius: 5,
     backgroundColor: COLORS.white,
     width: ms(120),
@@ -198,6 +194,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
   },
 });
