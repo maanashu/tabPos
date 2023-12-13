@@ -626,6 +626,7 @@ export const en = {
     priceChanging: 'Price Changing for Refund',
     productPrice: 'Product Price',
     refundAmount: 'Refund Amount',
+    noInvoices: 'No invoices found',
   },
   batchManagement: {
     header: 'Batch management',

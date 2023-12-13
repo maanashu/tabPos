@@ -8,7 +8,17 @@ import Price from './Price';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
-import { blankCheckBox, Fonts, PaymentDone, research, scooter, userImage } from '@/assets';
+import {
+  blankCheckBox,
+  checkboxSec,
+  checkboxSecBlue,
+  Fonts,
+  PaymentDone,
+  research,
+  scanNew,
+  scooter,
+  userImage,
+} from '@/assets';
 import { useState } from 'react';
 import { getProductByUpc } from '@/actions/DeliveryAction';
 import { useEffect } from 'react';
@@ -72,33 +82,21 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
             </Text>
           </View>
         </View>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+        <Text style={[styles.nameTextStyle, { color: COLORS.black }]}>
           {`$${item?.price}` ?? '-'}
         </Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>{item?.qty ?? '-'}</Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.darkGray }]}>
+        <Text style={[styles.nameTextStyle, { color: COLORS.black }]}>{item?.qty ?? '-'}</Text>
+        <Text style={[styles.nameTextStyle, { color: COLORS.black }]}>
           {`$${item?.price * item?.qty}` ?? '-'}
         </Text>
 
         {item?.isChecked ? (
-          <TouchableOpacity
-            style={{
-              width: SH(25),
-              height: SH(25),
-              resizeMode: 'contain',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onPress={() => checkboxHandler(item?.id, item?.qty)}
-          >
-            <Image
-              source={PaymentDone}
-              style={[styles.infoIconStyle, { tintColor: COLORS.primary }]}
-            />
+          <TouchableOpacity onPress={() => checkboxHandler(item?.id, item?.qty)}>
+            <Image source={checkboxSecBlue} style={styles.infoIconStyle} />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity onPress={() => checkboxHandler(item?.id, item?.qty)}>
-            <Image source={blankCheckBox} style={styles.checkboxIconStyle} />
+            <Image source={checkboxSec} style={styles.checkboxIconStyle} />
           </TouchableOpacity>
         )}
       </View>
@@ -141,15 +139,20 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
             </View>
           </View>
 
-          <Spacer space={SH(15)} />
+          <Spacer space={SH(20)} />
           <View style={styles.getProductDetailView}>
             <View style={styles.scanProductView}>
               <TextInput
                 value={productUpc}
-                maxLength={12}
-                placeholder="Scan barcode of each item returned"
+                placeholder="Scan Barcode of each Item"
                 style={styles.orderDateText}
                 onChangeText={onChangeHandler}
+                placeholderTextColor={COLORS.light_blue2}
+              />
+              <Image
+                source={scanNew}
+                resizeMode="contain"
+                style={{ height: ms(10), width: ms(10), tintColor: COLORS.aqua }}
               />
             </View>
 
@@ -239,17 +242,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
     marginHorizontal: ms(10),
-    paddingVertical: 30,
     borderRadius: 10,
     marginTop: ms(10),
-    backgroundColor: COLORS.textInputBackground,
   },
   getProductDetailView: {
     marginHorizontal: ms(10),
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   userImageStyle: {
     width: SH(36),
@@ -268,19 +267,20 @@ const styles = StyleSheet.create({
   },
   orderDateText: {
     fontFamily: Fonts.Medium,
-    fontSize: SF(11),
-    color: COLORS.dark_grey,
+    fontSize: ms(9),
+    color: COLORS.navy_blue,
+    marginRight: ms(10),
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(7.2),
-    color: COLORS.solid_grey,
+    color: COLORS.light_blue2,
     paddingTop: ms(2),
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
-    fontSize: ms(12),
-    color: COLORS.dark_grey,
+    fontSize: ms(11),
+    color: COLORS.navy_blue,
   },
   nameTextStyle: {
     fontSize: SF(14),
@@ -298,25 +298,28 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   scanProductView: {
-    paddingVertical: 15,
-    borderRadius: 7,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: ms(22),
-    backgroundColor: COLORS.blue_shade,
+    borderRadius: ms(15),
+    // alignItems: 'center',
+    // justifyContent: 'center',
     paddingHorizontal: ms(20),
+    backgroundColor: COLORS.light_blue,
+    // paddingHorizontal: ms(20),
     marginRight: ms(5),
-    flex: 1,
+    flex: 0.6,
+    maxHeight: ms(25),
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   manualView: {
     borderWidth: 3,
     backgroundColor: COLORS.white,
-    borderRadius: 7,
-    paddingHorizontal: ms(22),
+    borderRadius: ms(15),
+    paddingHorizontal: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(20),
     borderColor: COLORS.blue_shade,
+    flex: 0.4,
   },
   orderandPriceView: {
     flexDirection: 'row',
@@ -336,16 +339,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   infoIconStyle: {
-    width: SH(15),
-    height: SH(15),
+    width: ms(15),
+    height: ms(15),
     resizeMode: 'contain',
-    tintColor: COLORS.darkGray,
+    tintColor: COLORS.navy_blue,
   },
   checkboxIconStyle: {
-    width: SH(25),
-    height: SH(25),
+    width: ms(14),
+    height: ms(14),
     resizeMode: 'contain',
-    tintColor: COLORS.darkGray,
+    tintColor: COLORS.light_blue2,
   },
   orderproductView: {
     borderWidth: 1,
@@ -373,8 +376,10 @@ const styles = StyleSheet.create({
   searchViewStyle: {
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center',
-    flex: 1,
+    // alignSelf: 'center',
+    flex: 0.98,
+    backgroundColor: COLORS.white,
+    borderRadius: ms(5),
   },
   researchIconstyle: {
     width: SH(210),
