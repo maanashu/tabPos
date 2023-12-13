@@ -15,6 +15,7 @@ import { ms } from 'react-native-size-matters';
 import { COLORS, SH, SW } from '@/theme';
 import { CALENDAR_VIEW_MODES } from '@/constants/enums';
 import { Spacer } from '@/components';
+import { Images } from '@/assets/new_icon';
 
 const CalendarHeaderWithOptions = ({
   prevMonth,
@@ -110,7 +111,10 @@ const CalendarHeaderWithOptions = ({
             }
             onPress={onPressCalendarViewMode}
           >
-            <Image source={bookingsCalender} style={styles.calenderModeIcons} />
+            <Image
+              source={Images.calendarIcon}
+              style={[styles.calenderModeIcons, { tintColor: COLORS.navy_blue }]}
+            />
             <Spacer space={ms(8)} horizontal />
             <Text
               style={
