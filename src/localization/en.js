@@ -200,7 +200,7 @@ export const en = {
     totalCustomer: 'Total Customers',
     users: 'Users',
     userprofile: 'User Profile',
-    Edit: 'Edit',
+    Edit: 'Edit Profile',
     point: 'Points: 2',
     acceptMarket: 'Accept Marketing',
     costo: 'Costco Wholesale',
