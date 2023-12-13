@@ -1,9 +1,9 @@
-import { Platform, StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native';
 
-export const MIN_HEIGHT = 1200
-export const HOUR_GUIDE_WIDTH = 50
-export const OVERLAP_OFFSET = Platform.OS === 'web' ? 20 : 8
-export const OVERLAP_PADDING = Platform.OS === 'web' ? 3 : 0
+export const MIN_HEIGHT = 1200;
+export const HOUR_GUIDE_WIDTH = 50;
+export const OVERLAP_OFFSET = Platform.OS === 'web' ? 20 : 8;
+export const OVERLAP_PADDING = Platform.OS === 'web' ? 3 : 0;
 
 export const eventCellCss = StyleSheet.create({
   style: {
@@ -18,7 +18,7 @@ export const eventCellCss = StyleSheet.create({
     elevation: 2,
     minWidth: '33%',
   },
-})
+});
 
 /*
  * Utility-first CSS.
@@ -102,6 +102,9 @@ export const u = StyleSheet.create({
   'pt-2': {
     paddingTop: 2,
   },
+  'pt-12': {
+    paddingTop: 12,
+  },
   'py-2': {
     paddingVertical: 2,
   },
@@ -172,4 +175,4 @@ export const u = StyleSheet.create({
           // whiteSpace: 'nowrap',
         }
       : {},
-})
+});

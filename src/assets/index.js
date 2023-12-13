@@ -530,6 +530,8 @@ export { default as checkInIcon } from '@/assets/new_icon/appointments/checkInIc
 export { default as circleTick } from '@/assets/new_icon/appointments/circleTick.png';
 export { default as SubLine } from '@/assets/new_icon/ic_settings/SubLine.png';
 export { default as Flag } from '@/assets/new_icon/ic_settings/Flag.png';
+export { default as leftArrow } from '@/assets/new_icon/appointments/leftArrow.png';
+export { default as rightArrow } from '@/assets/new_icon/appointments/rightArrow.png';
 
 /* Fonts */
 export const Fonts = {
