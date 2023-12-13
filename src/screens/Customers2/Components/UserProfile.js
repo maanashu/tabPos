@@ -8,13 +8,14 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
+  KeyboardAvoidingView,
+  TextInput,
 } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
 import {
-  leftBack,
   dropdown2,
   Union,
   mask,
@@ -22,15 +23,17 @@ import {
   unionRight,
   userImage,
   toggle,
-  reward2,
-  email,
-  Phone_light,
-  location,
   arrowLeftUp,
   new_location,
   new_phone,
   new_email,
   Gift_Card,
+  editProfile,
+  new_camera,
+  addIcon,
+  addToCartBlue,
+  addProduct,
+  email_new,
 } from '@/assets';
 import { Spacer, TableDropdown } from '@/components';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -50,6 +53,9 @@ import { getAcceptMarketing, getOrderUser, marketingUpdate } from '@/actions/Cus
 import { useMemo } from 'react';
 import { useCallback } from 'react';
 import moment from 'moment';
+import Modal from 'react-native-modal';
+import CountryPicker from 'react-native-country-picker-modal';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const result = Dimensions.get('window').height - 50;
 const windowWidth = Dimensions.get('window').width;
@@ -80,6 +86,13 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
 
   const monthSelection = (value) => setMonthSelect(value);
   const [monthSelect, setMonthSelect] = useState('none');
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [name, setName] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
+  const [flag, setFlag] = useState('US');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState('+1');
 
   const storeLocationArray = [
     storeLocationData?.map((item, index) => ({
@@ -175,9 +188,10 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
           </TouchableOpacity>
           <Text style={styles.deliveryText}>{'User Profile'}</Text>
         </View>
-        {/* <View style={styles.editButtonCon}>
+        {/* <TouchableOpacity style={styles.displayFlex} onPress={() => setShowEditModal(true)}>
           <Text style={styles.editButtonText}>{strings.customers.Edit}</Text>
-        </View> */}
+          <Image source={editProfile} style={styles.Phonelight} />
+        </TouchableOpacity> */}
       </View>
 
       <View style={styles.profileCon}>
@@ -659,6 +673,181 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
           </View>
         </Table>
       </View>
+      <Modal isVisible={showEditModal} onBackdropPress={() => setShowEditModal(false)}>
+        <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps={'handled'}
+          style={{
+            flex: 1,
+          }}
+          contentContainerStyle={{ alignItems: 'center' }}
+        >
+          <View
+            style={{
+              marginHorizontal: ms(40),
+              backgroundColor: COLORS.white,
+              borderRadius: ms(5),
+              paddingHorizontal: ms(20),
+              paddingVertical: ms(20),
+              // minHeight: '90%',
+              flexDirection: 'row',
+            }}
+          >
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: COLORS.input_border,
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  padding: ms(5),
+                  borderRadius: ms(20),
+                }}
+              >
+                <Image
+                  source={new_camera}
+                  resizeMode="contain"
+                  style={{ height: ms(20), width: ms(20) }}
+                />
+              </TouchableOpacity>
+              <Text style={styles.headerText}>{'Add New Store Employee'}</Text>
+
+              <View style={{ flexDirection: 'row', marginTop: ms(20) }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: ms(10), color: COLORS.navy_blue }}>{'First Name'}</Text>
+                  <View style={styles.textInputView}>
+                    <TextInput
+                      returnKeyType={'done'}
+                      keyboardType={'default'}
+                      value={name.trim()}
+                      onChangeText={(text) => {
+                        setName(text);
+                      }}
+                      style={[styles.textInputContainer]}
+                      placeholder={'First Name'}
+                      placeholderTextColor={COLORS.navy_light_blue}
+                      // showSoftInputOnFocus={false}
+                    />
+                  </View>
+                </View>
+                <View style={{ flex: 1, marginLeft: ms(8) }}>
+                  <Text style={{ fontSize: ms(10), color: COLORS.navy_blue }}>{'Last Name'}</Text>
+                  <View style={styles.textInputView}>
+                    <TextInput
+                      returnKeyType={'done'}
+                      keyboardType={'default'}
+                      value={name.trim()}
+                      onChangeText={(text) => {
+                        setName(text);
+                      }}
+                      style={[styles.textInputContainer]}
+                      placeholder={'Last Name'}
+                      placeholderTextColor={COLORS.navy_light_blue}
+                      // showSoftInputOnFocus={false}
+                    />
+                  </View>
+                </View>
+              </View>
+              <Text style={{ fontSize: ms(10), color: COLORS.navy_blue }}>{'Phone Number'}</Text>
+
+              <View style={styles.textInputView}>
+                <CountryPicker
+                  withFilter
+                  withCallingCode
+                  countryCode={flag}
+                  onSelect={(code) => {
+                    setFlag(code.cca2);
+                    if (code?.callingCode?.length > 0) {
+                      setCountryCode('+' + code.callingCode.flat());
+                    } else {
+                      setCountryCode('');
+                    }
+                  }}
+                />
+
+                <Text style={styles.codeText}>{countryCode}</Text>
+
+                <TextInput
+                  maxLength={10}
+                  value={phoneNumber}
+                  autoCorrect={false}
+                  returnKeyType={'done'}
+                  keyboardType={'number-pad'}
+                  style={styles.textInputContainer}
+                  onChangeText={(phone) => setPhoneNumber(phone)}
+                  placeholderTextColor={COLORS.navy_light_blue}
+                  placeholder={strings.verifyPhone.placeHolderText}
+                />
+              </View>
+              <Text style={{ fontSize: ms(10), color: COLORS.navy_blue }}>{'Email-Address'}</Text>
+
+              <View style={styles.textInputView}>
+                <Image
+                  source={email_new}
+                  resizeMode="contain"
+                  style={{ width: ms(10), aspectRatio: 1 }}
+                />
+                <TextInput
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={emailAddress}
+                  onChangeText={(text) => {
+                    setEmailAddress(text);
+                  }}
+                  style={styles.textInputContainer}
+                  placeholder={'Email'}
+                  placeholderTextColor={COLORS.navy_light_blue}
+                  // showSoftInputOnFocus={false}
+                />
+              </View>
+
+              <View style={{ flexDirection: 'row', marginTop: ms(20) }}>
+                <TouchableOpacity
+                  style={styles.continueBtnCon}
+                  onPress={() => setShowEditModal(false)}
+                >
+                  <Text style={styles.detailBtnCon}>Cancel</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.addToCartCon} onPress={() => {}}>
+                  <Text style={styles.addTocartText}>Add Employee</Text>
+                  <Image
+                    resizeMode="contain"
+                    style={{ width: ms(20), aspectRatio: 1, tintColor: COLORS.aqua }}
+                    source={addProduct}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View
+              style={{
+                width: ms(2),
+                backgroundColor: COLORS.light_blue,
+                marginHorizontal: ms(20),
+              }}
+            />
+
+            <View style={{ flex: 1 }}>
+              <Text style={styles.phoneText}>{'Name'}</Text>
+
+              <View style={styles.textInputView}>
+                <TextInput
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={name.trim()}
+                  onChangeText={(text) => {
+                    setName(text);
+                  }}
+                  style={styles.textInputContainer}
+                  placeholder={'Name'}
+                  placeholderTextColor={COLORS.darkGray}
+                  // showSoftInputOnFocus={false}
+                />
+              </View>
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
+      </Modal>
     </View>
   );
 };

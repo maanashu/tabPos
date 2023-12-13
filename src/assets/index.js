@@ -455,6 +455,10 @@ export { default as new_wallet } from '@/assets/new_icon/ic_customer/new_wallet.
 export { default as new_cash } from '@/assets/new_icon/ic_customer/new_cash.png';
 export { default as new_visa } from '@/assets/new_icon/ic_customer/new_visa.png';
 export { default as new_JBR_coin } from '@/assets/new_icon/ic_customer/new_JBR_coin.png';
+export { default as editProfile } from '@/assets/new_icon/ic_customer/editProfile.png';
+export { default as email_new } from '@/assets/new_icon/ic_customer/email_new.png';
+export { default as location_new } from '@/assets/new_icon/ic_customer/location.png';
+export { default as new_camera } from '@/assets/new_icon/ic_customer/new_camera.png';
 // Delivery  New ICON
 export { default as BikeFast } from '@/assets/new_icon/ic_delivery/bikefast.png';
 export { default as Market } from '@/assets/new_icon/ic_delivery/market.png';
@@ -528,6 +532,9 @@ export { default as timeDurationIcon } from '@/assets/new_icon/appointments/time
 export { default as editAppointmentIcon } from '@/assets/new_icon/appointments/editAppointment.png';
 export { default as checkInIcon } from '@/assets/new_icon/appointments/checkInIcon.png';
 export { default as circleTick } from '@/assets/new_icon/appointments/circleTick.png';
+
+//retial Icons
+export { default as addProduct } from '@/assets/new_icon/retail_con/addProduct.png';
 
 /* Fonts */
 export const Fonts = {
