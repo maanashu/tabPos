@@ -696,6 +696,14 @@ export function Calender() {
               </View>
             </TouchableOpacity>
 
+            {/* <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+              <Image
+                source={Images.backIcon}
+                resizeMode="contain"
+                style={{ height: ms(22), width: ms(22) }}
+              />
+            </TouchableOpacity> */}
+
             <View style={{ flex: 1, alignItems: 'center' }}>
               {/* <TouchableOpacity
                 onPress={() => {
@@ -765,12 +773,21 @@ export function Calender() {
                   );
                 }}
               />
-
+              <TouchableOpacity style={styles.usersIconView}>
+                <Image
+                  source={Images.usersThree}
+                  resizeMode="contain"
+                  style={styles.usersIconStyle}
+                />
+                <View style={styles.totalUsersCountContainer}>
+                  <Text style={styles.countUsers}>{getStaffUsers?.length || '0'}</Text>
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setisCalendarSettingModalVisible(true)}
                 style={styles.CalendarSettingsContainer}
               >
-                <Image source={calendarSettingsIcon} style={styles.calendarIconSettings} />
+                <Image source={Images.settingsOutline} style={styles.calendarIconSettings} />
               </TouchableOpacity>
             </View>
           </View>

@@ -486,7 +486,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   CalendarSettingsContainer: {
-    position: 'absolute',
+    // position: 'absolute',
     height: ms(40),
     width: '95%',
     alignSelf: 'center',
@@ -1033,5 +1033,34 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'baseline',
     marginVertical: ms(10),
+  },
+  totalUsersCountContainer: {
+    position: 'absolute',
+    height: ms(14),
+    width: ms(14),
+    borderRadius: ms(14),
+    borderWidth: 2,
+    backgroundColor: COLORS.success_green,
+    borderColor: COLORS.white,
+    right: ms(-3),
+    bottom: ms(-5),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  countUsers: {
+    color: COLORS.white,
+    fontFamily: Fonts.Regular,
+    fontSize: ms(7),
+  },
+  usersIconView: {
+    marginBottom: ms(1),
+    borderWidth: 1,
+    borderRadius: ms(50),
+    borderColor: COLORS.light_purple,
+    padding: ms(3),
+  },
+  usersIconStyle: {
+    height: ms(18),
+    width: ms(18),
   },
 });
