@@ -742,7 +742,7 @@ export function DashBoard({ navigation }) {
 
           <View style={styles.homeTableCon}>
             <View>
-              <Text style={styles.deliveries}>{strings.dashboard.deliveries}</Text>
+              <Text style={styles.deliveries}>{'Order'}</Text>
             </View>
             {getDeliveryData?.length === 0 || (getDeliveryData === undefined && orderLoad) ? (
               <View>

@@ -27,6 +27,8 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
   const orderInvoice = retailData?.createOrder;
   const saveProductData = saveCart?.poscart_products;
 
+  console.log('saveCart', orderCreateData);
+
   // change due function
   const payAmount = Number(orderCreateData?.tips ?? '0.00')?.toFixed(2);
   const actualAmount = Number(saveCart?.amount?.total_amount ?? '0.00')?.toFixed(2);
@@ -56,7 +58,10 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
           </View>
           <View style={styles.paidAmountCon}>
             <Text style={styles.paidAmount}>{strings.cart.paidAmount}</Text>
-            <Text style={styles.amountText}>${payAmount}</Text>
+            <Text style={styles.amountText}>
+              {saveCart?.modeOfPayment?.jbr == 'jbr' ? 'JBR' : '$'}
+              {payAmount}
+            </Text>
             {orderCreateData?.modeOfPayment === 'cash' && (
               <>
                 <View style={styles.paidAmountHr} />

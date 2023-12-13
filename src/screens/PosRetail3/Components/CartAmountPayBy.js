@@ -931,7 +931,6 @@ export const CartAmountPayBy = ({
                     };
                     dispatch(
                       merchantWalletCheck(data, (res) => {
-                        console.log(res?.user_profiles?.wallet_steps);
                         if (res?.user_profiles?.wallet_steps <= 4) {
                           alert('Please complete your wallet steps');
                         } else {
