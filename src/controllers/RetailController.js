@@ -821,11 +821,13 @@ export class RetailController {
 
   static async requestMoney(data) {
     return new Promise(async (resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const token = store.getState().auth?.merchantLoginData?.token;
       const endpoint = WALLET_URL + ApiWalletInventory.requestMoney;
       const body = {
         amount: data.amount,
         reciever_address: data.wallletAdd,
+        seller_id: sellerID,
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
@@ -1414,13 +1416,13 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          error?.statusCode === 204 &&
-            Toast.show({
-              text2: 'Offer Not Found',
-              position: 'bottom',
-              type: 'error_toast',
-              visibilityTime: 1500,
-            });
+          // error?.statusCode === 204 &&
+          //   Toast.show({
+          //     text2: 'Offer Not Found',
+          //     position: 'bottom',
+          //     type: 'error_toast',
+          //     visibilityTime: 1500,
+          //   });
           reject(error);
         });
     });
@@ -1602,6 +1604,28 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static async merchantWalletCheck(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.merchantWalletCheck + `${data?.seller_id}`;
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          error &&
+            Toast.show({
+              text2: 'Your wallet not found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+
           reject(error);
         });
     });

@@ -107,7 +107,6 @@ export function DashBoard({ navigation }) {
   const todayCardAmount = TotalSale?.[2]?.total_sale_amount.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getDeliveryData = getDashboardData?.getOrderDeliveries?.data;
-  console.log('getDeliveryData', JSON.stringify(getDeliveryData?.[0]));
   const [orderDeliveriesData, setOrderDeleveriesData] = useState([]);
   const getDeliveryData2 = getDeliveryData?.filter((item) => item.status <= 3);
   const [trackingSession, setTrackingSession] = useState(false);
@@ -126,6 +125,7 @@ export function DashBoard({ navigation }) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
+  console.log('getDeliveryData', getDeliveryData?.[0]);
 
   //  order delivery pagination
   const paginationData = {

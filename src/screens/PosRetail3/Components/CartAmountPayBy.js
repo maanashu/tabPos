@@ -59,6 +59,7 @@ import {
   getAllCart,
   getServiceCart,
   getAllCartSuccess,
+  merchantWalletCheck,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -185,6 +186,7 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
+  console.log('requestStatus', requestStatus, getRetailData?.qrStatuskey?.status);
   // useEffect(() => {
   //   setSelectedTipIndex(tipsSelected);
   //   setSelectedTipAmount(
@@ -396,9 +398,7 @@ export const CartAmountPayBy = ({
     dispatch(qrcodestatus(cartData.id));
   };
 
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_WALLET_PHONE, TYPES.ATTACH_CUSTOMER, TYPES.CREATE_ORDER], state)
-  );
+  const isLoading = useSelector((state) => isLoadingSelector([TYPES.CREATE_ORDER], state));
   useEffect(() => {
     let interval;
 
@@ -416,24 +416,38 @@ export const CartAmountPayBy = ({
         });
       }, 10000);
     } else if (requestStatus == 'success' && sendRequest) {
-      cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+      // cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+      createOrderHandler();
       // Alert.alert('2  condition');
       clearInterval(interval);
-    } else if (qrStatus?.status !== 'success' && qrPopUp && sendRequest == false) {
+    } else if (
+      getRetailData?.qrStatuskey?.status !== 'success' &&
+      qrPopUp &&
+      sendRequest == false
+    ) {
+      // alert('fghjkl');
       interval = setInterval(() => {
-        cartType == 'Service'
-          ? dispatch(Servicesqrcodestatus(cartData.id))
-          : dispatch(qrcodestatus(cartData.id));
+        // cartType == 'Service'
+        //   ? dispatch(Servicesqrcodestatus(cartData.id))
+        //   : dispatch(qrcodestatus(cartData.id));
+        dispatch(qrcodestatus(cartData.id));
         // Alert.alert('3 condition', sendRequest);
       }, 5000);
-    } else if (qrStatus?.status == 'success' && qrPopUp && sendRequest == false) {
-      cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+    } else if (getRetailData?.qrStatuskey?.status == 'success' && qrPopUp && sendRequest == false) {
+      // cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+      createOrderHandler();
       // Alert.alert('4 condition');
       clearInterval(interval);
     }
 
     return () => clearInterval(interval);
-  }, [isFocused, requestStatus == 'success', qrStatus?.status == 'success', qrPopUp, sendRequest]);
+  }, [
+    isFocused,
+    requestStatus == 'success',
+    getRetailData?.qrStatuskey?.status == 'success',
+    qrPopUp,
+    sendRequest,
+  ]);
 
   const walletInputFun = (phoneNumber) => {
     setWalletIdInp(phoneNumber);
@@ -452,9 +466,12 @@ export const CartAmountPayBy = ({
   const sendRequestFun = async () => {
     setsendRequest(true);
     const data = {
-      amount: (totalPayAmount() * 100).toFixed(0),
+      // amount: (totalPayAmount() * 100).toFixed(0),
+      amount: (paymentShow() * 100).toFixed(0),
       wallletAdd: walletUser?.wallet_address,
     };
+    // console.log('amount', data);
+    // return;
 
     const res = await dispatch(requestMoney(data)).then((res) => {
       setRequestId(res?.payload?._id);
@@ -652,7 +669,7 @@ export const CartAmountPayBy = ({
   const createOrderHandler = () => {
     const data = {
       cartid: cartData.id,
-      tips: (totalPayAmount() * 100).toFixed(0),
+      tips: (paymentShow() * 100).toFixed(0),
       modeOfPayment: 'jbr',
     };
     const callback = (response) => {
@@ -683,6 +700,12 @@ export const CartAmountPayBy = ({
     dispatch(requestCheckSuccess(''));
     setsendRequest(false);
   };
+
+  useEffect(() => {
+    if (requestStatus == 'approved') {
+      createOrderHandler();
+    }
+  }, [requestStatus]);
 
   return (
     <SafeAreaView style={styles._innerContainer}>
@@ -903,11 +926,23 @@ export const CartAmountPayBy = ({
                   style={styles.confirmButom}
                   isLoading={true}
                   onPress={() => {
-                    getTipPress();
-                    setQrPopUp(true);
+                    const data = {
+                      seller_id: sellerID,
+                    };
+                    dispatch(
+                      merchantWalletCheck(data, (res) => {
+                        console.log(res?.user_profiles?.wallet_steps);
+                        if (res?.user_profiles?.wallet_steps <= 4) {
+                          alert('Please complete your wallet steps');
+                        } else {
+                          getTipPress();
+                          setQrPopUp(true);
+                        }
+                      })
+                    );
                   }}
                 >
-                  <Text style={styles.confirmText}>{'Confirm '}</Text>
+                  <Text style={styles.confirmText}>{'Confirm'}</Text>
                 </TouchableOpacity>
                 <Spacer space={SH(50)} />
               </>
@@ -1446,6 +1481,16 @@ export const CartAmountPayBy = ({
                 <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
               </View>
             ) : null} */}
+            {isLoading && (
+              <View
+                style={[
+                  styles.loader,
+                  { backgroundColor: 'rgba(0,0,0, 0.3)', borderRadius: ms(18) },
+                ]}
+              >
+                <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
+              </View>
+            )}
           </View>
           {/* </ScrollView> */}
         </KeyboardAvoidingView>

@@ -465,7 +465,6 @@ export function PosRetail3() {
           }
         }}
         selectValueTake={(paymentSelect, tipSelect) => {
-          // console.log('------', paymentSelect, tipSelect);
           setSelectTips(tipSelect);
         }}
         payNowByphone={(tip) => {
