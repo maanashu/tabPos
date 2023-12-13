@@ -908,8 +908,8 @@ export const styles = StyleSheet.create({
   },
   LheaderText: {
     flex: 0.2,
-    fontSize: ms(9),
-    fontFamily: Fonts.SemiBold,
+    fontSize: ms(8),
+    fontFamily: Fonts.Medium,
     marginVertical: ms(5),
     textAlign: 'center',
     color: COLORS.lavender,
