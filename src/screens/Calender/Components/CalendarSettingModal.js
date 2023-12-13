@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Fonts, radioSelect, radioUnSelect } from '@/assets';
+import { Fonts, calendarSettingsIcon, cross, radioSelect, radioUnSelect } from '@/assets';
 import { COLORS, SF } from '@/theme';
 import { ms } from 'react-native-size-matters';
 import Modal from 'react-native-modal';
@@ -12,6 +12,8 @@ import {
 } from '@/constants/enums';
 import { useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
+import { height, width } from '@/theme/ScalerDimensions';
+import { Images } from '@/assets/new_icon';
 
 const CalendarSettingModal = ({
   isVisible,
@@ -31,9 +33,17 @@ const CalendarSettingModal = ({
     defaultSettingsForCalendar?.employee_color_set ?? EMPLOYEES_COLOR_SET_MODE.DEFAULT
   );
   return (
-    <Modal isVisible={isVisible}>
+    <Modal
+      isVisible={isVisible}
+      backdropOpacity={0.11}
+      style={{ position: 'absolute', right: width * 0.04, top: height * 0.05 }}
+    >
       <View style={styles.calendarSettingModalContainer}>
-        <Text style={styles.title}>Preference</Text>
+        <View style={styles.preferanceHeader}>
+          <Image source={calendarSettingsIcon} resizeMode="contain" style={styles.settingIcon} />
+          <Text style={styles.title}>Preferences</Text>
+          <Image source={cross} resizeMode="contain" style={styles.settingIcon} />
+        </View>
         <View style={styles.mainOptionTitleContainer} />
 
         <View style={{ marginTop: ms(15) }}>
@@ -234,7 +244,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
     marginVertical: ms(5),
   },
-  title: { fontFamily: Fonts.SemiBold, fontSize: ms(8), color: COLORS.black },
+  title: { fontFamily: Fonts.Medium, fontSize: ms(8), color: COLORS.navy_blue },
   calendarSettingModalContainer: {
     width: ms(290),
     height: ms(300),
@@ -276,5 +286,15 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: ms(8),
     color: COLORS.dark_grey,
+  },
+  preferanceHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  settingIcon: {
+    height: ms(20),
+    width: ms(20),
+    tintColor: COLORS.navy_blue,
   },
 });

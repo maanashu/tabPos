@@ -697,7 +697,7 @@ export function Calender() {
             </TouchableOpacity>
 
             <View style={{ flex: 1, alignItems: 'center' }}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
                   setshouldShowCalendarModeOptions(true);
@@ -722,7 +722,8 @@ export function Calender() {
                 <View style={styles.circularBadgeContainer}>
                   <Text style={styles.asigneesBadgeText}>{totalAppointmentCountOfStaff}</Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              <Spacer space={ms(20)} />
               <FlatList
                 data={getStaffUsers}
                 showsVerticalScrollIndicator={false}
@@ -746,27 +747,17 @@ export function Calender() {
                         });
                         setSelectedStaffData(item);
                       }}
-                      style={[
-                        styles.renderItemContainer,
-                        {
-                          backgroundColor:
-                            selectedStaffEmployeeId === posUserId
-                              ? COLORS.white
-                              : COLORS.textInputBackground,
-                        },
-                      ]}
+                      style={styles.renderItemContainer}
                     >
                       <View>
                         <Image
                           source={{
                             uri: userProfile?.profile_photo,
                           }}
-                          style={[styles.employeeImages, { borderColor: item?.color_code }]}
+                          style={styles.employeeImages}
                         />
 
-                        <View
-                          style={[styles.circularBadgeEmployee, { borderColor: item?.color_code }]}
-                        >
+                        <View style={styles.circularBadgeEmployee}>
                           <Text style={styles.badgeTextEmployee}>{item?.appointment_counts}</Text>
                         </View>
                       </View>
