@@ -40,7 +40,7 @@ const ProductCustomerAdd = ({ crossHandler }) => {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
-  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getAllCart;
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
   const [email, setEmail] = useState('');
@@ -103,7 +103,7 @@ const ProductCustomerAdd = ({ crossHandler }) => {
         firstName: firstName,
         lastName: lastName,
       };
-      dispatch(presentCart === 'product' ? attachCustomer(data) : attachServiceCustomer(data));
+      dispatch(presentCart === 'product' ? attachCustomer(data) : attachCustomer(data));
       clearInput();
       crossHandler();
     }
@@ -120,7 +120,7 @@ const ProductCustomerAdd = ({ crossHandler }) => {
           userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
           customerAdd: 'customerAdd',
         };
-    dispatch(presentCart === 'product' ? attachCustomer(data) : attachServiceCustomer(data));
+    dispatch(presentCart === 'product' ? attachCustomer(data) : attachCustomer(data));
     clearInput();
     crossHandler();
   };

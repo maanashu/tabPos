@@ -13,6 +13,8 @@ export const Images = {
   cartIcon: require('@/assets/new_icon/retail_con/cartIcon.png'),
   email: require('@/assets/new_icon/retail_con/email.png'),
   bell: require('@/assets/new_icon/retail_con/bell.png'),
+  moon: require('@/assets/new_icon/retail_con/moon.png'),
+  sun: require('@/assets/new_icon/retail_con/sun.png'),
   phone: require('@/assets/new_icon/retail_con/phone.png'),
   camera: require('@/assets/new_icon/retail_con/camera.png'),
   homeScan: require('@/assets/new_icon/retail_con/homeScan.png'),

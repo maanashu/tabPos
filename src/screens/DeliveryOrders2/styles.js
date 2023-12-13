@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.textInputBackground,
+    backgroundColor: COLORS.sky_grey,
   },
   firstRowStyle: {
     flexDirection: 'row',
@@ -739,6 +739,7 @@ const styles = StyleSheet.create({
   },
   drawerMainViewStyle: {
     flex: 0.06,
+
     // marginTop: SH(15),
   },
   centerViewStyle: {

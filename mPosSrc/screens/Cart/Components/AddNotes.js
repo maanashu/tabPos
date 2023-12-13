@@ -15,7 +15,9 @@ const AddNotes = ({ notesClose }) => {
   const notesRef = useRef();
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
-  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  // const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getAllCart;
+
   const cartId = cartData?.id;
   const [notes, setNotes] = useState(cartData?.notes);
 
@@ -31,13 +33,16 @@ const AddNotes = ({ notesClose }) => {
         cartId: cartId,
         notes: notes,
       };
-      dispatch(presentCart === 'product' ? addNotescart(data) : addServiceNotescart(data));
+      dispatch(presentCart === 'product' ? addNotescart(data) : addNotescart(data));
       notesClose();
     }
   };
 
   return (
-    <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ flex: 1, justifyContent: 'center' }}
+    >
       <View style={styles.addDiscountcon}>
         <View style={styles.headerViewStyle}>
           <Text style={styles.clearCartTextStyle}>{strings.cart.addNotesHeading}</Text>
@@ -84,12 +89,13 @@ const styles = StyleSheet.create({
   addDiscountcon: {
     backgroundColor: COLORS.white,
     borderRadius: 30,
-    width: ms(350),
+    // width: ms(350),
+    // flex: 1,
     height: ms(300),
     alignSelf: 'center',
     paddingHorizontal: moderateScale(15),
     paddingVertical: ms(30),
-    marginTop: ms(200),
+    // marginTop: ms(200),
   },
   nameBottomSheetContainerStyle: {
     borderTopLeftRadius: ms(30),
@@ -135,7 +141,7 @@ const styles = StyleSheet.create({
   },
   keepButtonStyle: {
     height: SH(50),
-    width: SW(150),
+    width: SW(130),
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',

@@ -45,7 +45,6 @@ export function DrawerNavigator(props) {
   const selection = getDashboardData?.selection;
   const [active, setActive] = useState('dashBoard');
   const getPosUser = getUserData?.posLoginData;
-  console.log('-------', getPosUser?.user_profiles?.profile_photo);
 
   useEffect(() => {
     getSelectedOption();

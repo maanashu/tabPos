@@ -17,7 +17,9 @@ const AddDiscount = ({ discountClose }) => {
   const discountInputRef = useRef(null);
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
-  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  // const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getAllCart;
+
   const cartId = cartData?.id;
 
   const discountRef = useRef();
@@ -292,7 +294,6 @@ const styles = StyleSheet.create({
   addDiscountcon: {
     backgroundColor: COLORS.white,
     borderRadius: 30,
-    // width: ms(350),
     flex: 1,
     height: ms(450),
     alignSelf: 'center',
@@ -346,6 +347,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.inputBorder,
+    marginRight: ms(7),
   },
   clearButtonStyle: {
     height: SH(50),

@@ -20,10 +20,12 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
   const presentCart = retailData?.cartFrom;
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const snapPoints = useMemo(() => ['100%'], []);
-  const orderInvoice =
-    presentCart === 'product' ? retailData?.createOrder : retailData?.createServiceOrder;
-  const saveProductData =
-    presentCart === 'product' ? saveCart?.poscart_products : saveCart?.appointment_cart_products;
+  // const orderInvoice =
+  //   presentCart === 'product' ? retailData?.createOrder : retailData?.createServiceOrder;
+  // const saveProductData =
+  //   presentCart === 'product' ? saveCart?.poscart_products : saveCart?.appointment_cart_products;
+  const orderInvoice = retailData?.createOrder;
+  const saveProductData = saveCart?.poscart_products;
 
   // change due function
   const payAmount = Number(orderCreateData?.tips ?? '0.00')?.toFixed(2);

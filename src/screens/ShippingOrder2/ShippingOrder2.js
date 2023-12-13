@@ -45,6 +45,7 @@ import { getOrderstatistics } from '@mPOS/actions/ShippingActions';
 import Modal from 'react-native-modal';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 import moment from 'moment';
+import { CustomHeader } from '../PosRetail3/Components';
 
 export function ShippingOrder2() {
   const dispatch = useDispatch();
@@ -154,7 +155,6 @@ export function ShippingOrder2() {
       status: status,
       sellerID: sellerID,
     };
-    console.log('SAdasas', data);
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg) {
@@ -219,11 +219,12 @@ export function ShippingOrder2() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.sky_grey, paddingRight: ms(5) }}>
+    <View style={{ flex: 1, backgroundColor: COLORS.sky_grey, paddingRight: ms(6) }}>
       {!openWebView ? (
         <>
           <Spacer space={SH(15)} />
-          <NewHeader />
+          {/* <NewHeader /> */}
+          <CustomHeader iconShow={false} />
           {!viewAllOrders ? (
             <SafeAreaView style={[styles.container, { justifyContent: 'space-evenly' }]}>
               <View style={styles.leftMainViewStyle}>

@@ -7,26 +7,56 @@ import { Image } from 'react-native';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { getUser } from '@/selectors/UserSelectors';
+import { useEffect, useState } from 'react';
+import { Images } from '@/assets/new_icon';
+import { ms } from 'react-native-size-matters';
+import { COLORS } from '@/theme';
 
 moment.suppressDeprecationWarnings = true;
 
 export function CustomHeader({ crossHandler, iconShow }) {
   const getUserData = useSelector(getUser);
   const getPosUser = getUserData?.posLoginData;
+  const [currentTime, setCurrentTime] = useState(moment());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(moment());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const isDaytime = () => {
+    const currentHour = currentTime.hour();
+    return currentHour >= 6 && currentHour < 18;
+  };
 
   return (
     <View style={styles.searchScreenHeader}>
       <View style={styles.displayflex}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{ marginRight: ms(3) }}>
+            {isDaytime() ? (
+              <Image
+                source={Images.sun}
+                style={{ width: ms(15), height: ms(15), tintColor: COLORS.placeHoldeText }}
+              />
+            ) : (
+              <Image
+                source={Images.moon}
+                style={{ width: ms(15), height: ms(15), tintColor: COLORS.placeHoldeText }}
+              />
+            )}
+          </View>
+
           <Text style={styles.cashLabelBold}>{moment().format('hh:mm a')}</Text>
           <View style={styles._border} />
-          {/* <Text style={styles.cashLabelBold}>{moment().format('ddd DD MMM, YYYY')}</Text> */}
-          <Text style={styles.cashLabelBold}>{moment().format('LLL')}</Text>
-
-          {/* <View style={styles._border} /> */}
+          <Text style={styles.cashLabelBold}>
+            {moment().format('dddd') + ', ' + moment().format('LL')}
+          </Text>
         </View>
 
-        {/* <View style={styles._border} /> */}
         <View style={styles.displayRow}>
           <Image
             source={
