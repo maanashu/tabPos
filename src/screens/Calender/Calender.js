@@ -823,13 +823,34 @@ export function Calender() {
               </View>
             ) : (
               <View style={{ marginBottom: ms(40) }}>
-                <Text style={styles._requestTitle}>
-                  {`Request (${
-                    selectedStaffEmployeeId
-                      ? getAppointmentByStaffIdList?.length ?? 0
-                      : appointmentListArr?.length ?? 0
-                  })`}
-                </Text>
+                <View
+                  style={[styles.rowAlignedJustified, { marginLeft: ms(10), marginTop: ms(5) }]}
+                >
+                  <View style={styles.rowAligned}>
+                    <Image
+                      source={Images.calendarIcon}
+                      style={styles.requestCalendarIconSmall}
+                      resizeMode="contain"
+                    />
+
+                    <View style={styles.requestCountView}>
+                      <Text style={styles.requestText}>
+                        {selectedStaffEmployeeId
+                          ? getAppointmentByStaffIdList?.length ?? 0
+                          : appointmentListArr?.length ?? 0}
+                      </Text>
+                    </View>
+                    <Text style={styles._requestTitle}>{`Requests`}</Text>
+                  </View>
+
+                  <TouchableOpacity onPress={() => setshowRequestsView(false)}>
+                    <Image
+                      source={crossButton}
+                      style={[styles.closeIcon, { marginRight: ms(10) }]}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                </View>
                 <FlatList
                   extraData={appointmentListArr}
                   data={selectedStaffEmployeeId ? getAppointmentByStaffIdList : appointmentListArr}
@@ -839,6 +860,7 @@ export function Calender() {
                   onEndReached={handleEndReached}
                   onEndReachedThreshold={0.1} // Adjust this value as per your requirements
                   ListFooterComponent={renderLoader}
+                  showsVerticalScrollIndicator={false}
                 />
               </View>
             )}
@@ -950,7 +972,9 @@ export function Calender() {
             <View style={styles.serviceDetailContainer}>
               <View style={styles.rowJustified}>
                 <Text style={styles.customerText}>Customer:</Text>
-                <Text style={styles.unpaidText}>Unpaid</Text>
+                <Text style={styles.unpaidText}>
+                  {selectedPosStaffCompleteData?.mode_of_payment == 'cash' ? 'Unpaid' : 'Paid'}
+                </Text>
               </View>
 
               <View style={styles.customerProfileView}>
@@ -984,11 +1008,13 @@ export function Calender() {
                   style={{ marginLeft: ms(5) }}
                 >
                   <View style={styles.rowAligned}>
-                    {[0, 1, 2, 3, 4, 5].map((item, index) => (
-                      <View style={styles.scrollableServicesView}>
-                        <Text style={styles.servicesName}>Haircut</Text>
-                      </View>
-                    ))}
+                    {/* {[0, 1, 2, 3, 4, 5].map((item, index) => ( */}
+                    <View style={styles.scrollableServicesView}>
+                      <Text style={styles.servicesName}>
+                        {selectedPosStaffCompleteData?.product_name}
+                      </Text>
+                    </View>
+                    {/* ))} */}
                   </View>
                 </ScrollView>
               </View>

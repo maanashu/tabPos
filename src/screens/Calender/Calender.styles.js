@@ -85,10 +85,11 @@ export const styles = StyleSheet.create({
     width: windowWidth * 0.34,
     height: '90%',
     position: 'absolute',
-    top: ms(40),
-    right: 110,
-    borderRadius: ms(5),
-    backgroundColor: COLORS.textInputBackground,
+    top: ms(30),
+    right: 120,
+    borderRadius: ms(15),
+    backgroundColor: COLORS.white,
+    elevation: 3,
   },
   approveButtonCon: {
     backgroundColor: COLORS.primary,
@@ -108,11 +109,6 @@ export const styles = StyleSheet.create({
     marginLeft: moderateScale(10),
   },
 
-  approveText: {
-    color: COLORS.white,
-    fontSize: SF(12),
-    fontFamily: Fonts.Regular,
-  },
   requestFor: {
     fontFamily: Fonts.Regular,
     color: COLORS.dark_grey,
@@ -406,6 +402,21 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.navy_blue,
   },
+  requestCalendarIconSmall: {
+    height: ms(18),
+    width: ms(18),
+    resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
+  },
+  requestCountView: {
+    height: ms(15),
+    width: ms(15),
+    backgroundColor: COLORS.alert_red,
+    borderRadius: ms(7.5),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: ms(5),
+  },
   requestCalendarContainer: {
     height: ms(36),
     width: ms(36),
@@ -499,9 +510,9 @@ export const styles = StyleSheet.create({
     borderRightColor: COLORS.white,
   },
   _eventTitle: {
-    fontFamily: Fonts.Regular,
-    fontSize: ms(7),
-    color: COLORS.dark_grey,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(8.5),
+    color: COLORS.navy_blue,
   },
   lineStl: {
     height: ms(8),
@@ -510,10 +521,14 @@ export const styles = StyleSheet.create({
     marginHorizontal: ms(10),
   },
   eventItemContainer: {
-    backgroundColor: COLORS.white,
-    borderRadius: ms(5),
+    backgroundColor: COLORS.sky_grey,
+    borderRadius: ms(16),
     marginHorizontal: ms(8),
     marginTop: ms(5),
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
+    overflow: 'hidden',
+    paddingHorizontal: ms(10),
   },
   approveText: {
     fontFamily: Fonts.Regular,
@@ -529,11 +544,7 @@ export const styles = StyleSheet.create({
     borderRadius: ms(3),
     marginLeft: ms(8),
   },
-  declineText: {
-    fontFamily: Fonts.Regular,
-    fontSize: ms(8),
-    color: COLORS.dark_grey,
-  },
+
   declineBtnContainer: {
     height: ms(25),
     alignItems: 'center',
@@ -544,34 +555,33 @@ export const styles = StyleSheet.create({
   },
   _btnContainer: {
     flexDirection: 'row',
-    marginHorizontal: ms(10),
-    marginVertical: ms(10),
+    alignItems: 'center',
+    marginLeft: ms(10),
   },
   paidText: {
     fontFamily: Fonts.Regular,
-    color: COLORS.white,
+    color: COLORS.navy_blue,
     alignSelf: 'center',
   },
   paidContainer: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.white,
     padding: ms(3),
-    marginHorizontal: ms(10),
-    width: ms(35),
-    borderRadius: ms(3),
+    paddingHorizontal: ms(10),
+    borderRadius: ms(30),
     marginTop: ms(3),
     justifyContent: 'center',
     alignContent: 'center',
   },
   totalTile: {
-    fontFamily: Fonts.SemiBold,
-    fontSize: ms(9),
-    color: COLORS.black,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(8),
+    color: COLORS.navy_blue,
   },
   serviceChargeSub: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
+    width: '20%',
     marginTop: ms(5),
   },
   duractiontxt: {
@@ -631,7 +641,7 @@ export const styles = StyleSheet.create({
   customerName: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(8),
-    color: COLORS.black,
+    color: COLORS.navy_blue,
   },
   customerUserProfile: {
     height: ms(24),
@@ -641,10 +651,9 @@ export const styles = StyleSheet.create({
   },
   customerDetailContainer: {
     backgroundColor: COLORS.textInputBackground,
-    margin: ms(10),
+    // margin: ms(10),
     borderRadius: ms(5),
     paddingVertical: ms(10),
-    paddingHorizontal: ms(8),
   },
   _requestTitle: {
     fontFamily: Fonts.SemiBold,
@@ -828,6 +837,7 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.darkGray,
   },
+
   messageSend: {
     height: ms(25),
     width: ms(25),
@@ -885,6 +895,11 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Medium,
     fontSize: ms(15),
     color: COLORS.black,
+  },
+  requestText: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(8),
+    color: COLORS.white,
   },
   alignSelfCenter: {
     alignSelf: 'center',
@@ -1168,6 +1183,7 @@ export const styles = StyleSheet.create({
   servicesName: {
     fontFamily: Fonts.Medium,
     color: COLORS.white,
+    fontSize: ms(8),
   },
   closeIcon: {
     height: ms(20),
@@ -1191,6 +1207,12 @@ export const styles = StyleSheet.create({
     color: COLORS.navy_blue,
     fontFamily: Fonts.Medium,
     fontSize: ms(7),
+    left: ms(3),
+  },
+  serviceTimeTextSmall: {
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(6),
     left: ms(3),
   },
   dashedLine: {
@@ -1226,7 +1248,7 @@ export const styles = StyleSheet.create({
   },
   declineText: {
     fontFamily: Fonts.Regular,
-    fontSize: ms(9),
+    fontSize: ms(8),
     color: COLORS.navy_blue,
   },
   acceptText: {
