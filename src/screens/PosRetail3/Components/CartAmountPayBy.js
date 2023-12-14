@@ -403,6 +403,9 @@ export const CartAmountPayBy = ({
   const isLoadingAttachCustomer = useSelector((state) =>
     isLoadingSelector([TYPES.ATTACH_CUSTOMER], state)
   );
+  const isLoadingMerchantWalletCheck = useSelector((state) =>
+    isLoadingSelector([TYPES.MERCHANT_WALLET_CHECK], state)
+  );
 
   useEffect(() => {
     let interval;
@@ -1491,7 +1494,7 @@ export const CartAmountPayBy = ({
           {/* </ScrollView> */}
         </KeyboardAwareScrollView>
       </BlurredModal>
-      {isLoadingAttachCustomer && <FullScreenLoader />}
+      {isLoadingAttachCustomer || (isLoadingMerchantWalletCheck && <FullScreenLoader />)}
     </SafeAreaView>
   );
 };

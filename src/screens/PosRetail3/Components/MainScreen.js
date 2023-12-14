@@ -1598,13 +1598,9 @@ export function MainScreen({
         animationOut={'slideOutRight'}
         onBackdropPress={() => {
           setCartModal(false);
-          // bulkCart();
-          // checkOutHandler();
         }}
         onBackButtonPress={() => {
           setCartModal(false);
-          // bulkCart();
-          // checkOutHandler();
         }}
       >
         <CartListModal
@@ -1622,6 +1618,10 @@ export function MainScreen({
             setCartModal(false);
             setNumPadModal(true);
             setCustomProductOpen('product');
+          }}
+          cartListModalOff={() => {
+            dispatch(getMainProduct());
+            setCartModal(false);
           }}
         />
       </BlurredModal>

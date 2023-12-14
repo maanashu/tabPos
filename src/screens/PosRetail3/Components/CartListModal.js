@@ -28,7 +28,7 @@ import { ms } from 'react-native-size-matters';
 import { Images } from '@/assets/new_icon';
 import { useEffect } from 'react';
 
-export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate }) {
+export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate, cartListModalOff }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
@@ -70,20 +70,33 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate }) {
       cartQtyUpdate();
     }, 1000);
   };
+
+  const clearCartHandler = async () => {
+    dispatch(clearAllCart());
+    cartListModalOff();
+    // dispatch(clearLocalCart());
+    // setTimeout(() => {
+    //   crossHandler();
+    // }, 2000);
+  };
   const removeOneCartHandler = (productId, index) => {
     var arr = getRetailData?.getAllCart;
-    const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
-    if (product.qty > 0) {
-      arr.amount.total_amount -= productPrice * product.qty;
-      arr.amount.products_price -= productPrice * product.qty;
-      arr?.poscart_products.splice(index, 1);
+    if (arr?.poscart_products.length == 1 && index == 0) {
+      clearCartHandler();
+    } else {
+      const product = arr?.poscart_products[index];
+      const productPrice = product.product_details.price;
+      if (product.qty > 0) {
+        arr.amount.total_amount -= productPrice * product.qty;
+        arr.amount.products_price -= productPrice * product.qty;
+        arr?.poscart_products.splice(index, 1);
+      }
+      var DATA = {
+        payload: arr,
+      };
+      dispatch(updateCartLength(CART_LENGTH - 1));
+      dispatch(getAllCartSuccess(DATA));
     }
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(updateCartLength(CART_LENGTH - 1));
-    dispatch(getAllCartSuccess(DATA));
   };
   // useFocusEffect(
   //   React.useCallback(() => {
@@ -115,13 +128,13 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate }) {
       // clearCartHandler();
     }
   };
-  const clearCartHandler = () => {
-    dispatch(clearAllCart());
-    dispatch(clearLocalCart());
-    // setTimeout(() => {
-    //   crossHandler();
-    // }, 1500);
-  };
+  // const clearCartHandler = () => {
+  //   dispatch(clearAllCart());
+  //   dispatch(clearLocalCart());
+  //   // setTimeout(() => {
+  //   //   crossHandler();
+  //   // }, 1500);
+  // };
   const eraseClearCart = async () => {
     clearCart();
     // dispatch(clearAllCart())

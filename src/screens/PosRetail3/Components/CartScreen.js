@@ -529,7 +529,7 @@ export function CartScreen({
               <TouchableOpacity
                 style={[
                   styles.holdCartPad,
-                  { borderColor: holdProductArray?.length > 0 ? COLORS.navy_blue : COLORS.black },
+                  //
                 ]}
                 onPress={cartStatusHandler}
               >
@@ -537,11 +537,29 @@ export function CartScreen({
                   source={Images.cartHold}
                   style={[
                     styles.keyboardIcon,
-                    {
-                      tintColor: holdProductArray?.length > 0 ? COLORS.navy_blue : COLORS.dark_grey,
-                    },
+                    // {
+                    //   tintColor: holdProductArray?.length > 0 ? COLORS.navy_blue : COLORS.dark_grey,
+                    // },
                   ]}
                 />
+                <View
+                  style={{
+                    width: ms(10),
+                    height: ms(10),
+                    borderColor: COLORS.navy_blue,
+                    borderWidth: 1,
+                    position: 'absolute',
+                    bottom: 3,
+                    right: 3,
+                    borderRadius: ms(10),
+                    backgroundColor: COLORS.white,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: COLORS.navy_blue,
+                  }}
+                >
+                  <Text style={{ color: COLORS.white }}>{holdProductArray?.length}</Text>
+                </View>
               </TouchableOpacity>
 
               <TouchableOpacity
