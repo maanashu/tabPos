@@ -20,7 +20,9 @@ export class DashboardController {
       //   ApiOrderInventory.getOrderUser +
       //   `?seller_id=${sellerID}&delivery_option=1&page=${page}&limit=10`;
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderUser + `?seller_id=${sellerID}&page=${page}&limit=10`;
+        ORDER_URL +
+        ApiOrderInventory.getOrderUser +
+        `?seller_id=${sellerID}&delivery_option=1,4&page=${page}&limit=10`;
 
       HttpClient.get(endpoint)
         .then((response) => {

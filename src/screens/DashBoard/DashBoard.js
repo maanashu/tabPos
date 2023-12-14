@@ -254,7 +254,7 @@ export function DashBoard({ navigation }) {
     const seconds = Math.floor((timeDifference / 1000) % 60);
     const timeFormatted = (
       <View>
-        <Text style={[styles.nameTextBold, styles.timeSec]}>
+        <Text style={[styles.nameTextBold, { color: COLORS.navy_blue }]}>
           {hours < 1 ? '00' : hours}:{minutes < 1 ? '00' : minutes}:{seconds < 1 ? '00' : seconds}
         </Text>
       </View>
@@ -316,8 +316,13 @@ export function DashBoard({ navigation }) {
   const tableListItem = ({ item, index }) => (
     <TouchableOpacity
       onPress={() => {
-        dispatch(addSellingSelection(2));
-        navigation.navigate(NAVIGATION.deliveryOrders2, { ORDER_DETAIL: item });
+        if (item?.delivery_option == 1) {
+          dispatch(addSellingSelection(2));
+          navigation.navigate(NAVIGATION.deliveryOrders2, { ORDER_DETAIL: item });
+        } else if (item?.delivery_option == 4) {
+          dispatch(addSellingSelection(3));
+          navigation.navigate(NAVIGATION.shippingOrder2, { ORDER_DETAIL: item });
+        }
       }}
       style={[styles.reviewRenderView]}
     >
@@ -345,8 +350,8 @@ export function DashBoard({ navigation }) {
           </Text>
         </View>
       </View>
-      {item?.order_type == 'product' ? (
-        <View style={{ minWidth: SW(50), maxWidth: SW(70) }}>
+      {item?.delivery_option == 1 ? (
+        <View style={{ width: SW(60) }}>
           <Text style={styles.nameText}>
             {item?.preffered_delivery_start_time || '-----'} -
             {item?.preffered_delivery_end_time || '-----'}
@@ -362,19 +367,18 @@ export function DashBoard({ navigation }) {
           </View>
         </View>
       ) : (
-        <View style={{ minWidth: SW(50), maxWidth: SW(70) }}></View>
+        <View style={{ width: SW(60) }}></View>
       )}
 
       <Image source={arrowRightIcon} style={styles.arrowIconRight} />
       <View style={styles.rightIconStyle1}>
-        <View style={[styles.timeView, { paddingTop: 0 }]}>
-          <Text style={[styles.nameTextBold, { color: COLORS.textBlue }]}>
-            {/* {'00:00:00'} */}
-            {item.estimated_preparation_time === null
-              ? '00:00:00'
-              : orderTime(item.estimated_preparation_time)}
-          </Text>
-        </View>
+        {/* <View style={[styles.timeView, { paddingTop: 0, borderWidth: 1 }]}> */}
+        <Text style={[styles.nameTextBold, { color: COLORS.navy_blue }]}>
+          {item.estimated_preparation_time === null
+            ? '00:00:00'
+            : orderTime(item.estimated_preparation_time)}
+        </Text>
+        {/* </View> */}
       </View>
     </TouchableOpacity>
   );
@@ -743,7 +747,7 @@ export function DashBoard({ navigation }) {
 
           <View style={styles.homeTableCon}>
             <View>
-              <Text style={styles.deliveries}>{'Order'}</Text>
+              <Text style={styles.deliveries}>{'Orders'}</Text>
             </View>
             {getDeliveryData?.length === 0 || (getDeliveryData === undefined && orderLoad) ? (
               <View>
