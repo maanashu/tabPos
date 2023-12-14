@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Text,
 } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -112,14 +113,14 @@ export function SearchScreen(props) {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Header />
-        <View style={{ flex: 0.85, marginHorizontal: ms(15) }}>
-          <CustomHeader />
-        </View>
-      </View>
       {!showProductRefund ? (
         <>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Header />
+            <View style={{ flex: 0.85, marginHorizontal: ms(15) }}>
+              <CustomHeader />
+            </View>
+          </View>
           {/* <Spacer space={SH(20)} /> */}
           <View style={styles.leftViewStyle}>
             <View style={styles.textInputMainViewStyle}>
@@ -151,6 +152,16 @@ export function SearchScreen(props) {
               </View>
 
               <Spacer space={SH(25)} />
+              {order?.invoice_number ? (
+                <Text
+                  style={{ marginHorizontal: ms(30), fontSize: ms(11), color: COLORS.navy_blue }}
+                >
+                  {'Invoices'}
+                  <Text style={{ color: COLORS.light_blue2 }}>
+                    ({order?.invoice_number ? `${order?.invoice_number}` : ''})
+                  </Text>
+                </Text>
+              ) : null}
 
               <OrderWithInvoiceNumber orderData={order} />
             </View>

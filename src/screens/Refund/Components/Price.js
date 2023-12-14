@@ -1,7 +1,15 @@
 import React, { memo } from 'react';
-import { View, Text, Platform, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Platform,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import { ms } from 'react-native-size-matters';
-import { Fonts } from '@/assets';
+import { Fonts, arrowRightTop } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
@@ -95,7 +103,37 @@ const Price = ({ orderData, onPresshandler }) => {
 
       <Spacer space={SH(15)} />
 
-      <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
+      <View style={styles.activeTaxButtonStyle}>
+        <TouchableOpacity
+          onPress={() => {
+            if (hasCheckedItem) {
+              onPresshandler();
+            } else {
+              alert('Please select products to return');
+            }
+          }}
+          style={[
+            styles.saveButtonTax,
+            {
+              backgroundColor: hasCheckedItem ? COLORS.navy_blue : COLORS.white,
+              borderWidth: hasCheckedItem ? 0 : 1,
+              borderColor: COLORS.navy_blue,
+            },
+          ]}
+        >
+          <Text
+            style={[
+              styles.saveButtonText,
+              { color: hasCheckedItem ? COLORS.white : COLORS.navy_blue },
+            ]}
+          >
+            {'Next'}
+          </Text>
+          <Image source={arrowRightTop} style={styles.arrowButton} />
+        </TouchableOpacity>
+      </View>
+
+      {/* <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
         <TouchableOpacity
           onPress={() => {
             if (hasCheckedItem) {
@@ -121,7 +159,7 @@ const Price = ({ orderData, onPresshandler }) => {
             {'Return All'}
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -131,7 +169,7 @@ export default memo(Price);
 const styles = StyleSheet.create({
   subTotalView: {
     paddingHorizontal: ms(10),
-    backgroundColor: COLORS.light_blue,
+    backgroundColor: COLORS.sky_grey,
     paddingVertical: ms(8),
     width:
       Platform.OS === 'android'
@@ -195,5 +233,30 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(16),
     color: COLORS.navy_blue,
+  },
+  saveButtonTax: {
+    backgroundColor: COLORS.navy_blue,
+    flex: 1,
+    height: SH(50),
+    borderRadius: 5,
+    marginLeft: ms(10),
+    borderRadius: 100,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  saveButtonText: {
+    color: COLORS.white,
+    textAlign: 'center',
+    fontSize: ms(11),
+    fontFamily: Fonts.MaisonRegular,
+    letterSpacing: -1,
+  },
+
+  arrowButton: {
+    width: ms(14),
+    height: ms(14),
+    resizeMode: 'contain',
+    // tintColor: COLORS.solid_grey,
   },
 });
