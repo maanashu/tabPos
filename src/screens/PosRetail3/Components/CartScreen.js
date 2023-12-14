@@ -45,6 +45,7 @@ import { useCallback } from 'react';
 import { useMemo } from 'react';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
+import { FullScreenLoader } from '@mPOS/components';
 
 export function CartScreen({
   onPressPayNow,
@@ -69,7 +70,6 @@ export function CartScreen({
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const [offerId, setOfferId] = useState();
   const CART_LENGTH = useSelector(getCartLength);
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
   const [unitPrice, setUnitPrice] = useState();
   const [cartEditItem, setCartEditItem] = useState(false);
   const [cartIndex, setCartIndex] = useState();
@@ -82,6 +82,27 @@ export function CartScreen({
 
   const availableOfferLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
+  );
+  const isLoadingGetAllCart = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_CART], state)
+  );
+  const isLoadingAddCart = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+
+  const isLoadingBulkCart = useSelector((state) =>
+    isLoadingSelector([TYPES.CREATE_BULK_CART], state)
+  );
+
+  const isLoadingOneProduct = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ONE_PRODUCT], state)
+  );
+
+  const isLoadingAddDiscount = useSelector((state) =>
+    isLoadingSelector([TYPES.ADD_DISCOUNT], state)
+  );
+  const isLoadingAddNote = useSelector((state) => isLoadingSelector([TYPES.ADDNOTES], state));
+
+  const isLoadingAddCustomProduct = useSelector((state) =>
+    isLoadingSelector([TYPES.CUSTOM_PRODUCT_ADD], state)
   );
 
   const beforeDiscountCartLoad = () => {
@@ -729,6 +750,13 @@ export function CartScreen({
       <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
         <NewCustomerAdd crossHandler={closeCustomerAddModal} cartid={cartidFrom} />
       </Modal>
+      {(isLoadingGetAllCart ||
+        isLoadingAddCart ||
+        isLoadingBulkCart ||
+        isLoadingOneProduct ||
+        isLoadingAddDiscount ||
+        isLoadingAddNote ||
+        isLoadingAddCustomProduct) && <FullScreenLoader />}
     </View>
   );
 }

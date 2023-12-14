@@ -26,6 +26,9 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { CustomHeader } from '../CustomHeader';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
+import { FullScreenLoader } from '@mPOS/components';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -101,6 +104,13 @@ export const PayByCash = ({
       return Math.ceil(value / 10) * 10;
     }
   };
+
+  const isLoadingUpdateCartByTip = useSelector((state) =>
+    isLoadingSelector([TYPES.UPDATE_CART_BY_TIP], state)
+  );
+  const isLoadingCreateOrder = useSelector((state) =>
+    isLoadingSelector([TYPES.CREATE_ORDER], state)
+  );
 
   const createOrderHandler = () => {
     if (cartType == 'Product') {
@@ -419,6 +429,7 @@ export const PayByCash = ({
           </View>
         </View>
       </View>
+      {(isLoadingUpdateCartByTip || isLoadingCreateOrder) && <FullScreenLoader />}
     </SafeAreaView>
   );
 };

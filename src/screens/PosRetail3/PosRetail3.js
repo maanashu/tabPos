@@ -44,6 +44,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { strings } from '@/localization';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { getDrawerSessions } from '@/actions/CashTrackingAction';
+import { FullScreenLoader } from '@mPOS/components';
 
 export function PosRetail3() {
   const dispatch = useDispatch();
@@ -339,39 +340,39 @@ export function PosRetail3() {
     }
   };
 
+  // TYPES.GET_ONE_PRODUCT,
+  // TYPES.GET_MAIN_PRODUCT,
+  // TYPES.ADDCART,
+  // TYPES.GET_ONE_SERVICE,
+  // TYPES.GET_CLEAR_ALL_CART,
+  // TYPES.GET_ALL_CART,
+  // TYPES.ADDNOTES,
+  // TYPES.ADD_DISCOUNT,
+  // TYPES.ATTACH_SERVICE_CUSTOMER, //not used anymore
+  // TYPES.ATTACH_CUSTOMER,
+  // TYPES.GET_SERVICE_CART, // not used anymore
+  // TYPES.ADD_SERVICE_CART, // not used anymore
+  // TYPES.GET_CLEAR_ONE_CART, // not used anymore
+  // TYPES.CUSTOM_PRODUCT_ADD,
+  // TYPES.CUSTOM_SERVICE_ADD,
+  // TYPES.GET_TIPS, // not used anymore
+  // TYPES.CREATE_ORDER,
+  // TYPES.CLEAR_SERVICE_ALL_CART, // not used anymore
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
-        TYPES.GET_ONE_PRODUCT,
-        TYPES.GET_ONE_SERVICE,
-        // TYPES.ADDCART,
-        TYPES.GET_CLEAR_ALL_CART,
-        TYPES.GET_ALL_CART,
-        TYPES.GET_WALLET_PHONE,
-        TYPES.GET_CLEAR_ONE_CART,
-        TYPES.REQUEST_MONEY,
-        TYPES.CREATE_ORDER,
-        TYPES.ADDNOTES,
-        TYPES.ADD_DISCOUNT,
-        TYPES.CHECK_SUPPLIES_VARIANT,
-        TYPES.GET_TIPS,
-        TYPES.CLEAR_SERVICE_ALL_CART,
-        TYPES.GET_SERVICE_CART,
-        TYPES.ADD_SERVICE_CART,
-        TYPES.CHANGE_STATUS_PRODUCT_CART,
-        TYPES.GET_MAIN_PRODUCT,
-        TYPES.GET_ALL_SERVICE_CART,
-        TYPES.CHANGE_STATUS_SERVICE_CART,
-        TYPES.ADD_SERVICE_DISCOUNT,
-        TYPES.GET_MAIN_SERVICES,
-        TYPES.PRODUCT_UPDATE_PRICE,
-        TYPES.SERVICE_UPDATE_PRICE,
-        TYPES.CUSTOM_PRODUCT_ADD,
-        TYPES.CUSTOM_SERVICE_ADD,
-        TYPES.ATTACH_SERVICE_CUSTOMER,
-        TYPES.ATTACH_CUSTOMER,
-        TYPES.CREATE_SERVICE_ORDER,
-        TYPES.UPDATE_CART_BY_TIP,
+        // TYPES.GET_WALLET_PHONE,
+        // TYPES.REQUEST_MONEY,
+        // TYPES.CHECK_SUPPLIES_VARIANT,
+        // TYPES.CHANGE_STATUS_PRODUCT_CART,
+        // TYPES.GET_ALL_SERVICE_CART,
+        // TYPES.CHANGE_STATUS_SERVICE_CART,
+        // TYPES.ADD_SERVICE_DISCOUNT,
+        // TYPES.GET_MAIN_SERVICES,
+        // TYPES.PRODUCT_UPDATE_PRICE,
+        // TYPES.SERVICE_UPDATE_PRICE,
+        // TYPES.CREATE_SERVICE_ORDER,
+        // TYPES.UPDATE_CART_BY_TIP,
       ],
       state
     )
@@ -576,11 +577,7 @@ export function PosRetail3() {
     <ScreenWrapper>
       <View style={styles.container}>{screenChangeView()}</View>
 
-      {isLoading ? (
-        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
-        </View>
-      ) : null}
+      {/* {isLoading && <FullScreenLoader />} */}
 
       <Modal animationType="fade" transparent={true} isVisible={addNotes || addDiscount}>
         <KeyboardAvoidingView

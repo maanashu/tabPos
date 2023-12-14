@@ -34,7 +34,9 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate }) {
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   let arr = [getRetailData?.getAllCart];
+
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
+  const isLoadingCart = useSelector((state) => isLoadingSelector([TYPES.CREATE_BULK_CART], state));
 
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
@@ -139,7 +141,7 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate }) {
   };
   return (
     <View style={styles.cartListModalView}>
-      {isLoading ? (
+      {isLoading || isLoadingCart ? (
         <ActivityIndicator size={'large'} animating color={COLORS.primary} />
       ) : (
         <View

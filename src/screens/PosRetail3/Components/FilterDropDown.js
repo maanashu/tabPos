@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
     marginVertical: ms(5),
   },
   filterDropDownBackGround: {
-    zIndex: 999,
+    zIndex: 9999999,
     position: 'absolute',
     right: 0,
     top: Platform.OS === 'ios' ? 60 : 70,

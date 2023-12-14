@@ -20,6 +20,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import Modal, { ReactNativeModal } from 'react-native-modal';
 import {
   addServiceFrom,
+  changeStatusProductCart,
   changeStatusServiceCart,
   clearAllCart,
   clearServiceAllCart,
@@ -47,6 +48,7 @@ import { NewCustomerAddService } from './NewCustomerAddService';
 import Toast from 'react-native-toast-message';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
+import { FullScreenLoader } from '@mPOS/components';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -95,6 +97,26 @@ export function CartServiceScreen({
 
   const availableOfferLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
+  );
+
+  const isLoadingGetAllCart = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_CART], state)
+  );
+  const isLoadingAddCart = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+
+  const isLoadingOneService = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ONE_SERVICE], state)
+  );
+  const isLoadingAddDiscount = useSelector((state) =>
+    isLoadingSelector([TYPES.ADD_DISCOUNT], state)
+  );
+  const isLoadingAddNote = useSelector((state) => isLoadingSelector([TYPES.ADDNOTES], state));
+  const isLoadingAttachCustomer = useSelector((state) =>
+    isLoadingSelector([TYPES.ATTACH_CUSTOMER], state)
+  );
+
+  const isLoadingAddCustomService = useSelector((state) =>
+    isLoadingSelector([TYPES.CUSTOM_SERVICE_ADD], state)
   );
 
   const backCartLoad = () => {
@@ -243,15 +265,16 @@ export function CartServiceScreen({
   // hold cart Function
   const serviceCartStatusHandler = () => {
     backCartLoad();
-    holdProductArray?.length > 0
-      ? {
-          status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
-          cartId: holdProductArray?.[0]?.id,
-        }
-      : {
-          status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
-          cartId: getRetailData?.getAllCart?.id,
-        };
+    const data =
+      holdProductArray?.length > 0
+        ? {
+            status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdProductArray?.[0]?.id,
+          }
+        : {
+            status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getAllCart?.id,
+          };
     dispatch(changeStatusProductCart(data));
   };
 
@@ -743,6 +766,13 @@ export function CartServiceScreen({
         <NewCustomerAddService crossHandler={closeCustomerAddModal} />
         {/* </KeyboardAvoidingView> */}
       </Modal>
+      {(isLoadingGetAllCart ||
+        isLoadingAddCart ||
+        isLoadingOneService ||
+        isLoadingAddDiscount ||
+        isLoadingAddNote ||
+        isLoadingAttachCustomer ||
+        isLoadingAddCustomService) && <FullScreenLoader />}
     </View>
   );
 }

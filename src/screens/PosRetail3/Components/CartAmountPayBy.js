@@ -72,7 +72,7 @@ import { getSetting } from '@/selectors/SettingSelector';
 import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
 import { CustomHeader } from './CustomHeader';
 import { Images } from '@/assets/new_icon';
-import { log } from 'react-native-reanimated';
+import { FullScreenLoader } from '@mPOS/components';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -396,9 +396,10 @@ export const CartAmountPayBy = ({
     dispatch(qrcodestatus(cartData.id));
   };
 
-  const isLoading = useSelector((state) =>
-    isLoadingSelector([TYPES.GET_WALLET_PHONE, TYPES.ATTACH_CUSTOMER, TYPES.CREATE_ORDER], state)
+  const isLoadingAttachCustomer = useSelector((state) =>
+    isLoadingSelector([TYPES.ATTACH_CUSTOMER], state)
   );
+
   useEffect(() => {
     let interval;
 
@@ -1087,6 +1088,7 @@ export const CartAmountPayBy = ({
                 <TouchableOpacity
                   style={styles.addToCartButtonCon}
                   onPress={() => {
+                    setPhonePopVisible(false);
                     getTipPress();
                     payNowByphone(selectedTipAmount);
                     attachUserByPhone(phoneNumber);
@@ -1222,6 +1224,7 @@ export const CartAmountPayBy = ({
                 <TouchableOpacity
                   style={styles.addToCartButtonCon}
                   onPress={() => {
+                    setEmailModal(false);
                     getTipPress();
                     payNowByphone(selectedTipAmount);
                     attachUserByEmail(email);
@@ -1450,6 +1453,7 @@ export const CartAmountPayBy = ({
           {/* </ScrollView> */}
         </KeyboardAvoidingView>
       </ReactNativeModal>
+      {isLoadingAttachCustomer && <FullScreenLoader />}
     </SafeAreaView>
   );
 };
