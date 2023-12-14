@@ -20,6 +20,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import Modal, { ReactNativeModal } from 'react-native-modal';
 import {
   addServiceFrom,
+  changeStatusProductCart,
   changeStatusServiceCart,
   clearAllCart,
   clearServiceAllCart,
@@ -47,6 +48,7 @@ import { NewCustomerAddService } from './NewCustomerAddService';
 import Toast from 'react-native-toast-message';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
+import BlurredModal from '@/components/BlurredModal';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -243,15 +245,16 @@ export function CartServiceScreen({
   // hold cart Function
   const serviceCartStatusHandler = () => {
     backCartLoad();
-    holdProductArray?.length > 0
-      ? {
-          status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
-          cartId: holdProductArray?.[0]?.id,
-        }
-      : {
-          status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
-          cartId: getRetailData?.getAllCart?.id,
-        };
+    const data =
+      holdProductArray?.length > 0
+        ? {
+            status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdProductArray?.[0]?.id,
+          }
+        : {
+            status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getAllCart?.id,
+          };
     dispatch(changeStatusProductCart(data));
   };
 
@@ -732,17 +735,17 @@ export function CartServiceScreen({
         />
       </Modal>
 
-      <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={numPadModal}>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
           <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="service" />
         </KeyboardAvoidingView>
-      </Modal>
+      </BlurredModal>
 
-      <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={newCustomerModal}>
         {/* <KeyboardAvoidingView behavior="padding"> */}
         <NewCustomerAddService crossHandler={closeCustomerAddModal} />
         {/* </KeyboardAvoidingView> */}
-      </Modal>
+      </BlurredModal>
     </View>
   );
 }

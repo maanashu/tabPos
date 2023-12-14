@@ -85,6 +85,7 @@ import { AddCartDetailModal, AddCartModal } from '../PosRetail3/Components';
 import { Modal as PaperModal } from 'react-native-paper';
 import { Images } from '@/assets/new_icon';
 import { ms } from 'react-native-size-matters';
+import BlurredModal from '@/components/BlurredModal';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -380,12 +381,12 @@ export function DashBoard({ navigation }) {
 
   const trackinSessionModal = () => {
     return (
-      <Modal
+      <BlurredModal
         transparent={true}
         animationType={'fade'}
         isVisible={trackingSession}
-        backdropColor={COLORS.row_grey}
-        backdropOpacity={0.9}
+        // backdropColor={COLORS.row_grey}
+        // backdropOpacity={0.9}
       >
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
@@ -468,7 +469,7 @@ export function DashBoard({ navigation }) {
             </View>
           </View>
         </KeyboardAwareScrollView>
-      </Modal>
+      </BlurredModal>
     );
   };
 

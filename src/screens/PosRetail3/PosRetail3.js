@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { AddDiscountToCart, ScreenWrapper, Spacer } from '@/components';
 import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import {
@@ -15,6 +22,7 @@ import {
   PayByCash,
   PayByCash2,
 } from '@/screens/PosRetail3/Components';
+import { addSellingSelection } from '@/actions/DashboardAction';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -44,6 +52,10 @@ import { TextInput } from 'react-native-gesture-handler';
 import { strings } from '@/localization';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { getDrawerSessions } from '@/actions/CashTrackingAction';
+import BlurredModal from '@/components/BlurredModal';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function PosRetail3() {
   const dispatch = useDispatch();
@@ -54,7 +66,7 @@ export function PosRetail3() {
   const servicCartId = getRetailData?.getAllCart?.id;
   const cartData = getRetailData?.getAllCart;
   const getCart = getRetailData?.getAllCart;
-  const getServicecart = getRetailData?.getserviceCart;
+  const getServicecart = getRetailData?.getAllCart;
   const getServiceCartAmount = getRetailData?.getAllCart?.amount;
   const finalAmountForDiscount =
     cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
@@ -437,7 +449,8 @@ export function PosRetail3() {
     ),
     ['CartAmountTips']: (
       <CartAmountTips
-        onPressBack={() => setselectedScreen('MainScreen')}
+        // onPressBack={() => setselectedScreen('MainScreen')}
+        onPressBack={() => navigate(NAVIGATION.dashBoard)}
         onPressContinue={(tip) => {
           setTipAmount(tip);
           setselectedScreen('CartAmountPayBy');
@@ -540,7 +553,11 @@ export function PosRetail3() {
     ['FinalPaymentScreen']: (
       <FinalPaymentScreen
         tipAmount={tipAmount}
-        onPressBack={() => setselectedScreen('MainScreen')}
+        // onPressBack={() => setselectedScreen('MainScreen')}
+        onPressBack={() => {
+          dispatch(addSellingSelection(0));
+          navigate(NAVIGATION.dashBoard);
+        }}
         paymentMethod={paymentMethod}
         cartData={savedTempCartData}
         payDetail={cashPayDetail}
@@ -581,167 +598,158 @@ export function PosRetail3() {
         </View>
       ) : null}
 
-      <Modal animationType="fade" transparent={true} isVisible={addNotes || addDiscount}>
-        <KeyboardAvoidingView
-        // style={{ flex: 1 }}
-        // behavior={Platform.OS === 'ios' ? 'padding' : 100}
-        // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
+      <BlurredModal animationType="fade" transparent={true} isVisible={addNotes || addDiscount}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
         >
-          <ScrollView>
-            {addDiscount ? (
-              <View style={[styles.addNotesCon, styles.addDiscountConPop]}>
-                <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
-                  <Text style={styles.jacketName}>Add Discount</Text>
-                  <TouchableOpacity onPress={() => setAddDiscount(false)}>
-                    <Image source={crossButton} style={styles.crossBg} />
-                  </TouchableOpacity>
-                </View>
-                <Spacer space={SH(15)} />
-                <AddDiscountToCart
-                  amountDis={amountDis}
-                  setAmountDis={setAmountDis}
-                  percentDis={percentDis}
-                  setPercentDis={setPercentDis}
-                  discountCode={discountCode}
-                  setDiscountCode={setDiscountCode}
-                  descriptionDis={descriptionDis}
-                  setDescriptionDis={setDescriptionDis}
-                  setValue={setValue}
-                  value={value}
-                  clearInput={clearInput}
-                  amountCheck={amountCheck}
-                  setAmountCheck={setAmountCheck}
-                  percentageCheck={percentageCheck}
-                  setPercentageCheck={setPercentageCheck}
-                  discountCheck={discountCheck}
-                  setDiscountCheck={setDiscountCheck}
-                />
-                <Spacer space={SH(10)} />
-                <TouchableOpacity
-                  style={styles.addDiscountcon}
-                  onPress={() => saveDiscountHandler()}
-                >
-                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
+          {/* <ScrollView> */}
+          {addDiscount ? (
+            <View style={[styles.addNotesCon, styles.addDiscountConPop]}>
+              <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
+                <Text style={styles.jacketName}>Add Discount</Text>
+                <TouchableOpacity onPress={() => setAddDiscount(false)}>
+                  <Image source={crossButton} style={styles.crossBg} />
                 </TouchableOpacity>
               </View>
-            ) : (
-              <View style={[styles.addNotesCon, styles.addNotesCon2]}>
-                <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
-                  <Text style={styles.jacketName}>Add Notes</Text>
-                  <TouchableOpacity onPress={() => setAddNotes(false)}>
-                    <Image source={crossButton} style={styles.crossBg} />
-                  </TouchableOpacity>
-                </View>
-                <Spacer space={SH(15)} />
-                <TextInput
-                  style={styles.addNotesInput1}
-                  onChangeText={setNotes}
-                  value={notes}
-                  placeholder="Add Notes"
-                  multiline={true}
-                  placeholderTextColor={COLORS.light_purple}
-                />
-                <Spacer space={SH(15)} />
-                <TouchableOpacity style={styles.addDiscountcon} onPress={() => saveNotesHandler()}>
-                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
+              <Spacer space={SH(15)} />
+              <AddDiscountToCart
+                amountDis={amountDis}
+                setAmountDis={setAmountDis}
+                percentDis={percentDis}
+                setPercentDis={setPercentDis}
+                discountCode={discountCode}
+                setDiscountCode={setDiscountCode}
+                descriptionDis={descriptionDis}
+                setDescriptionDis={setDescriptionDis}
+                setValue={setValue}
+                value={value}
+                clearInput={clearInput}
+                amountCheck={amountCheck}
+                setAmountCheck={setAmountCheck}
+                percentageCheck={percentageCheck}
+                setPercentageCheck={setPercentageCheck}
+                discountCheck={discountCheck}
+                setDiscountCheck={setDiscountCheck}
+              />
+              <Spacer space={SH(10)} />
+              <TouchableOpacity style={styles.addDiscountcon} onPress={() => saveDiscountHandler()}>
+                <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={[styles.addNotesCon, styles.addNotesCon2]}>
+              <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
+                <Text style={styles.jacketName}>Add Notes</Text>
+                <TouchableOpacity onPress={() => setAddNotes(false)}>
+                  <Image source={crossButton} style={styles.crossBg} />
                 </TouchableOpacity>
               </View>
-            )}
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </Modal>
+              <Spacer space={SH(15)} />
+              <TextInput
+                style={styles.addNotesInput1}
+                onChangeText={setNotes}
+                value={notes}
+                placeholder="Add Notes"
+                multiline={true}
+                placeholderTextColor={COLORS.light_purple}
+              />
+              <Spacer space={SH(15)} />
+              <TouchableOpacity style={styles.addDiscountcon} onPress={() => saveNotesHandler()}>
+                <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {/* </ScrollView> */}
+        </KeyboardAwareScrollView>
+      </BlurredModal>
 
-      <Modal
+      <BlurredModal
         animationType="fade"
         transparent={true}
         isVisible={addServiceNotes || addServiceDiscount}
       >
-        <KeyboardAvoidingView
-        // style={{ flex: 1 }}
-        // behavior={Platform.OS === 'ios' ? 'padding' : 100}
-        // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
         >
-          <ScrollView>
-            {addServiceDiscount ? (
-              <View style={[styles.addNotesCon, styles.addDiscountConPop]}>
-                <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
-                  <Text style={styles.jacketName}>Add Discount</Text>
-                  <TouchableOpacity onPress={() => setAddServiceDiscount(false)}>
-                    <Image source={crossButton} style={styles.crossBg} />
-                  </TouchableOpacity>
-                </View>
-                <Spacer space={SH(15)} />
-                <AddDiscountToCart
-                  amountDis={serviceAmountDis}
-                  setAmountDis={setServiceAmountDis}
-                  percentDis={servicePercentDis}
-                  setPercentDis={setServicePercentDis}
-                  discountCode={serviceDiscountCode}
-                  setDiscountCode={setServiceDiscountCode}
-                  descriptionDis={serviceDescriptionDis}
-                  setDescriptionDis={setServiceDescriptionDis}
-                  setValue={setServiceValue}
-                  value={serviceValue}
-                  clearInput={clearServiceInput}
-                  amountCheck={serviceAmountCheck}
-                  setAmountCheck={setServiceAmountCheck}
-                  percentageCheck={servicePercentageCheck}
-                  setPercentageCheck={setServicePercentageCheck}
-                  discountCheck={serviceDiscountCheck}
-                  setDiscountCheck={setServiceDiscountCheck}
-                />
-                <Spacer space={SH(10)} />
-                <TouchableOpacity
-                  style={[styles.holdCartCon, styles.addNotesBtn, { borderWidth: 0 }]}
-                  onPress={() => saveServiceDiscountHandler()}
-                  // onPress={() => saveDiscountHandler()}
-                >
-                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
+          {addServiceDiscount ? (
+            <View style={[styles.addNotesCon, styles.addDiscountConPop]}>
+              <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
+                <Text style={styles.jacketName}>Add Discount</Text>
+                <TouchableOpacity onPress={() => setAddServiceDiscount(false)}>
+                  <Image source={crossButton} style={styles.crossBg} />
                 </TouchableOpacity>
               </View>
-            ) : (
-              <View style={[styles.addNotesCon, styles.addNotesCon2]}>
-                <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
-                  <Text style={styles.jacketName}>Add Notes</Text>
-                  <TouchableOpacity onPress={() => setAddServiceNotes(false)}>
-                    <Image source={crossButton} style={styles.crossBg} />
-                  </TouchableOpacity>
-                </View>
-                <Spacer space={SH(15)} />
-                <TextInput
-                  style={styles.addNotesInput1}
-                  onChangeText={setServiceNotes}
-                  value={serviceNotes}
-                  placeholder="Add Notes"
-                  multiline={true}
-                  placeholderTextColor={COLORS.light_purple}
-                />
-                <Spacer space={SH(15)} />
-                <TouchableOpacity
-                  style={[styles.holdCartCon, styles.addNotesBtn]}
-                  // onPress={() => saveServiceNotesHandler()}
-                  onPress={() => {
-                    if (!serviceNotes) {
-                      alert(strings.posSale.pleaseAddNotes);
-                    } else {
-                      const data = {
-                        cartId: servicCartId,
-                        notes: serviceNotes,
-                      };
-                      // dispatch(addServiceNotescart(data));
-                      dispatch(addNotescart(data));
-                      setServiceNotes('');
-                      setAddServiceNotes(false);
-                    }
-                  }}
-                >
-                  <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
+              <Spacer space={SH(15)} />
+              <AddDiscountToCart
+                amountDis={serviceAmountDis}
+                setAmountDis={setServiceAmountDis}
+                percentDis={servicePercentDis}
+                setPercentDis={setServicePercentDis}
+                discountCode={serviceDiscountCode}
+                setDiscountCode={setServiceDiscountCode}
+                descriptionDis={serviceDescriptionDis}
+                setDescriptionDis={setServiceDescriptionDis}
+                setValue={setServiceValue}
+                value={serviceValue}
+                clearInput={clearServiceInput}
+                amountCheck={serviceAmountCheck}
+                setAmountCheck={setServiceAmountCheck}
+                percentageCheck={servicePercentageCheck}
+                setPercentageCheck={setServicePercentageCheck}
+                discountCheck={serviceDiscountCheck}
+                setDiscountCheck={setServiceDiscountCheck}
+              />
+              <Spacer space={SH(10)} />
+              <TouchableOpacity
+                style={[styles.holdCartCon, styles.addNotesBtn, { borderWidth: 0 }]}
+                onPress={() => saveServiceDiscountHandler()}
+                // onPress={() => saveDiscountHandler()}
+              >
+                <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Discount</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={[styles.addNotesCon, styles.addNotesCon2]}>
+              <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>
+                <Text style={styles.jacketName}>Add Notes</Text>
+                <TouchableOpacity onPress={() => setAddServiceNotes(false)}>
+                  <Image source={crossButton} style={styles.crossBg} />
                 </TouchableOpacity>
               </View>
-            )}
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </Modal>
+              <Spacer space={SH(15)} />
+              <TextInput
+                style={styles.addNotesInput1}
+                onChangeText={setServiceNotes}
+                value={serviceNotes}
+                placeholder="Add Notes"
+                multiline={true}
+                placeholderTextColor={COLORS.light_purple}
+              />
+              <Spacer space={SH(15)} />
+              <TouchableOpacity
+                style={[styles.holdCartCon, styles.addNotesBtn]}
+                // onPress={() => saveServiceNotesHandler()}
+                onPress={() => {
+                  if (!serviceNotes) {
+                    alert(strings.posSale.pleaseAddNotes);
+                  } else {
+                    const data = {
+                      cartId: servicCartId,
+                      notes: serviceNotes,
+                    };
+                    // dispatch(addServiceNotescart(data));
+                    dispatch(addNotescart(data));
+                    setServiceNotes('');
+                    setAddServiceNotes(false);
+                  }
+                }}
+              >
+                <Text style={[styles.holdCart, { color: COLORS.white }]}>Add Notes</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </KeyboardAwareScrollView>
+      </BlurredModal>
     </ScreenWrapper>
   );
 }

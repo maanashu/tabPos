@@ -85,6 +85,7 @@ import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 import { Images } from '@/assets/new_icon';
 import { imageSource } from '@/utils/GlobalMethods';
 import CustomAlert from '@/components/CustomAlert';
+import BlurredModal from '@/components/BlurredModal';
 
 export function MainScreen({
   cartScreenHandler,
@@ -1582,26 +1583,27 @@ export function MainScreen({
       </View>
 
       {/* cart list modal start */}
-      <ReactNativeModal
+      <BlurredModal
         animationType="fade"
         transparent={true}
         isVisible={cartModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        backdropOpacity={0.9}
-        backdropColor={COLORS.row_grey}
         onBackdropPress={() => {
           setCartModal(false);
+          // bulkCart();
+          // checkOutHandler();
         }}
         onBackButtonPress={() => {
           setCartModal(false);
+          // bulkCart();
+          // checkOutHandler();
         }}
       >
         <CartListModal
           cartQtyUpdate={cartQtyUpdate}
           clearCart={eraseClearCart}
           checkOutHandler={() => {
-            // bulkCart();
             checkOutHandler();
           }}
           CloseCartModal={() => {
@@ -1615,17 +1617,15 @@ export function MainScreen({
             setCustomProductOpen('product');
           }}
         />
-      </ReactNativeModal>
+      </BlurredModal>
 
       {/* cart list modal end */}
 
       {/* cart list modal start */}
-      <ReactNativeModal
+      <BlurredModal
         animationType="fade"
         transparent={true}
         isVisible={numPadModal}
-        backdropOpacity={0.9}
-        backdropColor={COLORS.row_grey}
         onBackdropPress={() => {
           setNumPadModal(false);
         }}
@@ -1638,19 +1638,17 @@ export function MainScreen({
           comeFrom={customProductOpen}
           sellerID={sellerID}
         />
-      </ReactNativeModal>
+      </BlurredModal>
 
       {/* cart list modal end */}
 
       {/* cart list modal start */}
-      <ReactNativeModal
+      <BlurredModal
         animationType="fade"
         transparent={true}
         isVisible={serviceCartModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        backdropOpacity={0.9}
-        backdropColor={COLORS.row_grey}
         onBackdropPress={() => {
           setServiceCartModal(false);
         }}
@@ -1671,19 +1669,14 @@ export function MainScreen({
             setCustomProductOpen('service');
           }}
         />
-        {/* ) : (
-          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-            <CustomProductAdd
-              crossHandler={() => setNumPadModal(false)}
-              comeFrom={customProductOpen}
-              sellerID={sellerID}
-            />
-          </KeyboardAvoidingView>
-        )} */}
-      </ReactNativeModal>
+      </BlurredModal>
 
       {/* cart list modal end */}
-      <Modal animationType="fade" transparent={true} isVisible={addCartModal || addCartDetailModal}>
+      <BlurredModal
+        animationType="fade"
+        transparent={true}
+        isVisible={addCartModal || addCartDetailModal}
+      >
         {addCartDetailModal ? (
           <AddCartDetailModal
             crossHandler={() => setAddCartDetailModal(false)}
@@ -1712,10 +1705,10 @@ export function MainScreen({
             openFrom="main"
           />
         )}
-      </Modal>
+      </BlurredModal>
 
       {/* cart list modal end */}
-      <Modal animationType="fade" transparent={true} isVisible={addServiceCartModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={addServiceCartModal}>
         <AddServiceCartModal
           crossHandler={() => setAddServiceCartModal(false)}
           // detailHandler={() => setAddCartDetailModal(true)}
@@ -1723,7 +1716,7 @@ export function MainScreen({
           itemData={serviceItemSave}
           backToCartHandler={() => cartServiceScreenHandler()}
         />
-      </Modal>
+      </BlurredModal>
 
       <Modal
         animationType="fade"

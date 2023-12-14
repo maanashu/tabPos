@@ -200,7 +200,7 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
       contentContainerStyle={{ flex: Platform.OS === 'android' ? 0 : 1, justifyContent: 'center' }}
       showsVerticalScrollIndicator={false}
     >
-      <View style={comeFrom === 'product' ? styles.customProductCon : [styles.customProductCon]}>
+      <View style={styles.customProductCon}>
         <View style={styles.headerConCustomProduct}>
           <Image source={Images.addProduct} style={styles.plusIcon} />
           <Text style={styles.addManually}>Add New Product {'\n'} Manually</Text>
@@ -376,6 +376,7 @@ const styles = StyleSheet.create({
     borderRadius: ms(15),
     paddingVertical: ms(12),
     paddingHorizontal: ms(15),
+    ...ShadowStyles.shadow,
   },
   headerConCustomProduct: {
     height: ms(80),
