@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import ProfileImage from '@/components/ProfileImage';
 import { Images } from '@/assets/new_icon';
 import { Spacer } from '@/components';
+import { COLORS } from '@/theme';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -21,15 +22,49 @@ const EventItemCard = ({ item, index }) => {
   const appointmentDetail = item;
 
   return (
-    <View style={styles.eventItemContainer}>
+    <View
+      style={[
+        styles.eventItemContainer,
+        {
+          backgroundColor:
+            item?.mode_of_payment == 'cash' ? COLORS.sky_grey : COLORS.alarm_success_50,
+          borderColor: item?.mode_of_payment == 'cash' ? COLORS.light_purple : COLORS.success_green,
+        },
+      ]}
+    >
       {userDetails && (
         <View style={styles.customerDetailContainer}>
           <View style={styles.rowAlignedJustified}>
             <Text style={styles._eventTitle}>Customer:</Text>
-            <View style={styles.paidContainer}>
-              <Text style={styles.paidText}>
+            <View
+              style={[
+                styles.paidContainer,
+                {
+                  backgroundColor:
+                    item?.mode_of_payment == 'cash' ? COLORS.white : COLORS.success_green,
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.paidText,
+                  {
+                    color: item?.mode_of_payment == 'cash' ? COLORS.navy_blue : COLORS.white,
+                  },
+                ]}
+              >
                 {item?.mode_of_payment == 'cash' ? 'Unpaid' : 'Paid'}
               </Text>
+              {item?.mode_of_payment != 'cash' && (
+                <>
+                  <Spacer horizontal space={ms(3)} />
+                  <Image
+                    source={Images.check_circle}
+                    resizeMode="contain"
+                    style={styles.checkStyle}
+                  />
+                </>
+              )}
             </View>
           </View>
 
@@ -127,7 +162,10 @@ const EventItemCard = ({ item, index }) => {
                 changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER)
               );
             }}
-            style={[styles.declineButtonStyle, { height: ms(30), width: '46%' }]}
+            style={[
+              styles.declineButtonStyle,
+              { height: ms(30), width: '46%', backgroundColor: 'transparent' },
+            ]}
           >
             <Text style={styles.declineText}>Decline</Text>
           </TouchableOpacity>

@@ -521,12 +521,10 @@ export const styles = StyleSheet.create({
     marginHorizontal: ms(10),
   },
   eventItemContainer: {
-    backgroundColor: COLORS.sky_grey,
     borderRadius: ms(16),
     marginHorizontal: ms(8),
     marginTop: ms(5),
     borderWidth: 1,
-    borderColor: COLORS.light_purple,
     overflow: 'hidden',
     paddingHorizontal: ms(10),
   },
@@ -561,16 +559,16 @@ export const styles = StyleSheet.create({
   paidText: {
     fontFamily: Fonts.Regular,
     color: COLORS.navy_blue,
-    alignSelf: 'center',
   },
   paidContainer: {
     backgroundColor: COLORS.white,
-    padding: ms(3),
     paddingHorizontal: ms(10),
     borderRadius: ms(30),
     marginTop: ms(3),
     justifyContent: 'center',
-    alignContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: ms(21),
   },
   totalTile: {
     fontFamily: Fonts.Medium,
@@ -650,8 +648,6 @@ export const styles = StyleSheet.create({
     borderRadius: ms(12),
   },
   customerDetailContainer: {
-    backgroundColor: COLORS.textInputBackground,
-    // margin: ms(10),
     borderRadius: ms(5),
     paddingVertical: ms(10),
   },
@@ -1260,5 +1256,9 @@ export const styles = StyleSheet.create({
     tintColor: COLORS.sky_blue,
     height: ms(16),
     width: ms(16),
+  },
+  checkStyle: {
+    height: ms(12),
+    width: ms(12),
   },
 });
