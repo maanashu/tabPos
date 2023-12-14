@@ -108,7 +108,6 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate, cartL
   useEffect(() => {
     if (!isFocused) {
       updateQty();
-      alert('fghjmk,.');
     }
   }, [isFocused]);
 
@@ -123,6 +122,7 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate, cartL
       const data = {
         updated_products: products,
       };
+
       dispatch(updateCartQty(data, arr.id));
     } else {
       // clearCartHandler();

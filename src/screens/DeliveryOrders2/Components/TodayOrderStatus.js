@@ -14,7 +14,6 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 const TodayOrderStatus = () => {
   const getDeliveryData = useSelector(getDelivery);
   const todayOrderStatusData = getDeliveryData?.todayOrderStatus;
-  console.log('ASdasdas', todayOrderStatusData);
   const orderStatusLoading = useSelector((state) =>
     isLoadingSelector([TYPES.TODAY_ORDER_STATUS], state)
   );

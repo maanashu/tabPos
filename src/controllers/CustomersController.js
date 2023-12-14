@@ -87,7 +87,6 @@ export class CustomersController {
           : ORDER_URL +
             ApiOrderInventory.getOrderUser +
             `?seller_id=${data?.sellerID}&user_uid=${data?.userId}&month=${data?.month}&store_location=${data?.storeLocation}&page=${data?.page}&limit=${data?.limit}`;
-      console.log('endpoint---------', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

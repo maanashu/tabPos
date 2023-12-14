@@ -188,7 +188,6 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
-  console.log('requestStatus', requestStatus, getRetailData?.qrStatuskey?.status);
   // useEffect(() => {
   //   setSelectedTipIndex(tipsSelected);
   //   setSelectedTipAmount(

@@ -719,11 +719,8 @@ export class RetailController {
             // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
           };
-      console.log('body', body);
-      console.log('endpoint', endpoint);
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           if (response?.msg === 'Order placed successfully!') {
             Toast.show({
               position: 'bottom',
@@ -735,7 +732,6 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -1619,11 +1615,9 @@ export class RetailController {
 
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           error &&
             Toast.show({
               text2: 'Your wallet not found',

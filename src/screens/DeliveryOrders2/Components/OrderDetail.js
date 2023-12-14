@@ -32,7 +32,6 @@ const OrderDetail = ({
   onPressShop,
   isMaximizeStatusView,
 }) => {
-  console.log('userDetails', JSON.stringify(userDetail));
   const detailView = () => {
     if (
       userDetail?.status === 0 ||

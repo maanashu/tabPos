@@ -18,6 +18,7 @@ const BlurredModal = ({
         blurAmount={blurAmount || 15} // Default blur amount to 15 if not provided
         reducedTransparencyFallbackColor={fallbackColor || 'white'} // Default fallback color to white if not provided
         style={styles.absolute}
+        pointerEvents="none"
       />
       {children}
     </Modal>

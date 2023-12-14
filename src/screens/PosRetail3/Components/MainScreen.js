@@ -451,7 +451,6 @@ export function MainScreen({
     }
   }, [cartLength]);
   const checkAttributes = async (item, index, cartQty) => {
-    console.log('pressed');
     if (onlyServiceCartArray?.length > 0) {
       CustomAlert({
         title: 'Alert',
@@ -1596,12 +1595,18 @@ export function MainScreen({
         isVisible={cartModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        onBackdropPress={() => {
-          setCartModal(false);
-        }}
-        onBackButtonPress={() => {
-          setCartModal(false);
-        }}
+        // onBackdropPress={() => {
+        //   setCartModal(false);
+        //   // dispatch(getAllCart());
+        //   // bulkCart();
+        //   cartQtyUpdate();
+        // }}
+        // onBackButtonPress={() => {
+        //   setCartModal(false);
+        //   // dispatch(getAllCart());
+        //   // bulkCart();
+        //   cartQtyUpdate();
+        // }}
       >
         <CartListModal
           cartQtyUpdate={cartQtyUpdate}

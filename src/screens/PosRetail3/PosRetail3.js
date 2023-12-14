@@ -450,8 +450,8 @@ export function PosRetail3() {
     ),
     ['CartAmountTips']: (
       <CartAmountTips
-        // onPressBack={() => setselectedScreen('MainScreen')}
-        onPressBack={() => navigate(NAVIGATION.dashBoard)}
+        onPressBack={() => setselectedScreen('MainScreen')}
+        // onPressBack={() => navigate(NAVIGATION.dashBoard)}
         onPressContinue={(tip) => {
           setTipAmount(tip);
           setselectedScreen('CartAmountPayBy');
