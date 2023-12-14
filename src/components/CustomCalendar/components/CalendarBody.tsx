@@ -161,10 +161,12 @@ function _CalendarBody<T extends ICalendarEventBase>({
   return (
     <React.Fragment>
       {headerComponent != null ? <View style={headerComponentStyle}>{headerComponent}</View> : null}
+
       <ScrollView
         style={[
           {
             height: containerHeight - cellHeight * 3,
+            marginTop: 16,
           },
           style,
         ]}

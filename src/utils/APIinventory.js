@@ -67,6 +67,7 @@ export const ApiUserInventory = {
   changeOldPin: USER_URL + 'users/change-old-pin',
   departmentList: USER_URL + 'departments',
   updateUserProfile: 'user_profiles',
+  merchantWalletCheck: 'users/uuid/',
 };
 
 export const ApiProductInventory = {

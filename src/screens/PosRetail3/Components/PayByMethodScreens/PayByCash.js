@@ -71,7 +71,7 @@ export const PayByCash = ({
     },
     {
       title: 'Date',
-      data: moment().format('ddd') + ' ' + moment().subtract(10, 'days').calendar(),
+      data: moment().format('ddd') + ' ' + moment().format('L'),
       id: 2,
     },
     {

@@ -88,6 +88,7 @@ import { Images } from '@/assets/new_icon';
 import { imageSource } from '@/utils/GlobalMethods';
 import CustomAlert from '@/components/CustomAlert';
 import { FullScreenLoader } from '@mPOS/components';
+import BlurredModal from '@/components/BlurredModal';
 
 export function MainScreen({
   cartScreenHandler,
@@ -1589,26 +1590,27 @@ export function MainScreen({
       </View>
 
       {/* cart list modal start */}
-      <ReactNativeModal
+      <BlurredModal
         animationType="fade"
         transparent={true}
         isVisible={cartModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        backdropOpacity={0.9}
-        backdropColor={COLORS.row_grey}
         onBackdropPress={() => {
           setCartModal(false);
+          // bulkCart();
+          // checkOutHandler();
         }}
         onBackButtonPress={() => {
           setCartModal(false);
+          // bulkCart();
+          // checkOutHandler();
         }}
       >
         <CartListModal
           cartQtyUpdate={cartQtyUpdate}
           clearCart={eraseClearCart}
           checkOutHandler={() => {
-            // bulkCart();
             checkOutHandler();
           }}
           CloseCartModal={() => {
@@ -1622,17 +1624,15 @@ export function MainScreen({
             setCustomProductOpen('product');
           }}
         />
-      </ReactNativeModal>
+      </BlurredModal>
 
       {/* cart list modal end */}
 
       {/* cart list modal start */}
-      <ReactNativeModal
+      <BlurredModal
         animationType="fade"
         transparent={true}
         isVisible={numPadModal}
-        backdropOpacity={0.9}
-        backdropColor={COLORS.row_grey}
         onBackdropPress={() => {
           setNumPadModal(false);
         }}
@@ -1645,19 +1645,17 @@ export function MainScreen({
           comeFrom={customProductOpen}
           sellerID={sellerID}
         />
-      </ReactNativeModal>
+      </BlurredModal>
 
       {/* cart list modal end */}
 
       {/* cart list modal start */}
-      <ReactNativeModal
+      <BlurredModal
         animationType="fade"
         transparent={true}
         isVisible={serviceCartModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        backdropOpacity={0.9}
-        backdropColor={COLORS.row_grey}
         onBackdropPress={() => {
           setServiceCartModal(false);
         }}
@@ -1678,19 +1676,14 @@ export function MainScreen({
             setCustomProductOpen('service');
           }}
         />
-        {/* ) : (
-          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-            <CustomProductAdd
-              crossHandler={() => setNumPadModal(false)}
-              comeFrom={customProductOpen}
-              sellerID={sellerID}
-            />
-          </KeyboardAvoidingView>
-        )} */}
-      </ReactNativeModal>
+      </BlurredModal>
 
       {/* cart list modal end */}
-      <Modal animationType="fade" transparent={true} isVisible={addCartModal || addCartDetailModal}>
+      <BlurredModal
+        animationType="fade"
+        transparent={true}
+        isVisible={addCartModal || addCartDetailModal}
+      >
         {addCartDetailModal ? (
           <AddCartDetailModal
             crossHandler={() => setAddCartDetailModal(false)}
@@ -1719,10 +1712,10 @@ export function MainScreen({
             openFrom="main"
           />
         )}
-      </Modal>
+      </BlurredModal>
 
       {/* cart list modal end */}
-      <Modal animationType="fade" transparent={true} isVisible={addServiceCartModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={addServiceCartModal}>
         <AddServiceCartModal
           crossHandler={() => setAddServiceCartModal(false)}
           // detailHandler={() => setAddCartDetailModal(true)}
@@ -1730,7 +1723,8 @@ export function MainScreen({
           itemData={serviceItemSave}
           backToCartHandler={() => cartServiceScreenHandler()}
         />
-      </Modal>
+      </BlurredModal>
+
       {(isLoadingProduct ||
         isLoadingOneProduct ||
         isLoadingAddCart ||
@@ -1741,151 +1735,6 @@ export function MainScreen({
         isLoadingServices ||
         isLoadingAddCustomProduct ||
         isLoadingAddCustomService) && <FullScreenLoader />}
-      {/* <Modal
-        animationType="fade"
-        transparent={true}
-        isVisible={categoryModal || subCategoryModal || brandModal}
-      >
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 100}
-          // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
-        >
-          <ScrollView>
-            <View>
-              {categoryModal ? (
-                <CategoryModal
-                  cancelCategory={() => {
-                    setselectedCatID(null);
-                    setCategoryModal(false);
-                    dispatch(getMainProduct());
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-                      newData[0].isSelected = false;
-                      newData[0].name = originalFilterData[0].name;
-                      return newData;
-                    });
-                  }}
-                  crossHandler={() => setCategoryModal(false)}
-                  categoryArray={categoryArray}
-                  onSelectCategory={(selectedCat) => {
-                    setselectedCatID(selectedCat.id);
-                    const categoryID = {
-                      category_ids: selectedCat.id,
-                    };
-                    dispatch(getMainProduct(categoryID));
-                    setSearch(''); // Clear the search input product
-
-                    setisFilterDataSeclectedOfIndex(0);
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-
-                      // Set Category
-                      newData[0].name = selectedCat.name;
-                      newData[0].isSelected = true;
-
-                      // Reset SubCategory selections
-                      newData[1].isSelected = false;
-                      newData[1].name = originalFilterData[1].name;
-
-                      // Reset Brand selections
-                      newData[2].isSelected = false;
-                      newData[2].name = originalFilterData[2].name;
-
-                      return newData;
-                    });
-
-                    setCategoryModal(false);
-                  }}
-                />
-              ) : subCategoryModal ? (
-                <SubCatModal
-                  cancelSubCategory={() => {
-                    setselectedSubCatID(null);
-                    setSubCategoryModal(false);
-                    dispatch(getMainProduct());
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-                      newData[1].isSelected = false;
-                      newData[1].name = originalFilterData[1].name;
-                      return newData;
-                    });
-                  }}
-                  crossHandler={() => setSubCategoryModal(false)}
-                  onSelectSubCategory={(selectedSubCat) => {
-                    const subCategoryID = {
-                      sub_category_ids: selectedSubCat.id,
-                    };
-                    dispatch(getMainProduct(subCategoryID));
-                    setSearch(''); // Clear the search input product
-                    setselectedSubCatID(selectedSubCat.id);
-                    setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
-
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-
-                      // Set SubCategory
-                      newData[1].name = selectedSubCat.name;
-                      newData[1].isSelected = true;
-
-                      // Reset category selections
-                      newData[0].isSelected = false;
-                      newData[0].name = originalFilterData[0].name;
-
-                      // Reset brand selections
-                      newData[2].isSelected = false;
-                      newData[2].name = originalFilterData[2].name;
-
-                      return newData;
-                    });
-                    setSubCategoryModal(false);
-                  }}
-                />
-              ) : (
-                <BrandModal
-                  cancelBrand={() => {
-                    setselectedBrandID(null);
-                    setBrandModal(false);
-                    dispatch(getMainProduct());
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-                      newData[2].isSelected = false;
-                      newData[2].name = originalFilterData[2].name;
-                      return newData;
-                    });
-                  }}
-                  crossHandler={() => setBrandModal(false)}
-                  onSelectbrands={(selectedBrand) => {
-                    setselectedBrandID(selectedBrand.id);
-                    const brandID = {
-                      brand_id: selectedBrand.id,
-                    };
-                    dispatch(getMainProduct(brandID));
-                    setSearch(''); // Clear the search input product
-                    setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
-
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-                      newData[2].name = selectedBrand.name;
-                      newData[2].isSelected = true;
-
-                      // Reset category selections
-                      newData[0].isSelected = false;
-                      newData[0].name = originalFilterData[0].name;
-
-                      // Reset subCategory selections
-                      newData[1].isSelected = false;
-                      newData[1].name = originalFilterData[1].name;
-                      return newData;
-                    });
-                    setBrandModal(false);
-                  }}
-                />
-              )}
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </Modal> */}
 
       {/* <Modal animationType="fade" transparent={true} isVisible={numPadModal} backdropOpacity={0.6}>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>

@@ -59,6 +59,7 @@ import {
   getAllCart,
   getServiceCart,
   getAllCartSuccess,
+  merchantWalletCheck,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -73,6 +74,8 @@ import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/G
 import { CustomHeader } from './CustomHeader';
 import { Images } from '@/assets/new_icon';
 import { FullScreenLoader } from '@mPOS/components';
+import BlurredModal from '@/components/BlurredModal';
+import { Platform } from 'react-native';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -185,6 +188,7 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
+  console.log('requestStatus', requestStatus, getRetailData?.qrStatuskey?.status);
   // useEffect(() => {
   //   setSelectedTipIndex(tipsSelected);
   //   setSelectedTipAmount(
@@ -225,7 +229,7 @@ export const CartAmountPayBy = ({
     },
     {
       title: 'Date',
-      data: moment().format('ddd') + ' ' + moment().subtract(10, 'days').calendar(),
+      data: moment().format('ddd') + ' ' + moment().format('L'),
       id: 2,
     },
     {
@@ -417,24 +421,38 @@ export const CartAmountPayBy = ({
         });
       }, 10000);
     } else if (requestStatus == 'success' && sendRequest) {
-      cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+      // cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+      createOrderHandler();
       // Alert.alert('2  condition');
       clearInterval(interval);
-    } else if (qrStatus?.status !== 'success' && qrPopUp && sendRequest == false) {
+    } else if (
+      getRetailData?.qrStatuskey?.status !== 'success' &&
+      qrPopUp &&
+      sendRequest == false
+    ) {
+      // alert('fghjkl');
       interval = setInterval(() => {
-        cartType == 'Service'
-          ? dispatch(Servicesqrcodestatus(cartData.id))
-          : dispatch(qrcodestatus(cartData.id));
+        // cartType == 'Service'
+        //   ? dispatch(Servicesqrcodestatus(cartData.id))
+        //   : dispatch(qrcodestatus(cartData.id));
+        dispatch(qrcodestatus(cartData.id));
         // Alert.alert('3 condition', sendRequest);
       }, 5000);
-    } else if (qrStatus?.status == 'success' && qrPopUp && sendRequest == false) {
-      cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+    } else if (getRetailData?.qrStatuskey?.status == 'success' && qrPopUp && sendRequest == false) {
+      // cartType == 'Service' ? serviceOrderHandler() : createOrderHandler();
+      createOrderHandler();
       // Alert.alert('4 condition');
       clearInterval(interval);
     }
 
     return () => clearInterval(interval);
-  }, [isFocused, requestStatus == 'success', qrStatus?.status == 'success', qrPopUp, sendRequest]);
+  }, [
+    isFocused,
+    requestStatus == 'success',
+    getRetailData?.qrStatuskey?.status == 'success',
+    qrPopUp,
+    sendRequest,
+  ]);
 
   const walletInputFun = (phoneNumber) => {
     setWalletIdInp(phoneNumber);
@@ -453,9 +471,12 @@ export const CartAmountPayBy = ({
   const sendRequestFun = async () => {
     setsendRequest(true);
     const data = {
-      amount: (totalPayAmount() * 100).toFixed(0),
+      // amount: (totalPayAmount() * 100).toFixed(0),
+      amount: (paymentShow() * 100).toFixed(0),
       wallletAdd: walletUser?.wallet_address,
     };
+    // console.log('amount', data);
+    // return;
 
     const res = await dispatch(requestMoney(data)).then((res) => {
       setRequestId(res?.payload?._id);
@@ -653,7 +674,7 @@ export const CartAmountPayBy = ({
   const createOrderHandler = () => {
     const data = {
       cartid: cartData.id,
-      tips: (totalPayAmount() * 100).toFixed(0),
+      tips: (paymentShow() * 100).toFixed(0),
       modeOfPayment: 'jbr',
     };
     const callback = (response) => {
@@ -684,6 +705,12 @@ export const CartAmountPayBy = ({
     dispatch(requestCheckSuccess(''));
     setsendRequest(false);
   };
+
+  useEffect(() => {
+    if (requestStatus == 'approved') {
+      createOrderHandler();
+    }
+  }, [requestStatus]);
 
   return (
     <SafeAreaView style={styles._innerContainer}>
@@ -904,11 +931,22 @@ export const CartAmountPayBy = ({
                   style={styles.confirmButom}
                   isLoading={true}
                   onPress={() => {
-                    getTipPress();
-                    setQrPopUp(true);
+                    const data = {
+                      seller_id: sellerID,
+                    };
+                    dispatch(
+                      merchantWalletCheck(data, (res) => {
+                        if (res?.user_profiles?.wallet_steps <= 4) {
+                          alert('Please complete your wallet steps');
+                        } else {
+                          getTipPress();
+                          setQrPopUp(true);
+                        }
+                      })
+                    );
                   }}
                 >
-                  <Text style={styles.confirmText}>{'Confirm '}</Text>
+                  <Text style={styles.confirmText}>{'Confirm'}</Text>
                 </TouchableOpacity>
                 <Spacer space={SH(50)} />
               </>
@@ -1023,7 +1061,7 @@ export const CartAmountPayBy = ({
       </View>
 
       {/* Phone PopUp */}
-      <Modal isVisible={phonePopVisible}>
+      <BlurredModal isVisible={phonePopVisible}>
         <KeyboardAwareScrollView
           contentContainerStyle={{
             // alignItems: 'center',
@@ -1153,9 +1191,9 @@ export const CartAmountPayBy = ({
             </View>
           ) : null}
         </View> */}
-      </Modal>
+      </BlurredModal>
 
-      <Modal isVisible={emailModal}>
+      <BlurredModal isVisible={emailModal}>
         <KeyboardAwareScrollView
           contentContainerStyle={{
             // alignItems: 'center',
@@ -1240,12 +1278,12 @@ export const CartAmountPayBy = ({
             </View>
           </View>
         </KeyboardAwareScrollView>
-      </Modal>
+      </BlurredModal>
 
       {/* qr code scan pop */}
-      <ReactNativeModal isVisible={qrPopUp} backdropColor={COLORS.row_grey} backdropOpacity={0.9}>
-        <KeyboardAvoidingView
-          contentContainerStyle={{ flex: 1 }}
+      <BlurredModal isVisible={qrPopUp}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
           // behavior={Platform.OS === 'ios' ? 'padding' : 100}
         >
           {/* <ScrollView showsVerticalScrollIndicator={false}> */}
@@ -1377,7 +1415,7 @@ export const CartAmountPayBy = ({
                             onChangeText={(walletIdInp) => walletInputFun(walletIdInp)}
                             style={styles.walletSearchContainer}
                             placeholder={strings.verifyPhone.placeHolderText}
-                            placeholderTextColor={COLORS.navy_blue}
+                            placeholderTextColor={COLORS.purple_fade}
                             // showSoftInputOnFocus={false}
                           />
                         </View>
@@ -1451,8 +1489,8 @@ export const CartAmountPayBy = ({
             ) : null} */}
           </View>
           {/* </ScrollView> */}
-        </KeyboardAvoidingView>
-      </ReactNativeModal>
+        </KeyboardAwareScrollView>
+      </BlurredModal>
       {isLoadingAttachCustomer && <FullScreenLoader />}
     </SafeAreaView>
   );

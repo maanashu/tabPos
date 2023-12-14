@@ -20,10 +20,14 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
   const presentCart = retailData?.cartFrom;
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const snapPoints = useMemo(() => ['100%'], []);
-  const orderInvoice =
-    presentCart === 'product' ? retailData?.createOrder : retailData?.createServiceOrder;
-  const saveProductData =
-    presentCart === 'product' ? saveCart?.poscart_products : saveCart?.appointment_cart_products;
+  // const orderInvoice =
+  //   presentCart === 'product' ? retailData?.createOrder : retailData?.createServiceOrder;
+  // const saveProductData =
+  //   presentCart === 'product' ? saveCart?.poscart_products : saveCart?.appointment_cart_products;
+  const orderInvoice = retailData?.createOrder;
+  const saveProductData = saveCart?.poscart_products;
+
+  console.log('saveCart', orderCreateData);
 
   // change due function
   const payAmount = Number(orderCreateData?.tips ?? '0.00')?.toFixed(2);
@@ -54,7 +58,10 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
           </View>
           <View style={styles.paidAmountCon}>
             <Text style={styles.paidAmount}>{strings.cart.paidAmount}</Text>
-            <Text style={styles.amountText}>${payAmount}</Text>
+            <Text style={styles.amountText}>
+              {orderCreateData?.modeOfPayment === 'jbr' ? 'JBR' : '$'}
+              {payAmount}
+            </Text>
             {orderCreateData?.modeOfPayment === 'cash' && (
               <>
                 <View style={styles.paidAmountHr} />

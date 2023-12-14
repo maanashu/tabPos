@@ -49,6 +49,7 @@ import Toast from 'react-native-toast-message';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
 import { FullScreenLoader } from '@mPOS/components';
+import BlurredModal from '@/components/BlurredModal';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -755,17 +756,17 @@ export function CartServiceScreen({
         />
       </Modal>
 
-      <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={numPadModal}>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
           <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="service" />
         </KeyboardAvoidingView>
-      </Modal>
+      </BlurredModal>
 
-      <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={newCustomerModal}>
         {/* <KeyboardAvoidingView behavior="padding"> */}
         <NewCustomerAddService crossHandler={closeCustomerAddModal} />
         {/* </KeyboardAvoidingView> */}
-      </Modal>
+      </BlurredModal>
       {(isLoadingGetAllCart ||
         isLoadingAddCart ||
         isLoadingOneService ||

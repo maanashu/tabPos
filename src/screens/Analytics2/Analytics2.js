@@ -386,7 +386,7 @@ export function Analytics2() {
                         selectedScreen === 'Revenue'
                           ? COLORS.sky_grey
                           : getPosUser?.user_roles?.length > 0
-                          ? COLORS.mid_grey
+                          ? COLORS.transparentGreen
                           : COLORS.white,
                     },
                   ]}
@@ -400,7 +400,7 @@ export function Analytics2() {
                           selectedScreen === 'Revenue'
                             ? COLORS.navy_blue
                             : getPosUser?.user_roles?.length > 0
-                            ? COLORS.mid_grey
+                            ? COLORS.input_border
                             : COLORS.light_blue2,
                       },
                     ]}
@@ -419,7 +419,7 @@ export function Analytics2() {
                         selectedScreen === 'TotalCost'
                           ? COLORS.sky_grey
                           : getPosUser?.user_roles?.length > 0
-                          ? COLORS.mid_grey
+                          ? COLORS.transparentGreen
                           : COLORS.white,
                     },
                   ]}
@@ -433,7 +433,7 @@ export function Analytics2() {
                           selectedScreen === 'TotalCost'
                             ? COLORS.navy_blue
                             : getPosUser?.user_roles?.length > 0
-                            ? COLORS.mid_grey
+                            ? COLORS.input_border
                             : COLORS.light_blue2,
                       },
                     ]}
@@ -450,7 +450,7 @@ export function Analytics2() {
                         selectedScreen === 'TotalProfit'
                           ? COLORS.sky_grey
                           : getPosUser?.user_roles?.length > 0
-                          ? COLORS.mid_grey
+                          ? COLORS.transparentGreen
                           : COLORS.white,
                     },
                   ]}
@@ -465,7 +465,7 @@ export function Analytics2() {
                           selectedScreen === 'TotalProfit'
                             ? COLORS.navy_blue
                             : getPosUser?.user_roles?.length > 0
-                            ? COLORS.mid_grey
+                            ? COLORS.input_border
                             : COLORS.light_blue2,
                       },
                     ]}

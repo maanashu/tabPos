@@ -46,6 +46,7 @@ import { useMemo } from 'react';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
 import { FullScreenLoader } from '@mPOS/components';
+import BlurredModal from '@/components/BlurredModal';
 
 export function CartScreen({
   onPressPayNow,
@@ -720,7 +721,11 @@ export function CartScreen({
         </View>
       </View>
 
-      <Modal animationType="fade" transparent={true} isVisible={addCartModal || addCartDetailModal}>
+      <BlurredModal
+        animationType="fade"
+        transparent={true}
+        isVisible={addCartModal || addCartDetailModal}
+      >
         {addCartDetailModal ? (
           <AddCartDetailModal crossHandler={() => setAddCartDetailModal(false)} />
         ) : (
@@ -740,16 +745,16 @@ export function CartScreen({
             // onClickAddCartModal={onClickAddCartModal}
           />
         )}
-      </Modal>
+      </BlurredModal>
 
-      <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={numPadModal}>
         {/* <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}> */}
         <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="product" />
         {/* </KeyboardAvoidingView> */}
-      </Modal>
-      <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
+      </BlurredModal>
+      <BlurredModal animationType="fade" transparent={true} isVisible={newCustomerModal}>
         <NewCustomerAdd crossHandler={closeCustomerAddModal} cartid={cartidFrom} />
-      </Modal>
+      </BlurredModal>
       {(isLoadingGetAllCart ||
         isLoadingAddCart ||
         isLoadingBulkCart ||

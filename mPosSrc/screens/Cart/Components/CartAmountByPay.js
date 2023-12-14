@@ -37,12 +37,14 @@ import {
   getAllCart,
   getQrCodee,
   getServiceCart,
+  merchantWalletCheck,
   updateCartByTip,
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import { digitWithDot, emailReg, mobileReg } from '@/utils/validators';
+import { getAuthData } from '@/selectors/AuthSelector';
 
 const CartAmountByPay = ({
   addProductCartRef,
@@ -55,10 +57,14 @@ const CartAmountByPay = ({
   const payByCashRef = useRef(null);
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
+  const getAuthdata = useSelector(getAuthData);
   const presentCart = retailData?.cartFrom;
   const productDetail = retailData?.getOneProduct;
+  const sellerID = getAuthdata?.merchantLoginData?.uniqe_id;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
-  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  // const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getserviceCart;
+  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getAllCart;
+
   const getTips = retailData?.getTips;
   const [selectedTipIndex, setSelectedTipIndex] = useState(null);
   const [selectedTipAmount, setSelectedTipAmount] = useState('0.00');
@@ -173,17 +179,20 @@ const CartAmountByPay = ({
     const data = {
       tip: selectedTipAmount.toString(),
       cartId: cartData.id,
-      ...(presentCart === 'service' && { services: 'services' }),
+      // ...(presentCart === 'service' && { services: 'services' }),
     };
     const res = await dispatch(updateCartByTip(data));
     if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
       cashPayNowHandler();
-      presentCart === 'product' ? dispatch(getAllCart()) : dispatch(getServiceCart());
+      presentCart === 'product' ? dispatch(getAllCart()) : dispatch(getAllCart());
     }
   };
 
   const isLoad = useSelector((state) =>
-    isLoadingSelector([TYPES.UPDATE_CART_BY_TIP, TYPES.ATTACH_CUSTOMER], state)
+    isLoadingSelector(
+      [TYPES.UPDATE_CART_BY_TIP, TYPES.ATTACH_CUSTOMER, TYPES.MERCHANT_WALLET_CHECK],
+      state
+    )
   );
 
   const jobrSavePercent = (value, percent) => {
@@ -446,7 +455,7 @@ const CartAmountByPay = ({
                       const data = {
                         tip: selectedTipAmount.toString(),
                         cartId: cartData.id,
-                        ...(presentCart === 'service' && { services: 'services' }),
+                        // ...(presentCart === 'service' && { services: 'services' }),
                       };
                       const res = await dispatch(updateCartByTip(data));
                       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
@@ -455,10 +464,8 @@ const CartAmountByPay = ({
                           phoneNo: phoneNumber,
                           countryCode: countryCode,
                         };
-                        const res =
-                          (await presentCart) === 'product'
-                            ? dispatch(attachCustomer(data))
-                            : dispatch(attachServiceCustomer(data));
+                        const res = await dispatch(attachCustomer(data));
+                        // : dispatch(attachServiceCustomer(data));
                         if (
                           res?.type === 'ATTACH_CUSTOMER_SUCCESS' ||
                           'ATTACH_SERVICE_CUSTOMER_SUCCESS'
@@ -519,7 +526,7 @@ const CartAmountByPay = ({
                       const data = {
                         tip: selectedTipAmount.toString(),
                         cartId: cartData.id,
-                        ...(presentCart === 'service' && { services: 'services' }),
+                        // ...(presentCart === 'service' && { services: 'services' }),
                       };
                       const res = await dispatch(updateCartByTip(data));
                       if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
@@ -527,10 +534,8 @@ const CartAmountByPay = ({
                           cartId: cartData?.id,
                           phoneEmail: email,
                         };
-                        const res =
-                          (await presentCart) === 'product'
-                            ? dispatch(attachCustomer(data))
-                            : dispatch(attachServiceCustomer(data));
+                        const res = await dispatch(attachCustomer(data));
+                        // : dispatch(attachServiceCustomer(data));
                         if (
                           res?.type === 'ATTACH_CUSTOMER_SUCCESS' ||
                           'ATTACH_SERVICE_CUSTOMER_SUCCESS'
@@ -565,16 +570,26 @@ const CartAmountByPay = ({
               //  onPress={jbrCoinSheetshow}
               onPress={async () => {
                 const data = {
-                  tip: selectedTipAmount.toString(),
-                  cartId: cartData.id,
-                  ...(presentCart === 'service' && { services: 'services' }),
+                  seller_id: sellerID,
                 };
-                const res = await dispatch(updateCartByTip(data));
-                if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
-                  dispatch(getQrCodee(cartData?.id));
-                  dispatch(getAllCart());
-                  jbrCoinSheetshow();
-                }
+                dispatch(
+                  merchantWalletCheck(data, async (rsp) => {
+                    if (rsp?.user_profiles?.wallet_steps <= 4) {
+                      alert('Please complete your wallet steps');
+                    } else {
+                      const data = {
+                        tip: selectedTipAmount.toString(),
+                        cartId: cartData.id,
+                      };
+                      const res = await dispatch(updateCartByTip(data));
+                      if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+                        dispatch(getQrCodee(cartData?.id));
+                        dispatch(getAllCart());
+                        jbrCoinSheetshow();
+                      }
+                    }
+                  })
+                );
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>

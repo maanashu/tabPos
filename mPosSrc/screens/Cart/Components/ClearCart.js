@@ -22,7 +22,8 @@ function ClearCart({ cartClose }) {
       dispatch(clearLocalCart());
       dispatch(updateCartLength(0));
     } else {
-      dispatch(clearServiceAllCart());
+      dispatch(clearAllCart());
+      // dispatch(clearServiceAllCart());
     }
   };
 

@@ -200,7 +200,7 @@ export const en = {
     totalCustomer: 'Total Customers',
     users: 'Users',
     userprofile: 'User Profile',
-    Edit: 'Edit',
+    Edit: 'Edit Profile',
     point: 'Points: 2',
     acceptMarket: 'Accept Marketing',
     costo: 'Costco Wholesale',
@@ -367,10 +367,13 @@ export const en = {
     activateBtn: 'Activate',
     addState: 'Add State',
     craeteTax: 'Create tax',
+    activeStateTax: 'Activate your State Tax',
+    activate: 'Activate',
     details: 'Details',
     taxName: 'Tax name',
     taxRate: 'Tax rate',
     location: 'Location',
+
     taxCalculation: 'Tax calculation',
     includeTax: 'Include tax in item price',
     includetaxSubhead:
@@ -391,6 +394,7 @@ export const en = {
       'Add a new device as any of the following or configure the settings of a registered one.',
     addNewDevice: 'Add a new device',
     codeDisplays: 'The code displays here',
+    fullName: 'Full Name',
   },
   dashboard: {
     todaySale: "Today's Sales",
@@ -622,6 +626,7 @@ export const en = {
     priceChanging: 'Price Changing for Refund',
     productPrice: 'Product Price',
     refundAmount: 'Refund Amount',
+    noInvoices: 'No invoices found',
   },
   batchManagement: {
     header: 'Batch management',
