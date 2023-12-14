@@ -73,6 +73,7 @@ import styles from './styles';
 import Header from './Components/Header';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 import { CustomHeader } from '../PosRetail3/Components';
+import VerifyPickupOtpModal from './Components/VerifyPickupOtpModal';
 
 export function DeliveryOrders2({ route }) {
   var screen;
@@ -125,6 +126,8 @@ export function DeliveryOrders2({ route }) {
   const [isReturnModalVisible, setIsReturnModalVisible] = useState(false);
   const [changeViewToRecheck, setChangeViewToRecheck] = useState();
   const [isMaximizeStatusView, SetIsMaximizeStatusView] = useState(false);
+  const [pickupModalVisible, setPickupModalVisible] = useState(false);
+
   useEffect(() => {
     if (ORDER_DATA) {
       setOpenShippingOrders(ORDER_DATA?.status?.toString());
@@ -506,9 +509,44 @@ export function DeliveryOrders2({ route }) {
   };
 
   const acceptHandler = (id) => {
+    if (userDetail?.delivery_option == '3' && openShippingOrders == '2') {
+      setPickupModalVisible(true);
+    } else {
+      const data = {
+        orderId: id,
+        status: parseInt(openShippingOrders) + 1,
+        sellerID: sellerID,
+      };
+      dispatch(
+        acceptOrder(data, openShippingOrders, 1, (res) => {
+          if (res?.msg) {
+            if (
+              getDeliveryData?.getReviewDef?.length > 0 &&
+              getDeliveryData?.getReviewDef?.length === 1
+            ) {
+              dispatch(getOrderCount(getUpdatedCount));
+            } else {
+              dispatch(getReviewDefault(openShippingOrders));
+              dispatch(orderStatusCount());
+              dispatch(todayOrders());
+              dispatch(getOrderstatistics(1));
+              dispatch(getGraphOrders(1));
+              setGetOrderDetail('ViewAllScreen');
+              setUserDetail(ordersList?.[0] ?? []);
+              setViewAllOrder(true);
+              setOrderDetail(ordersList?.[0]?.order_details ?? []);
+            }
+          }
+        })
+      );
+    }
+  };
+
+  const changeOrderStatusAfterPickup = (id) => {
+    setPickupModalVisible(false);
     const data = {
       orderId: id,
-      status: parseInt(openShippingOrders) + 1,
+      status: 5,
       sellerID: sellerID,
     };
     dispatch(
@@ -534,7 +572,6 @@ export function DeliveryOrders2({ route }) {
       })
     );
   };
-
   const declineHandler = (id) => {
     const data = {
       orderId: id,
@@ -621,6 +658,12 @@ export function DeliveryOrders2({ route }) {
         paddingRight: ms(6),
       }}
     >
+      <VerifyPickupOtpModal
+        visible={pickupModalVisible}
+        orderData={userDetail}
+        changeOrderStatus={() => changeOrderStatusAfterPickup(userDetail?.id)}
+        onClose={() => setPickupModalVisible(!pickupModalVisible)}
+      />
       {!trackingView ? (
         <>
           <Spacer space={SH(15)} backgroundColor={COLORS.sky_grey} />
@@ -879,6 +922,7 @@ export function DeliveryOrders2({ route }) {
         orderDetail={singleOrderDetail}
         onPressConfirm={onPressConfirmHandler}
       />
+
       <Modal
         isVisible={showMiniCalendar}
         statusBarTranslucent

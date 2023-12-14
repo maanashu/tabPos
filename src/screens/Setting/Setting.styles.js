@@ -173,7 +173,7 @@ export const styles = StyleSheet.create({
     color: COLORS.navy_blue,
   },
   shippingHeadingText: {
-    fontSize: SF(20),
+    fontSize: SF(16),
     fontFamily: Fonts.Medium,
     color: COLORS.navy_blue,
   },
@@ -204,7 +204,7 @@ export const styles = StyleSheet.create({
     marginBottom: SH(8),
   },
   securitysubhead: {
-    fontSize: SF(12),
+    fontSize: SF(10),
     fontFamily: Fonts.Regular,
     color: COLORS.lavender,
   },
@@ -292,8 +292,8 @@ export const styles = StyleSheet.create({
   },
 
   toggleSecurityLarge: {
-    width: SW(12),
-    height: SW(12),
+    width: SW(10),
+    height: SW(10),
     resizeMode: 'contain',
   },
   marginLeft: {
@@ -2156,5 +2156,12 @@ export const styles = StyleSheet.create({
     height: SW(8),
     resizeMode: 'contain',
     tintColor: COLORS.navy_blue,
+  },
+
+  shippingTileBorderStyle: {
+    borderWidth: 1,
+    borderRadius: ms(10),
+    borderColor: COLORS.light_purple,
+    padding: ms(10),
   },
 });

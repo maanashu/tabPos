@@ -4,7 +4,7 @@ import { KeyPadButton } from './KeyPadButton';
 import { strings } from '@/localization';
 import { Button } from './Button';
 import { COLORS, SF, SH } from '@/theme';
-import { Fonts } from '@/assets';
+import { cross, crossDrawer, Fonts } from '@/assets';
 import { goBack } from '@/navigation/NavigationRef';
 import { ms } from 'react-native-size-matters';
 import { ButtonIcon } from './ButtonIcon';
@@ -20,6 +20,7 @@ export const VirtualKeyBoard = ({
   onPressContinueButton = () => {},
   screen,
   canGoBack = true,
+  onBackPressHandler,
 }) => {
   const KEYBOARD_DATA = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'cross', '0', 'deleteBack'];
   return (
@@ -79,7 +80,9 @@ export const VirtualKeyBoard = ({
             <View style={{ flexDirection: 'row' }}>
               <ButtonIcon
                 disabled={isBackButtonDisbaled}
-                onPress={() => goBack()}
+                onPress={() => {
+                  screen == 'PickupPin' ? onBackPressHandler() : goBack();
+                }}
                 style={{
                   width: 'auto',
                   height: ms(35),
@@ -100,8 +103,8 @@ export const VirtualKeyBoard = ({
                   width: ms(15),
                   tintColor: !canGoBack ? COLORS.graySky : COLORS.sky_blue,
                 }}
-                icon={Images.arrowLeftUp}
-                title={'Back'}
+                icon={screen == 'PickupPin' ? crossDrawer : Images.arrowLeftUp}
+                title={screen == 'PickupPin' ? 'Close' : 'Back'}
               />
               <ButtonIcon
                 pending={isButtonLoading}
