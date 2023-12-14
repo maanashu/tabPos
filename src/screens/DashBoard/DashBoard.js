@@ -330,7 +330,7 @@ export function DashBoard({ navigation }) {
         <View style={styles.timeView}>
           <Image source={locationSolidIcon} style={styles.pinIcon(1)} />
           <Text style={[styles.timeText, { color: COLORS.purple }]}>
-            {item?.distance ? item?.distance : '0miles'} miles
+            {item?.distance ? item?.distance : '0'} miles
           </Text>
         </View>
       </View>
@@ -344,28 +344,34 @@ export function DashBoard({ navigation }) {
           </Text>
         </View>
       </View>
-      <View style={{ minWidth: SW(50), maxWidth: SW(70) }}>
-        <Text style={styles.nameText}>
-          {item?.preffered_delivery_start_time} - {item?.preffered_delivery_end_time}
-        </Text>
-        <View style={styles.timeView}>
-          <Image source={Images.serviceTime} style={styles.pinIcon(3)} />
-          <Text
-            style={[styles.timeText, styles.nameTextBold, { color: COLORS.light_time }]}
-            numberOfLines={1}
-          >
-            {item?.delivery_details?.title}
+      {item?.order_type == 'product' ? (
+        <View style={{ minWidth: SW(50), maxWidth: SW(70) }}>
+          <Text style={styles.nameText}>
+            {item?.preffered_delivery_start_time || '-----'} -
+            {item?.preffered_delivery_end_time || '-----'}
           </Text>
+          <View style={styles.timeView}>
+            <Image source={Images.serviceTime} style={styles.pinIcon(3)} />
+            <Text
+              style={[styles.timeText, styles.nameTextBold, { color: COLORS.light_time }]}
+              numberOfLines={1}
+            >
+              {item?.delivery_details?.title || '-----'}
+            </Text>
+          </View>
         </View>
-      </View>
+      ) : (
+        <View style={{ minWidth: SW(50), maxWidth: SW(70) }}></View>
+      )}
+
       <Image source={arrowRightIcon} style={styles.arrowIconRight} />
       <View style={styles.rightIconStyle1}>
         <View style={[styles.timeView, { paddingTop: 0 }]}>
           <Text style={[styles.nameTextBold, { color: COLORS.textBlue }]}>
-            {'00:00:00'}
-            {/* {item.estimated_preparation_time === null
+            {/* {'00:00:00'} */}
+            {item.estimated_preparation_time === null
               ? '00:00:00'
-              : orderTime(item.estimated_preparation_time)} */}
+              : orderTime(item.estimated_preparation_time)}
           </Text>
         </View>
       </View>
@@ -736,7 +742,7 @@ export function DashBoard({ navigation }) {
 
           <View style={styles.homeTableCon}>
             <View>
-              <Text style={styles.deliveries}>{strings.dashboard.deliveries}</Text>
+              <Text style={styles.deliveries}>{'Order'}</Text>
             </View>
             {getDeliveryData?.length === 0 || (getDeliveryData === undefined && orderLoad) ? (
               <View>

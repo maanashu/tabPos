@@ -203,8 +203,20 @@ export function RetailServices(props) {
             title={`Back`}
             cartIcon
             cartHandler={() => {
-              dispatch(cartRun('service'));
-              navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+              if (onlyProductCartArray?.length >= 1) {
+                CustomAlert({
+                  title: 'Alert',
+                  description: 'Please clear product cart',
+                  yesButtonTitle: 'Clear cart',
+                  noButtonTitle: 'Cancel',
+                  onYesPress: () => {
+                    dispatch(clearAllCart());
+                  },
+                });
+              } else {
+                dispatch(cartRun('service'));
+                navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+              }
             }}
             cartLength={servicecCart?.length}
           />

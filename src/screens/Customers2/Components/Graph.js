@@ -87,7 +87,7 @@ const Graph = ({ graphDetail, newCustomerCheck, onlineCustomerCheck, walkCustome
             width={
               graphDetail?.labels?.length > 20
                 ? Platform.OS === 'ios'
-                  ? Dimensions.get('window').width * 2
+                  ? Dimensions.get('window').width * 2.1
                   : Dimensions.get('window').width * 1.8
                 : Dimensions.get('window').width * 0.86
             }

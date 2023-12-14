@@ -102,7 +102,7 @@ const AllUsers = ({
   const startDated = moment(startDate).format('YYYY-MM-DD');
   const endDated = moment(endDate).format('YYYY-MM-DD');
   const [selectDate, setSelectDate] = useState('');
-  const maxDateCalendar = new Date(2030, 6, 3);
+  const maxDateCalendar = new Date();
 
   const time = selectTime?.value;
   const onLoad = useSelector((state) => isLoadingSelector([Types.GET_ORDER_DATA], state));

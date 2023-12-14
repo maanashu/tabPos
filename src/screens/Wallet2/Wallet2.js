@@ -123,7 +123,7 @@ export function Wallet2() {
   const currentStartDate = moment().startOf('month').format('MMM D');
   const currentEndDate = moment().endOf('month').format('MMM D, YYYY');
   const dateRange = `${currentStartDate} - ${currentEndDate}`;
-  const maxDate = new Date(2030, 6, 3);
+  const maxDate = new Date();
   const formateDate = { start_date: startDated, end_date: endDated };
 
   const [showSearchModal, setShowSearchModal] = useState(false);
@@ -398,13 +398,23 @@ export function Wallet2() {
           <Text
             style={{
               fontSize: ms(9),
-              color: COLORS.navy_light_blue,
+              color: COLORS.light_blue2,
               position: 'absolute',
               top: ms(35),
               left: ms(35),
             }}
           >
-            {'All the following data is gathered weekly.'}
+            {'All the following data is gathered '}
+            <Text style={{ color: COLORS.navy_blue }}>
+              {time === 'week'
+                ? 'weekly'
+                : time === 'today'
+                ? 'today'
+                : time === 'month'
+                ? 'monthly'
+                : `${startDated} - ${endDated}`}
+            </Text>
+            .
           </Text>
 
           <View style={styles.walletHomeBodyCon}>
