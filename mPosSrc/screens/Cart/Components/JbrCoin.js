@@ -16,6 +16,7 @@ import {
   createOrder,
   getAllCart,
   qrcodestatus,
+  qrCodeStatusSuccess,
   requestCheck,
   requestCheckSuccess,
   requestMoney,
@@ -110,7 +111,8 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
   const sendRequestFun = async () => {
     setsendRequest(true);
     const data = {
-      amount: (totalPayAmount() * 100).toFixed(0),
+      // amount: (totalPayAmount() * 100).toFixed(0),
+      amount: (cartData?.amount?.total_amount * 100).toFixed(0),
       wallletAdd: walletUser?.wallet_address,
     };
 
@@ -123,39 +125,41 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
     });
   };
 
-  // useEffect(() => {
-  //   let interval;
+  useEffect(() => {
+    let interval;
 
-  //   if (requestStatus !== 'approved' && sendRequest) {
-  //     interval = setInterval(() => {
-  //       setRequestId((requestId) => {
-  //         const data = {
-  //           requestId: requestId,
-  //         };
-  //         dispatch(requestCheck(data));
-  //         return requestId;
-  //       });
-  //     }, 10000);
-  //   } else if (requestStatus == 'approved' && sendRequest) {
-  //     createOrderHandler();
-  //     clearInterval(interval);
-  //   } else if (qrStatus?.status !== 'success' && sendRequest == false) {
-  //     interval = setInterval(() => {
-  //       dispatch(qrcodestatus(cartData.id));
-  //       // Alert.alert('3 condition', sendRequest);
-  //     }, 5000);
-  //   } else if (qrStatus?.status == 'success' && sendRequest == false) {
-  //     createOrderHandler();
-  //     clearInterval(interval);
-  //   }
+    if (requestStatus !== 'success' && sendRequest) {
+      interval = setInterval(() => {
+        setRequestId((requestId) => {
+          const data = {
+            requestId: requestId,
+          };
+          dispatch(requestCheck(data));
+          return requestId;
+        });
+      }, 10000);
+    } else if (requestStatus == 'success' && sendRequest) {
+      createOrderHandler();
+      clearInterval(interval);
+    } else if (qrStatus?.status !== 'success' && sendRequest == false) {
+      interval = setInterval(() => {
+        dispatch(qrcodestatus(cartData.id));
+      }, 5000);
+    }
+    // else if (qrStatus?.status == 'success' && sendRequest == false) {
+    //   // alert('fghjk');
+    //   createOrderHandler();
+    //   clearInterval(interval);
+    // }
 
-  //   return () => clearInterval(interval);
-  // }, [isFocused, requestStatus == 'approved', qrStatus?.status == 'success', sendRequest]);
+    return () => clearInterval(interval);
+  }, [isFocused, requestStatus == 'success', qrStatus?.status == 'success', sendRequest]);
 
   const createOrderHandler = () => {
     const data = {
       cartid: cartData.id,
-      tips: (totalPayAmount() * 100).toFixed(0),
+      // tips: (totalPayAmount() * 100).toFixed(0),
+      tips: (cartData?.amount?.total_amount * 100).toFixed(0),
       modeOfPayment: 'jbr',
     };
     const callback = (response) => {
@@ -169,12 +173,21 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
     setsendRequest(false);
   };
 
+  useEffect(() => {
+    if (requestStatus == 'approved') {
+      createOrderHandler();
+    }
+  }, [requestStatus]);
+
   return (
     <BottomSheetModal
       backdropComponent={CustomBackdrop}
       detached
       bottomInset={0}
       onDismiss={() => {
+        // setWalletIdInp('');
+        dispatch(requestCheckSuccess(''));
+        dispatch(qrCodeStatusSuccess(''));
         setWalletIdInp('');
       }}
       backdropOpacity={0.5}
@@ -190,7 +203,14 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
           style={{ flex: 1, paddingHorizontal: ms(10), paddingBottom: spacing ? ms(320) : ms(20) }}
         >
           <View style={styles.productHeaderCon}>
-            <TouchableOpacity onPress={() => jbrCoinCrossHandler()}>
+            <TouchableOpacity
+              onPress={() => {
+                jbrCoinCrossHandler();
+                dispatch(requestCheckSuccess(''));
+                dispatch(qrCodeStatusSuccess(''));
+                setWalletIdInp('');
+              }}
+            >
               <Image source={Images.cross} style={styles.crossImageStyle} />
             </TouchableOpacity>
           </View>

@@ -50,8 +50,7 @@ export const styles = StyleSheet.create({
   },
   sessionCon: {
     borderColor: COLORS.solidGrey,
-    width: windowWidth * 0.26,
-    paddingHorizontal: moderateScale(12),
+    // width: windowWidth * 0.26,
   },
 
   todaySale: {

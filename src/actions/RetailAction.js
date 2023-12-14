@@ -1003,6 +1003,21 @@ export const addServiceFrom = (addServiceFrom) => ({
   type: TYPES.ADD_SERVICE_FROM_SUCCESS,
   payload: { addServiceFrom },
 });
+
+//Merchant wallet check
+const merchantWalletCheckRequest = () => ({
+  type: TYPES.MERCHANT_WALLET_CHECK_REQUEST,
+  payload: null,
+});
+const merchantWalletCheckSuccess = () => ({
+  type: TYPES.MERCHANT_WALLET_CHECK_SUCCESS,
+  payload: null,
+});
+const merchantWalletCheckError = (error) => ({
+  type: TYPES.MERCHANT_WALLET_CHECK_ERROR,
+  payload: { error },
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -1741,5 +1756,16 @@ export const getProductRoot = () => async (dispatch) => {
       dispatch(getProductRootReset());
     }
     dispatch(getProductRootError(error.message));
+  }
+};
+
+export const merchantWalletCheck = (data, callback) => async (dispatch) => {
+  dispatch(merchantWalletCheckRequest());
+  try {
+    const res = await RetailController.merchantWalletCheck(data);
+    dispatch(merchantWalletCheckSuccess(res));
+    callback && callback(res?.payload);
+  } catch (error) {
+    dispatch(merchantWalletCheckError(error.message));
   }
 };

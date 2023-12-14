@@ -29,6 +29,8 @@ import {
   getAllCart,
   getAllProductCart,
   getAllServiceCart,
+  getMainProduct,
+  getMainServices,
   getServiceCart,
 } from '@/actions/RetailAction';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
@@ -89,6 +91,11 @@ export function PosRetail3() {
       // return () => setselectedScreen('CartAmountPayBy');
     }, [])
   );
+
+  useEffect(() => {
+    dispatch(getMainProduct());
+    dispatch(getMainServices());
+  }, []);
 
   // service Add discount start
 
@@ -458,7 +465,6 @@ export function PosRetail3() {
           }
         }}
         selectValueTake={(paymentSelect, tipSelect) => {
-          // console.log('------', paymentSelect, tipSelect);
           setSelectTips(tipSelect);
         }}
         payNowByphone={(tip) => {

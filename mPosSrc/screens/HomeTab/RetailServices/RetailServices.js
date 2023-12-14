@@ -25,6 +25,8 @@ import { FullScreenLoader, Header, ImageView, ScreenWrapper } from '@mPOS/compon
 import { debounce } from 'lodash';
 import {
   cartRun,
+  clearAllCart,
+  getAllCart,
   getBrand,
   getCategory,
   getMainProduct,
@@ -44,6 +46,7 @@ import AddServiceCart from './Components/AddServiceCart';
 import { getAllPosUsers } from '@/actions/AuthActions';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { MPOS_NAVIGATION } from '@common/commonImports';
+import CustomAlert from '@/components/CustomAlert';
 
 export function RetailServices(props) {
   const onEndReachedCalledDuringMomentum = useRef(false);
@@ -51,8 +54,9 @@ export function RetailServices(props) {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const serviceData = retailData?.getMainServices;
-  const servicecCart = retailData?.getserviceCart?.appointment_cart_products ?? [];
-  const serviceCartLength = servicecCart?.length;
+  const servicecCart = retailData?.getAllCart?.poscart_products ?? [];
+  const onlyServiceCartArray = servicecCart?.filter((item) => item?.product_type === 'service');
+  const onlyProductCartArray = servicecCart?.filter((item) => item?.product_type === 'product');
   const addServiceCartRef = useRef(null);
   const productDetailRef = useRef(null);
   const [selectedProduct, setSelectedProduct] = useState('');
@@ -89,7 +93,8 @@ export function RetailServices(props) {
       seller_id: sellerID,
     };
     dispatch(getAllPosUsers(data));
-    dispatch(getServiceCart());
+    dispatch(getAllCart());
+    // dispatch(getServiceCart());
   }, []);
 
   useEffect(() => {
@@ -174,7 +179,12 @@ export function RetailServices(props) {
 
   const isLoading = useSelector((state) =>
     isLoadingSelector(
-      [TYPES.GET_ONE_SERVICE, TYPES.ADD_SERVICE_CART, TYPES.GET_SERVICE_CART],
+      [
+        TYPES.GET_ONE_SERVICE,
+        TYPES.ADD_SERVICE_CART,
+        TYPES.GET_SERVICE_CART,
+        TYPES.GET_CLEAR_ALL_CART,
+      ],
       state
     )
   );
@@ -193,10 +203,22 @@ export function RetailServices(props) {
             title={`Back`}
             cartIcon
             cartHandler={() => {
-              dispatch(cartRun('service'));
-              navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+              if (onlyProductCartArray?.length >= 1) {
+                CustomAlert({
+                  title: 'Alert',
+                  description: 'Please clear product cart',
+                  yesButtonTitle: 'Clear cart',
+                  noButtonTitle: 'Cancel',
+                  onYesPress: () => {
+                    dispatch(clearAllCart());
+                  },
+                });
+              } else {
+                dispatch(cartRun('service'));
+                navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+              }
             }}
-            cartLength={serviceCartLength}
+            cartLength={servicecCart?.length}
           />
           {categoryLoad ? (
             <View style={[styles.contentContainerStyle, { height: ms(20) }]}>
@@ -264,9 +286,21 @@ export function RetailServices(props) {
             return (
               <TouchableOpacity
                 onPress={async () => {
-                  const res = await dispatch(getOneService(sellerID, item.id));
-                  if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-                    addServiceCartRef.current.present();
+                  if (onlyProductCartArray?.length >= 1) {
+                    CustomAlert({
+                      title: 'Alert',
+                      description: 'Please clear service cart',
+                      yesButtonTitle: 'Clear cart',
+                      noButtonTitle: 'Cancel',
+                      onYesPress: () => {
+                        dispatch(clearAllCart());
+                      },
+                    });
+                  } else {
+                    const res = await dispatch(getOneService(sellerID, item.id));
+                    if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
+                      addServiceCartRef.current.present();
+                    }
                   }
                 }}
                 style={[styles.productDetailMainView, { marginTop: index === 0 ? ms(0) : ms(5) }]}

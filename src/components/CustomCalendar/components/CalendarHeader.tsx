@@ -1,12 +1,6 @@
 import dayjs from 'dayjs';
 import * as React from 'react';
-import {
-  Platform,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { Platform, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { eventCellCss, u } from '../commonStyles';
 import { ICalendarEventBase } from '../interfaces';
@@ -69,21 +63,26 @@ function _CalendarHeader<T extends ICalendarEventBase>({
   return (
     <View
       style={[
-        showAllDayEventCell ? u['border-b-2'] : {},
-        showAllDayEventCell ? borderColor : {},
+        // showAllDayEventCell ? u['border-b-2'] : {},
+        // showAllDayEventCell ? borderColor : {},
         theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
         style,
       ]}
     >
       {!hideHours && <View style={[u['z-10'], u['w-50'], borderColor]} />}
-      {dateRange.map(date => {
-        const shouldHighlight = activeDate
-          ? date.isSame(activeDate, 'date')
-          : isToday(date);
+      {dateRange.map((date) => {
+        const shouldHighlight = activeDate ? date.isSame(activeDate, 'date') : isToday(date);
 
         return (
           <TouchableOpacity
-            style={[u['flex-1'], u['pt-2']]}
+            style={[
+              u['flex-1'],
+              u['pt-12'],
+              {
+                backgroundColor: shouldHighlight ? '#F5F6FC' : 'transparent',
+                borderRadius: 14,
+              },
+            ]}
             onPress={() => _onPressHeader(date.toDate())}
             disabled={onPressDateHeader === undefined}
             key={date.toString()}
@@ -91,27 +90,26 @@ function _CalendarHeader<T extends ICalendarEventBase>({
             <View
               style={[
                 { height: cellHeight },
-                objHasContent(headerContentStyle)
-                  ? headerContentStyle
-                  : u['justify-between'],
+                objHasContent(headerContentStyle) ? headerContentStyle : {},
               ]}
             >
               <Text
                 style={[
-                  theme.typography.xs,
+                  theme.typography.sm,
                   u['text-center'],
 
                   {
                     fontFamily: Fonts.SemiBold,
-                    color: shouldHighlight
-                      ? stringHasContent(weekDayHeaderHighlightColor)
-                        ? weekDayHeaderHighlightColor
-                        : theme.palette.primary.main
-                      : theme.palette.gray['500'],
+                    color: '#263682',
+                    // color: shouldHighlight
+                    //   ? stringHasContent(weekDayHeaderHighlightColor)
+                    //     ? weekDayHeaderHighlightColor
+                    //     : theme.palette.primary.main
+                    //   : theme.palette.gray['500'],
                   },
                 ]}
               >
-                {date.format('ddd')}
+                {date.format('dddd')}
               </Text>
               <View
                 style={
@@ -136,11 +134,12 @@ function _CalendarHeader<T extends ICalendarEventBase>({
                   style={[
                     {
                       fontFamily: Fonts.SemiBold,
-                      color: shouldHighlight
-                        ? stringHasContent(dayHeaderHighlightColor)
-                          ? dayHeaderHighlightColor
-                          : theme.palette.primary.contrastText
-                        : theme.palette.gray['800'],
+                      // color: shouldHighlight
+                      //   ? stringHasContent(dayHeaderHighlightColor)
+                      //     ? dayHeaderHighlightColor
+                      //     : theme.palette.primary.contrastText
+                      //   : theme.palette.gray['800'],
+                      color: '#263682',
                     },
                     theme.typography.xl,
                     u['text-center'],
@@ -157,15 +156,13 @@ function _CalendarHeader<T extends ICalendarEventBase>({
             {showAllDayEventCell ? (
               <View
                 style={[
-                  u['border-l'],
-                  { borderColor: theme.palette.gray['200'] },
+                  // u['border-l'],
+                  // { borderColor: theme.palette.gray['200'] },
                   { height: cellHeight },
                 ]}
               >
                 {allDayEvents.map((event, index) => {
-                  if (
-                    !dayjs(date).isBetween(event.start, event.end, 'day', '[]')
-                  ) {
+                  if (!dayjs(date).isBetween(event.start, event.end, 'day', '[]')) {
                     return null;
                   }
                   return (

@@ -48,7 +48,9 @@ const PriceChange = ({ priceChangeClose, cartProduct }) => {
         cartProductId: cartProduct?.id,
         updatedPrice: amount,
       };
-      dispatch(presentCart === 'product' ? productUpdatePrice(data) : serviceUpdatePrice(data));
+      // dispatch(presentCart === 'product' ? productUpdatePrice(data) : serviceUpdatePrice(data));
+      dispatch(productUpdatePrice(data));
+
       priceChangeClose();
     }
   };

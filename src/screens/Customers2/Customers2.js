@@ -121,7 +121,7 @@ export function Customers2() {
   const startDated = moment(startDate).format('YYYY-MM-DD');
   const endDated = moment(endDate).format('YYYY-MM-DD');
   const [selectDate, setSelectDate] = useState('');
-  const maxDate = new Date(2030, 6, 3);
+  const maxDate = new Date();
 
   const closeHandler = () => {
     setInvoiceDetail(false);
@@ -446,13 +446,23 @@ export function Customers2() {
           <Text
             style={{
               fontSize: ms(9),
-              color: COLORS.navy_light_blue,
+              color: COLORS.light_blue2,
               position: 'absolute',
               top: ms(35),
               left: ms(35),
             }}
           >
-            {'All the following data is gathered weekly.'}
+            {'All the following data is gathered '}
+            <Text style={{ color: COLORS.navy_blue }}>
+              {time === 'week'
+                ? 'weekly'
+                : time === 'today'
+                ? 'today'
+                : time === 'month'
+                ? 'monthly'
+                : `${startDated} - ${endDated}`}
+            </Text>
+            .
           </Text>
 
           <View style={styles.homeBodyCon}>

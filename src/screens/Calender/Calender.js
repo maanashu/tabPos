@@ -65,6 +65,9 @@ import { useRef } from 'react';
 import { BlurView } from '@react-native-community/blur';
 import BlurredModal from '@/components/BlurredModal';
 import ProfileImage from '@/components/ProfileImage';
+import { CustomHeader } from '../PosRetail3/Components';
+import { CalendarCustomHeader } from './Components/CalendarCustomHeader';
+import { Images } from '@/assets/new_icon';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -523,6 +526,7 @@ export function Calender() {
 
   return (
     <ScreenWrapper>
+      <CalendarCustomHeader />
       <View style={styles.container}>
         {/* {customHeader()} */}
         <View style={[styles.calenderContainer, { flexDirection: 'row' }]}>
@@ -569,6 +573,7 @@ export function Calender() {
                   date={calendarDate}
                   mode={calendarMode}
                   events={extractedAppointment}
+                  hourRowHeight={ms(50)}
                   height={windowHeight * 0.91}
                   {...(showEmployeeHeader
                     ? {
@@ -656,6 +661,15 @@ export function Calender() {
           </View>
           {/* Right tab container */}
           <View style={styles.rightTabContainer}>
+            <TouchableOpacity>
+              <Image
+                source={Images.backIcon}
+                resizeMode="contain"
+                style={{ height: ms(22), width: ms(22) }}
+              />
+            </TouchableOpacity>
+            <Spacer space={ms(20)} />
+
             <TouchableOpacity
               onPress={() => {
                 setSelectedStaffEmployeeId(null);
@@ -672,8 +686,8 @@ export function Calender() {
                 },
               ]}
             >
-              <View>
-                <Image source={calendarIcon} style={styles.requestCalendarIcon} />
+              <View style={{ position: 'absolute', top: ms(5), left: ms(6) }}>
+                <Image source={Images.calendarIcon} style={styles.requestCalendarIcon} />
                 <View style={styles.requestEventBadgeContainer}>
                   <Text style={styles.RequestEventBadgeText}>
                     {appointmentListArr?.length ?? 0}
@@ -682,8 +696,16 @@ export function Calender() {
               </View>
             </TouchableOpacity>
 
+            {/* <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+              <Image
+                source={Images.backIcon}
+                resizeMode="contain"
+                style={{ height: ms(22), width: ms(22) }}
+              />
+            </TouchableOpacity> */}
+
             <View style={{ flex: 1, alignItems: 'center' }}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
                   setshouldShowCalendarModeOptions(true);
@@ -708,7 +730,8 @@ export function Calender() {
                 <View style={styles.circularBadgeContainer}>
                   <Text style={styles.asigneesBadgeText}>{totalAppointmentCountOfStaff}</Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              <Spacer space={ms(20)} />
               <FlatList
                 data={getStaffUsers}
                 showsVerticalScrollIndicator={false}
@@ -732,27 +755,17 @@ export function Calender() {
                         });
                         setSelectedStaffData(item);
                       }}
-                      style={[
-                        styles.renderItemContainer,
-                        {
-                          backgroundColor:
-                            selectedStaffEmployeeId === posUserId
-                              ? COLORS.white
-                              : COLORS.textInputBackground,
-                        },
-                      ]}
+                      style={styles.renderItemContainer}
                     >
                       <View>
                         <Image
                           source={{
                             uri: userProfile?.profile_photo,
                           }}
-                          style={[styles.employeeImages, { borderColor: item?.color_code }]}
+                          style={styles.employeeImages}
                         />
 
-                        <View
-                          style={[styles.circularBadgeEmployee, { borderColor: item?.color_code }]}
-                        >
+                        <View style={styles.circularBadgeEmployee}>
                           <Text style={styles.badgeTextEmployee}>{item?.appointment_counts}</Text>
                         </View>
                       </View>
@@ -760,12 +773,21 @@ export function Calender() {
                   );
                 }}
               />
-
+              <TouchableOpacity style={styles.usersIconView}>
+                <Image
+                  source={Images.usersThree}
+                  resizeMode="contain"
+                  style={styles.usersIconStyle}
+                />
+                <View style={styles.totalUsersCountContainer}>
+                  <Text style={styles.countUsers}>{getStaffUsers?.length || '0'}</Text>
+                </View>
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setisCalendarSettingModalVisible(true)}
                 style={styles.CalendarSettingsContainer}
               >
-                <Image source={calendarSettingsIcon} style={styles.calendarIconSettings} />
+                <Image source={Images.settingsOutline} style={styles.calendarIconSettings} />
               </TouchableOpacity>
             </View>
           </View>
