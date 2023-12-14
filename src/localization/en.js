@@ -628,6 +628,7 @@ export const en = {
     productPrice: 'Product Price',
     refundAmount: 'Refund Amount',
     noInvoices: 'No invoices found',
+    applicableForAll: 'Apply a fixed amount to all items.',
   },
   batchManagement: {
     header: 'Batch management',
