@@ -57,6 +57,19 @@ const addressUpdateByIdError = (error) => ({
   payload: { error },
 });
 
+const updateAddressStatusRequest = () => ({
+  type: TYPES.UPDATE_ADDRESS_STATUS_REQUEST,
+  payload: null,
+});
+const updateAddressStatusSuccess = () => ({
+  type: TYPES.UPDATE_ADDRESS_STATUS_SUCCESS,
+  payload: null,
+});
+const updateAddressStatusError = (error) => ({
+  type: TYPES.UPDATE_ADDRESS_STATUS_ERROR,
+  payload: { error },
+});
+
 const deleteAddressByIdRequest = () => ({
   type: TYPES.DELETE_ADDRESS_BY_ID_REQUEST,
   payload: null,
@@ -350,6 +363,16 @@ export const addressUpdateById = (body) => async (dispatch) => {
     dispatch(getShippingPickup());
   } catch (error) {
     dispatch(addressUpdateByIdError(error.message));
+  }
+};
+export const updateAddressStatus = (body) => async (dispatch) => {
+  dispatch(updateAddressStatusRequest());
+  try {
+    const res = await SettingController.updateAddressStatus(body);
+    dispatch(updateAddressStatusSuccess(res));
+    dispatch(getShippingPickup());
+  } catch (error) {
+    dispatch(updateAddressStatusError(error.message));
   }
 };
 export const deleteAddressById = (address_id) => async (dispatch) => {

@@ -95,6 +95,32 @@ export class DeliveryController {
     });
   }
 
+  static async verifyPickupOtp(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = ORDER_URL + ApiOrderInventory.verifyPickupOtp;
+      const body = data;
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          // Toast.show({
+          //   position: 'bottom',
+          //   type: 'success_toast',
+          //   text2: response?.msg,
+          //   visibilityTime: 2000,
+          // });
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+
   static async deliveryOrd() {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getOrders + `?delivery_option=1`;
