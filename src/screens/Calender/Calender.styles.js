@@ -514,6 +514,27 @@ export const styles = StyleSheet.create({
     fontSize: ms(8.5),
     color: COLORS.navy_blue,
   },
+  _eventHeading: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(8.5),
+    color: COLORS.faded_purple,
+  },
+  _eventTitleBold: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(8.5),
+    color: COLORS.navy_blue,
+  },
+  _eventHeadingBold: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(8.5),
+    color: COLORS.faded_purple,
+  },
+  invoiceText: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(7),
+    color: COLORS.dark_skyblue,
+    marginTop: ms(2),
+  },
   lineStl: {
     height: ms(8),
     width: 1,
@@ -559,6 +580,7 @@ export const styles = StyleSheet.create({
   paidText: {
     fontFamily: Fonts.Regular,
     color: COLORS.navy_blue,
+    fontSize: ms(8),
   },
   paidContainer: {
     backgroundColor: COLORS.white,
@@ -568,7 +590,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    height: ms(21),
+    height: ms(20),
   },
   totalTile: {
     fontFamily: Fonts.Medium,
@@ -648,8 +670,11 @@ export const styles = StyleSheet.create({
     borderRadius: ms(12),
   },
   customerDetailContainer: {
-    borderRadius: ms(5),
-    paddingVertical: ms(10),
+    borderRadius: ms(16),
+    paddingHorizontal: ms(10),
+    borderColor: COLORS.light_purple,
+    borderWidth: 1,
+    paddingVertical: ms(5),
   },
   _requestTitle: {
     fontFamily: Fonts.SemiBold,
@@ -662,7 +687,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: ms(5),
+    marginTop: ms(3),
   },
   invoiceTxt: {
     fontFamily: Fonts.SemiBold,
@@ -670,11 +695,7 @@ export const styles = StyleSheet.create({
     marginVertical: ms(5),
   },
   amountSliptContainer: {
-    marginTop: ms(15),
-    marginHorizontal: ms(15),
-    padding: ms(5),
-    borderRadius: ms(5),
-    backgroundColor: COLORS.textInputBackground,
+    marginHorizontal: ms(5),
   },
   assignedContainer: {
     backgroundColor: COLORS.white,
@@ -686,11 +707,13 @@ export const styles = StyleSheet.create({
   },
   chatIconStl: { height: ms(15), width: ms(15), resizeMode: 'contain' },
   eventDetailModalContainer: {
-    backgroundColor: COLORS.white,
-    borderRadius: ms(5),
-    width: '50%',
+    width: ms(290),
+    height: ms(380),
+    backgroundColor: 'white',
+    paddingHorizontal: ms(10),
+    paddingVertical: ms(10),
     alignSelf: 'center',
-    flexDirection: 'row',
+    borderRadius: ms(10),
   },
   crossStl: { height: ms(18), width: ms(18), tintColor: COLORS.black, alignSelf: 'center' },
   crossEventDetailModal: { position: 'absolute', right: ms(8), top: ms(6) },
@@ -739,8 +762,8 @@ export const styles = StyleSheet.create({
     height: ms(14),
     width: ms(14),
     resizeMode: 'contain',
-    marginRight: ms(2),
-    tintColor: COLORS.darkGray,
+    tintColor: COLORS.navy_blue,
+    left: ms(5),
   },
   cancelOptionIcon: { height: ms(12), width: ms(12), resizeMode: 'contain', marginRight: ms(7) },
   EventDetailoptionsContainer: {
@@ -858,8 +881,8 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     paddingVertical: ms(10),
   },
-  checkintitle: { color: COLORS.white, fontFamily: Fonts.SemiBold },
-  editTextBtn: { fontFamily: Fonts.SemiBold, fontSize: ms(8), color: COLORS.darkGray },
+  checkintitle: { color: COLORS.white, fontFamily: Fonts.Regular },
+  editTextBtn: { fontFamily: Fonts.SemiBold, fontSize: ms(8), color: COLORS.navy_blue },
   btmEditBtn: {
     flex: 1,
     borderWidth: 1,
@@ -875,6 +898,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: ms(14),
     marginTop: ms(10),
+    alignSelf: 'center',
   },
   cellRoot: {
     backgroundColor: COLORS.textInputBackground,
@@ -1166,20 +1190,20 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   servicesRequested: {
-    fontSize: ms(9),
+    fontSize: ms(8),
     color: COLORS.navy_blue,
     fontFamily: Fonts.Medium,
   },
   scrollableServicesView: {
     backgroundColor: COLORS.sky_blue,
     margin: ms(5),
-    padding: ms(5),
+    padding: ms(3),
     borderRadius: ms(15),
   },
   servicesName: {
     fontFamily: Fonts.Medium,
     color: COLORS.white,
-    fontSize: ms(8),
+    fontSize: ms(7.5),
   },
   closeIcon: {
     height: ms(20),
@@ -1233,6 +1257,17 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  modifyButtonStyle: {
+    width: '42%',
+    height: ms(33),
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.navy_blue,
+    borderRadius: ms(30),
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   acceptButtonStyle: {
     width: '42%',
     height: ms(33),
@@ -1252,13 +1287,18 @@ export const styles = StyleSheet.create({
     fontSize: ms(9),
     color: COLORS.white,
   },
+  modalHeading: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(9),
+    color: COLORS.navy_blue,
+  },
   rightArrowStyle: {
     tintColor: COLORS.sky_blue,
     height: ms(16),
     width: ms(16),
   },
   checkStyle: {
-    height: ms(12),
-    width: ms(12),
+    height: ms(10),
+    width: ms(10),
   },
 });
