@@ -14,17 +14,6 @@ import { useFocusEffect } from '@react-navigation/native';
 const { width } = Dimensions.get('window');
 
 const ReturnConfirmation = ({ isVisible, order, onPressHandler }) => {
-  useFocusEffect(
-    useCallback(() => {
-      const timeoutId = setTimeout(() => {
-        if (isVisible) {
-          navigate(NAVIGATION.dashBoard);
-        }
-      }, 2000);
-      return () => clearTimeout(timeoutId);
-    }, [isVisible])
-  );
-
   return (
     <ReactNativeModal
       isVisible={isVisible}
@@ -32,6 +21,11 @@ const ReturnConfirmation = ({ isVisible, order, onPressHandler }) => {
       animationOut={'slideOutRight'}
     >
       <View style={styles.modalStyle}>
+        <View style={{ position: 'absolute', top: 20, right: 20 }}>
+          <TouchableOpacity style={styles.crossIconView} onPress={onPressHandler}>
+            <Image source={crossButton} style={styles.crossIconStyle} />
+          </TouchableOpacity>
+        </View>
         <Spacer space={ms(30)} />
         <Image
           source={verifyGreen}
