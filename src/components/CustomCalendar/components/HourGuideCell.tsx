@@ -52,9 +52,12 @@ const _HourGuideCell = ({
               // u['border-b'],
               // u['border-r'],
               {
+                height: cellHeight / 4,
+                marginHorizontal: 3,
+                marginTop: 3,
                 borderStyle: 'dotted',
+                borderRadius: 1,
                 borderWidth: 1,
-                flex: 1,
                 borderColor: theme.palette.gray['300'],
               },
               { ...getCalendarCellStyle(date.toDate(), index) },

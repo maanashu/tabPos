@@ -25,60 +25,6 @@ const CustomEventCell = (
   );
   employeeIndex = employeeIndex > -1 ? employeeIndex : 0;
 
-  const eventCellItem = () => {
-    return (
-      <>
-        <View style={{ flexDirection: 'row' }}>
-          {allEvents?.map((eventItem, index) => {
-            return (
-              <View key={index}>
-                {/* {eventItem?.completeData?.pos_user_details?.user?.user_profiles
-                ?.profile_photo && ( */}
-                <View
-                  style={[
-                    styles.profilePicContainer,
-                    {
-                      borderColor: '#fff',
-                      flexDirection: 'row',
-                      marginLeft: index === 0 ? 0 : -8,
-                      zIndex: index,
-                      elevation: index,
-                    },
-                  ]}
-                >
-                  <Image
-                    source={{
-                      uri: eventItem?.completeData?.pos_user_details?.user?.user_profiles
-                        ?.profile_photo,
-                    }}
-                    style={[styles.eventProfilePic, { backgroundColor: colorCode }]}
-                  />
-                </View>
-                {/* // )} */}
-              </View>
-            );
-          })}
-
-          <Spacer space={ms(3)} horizontal />
-          <Text style={[styles.startEndDate, { color: colorCode }]}>
-            {getStartEndFormattedDate(event.start)}
-          </Text>
-        </View>
-        <Spacer space={ms(2)} />
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          {allEvents?.map((eventItem, index) => {
-            const isLast = index === allEvents?.length - 1;
-            return (
-              <Text key={index} numberOfLines={1} style={[styles.eventTitle, { color: colorCode }]}>
-                {eventItem?.title + (isLast ? '' : ', ')}
-              </Text>
-            );
-          })}
-        </View>
-      </>
-    );
-  };
-
   return (
     <TouchableOpacity
       {...touchableOpacityProps}
@@ -92,15 +38,99 @@ const CustomEventCell = (
               marginLeft: Dimensions.get('screen').width * 0.14 * employeeIndex,
             }
           : {},
-        { flex: 1 },
       ]}
       activeOpacity={0.7}
     >
       {calendarMode === CALENDAR_MODES.MONTH ? (
-        <View>{eventCellItem()}</View>
+        <View>
+          <View style={{ flexDirection: 'row' }}>
+            {allEvents?.map((eventItem, index) => {
+              return (
+                <View key={index} style={{ margin: 1 }}>
+                  {eventItem?.completeData?.pos_user_details?.user?.user_profiles
+                    ?.profile_photo && (
+                    <View
+                      style={[
+                        styles.profilePicContainer,
+                        {
+                          borderColor: colorCode,
+                          flexDirection: 'row',
+                          marginLeft: index === 0 ? 0 : -8,
+                        },
+                      ]}
+                    >
+                      <Image
+                        source={{
+                          uri: eventItem?.completeData?.pos_user_details?.user?.user_profiles
+                            ?.profile_photo,
+                        }}
+                        style={styles.eventProfilePic}
+                      />
+                    </View>
+                  )}
+                </View>
+              );
+            })}
+          </View>
+          <Text style={styles.startEndDate}>{`Slots ${totalSlots ?? 0}`}</Text>
+          <Text style={styles.eventTitle}>{`Booked: ${bookedSlots ?? 0}`}</Text>
+        </View>
       ) : (
         <View>
-          {eventCellItem()}
+          {/* {allEvents?.length > 0 ? ( */}
+          <>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              {allEvents?.map((eventItem, index) => {
+                return (
+                  <View key={index}>
+                    {/* {eventItem?.completeData?.pos_user_details?.user?.user_profiles
+                      ?.profile_photo && ( */}
+                    <View
+                      style={[
+                        styles.profilePicContainer,
+                        {
+                          borderColor: '#fff',
+                          flexDirection: 'row',
+                          marginLeft: index === 0 ? 0 : -8,
+                          zIndex: index,
+                          elevation: index,
+                        },
+                      ]}
+                    >
+                      <Image
+                        source={{
+                          uri: eventItem?.completeData?.pos_user_details?.user?.user_profiles
+                            ?.profile_photo,
+                        }}
+                        style={[styles.eventProfilePic, { backgroundColor: colorCode }]}
+                      />
+                    </View>
+                    {/* // )} */}
+                  </View>
+                );
+              })}
+
+              <Spacer space={ms(3)} horizontal />
+              <Text style={[styles.startEndDate, { color: colorCode }]}>
+                {getStartEndFormattedDate(event.start)}
+              </Text>
+            </View>
+            <Spacer space={ms(2)} />
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              {allEvents?.map((eventItem, index) => {
+                const isLast = index === allEvents?.length - 1;
+                return (
+                  <Text
+                    key={index}
+                    numberOfLines={1}
+                    style={[styles.eventTitle, { color: colorCode }]}
+                  >
+                    {eventItem?.title + (isLast ? '' : ', ')}
+                  </Text>
+                );
+              })}
+            </View>
+          </>
           {/* // ) 
           
           

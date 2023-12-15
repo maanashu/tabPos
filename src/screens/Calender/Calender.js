@@ -22,11 +22,10 @@ import {
   circleTick,
   checkInIcon,
   new_location,
-  clock,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
-import { Button, ScreenWrapper, Spacer } from '@/components';
+import { ScreenWrapper, Spacer } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import { Calendar } from '@/components/CustomCalendar';
@@ -101,8 +100,6 @@ export function Calender() {
   const [isLoadingSearchAppoinment, setIsLoadingSearchAppoinment] = useState(false);
 
   const [showSearchModal, setShowSearchModal] = useState(false);
-  const [isCheckIn, setcheckIn] = useState(false);
-  const [formattedTime, setFormattedTime] = useState(false);
   const [searchedAppointments, setSearchedAppointments] = useState([]);
   const [searchedText, setSearchedText] = useState('');
   const [week, setWeek] = useState(true);
@@ -327,21 +324,6 @@ export function Calender() {
 
   const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), []);
 
-  console.log('selecetd services->', selectedPosStaffCompleteData);
-  const calculateTime = (item) => {
-    const startMoment = moment(item?.start_date_time);
-    const endMoment = moment(item?.end_date_time);
-    const duration = moment.duration(endMoment.diff(startMoment));
-
-    const startFormattedTime = startMoment.format('h:mm A');
-    const endFormattedTime = moment(item?.end_date_time).format('h:mm A');
-
-    const hours = Math.floor(duration.asHours());
-    const minutes = Math.floor(duration.asMinutes()) % 60;
-
-    const newFormattedTime = `${startFormattedTime} - ${endFormattedTime} (${hours} hrs ${minutes} mins)`;
-    setFormattedTime(newFormattedTime);
-  };
   const renderListViewItem = ({ item, index }) => {
     const appointmentId = item?.id;
     return (
@@ -352,11 +334,7 @@ export function Calender() {
         // isSendCheckinOTPLoading={isSendCheckinOTPLoading}
         onPressCheckin={() => {
           setSelectedPosStaffCompleteData(item);
-          // dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
-          // alert('ok');
-          calculateTime(item);
-          setcheckIn(true);
-
+          dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
           // dispatch(sendCheckinOTP(appointmentId)).then(() => {
           //   setshowVerifyOTPModal(true);
           // });
@@ -817,34 +795,13 @@ export function Calender() {
               </View>
             ) : (
               <View style={{ marginBottom: ms(40) }}>
-                <View
-                  style={[styles.rowAlignedJustified, { marginLeft: ms(10), marginTop: ms(5) }]}
-                >
-                  <View style={styles.rowAligned}>
-                    <Image
-                      source={Images.calendarIcon}
-                      style={styles.requestCalendarIconSmall}
-                      resizeMode="contain"
-                    />
-
-                    <View style={styles.requestCountView}>
-                      <Text style={styles.requestText}>
-                        {selectedStaffEmployeeId
-                          ? getAppointmentByStaffIdList?.length ?? 0
-                          : appointmentListArr?.length ?? 0}
-                      </Text>
-                    </View>
-                    <Text style={styles._requestTitle}>{`Requests`}</Text>
-                  </View>
-
-                  <TouchableOpacity onPress={() => setshowRequestsView(false)}>
-                    <Image
-                      source={crossButton}
-                      style={[styles.closeIcon, { marginRight: ms(10) }]}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                </View>
+                <Text style={styles._requestTitle}>
+                  {`Request (${
+                    selectedStaffEmployeeId
+                      ? getAppointmentByStaffIdList?.length ?? 0
+                      : appointmentListArr?.length ?? 0
+                  })`}
+                </Text>
                 <FlatList
                   extraData={appointmentListArr}
                   data={selectedStaffEmployeeId ? getAppointmentByStaffIdList : appointmentListArr}
@@ -854,7 +811,6 @@ export function Calender() {
                   onEndReached={handleEndReached}
                   onEndReachedThreshold={0.1} // Adjust this value as per your requirements
                   ListFooterComponent={renderLoader}
-                  showsVerticalScrollIndicator={false}
                 />
               </View>
             )}
@@ -954,122 +910,155 @@ export function Calender() {
          * Design Check-in Modal
          * It is in Progress/unfinished due to change of preority
          */}
-        <BlurredModal isVisible={isCheckIn}>
-          <View style={styles.checkInModalContainer}>
-            <TouchableOpacity style={styles.closeIconView} onPress={() => setcheckIn(false)}>
-              <Image source={crossButton} resizeMode="contain" style={styles.closeIcon} />
-            </TouchableOpacity>
-            <Image source={checkInIcon} style={styles.checkInIcon} />
-            <Text style={styles.checkInText}>Check In</Text>
-            <Text style={styles.subHeadingText}>Confirm the details of your appointment</Text>
+        {/* <BlurredModal isVisible={false}>
+          <View
+            style={{
+              width: ms(300),
+              paddingVertical: ms(20),
+              backgroundColor: 'white',
+              alignItems: 'center',
+              alignSelf: 'center',
+              shadowColor: '#000',
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 0.29,
+              shadowRadius: 4.65,
+              elevation: 7,
+              borderRadius: ms(15),
+            }}
+          >
+            <Image
+              source={checkInIcon}
+              style={{
+                height: ms(35),
+                width: ms(35),
+                resizeMode: 'contain',
+                tintColor: COLORS.sky_blue,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: ms(14),
+                color: COLORS.navy_blue,
+                fontFamily: Fonts.SemiBold,
+                marginTop: ms(10),
+              }}
+            >
+              Check In
+            </Text>
+            <Text
+              style={{
+                fontSize: ms(11),
+                color: COLORS.navy_blue,
+                fontFamily: Fonts.Regular,
+                marginTop: ms(10),
+              }}
+            >
+              Confirm the details of your appointment
+            </Text>
 
-            <View style={styles.serviceDetailContainer}>
-              <View style={styles.rowJustified}>
-                <Text style={styles.customerText}>Customer:</Text>
-                <Text style={styles.unpaidText}>
-                  {selectedPosStaffCompleteData?.mode_of_payment == 'cash' ? 'Unpaid' : 'Paid'}
+            <View
+              style={{
+                borderWidth: 0.5,
+                borderColor: COLORS.light_purple,
+                borderRadius: ms(15),
+                padding: ms(10),
+                marginVertical: ms(10),
+                width: '92%',
+              }}
+            >
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text
+                  style={{
+                    fontSize: ms(11),
+                    color: COLORS.navy_blue,
+                    fontFamily: Fonts.Regular,
+                  }}
+                >
+                  Customer
+                </Text>
+                <Text
+                  style={{
+                    fontSize: ms(11),
+                    color: COLORS.navy_blue,
+                    fontFamily: Fonts.Regular,
+                  }}
+                >
+                  Unpaid
                 </Text>
               </View>
 
-              <View style={styles.customerProfileView}>
-                <ProfileImage
-                  source={{
-                    uri: selectedPosStaffCompleteData?.user_details?.profile_photo || null,
-                  }}
-                  style={styles.customerProfileImage}
-                />
+              <View style={{ marginTop: ms(10), flexDirection: 'row', alignItems: 'center' }}>
+                <ProfileImage source={{ uri: null }} style={{ height: ms(35), width: ms(35) }} />
                 <View style={{ marginLeft: ms(5) }}>
-                  <Text style={styles.customerNameText}>
-                    {`${selectedPosStaffCompleteData?.user_details?.firstname} ${selectedPosStaffCompleteData?.user_details?.lastname}`}
+                  <Text
+                    style={{
+                      fontSize: ms(11),
+                      color: COLORS.navy_blue,
+                      fontFamily: Fonts.Medium,
+                    }}
+                  >
+                    John Wick
                   </Text>
                   <Spacer space={ms(5)} />
-                  <View style={[styles.rowAligned, {}]}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={new_location} style={styles.eventAddressIcon} />
-                    <View style={{ width: '85%' }}>
-                      <Text
-                        style={styles.addressText}
-                      >{`${selectedPosStaffCompleteData?.user_details?.current_address?.city}, ${selectedPosStaffCompleteData?.user_details?.current_address?.state}`}</Text>
-                    </View>
+
+                    <Text
+                      style={{
+                        fontSize: ms(9),
+                        color: COLORS.purple,
+                        fontFamily: Fonts.Medium,
+                        marginLeft: ms(5),
+                      }}
+                    >
+                      San Andreas, LA
+                    </Text>
                   </View>
                 </View>
               </View>
 
-              <View style={styles.requestedServicesView}>
-                <Text style={styles.servicesRequested}>Services requested:</Text>
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  style={{ marginLeft: ms(5) }}
+              <View
+                style={{
+                  marginTop: ms(10),
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: ms(9),
+                    color: COLORS.navy_blue,
+                    fontFamily: Fonts.Medium,
+                  }}
                 >
-                  <View style={styles.rowAligned}>
-                    {/* {[0, 1, 2, 3, 4, 5].map((item, index) => ( */}
-                    <View style={styles.scrollableServicesView}>
-                      <Text style={styles.servicesName}>
-                        {selectedPosStaffCompleteData?.product_name}
-                      </Text>
-                    </View>
-                    {/* ))} */}
+                  Services requested:
+                </Text>
+                <ScrollView horizontal>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    {[0, 1].map((item, index) => (
+                      <View
+                        style={{
+                          backgroundColor: COLORS.sky_blue,
+                          margin: ms(5),
+                          padding: ms(5),
+                          borderRadius: ms(10),
+                        }}
+                      >
+                        <Text style={{ fontFamily: Fonts.Medium, color: COLORS.white }}>
+                          Haircut
+                        </Text>
+                      </View>
+                    ))}
                   </View>
                 </ScrollView>
               </View>
-
-              <View style={styles.serviceTimeView}>
-                <Text style={styles.servicesRequested}>Service Time</Text>
-
-                <Spacer space={ms(10)} />
-                <View style={styles.rowAligned}>
-                  <View style={styles.rowAligned}>
-                    <Image
-                      style={styles.serviceTimeIcons}
-                      resizeMode="contain"
-                      source={Images.calendarIcon}
-                    />
-                    <Text style={styles.serviceTimeText}>
-                      {moment(selectedPosStaffCompleteData?.start_date_time).format(
-                        'dddd, DD/MM/YYYY'
-                      )}
-                    </Text>
-                  </View>
-                  <Spacer horizontal space={ms(10)} />
-                  <View style={styles.rowAligned}>
-                    <Image style={styles.serviceTimeIcons} resizeMode="contain" source={clock} />
-                    <Text style={styles.serviceTimeText}>{formattedTime}</Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.dashedLine} />
-              <View style={styles.rowAlignedJustified}>
-                <Text style={styles.totalPrice}>Total</Text>
-                <Text
-                  style={styles.totalPrice}
-                >{`$ ${selectedPosStaffCompleteData?.actual_price}`}</Text>
-              </View>
-            </View>
-            <Spacer space={ms(5)} />
-
-            <View style={styles.rowAlignedJustified}>
-              <TouchableOpacity style={styles.declineButtonStyle} onPress={() => setcheckIn(false)}>
-                <Text style={styles.declineText}>Decline</Text>
-              </TouchableOpacity>
-              <Spacer horizontal space={ms(10)} />
-              <TouchableOpacity
-                style={styles.acceptButtonStyle}
-                onPress={() =>
-                  dispatch(
-                    changeAppointmentStatus(
-                      selectedPosStaffCompleteData?.id,
-                      APPOINTMENT_STATUS.CHECKED_IN
-                    )
-                  )
-                }
-              >
-                <Text style={styles.acceptText}>Confirm</Text>
-                <Image style={styles.rightArrowStyle} source={Images.arrowUpRightIcon} />
-              </TouchableOpacity>
             </View>
           </View>
-        </BlurredModal>
+        </BlurredModal> */}
       </View>
     </ScreenWrapper>
   );

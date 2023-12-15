@@ -8,7 +8,6 @@ import { useTheme } from '../theme/ThemeContext';
 import { getDatesInWeek } from '../utils/datetime';
 import { typedMemo } from '../utils/react';
 import { Fonts } from '@/assets';
-import { ms } from 'react-native-size-matters';
 
 export interface CalendarHeaderForMonthViewProps {
   weekStartsOn: WeekNum;
@@ -27,29 +26,30 @@ function _CalendarHeaderForMonthView({
   const theme = useTheme();
 
   return (
-    <View style={[theme.isRTL ? u['flex-row-reverse'] : u['flex-row'], style]}>
-      {dates.map((date) => (
-        <View
-          style={{
-            flex: 1,
-            paddingTop: 2,
-            borderRadius: 14,
-            backgroundColor: todayWeekNum === date.day() ? '#F5F6FC' : 'transparent',
-          }}
-          key={date.toISOString()}
-        >
-          <View style={{ height: ms(30), alignItems: 'center', paddingTop: ms(6) }}>
+    <View
+      style={[
+        u['border-b'],
+        { borderColor: theme.palette.gray['100'] },
+        theme.isRTL ? u['flex-row-reverse'] : u['flex-row'],
+        style,
+      ]}
+    >
+      {dates.map(date => (
+        <View style={{ flex: 1, paddingTop: 2 }} key={date.toISOString()}>
+          <View style={{ height: 30 }}>
             <Text
               style={[
-                theme.typography.sm,
                 u['text-center'],
                 {
                   fontFamily: Fonts.SemiBold,
-                  color: '#263682',
+                  color:
+                    todayWeekNum === date.day()
+                      ? theme.palette.primary.main
+                      : theme.palette.gray['800'],
                 },
               ]}
             >
-              {date.format('dddd')}
+              {date.format('ddd')}
             </Text>
           </View>
         </View>
@@ -58,4 +58,6 @@ function _CalendarHeaderForMonthView({
   );
 }
 
-export const CalendarHeaderForMonthView = typedMemo(_CalendarHeaderForMonthView);
+export const CalendarHeaderForMonthView = typedMemo(
+  _CalendarHeaderForMonthView
+);

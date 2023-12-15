@@ -19,7 +19,6 @@ import { useTheme } from '../theme/ThemeContext';
 import { getWeeksWithAdjacentMonths } from '../utils/datetime';
 import { typedMemo } from '../utils/react';
 import { CalendarEventForMonthView } from './CalendarEventForMonthView';
-import { ms } from 'react-native-size-matters';
 
 interface CalendarBodyForMonthViewProps<T extends ICalendarEventBase> {
   containerHeight: number;
@@ -119,13 +118,12 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
       style={[
         {
           height: containerHeight,
-          marginTop: 16,
         },
         u['flex-column'],
         u['flex-1'],
-        // u['border-b'],
-        // u['border-l'],
-        // u['border-r'],
+        u['border-b'],
+        u['border-l'],
+        u['border-r'],
         u['rounded'],
         { borderColor: theme.palette.gray['200'] },
         style,
@@ -153,19 +151,15 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
               <TouchableOpacity
                 onPress={() => date && onPressCell && onPressCell(date.toDate())}
                 style={[
-                  u['border-t'],
+                  i > 0 && u['border-t'],
                   theme.isRTL && ii > 0 && u['border-r'],
                   !theme.isRTL && ii > 0 && u['border-l'],
-                  // { borderColor: theme.palette.gray['200'] },
+                  { borderColor: theme.palette.gray['200'] },
                   u['p-2'],
                   u['flex-1'],
                   u['flex-column'],
                   {
                     minHeight: minCellHeight,
-                    // borderRadius: ms(4),
-                    borderColor: '#E4E6F2',
-                    borderWidth: 1,
-                    borderRadius: 10,
                   },
                   {
                     ...getCalendarCellStyle(date?.toDate(), i),
@@ -173,66 +167,6 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                 ]}
                 key={ii}
               >
-                <View style={{ flex: 1 }}>
-                  {[1, 2, 3, 4, 5].map((item) => (
-                    <View
-                      key={item}
-                      style={[
-                        {
-                          borderStyle: 'dotted',
-                          borderWidth: 1,
-                          flex: 1,
-                          borderColor: theme.palette.gray['300'],
-                        },
-                      ]}
-                    />
-                  ))}
-                </View>
-
-                <View style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0 }}>
-                  {date &&
-                    sortedEvents(date).reduce((elements, event, index, events) => {
-                      if (index > maxVisibleEventCount) {
-                        return elements; // Don't render more events than the limit
-                      }
-                      if (index === maxVisibleEventCount) {
-                        return [
-                          ...elements,
-                          <Text
-                            key={index}
-                            style={[
-                              theme.typography.moreLabel,
-                              { marginTop: 2, color: theme.palette.moreLabel },
-                            ]}
-                          >
-                            {moreLabel.replace(
-                              '{moreCount}',
-                              `${events.length - maxVisibleEventCount}`
-                            )}
-                          </Text>,
-                        ];
-                      }
-
-                      return [
-                        // ...elements,
-                        <CalendarEventForMonthView
-                          allEvents={events}
-                          key={index}
-                          event={event}
-                          eventCellStyle={eventCellStyle}
-                          onPressEvent={onPressEvent}
-                          renderEvent={renderEvent}
-                          date={date}
-                          dayOfTheWeek={ii}
-                          calendarWidth={calendarWidth}
-                          isRTL={theme.isRTL}
-                          eventMinHeightForMonthView={50}
-                          showAdjacentMonths={showAdjacentMonths}
-                        />,
-                      ];
-                    }, [] as JSX.Element[])}
-                </View>
-
                 <TouchableOpacity
                   onPress={() =>
                     date &&
@@ -240,41 +174,68 @@ function _CalendarBodyForMonthView<T extends ICalendarEventBase>({
                       ? onPressDateHeader(date.toDate())
                       : onPressCell && onPressCell(date.toDate()))
                   }
-                  style={{
-                    // backgroundColor: '#FFFFFF',
-                    borderColor: '#D7DEFF',
-                    borderWidth: 1,
-                    alignSelf: 'flex-end',
-                    padding: 4,
-                    borderRadius: 4,
-                    position: 'absolute',
-                    right: 12,
-                    top: 12,
-                  }}
                 >
                   <Text
                     style={[
                       { textAlign: 'center' },
                       theme.typography.sm,
                       {
-                        // color:
-                        //   date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
-                        //     ? theme.palette.primary.main
-                        //     : date?.month() !== targetDate.month()
-                        //     ? theme.palette.gray['500']
-                        //     : theme.palette.gray['800'],
-
-                        color: '#263682',
+                        color:
+                          date?.format('YYYY-MM-DD') === now.format('YYYY-MM-DD')
+                            ? theme.palette.primary.main
+                            : date?.month() !== targetDate.month()
+                            ? theme.palette.gray['500']
+                            : theme.palette.gray['800'],
                       },
                       {
                         ...getCalendarCellTextStyle(date?.toDate(), i),
                       },
                     ]}
                   >
-                    {date &&
-                      (date.format('D')?.length > 1 ? date.format('D') : '0' + date.format('D'))}
+                    {date && date.format('D')}
                   </Text>
                 </TouchableOpacity>
+                {date &&
+                  sortedEvents(date).reduce((elements, event, index, events) => {
+                    if (index > maxVisibleEventCount) {
+                      return elements; // Don't render more events than the limit
+                    }
+                    if (index === maxVisibleEventCount) {
+                      return [
+                        ...elements,
+                        <Text
+                          key={index}
+                          style={[
+                            theme.typography.moreLabel,
+                            { marginTop: 2, color: theme.palette.moreLabel },
+                          ]}
+                        >
+                          {moreLabel.replace(
+                            '{moreCount}',
+                            `${events.length - maxVisibleEventCount}`
+                          )}
+                        </Text>,
+                      ];
+                    }
+
+                    return [
+                      // ...elements,
+                      <CalendarEventForMonthView
+                        allEvents={events}
+                        key={index}
+                        event={event}
+                        eventCellStyle={eventCellStyle}
+                        onPressEvent={onPressEvent}
+                        renderEvent={renderEvent}
+                        date={date}
+                        dayOfTheWeek={ii}
+                        calendarWidth={calendarWidth}
+                        isRTL={theme.isRTL}
+                        eventMinHeightForMonthView={50}
+                        showAdjacentMonths={showAdjacentMonths}
+                      />,
+                    ];
+                  }, [] as JSX.Element[])}
               </TouchableOpacity>
             ))}
         </View>
