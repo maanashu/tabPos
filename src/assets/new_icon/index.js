@@ -80,4 +80,6 @@ export const Images = {
   radioFilled: require('@/assets/new_icon/appointments/radioFilled.png'),
   usersThree: require('@/assets/new_icon/appointments/usersThree.png'),
   settingsOutline: require('@/assets/new_icon/appointments/settingsOutline.png'),
+  check_circle: require('@/assets/new_icon/appointments/check_circle.png'),
+  modifyAppointment: require('@/assets/new_icon/appointments/modifyAppointment.png'),
 };
