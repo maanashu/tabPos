@@ -49,6 +49,8 @@ export const Images = {
   clearCart: require('@/assets/new_icon/retail_con/clearCart.png'),
   addNotesIcon: require('@/assets/new_icon/retail_con/addNotesIcon.png'),
   holdCart: require('@/assets/new_icon/retail_con/holdCart.png'),
+  shoppingReturn: require('@/assets/new_icon/retail_con/Shopping-Return.png'),
+  billReceipt: require('@/assets/new_icon/retail_con/Receipt_bill_search.png'),
   arrowLeftUp: require('@/assets/new_icon/Auth_icons/ArrowLeftUp.png'),
   bikeDelivery: require('@/assets/new_icon/ic_settings/bikeDelivery.png'),
   localDropOff: require('@/assets/new_icon/ic_settings/localDropOff.png'),

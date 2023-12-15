@@ -10,6 +10,7 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import { crossButton, Fonts, minus, plus } from '@/assets';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Images } from '@/assets/new_icon';
 
 const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) => {
   const selectedOrderList = orderList?.filter((e) => e?.isChecked);
@@ -51,9 +52,9 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
     return (
       <View style={styles.itemMainViewStyle}>
         <Text style={styles.quantityTextStyle}>{item?.qty ?? '-'}</Text>
-        <Text style={styles.quantityTextStyle}>{'X'}</Text>
+        <Text style={[styles.quantityTextStyle, { fontSize: ms(6) }]}>{'X'}</Text>
 
-        <View style={{ width: '60%', paddingLeft: ms(8) }}>
+        <View style={{ width: '60%', paddingHorizontal: ms(5) }}>
           <Text style={styles.productTextStyle}>{item?.product_name ?? '-'}</Text>
           <View
             style={{
@@ -62,7 +63,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
               alignItems: 'center',
             }}
           >
-            <Text style={styles.colorTextStyle}>{item?.sku ? item?.sku : '-'}</Text>
+            <Text style={styles.colorTextStyle}>{item?.sku ? item?.sku : ''}</Text>
           </View>
         </View>
 
@@ -70,18 +71,24 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
           <View style={styles.listCountCon}>
             <TouchableOpacity
               style={{
-                width: SW(10),
+                width: SW(9),
                 alignItems: 'center',
+                borderRightWidth: 1,
+                borderRightColor: COLORS.navy_blue,
               }}
               onPress={() => addRemoveQty('-', index)}
             >
               <Image source={minus} style={styles.minus} />
             </TouchableOpacity>
-            <Text>{`${item?.add_to_inventory_qty}`}</Text>
+            <Text
+              style={{ fontSize: ms(9), tintColor: COLORS.navy_blue }}
+            >{`${item?.add_to_inventory_qty}`}</Text>
             <TouchableOpacity
               style={{
-                width: SW(10),
+                width: SW(8),
                 alignItems: 'center',
+                borderLeftWidth: 1,
+                borderLeftColor: COLORS.navy_blue,
               }}
               onPress={() => addRemoveQty('+', index)}
             >
@@ -100,16 +107,20 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
       animationIn={'slideInRight'}
       animationOut={'slideOutRight'}
     >
-      <View style={{ flex: 1, paddingHorizontal: ms(15) }}>
-        <View style={styles.headingRowStyle}>
-          <Text style={styles.headingTextStyle}>{strings.returnOrder.returnToInventory}</Text>
-
-          <TouchableOpacity style={styles.crossIconViewStyle} onPress={() => setIsVisible(false)}>
-            <Image source={crossButton} style={styles.crossIconStyle} />
-          </TouchableOpacity>
+      <View style={{ flex: 1 }}>
+        <TouchableOpacity style={styles.crossIconViewStyle} onPress={() => setIsVisible(false)}>
+          <Image source={crossButton} style={styles.crossIconStyle} />
+        </TouchableOpacity>
+        <View style={{ alignSelf: 'center', marginTop: ms(-12) }}>
+          <Image
+            resizeMode="contain"
+            style={{ width: ms(20), height: ms(20) }}
+            source={Images.shoppingReturn}
+          />
         </View>
+        <Text style={styles.headingTextStyle}>{strings.returnOrder.returnToInventory}</Text>
 
-        <Spacer space={SH(30)} />
+        <Spacer space={SH(5)} />
         <View>
           <Text style={styles.customerNameStyle}>{strings.returnOrder.description}</Text>
         </View>
@@ -121,15 +132,28 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
           renderItem={renderProductList}
           showsVerticalScrollIndicator={false}
           keyExtractor={(_, index) => index.toString()}
-          style={{ height: ms(200) }}
+          style={{ height: ms(150) }}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: ms(10) }}
         />
 
         <View style={{ flex: 0.2 }} />
-
-        <TouchableOpacity onPress={() => onPress(editedOrder)} style={styles.buttonStyle}>
-          <Text style={styles.buttonTextStyle}>{strings.returnOrder.returnToInventory}</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <TouchableOpacity
+            style={[styles.buttonStyle, { backgroundColor: COLORS.input_border }]}
+            onPress={() => setIsVisible(false)}
+          >
+            <Text style={[styles.buttonTextStyle, { color: COLORS.navy_blue }]}>{'Cancel'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => onPress(editedOrder)} y style={styles.buttonStyle}>
+            <Text style={[styles.buttonTextStyle, { marginRight: ms(5) }]}>
+              {strings.returnOrder.returnToInventory}
+            </Text>
+            <Image
+              source={Images.shoppingReturn}
+              style={{ resizeMode: 'contain', height: ms(15), width: ms(15) }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </ReactNativeModal>
   );
@@ -139,16 +163,20 @@ export default memo(RecheckConfirmation);
 
 const styles = StyleSheet.create({
   modalStyle: {
-    borderRadius: 10,
-    alignSelf: 'flex-end',
+    borderRadius: ms(15),
+    alignSelf: 'center',
     backgroundColor: COLORS.white,
-    width: '44%',
+    width: '30%',
+    paddingLeft: ms(20),
+    paddingRight: ms(15),
+    marginVertical: ms(60),
   },
   headingTextStyle: {
-    fontSize: SF(25),
+    fontSize: ms(12),
     textAlign: 'center',
-    color: COLORS.dark_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
+    marginTop: ms(5),
   },
   headingRowStyle: {
     flexDirection: 'row',
@@ -159,35 +187,37 @@ const styles = StyleSheet.create({
   crossIconViewStyle: {
     width: SH(34),
     height: SH(34),
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: 'flex-end',
+    marginTop: ms(10),
   },
   crossIconStyle: {
-    width: SH(14),
-    height: SH(14),
+    width: ms(18),
+    height: ms(18),
     resizeMode: 'contain',
-    tintColor: COLORS.dark_grey,
+    tintColor: COLORS.navy_blue,
   },
   customerNameStyle: {
-    fontSize: SF(13),
-    color: COLORS.black,
-    fontFamily: Fonts.SemiBold,
+    fontSize: ms(9),
+    color: COLORS.navy_light_blue,
+    fontFamily: Fonts.Regular,
+    // textAlign: 'center',
   },
   itemMainViewStyle: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 5,
-    borderColor: COLORS.washGrey,
-    marginHorizontal: ms(10),
+    borderColor: COLORS.light_purple,
+    // marginHorizontal: ms(10),
     marginVertical: ms(4),
     paddingVertical: ms(5),
+    paddingHorizontal: ms(5),
   },
   quantityTextStyle: {
-    fontSize: SF(12),
-    color: COLORS.dark_grey,
+    fontSize: ms(9),
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
-    paddingLeft: ms(8),
+    paddingLeft: ms(1),
   },
   colorTextStyle: {
     fontSize: SF(9),
@@ -196,14 +226,14 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   productTextStyle: {
-    fontSize: SF(9),
-    color: COLORS.solid_grey,
+    fontSize: ms(6),
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
   },
   priceViewStyle: {
     flex: 1,
     alignItems: 'flex-end',
-    paddingHorizontal: ms(10),
+    paddingLeft: ms(10),
   },
   priceTextStyle: {
     fontSize: SF(12),
@@ -211,26 +241,28 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
   },
   buttonStyle: {
-    height: ms(35),
-    borderRadius: 5,
+    // height: ms(35),
+    borderRadius: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: ms(15),
-    backgroundColor: COLORS.primary,
+    // marginHorizontal: ms(15),
+    backgroundColor: COLORS.navy_blue,
     marginBottom: ms(25),
+    flexDirection: 'row',
+    padding: ms(10),
   },
   buttonTextStyle: {
     fontSize: SF(16),
     color: COLORS.white,
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
   },
 
   listCountCon: {
     borderWidth: 1,
     width: SW(30),
-    height: SH(30),
-    borderRadius: 3,
-    borderColor: COLORS.solidGrey,
+    height: ms(15),
+    borderRadius: ms(5),
+    borderColor: COLORS.light_purple,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(4),
@@ -240,5 +272,6 @@ const styles = StyleSheet.create({
     width: SW(5),
     height: SW(5),
     resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
   },
 });
