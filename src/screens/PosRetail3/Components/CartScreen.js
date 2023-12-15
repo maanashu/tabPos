@@ -45,6 +45,8 @@ import { useCallback } from 'react';
 import { useMemo } from 'react';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
+import { FullScreenLoader } from '@mPOS/components';
+import BlurredModal from '@/components/BlurredModal';
 
 export function CartScreen({
   onPressPayNow,
@@ -69,7 +71,6 @@ export function CartScreen({
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
   const [offerId, setOfferId] = useState();
   const CART_LENGTH = useSelector(getCartLength);
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
   const [unitPrice, setUnitPrice] = useState();
   const [cartEditItem, setCartEditItem] = useState(false);
   const [cartIndex, setCartIndex] = useState();
@@ -82,6 +83,27 @@ export function CartScreen({
 
   const availableOfferLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
+  );
+  const isLoadingGetAllCart = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_CART], state)
+  );
+  const isLoadingAddCart = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+
+  const isLoadingBulkCart = useSelector((state) =>
+    isLoadingSelector([TYPES.CREATE_BULK_CART], state)
+  );
+
+  const isLoadingOneProduct = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ONE_PRODUCT], state)
+  );
+
+  const isLoadingAddDiscount = useSelector((state) =>
+    isLoadingSelector([TYPES.ADD_DISCOUNT], state)
+  );
+  const isLoadingAddNote = useSelector((state) => isLoadingSelector([TYPES.ADDNOTES], state));
+
+  const isLoadingAddCustomProduct = useSelector((state) =>
+    isLoadingSelector([TYPES.CUSTOM_PRODUCT_ADD], state)
   );
 
   const beforeDiscountCartLoad = () => {
@@ -507,7 +529,7 @@ export function CartScreen({
               <TouchableOpacity
                 style={[
                   styles.holdCartPad,
-                  { borderColor: holdProductArray?.length > 0 ? COLORS.navy_blue : COLORS.black },
+                  //
                 ]}
                 onPress={cartStatusHandler}
               >
@@ -515,11 +537,29 @@ export function CartScreen({
                   source={Images.cartHold}
                   style={[
                     styles.keyboardIcon,
-                    {
-                      tintColor: holdProductArray?.length > 0 ? COLORS.navy_blue : COLORS.dark_grey,
-                    },
+                    // {
+                    //   tintColor: holdProductArray?.length > 0 ? COLORS.navy_blue : COLORS.dark_grey,
+                    // },
                   ]}
                 />
+                <View
+                  style={{
+                    width: ms(10),
+                    height: ms(10),
+                    borderColor: COLORS.navy_blue,
+                    borderWidth: 1,
+                    position: 'absolute',
+                    bottom: 3,
+                    right: 3,
+                    borderRadius: ms(10),
+                    backgroundColor: COLORS.white,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: COLORS.navy_blue,
+                  }}
+                >
+                  <Text style={{ color: COLORS.white }}>{holdProductArray?.length}</Text>
+                </View>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -699,7 +739,11 @@ export function CartScreen({
         </View>
       </View>
 
-      <Modal animationType="fade" transparent={true} isVisible={addCartModal || addCartDetailModal}>
+      <BlurredModal
+        animationType="fade"
+        transparent={true}
+        isVisible={addCartModal || addCartDetailModal}
+      >
         {addCartDetailModal ? (
           <AddCartDetailModal crossHandler={() => setAddCartDetailModal(false)} />
         ) : (
@@ -719,16 +763,23 @@ export function CartScreen({
             // onClickAddCartModal={onClickAddCartModal}
           />
         )}
-      </Modal>
+      </BlurredModal>
 
-      <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={numPadModal}>
         {/* <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}> */}
         <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="product" />
         {/* </KeyboardAvoidingView> */}
-      </Modal>
-      <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
+      </BlurredModal>
+      <BlurredModal animationType="fade" transparent={true} isVisible={newCustomerModal}>
         <NewCustomerAdd crossHandler={closeCustomerAddModal} cartid={cartidFrom} />
-      </Modal>
+      </BlurredModal>
+      {(isLoadingGetAllCart ||
+        isLoadingAddCart ||
+        isLoadingBulkCart ||
+        isLoadingOneProduct ||
+        isLoadingAddDiscount ||
+        isLoadingAddNote ||
+        isLoadingAddCustomProduct) && <FullScreenLoader />}
     </View>
   );
 }

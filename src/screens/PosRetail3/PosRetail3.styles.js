@@ -1214,9 +1214,12 @@ export const styles = StyleSheet.create({
   addNotesCon2: {
     paddingHorizontal: moderateScale(8),
     borderRadius: ms(15),
+    ...ShadowStyles.shadow,
   },
   addDiscountConPop: {
     height: windowHeight * 0.55,
+    borderRadius: ms(22),
+    ...ShadowStyles.shadow,
   },
   addNotesInput1: {
     backgroundColor: COLORS.white,
@@ -1816,8 +1819,8 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     position: 'absolute',
-    top: Platform.OS === 'ios' ? -10 : -50,
-    right: Platform.OS === 'ios' ? -10 : -50,
+    top: Platform.OS === 'ios' ? 30 : -50,
+    right: Platform.OS === 'ios' ? 15 : -50,
     borderRadius: ms(15),
     padding: 18,
   },
@@ -2056,8 +2059,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: ms(22),
     // alignItems: 'center',
-    borderWidth: 1,
-    // flex: 1,
+    ...ShadowStyles.shadow,
   },
   modalHeaderCon: {
     width: ms(280),
@@ -2161,6 +2163,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: ms(18),
+    ...ShadowStyles.shadow,
   },
   scanPopHeader: {
     height: ms(30),
@@ -2663,6 +2666,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     alignSelf: 'center',
     borderRadius: ms(15),
+    ...ShadowStyles.shadow,
   },
   addcustomerIcon: {
     width: SW(20),

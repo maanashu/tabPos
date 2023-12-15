@@ -52,12 +52,14 @@ export function DrawerNavigator(props) {
 
   const getSelectedOption = async () => {
     if (selection || selection !== undefined) {
-      if (selection === 1) {
+      if (selection === 0) {
+        setActive('dashBoard');
+      } else if (selection === 1) {
         setActive('posRetail3');
       } else if (selection === 2) {
         setActive('deliveryOrders2');
-      } else {
-        setActive('dashBoard');
+      } else if (selection === 3) {
+        setActive('shippingOrder2');
       }
     }
   };
@@ -92,7 +94,7 @@ export function DrawerNavigator(props) {
         <DrawerItem
           label={''}
           activeBackgroundColor={COLORS.transparent}
-          // focused={active === 'posRetail3' ? true : false}
+          focused={active === 'dashBoard' ? true : false}
           onPress={() => {
             setActive('dashBoard');
             navigate(NAVIGATION.dashBoard);
@@ -122,7 +124,7 @@ export function DrawerNavigator(props) {
           onPress={() => {
             setActive('posRetail3');
             navigate(NAVIGATION.posRetail3);
-            // dispatch(addSellingSelection());
+            dispatch(addSellingSelection());
             // dispatch(cartScreenTrue({ state: false }));
             // dispatch(getUserDetailSuccess([]));
           }}
@@ -140,6 +142,7 @@ export function DrawerNavigator(props) {
           onPress={() => {
             setActive('deliveryOrders2');
             navigate(NAVIGATION.deliveryOrders2);
+            dispatch(addSellingSelection());
           }}
           icon={({ focused }) => {
             return getDashboardData?.pendingOrders?.delivery_count ? (
@@ -168,6 +171,7 @@ export function DrawerNavigator(props) {
           onPress={() => {
             setActive('shippingOrder2');
             navigate(NAVIGATION.shippingOrder2);
+            dispatch(addSellingSelection());
           }}
           icon={({ focused }) => {
             return getDashboardData?.pendingOrders?.shipping_count ? (

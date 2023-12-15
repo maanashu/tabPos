@@ -1,7 +1,9 @@
 /**
  * @format
  */
-
+if (__DEV__) {
+  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
+}
 import { AppRegistry, Platform } from 'react-native';
 
 import notifee, { EventType } from '@notifee/react-native';
@@ -26,7 +28,7 @@ if (Platform.OS === 'android') {
 notifee.onBackgroundEvent(async ({ type, detail }) => {
   if (type === EventType.PRESS) {
     store.dispatch(getPendingOrders());
-    await handleNotification(detail.notification);
+    handleNotification(detail.notification);
   }
 });
 

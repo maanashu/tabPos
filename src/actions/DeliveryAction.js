@@ -72,6 +72,19 @@ const acceptOrderError = (error) => ({
   payload: { error },
 });
 
+const verifyPickupOtpRequest = () => ({
+  type: TYPES.VERIFY_PICKUP_OTP_REQUEST,
+  payload: null,
+});
+const verifyPickupOtpSuccess = () => ({
+  type: TYPES.VERIFY_PICKUP_OTP_SUCCESS,
+  payload: {},
+});
+const verifyPickupOtpError = (error) => ({
+  type: TYPES.VERIFY_PICKUP_OTP_ERROR,
+  payload: { error },
+});
+
 const deliveryOrdRequest = () => ({
   type: TYPES.DELIVERY_ORDER_REQUEST,
   payload: null,
@@ -237,6 +250,23 @@ export const acceptOrder = (data, openShippingOrders, delivery, callback) => asy
   }
 };
 
+export const verifyPickupOtp = (data, callback) => async (dispatch) => {
+  dispatch(verifyPickupOtpRequest());
+  try {
+    const res = await DeliveryController.verifyPickupOtp(data);
+    dispatch(verifyPickupOtpSuccess(res));
+    console.log('ressss', JSON.stringify(res));
+
+    return res;
+    // await dispatch(getOrderCount());
+    // callback && callback(res);
+    // dispatch(getPendingOrders());
+  } catch (error) {
+    console.log('error', JSON.stringify(error));
+
+    dispatch(verifyPickupOtpError(error.message));
+  }
+};
 export const deliveryOrd = () => async (dispatch) => {
   dispatch(deliveryOrdRequest());
   try {

@@ -73,7 +73,9 @@ import { getSetting } from '@/selectors/SettingSelector';
 import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
 import { CustomHeader } from './CustomHeader';
 import { Images } from '@/assets/new_icon';
-import { log } from 'react-native-reanimated';
+import { FullScreenLoader } from '@mPOS/components';
+import BlurredModal from '@/components/BlurredModal';
+import { Platform } from 'react-native';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -186,7 +188,6 @@ export const CartAmountPayBy = ({
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
   const isFocused = useIsFocused();
-  console.log('requestStatus', requestStatus, getRetailData?.qrStatuskey?.status);
   // useEffect(() => {
   //   setSelectedTipIndex(tipsSelected);
   //   setSelectedTipAmount(
@@ -227,7 +228,7 @@ export const CartAmountPayBy = ({
     },
     {
       title: 'Date',
-      data: moment().format('ddd') + ' ' + moment().subtract(10, 'days').calendar(),
+      data: moment().format('ddd') + ' ' + moment().format('L'),
       id: 2,
     },
     {
@@ -398,7 +399,13 @@ export const CartAmountPayBy = ({
     dispatch(qrcodestatus(cartData.id));
   };
 
-  const isLoading = useSelector((state) => isLoadingSelector([TYPES.CREATE_ORDER], state));
+  const isLoadingAttachCustomer = useSelector((state) =>
+    isLoadingSelector([TYPES.ATTACH_CUSTOMER], state)
+  );
+  const isLoadingMerchantWalletCheck = useSelector((state) =>
+    isLoadingSelector([TYPES.MERCHANT_WALLET_CHECK], state)
+  );
+
   useEffect(() => {
     let interval;
 
@@ -1056,7 +1063,7 @@ export const CartAmountPayBy = ({
       </View>
 
       {/* Phone PopUp */}
-      <Modal isVisible={phonePopVisible}>
+      <BlurredModal isVisible={phonePopVisible}>
         <KeyboardAwareScrollView
           contentContainerStyle={{
             // alignItems: 'center',
@@ -1121,6 +1128,7 @@ export const CartAmountPayBy = ({
                 <TouchableOpacity
                   style={styles.addToCartButtonCon}
                   onPress={() => {
+                    setPhonePopVisible(false);
                     getTipPress();
                     payNowByphone(selectedTipAmount);
                     attachUserByPhone(phoneNumber);
@@ -1185,9 +1193,9 @@ export const CartAmountPayBy = ({
             </View>
           ) : null}
         </View> */}
-      </Modal>
+      </BlurredModal>
 
-      <Modal isVisible={emailModal}>
+      <BlurredModal isVisible={emailModal}>
         <KeyboardAwareScrollView
           contentContainerStyle={{
             // alignItems: 'center',
@@ -1256,6 +1264,7 @@ export const CartAmountPayBy = ({
                 <TouchableOpacity
                   style={styles.addToCartButtonCon}
                   onPress={() => {
+                    setEmailModal(false);
                     getTipPress();
                     payNowByphone(selectedTipAmount);
                     attachUserByEmail(email);
@@ -1271,12 +1280,12 @@ export const CartAmountPayBy = ({
             </View>
           </View>
         </KeyboardAwareScrollView>
-      </Modal>
+      </BlurredModal>
 
       {/* qr code scan pop */}
-      <ReactNativeModal isVisible={qrPopUp} backdropColor={COLORS.row_grey} backdropOpacity={0.9}>
-        <KeyboardAvoidingView
-          contentContainerStyle={{ flex: 1 }}
+      <BlurredModal isVisible={qrPopUp}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
           // behavior={Platform.OS === 'ios' ? 'padding' : 100}
         >
           {/* <ScrollView showsVerticalScrollIndicator={false}> */}
@@ -1408,7 +1417,7 @@ export const CartAmountPayBy = ({
                             onChangeText={(walletIdInp) => walletInputFun(walletIdInp)}
                             style={styles.walletSearchContainer}
                             placeholder={strings.verifyPhone.placeHolderText}
-                            placeholderTextColor={COLORS.navy_blue}
+                            placeholderTextColor={COLORS.purple_fade}
                             // showSoftInputOnFocus={false}
                           />
                         </View>
@@ -1480,20 +1489,11 @@ export const CartAmountPayBy = ({
                 <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
               </View>
             ) : null} */}
-            {isLoading && (
-              <View
-                style={[
-                  styles.loader,
-                  { backgroundColor: 'rgba(0,0,0, 0.3)', borderRadius: ms(18) },
-                ]}
-              >
-                <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
-              </View>
-            )}
           </View>
           {/* </ScrollView> */}
-        </KeyboardAvoidingView>
-      </ReactNativeModal>
+        </KeyboardAwareScrollView>
+      </BlurredModal>
+      {isLoadingAttachCustomer || (isLoadingMerchantWalletCheck && <FullScreenLoader />)}
     </SafeAreaView>
   );
 };

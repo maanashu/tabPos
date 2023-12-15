@@ -33,8 +33,7 @@ export const FinalPaymentScreen = ({
   const getUserData = useSelector(getUser);
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const reatilData = useSelector(getRetail);
-  const orderInvoice =
-    cartType == 'Product' ? reatilData?.createOrder : reatilData?.createServiceOrder;
+  const orderInvoice = cartType == 'Product' ? reatilData?.createOrder : reatilData?.createOrder;
   const invoiceData = [
     {
       title: 'Payment Option',

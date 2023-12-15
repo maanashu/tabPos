@@ -9,12 +9,15 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import {
+  addProduct,
   blankCheckBox,
   checkboxSec,
   checkboxSecBlue,
   Fonts,
+  pay,
   PaymentDone,
   research,
+  retail,
   scanNew,
   scooter,
   userImage,
@@ -23,6 +26,8 @@ import { useState } from 'react';
 import { getProductByUpc } from '@/actions/DeliveryAction';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { height } from '@/theme/ScalerDimensions';
+import { Images } from '@/assets/new_icon';
 
 const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
   const [productUpc, setProductUpc] = useState('');
@@ -119,23 +124,23 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
               />
 
               <View style={styles.userNameView}>
-                <Text style={[styles.totalTextStyle, { padding: 0 }]}>{'No Customer'}</Text>
+                <Text style={[styles.customerName]}>
+                  {orderData?.order?.user_details
+                    ? `${orderData?.order?.user_details?.user_profiles?.firstname} ${orderData?.order?.user_details?.user_profiles?.lastname}`
+                    : 'No Customer'}
+                </Text>
               </View>
             </View>
 
-            <View style={[styles.locationViewStyle, { flex: 0.55 }]}>
-              <Image source={scooter} style={styles.scooterImageStyle} />
+            <View style={[styles.locationViewStyle, { flex: 0.75 }]}>
+              <Image source={Images.inStore} style={styles.scooterImageStyle} />
 
-              <View style={[styles.userNameView, { paddingLeft: 5 }]}>
-                <Text style={styles.orderTypeStyle}>
-                  {getDeliveryType(orderData?.order?.delivery_option)}
-                </Text>
-                <Text style={styles.orderDateText}>
-                  {orderData?.order?.date
-                    ? moment(orderData?.order?.date).format('MM/DD/YYYY')
-                    : '-'}
-                </Text>
-              </View>
+              <Text style={styles.orderTypeStyle}>
+                {getDeliveryType(orderData?.order?.delivery_option)}
+              </Text>
+              <Text style={styles.orderDateText}>
+                {orderData?.order?.date ? moment(orderData?.order?.date).format('MM/DD/YYYY') : '-'}
+              </Text>
             </View>
           </View>
 
@@ -147,17 +152,22 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                 placeholder="Scan Barcode of each Item"
                 style={styles.orderDateText}
                 onChangeText={onChangeHandler}
-                placeholderTextColor={COLORS.light_blue2}
+                placeholderTextColor={COLORS.navy_blue}
               />
               <Image
                 source={scanNew}
                 resizeMode="contain"
-                style={{ height: ms(10), width: ms(10), tintColor: COLORS.aqua }}
+                style={{ height: ms(12), width: ms(12), tintColor: COLORS.sky_blue }}
               />
             </View>
 
             <TouchableOpacity onPress={enableModal} style={styles.manualView}>
               <Text style={styles.orderDateText}>{'Manual Entry'}</Text>
+              <Image
+                source={addProduct}
+                resizeMode="contain"
+                style={{ height: ms(12), width: ms(12), tintColor: COLORS.sky_blue }}
+              />
             </TouchableOpacity>
           </View>
 
@@ -181,7 +191,14 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                 <Text style={styles.itemCountText}>{orderData?.order?.total_items ?? '0'}</Text>
               </View>
 
-              <Spacer space={SH(15)} />
+              <View
+                style={{
+                  height: ms(0.5),
+                  backgroundColor: COLORS.input_border,
+                  marginVertical: ms(5),
+                }}
+              />
+
               <View>
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                   {strings.shippingOrder.orderDate}
@@ -193,20 +210,46 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                 </Text>
               </View>
 
-              <Spacer space={SH(15)} />
+              <View
+                style={{
+                  height: ms(0.5),
+                  backgroundColor: COLORS.input_border,
+                  marginVertical: ms(5),
+                }}
+              />
               <View>
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
                   {strings.shippingOrder.orderId}
                 </Text>
                 <Text style={styles.itemCountText}>{`#${orderData?.order?.id}` ?? '-'}</Text>
               </View>
-              <Spacer space={SH(15)} />
 
+              <View
+                style={{
+                  height: ms(0.5),
+                  backgroundColor: COLORS.input_border,
+                  marginVertical: ms(5),
+                }}
+              />
               <View>
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>{'Payment Method'}</Text>
-                <Text style={styles.itemCountText}>
-                  {`${orderData?.order?.mode_of_payment}` ?? '-'}
-                </Text>
+                <View
+                  style={[
+                    styles.locationViewStyle,
+                    {
+                      backgroundColor: COLORS.soft_green,
+                      paddingHorizontal: ms(4),
+                      borderRadius: ms(20),
+                      alignSelf: 'flex-start',
+                      marginTop: ms(2),
+                    },
+                  ]}
+                >
+                  <Image source={pay} style={[styles.pinImageStyle]} />
+                  <Text style={styles.itemCountText}>
+                    {`${orderData?.order?.mode_of_payment}` ?? '-'}
+                  </Text>
+                </View>
               </View>
             </View>
 
@@ -261,21 +304,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   orderTypeStyle: {
-    fontFamily: Fonts.Bold,
-    fontSize: SF(14),
-    color: COLORS.primary,
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(9.5),
+    color: COLORS.navy_blue,
+    marginHorizontal: ms(6),
   },
   orderDateText: {
     fontFamily: Fonts.Medium,
     fontSize: ms(9),
     color: COLORS.navy_blue,
-    marginRight: ms(10),
+    marginRight: ms(3),
   },
   totalTextStyle: {
     fontFamily: Fonts.SemiBold,
     fontSize: ms(7.2),
     color: COLORS.light_blue2,
     paddingTop: ms(2),
+  },
+  customerName: {
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(9.5),
+    color: COLORS.navy_blue,
   },
   itemCountText: {
     fontFamily: Fonts.SemiBold,
@@ -296,13 +345,14 @@ const styles = StyleSheet.create({
     width: SH(26),
     height: SH(26),
     resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
   },
   scanProductView: {
     borderRadius: ms(15),
     // alignItems: 'center',
     // justifyContent: 'center',
     paddingHorizontal: ms(20),
-    backgroundColor: COLORS.light_blue,
+    backgroundColor: COLORS.sky_grey,
     // paddingHorizontal: ms(20),
     marginRight: ms(5),
     flex: 0.6,
@@ -311,15 +361,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   manualView: {
-    borderWidth: 3,
+    borderWidth: 1,
     backgroundColor: COLORS.white,
     borderRadius: ms(15),
     paddingHorizontal: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: ms(20),
-    borderColor: COLORS.blue_shade,
+    borderColor: COLORS.input_border,
     flex: 0.4,
+    flexDirection: 'row',
   },
   orderandPriceView: {
     flexDirection: 'row',
@@ -390,5 +441,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(20),
     color: COLORS.primary,
+  },
+  pinImageStyle: {
+    width: ms(14),
+    height: ms(14),
+    resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
   },
 });

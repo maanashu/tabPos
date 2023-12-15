@@ -254,7 +254,7 @@ export const AddProductScreen = ({ backHandler }) => {
                   data={colorArray?.[0]?.values}
                   extraData={colorArray?.[0]?.values}
                   horizontal
-                  keyExtractor={(item) => item.id}
+                  keyExtractor={(item, index) => index}
                   showsHorizontalScrollIndicator={false}
                   renderItem={({ item, index }) => {
                     const backgroundColor =
@@ -285,7 +285,7 @@ export const AddProductScreen = ({ backHandler }) => {
                   data={sizeArray?.[0]?.values}
                   extraData={sizeArray?.[0]?.values}
                   horizontal
-                  keyExtractor={(item) => item.id}
+                  keyExtractor={(item, index) => index}
                   showsHorizontalScrollIndicator={false}
                   renderItem={({ item, index }) => {
                     const backgroundColor = item.id === sizeId ? COLORS.navy_blue : 'transparent';
@@ -372,7 +372,7 @@ export const AddProductScreen = ({ backHandler }) => {
                   <FlatList
                     data={[1, 2, 3, 4, 5, 6, 7]}
                     horizontal
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item, index) => index}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({ item, index }) => {
                       return (
@@ -421,7 +421,7 @@ export const AddProductScreen = ({ backHandler }) => {
                 <FlatList
                   data={availblityArray}
                   horizontal
-                  keyExtractor={(item) => item.id}
+                  keyExtractor={(item, index) => index}
                   renderItem={({ item }) => {
                     return (
                       <View style={styles.avaiblityMainCon}>
@@ -442,7 +442,6 @@ export const AddProductScreen = ({ backHandler }) => {
           </View>
         </View>
       </View>
-      {/* <FullScreenLoader /> */}
     </SafeAreaView>
   );
 };

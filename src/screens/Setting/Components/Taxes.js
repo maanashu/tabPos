@@ -42,6 +42,8 @@ import {
   SubLine,
   verifyGreen,
   toggle,
+  cartEdit,
+  editIcon,
 } from '@/assets';
 import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
@@ -93,6 +95,8 @@ export function Taxes() {
   const [zipCode, setZipCode] = useState(merchantProfile?.current_address?.zipcode);
   const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
   const [isToggle, setIsToggle] = useState(false);
+  const [activeTaxes, setActiveTaxes] = useState(false);
+  const [stateActive, setStateActive] = useState(false);
 
   useEffect(() => {
     taxGetfunction();
@@ -915,6 +919,7 @@ export function Taxes() {
               <TouchableOpacity
                 onPress={() => {
                   setActivateTaxModal(false);
+                  setStateActive(true);
                   // setTaxPayerModel(true);
                 }}
                 style={styles.saveButtonTax}
@@ -1227,7 +1232,6 @@ export function Taxes() {
         <View
           style={{
             backgroundColor: COLORS.light_blue,
-            marginTop: ms(20),
             padding: ms(10),
             borderRadius: ms(5),
             flexDirection: 'row',
@@ -1317,45 +1321,101 @@ export function Taxes() {
             />
           </TouchableOpacity>
         </View>
+        {isToggle ? (
+          <View style={styles.dispalyRow}>
+            <Image source={SubLine} style={{ height: ms(50), width: ms(50) }} />
 
-        <View style={styles.dispalyRow}>
-          <Image source={SubLine} style={{ height: ms(50), width: ms(50) }} />
-
-          <View style={[styles.view2Styles, { padding: ms(10), flexDirection: 'row', flex: 1 }]}>
-            <View style={[styles.dispalyRow, { flex: 1 }]}>
-              <Image source={Flag} style={{ height: ms(15), width: ms(15) }} />
-              <View style={{ marginHorizontal: ms(5) }}>
-                <Text
-                  style={{
-                    fontFamily: Fonts.MaisonBold,
-                    fontSize: ms(10),
-                    color: COLORS.navy_blue,
-                  }}
-                >
-                  Miami, FL
-                </Text>
-                <Text
-                  style={{
-                    fontFamily: Fonts.Regular,
-                    fontSize: ms(8),
-                    color: COLORS.navy_blue,
-                  }}
-                >
-                  1899 Rollins Road, Grand Island Nebraska 68801, United States
-                </Text>
+            <View style={[styles.view2Styles, { padding: ms(10), flexDirection: 'row', flex: 1 }]}>
+              <View style={[styles.dispalyRow, { flex: 1 }]}>
+                <Image source={Flag} style={{ height: ms(15), width: ms(15) }} />
+                <View style={{ marginHorizontal: ms(5) }}>
+                  <Text
+                    style={{
+                      fontFamily: Fonts.MaisonBold,
+                      fontSize: ms(10),
+                      color: COLORS.navy_blue,
+                    }}
+                  >
+                    Miami, FL
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: Fonts.Regular,
+                      fontSize: ms(8),
+                      color: COLORS.navy_blue,
+                    }}
+                  >
+                    1899 Rollins Road, Grand Island Nebraska 68801, United State
+                  </Text>
+                </View>
               </View>
+              {stateActive ? (
+                <TouchableOpacity
+                  style={styles.toggleBtnCon}
+                  onPress={() => setStateActive(!stateActive)}
+                >
+                  <Image
+                    source={toggle}
+                    style={stateActive ? styles.toggleBtnStyle : styles.toggleBtnStyle2}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => setActivateTaxModal(true)}
+                  style={[
+                    styles.activeTaxButton,
+                    {
+                      height: ms(20),
+                      marginLeft: ms(15),
+                      alignSelf: 'flex-start',
+                      paddingVertical: 0,
+                      marginVertical: 0,
+                    },
+                  ]}
+                >
+                  <Text style={styles.activeText}>Active</Text>
+                </TouchableOpacity>
+              )}
             </View>
-            <TouchableOpacity
-              // onPress={() => setCreateTaxModal(true)}
-              style={styles.activeTaxButton}
-            >
-              <Text style={styles.activeText}>Active</Text>
-            </TouchableOpacity>
           </View>
-        </View>
+        ) : null}
+
+        {stateActive ? (
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: COLORS.light_blue,
+              marginVertical: ms(10),
+              marginLeft: ms(50),
+              width: ms(75),
+              alignContent: 'center',
+              justifyContent: 'center',
+              borderRadius: ms(20),
+              paddingVertical: ms(5),
+            }}
+            onPress={() => setCreateTaxModal(true)}
+          >
+            <Text style={{ fontSize: ms(9.5), marginHorizontal: ms(4), color: COLORS.navy_blue }}>
+              {'Create Tax'}
+            </Text>
+            <Image
+              source={editIcon}
+              style={{
+                height: ms(15),
+                width: ms(15),
+                resizeMode: 'contain',
+                tintColor: COLORS.navy_blue,
+              }}
+            />
+          </TouchableOpacity>
+        ) : (
+          <></>
+        )}
       </View>
     );
   };
+
   return (
     <View>
       <View style={[styles.flexRow, { height: SW(8) }]}>
@@ -1365,14 +1425,17 @@ export function Taxes() {
       <Text style={styles.taxDesc}>{strings.settings.taxSubHead}</Text>
       <Spacer space={SH(15)} />
 
-      <View style={styles.activeTaxBox}>
-        <Text style={styles.activeTaxStyle}>{strings.settings.activeTaxPayInfo}</Text>
-        <TouchableOpacity onPress={() => setCreateTaxModal(true)} style={styles.activeTaxButton}>
-          <Text style={styles.activeText}>Active</Text>
-        </TouchableOpacity>
-      </View>
+      {activeTaxes ? (
+        activeTax()
+      ) : (
+        <View style={styles.activeTaxBox}>
+          <Text style={styles.activeTaxStyle}>{strings.settings.activeTaxPayInfo}</Text>
+          <TouchableOpacity onPress={() => setActiveTaxes(true)} style={styles.activeTaxButton}>
+            <Text style={styles.activeText}>Active</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       {/* <View>{verifiedAreaFun()}</View> */}
-      <View>{activeTax()}</View>
 
       <Modal
         animationType="slide"

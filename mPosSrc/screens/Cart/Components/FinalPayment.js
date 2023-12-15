@@ -59,7 +59,7 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
           <View style={styles.paidAmountCon}>
             <Text style={styles.paidAmount}>{strings.cart.paidAmount}</Text>
             <Text style={styles.amountText}>
-              {saveCart?.modeOfPayment?.jbr == 'jbr' ? 'JBR' : '$'}
+              {orderCreateData?.modeOfPayment === 'jbr' ? 'JBR' : '$'}
               {payAmount}
             </Text>
             {orderCreateData?.modeOfPayment === 'cash' && (

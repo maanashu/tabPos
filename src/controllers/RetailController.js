@@ -1615,11 +1615,9 @@ export class RetailController {
 
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           error &&
             Toast.show({
               text2: 'Your wallet not found',

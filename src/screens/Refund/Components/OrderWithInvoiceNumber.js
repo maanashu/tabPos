@@ -1,10 +1,11 @@
 import React, { memo } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, Platform } from 'react-native';
 
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import { clock, Fonts, pay, pin, rightIcon, user, userOutlineDrawer } from '@/assets';
 import { ms } from 'react-native-size-matters';
+import { DataTable } from 'react-native-paper';
 
 const OrderWithInvoiceNumber = ({ orderData }) => {
   const getDeliveryType = (type) => {
@@ -22,6 +23,31 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
 
   return (
     <View style={styles.container}>
+      <DataTable style={styles.tableView}>
+        <DataTable.Header style={[styles.tableListHeader]}>
+          <DataTable.Title style={styles.dateTableSetting}>
+            <Text style={styles.revenueText}># Invoice</Text>
+          </DataTable.Title>
+          <DataTable.Title style={[styles.dateTableSetting, { marginLeft: ms(-5) }]}>
+            <Text style={styles.revenueText}>Customer</Text>
+          </DataTable.Title>
+
+          <DataTable.Title style={[styles.dateTableSetting, { marginLeft: ms(25) }]}>
+            <Text style={styles.revenueText}>Sale</Text>
+          </DataTable.Title>
+
+          <DataTable.Title style={[styles.dateTableSetting, { marginLeft: ms(25) }]}>
+            <Text style={styles.revenueText}>Items</Text>
+          </DataTable.Title>
+
+          <DataTable.Title style={[styles.dateTableSetting, { marginLeft: ms(-15) }]}>
+            <Text style={styles.revenueText}>Price</Text>
+          </DataTable.Title>
+          <DataTable.Title style={[styles.dateTableSetting, { marginLeft: ms(-20) }]}>
+            <Text style={styles.revenueText}></Text>
+          </DataTable.Title>
+        </DataTable.Header>
+      </DataTable>
       {orderData !== undefined && Object.keys(orderData).length > 0 ? (
         <View style={styles.orderRowStyle}>
           <Text style={styles.invoiceNumberTextStyle}>
@@ -85,6 +111,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
           </View>
         </View>
       ) : (
+        // </View>
         <View style={styles.emptyViewStyle}>
           <Text style={styles.emptyTextStyle}>{strings.returnOrder.noInvoices}</Text>
         </View>
@@ -107,17 +134,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 20,
-    paddingHorizontal: 20,
-    borderColor: COLORS.input_border,
+    paddingHorizontal: ms(10),
+    borderColor: COLORS.light_blue,
     justifyContent: 'space-between',
     backgroundColor: COLORS.sky_grey,
   },
   invoiceNumberTextStyle: {
-    fontSize: SF(10),
+    fontSize: ms(7),
     color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
     textAlignVertical: 'center',
+    paddingHorizontal: ms(1),
   },
+
   orderDetailStyle: {
     width: SW(30),
   },
@@ -141,6 +170,7 @@ const styles = StyleSheet.create({
     width: ms(14),
     height: ms(14),
     resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
   },
   timeTextStyle: {
     fontSize: SF(12),
@@ -168,5 +198,45 @@ const styles = StyleSheet.create({
     fontSize: ms(14),
     color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
+  },
+  tableView: {
+    zIndex: -99,
+    marginTop: ms(5),
+    // width:
+    //   Platform.OS === 'ios'
+    //     ? Dimensions.get('window').width - ms(150)
+    //     : Dimensions.get('window').width - ms(175),
+  },
+  revenueText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.light_blue2,
+    fontSize: ms(8),
+    textAlign: 'center',
+    letterSpacing: -1,
+  },
+  dateTableSetting: {
+    // justifyContent: 'center',
+    width: ms(70),
+    marginLeft: ms(8),
+    // flex: 1,
+  },
+  tableListHeader: {
+    borderRadius: 5,
+    borderBottomWidth: 0,
+    borderColor: 'blue',
+  },
+  dateTablealignStart: {
+    // width: SH(185),
+    width: ms(140),
+    justifyContent: 'flex-start',
+    backgroundColor: 'red',
+  },
+  flexDirectionRow: {
+    flexDirection: 'row',
+  },
+  revenueDataText: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: SF(12),
   },
 });

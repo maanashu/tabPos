@@ -20,6 +20,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import Modal, { ReactNativeModal } from 'react-native-modal';
 import {
   addServiceFrom,
+  changeStatusProductCart,
   changeStatusServiceCart,
   clearAllCart,
   clearServiceAllCart,
@@ -47,6 +48,8 @@ import { NewCustomerAddService } from './NewCustomerAddService';
 import Toast from 'react-native-toast-message';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
+import { FullScreenLoader } from '@mPOS/components';
+import BlurredModal from '@/components/BlurredModal';
 
 export function CartServiceScreen({
   onPressPayNow,
@@ -95,6 +98,26 @@ export function CartServiceScreen({
 
   const availableOfferLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
+  );
+
+  const isLoadingGetAllCart = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_CART], state)
+  );
+  const isLoadingAddCart = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+
+  const isLoadingOneService = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ONE_SERVICE], state)
+  );
+  const isLoadingAddDiscount = useSelector((state) =>
+    isLoadingSelector([TYPES.ADD_DISCOUNT], state)
+  );
+  const isLoadingAddNote = useSelector((state) => isLoadingSelector([TYPES.ADDNOTES], state));
+  const isLoadingAttachCustomer = useSelector((state) =>
+    isLoadingSelector([TYPES.ATTACH_CUSTOMER], state)
+  );
+
+  const isLoadingAddCustomService = useSelector((state) =>
+    isLoadingSelector([TYPES.CUSTOM_SERVICE_ADD], state)
   );
 
   const backCartLoad = () => {
@@ -243,15 +266,16 @@ export function CartServiceScreen({
   // hold cart Function
   const serviceCartStatusHandler = () => {
     backCartLoad();
-    holdProductArray?.length > 0
-      ? {
-          status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
-          cartId: holdProductArray?.[0]?.id,
-        }
-      : {
-          status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
-          cartId: getRetailData?.getAllCart?.id,
-        };
+    const data =
+      holdProductArray?.length > 0
+        ? {
+            status: holdProductArray?.[0]?.is_on_hold === false ? true : false,
+            cartId: holdProductArray?.[0]?.id,
+          }
+        : {
+            status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getAllCart?.id,
+          };
     dispatch(changeStatusProductCart(data));
   };
 
@@ -540,6 +564,24 @@ export function CartServiceScreen({
                     // { tintColor: holdServiceArray?.length > 0 ? COLORS.primary : COLORS.dark_grey },
                   ]}
                 />
+                <View
+                  style={{
+                    width: ms(10),
+                    height: ms(10),
+                    borderColor: COLORS.navy_blue,
+                    borderWidth: 1,
+                    position: 'absolute',
+                    bottom: 3,
+                    right: -7,
+                    borderRadius: ms(10),
+                    backgroundColor: COLORS.white,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: COLORS.navy_blue,
+                  }}
+                >
+                  <Text style={{ color: COLORS.white }}>{holdProductArray?.length}</Text>
+                </View>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.holdCartPad}
@@ -732,17 +774,24 @@ export function CartServiceScreen({
         />
       </Modal>
 
-      <Modal animationType="fade" transparent={true} isVisible={numPadModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={numPadModal}>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
           <CustomProductAdd crossHandler={() => setNumPadModal(false)} comeFrom="service" />
         </KeyboardAvoidingView>
-      </Modal>
+      </BlurredModal>
 
-      <Modal animationType="fade" transparent={true} isVisible={newCustomerModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={newCustomerModal}>
         {/* <KeyboardAvoidingView behavior="padding"> */}
         <NewCustomerAddService crossHandler={closeCustomerAddModal} />
         {/* </KeyboardAvoidingView> */}
-      </Modal>
+      </BlurredModal>
+      {(isLoadingGetAllCart ||
+        isLoadingAddCart ||
+        isLoadingOneService ||
+        isLoadingAddDiscount ||
+        isLoadingAddNote ||
+        isLoadingAttachCustomer ||
+        isLoadingAddCustomService) && <FullScreenLoader />}
     </View>
   );
 }

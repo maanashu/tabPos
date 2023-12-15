@@ -345,6 +345,7 @@ export const styles = StyleSheet.create({
     borderRadius: ms(22),
     alignSelf: 'center',
     height: ms(320),
+    ...ShadowStyles.shadow,
   },
   headerView: {
     height: ms(30),

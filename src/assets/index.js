@@ -536,6 +536,7 @@ export { default as SubLine } from '@/assets/new_icon/ic_settings/SubLine.png';
 export { default as Flag } from '@/assets/new_icon/ic_settings/Flag.png';
 export { default as leftArrow } from '@/assets/new_icon/appointments/leftArrow.png';
 export { default as rightArrow } from '@/assets/new_icon/appointments/rightArrow.png';
+export { default as ToggleOnNew } from '@/assets/new_icon/ic_settings/ToggleNew.png';
 
 //retial Icons
 export { default as addProduct } from '@/assets/new_icon/retail_con/addProduct.png';

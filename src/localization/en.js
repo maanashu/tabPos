@@ -243,6 +243,7 @@ export const en = {
     validOtp: 'Please enter valid OTP',
     enterPassCode: 'Please enter passcode',
     validPasscode: 'Please enter valid passcode',
+    validPin: 'Please enter valid pin',
     error: 'not found',
     phoneNotExist: 'This number does not exist',
     noData: 'No Data',
@@ -627,6 +628,7 @@ export const en = {
     productPrice: 'Product Price',
     refundAmount: 'Refund Amount',
     noInvoices: 'No invoices found',
+    applicableForAll: 'Apply a fixed amount to all items.',
   },
   batchManagement: {
     header: 'Batch management',

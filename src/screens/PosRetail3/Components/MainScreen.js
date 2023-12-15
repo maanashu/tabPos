@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
-  ActivityIndicator,
   Alert,
   FlatList,
   Keyboard,
@@ -9,7 +8,10 @@ import {
   ScrollView,
   Text,
   View,
+  ActivityIndicator,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+
 import { COLORS, SF, SH } from '@/theme';
 import { strings } from '@/localization';
 import { Spacer } from '@/components';
@@ -85,6 +87,8 @@ import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 import { Images } from '@/assets/new_icon';
 import { imageSource } from '@/utils/GlobalMethods';
 import CustomAlert from '@/components/CustomAlert';
+import { FullScreenLoader } from '@mPOS/components';
+import BlurredModal from '@/components/BlurredModal';
 
 export function MainScreen({
   cartScreenHandler,
@@ -396,6 +400,45 @@ export function MainScreen({
       } catch (error) {}
     }
   };
+
+  //Products
+  const isLoadingProduct = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_MAIN_PRODUCT], state)
+  );
+
+  const isLoadingOneProduct = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ONE_PRODUCT], state)
+  );
+
+  const isLoadingAddCustomProduct = useSelector((state) =>
+    isLoadingSelector([TYPES.CUSTOM_PRODUCT_ADD], state)
+  );
+
+  //Common
+  const isLoadingAddCart = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+  const isLoadingClearCart = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_CLEAR_ALL_CART], state)
+  );
+  const isLoadingGetAllCart = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_CART], state)
+  );
+
+  // Services
+  const isLoadingServices = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_MAIN_SERVICES], state)
+  );
+
+  const isLoadingOneService = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ONE_SERVICE], state)
+  );
+
+  const isLoadingAddServiceCart = useSelector((state) =>
+    isLoadingSelector([TYPES.ADD_SERVICE_CART], state)
+  );
+
+  const isLoadingAddCustomService = useSelector((state) =>
+    isLoadingSelector([TYPES.CUSTOM_SERVICE_ADD], state)
+  );
 
   useEffect(() => {
     if (selectedCatID) {
@@ -732,36 +775,7 @@ export function MainScreen({
       dispatch(getMainProductPagination(data));
     }
   }, [getRetailData]);
-  // const onLoadMoreProduct = () => {
-  //   console.log('sjdhaskdjas', JSON.stringify(getRetailData?.getMainProduct));
-  //   // setPage((prevPage) => prevPage + 1);
-  //   const totalPages = getRetailData?.getMainProduct?.total_pages;
-  //   const currentPage = getRetailData?.getMainProduct?.current_page;
-  //   if (currentPage < totalPages) {
-  //     // if (!isScrolling) return;
-  //     const data = {
-  //       // page: page,
-  //       page: currentPage + 1,
-  //     };
-  //     dispatch(getMainProductPagination(data));
-  //   }
-  // };
 
-  // const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
-
-  // const renderFooterPost = () => {
-  //   return (
-  //     <View style={{}}>
-  //       {isLoadingMore && (
-  //         <ActivityIndicator
-  //           style={{ marginVertical: 14 }}
-  //           size={'large'}
-  //           color={COLORS.blueLight}
-  //         />
-  //       )}
-  //     </View>
-  //   );
-  // };
   const renderFooterPost = useCallback(
     () => (
       <View
@@ -1026,160 +1040,153 @@ export function MainScreen({
               <Spacer space={SH(10)} />
               {/* <View style={styles.hr} /> */}
               <Spacer space={SH(10)} />
-
-              {productCon && getMerchantService?.is_product_exist === true ? (
-                <FlatList
-                  data={mainProductArray}
-                  extraData={mainProductArray}
-                  renderItem={renderItem}
-                  keyExtractor={(_, index) => index.toString()}
-                  numColumns={6}
-                  key={6 + 'prds'}
-                  contentContainerStyle={{
-                    justifyContent: 'space-between',
-                    marginTop: isLoadingMore ? -50 : 0,
-                  }}
-                  scrollEnabled={true}
-                  showsVerticalScrollIndicator={false}
-                  ListFooterComponent={renderFooterPost}
-                  onEndReachedThreshold={0.1}
-                  onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
-                  onMomentumScrollBegin={() => {}}
-                  onMomentumScrollEnd={() => {
-                    if (onEndReachedCalledDuringMomentum.current) {
-                      onLoadMoreProduct();
-                      onEndReachedCalledDuringMomentum.current = false;
-                    }
-                  }}
-                  ListEmptyComponent={() => (
-                    <View style={styles.noProductText}>
-                      <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
-                        No Data found
-                      </Text>
-                    </View>
-                  )}
-                  style={{ zIndex: -99 }}
-                />
-              ) : (
-                <FlatList
-                  data={mainServicesArray}
-                  extraData={mainServicesArray}
-                  renderItem={({ item, index }) => {
-                    const cartMatchService = servicecCart?.find(
-                      (data) => data?.product_id === item?.id
-                    );
-                    return (
-                      <View style={styles.serviceCon(cartMatchService?.qty)}>
-                        <TouchableOpacity
-                          onPress={() => serviceFun(item.id, index)}
-                          activeOpacity={0.7}
-                        >
-                          <View style={styles.avalibleServiceCon}>
-                            <FastImage
-                              source={{
-                                uri: item.image,
-                              }}
-                              style={styles.serviceImagemain}
-                              resizeMode={FastImage.resizeMode.contain}
-                            />
-                            {cartMatchService?.qty > 0 && (
-                              <View style={styles.imageInnerView}>
-                                <Image
-                                  source={plus}
-                                  style={[styles.plusButton, { tintColor: COLORS.white }]}
-                                />
-                              </View>
-                            )}
-                          </View>
-                          <View style={{ padding: ms(5) }}>
-                            <Text
-                              numberOfLines={1}
-                              style={[styles.productDes, styles.productDesBold]}
-                            >
-                              {item.name}
-                            </Text>
-                            <Spacer space={SH(6)} />
-                            {item.description && (
-                              <Text numberOfLines={2} style={styles.productDes}>
-                                {item.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '')}
-                              </Text>
-                            )}
-                            <Spacer space={SH(7)} />
-                            <Text numberOfLines={1} style={styles.productPrice}>
-                              ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-                            </Text>
-
-                            <Spacer space={SH(7)} />
-                            <View style={styles.serviceTimeCon}>
-                              <Image source={Images.serviceCalendar} style={styles.calendarStyle} />
-                              <Text numberOfLines={1} style={styles.serviceTimeText}>
-                                Tomorrow at 10:00hrs
-                              </Text>
-                            </View>
-                            <Spacer space={SH(7)} />
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                              }}
-                            >
-                              <Image source={Images.serviceTime} style={styles.calendarStyle} />
-                              {item.supplies?.[0]?.approx_service_time == null ? (
-                                <Text numberOfLines={1} style={styles.productDes}>
-                                  Estimated Time Not found
-                                </Text>
-                              ) : (
-                                <Text numberOfLines={1} style={styles.productDes}>
-                                  Est: {item.supplies?.[0]?.approx_service_time} min
-                                </Text>
+              <View style={{ flex: 1, zIndex: -99 }}>
+                {productCon && getMerchantService?.is_product_exist === true ? (
+                  <FlatList
+                    data={mainProductArray}
+                    extraData={getRetailData?.getMainProduct} // Need to fix add cart items using this prop for flashlist
+                    numColumns={6}
+                    // estimatedItemSize={250}
+                    keyExtractor={(_, index) => index.toString()}
+                    renderItem={renderItem}
+                    ListFooterComponent={renderFooterPost}
+                    showsVerticalScrollIndicator={false}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                    onMomentumScrollBegin={() => {}}
+                    onMomentumScrollEnd={() => {
+                      if (onEndReachedCalledDuringMomentum.current) {
+                        onLoadMoreProduct();
+                        onEndReachedCalledDuringMomentum.current = false;
+                      }
+                    }}
+                    ListEmptyComponent={() => (
+                      <View style={styles.noProductText}>
+                        <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                          No Data found
+                        </Text>
+                      </View>
+                    )}
+                  />
+                ) : (
+                  <FlatList
+                    data={mainServicesArray}
+                    // estimatedItemSize={350}
+                    renderItem={({ item, index }) => {
+                      const cartMatchService = servicecCart?.find(
+                        (data) => data?.product_id === item?.id
+                      );
+                      return (
+                        <View style={styles.serviceCon(cartMatchService?.qty)}>
+                          <TouchableOpacity
+                            onPress={() => serviceFun(item.id, index)}
+                            activeOpacity={0.7}
+                          >
+                            <View style={styles.avalibleServiceCon}>
+                              <FastImage
+                                source={{
+                                  uri: item.image,
+                                }}
+                                style={styles.serviceImagemain}
+                                resizeMode={FastImage.resizeMode.contain}
+                              />
+                              {cartMatchService?.qty > 0 && (
+                                <View style={styles.imageInnerView}>
+                                  <Image
+                                    source={plus}
+                                    style={[styles.plusButton, { tintColor: COLORS.white }]}
+                                  />
+                                </View>
                               )}
                             </View>
-                          </View>
-                        </TouchableOpacity>
-                        <Spacer space={SH(6)} />
-                        <View>
-                          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                            {item?.pos_staff?.map((data, index) => (
-                              <Image
-                                key={index}
-                                source={imageSource(
-                                  data?.user?.user_profiles?.profile_photo,
-                                  userImage
-                                )}
+                            <View style={{ padding: ms(5) }}>
+                              <Text
+                                numberOfLines={1}
+                                style={[styles.productDes, styles.productDesBold]}
+                              >
+                                {item.name}
+                              </Text>
+                              <Spacer space={SH(6)} />
+                              {item.description && (
+                                <Text numberOfLines={2} style={styles.productDes}>
+                                  {item.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '')}
+                                </Text>
+                              )}
+                              <Spacer space={SH(7)} />
+                              <Text numberOfLines={1} style={styles.productPrice}>
+                                ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                              </Text>
+
+                              <Spacer space={SH(7)} />
+                              <View style={styles.serviceTimeCon}>
+                                <Image
+                                  source={Images.serviceCalendar}
+                                  style={styles.calendarStyle}
+                                />
+                                <Text numberOfLines={1} style={styles.serviceTimeText}>
+                                  Tomorrow at 10:00hrs
+                                </Text>
+                              </View>
+                              <Spacer space={SH(7)} />
+                              <View
                                 style={{
-                                  width: ms(15),
-                                  height: ms(15),
-                                  resizeMode: 'contain',
-                                  marginRight: -1,
-                                  borderRadius: 50,
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
                                 }}
-                              />
-                            ))}
-                          </ScrollView>
+                              >
+                                <Image source={Images.serviceTime} style={styles.calendarStyle} />
+                                {item.supplies?.[0]?.approx_service_time == null ? (
+                                  <Text numberOfLines={1} style={styles.productDes}>
+                                    Estimated Time Not found
+                                  </Text>
+                                ) : (
+                                  <Text numberOfLines={1} style={styles.productDes}>
+                                    Est: {item.supplies?.[0]?.approx_service_time} min
+                                  </Text>
+                                )}
+                              </View>
+                            </View>
+                          </TouchableOpacity>
+                          <Spacer space={SH(6)} />
+                          <View>
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                              {item?.pos_staff?.map((data, index) => (
+                                <Image
+                                  key={index}
+                                  source={imageSource(
+                                    data?.user?.user_profiles?.profile_photo,
+                                    userImage
+                                  )}
+                                  style={{
+                                    width: ms(15),
+                                    height: ms(15),
+                                    resizeMode: 'contain',
+                                    marginRight: -1,
+                                    borderRadius: 50,
+                                  }}
+                                />
+                              ))}
+                            </ScrollView>
+                          </View>
+                          <Spacer space={SH(6)} />
                         </View>
-                        <Spacer space={SH(6)} />
+                      );
+                    }}
+                    key={5 + 'prds'}
+                    keyExtractor={(_, index) => index.toString()}
+                    numColumns={5}
+                    showsVerticalScrollIndicator={false}
+                    scrollEnabled={true}
+                    ListEmptyComponent={() => (
+                      <View style={styles.noProductText}>
+                        <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
+                          {strings.valiadtion.noData}
+                        </Text>
                       </View>
-                    );
-                  }}
-                  key={5 + 'prds'}
-                  keyExtractor={(_, index) => index.toString()}
-                  numColumns={5}
-                  contentContainerStyle={{
-                    justifyContent: 'space-between',
-                    zIndex: -99,
-                  }}
-                  showsVerticalScrollIndicator={false}
-                  scrollEnabled={true}
-                  ListEmptyComponent={() => (
-                    <View style={styles.noProductText}>
-                      <Text style={[styles.emptyListText, { fontSize: SF(25) }]}>
-                        {strings.valiadtion.noData}
-                      </Text>
-                    </View>
-                  )}
-                  style={{ zIndex: -99 }}
-                />
-              )}
+                    )}
+                  />
+                )}
+              </View>
             </View>
             {productCon && getMerchantService?.is_product_exist === true ? (
               <View style={styles.rightSideView}>
@@ -1582,26 +1589,29 @@ export function MainScreen({
       </View>
 
       {/* cart list modal start */}
-      <ReactNativeModal
+      <BlurredModal
         animationType="fade"
         transparent={true}
         isVisible={cartModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        backdropOpacity={0.9}
-        backdropColor={COLORS.row_grey}
-        onBackdropPress={() => {
-          setCartModal(false);
-        }}
-        onBackButtonPress={() => {
-          setCartModal(false);
-        }}
+        // onBackdropPress={() => {
+        //   setCartModal(false);
+        //   // dispatch(getAllCart());
+        //   // bulkCart();
+        //   cartQtyUpdate();
+        // }}
+        // onBackButtonPress={() => {
+        //   setCartModal(false);
+        //   // dispatch(getAllCart());
+        //   // bulkCart();
+        //   cartQtyUpdate();
+        // }}
       >
         <CartListModal
           cartQtyUpdate={cartQtyUpdate}
           clearCart={eraseClearCart}
           checkOutHandler={() => {
-            // bulkCart();
             checkOutHandler();
           }}
           CloseCartModal={() => {
@@ -1614,18 +1624,20 @@ export function MainScreen({
             setNumPadModal(true);
             setCustomProductOpen('product');
           }}
+          cartListModalOff={() => {
+            dispatch(getMainProduct());
+            setCartModal(false);
+          }}
         />
-      </ReactNativeModal>
+      </BlurredModal>
 
       {/* cart list modal end */}
 
       {/* cart list modal start */}
-      <ReactNativeModal
+      <BlurredModal
         animationType="fade"
         transparent={true}
         isVisible={numPadModal}
-        backdropOpacity={0.9}
-        backdropColor={COLORS.row_grey}
         onBackdropPress={() => {
           setNumPadModal(false);
         }}
@@ -1638,19 +1650,17 @@ export function MainScreen({
           comeFrom={customProductOpen}
           sellerID={sellerID}
         />
-      </ReactNativeModal>
+      </BlurredModal>
 
       {/* cart list modal end */}
 
       {/* cart list modal start */}
-      <ReactNativeModal
+      <BlurredModal
         animationType="fade"
         transparent={true}
         isVisible={serviceCartModal}
         animationIn={'slideInRight'}
         animationOut={'slideOutRight'}
-        backdropOpacity={0.9}
-        backdropColor={COLORS.row_grey}
         onBackdropPress={() => {
           setServiceCartModal(false);
         }}
@@ -1671,19 +1681,14 @@ export function MainScreen({
             setCustomProductOpen('service');
           }}
         />
-        {/* ) : (
-          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-            <CustomProductAdd
-              crossHandler={() => setNumPadModal(false)}
-              comeFrom={customProductOpen}
-              sellerID={sellerID}
-            />
-          </KeyboardAvoidingView>
-        )} */}
-      </ReactNativeModal>
+      </BlurredModal>
 
       {/* cart list modal end */}
-      <Modal animationType="fade" transparent={true} isVisible={addCartModal || addCartDetailModal}>
+      <BlurredModal
+        animationType="fade"
+        transparent={true}
+        isVisible={addCartModal || addCartDetailModal}
+      >
         {addCartDetailModal ? (
           <AddCartDetailModal
             crossHandler={() => setAddCartDetailModal(false)}
@@ -1712,10 +1717,10 @@ export function MainScreen({
             openFrom="main"
           />
         )}
-      </Modal>
+      </BlurredModal>
 
       {/* cart list modal end */}
-      <Modal animationType="fade" transparent={true} isVisible={addServiceCartModal}>
+      <BlurredModal animationType="fade" transparent={true} isVisible={addServiceCartModal}>
         <AddServiceCartModal
           crossHandler={() => setAddServiceCartModal(false)}
           // detailHandler={() => setAddCartDetailModal(true)}
@@ -1723,153 +1728,18 @@ export function MainScreen({
           itemData={serviceItemSave}
           backToCartHandler={() => cartServiceScreenHandler()}
         />
-      </Modal>
+      </BlurredModal>
 
-      <Modal
-        animationType="fade"
-        transparent={true}
-        isVisible={categoryModal || subCategoryModal || brandModal}
-      >
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 100}
-          // keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
-        >
-          <ScrollView>
-            <View>
-              {categoryModal ? (
-                <CategoryModal
-                  cancelCategory={() => {
-                    setselectedCatID(null);
-                    setCategoryModal(false);
-                    dispatch(getMainProduct());
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-                      newData[0].isSelected = false;
-                      newData[0].name = originalFilterData[0].name;
-                      return newData;
-                    });
-                  }}
-                  crossHandler={() => setCategoryModal(false)}
-                  categoryArray={categoryArray}
-                  onSelectCategory={(selectedCat) => {
-                    setselectedCatID(selectedCat.id);
-                    const categoryID = {
-                      category_ids: selectedCat.id,
-                    };
-                    dispatch(getMainProduct(categoryID));
-                    setSearch(''); // Clear the search input product
-
-                    setisFilterDataSeclectedOfIndex(0);
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-
-                      // Set Category
-                      newData[0].name = selectedCat.name;
-                      newData[0].isSelected = true;
-
-                      // Reset SubCategory selections
-                      newData[1].isSelected = false;
-                      newData[1].name = originalFilterData[1].name;
-
-                      // Reset Brand selections
-                      newData[2].isSelected = false;
-                      newData[2].name = originalFilterData[2].name;
-
-                      return newData;
-                    });
-
-                    setCategoryModal(false);
-                  }}
-                />
-              ) : subCategoryModal ? (
-                <SubCatModal
-                  cancelSubCategory={() => {
-                    setselectedSubCatID(null);
-                    setSubCategoryModal(false);
-                    dispatch(getMainProduct());
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-                      newData[1].isSelected = false;
-                      newData[1].name = originalFilterData[1].name;
-                      return newData;
-                    });
-                  }}
-                  crossHandler={() => setSubCategoryModal(false)}
-                  onSelectSubCategory={(selectedSubCat) => {
-                    const subCategoryID = {
-                      sub_category_ids: selectedSubCat.id,
-                    };
-                    dispatch(getMainProduct(subCategoryID));
-                    setSearch(''); // Clear the search input product
-                    setselectedSubCatID(selectedSubCat.id);
-                    setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
-
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-
-                      // Set SubCategory
-                      newData[1].name = selectedSubCat.name;
-                      newData[1].isSelected = true;
-
-                      // Reset category selections
-                      newData[0].isSelected = false;
-                      newData[0].name = originalFilterData[0].name;
-
-                      // Reset brand selections
-                      newData[2].isSelected = false;
-                      newData[2].name = originalFilterData[2].name;
-
-                      return newData;
-                    });
-                    setSubCategoryModal(false);
-                  }}
-                />
-              ) : (
-                <BrandModal
-                  cancelBrand={() => {
-                    setselectedBrandID(null);
-                    setBrandModal(false);
-                    dispatch(getMainProduct());
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-                      newData[2].isSelected = false;
-                      newData[2].name = originalFilterData[2].name;
-                      return newData;
-                    });
-                  }}
-                  crossHandler={() => setBrandModal(false)}
-                  onSelectbrands={(selectedBrand) => {
-                    setselectedBrandID(selectedBrand.id);
-                    const brandID = {
-                      brand_id: selectedBrand.id,
-                    };
-                    dispatch(getMainProduct(brandID));
-                    setSearch(''); // Clear the search input product
-                    setisFilterDataSeclectedOfIndex(1); // Enable Selection of subcategory if any category is selected
-
-                    setfilterMenuTitle((prevData) => {
-                      const newData = [...prevData];
-                      newData[2].name = selectedBrand.name;
-                      newData[2].isSelected = true;
-
-                      // Reset category selections
-                      newData[0].isSelected = false;
-                      newData[0].name = originalFilterData[0].name;
-
-                      // Reset subCategory selections
-                      newData[1].isSelected = false;
-                      newData[1].name = originalFilterData[1].name;
-                      return newData;
-                    });
-                    setBrandModal(false);
-                  }}
-                />
-              )}
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </Modal>
+      {(isLoadingProduct ||
+        isLoadingOneProduct ||
+        isLoadingAddCart ||
+        isLoadingOneService ||
+        isLoadingAddServiceCart ||
+        isLoadingClearCart ||
+        isLoadingGetAllCart ||
+        isLoadingServices ||
+        isLoadingAddCustomProduct ||
+        isLoadingAddCustomService) && <FullScreenLoader />}
 
       {/* <Modal animationType="fade" transparent={true} isVisible={numPadModal} backdropOpacity={0.6}>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>

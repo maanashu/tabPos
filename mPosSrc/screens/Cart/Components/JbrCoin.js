@@ -46,6 +46,7 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
   const requestStatus = retailData?.requestCheck;
   const qrStatus = retailData.qrStatuskey;
   const saveCartData = cartData;
+  console.log('requestStatus', requestStatus, retailData?.qrStatuskey);
 
   const snapPoints = useMemo(() => ['82%'], []);
 
@@ -63,6 +64,11 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
     const secs = seconds % 60;
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   }
+
+  useEffect(() => {
+    dispatch(requestCheckSuccess(''));
+    dispatch(qrCodeStatusSuccess(''));
+  }, []);
 
   useEffect(() => {
     let timer;
@@ -141,19 +147,23 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
     } else if (requestStatus == 'success' && sendRequest) {
       createOrderHandler();
       clearInterval(interval);
-    } else if (qrStatus?.status !== 'success' && sendRequest == false) {
+    } else if (retailData?.qrStatuskey?.status !== 'success' && sendRequest == false) {
       interval = setInterval(() => {
         dispatch(qrcodestatus(cartData.id));
       }, 5000);
+    } else if (retailData?.qrStatuskey?.status == 'success' && sendRequest == false) {
+      // alert('fghjk');
+      createOrderHandler();
+      clearInterval(interval);
     }
-    // else if (qrStatus?.status == 'success' && sendRequest == false) {
-    //   // alert('fghjk');
-    //   createOrderHandler();
-    //   clearInterval(interval);
-    // }
 
     return () => clearInterval(interval);
-  }, [isFocused, requestStatus == 'success', qrStatus?.status == 'success', sendRequest]);
+  }, [
+    isFocused,
+    requestStatus == 'success',
+    retailData?.qrStatuskey?.status == 'success',
+    sendRequest,
+  ]);
 
   const createOrderHandler = () => {
     const data = {
