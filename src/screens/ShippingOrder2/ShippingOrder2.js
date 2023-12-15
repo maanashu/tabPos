@@ -68,6 +68,32 @@ export function ShippingOrder2() {
   const [calendarDate, setCalendarDate] = useState(moment());
   const maxDate = new Date(2030, 6, 3);
 
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     dispatch(orderStatusCount());
+  //     dispatch(todayShippingStatus());
+  //     dispatch(todayCurrentStatus());
+  //     dispatch(getReviewDefault(0));
+  //     dispatch(getGraphOrders());
+  //     dispatch(getPendingOrders());
+  //     dispatch(getShippingOrderstatistics());
+  //   }, [])
+  // );
+
+  // useEffect(() => {
+  //   setUserDetail(ordersList?.[0] ?? []);
+  //   setOrderDetail(ordersList?.[0]?.order_details ?? []);
+  //   dispatch(getOrderData(ordersList?.[0]?.id));
+  //   setOrderId(ordersList?.[0]?.id);
+  // }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
+
+  // useEffect(() => {
+  //   setUserDetail(ordersList?.[0] ?? []);
+  //   setOrderDetail(ordersList?.[0]?.order_details ?? []);
+  //   dispatch(getOrderData(ordersList?.[0]?.id));
+  //   setOrderId(ordersList?.[0]?.id);
+  // }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
+
   useFocusEffect(
     React.useCallback(() => {
       dispatch(orderStatusCount());
@@ -80,18 +106,23 @@ export function ShippingOrder2() {
     }, [])
   );
 
-  useEffect(() => {
+  const updateOrderDetails = () => {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
     dispatch(getOrderData(ordersList?.[0]?.id));
     setOrderId(ordersList?.[0]?.id);
-  }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
+  };
 
   useEffect(() => {
-    setUserDetail(ordersList?.[0] ?? []);
-    setOrderDetail(ordersList?.[0]?.order_details ?? []);
-    dispatch(getOrderData(ordersList?.[0]?.id));
-    setOrderId(ordersList?.[0]?.id);
+    if (viewAllOrders && getOrderDetail === 'ViewAllScreen') {
+      updateOrderDetails();
+    }
+  }, [viewAllOrders, getOrderDetail]);
+
+  useEffect(() => {
+    if (openShippingOrders || viewAllOrders || getGraphOrderData?.getReviewDef) {
+      updateOrderDetails();
+    }
   }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
 
   const acceptOrderLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));

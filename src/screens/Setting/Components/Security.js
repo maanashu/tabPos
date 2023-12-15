@@ -157,14 +157,15 @@ export function Security() {
           <Spacer space={SH(25)} />
           <View style={[styles.flexRow, styles.flexWidth]}>
             <Text>{''}</Text>
-            <Text style={styles.subHeading}>{'Enter 6-Digit code'}</Text>
-            <TouchableOpacity
+            <Text style={[styles.subHeading]}>{'Enter 6-Digit code'}</Text>
+            <Text></Text>
+            {/* <TouchableOpacity
               onPress={() => {
                 setSixDigit(false), setValue('');
               }}
             >
               <Image source={crossButton} style={styles.cross} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <Spacer space={SH(40)} />
           <CodeField
@@ -185,6 +186,8 @@ export function Security() {
             enteredValue={value}
             setEnteredValue={setValue}
             onPressContinueButton={passcodeHandler}
+            screen={'PickupPin'}
+            onBackPressHandler={() => setSixDigit(false)}
           />
         </View>
       ) : (
@@ -230,6 +233,14 @@ export function Security() {
       <Modal animationType="fade" transparent={true} isVisible={twoStepModal || googleAuthScan}>
         {googleAuthScan ? (
           <View style={styles.modalMainViewNew}>
+            <TouchableOpacity
+              style={[styles.crossButtonCon, { position: 'absolute', top: 10 }]}
+              onPress={() => {
+                setTwoStepModal(true), setGoogleAuthScan(false);
+              }}
+            >
+              <Image source={crossButton} style={styles.crossButton} />
+            </TouchableOpacity>
             {/* <View style={styles.modalHeaderCon}>
               <View style={styles.flexRow}>
                 <Text style={[styles.twoStepText, { fontSize: SF(20) }]}>
@@ -275,14 +286,7 @@ export function Security() {
                 />
               </TouchableOpacity>
             </View> */}
-            <TouchableOpacity
-              style={styles.crossButtonCon}
-              onPress={() => {
-                setTwoStepModal(true), setGoogleAuthScan(false);
-              }}
-            >
-              <Image source={crossButton} style={styles.crossButton} />
-            </TouchableOpacity>
+
             <View style={{ flex: 1 }}>
               <View style={styles.firstBox}>
                 <Image source={GAuth} style={{ width: ms(30), height: ms(30) }} />
@@ -300,6 +304,23 @@ export function Security() {
               ) : (
                 <Image source={{ uri: googleCode?.qrCode }} style={styles.scurityScan} />
               )}
+              <Spacer space={SH(30)} />
+              <TouchableOpacity
+                style={[styles.nextButtonNew, { backgroundColor: COLORS.navy_blue }]}
+                onPress={() => {
+                  setTwoStepModal(false);
+                  setGoogleAuthScan(false);
+                  setSixDigit(true);
+                }}
+              >
+                <Text style={[styles.checkoutText, { color: COLORS.white }]}>
+                  {strings.settings.next}
+                </Text>
+                <Image
+                  source={checkArrow}
+                  style={[styles.checkArrow, { tintColor: COLORS.white }]}
+                />
+              </TouchableOpacity>
             </View>
           </View>
         ) : (
