@@ -71,4 +71,5 @@ export const NAVIGATION = {
   supportChat: 'SupportChat',
   faqAnswers: 'FaqAnswers',
   faq: 'Faq',
+  TaxesDuties: 'TaxesDuties',
 };

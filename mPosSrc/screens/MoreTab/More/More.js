@@ -202,7 +202,7 @@ export function More() {
           </View>
 
           {/* essential section */}
-          <View style={[styles.moreProfileSection, { height: ms(245) }]}>
+          <View style={[styles.moreProfileSection, { height: ms(280) }]}>
             <Text style={styles.profileName}>{strings.more.essential}</Text>
             {essential?.map((item, index) => (
               <TouchableOpacity
