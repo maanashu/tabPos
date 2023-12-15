@@ -499,7 +499,12 @@ export function MainScreen({
       cartArray.push(DATA);
       dispatch(updateCartLength(cartLength + 1));
     } else {
-      cartArray[existingItemIndex].qty = cartQty + 1;
+      const restProductQty = mainProductArray.data[index].supplies[0]?.rest_quantity;
+      if (restProductQty > cartArray[existingItemIndex].qty) {
+        cartArray[existingItemIndex].qty = cartQty + 1;
+      } else {
+        alert('There are no more quantity left to add');
+      }
     }
     dispatch(addLocalCart(cartArray));
 

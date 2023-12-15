@@ -37,13 +37,12 @@ export const AddProductScreen = ({ backHandler }) => {
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-
   const sizeAndColorArray = productDetail?.supplies?.[0]?.attributes;
   const sizeArray = sizeAndColorArray?.filter((item) => item.name === 'Size');
   const colorArray = sizeAndColorArray?.filter((item) => item.name === 'Color');
   const attrsArr = productDetail?.supplies[0]?.attributes;
   const [count, setCount] = useState(1);
-
+  const restProductQty = productDetail.supplies[0]?.rest_quantity;
   // avaiblity option
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options?.split(',');
@@ -314,14 +313,23 @@ export const AddProductScreen = ({ backHandler }) => {
               <TouchableOpacity
                 style={styles.bodycounter}
                 onPress={() => setCount(count - 1)}
-                disabled={count == 1 ? true : false}
+                disabled={count == 1}
               >
                 <Image source={minus} style={styles.plusSign} />
               </TouchableOpacity>
               <View style={[styles.bodycounter, styles.bodycounterWidth]}>
                 <Text style={[styles.productName, { fontSize: ms(10) }]}>{count}</Text>
               </View>
-              <TouchableOpacity style={styles.bodycounter} onPress={() => setCount(count + 1)}>
+              <TouchableOpacity
+                style={styles.bodycounter}
+                onPress={() => {
+                  if (restProductQty > count) {
+                    setCount(count + 1);
+                  } else {
+                    alert('There are no more quantity left to add');
+                  }
+                }}
+              >
                 <Image source={plus} style={styles.plusSign} />
               </TouchableOpacity>
             </View>

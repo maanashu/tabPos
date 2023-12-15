@@ -46,11 +46,15 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate, cartL
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
     const productPrice = product.product_details.price;
-
+    const restProductQty = product?.product_details?.supply?.rest_quantity;
     if (operation === '+') {
-      product.qty += 1;
-      arr.amount.total_amount += productPrice;
-      arr.amount.products_price += productPrice;
+      if (restProductQty > product.qty) {
+        product.qty += 1;
+        arr.amount.total_amount += productPrice;
+        arr.amount.products_price += productPrice;
+      } else {
+        alert('There are no more quantity left to add');
+      }
     } else if (operation === '-') {
       if (product.qty > 0) {
         if (product.qty == 1) {
