@@ -264,7 +264,7 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
             <View>
               {userLength > 0 && detailArea ? (
                 getuserDetailByNo?.invitation?.id ? (
-                  <View style={{ borderWidth: 1 }}>
+                  <View style={{}}>
                     <Spacer space={SH(18)} />
                     <View>
                       <Text style={styles.customerDarkLabel}>{strings.retail.phoneNumber}</Text>
