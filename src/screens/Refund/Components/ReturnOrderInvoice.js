@@ -16,30 +16,30 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
   const returnInvoiceData = returnedData?.invoices;
   const sellerDetails = returnedData?.seller_details;
 
-  const renderProductItem = ({ item, index }) => (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.count}>{index + 1}</Text>
-        <View style={{ marginLeft: ms(10) }}>
-          <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-            {item?.order_details?.product_name ?? '-'}
-          </Text>
-          <View style={styles.belowSubContainer}>
-            <Text style={styles.colorsTitle}>{'Qty: '}</Text>
-            <Text style={styles.colorsTitle}>{item?.order_details?.qty ?? '-'}</Text>
-          </View>
-        </View>
-      </View>
-      <Text style={styles.priceTitle}>
-        {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
-      </Text>
-    </View>
-  );
+  // const renderProductItem = ({ item, index }) => (
+  //   <View style={styles.container}>
+  //     <View style={styles.subContainer}>
+  //       <Text style={styles.count}>{index + 1}</Text>
+  //       <View style={{ marginLeft: ms(10) }}>
+  //         <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
+  //           {item?.order_details?.product_name ?? '-'}
+  //         </Text>
+  //         <View style={styles.belowSubContainer}>
+  //           <Text style={styles.colorsTitle}>{'Qty: '}</Text>
+  //           <Text style={styles.colorsTitle}>{item?.order_details?.qty ?? '-'}</Text>
+  //         </View>
+  //       </View>
+  //     </View>
+  //     <Text style={styles.priceTitle}>
+  //       {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
+  //     </Text>
+  //   </View>
+  // );
 
   const invoiceData = [
     {
-      title: 'Payment Option',
-      data: orderDetail?.mode_of_payment?.toUpperCase() ?? '-',
+      title: 'Status',
+      data: 'Returned',
       id: 1,
     },
     {
@@ -69,33 +69,34 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
     },
   ];
 
-  // const renderProductItem = ({ item, index }) => (
-  //   <View style={styles.container}>
-  //     <View style={styles.subContainer}>
-  //       <Text style={styles.count}>x {item?.order_details?.qty}</Text>
-  //       <View style={{ marginLeft: ms(10) }}>
-  //         <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-  //           {item?.order_details?.product_name}
-  //         </Text>
-  //       </View>
-  //     </View>
-  //     <View style={{ width: '24%', alignItems: 'flex-end' }}>
-  //       <Text style={styles.priceTitle} numberOfLines={1}>
-  //         {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
-  //       </Text>
-  //     </View>
-  //   </View>
-  // );
+  const renderProductItem = ({ item, index }) => (
+    <View style={styles.container}>
+      <View style={styles.subContainer}>
+        <Text style={styles.count}>x {item?.order_details?.qty}</Text>
+        <View style={{ marginLeft: ms(10) }}>
+          <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
+            {item?.order_details?.product_name}
+          </Text>
+        </View>
+      </View>
+      <View style={{ width: '24%', alignItems: 'flex-end' }}>
+        <Text style={styles.priceTitle} numberOfLines={1}>
+          {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
+        </Text>
+      </View>
+    </View>
+  );
+  console.log('first', returnInvoiceData);
   return (
     <>
-      {/* <View style={styles.rightCon}>
+      <View style={styles.rightCon}>
         <View style={[{ height: '100%' }]}>
           <View style={{ alignItems: 'center' }}>
             <Text style={styles._kSubCenterContainer}>
               {`${sellerDetails?.user_profiles?.organization_name}` ?? '-'}
             </Text>
             <Text style={styles._kAddress}>
-              {`${sellerDetails?.user_locations[0]?.formatted_address}` ?? '-'}{' '}
+              {`${sellerDetails?.user_locations[0]?.custom_address}` ?? '-'}{' '}
             </Text>
             <Text style={styles._kNumber}>
               {`${sellerDetails?.user_profiles?.full_phone_number}` ?? '-'}
@@ -110,22 +111,34 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
               contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
             />
           </View>
-          <View style={{ width: '85%', alignSelf: 'center', flexDirection: 'row' }}>
+          <View
+            style={{
+              width: '100%',
+              alignSelf: 'center',
+              flexDirection: 'row',
+              // paddingLeft: ms(30),
+              // backgroundColor: 'red',
+            }}
+          >
             <FlatList
               data={invoiceData}
               numColumns={3}
               renderItem={({ item, index }) => (
                 <View
                   style={{
-                    width: ms(67),
+                    // width: ms(67),
                     height: ms(30),
-                    justifyContent: 'space-between',
+                    // justifyContent: 'space-between',
                     marginTop: ms(15),
+                    flex: 1,
+                    alignItems: 'center',
                   }}
                 >
-                  <Text style={[styles._payTitle, { letterSpacing: -1 }]}>{item.title}</Text>
+                  <Text style={[styles._payTitle, { letterSpacing: -1, flex: 1 }]}>
+                    {item.title}
+                  </Text>
                   <Spacer space={SH(7)} />
-                  <Text style={styles._paySubTitle}>{item.data}</Text>
+                  <Text style={[styles._paySubTitle, { flex: 1 }]}>{item.data}</Text>
                 </View>
               )}
             />
@@ -172,8 +185,8 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
             />
           </View>
         </View>
-      </View> */}
-      <View style={styles.invoiceMainViewStyle}>
+      </View>
+      {/* <View style={styles.invoiceMainViewStyle}>
         <Text style={styles.storeNameText}>
           {`${sellerDetails?.user_profiles?.organization_name}` ?? '-'}
         </Text>
@@ -268,7 +281,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
         <Text style={styles._thankyou}>{strings.deliveryOrders2.thanks}</Text>
         <Image source={{ uri: returnedData?.invoices?.barcode }} style={styles._barCodeImage} />
         <Image source={logo_full} style={styles.logoFull} />
-      </View>
+      </View> */}
     </>
   );
 };
@@ -406,6 +419,140 @@ const styles = StyleSheet.create({
   boldInvoice: {
     alignSelf: 'center',
     fontFamily: Fonts.SemiBold,
+  },
+  rightCon: {
+    backgroundColor: COLORS.white,
+    borderRadius: ms(12),
+    flex: 0.3,
+    marginRight: ms(7),
+    paddingVertical: ms(8),
+  },
+  _kSubCenterContainer: {
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(8),
+    marginTop: ms(5),
+  },
+  _kAddress: {
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(7),
+    marginTop: ms(5),
+    paddingHorizontal: ms(5),
+    textAlign: 'center',
+  },
+  _kNumber: {
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(7),
+    marginTop: ms(3),
+  },
+  _flatListContainer: {
+    height: ms(120),
+    width: '100%',
+    marginTop: ms(5),
+    // flex: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: COLORS.light_purple,
+    borderStyle: 'dashed',
+  },
+  _horizontalLine: {
+    // height: ms(1),
+    borderWidth: 0.5,
+    width: '90%',
+    marginTop: ms(4),
+    borderColor: COLORS.light_purple,
+  },
+
+  _paymentTitleContainer: {
+    marginTop: ms(5),
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    marginLeft: ms(15),
+  },
+  _payTitle: {
+    fontSize: ms(7),
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
+  },
+  _paySubTitle: {
+    fontSize: ms(7),
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
+  },
+  _subTotalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // width: '80%',
+  },
+  totalView: {
+    backgroundColor: COLORS.textInputBackground,
+    height: ms(25),
+    paddingHorizontal: ms(10),
+    justifyContent: 'center',
+    borderRadius: ms(12),
+  },
+  logoFull: {
+    width: ms(90),
+    height: ms(30),
+    resizeMode: 'contain',
+    tintColor: COLORS.navy_blue,
+    alignSelf: 'center',
+  },
+  _barCodeImage: {
+    height: ms(25),
+    width: '70%',
+    marginTop: ms(5),
+  },
+
+  container: {
+    paddingHorizontal: ms(8),
+    height: ms(28),
+    borderRadius: ms(5),
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    width: '90%',
+    marginTop: ms(5),
+  },
+  subContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  count: {
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Regular,
+    fontSize: ms(6.2),
+  },
+  itemName: {
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.SemiBold,
+    fontSize: ms(6),
+  },
+  belowSubContainer: {
+    flexDirection: 'row',
+    marginTop: ms(2),
+    alignItems: 'center',
+  },
+  colorsTitle: {
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(6),
+  },
+  sizeTitle: {
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(6),
+    marginLeft: ms(10),
+  },
+  priceTitle: {
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
+    fontSize: ms(6),
+    // marginLeft: ms(10),
   },
 });
 
