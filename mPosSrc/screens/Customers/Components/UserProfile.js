@@ -67,6 +67,7 @@ export function UserProfile(props) {
   const [ordersByUser, setOrdersByUser] = useState(getCustomerData?.getOrderUser?.data ?? []);
   const userDetail = props?.route?.params?.userDetail;
   const user_details = customerArray?.user_details;
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
@@ -114,6 +115,7 @@ export function UserProfile(props) {
     country: user_details?.current_address?.country,
     postalCode: user_details?.current_address?.zipcode,
   };
+
   useEffect(() => {
     const data = {
       userId: userDetail?.user_id,
@@ -129,6 +131,34 @@ export function UserProfile(props) {
   useEffect(() => {
     setOrdersByUser(getCustomerData?.getOrderUser?.data ?? []);
   }, [getCustomerData?.getOrderUser?.data]);
+
+  // useEffect(() => {
+  //   const getCityLocation = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `https://maps.googleapis.com/maps/api/geocode/json?address=${data?.city},${data?.state}&key=YOUR_GOOGLE_MAPS_API_KEY`
+  //       );
+  //       if (!response.ok) {
+  //         throw new Error('Error fetching city location');
+  //       }
+
+  //       const responseData = await response.json();
+  //       console.log('ahhasgd', responseData);
+
+  //       if (responseData.status === 'OK' && responseData.results.length > 0) {
+  //         const { lat, lng } = responseData.results[0].geometry.location;
+  //         setLocation({ latitude: lat, longitude: lng });
+  //       } else {
+  //         throw new Error('No results found');
+  //       }
+  //     } catch (error) {
+  //       console.log('first', data?.city);
+  //       console.error('Error:', error.message);
+  //     }
+  //   };
+
+  //   getCityLocation();
+  // }, []);
 
   const isOrderUserLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ORDER_USER], state)
