@@ -28,12 +28,20 @@ import { ms } from 'react-native-size-matters';
 import { Images } from '@/assets/new_icon';
 import { useEffect } from 'react';
 
-export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate, cartListModalOff }) {
+export function CartListModal({
+  checkOutHandler,
+  clearCart,
+  cartQtyUpdate,
+  cartListModalOff,
+  fromScreen,
+}) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   let arr = [getRetailData?.getAllCart];
+
+  const TYPE = fromScreen; //cartData?.poscart_products[0]?.product_type;
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
   const isLoadingCart = useSelector((state) => isLoadingSelector([TYPES.CREATE_BULK_CART], state));
@@ -214,32 +222,45 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate, cartL
                             >
                               ${data?.product_details?.supply?.supply_prices?.selling_price}
                             </Text>
-                            <View style={styles.listCountCon}>
-                              <TouchableOpacity
-                                style={{
-                                  width: ms(10),
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                }}
-                                onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
-                                disabled={data.qty == 1 ? true : false}
+                            {TYPE == 'product' ? (
+                              <View style={styles.listCountCon}>
+                                <TouchableOpacity
+                                  style={{
+                                    width: ms(10),
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                  }}
+                                  onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
+                                  disabled={data.qty == 1 ? true : false}
+                                >
+                                  <Image source={minus} style={styles.minus} />
+                                </TouchableOpacity>
+
+                                <View style={styles.dataQtyCon}>
+                                  <Text style={styles.dataQty}>{data.qty}</Text>
+                                </View>
+
+                                <TouchableOpacity
+                                  style={{
+                                    width: ms(11),
+                                    alignItems: 'center',
+                                  }}
+                                  onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
+                                >
+                                  <Image source={plus} style={styles.minus} />
+                                </TouchableOpacity>
+                              </View>
+                            ) : (
+                              <View
+                                style={[
+                                  styles.dataQtyCon,
+                                  { borderLeftWidth: 0, borderRightWidth: 0 },
+                                ]}
                               >
-                                <Image source={minus} style={styles.minus} />
-                              </TouchableOpacity>
-                              <View style={styles.dataQtyCon}>
                                 <Text style={styles.dataQty}>{data.qty}</Text>
                               </View>
+                            )}
 
-                              <TouchableOpacity
-                                style={{
-                                  width: ms(11),
-                                  alignItems: 'center',
-                                }}
-                                onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
-                              >
-                                <Image source={plus} style={styles.minus} />
-                              </TouchableOpacity>
-                            </View>
                             <Text style={styles.blueListDataText}>
                               $
                               {(
@@ -309,7 +330,7 @@ export function CartListModal({ checkOutHandler, clearCart, cartQtyUpdate, cartL
                 </View>
                 <TouchableOpacity
                   style={[styles.checkoutButtonSideBar, { marginTop: ms(7) }]}
-                  onPress={checkOutHandler}
+                  onPress={() => checkOutHandler(TYPE)}
                 >
                   <Text style={styles.checkoutText}>Proceed to checkout</Text>
                   <Image source={Images.arrowUpRightIcon} style={styles.checkArrow} />

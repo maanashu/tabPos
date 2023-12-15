@@ -138,6 +138,7 @@ export function MainScreen({
       setServiceCon(true);
     }
   }, [activeCategory]);
+
   useEffect(() => {
     setLocalCartArray(LOCAL_CART_ARRAY);
   }, [LOCAL_CART_ARRAY]);
@@ -1616,8 +1617,13 @@ export function MainScreen({
         <CartListModal
           cartQtyUpdate={cartQtyUpdate}
           clearCart={eraseClearCart}
-          checkOutHandler={() => {
-            checkOutHandler();
+          fromScreen={serviceCon ? 'service' : 'product'}
+          checkOutHandler={(type) => {
+            if (type == 'product') {
+              checkOutHandler();
+            } else {
+              cartServiceScreenHandler();
+            }
           }}
           CloseCartModal={() => {
             // bulkCart();
@@ -1659,7 +1665,7 @@ export function MainScreen({
 
       {/* cart list modal end */}
 
-      {/* cart list modal start */}
+      {/* Service cart list modal start */}
       <BlurredModal
         animationType="fade"
         transparent={true}
