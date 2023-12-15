@@ -118,8 +118,6 @@ export function Calender() {
 
   const [showMiniCalendar, setshowMiniCalendar] = useState(false);
 
-  const [listViewSelectedDay, setListViewSelectedDay] = useState(null);
-
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
   const getAppointmentList2 = getAppointmentList?.filter((item) => item.status !== 3);
@@ -371,7 +369,6 @@ export function Calender() {
         }}
         onPress={() => {
           setCalendarDate(moment(item.fullDateFortheDay));
-          setListViewSelectedDay(item);
         }}
       >
         <Text style={{ color: isSelected ? '#F5F6FC' : COLORS.light_blue2, fontSize: ms(8) }}>
@@ -630,13 +627,10 @@ export function Calender() {
                     <Spacer space={ms(8)} />
                     <View style={styles._mListViewDateHeaderContainer}>
                       <Text style={styles._mListViewDayName}>
-                        {listViewSelectedDay?.dayName ?? moment().format('dddd')}
+                        {moment(calendarDate).format('dddd')}
                       </Text>
                       <Spacer space={ms(5)} horizontal />
-                      <Text style={styles._mListViewDate}>
-                        {moment(listViewSelectedDay?.fullDateFortheDay).format('Do') ??
-                          moment().format('Do')}
-                      </Text>
+                      <Text style={styles._mListViewDate}>{moment(calendarDate).format('Do')}</Text>
                     </View>
                   </View>
 
