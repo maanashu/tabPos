@@ -279,24 +279,30 @@ const OrderDetail = ({
               strokeColor={COLORS.primary}
             />
             <Marker
+              zIndex={1}
               coordinate={{
                 latitude: userDetail?.order_delivery?.order_pickup_latitude ?? 0.0,
                 longitude: userDetail?.order_delivery?.order_pickup_longitude ?? 0.0,
               }}
             >
-              <View>
-                <Image source={scooter} style={styles.mapMarkerStyle} />
-              </View>
+              {userDetail?.order_delivery !== null && (
+                <View>
+                  <Image source={scooter} style={styles.mapMarkerStyle} />
+                </View>
+              )}
             </Marker>
             <Marker
+              zIndex={5}
               coordinate={{
                 latitude: userDetail?.order_delivery?.order_delivery_latitude ?? 0.0,
                 longitude: userDetail?.order_delivery?.order_delivery_longitude ?? 0.0,
               }}
             >
-              <View>
-                <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
-              </View>
+              {userDetail?.order_delivery !== null && (
+                <View>
+                  <Image source={deliveryHomeIcon} style={styles.mapMarkerStyle} />
+                </View>
+              )}
             </Marker>
           </MapView>
 
