@@ -757,7 +757,7 @@ export function Calender() {
                       style={styles.renderItemContainer}
                     >
                       <View>
-                        <Image
+                        <ProfileImage
                           source={{
                             uri: userProfile?.profile_photo,
                           }}
