@@ -694,7 +694,13 @@ export function DeliveryOrders2({ route }) {
     setTrackingView(false);
   };
   const showMaxButton = (data) => {
-    if (data?.status === 3 || data?.status === 5 || data?.status === 7 || data?.status === 9)
+    if (
+      data?.status === 3 ||
+      data?.status === 4 ||
+      data?.status === 5 ||
+      data?.status === 7 ||
+      data?.status === 9
+    )
       return (
         <TouchableOpacity
           onPress={() => SetIsMaximizeStatusView(!isMaximizeStatusView)}

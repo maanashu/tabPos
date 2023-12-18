@@ -49,9 +49,12 @@ export class ShippingController {
       // console.log(endpoint, 'shipping-orders URL-----------');
       HttpClient.get(endpoint)
         .then((response) => {
+          // console.log('response-0-0-0-0-0-0', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
+          // console.log('error-0-0-0-0-0-0', JSON.stringify(error));
+
           reject(error);
         });
     });
@@ -81,6 +84,8 @@ export class ShippingController {
       };
       HttpClient.put(endpoint, body)
         .then((response) => {
+          // console.log('response-0-03-120-3=312', JSON.stringify(response));
+
           Toast.show({
             position: 'bottom',
             type: 'success_toast',
@@ -90,6 +95,13 @@ export class ShippingController {
           resolve(response);
         })
         .catch((error) => {
+          // console.log('errorr2222222222', JSON.stringify(error));
+          Toast.show({
+            position: 'bottom',
+            type: 'success_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
           reject(error);
         });
     });
