@@ -31,6 +31,7 @@ const OrderDetail = ({
   mapRef,
   onPressShop,
   isMaximizeStatusView,
+  data,
 }) => {
   const detailView = () => {
     if (

@@ -113,14 +113,28 @@ export function TransactionList(props) {
     setTransactionType(item?.value);
   };
 
+  // const handleOrderDetail = (item) => {
+  //   console.log(item?.delivery_option);
+  //   if (item?.delivery_option == '1') {
+  //     commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
+  //   } else if (item?.delivery_option == '4') {
+  //     commonNavigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item });
+  //   } else if (item?.delivery_option == '3') {
+  //     commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
+  //   }
+  // };
+
   const handleOrderDetail = (item) => {
-    if (item?.delivery_option == '1') {
-      commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
-    } else if (item?.delivery_option == '4') {
-      commonNavigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item });
-    } else if (item?.delivery_option == '3') {
-      commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
-    }
+    commonNavigate(MPOS_NAVIGATION.commonOrderDetail, { data: item });
+
+    // commonNavigate(MPOS_NAVIGATION.OrderDetail);
+    // if (item?.delivery_option == '1') {
+    //   commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
+    // } else if (item?.delivery_option == '4') {
+    //   commonNavigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item });
+    // } else if (item?.delivery_option == '3') {
+    //   commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
+    // }
   };
 
   const renderPaymentType = ({ item }) => {

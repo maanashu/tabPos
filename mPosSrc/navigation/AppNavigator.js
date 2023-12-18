@@ -62,6 +62,7 @@ import { PinId } from '@mPOS/screens/MoreTab/PinId/PinId';
 import { OldPin } from '@mPOS/screens/MoreTab/OldPin/OldPin';
 import { SetPin } from '@mPOS/screens/MoreTab/SetPin/SetPin';
 import { ReEnterPin } from '@mPOS/screens/MoreTab/ReEnterPin/ReEnterPin';
+import { CommonOrderDetail } from '@mPOS/components/CommonOrderDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -366,6 +367,11 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.faqAnswers}
         options={{ headerShown: false }}
         component={FaqAnswers}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.commonOrderDetail}
+        options={{ headerShown: false }}
+        component={CommonOrderDetail}
       />
     </Stack.Navigator>
   );

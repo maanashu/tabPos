@@ -111,6 +111,7 @@ export const PayByCash = ({
   const isLoadingCreateOrder = useSelector((state) =>
     isLoadingSelector([TYPES.CREATE_ORDER], state)
   );
+  const isLoadingGetCart = useSelector((state) => isLoadingSelector([TYPES.GET_ALL_CART], state));
 
   const createOrderHandler = () => {
     if (cartType == 'Product') {
@@ -319,6 +320,7 @@ export const PayByCash = ({
                   }}
                   title={'Continue'}
                   style={{
+                    borderRadius: ms(22),
                     height: ms(40),
                     width: '100%',
                     marginTop: ms(10),
@@ -429,7 +431,9 @@ export const PayByCash = ({
           </View>
         </View>
       </View>
-      {(isLoadingUpdateCartByTip || isLoadingCreateOrder) && <FullScreenLoader />}
+      {(isLoadingUpdateCartByTip || isLoadingCreateOrder || isLoadingGetCart) && (
+        <FullScreenLoader />
+      )}
     </SafeAreaView>
   );
 };

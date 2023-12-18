@@ -86,7 +86,6 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
       </View>
     </View>
   );
-  console.log('first', returnInvoiceData);
   return (
     <>
       <View style={styles.rightCon}>

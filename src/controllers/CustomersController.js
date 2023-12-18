@@ -8,8 +8,6 @@ import axios from 'axios';
 
 export class CustomersController {
   static async getUserOrder(data) {
-    console.log('second', data);
-
     return new Promise((resolve, reject) => {
       const type = data?.customerType?.toLowerCase().replace(/\s+/g, '_');
       const defaultParams = {

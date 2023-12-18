@@ -58,6 +58,8 @@ import { AddServiceCartModal } from '@mPOS/screens/HomeTab/Services/AddServiceCa
 import AddServiceCart from '@mPOS/screens/HomeTab/RetailServices/Components/AddServiceCart';
 import moment from 'moment';
 import CustomAlert from '@/components/CustomAlert';
+import { navigate } from '@mPOS/navigation/NavigationRef';
+import { MPOS_NAVIGATION } from '@common/commonImports';
 
 export function ServiceCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -170,6 +172,7 @@ export function ServiceCart({ cartChangeHandler }) {
     finalPaymentRef.current?.dismiss();
     payByCashRef.current?.dismiss();
     cartAmountByPayRef.current?.dismiss();
+    navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.home });
     // commonNavigate(MPOS_NAVIGATION.retailProducts);
   }, []);
 

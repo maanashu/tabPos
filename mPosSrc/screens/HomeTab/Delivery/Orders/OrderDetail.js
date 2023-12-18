@@ -37,6 +37,8 @@ export function OrderDetail(props) {
   const statusCount = deliveryData?.getOrderCount;
   const orders = deliveryData?.getReviewDef ?? [];
   const orderData = orders[props?.route?.params?.index ?? 0];
+  // const orderData = props?.route?.params?.data;
+
   const customerDetail = orderData?.user_details;
   const deliveryDate =
     dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') &&
@@ -49,6 +51,7 @@ export function OrderDetail(props) {
   const orderLoad = useSelector((state) =>
     isLoadingSelector([TYPES.TODAY_ORDER_STATUS, TYPES.DELIVERING_ORDER], state)
   );
+  console.log('orderData', JSON.stringify(props?.route?.params?.data));
   const setHeaderText = (value) => {
     switch (value) {
       case '0':

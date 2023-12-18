@@ -11,6 +11,7 @@ export const Images = {
   serviceIcon: require('@/assets/new_icon/retail_con/serviceIcon.png'),
   filterIcon: require('@/assets/new_icon/retail_con/filterIcon.png'),
   cartIcon: require('@/assets/new_icon/retail_con/cartIcon.png'),
+  settingIcon: require('@/assets/new_icon/retail_con/settingIcon.png'),
   email: require('@/assets/new_icon/retail_con/email.png'),
   bell: require('@/assets/new_icon/retail_con/bell.png'),
   moon: require('@/assets/new_icon/retail_con/moon.png'),

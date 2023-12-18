@@ -39,7 +39,9 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
       backdropComponent={CustomBackdrop}
       detached
       bottomInset={0}
-      onDismiss={() => finalPaymentCrossHandler()}
+      onDismiss={() => {
+        finalPaymentCrossHandler();
+      }}
       backdropOpacity={0.5}
       ref={finalPaymentRef}
       snapPoints={snapPoints}

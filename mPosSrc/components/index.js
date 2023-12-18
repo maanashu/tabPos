@@ -12,3 +12,4 @@ export { HorizontalLine } from '@mPOS/components/HorizontalLine';
 export { SearchedOrders } from '@mPOS/components/SearchedOrders';
 export { Invoice } from '@mPOS/components/Invoice';
 export { ImageView } from '@mPOS/components/ImageView';
+export { CommonOrderDetail } from '@mPOS/components/CommonOrderDetail';
