@@ -172,20 +172,34 @@ export function CommonOrderDetail(props) {
               >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
             </View>
           </View>
-          <Spacer space={SH(20)} />
 
-          <View style={styles.deliveryDetailsView}>
-            <View style={{ flex: 0.35 }}>
-              <Text style={styles.deliveryTypeText}>{deliveryDate}</Text>
-            </View>
-
-            <View style={styles.deliveryTimeViewStyle}>
-              <Image source={Images.clockIcon} style={styles.clockImageStyle} />
-              <Text
-                style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
-              >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
-            </View>
-          </View>
+          {orderData?.delivery_option == '1' ||
+            (orderData?.delivery_option == '4' && (
+              <>
+                <Spacer space={SH(20)} />
+                <View style={styles.deliveryDetailsView}>
+                  <View style={{ flex: 0.35 }}>
+                    {orderData?.shipping_details ? (
+                      <Text style={styles.deliveryTypeText}>
+                        {orderData?.shipping_details?.title}
+                      </Text>
+                    ) : orderData?.shipping_details ? (
+                      <Text style={styles.deliveryTypeText}>
+                        {orderData?.delivery_details?.title}
+                      </Text>
+                    ) : null}
+                  </View>
+                  {orderData?.delivery_option == '1' && (
+                    <View style={styles.deliveryTimeViewStyle}>
+                      <Image source={Images.clockIcon} style={styles.clockImageStyle} />
+                      <Text
+                        style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
+                      >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
+                    </View>
+                  )}
+                </View>
+              </>
+            ))}
         </View>
         <Spacer space={SH(10)} />
         {orderData?.delivery_option == '1' ||
@@ -233,11 +247,7 @@ export function CommonOrderDetail(props) {
                       : strings.orderStatus.delivered}
                   </Text>
                   <Text style={styles.driverArrivalTimeText}>
-                    {orderData?.status === 5
-                      ? dayjs(orderData?.status_desc?.status_5_updated_at).format(
-                          'DD MMM, YYYY  |  hh:mm a'
-                        )
-                      : null}
+                    {dayjs(orderData?.date).format('DD MMM, YYYY  |  hh:mm a')}
                   </Text>
                 </View>
 
@@ -570,5 +580,10 @@ export const styles = StyleSheet.create({
     width: SW(20),
     height: SW(20),
     resizeMode: 'contain',
+  },
+  detailMap: {
+    height: ms(80),
+    width: '100%',
+    borderRadius: 10,
   },
 });
