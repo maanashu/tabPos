@@ -1,10 +1,11 @@
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { rootReducer as tabPosRootReducer } from '@/reducers';
 import { rootReducer as mPOSRootReducer } from '@mPOS/reducers';
 import { isTablet } from 'react-native-device-info';
+import Reactotron from './../../ReactotronConfig';
 
 const persistConfig = {
   key: 'root',
@@ -17,7 +18,8 @@ const rootReducer = tabPosRootReducer;
 
 export const store = createStore(
   persistReducer(persistConfig, rootReducer),
-  applyMiddleware(thunk)
+  compose(applyMiddleware(thunk), Reactotron.createEnhancer())
+  // applyMiddleware(thunk)
 );
 
 export const persistor = persistStore(store);
