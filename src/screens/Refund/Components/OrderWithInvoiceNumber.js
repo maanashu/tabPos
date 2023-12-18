@@ -195,9 +195,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   emptyTextStyle: {
-    fontSize: ms(14),
-    color: COLORS.navy_blue,
-    fontFamily: Fonts.Regular,
+    fontSize: ms(11),
+    color: COLORS.navy_light_blue,
+    // fontFamily: Fonts.Regular,
+    marginBottom: ms(10),
   },
   tableView: {
     zIndex: -99,
