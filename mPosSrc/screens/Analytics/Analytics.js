@@ -264,20 +264,14 @@ export function Analytics() {
     ['TotalDeliveryOrders']: (
       <TotalDeliveryOrders
         onPressReview={(item) => {
-          setWeeklyTrasaction(true);
-          setDate(item);
-          setDeliveryOption(1);
-          setAppName();
+          showTransDetail();
         }}
       />
     ),
     ['TotalShippingOrders']: (
       <TotalShippingOrders
         onPressReview={(item) => {
-          setWeeklyTrasaction(true);
-          setDate(item);
-          setDeliveryOption(4);
-          setAppName();
+          showTransDetail();
         }}
       />
     ),
@@ -285,10 +279,7 @@ export function Analytics() {
     ['TotalOrders']: (
       <TotalOrders
         onPressReview={(item) => {
-          setWeeklyTrasaction(true);
-          setDate(item);
-          setAppName();
-          setDeliveryOption();
+          showTransDetail();
         }}
       />
     ),
