@@ -203,7 +203,9 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
       <View style={styles.customProductCon}>
         <View style={styles.headerConCustomProduct}>
           <Image source={Images.addProduct} style={styles.plusIcon} />
-          <Text style={styles.addManually}>Add New Product {'\n'} Manually</Text>
+          <Text style={styles.addManually}>{`Add New ${
+            comeFrom == 'product' ? 'Product' : 'Service'
+          } \n Manually`}</Text>
         </View>
         <TextInput
           placeholder={comeFrom == 'product' ? 'Product Name' : 'Service Name'}

@@ -206,17 +206,23 @@ export function CartScreen({
   const updateQuantity = (cartId, productId, operation, index) => {
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
+    const restProductQty = product?.product_details?.supply?.rest_quantity;
     // const productPrice = product.product_details.price;
     const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
 
     if (operation === '+') {
-      product.qty += 1;
-      arr.amount.total_amount += productPrice;
-      arr.amount.products_price += productPrice;
-      const totalAmount = arr.amount.products_price;
-      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-      arr.amount.tax = parseFloat(TAX); // Update tax value
-      arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
+      if (restProductQty > product.qty) {
+        product.qty += 1;
+        arr.amount.total_amount += productPrice;
+        arr.amount.products_price += productPrice;
+        const totalAmount = arr.amount.products_price;
+        const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+        arr.amount.tax = parseFloat(TAX); // Update tax value
+        arr.amount.total_amount = totalAmount + parseFloat(TAX);
+      } else {
+        alert('There are no more quantity left to add');
+      }
+      // Update total_amount including tax
     } else if (operation === '-') {
       if (product.qty > 0) {
         if (product.qty === 1) {

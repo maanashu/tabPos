@@ -15,14 +15,10 @@ import { HttpClient } from './HttpClient';
 export class DashboardController {
   static async getOrderDeliveries(sellerID, page) {
     return new Promise((resolve, reject) => {
-      // const endpoint =
-      //   ORDER_URL +
-      //   ApiOrderInventory.getOrderUser +
-      //   `?seller_id=${sellerID}&delivery_option=1&page=${page}&limit=10`;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderUser +
-        `?seller_id=${sellerID}&delivery_option=1,4&page=${page}&limit=10`;
+        `?seller_id=${sellerID}&delivery_option=1,3,4&page=${page}&limit=10`;
 
       HttpClient.get(endpoint)
         .then((response) => {

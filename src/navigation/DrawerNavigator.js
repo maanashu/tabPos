@@ -297,10 +297,7 @@ export function DrawerNavigator(props) {
             }}
             icon={({ focused }) => (
               <View style={styles.iconBackgroud(focused)}>
-                <Image
-                  source={focused ? blueSetting : settings}
-                  style={styles.iconStyle(focused)}
-                />
+                <Image source={Images.settingIcon} style={styles.iconStyle(focused)} />
               </View>
             )}
           />

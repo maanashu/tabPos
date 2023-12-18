@@ -64,6 +64,7 @@ export const en = {
     totalTax: 'Total Taxes',
     totalRefundItems: 'Total Refund Items:',
     returned: 'Returned',
+    itemsRefunded: 'Items Refunded',
   },
   verifyPhone: {
     heading: 'Verify your phone \nnumber',
@@ -609,7 +610,7 @@ export const en = {
     percentageLabel: 'percentage',
     inStore: 'In-store',
     reservation: 'Reservation',
-    totalReturnAmount: 'Total Return Amount:',
+    totalReturnAmount: 'Total Return Amount',
     returnPaymentMethod: 'Return Payment Method',
     payBy: 'Pay By',
     jbr: 'jbr',

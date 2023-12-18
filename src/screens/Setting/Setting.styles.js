@@ -419,6 +419,16 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: verticalScale(5),
   },
+  nextButtonNew: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.textInputBackground,
+    width: SW(40),
+    alignSelf: 'center',
+    borderRadius: ms(10),
+    paddingVertical: verticalScale(5),
+  },
   checkoutButtonSec: {
     backgroundColor: COLORS.bluish_green,
     width: SW(82),

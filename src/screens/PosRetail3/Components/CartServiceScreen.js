@@ -29,6 +29,7 @@ import {
   getOneService,
   getServiceCartSuccess,
   getUserDetailSuccess,
+  productUpdatePrice,
   serviceUpdatePrice,
   updateCartQty,
   updateServiceCartQty,
@@ -104,6 +105,10 @@ export function CartServiceScreen({
     isLoadingSelector([TYPES.GET_ALL_CART], state)
   );
   const isLoadingAddCart = useSelector((state) => isLoadingSelector([TYPES.ADDCART], state));
+
+  const isLoadingCartProductUpdate = useSelector((state) =>
+    isLoadingSelector([TYPES.PRODUCT_UPDATE_PRICE], state)
+  );
 
   const isLoadingOneService = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ONE_SERVICE], state)
@@ -247,7 +252,8 @@ export function CartServiceScreen({
         cartProductId: cartProductId,
         updatedPrice: unitPrice,
       };
-      dispatch(serviceUpdatePrice(data));
+      dispatch(productUpdatePrice(data));
+      // dispatch(serviceUpdatePrice(data));
     }
   };
 
@@ -791,6 +797,7 @@ export function CartServiceScreen({
         isLoadingAddDiscount ||
         isLoadingAddNote ||
         isLoadingAttachCustomer ||
+        isLoadingCartProductUpdate ||
         isLoadingAddCustomService) && <FullScreenLoader />}
     </View>
   );

@@ -215,7 +215,6 @@ export const CartAmountPayBy = ({
     var DATA = {
       payload: arr,
     };
-    console.log('arr', arr);
 
     dispatch(getAllCartSuccess(DATA));
   };
