@@ -189,6 +189,9 @@ export function ShippingOrder2() {
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg) {
+          dispatch(orderStatusCount(getUpdatedCount));
+          dispatch(getReviewDefault(openShippingOrders));
+
           if (
             getDeliveryData?.getReviewDef?.length > 0 &&
             getDeliveryData?.getReviewDef?.length === 1
@@ -206,6 +209,25 @@ export function ShippingOrder2() {
       })
     );
   };
+  // const checkOtherOrder = () => {
+  //   const orderStatusCountData = getGraphOrderData?.orderStatus;
+  //   var index = 0;
+  //   if (orderStatusCountData?.[0]?.count > 0) {
+  //     index = 0;
+  //   } else if (orderStatusCountData?.[3]?.count > 0) {
+  //     index = 3;
+  //   } else if (orderStatusCountData?.[4]?.count > 0) {
+  //     index = 4;
+  //   } else if (orderStatusCountData?.[6]?.count > 0) {
+  //     index = 6;
+  //   } else if (orderStatusCountData?.[6]?.count > 0) {
+  //     index = 6;
+  //   } else if (orderStatusCountData?.[8]?.count > 0) {
+  //     index = 8;
+  //   }
+  //   dispatch(getReviewDefault(index));
+  //   dispatch(orderStatusCount());
+  // };
 
   const declineHandler = (id) => {
     const data = {
@@ -218,6 +240,7 @@ export function ShippingOrder2() {
         alert('Order declined successfully');
         setViewAllOrders(false);
         dispatch(getReviewDefault(0));
+        dispatch(orderStatusCount());
       })
     );
   };
