@@ -140,12 +140,17 @@ export function Calender() {
     return filteredAppointments;
   };
 
+  //Always Show current date when user come to appointments module
+  useEffect(() => {
+    setCalendarDate(moment());
+  }, [isFocused]);
+
   useEffect(() => {
     if (isFocused || showRequestsView) {
       dispatch(getAppointment(pageNumber));
     }
     getCurrentMonthDays();
-  }, [isFocused, pageNumber, showRequestsView]);
+  }, [isFocused, pageNumber, showRequestsView, calendarDate, calendarViewMode]);
 
   const getCurrentMonthDays = () => {
     const date = new Date(calendarDate);
