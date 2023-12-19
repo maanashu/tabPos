@@ -63,7 +63,6 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
   const isChangeStatusLoading = useSelector((state) =>
     isLoadingSelector([TYPES.CHANGE_APPOINTMENT_STATUS], state)
   );
-  console.log('jgbf', posUserDetails?.profile_photo);
 
   const hideAllModal = () => {
     setshowVerifyOTPModal(false);
