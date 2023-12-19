@@ -113,7 +113,12 @@ const CalendarHeaderWithOptions = ({
           >
             <Image
               source={Images.calendarIcon}
-              style={[styles.calenderModeIcons, { tintColor: COLORS.navy_blue }]}
+              style={[
+                styles.calenderModeIcons,
+                {
+                  tintColor: CALENDAR_VIEW_MODES.CALENDAR_VIEW ? COLORS.sky_blue : COLORS.navy_blue,
+                },
+              ]}
             />
             <Spacer space={ms(8)} horizontal />
             <Text

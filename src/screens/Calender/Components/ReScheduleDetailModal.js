@@ -7,22 +7,28 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 
-import { COLORS, SF, SH, SW } from '@/theme';
-import { Button, Spacer } from '@/components';
-import { crossButton, Fonts, pin } from '@/assets';
+import { COLORS, SF, SH, SW, ShadowStyles } from '@/theme';
+import { ArrowButton, Button, Spacer } from '@/components';
+import { crossButton, Fonts, pin, userImage } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
 
 import { getTimeSlots } from '@/actions/RetailAction';
 import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker';
 import { useEffect } from 'react';
 import moment from 'moment';
-import Modal from 'react-native-modal';
+import Modal, { ReactNativeModal } from 'react-native-modal';
 import { styles } from '../Calender.styles';
-import { calculateTimeSlotSelection, getDaysAndDates } from '@/utils/GlobalMethods';
+import {
+  calculateDuration,
+  calculateTimeDuration,
+  calculateTimeSlotSelection,
+  getDaysAndDates,
+} from '@/utils/GlobalMethods';
 import CustomAlert from '@/components/CustomAlert';
 import { strings } from '@/localization';
 import { changeAppointmentStatus, rescheduleAppointment } from '@/actions/AppointmentAction';
@@ -36,6 +42,9 @@ import { memo } from 'react';
 import { TYPES } from '@/Types/Types';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { Modal as PaperModal } from 'react-native-paper';
+import { height, width } from '@/theme/ScalerDimensions';
+import { Images } from '@/assets/new_icon';
+import LinearGradient from 'react-native-linear-gradient';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -113,8 +122,13 @@ const ReScheduleDetailModal = ({
         style={{
           alignItems: 'center',
           justifyContent: 'center',
-          width: SW(31.5),
+          width: SW(20),
           height: SH(60),
+          backgroundColor:
+            item?.completeDate === selectedDate ? COLORS.success_green : COLORS.white,
+          marginHorizontal: ms(3),
+          borderRadius: ms(13),
+          marginVertical: 1,
         }}
         onPress={() => {
           setselectedDate(item?.completeDate);
@@ -128,56 +142,72 @@ const ReScheduleDetailModal = ({
         <Text
           style={{
             fontFamily: Fonts.Regular,
-            fontSize: SF(14),
-            color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.dark_grey,
+            fontSize: SF(13),
+            color: item?.completeDate === selectedDate ? COLORS.white : COLORS.navy_blue,
           }}
         >
-          {item?.day.toUpperCase()}
+          {item?.completeDate === moment(new Date()).format('YYYY-MM-DD') ? 'Today' : item?.day}
         </Text>
         <Text
           style={{
-            fontFamily: Fonts.SemiBold,
-            fontSize: SF(18),
-            color: item?.completeDate === selectedDate ? COLORS.primary : COLORS.black,
+            fontFamily: Fonts.Medium,
+            fontSize: SF(14),
+            color: item?.completeDate === selectedDate ? COLORS.white : COLORS.navy_blue,
           }}
         >
-          {item?.completeDate === moment(new Date()).format('YYYY-MM-DD') ? 'Today' : item?.date}
+          {item?.date}
         </Text>
       </TouchableOpacity>
     );
   };
 
   const renderSlotItem = ({ item, index }) => (
-    <TouchableOpacity
-      disabled={!item?.is_available}
-      style={{
-        borderWidth: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '25.1%',
-        height: ms(24),
-        borderColor: COLORS.solidGrey,
-        backgroundColor: selectedTimeSlotIndex === index ? COLORS.primary : COLORS.white,
-      }}
-      onPress={() => {
-        setselectedTimeSlotIndex(index);
-        setSelectedTimeSlotData(item);
-      }}
-    >
-      <Text
-        style={{
-          fontFamily: Fonts.Regular,
-          fontSize: ms(6.2),
-          color: !item?.is_available
-            ? COLORS.row_grey
-            : selectedTimeSlotIndex === index
-            ? COLORS.white
-            : COLORS.dark_grey,
-        }}
-      >
-        {item?.start_time + ' - ' + item?.end_time}
-      </Text>
-    </TouchableOpacity>
+    <>
+      {!item?.is_available ? (
+        <Image
+          source={Images.calendar_cell}
+          resizeMode="contain"
+          style={{ width: '24.1%', height: ms(23.5), marginVertical: ms(1.5) }}
+        />
+      ) : (
+        <TouchableOpacity
+          disabled={!item?.is_available}
+          style={{
+            borderWidth: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '23.5%',
+            height: ms(24),
+            borderColor:
+              selectedTimeSlotIndex === index ? COLORS.medium_green : COLORS.light_purple,
+            backgroundColor: selectedTimeSlotIndex === index ? COLORS.light_green : COLORS.white,
+            borderRadius: 8,
+            margin: ms(1.5),
+            overflow: 'hidden',
+          }}
+          onPress={() => {
+            setselectedTimeSlotIndex(index);
+            setSelectedTimeSlotData(item);
+          }}
+        >
+          {item?.is_available && (
+            <Text
+              style={{
+                fontFamily: Fonts.Regular,
+                fontSize: ms(6.2),
+                color: !item?.is_available
+                  ? COLORS.row_grey
+                  : selectedTimeSlotIndex === index
+                  ? COLORS.medium_green
+                  : COLORS.faded_purple,
+              }}
+            >
+              {item?.start_time + ' - ' + item?.end_time}
+            </Text>
+          )}
+        </TouchableOpacity>
+      )}
+    </>
   );
 
   const onReschuleAppointment = () => {
@@ -218,227 +248,245 @@ const ReScheduleDetailModal = ({
   };
 
   const renderServiceProviderItem = ({ item }) => {
-    const borderColor = item?.user?.unique_uuid === posUserId ? COLORS.primary : 'transparent';
-
+    const borderColor = item?.user?.unique_uuid === posUserId ? 'transparent' : COLORS.light_purple;
+    const imageUrl = item?.user?.user_profiles?.profile_photo;
+    const isPng = imageUrl?.toLowerCase().endsWith('.png');
     return (
-      <ServiceProviderItem
-        item={item}
+      <TouchableOpacity
         onPress={() => onClickServiceProvider(item)}
-        borderColor={borderColor}
-        imageStyle={{
-          width: ms(30),
-          height: ms(30),
-          borderRadius: ms(15),
-        }}
-      />
+        style={[
+          styles.staffInfoContainer,
+          {
+            borderColor: borderColor,
+            ...(item?.user?.unique_uuid === posUserId && ShadowStyles.shadow3),
+          },
+        ]}
+      >
+        <Image
+          source={imageUrl && isPng ? { uri: imageUrl } : userImage}
+          style={imageUrl && isPng ? styles.staffProfilePic : styles.staticEmployeeImages}
+        />
+
+        <Spacer horizontal space={ms(5)} />
+
+        <View>
+          <Text
+            numberOfLines={1}
+            style={styles.staffNameText}
+          >{`${item?.user?.user_profiles?.firstname} ${item?.user?.user_profiles?.lastname}`}</Text>
+          <Text numberOfLines={1} style={styles.occupationText}>
+            {''}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
   return (
-    <PaperModal visible={showRecheduleModal}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={styles.addCartCon}>
-          <View style={styles.addCartConHeader}>
-            <TouchableOpacity onPress={() => setShowRescheduleModal(false)}>
-              <Image source={crossButton} style={styles.crossBg} />
-            </TouchableOpacity>
-            <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(10) }}>
-              Booking #{appointmentData?.id ?? 'ABC'}
+    <ReactNativeModal
+      backdropOpacity={0.1}
+      isVisible={showRecheduleModal}
+      style={{
+        right: Platform.OS == 'ios' ? width * 0.055 : width * 0.04,
+        top: Platform.OS == 'ios' ? height * 0.03 : height * 0.06,
+      }}
+      animationIn={'fadeIn'}
+      animationOut={'fadeOut'}
+      animationInTiming={800}
+    >
+      <View style={styles.addCartCon}>
+        <View style={styles.addCartConHeader}>
+          <View style={styles.rowAligned}>
+            <Image source={Images.modifyAppointment} style={styles.calendarIcon} />
+            <Spacer horizontal space={ms(5)} />
+
+            <Text style={styles.modalHeading}>
+              Edit Appointment #{appointmentData?.id ?? 'ABC'}
             </Text>
           </View>
-          {userDetails && (
-            <View
-              style={[
-                styles.customerDetailContainer,
-                { marginTop: ms(15), marginHorizontal: ms(22) },
-              ]}
-            >
-              <Text style={styles._eventTitle}>Customer:</Text>
-
+          <TouchableOpacity onPress={() => setShowRescheduleModal(false)}>
+            <Image source={crossButton} style={styles.closeIconSmall} />
+          </TouchableOpacity>
+        </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
+            {userDetails && (
               <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: ms(5),
-                  justifyContent: 'space-between',
-                }}
+                style={[
+                  styles.customerDetailContainer,
+                  { marginTop: ms(15), marginHorizontal: ms(22) },
+                ]}
               >
-                <ProfileImage
-                  source={{ uri: userDetails?.profile_photo }}
-                  style={styles.customerUserProfile}
-                />
-                <View style={{ marginLeft: ms(6), flex: 1 }}>
-                  <Text style={styles.customerName}>
-                    {userDetails?.firstname + ' ' + userDetails?.lastname}
-                  </Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={pin} style={styles.eventAddressIcon} />
-                    <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
+                <View style={styles.rowAlignedJustified}>
+                  <Text style={styles._eventTitle}>Customer:</Text>
+                  <View style={styles.appointmentDateContainer}>
+                    <Image source={Images.calendarIcon} style={styles.bookedCalendarIcon} />
+                    <Spacer horizontal space={ms(3)} />
+                    <Text style={styles.bookedDate}>
+                      {moment(appointmentData?.start_date_time).format('DD/MM/YYYY. ')}
+                    </Text>
+                    <Text style={styles.bookedDate}>{`${moment(
+                      appointmentData?.start_date_time
+                    ).format('h:mm A')}-${moment(appointmentData?.end_date_time).format(
+                      'h:mm A'
+                    )}`}</Text>
                   </View>
                 </View>
-              </View>
-            </View>
-          )}
 
-          <View
-            style={{
-              width: windowWidth * 0.42,
-              alignSelf: 'center',
-              marginTop: userDetails ? 0 : ms(10),
-            }}
-          >
-            <View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <View>
-                  <Text style={[styles.selected, { fontSize: ms(12) }]}>
-                    {appointmentDetail?.product_name}
-                  </Text>
-                  <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(9), marginTop: ms(5) }}>
-                    Est {estimatedServiceTime} mins
-                  </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    marginTop: ms(5),
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <ProfileImage
+                    source={{ uri: userDetails?.profile_photo }}
+                    style={styles.customerUserProfile}
+                  />
+                  <View style={{ marginLeft: ms(6), flex: 1 }}>
+                    <Text style={styles.customerName}>
+                      {userDetails?.firstname + ' ' + userDetails?.lastname}
+                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Image source={pin} style={styles.eventAddressIcon} />
+                      <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
+                    </View>
+                  </View>
                 </View>
-                <Text style={[styles.selected, { fontSize: ms(12) }]}>
-                  {`$${appointmentData?.price}`}
-                </Text>
-              </View>
-              <Spacer space={ms(10)} />
-              <View style={styles.displayRow}>
-                <View style={[styles.colorRow, styles.serviceRow]} />
-                <Text style={styles.colorText}>SERVICE PROVIDER</Text>
-                <View style={[styles.colorRow, styles.serviceRow]} />
-              </View>
 
-              <Text style={styles.selected}>
-                Selected:{' '}
-                <Text style={{ color: COLORS.primary }}>
-                  {providerDetail?.user_profiles?.firstname +
-                    ' ' +
-                    providerDetail?.user_profiles?.lastname}
-                </Text>
-              </Text>
-              <Spacer space={ms(10)} />
-              <FlatList
-                data={getStaffUsers}
-                renderItem={renderServiceProviderItem}
-                keyExtractor={(item) => item.id}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              />
-              <Spacer space={ms(10)} />
-
-              <View style={styles.displayRow}>
-                <View style={[styles.colorRow, styles.serviceRow]} />
-                <Text style={styles.colorText}>AVAILABLE SLOT</Text>
-                <View style={[styles.colorRow, styles.serviceRow]} />
-              </View>
-              <Spacer space={ms(10)} />
-              <Text style={styles.selected}>
-                Service Time:{' '}
-                <Text style={{ color: COLORS.primary }}>
-                  {selectedDate === moment(new Date()).format('YYYY-MM-DD')
-                    ? `Today`
-                    : moment(selectedDate).format('ll')}
-                  {selectedTimeSlotData || (preSelectedStartTime && preSelectedEndTime) ? (
-                    <>
-                      {' '}
-                      @{' '}
-                      {selectedTimeSlotData
-                        ? selectedTimeSlotData?.start_time
-                        : preSelectedStartTime}{' '}
-                      - {selectedTimeSlotData ? selectedTimeSlotData?.end_time : preSelectedEndTime}
-                    </>
-                  ) : null}
-                </Text>
-              </Text>
-              <Spacer space={ms(10)} />
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginTop: 10,
-                }}
-              >
-                <MonthYearPicker
-                  dateType={DATE_TYPE.MONTH}
-                  placeholder={'Select Month'}
-                  containerStyle={{ marginRight: 10 }}
-                  defaultValue={moment().month() + 1}
-                  defaultYear={selectedYearData?.value ?? moment().year()}
-                  onSelect={(monthData) => {
-                    setselectedMonthData(monthData);
-                  }}
-                />
-                <MonthYearPicker
-                  dateType={DATE_TYPE.YEAR}
-                  placeholder={'Select Year'}
-                  defaultValue={moment().year()}
-                  onSelect={(yearData) => {
-                    setselectedYearData(yearData);
-                  }}
+                <Spacer space={ms(10)} />
+                <FlatList
+                  data={getStaffUsers}
+                  renderItem={renderServiceProviderItem}
+                  keyExtractor={(item) => item.id}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
                 />
               </View>
-            </View>
+            )}
 
             <View
               style={{
-                marginTop: SH(15),
-                borderWidth: 1,
-                borderColor: COLORS.solidGrey,
-                width: '100%',
+                width: windowWidth * 0.42,
+                alignSelf: 'center',
+                marginTop: userDetails ? 0 : ms(10),
               }}
             >
-              <FlatList horizontal data={monthDays} renderItem={renderWeekItem} />
-              {isLoadingTimeSlot ? (
-                <View style={{ paddingVertical: ms(40) }}>
-                  <ActivityIndicator size={'large'} />
+              {/* <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <View>
+                    <Text style={[styles.selected, { fontSize: ms(12) }]}>
+                      {appointmentDetail?.product_name}
+                    </Text>
+                    <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(9), marginTop: ms(5) }}>
+                      Est {estimatedServiceTime} mins
+                    </Text>
+                  </View>
+                  <Text style={[styles.selected, { fontSize: ms(12) }]}>
+                    {`$${appointmentData?.price}`}
+                  </Text>
                 </View>
-              ) : (
+
+                <Spacer space={ms(10)} />
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: 10,
+                  }}
+                >
+                  <MonthYearPicker
+                    dateType={DATE_TYPE.MONTH}
+                    placeholder={'Select Month'}
+                    containerStyle={{ marginRight: 10 }}
+                    defaultValue={moment().month() + 1}
+                    defaultYear={selectedYearData?.value ?? moment().year()}
+                    onSelect={(monthData) => {
+                      setselectedMonthData(monthData);
+                    }}
+                  />
+                  <MonthYearPicker
+                    dateType={DATE_TYPE.YEAR}
+                    placeholder={'Select Year'}
+                    defaultValue={moment().year()}
+                    onSelect={(yearData) => {
+                      setselectedYearData(yearData);
+                    }}
+                  />
+                </View>
+              </View> */}
+
+              <View
+                style={{
+                  marginTop: SH(10),
+                  // borderWidth: 1,
+                  // borderColor: COLORS.solidGrey,
+                  width: '100%',
+                }}
+              >
                 <FlatList
-                  scrollEnabled={false}
-                  data={timeSlotsData || []}
-                  numColumns={4}
-                  renderItem={renderSlotItem}
-                  ListEmptyComponent={() => (
-                    <View
-                      style={{
-                        height: ms(50),
-                        paddingHorizontal: ms(10),
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
-                        There are no slots available for this day
-                      </Text>
-                    </View>
-                  )}
+                  horizontal
+                  data={monthDays}
+                  renderItem={renderWeekItem}
+                  showsHorizontalScrollIndicator={false}
                 />
-              )}
+
+                <Spacer space={ms(10)} />
+                {isLoadingTimeSlot ? (
+                  <View style={{ paddingVertical: ms(40) }}>
+                    <ActivityIndicator size={'large'} />
+                  </View>
+                ) : (
+                  <FlatList
+                    scrollEnabled={false}
+                    data={timeSlotsData || []}
+                    numColumns={4}
+                    renderItem={renderSlotItem}
+                    ListEmptyComponent={() => (
+                      <View
+                        style={{
+                          height: ms(50),
+                          paddingHorizontal: ms(10),
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
+                          There are no slots available for this day
+                        </Text>
+                      </View>
+                    )}
+                  />
+                )}
+              </View>
+            </View>
+            <View style={styles.cancelSavebtnReschedule}>
+              <Button
+                title="Cancel Appointment"
+                textStyle={[styles.detailBtnCon]}
+                style={[styles.continueBtnCon, {}]}
+                onPress={onCancelAppoinment}
+              />
+              <Spacer space={ms(10)} horizontal />
+              <ArrowButton
+                title="Accept Changes"
+                textStyle={styles.addTocartText}
+                style={[styles.addToCartCon, {}]}
+                onPress={onReschuleAppointment}
+              />
             </View>
           </View>
-          <View style={styles.cancelSavebtnReschedule}>
-            <Button
-              title="Cancel Booking"
-              textStyle={[styles.detailBtnCon]}
-              style={[styles.continueBtnCon, { flex: 1 }]}
-              onPress={onCancelAppoinment}
-            />
-            <Spacer space={ms(10)} horizontal />
-            <Button
-              title="Save Modification"
-              textStyle={styles.addTocartText}
-              style={[styles.addToCartCon, { flex: 1 }]}
-              onPress={onReschuleAppointment}
-            />
-          </View>
-        </View>
-      </ScrollView>
-    </PaperModal>
+        </ScrollView>
+      </View>
+    </ReactNativeModal>
   );
 };
 

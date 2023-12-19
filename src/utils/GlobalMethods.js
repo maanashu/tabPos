@@ -403,7 +403,20 @@ const pSBC = (p, c0, c1, l) => {
         .slice(1, f ? undefined : -2)
     );
 };
+const calculateTimeDuration = (item) => {
+  const startMoment = moment(item?.start_date_time);
+  const endMoment = moment(item?.end_date_time);
+  const duration = moment.duration(endMoment.diff(startMoment));
 
+  const startFormattedTime = startMoment.format('h:mm A');
+  const endFormattedTime = moment(item?.end_date_time).format('h:mm A');
+
+  const hours = Math.floor(duration.asHours());
+  const minutes = Math.floor(duration.asMinutes()) % 60;
+
+  const newFormattedTime = `${startFormattedTime} - ${endFormattedTime} (${hours} hrs ${minutes} mins)`;
+  return newFormattedTime;
+};
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -427,4 +440,5 @@ export {
   getCurrentAddress,
   imageSource,
   pSBC,
+  calculateTimeDuration,
 };
