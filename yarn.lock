@@ -7472,6 +7472,11 @@ reactotron-react-native@^5.0.4:
   optionalDependencies:
     react-native-flipper "^0.164.0"
 
+reactotron-redux@^3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/reactotron-redux/-/reactotron-redux-3.1.4.tgz#8dc8101f508eb33f57033613da14a6fd0ba77777"
+  integrity sha512-UaEi1J4FwUqWWOv6QjLz8XBVUhC8JCo1e6PQJpWOteU45yIhWCCYZH2BZgt7ALPPkoOxG/hMBL01wmGy2rYRTw==
+
 read-pkg-up@^7.0.1:
   version "7.0.1"
   resolved "https://registry.npmjs.org/read-pkg-up/-/read-pkg-up-7.0.1.tgz"

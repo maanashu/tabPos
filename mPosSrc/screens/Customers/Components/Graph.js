@@ -36,7 +36,7 @@ const Graph = ({ graphDetail }) => {
 
   return (
     <View style={styles.graphViewStyle}>
-      <View style={styles.flexRow}>
+      <View style={[styles.flexRow]}>
         <TouchableOpacity
           style={styles.checkboxViewStyle}
           onPress={() => setWalkCustomerCheck((prev) => !prev)}

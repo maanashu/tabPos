@@ -139,7 +139,7 @@ export function OrderDetail(props) {
               >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
               <Text
                 style={styles.addressTextStyle}
-              >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+              >{`${customerDetail?.current_address?.street_address}\n${customerDetail?.current_address?.city}\n${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
             </View>
           </View>
 

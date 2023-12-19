@@ -61,12 +61,22 @@ export function PosUsers() {
       />
 
       <View style={styles.detailViewStyle}>
-        <Text style={styles.userNameTextStyle}>{item?.user?.user_profiles?.firstname ?? '-'}</Text>
+        <Text style={styles.userNameTextStyle}>
+          {item?.user?.user_profiles?.firstname + ' ' + item?.user?.user_profiles?.lastname ?? '-'}
+        </Text>
 
         <Text style={styles.roleTextStyle} numberOfLines={1}>
-          {item?.user?.user_roles?.length > 0
+          {item.user?.user_roles?.map((data, index) => {
+            if (index === item.user?.user_roles?.length - 1) {
+              return `${data.role?.name}`;
+            } else {
+              return `${data.role?.name}, `;
+            }
+          })}
+
+          {/* {item?.user?.user_roles?.length > 0
             ? item.user?.user_roles?.map((roleItem) => roleItem?.role?.name)
-            : 'admin'}
+            : 'admin'} */}
         </Text>
 
         {item.user?.api_tokens.length > 0 && (

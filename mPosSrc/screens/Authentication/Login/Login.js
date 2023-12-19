@@ -93,6 +93,7 @@ export function Login(props) {
         pos_user_id: posUser?.user_id.toString(),
         pos_security_pin: value,
       };
+
       const res = await dispatch(loginPosUser(data));
       setIsLoading(false);
       if (res?.type !== TYPES.LOGIN_POS_USER_ERROR) {

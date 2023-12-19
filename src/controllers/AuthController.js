@@ -146,7 +146,10 @@ export class AuthController {
         phone_number: data.phone_no,
         security_pin: data.pin,
       };
-      HttpClient.post(endpoint, body)
+      const headers = {
+        'app-name': 'merchant',
+      };
+      HttpClient.post(endpoint, body, { headers })
         .then((response) => {
           if (response.status_code === 200) {
             //   Toast.show({
