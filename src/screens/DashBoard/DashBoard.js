@@ -69,7 +69,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import { navigate } from '@/navigation/NavigationRef';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { logoutUserFunction } from '@/actions/UserActions';
-import { getLoginSessionTime } from '@/utils/GlobalMethods';
+import { ADMIN, getLoginSessionTime } from '@/utils/GlobalMethods';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -521,10 +521,14 @@ export function DashBoard({ navigation }) {
               {`${getPosUser?.user_profiles?.firstname} ${getPosUser?.user_profiles?.lastname}`}
             </Text>
             <View style={styles.cashierContainer}>
-              <Text style={styles.posCashier}>
-                {getPosUser?.user_roles?.length > 0
-                  ? getPosUser?.user_roles?.map((item) => item.role?.name)
-                  : 'admin'}
+              <Text style={[styles.posCashier, { width: ms(90) }]}>
+                {getPosUser?.user_roles?.map((item, index) => {
+                  if (index === getPosUser?.user_roles?.length - 1) {
+                    return `${item.role?.name}`;
+                  } else {
+                    return `${item.role?.name}, `;
+                  }
+                })}
               </Text>
               <Spacer horizontal space={12} />
               <View style={styles.cashierIdContainer}>

@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // paddingHorizontal: 5,
-    backgroundColor: COLORS.inputBorder,
+    backgroundColor: COLORS.textInputBackground,
   },
   storeNameHeader: {
     flexDirection: 'row',

@@ -400,7 +400,7 @@ export function ServiceCart({ cartChangeHandler }) {
                           <Text style={styles.verticalRow}>{'|'}</Text>
                           <Text style={[styles.sukNumber, styles.timeitalic]}>
                             {moment(data?.item?.date).format('LL')} @
-                            {data?.item?.start_time + '-' + data?.item?.start_time}
+                            {data?.item?.start_time + '-' + data?.item?.end_time}
                           </Text>
                         </View>
                         <Spacer space={SH(2)} />

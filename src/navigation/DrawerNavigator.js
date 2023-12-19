@@ -36,6 +36,7 @@ import { navigate } from '@/navigation/NavigationRef';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { addSellingSelection } from '@/actions/DashboardAction';
 import { Images } from '@/assets/new_icon';
+import { ADMIN } from '@/utils/GlobalMethods';
 const windowHeight = Dimensions.get('window').height;
 
 export function DrawerNavigator(props) {
@@ -285,7 +286,7 @@ export function DrawerNavigator(props) {
           )}
         />
 
-        {getUserData?.posLoginData?.user_roles.length === 0 && (
+        {ADMIN()?.length > 0 && (
           <DrawerItem
             label={''}
             activeBackgroundColor={COLORS.transparent}

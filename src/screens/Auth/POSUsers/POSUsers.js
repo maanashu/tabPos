@@ -52,6 +52,7 @@ export function POSUsers({ navigation }) {
   const isFocused = useIsFocused();
   const getAuth = useSelector(getAuthData);
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
+  console.log('0--------', JSON.stringify(posUserArray));
   const posUserArraydata = getAuth?.getAllPosUsersData;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
@@ -315,10 +316,14 @@ export function POSUsers({ navigation }) {
                       {`${item.user?.user_profiles?.firstname} ${item.user?.user_profiles?.lastname} `}
                     </Text>
                     <Spacer space={SH(6)} />
-                    <Text style={styles.role} numberOfLines={1}>
-                      {item.user?.user_roles?.length > 0
-                        ? item.user?.user_roles?.map((item) => item.role?.name)
-                        : 'admin'}
+                    <Text style={styles.role} numberOfLines={4}>
+                      {item.user?.user_roles?.map((data, index) => {
+                        if (index === item.user?.user_roles?.length - 1) {
+                          return `${data.role?.name}`;
+                        } else {
+                          return `${data.role?.name}, `;
+                        }
+                      })}
                     </Text>
 
                     <Spacer space={SH(24)} />

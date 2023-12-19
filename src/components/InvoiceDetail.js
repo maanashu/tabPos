@@ -34,6 +34,7 @@ import moment from 'moment';
 import ShipmentTracking from '@/screens/DeliveryOrders2/Components/ShipmentTracking';
 import { getUser } from '@/selectors/UserSelectors';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
 
 export function InvoiceDetail({ mapRef, closeHandler }) {
   const dispatch = useDispatch();
@@ -41,6 +42,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
   const getAuth = useSelector(getAuthData);
   const oneOrderDetail = useSelector(getAnalytics);
   const singleOrderDetail = oneOrderDetail?.getOrderData;
+  console.log('singleOrderDetail', JSON.stringify(singleOrderDetail));
   const sellerDetailData = singleOrderDetail?.seller_details;
   const location = getAuth?.merchantLoginData?.user?.user_profiles?.current_address;
   const latitude = parseFloat(location?.latitude ?? 0.0);
@@ -183,7 +185,9 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               <Text style={styles._commonPayTitle}>
                 {moment(singleOrderDetail?.created_at).format('llll')}
               </Text>
-              <Text style={styles._commonPayTitle}>Walk-In</Text>
+              <Text style={styles._commonPayTitle}>
+                {DELIVERY_MODE[singleOrderDetail?.delivery_option]}
+              </Text>
 
               <Text style={styles._commonPayTitle}>
                 POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
@@ -404,7 +408,9 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               <Text style={styles._commonPayTitle}>
                 {moment(singleOrderDetail?.created_at).format('llll')}
               </Text>
-              <Text style={styles._commonPayTitle}>Walk-In</Text>
+              <Text style={styles._commonPayTitle}>
+                {DELIVERY_MODE[singleOrderDetail?.delivery_option]}
+              </Text>
               <Text style={styles._commonPayTitle}>
                 POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
               </Text>
