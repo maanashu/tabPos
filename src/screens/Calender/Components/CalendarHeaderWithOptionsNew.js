@@ -95,7 +95,7 @@ const CalendarHeaderWithOptions = ({
             <Image source={bookingsNotification} style={[styles.truckStyle]} />
           </TouchableOpacity>
           <Spacer space={ms(16)} horizontal />
-          <TouchableOpacity onPress={onPressNotification}>
+          <TouchableOpacity onPress={onPressSearch}>
             <Image source={bookingsSearch} style={[styles.truckStyle]} />
           </TouchableOpacity>
         </View>

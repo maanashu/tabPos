@@ -84,7 +84,7 @@ export const styles = StyleSheet.create({
   },
   headerMainView: {
     width: windowWidth,
-    // paddingHorizontal: SW(16),
+    paddingHorizontal: SW(8),
     alignSelf: 'center',
     justifyContent: 'space-between',
     paddingVertical: SH(18),

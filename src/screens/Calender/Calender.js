@@ -822,11 +822,11 @@ export function Calender() {
                       style={styles.renderItemContainer}
                     >
                       <View>
-                        <Image
-                          source={imageUrl && isPng ? { uri: imageUrl } : userImage}
-                          style={
-                            imageUrl && isPng ? styles.employeeImages : styles.staticEmployeeImages
-                          }
+                        <ProfileImage
+                          source={{
+                            uri: userProfile?.profile_photo,
+                          }}
+                          style={styles.employeeImages}
                         />
 
                         <View style={styles.circularBadgeEmployee}>

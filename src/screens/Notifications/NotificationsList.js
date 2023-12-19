@@ -33,6 +33,7 @@ import { fetchAllNotifications } from '@/actions/SettingAction';
 moment.suppressDeprecationWarnings = true;
 
 import { styles } from './styles';
+import { ms } from 'react-native-size-matters';
 
 export default function NotificationsList(props) {
   const screen = props?.route?.params?.screen;
@@ -166,6 +167,7 @@ export default function NotificationsList(props) {
       {customHeader()}
 
       <SectionList
+        contentContainerStyle={{ paddingHorizontal: ms(10) }}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
         sections={sectionedNotifications || []}
