@@ -1102,14 +1102,15 @@ export function Calender() {
               <Spacer horizontal space={ms(10)} />
               <TouchableOpacity
                 style={styles.acceptButtonStyle}
-                onPress={() =>
+                onPress={() => {
                   dispatch(
                     changeAppointmentStatus(
                       selectedPosStaffCompleteData?.id,
                       APPOINTMENT_STATUS.CHECKED_IN
                     )
-                  )
-                }
+                  );
+                  setcheckIn(false);
+                }}
               >
                 <Text style={styles.acceptText}>Confirm</Text>
                 <Image style={styles.rightArrowStyle} source={Images.arrowUpRightIcon} />
