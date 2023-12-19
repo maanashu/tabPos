@@ -119,10 +119,14 @@ export function PosUserPasscode({ route }) {
               {`${posuser.user?.user_profiles?.firstname} ${posuser.user?.user_profiles?.lastname} `}
             </Text>
             <Spacer space={SH(6)} />
-            <Text style={styles.role} numberOfLines={1}>
-              {posuser.user?.user_roles?.length > 0
-                ? posuser.user?.user_roles?.map((item) => item.role?.name)
-                : 'admin'}
+            <Text style={styles.role} numberOfLines={3}>
+              {posuser.user?.user_roles?.map((data, index) => {
+                if (index === posuser.user?.user_roles?.length - 1) {
+                  return `${data.role?.name}`;
+                } else {
+                  return `${data.role?.name}, `;
+                }
+              })}
             </Text>
           </View>
           <Spacer space={SH(16)} />

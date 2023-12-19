@@ -51,6 +51,7 @@ import { WeeklyTransaction } from './Components/WeeklyTransaction';
 import { InvoiceDetail } from '@/screens/Analytics2/Components/InvoiceDetail';
 
 import { styles } from './Analytics2.styles';
+import { ADMIN } from '@/utils/GlobalMethods';
 
 export function Analytics2() {
   const mapRef = useRef(null);
@@ -377,7 +378,7 @@ export function Analytics2() {
 
                 <Spacer space={ms(10)} />
                 <TouchableOpacity
-                  disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+                  disabled={ADMIN()?.length > 0 ? false : true}
                   onPress={() => setselectedScreen('Revenue')}
                   style={[
                     styles.bucketBackgorund,
@@ -385,9 +386,9 @@ export function Analytics2() {
                       backgroundColor:
                         selectedScreen === 'Revenue'
                           ? COLORS.sky_grey
-                          : getPosUser?.user_roles?.length > 0
-                          ? COLORS.transparentGreen
-                          : COLORS.white,
+                          : ADMIN()?.length > 0
+                          ? COLORS.white
+                          : COLORS.transparentGreen,
                     },
                   ]}
                 >
@@ -399,9 +400,9 @@ export function Analytics2() {
                         tintColor:
                           selectedScreen === 'Revenue'
                             ? COLORS.navy_blue
-                            : getPosUser?.user_roles?.length > 0
-                            ? COLORS.input_border
-                            : COLORS.light_blue2,
+                            : ADMIN()?.length > 0
+                            ? COLORS.light_blue2
+                            : COLORS.input_border,
                       },
                     ]}
                   />
@@ -410,7 +411,7 @@ export function Analytics2() {
                 <Spacer space={ms(2)} />
 
                 <TouchableOpacity
-                  disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+                  disabled={ADMIN()?.length > 0 ? false : true}
                   onPress={() => setselectedScreen('TotalCost')}
                   style={[
                     styles.bucketBackgorund,
@@ -418,9 +419,9 @@ export function Analytics2() {
                       backgroundColor:
                         selectedScreen === 'TotalCost'
                           ? COLORS.sky_grey
-                          : getPosUser?.user_roles?.length > 0
-                          ? COLORS.transparentGreen
-                          : COLORS.white,
+                          : ADMIN()?.length > 0
+                          ? COLORS.white
+                          : COLORS.transparentGreen,
                     },
                   ]}
                 >
@@ -432,9 +433,9 @@ export function Analytics2() {
                         tintColor:
                           selectedScreen === 'TotalCost'
                             ? COLORS.navy_blue
-                            : getPosUser?.user_roles?.length > 0
-                            ? COLORS.input_border
-                            : COLORS.light_blue2,
+                            : ADMIN()?.length > 0
+                            ? COLORS.light_blue2
+                            : COLORS.input_border,
                       },
                     ]}
                   />
@@ -442,16 +443,16 @@ export function Analytics2() {
 
                 <Spacer space={ms(2)} />
                 <TouchableOpacity
-                  disabled={getPosUser?.user_roles?.length > 0 ? true : false}
+                  disabled={ADMIN()?.length > 0 ? false : true}
                   style={[
                     styles.bucketBackgorund,
                     {
                       backgroundColor:
                         selectedScreen === 'TotalProfit'
                           ? COLORS.sky_grey
-                          : getPosUser?.user_roles?.length > 0
-                          ? COLORS.transparentGreen
-                          : COLORS.white,
+                          : ADMIN()?.length > 0
+                          ? COLORS.white
+                          : COLORS.transparentGreen,
                     },
                   ]}
                   onPress={() => setselectedScreen('TotalProfit')}
@@ -464,9 +465,9 @@ export function Analytics2() {
                         tintColor:
                           selectedScreen === 'TotalProfit'
                             ? COLORS.navy_blue
-                            : getPosUser?.user_roles?.length > 0
-                            ? COLORS.input_border
-                            : COLORS.light_blue2,
+                            : ADMIN()?.length > 0
+                            ? COLORS.light_blue2
+                            : COLORS.input_border,
                       },
                     ]}
                   />

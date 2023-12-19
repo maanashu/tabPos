@@ -1,6 +1,7 @@
 import { Alert, Keyboard, Linking, PermissionsAndroid, ToastAndroid } from 'react-native';
 import { strings } from '@/localization';
 import moment from 'moment';
+import { store } from '@/store';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -404,6 +405,13 @@ const pSBC = (p, c0, c1, l) => {
     );
 };
 
+const ADMIN = () => {
+  const admin = store
+    .getState()
+    .user?.posLoginData?.user_roles?.filter((item) => item?.role?.slug == 'pos_admin');
+  return admin;
+};
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -427,4 +435,5 @@ export {
   getCurrentAddress,
   imageSource,
   pSBC,
+  ADMIN,
 };

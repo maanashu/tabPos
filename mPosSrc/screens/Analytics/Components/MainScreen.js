@@ -18,6 +18,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import { styles } from '../styles';
 import { Spacer } from '@/components';
 import { BarChartCom } from '@mPOS/components/BarChartCom';
+import { ADMIN } from '@/utils/GlobalMethods';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -128,7 +129,7 @@ export function MainScreen({
   return (
     <View>
       <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: ms(70) }}>
-        {getPosUser?.user_roles?.length > 0 ? (
+        {ADMIN()?.length > 0 ? (
           <HomeGraph
             header="Total Revenue"
             subHeader={
@@ -156,16 +157,7 @@ export function MainScreen({
             />
           </View>
         )}
-        {getPosUser?.user_roles?.length > 0 ? (
-          <View>
-            <HomeGraph
-              header="Total Costs"
-              subHeader={'0'}
-              disabled
-              style={{ backgroundColor: COLORS.mid_grey }}
-            />
-          </View>
-        ) : (
+        {ADMIN()?.length > 0 ? (
           <HomeGraph
             header="Total Costs"
             subHeader={
@@ -183,18 +175,18 @@ export function MainScreen({
             startDated={startDated}
             endDated={endDated}
           />
-        )}
-
-        {getPosUser?.user_roles?.length > 0 ? (
+        ) : (
           <View>
             <HomeGraph
-              header="Gross Profit"
+              header="Total Costs"
               subHeader={'0'}
               disabled
               style={{ backgroundColor: COLORS.mid_grey }}
             />
           </View>
-        ) : (
+        )}
+        {/* getPosUser?.user_roles?.length > 0 */}
+        {ADMIN()?.length > 0 ? (
           <HomeGraph
             header="Gross Profit"
             subHeader={
@@ -212,6 +204,15 @@ export function MainScreen({
             startDated={startDated}
             endDated={endDated}
           />
+        ) : (
+          <View>
+            <HomeGraph
+              header="Gross Profit"
+              subHeader={'0'}
+              disabled
+              style={{ backgroundColor: COLORS.mid_grey }}
+            />
+          </View>
         )}
         <HomeGraph
           header="Total POS Orders"

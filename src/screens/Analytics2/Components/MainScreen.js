@@ -18,6 +18,7 @@ import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { ms } from 'react-native-size-matters';
 import { useEffect } from 'react';
+import { ADMIN } from '@/utils/GlobalMethods';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   // const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -128,16 +129,7 @@ export function MainScreen({
   return (
     <View>
       <View style={styles.flexDirectionRow}>
-        {getPosUser?.user_roles?.length > 0 ? (
-          <View>
-            <HomeGraph
-              header="Total Revenue"
-              subHeader={'0'}
-              disabled
-              style={{ backgroundColor: COLORS.input_border }}
-            />
-          </View>
-        ) : (
+        {ADMIN()?.length > 0 ? (
           <HomeGraph
             header="Total Revenue"
             subHeader={
@@ -158,17 +150,18 @@ export function MainScreen({
             endDated={endDated}
             style={{ marginLeft: ms(2) }}
           />
-        )}
-        {getPosUser?.user_roles?.length > 0 ? (
+        ) : (
           <View>
             <HomeGraph
-              header="Total Costs"
+              header="Total Revenue"
               subHeader={'0'}
               disabled
               style={{ backgroundColor: COLORS.input_border }}
             />
           </View>
-        ) : (
+        )}
+
+        {ADMIN()?.length > 0 ? (
           <HomeGraph
             header="Total Costs"
             subHeader={
@@ -188,18 +181,18 @@ export function MainScreen({
             startDated={startDated}
             endDated={endDated}
           />
-        )}
-
-        {getPosUser?.user_roles?.length > 0 ? (
+        ) : (
           <View>
             <HomeGraph
-              header="Gross Profit"
+              header="Total Costs"
               subHeader={'0'}
               disabled
               style={{ backgroundColor: COLORS.input_border }}
             />
           </View>
-        ) : (
+        )}
+
+        {ADMIN()?.length > 0 ? (
           <HomeGraph
             header="Gross Profit"
             subHeader={
@@ -219,6 +212,15 @@ export function MainScreen({
             startDated={startDated}
             endDated={endDated}
           />
+        ) : (
+          <View>
+            <HomeGraph
+              header="Gross Profit"
+              subHeader={'0'}
+              disabled
+              style={{ backgroundColor: COLORS.input_border }}
+            />
+          </View>
         )}
       </View>
       <View style={styles.flexDirectionRow}>
