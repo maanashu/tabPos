@@ -27,6 +27,10 @@ export function ProductRefund(props) {
   const [orders, setOrders] = useState();
   const [isPartialRefund, setIsPartialRefund] = useState(false);
   const [isEditPrice, setIsEditPrice] = useState(false);
+  const [applyEachItem, setApplyEachItem] = useState(false);
+  const [selectType, setSelectType] = useState('dollar');
+  const [buttonText, setButtonText] = useState('Apply Refund');
+  const [changeView, setChangeView] = useState('TotalItems');
   const [selectedItem, setSelectedItem] = useState();
   const [selectedIndex, setSelectedIndex] = useState();
   const [isApplyAmount, setIsApplyAmount] = useState();
@@ -169,6 +173,20 @@ export function ProductRefund(props) {
     setOrders(val);
     setIsApplyAmount('applyForEachItem');
   };
+  const getOrdersDetail = () => {
+    if (applyEachItem) {
+      const newArray = orders.map((obj) => ({
+        ...obj, // Copy all existing key-value pairs
+        ['applyToEachItemKey']: applyEachItem, //
+      }));
+      setOrders(newArray);
+      // setChangeView('PaymentScreen');
+      productDetailRef?.current?.open();
+    } else {
+      // setChangeView('PaymentScreen');
+      productDetailRef?.current?.open();
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -242,7 +260,14 @@ export function ProductRefund(props) {
         <Spacer space={SH(20)} />
 
         <TouchableOpacity
-          onPress={() => setIsCheckConfirmationModalVisible(true)}
+          onPress={() => {
+            if (finalOrder?.order?.order_type === 'service') {
+              setIsCheckConfirmationModalVisible(false);
+              getOrdersDetail();
+            } else {
+              setIsCheckConfirmationModalVisible(true);
+            }
+          }}
           disabled={orders?.length > 0 ? false : true}
           style={styles.buttonStyle}
         >

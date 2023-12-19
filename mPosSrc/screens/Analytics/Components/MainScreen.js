@@ -80,6 +80,7 @@ export function MainScreen({
   const totalInventory = getAnalyticsData?.getTotalInventory;
   const getUserData = useSelector(getUser);
   const getPosUser = getUserData?.posLoginData;
+  console.log('getPosUser?.user_roles?.length ', getPosUser?.user_roles?.length);
 
   const interval = 2;
   const maxLabel = analyticStatistics?.profit?.graph_data?.labels?.length;
@@ -128,15 +129,6 @@ export function MainScreen({
     <View>
       <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: ms(70) }}>
         {getPosUser?.user_roles?.length > 0 ? (
-          <View>
-            <HomeGraph
-              header="Total Revenue"
-              subHeader={'0'}
-              disabled
-              style={{ backgroundColor: COLORS.mid_grey }}
-            />
-          </View>
-        ) : (
           <HomeGraph
             header="Total Revenue"
             subHeader={
@@ -154,6 +146,15 @@ export function MainScreen({
             startDated={startDated}
             endDated={endDated}
           />
+        ) : (
+          <View>
+            <HomeGraph
+              header="Total Revenue"
+              subHeader={'0'}
+              disabled
+              style={{ backgroundColor: COLORS.mid_grey }}
+            />
+          </View>
         )}
         {getPosUser?.user_roles?.length > 0 ? (
           <View>

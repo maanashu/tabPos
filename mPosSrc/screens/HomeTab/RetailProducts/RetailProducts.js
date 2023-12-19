@@ -59,6 +59,7 @@ export function RetailProducts(props) {
   const productCart = retailData?.getAllCart?.poscart_products ?? [];
   const onlyProductCartArray = productCart?.filter((item) => item?.product_type === 'product');
   const onlyServiceCartArray = productCart?.filter((item) => item?.product_type === 'service');
+  console.log('onlyServiceCartArray', onlyServiceCartArray?.length);
   const productData = retailData?.getMainProduct;
   const addProductCartRef = useRef(null);
   const productDetailRef = useRef(null);
@@ -451,9 +452,21 @@ export function RetailProducts(props) {
             title={`Back`}
             cartIcon
             cartHandler={() => {
-              bulkCart();
-              dispatch(cartRun('product'));
-              navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+              if (onlyServiceCartArray?.length >= 1) {
+                CustomAlert({
+                  title: 'Alert',
+                  description: 'Please clear service cart',
+                  yesButtonTitle: 'Clear cart',
+                  noButtonTitle: 'Cancel',
+                  onYesPress: () => {
+                    dispatch(clearAllCart());
+                  },
+                });
+              } else {
+                bulkCart();
+                dispatch(cartRun('product'));
+                navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+              }
             }}
             cartLength={cartLength}
           />

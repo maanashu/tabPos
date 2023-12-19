@@ -30,6 +30,7 @@ export function PosUsers() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const posUserArray = getAuth?.getAllPosUsers;
+  console.log('posUserArray', JSON.stringify(posUserArray));
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const [selectedUser, setSelectedUser] = useState('');
