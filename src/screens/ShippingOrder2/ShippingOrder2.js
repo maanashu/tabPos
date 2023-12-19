@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 
 import Pdf from 'react-native-pdf';
 import RNPrint from 'react-native-print';
@@ -133,11 +141,16 @@ export function ShippingOrder2() {
     dispatch(orderStatusCount());
   };
 
-  const onpressViewHandler = (id) => {
+  const onpressViewHandler = (id, item, index) => {
     setViewAllOrders(true);
     dispatch(getOrderData(id));
-    setUserDetail(ordersList?.[0] ?? []);
-    setOrderDetail(ordersList?.[0]?.order_details ?? []);
+    if (index == undefined) {
+      setUserDetail(ordersList?.[0] ?? []);
+      setOrderDetail(ordersList?.[0]?.order_details ?? []);
+    } else {
+      setUserDetail(ordersList?.[index] ?? []);
+      setOrderDetail(ordersList?.[index]?.order_details ?? []);
+    }
   };
 
   const trackOrderHandler = (info) => {
@@ -239,8 +252,11 @@ export function ShippingOrder2() {
       acceptOrder(data, () => {
         alert('Order declined successfully');
         setViewAllOrders(false);
-        dispatch(getReviewDefault(0));
+        dispatch(getReviewDefault(openShippingOrders));
         dispatch(orderStatusCount());
+        setUserDetail(ordersList?.[0] ?? []);
+        setViewAllOrders(true);
+        setOrderDetail(ordersList?.[0]?.order_details ?? []);
       })
     );
   };

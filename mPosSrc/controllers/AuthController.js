@@ -33,6 +33,7 @@ export class AuthController {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.merchantLogin;
       const body = data;
+
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response.status_code === 200) {

@@ -36,9 +36,12 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
   const getOrdersData = useSelector(getDelivery);
   const ordersList = getOrdersData?.getReviewDef;
 
-  const renderOrderToReview = ({ item }) => {
+  const renderOrderToReview = ({ item, index }) => {
     return (
-      <TouchableOpacity onPress={() => onViewAllHandler(item.id)} style={styles.orderRowStyle}>
+      <TouchableOpacity
+        onPress={() => onViewAllHandler(item.id, item, index)}
+        style={styles.orderRowStyle}
+      >
         <View style={{ width: SW(12), alignItems: 'center', alignSelf: 'center' }}>
           <Text
             style={{
