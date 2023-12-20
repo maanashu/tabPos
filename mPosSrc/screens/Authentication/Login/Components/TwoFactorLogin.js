@@ -135,7 +135,6 @@ export function TwoFactorLogin(props) {
       const authToken = userResponse?.token;
       const verificationFunction = verifyGoogleCodeMPOS;
       const res = await verificationFunction(data, authToken)(dispatch);
-      // console.log('Dsaasd--TWO_FACTOR', res);
       setIsLoading(false);
       if (res?.data?.status_code === 201) {
         dispatch(loginPosUserSuccess(userResponse));

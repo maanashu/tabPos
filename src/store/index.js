@@ -18,8 +18,8 @@ const rootReducer = tabPosRootReducer;
 
 export const store = createStore(
   persistReducer(persistConfig, rootReducer),
-  compose(applyMiddleware(thunk), Reactotron.createEnhancer())
-  // applyMiddleware(thunk)
+  // compose(applyMiddleware(thunk), Reactotron.createEnhancer())
+  applyMiddleware(thunk)
 );
 
 export const persistor = persistStore(store);

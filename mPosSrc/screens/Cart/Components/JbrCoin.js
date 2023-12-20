@@ -46,7 +46,6 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
   const requestStatus = retailData?.requestCheck;
   const qrStatus = retailData.qrStatuskey;
   const saveCartData = cartData;
-  console.log('requestStatus', requestStatus, retailData?.qrStatuskey);
 
   const snapPoints = useMemo(() => ['82%'], []);
 

@@ -59,7 +59,6 @@ export function RetailProducts(props) {
   const productCart = retailData?.getAllCart?.poscart_products ?? [];
   const onlyProductCartArray = productCart?.filter((item) => item?.product_type === 'product');
   const onlyServiceCartArray = productCart?.filter((item) => item?.product_type === 'service');
-  console.log('onlyServiceCartArray', onlyServiceCartArray?.length);
   const productData = retailData?.getMainProduct;
   const addProductCartRef = useRef(null);
   const productDetailRef = useRef(null);

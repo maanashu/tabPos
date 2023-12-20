@@ -27,8 +27,6 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
   const orderInvoice = retailData?.createOrder;
   const saveProductData = saveCart?.poscart_products;
 
-  console.log('saveCart', orderCreateData);
-
   // change due function
   const payAmount = Number(orderCreateData?.tips ?? '0.00')?.toFixed(2);
   const actualAmount = Number(saveCart?.amount?.total_amount ?? '0.00')?.toFixed(2);

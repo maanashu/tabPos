@@ -52,7 +52,6 @@ export function POSUsers({ navigation }) {
   const isFocused = useIsFocused();
   const getAuth = useSelector(getAuthData);
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
-  console.log('0--------', JSON.stringify(posUserArray));
   const posUserArraydata = getAuth?.getAllPosUsersData;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;

@@ -81,7 +81,6 @@ export function MainScreen({
   const totalInventory = getAnalyticsData?.getTotalInventory;
   const getUserData = useSelector(getUser);
   const getPosUser = getUserData?.posLoginData;
-  console.log('getPosUser?.user_roles?.length ', getPosUser?.user_roles?.length);
 
   const interval = 2;
   const maxLabel = analyticStatistics?.profit?.graph_data?.labels?.length;

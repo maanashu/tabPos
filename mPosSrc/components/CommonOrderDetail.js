@@ -63,7 +63,6 @@ export function CommonOrderDetail(props) {
   const orderLoad = useSelector((state) =>
     isLoadingSelector([TYPES.TODAY_ORDER_STATUS, TYPES.DELIVERING_ORDER], state)
   );
-  console.log('orderData', JSON.stringify(props?.route?.params?.data));
   const setHeaderText = (value) => {
     switch (value) {
       case '0':
