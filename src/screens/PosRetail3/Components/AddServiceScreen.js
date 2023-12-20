@@ -206,7 +206,6 @@ export const AddServiceScreen = ({ backHandler }) => {
       posUserId: posUserId,
       // offerId: offerId,
     };
-
     dispatch(addToServiceCart(data));
     backHandler();
   };

@@ -71,6 +71,7 @@ export function CartServiceScreen({
   // let arr = [getRetailData?.getserviceCart];
 
   let arr = [getRetailData?.getAllCart];
+  console.log('getRetailData?.getAllCart', JSON.stringify(getRetailData?.getAllCart));
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);
@@ -433,30 +434,37 @@ export function CartServiceScreen({
                                   </Text>
                                 )} */}
 
-                                {/* {Object.keys(data?.pos_user_details)?.length > 0 && (
-                                  <View
-                                    style={{
-                                      borderWidth: 1,
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                      flex: 1,
-                                      marginVertical: ms(5),
-                                    }}
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    flex: 1,
+                                    marginVertical: ms(5),
+                                  }}
+                                >
+                                  <Image
+                                    source={
+                                      data?.product_details?.supply?.seller_details?.user_profiles
+                                        ?.profile_photo == null
+                                        ? userImage
+                                        : {
+                                            uri: data?.product_details?.supply?.seller_details
+                                              ?.user_profiles?.profile_photo,
+                                          }
+                                    }
+                                    style={styles.offerImage}
+                                  />
+                                  <Text
+                                    style={[styles.blueListDataText, { marginLeft: ms(3) }]}
+                                    numberOfLines={1}
                                   >
-                                    <Image
-                                      source={
-                                        {
-                                          uri: data?.pos_user_details?.user?.user_profiles
-                                            ?.profile_photo,
-                                        } ?? userImage
-                                      }
-                                      style={styles.offerImage}
-                                    />
-                                    <Text style={styles.blueListDataText} numberOfLines={1}>
-                                      {data?.pos_user_details?.user?.user_profiles?.firstname}
-                                    </Text>
-                                  </View>
-                                )} */}
+                                    {data?.product_details?.supply?.seller_details?.user_profiles
+                                      ?.firstname +
+                                      ' ' +
+                                      data?.product_details?.supply?.seller_details?.user_profiles
+                                        ?.lastname}
+                                  </Text>
+                                </View>
                               </View>
                             </View>
                           </View>
