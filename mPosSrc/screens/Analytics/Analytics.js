@@ -158,10 +158,10 @@ export function Analytics() {
   const dispatch = useDispatch();
   useFocusEffect(
     useCallback(() => {
-      dispatch(getAnalyticStatistics(sellerID, data));
+      dispatch(getAnalyticStatistics(sellerID, data, 1));
       dispatch(getAnalyticOrderGraphs(sellerID, data));
       dispatch(getTotalOrder(sellerID, data));
-      dispatch(getTotalInventory(sellerID, data));
+      dispatch(getTotalInventory(sellerID, data, 1));
       dispatch(getSoldProduct(sellerID, data, 1));
       getData();
     }, [timeValue, channelValue, selectDate])
@@ -258,9 +258,9 @@ export function Analytics() {
         endDated={endDated}
       />
     ),
-    ['TotalProfit']: <TotalProfit />,
-    ['Revenue']: <Revenue />,
-    ['TotalCost']: <TotalCost />,
+    ['TotalProfit']: <TotalProfit sellerID={sellerID} data={data} />,
+    ['Revenue']: <Revenue sellerID={sellerID} data={data} />,
+    ['TotalCost']: <TotalCost sellerID={sellerID} data={data} />,
     ['TotalDeliveryOrders']: (
       <TotalDeliveryOrders
         onPressReview={(item) => {
@@ -417,7 +417,10 @@ export function Analytics() {
                   }}
                   zIndex={2000}
                   zIndexInverse={2000}
-                  containerStyle={styles.containerStyle}
+                  containerStyle={[
+                    styles.containerStyle,
+                    { width: Platform.OS === 'android' ? ms(95) : ms(98) },
+                  ]}
                   style={styles.dropdown}
                   arrowIconStyle={styles.arrowIconStyle}
                   textStyle={{
