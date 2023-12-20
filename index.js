@@ -1,9 +1,9 @@
 /**
  * @format
  */
-if (__DEV__) {
-  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
-}
+// if (__DEV__) {
+//   import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
+// }
 import { AppRegistry, Platform } from 'react-native';
 
 import notifee, { EventType } from '@notifee/react-native';

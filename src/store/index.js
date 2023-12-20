@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { rootReducer as tabPosRootReducer } from '@/reducers';
 import { rootReducer as mPOSRootReducer } from '@mPOS/reducers';
 import { isTablet } from 'react-native-device-info';
-import Reactotron from './../../ReactotronConfig';
+// import Reactotron from './../../ReactotronConfig';
 
 const persistConfig = {
   key: 'root',
