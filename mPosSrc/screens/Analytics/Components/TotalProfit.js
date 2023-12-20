@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -11,21 +11,48 @@ import {
 import { Spacer } from '@mPOS/components';
 import { DataTable } from 'react-native-paper';
 import { ms } from 'react-native-size-matters';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { styles } from '../styles';
 import { COLORS } from '@/theme';
 import { Images } from '@mPOS/assets';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
+import { useDebouncedCallback } from 'use-lodash-debounce';
 
-export function TotalProfit() {
+export function TotalProfit({ sellerID, data }) {
+  const dispatch = useDispatch();
+
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
+  const onEndReachedCalledDuringMomentum = useRef(false);
 
   const profitStatisticsLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
   );
+  const paginationData = {
+    total: analyticStatistics?.orderData?.total,
+    totalPages: analyticStatistics?.orderData?.total_pages,
+    perPage: analyticStatistics?.orderData?.per_page,
+    currentPage: analyticStatistics?.orderData?.current_page,
+  };
+
+  const onLoadMoreProfit = useCallback(() => {
+    if (!profitStatisticsLoader) {
+      if (paginationData?.currentPage < paginationData?.totalPages) {
+        dispatch(getAnalyticStatistics(sellerID, data, paginationData?.currentPage + 1));
+      }
+    }
+  }, [paginationData]);
+
+  const debouncedLoadMoreProfit = useDebouncedCallback(onLoadMoreProfit, 300);
+
+  const renderFooter = () => {
+    return profitStatisticsLoader ? (
+      <ActivityIndicator size="large" color={COLORS.primary} style={styles.loaderView} />
+    ) : null;
+  };
 
   const getProfitList = ({ item, index }) => (
     <DataTable.Row>
@@ -180,11 +207,12 @@ export function TotalProfit() {
             </DataTable.Header>
 
             <View style={[styles.mainListContainer]}>
-              {profitStatisticsLoader ? (
+              {/* {profitStatisticsLoader ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
-              ) : analyticStatistics?.orderData?.data?.length === 0 ? (
+              ) : */}
+              {analyticStatistics?.orderData?.data?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
@@ -194,10 +222,20 @@ export function TotalProfit() {
                     style={styles.listStyle}
                     data={analyticStatistics?.orderData?.data}
                     renderItem={getProfitList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
-                    bounces={false}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                    onMomentumScrollBegin={() => {}}
+                    onMomentumScrollEnd={() => {
+                      if (onEndReachedCalledDuringMomentum.current) {
+                        debouncedLoadMoreProfit();
+                        onEndReachedCalledDuringMomentum.current = false;
+                      }
+                    }}
+                    removeClippedSubviews={true}
+                    ListFooterComponent={renderFooter}
                   />
                 </View>
               )}

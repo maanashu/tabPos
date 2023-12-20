@@ -129,30 +129,43 @@ export function CommonOrderDetail(props) {
     <View style={styles.productItemViewStyle}>
       <View style={{ justifyContent: 'center' }}>
         <Image
-          source={item?.product_image ? { uri: item?.product_image } : Images.noproduct}
+          source={
+            item?.product_image || item?.order_details
+              ? {
+                  uri: item?.order_details
+                    ? item?.order_details?.product_image
+                    : item?.product_image,
+                }
+              : Images.noproduct
+          }
           style={styles.productImageStyle}
         />
       </View>
 
       <View style={styles.productDetailView}>
         <Text numberOfLines={1} style={styles.productnameTextStyle}>
-          {item?.product_name}
+          {item?.order_details ? item?.order_details?.product_name : item?.product_name}
         </Text>
 
-        <Text style={styles.productQtyPriceText}>{`$${item?.price} X ${item?.qty}`}</Text>
+        <Text style={styles.productQtyPriceText}>{`$${
+          item?.order_details ? item?.order_details?.price : item?.price
+        } X ${item?.order_details ? item?.order_details?.qty : item?.qty}`}</Text>
       </View>
 
       <View style={styles.totalAmountView}>
-        <Text style={styles.productQtyPriceText}>{`$${item?.price * item?.qty}`}</Text>
+        <Text style={styles.productQtyPriceText}>{`$${
+          item?.order_details
+            ? item?.order_details?.price * item?.order_details?.qty
+            : item?.price * item?.qty
+        }`}</Text>
       </View>
     </View>
   );
 
   return (
     <ScreenWrapper>
+      <Header backRequired title={strings.profile.header} />
       <View style={styles.container}>
-        <Header backRequired title={strings.profile.header} />
-
         <View style={styles.userDetailView}>
           <View style={{ flexDirection: 'row' }}>
             <Image
@@ -268,8 +281,12 @@ export function CommonOrderDetail(props) {
         <View>
           <FlatList
             renderItem={renderProductItem}
-            data={orderData?.order_details}
-            extraData={orderData?.order_details}
+            data={
+              orderData?.return_detail?.return_details
+                ? orderData?.return_detail?.return_details
+                : orderData?.order_details
+            }
+            // extraData={orderData?.order_details}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
             contentContainerStyle={{ flexGrow: 1 }}

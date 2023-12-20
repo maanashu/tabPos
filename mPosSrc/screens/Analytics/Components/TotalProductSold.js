@@ -50,7 +50,9 @@ export function TotalProductSold({ sellerID, data }) {
   const debouncedLoadMoreProduct = useDebouncedCallback(onLoadMoreProduct, 300);
 
   const renderFooter = () => {
-    return isSoldProductLoading ? <ActivityIndicator size="large" color={COLORS.primary} /> : null;
+    return isSoldProductLoading ? (
+      <ActivityIndicator size="large" color={COLORS.primary} style={styles.loaderView} />
+    ) : null;
   };
 
   const getSoldProductList = ({ item, index }) => (

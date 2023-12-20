@@ -152,7 +152,7 @@ export function MainScreen({
               header="Total Revenue"
               subHeader={'0'}
               disabled
-              style={{ backgroundColor: COLORS.mid_grey }}
+              style={{ backgroundColor: COLORS.white }}
             />
           </View>
         )}
@@ -180,7 +180,7 @@ export function MainScreen({
               header="Total Costs"
               subHeader={'0'}
               disabled
-              style={{ backgroundColor: COLORS.mid_grey }}
+              style={{ backgroundColor: COLORS.white }}
             />
           </View>
         )}
@@ -209,7 +209,7 @@ export function MainScreen({
               header="Gross Profit"
               subHeader={'0'}
               disabled
-              style={{ backgroundColor: COLORS.mid_grey }}
+              style={{ backgroundColor: COLORS.white }}
             />
           </View>
         )}

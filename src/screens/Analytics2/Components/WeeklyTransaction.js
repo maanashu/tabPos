@@ -192,6 +192,168 @@ export function WeeklyTransaction({
         </View>
       </View>
 
+      <View
+        style={[styles.jbrTypeCon, { zIndex: -2, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
+        pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={[styles.paginationCount]}>Showing Results</Text>
+          <View style={{ marginHorizontal: moderateScale(2) }}>
+            <DropDownPicker
+              ArrowUpIconComponent={({ style }) => (
+                <Image source={dropdown2} style={styles.dropDownIconPagination} />
+              )}
+              ArrowDownIconComponent={({ style }) => (
+                <Image source={dropdown2} style={styles.dropDownIconPagination} />
+              )}
+              style={styles.dropdown}
+              containerStyle={[
+                styles.containerStylePagination,
+                { zIndex: Platform.OS === 'ios' ? 20 : 1 },
+              ]}
+              dropDownContainerStyle={styles.dropDownContainerStyle}
+              listItemLabelStyle={styles.listItemLabelStyle}
+              labelStyle={styles.labelStyle}
+              selectedItemLabelStyle={styles.selectedItemLabelStyle}
+              open={paginationModalOpen}
+              value={paginationModalValue}
+              items={paginationModalItems}
+              setOpen={setPaginationModalOpen}
+              setValue={setPaginationModalValue}
+              setItems={setPaginationModalItems}
+              placeholder="10"
+              placeholderStyle={styles.placeholderStylePagination}
+            />
+          </View>
+          <TouchableOpacity
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor: paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                borderWidth: 1,
+                borderColor:
+                  paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
+              },
+            ]}
+            onPress={() => setPage(page - 1)}
+            disabled={paginationData?.currentPage == 1 ? true : false}
+          >
+            <Image
+              source={Union}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor: paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                },
+              ]}
+            />
+          </TouchableOpacity>
+          <View
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor: paginationData?.currentPage == 1 ? COLORS.sky_grey : COLORS.white,
+                borderWidth: 1,
+                borderColor:
+                  paginationData?.currentPage == 1 ? COLORS.transparent : COLORS.light_purple,
+              },
+            ]}
+          >
+            <Image
+              source={mask}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor: paginationData?.currentPage == 1 ? COLORS.graySky : COLORS.navy_blue,
+                },
+              ]}
+            />
+          </View>
+          <View
+            style={{
+              // width: ms(50),
+              marginRight: ms(7),
+            }}
+          >
+            {isTotalTradetail ? (
+              <ActivityIndicator size="small" color={COLORS.navy_blue} style={{ width: ms(50) }} />
+            ) : (
+              <Text style={[styles.paginationCount, { paddingHorizontal: 0, alignSelf: 'center' }]}>
+                {startIndex} - {startIndex + (getTotalTraDetail?.length - 1)} of{' '}
+                {paginationData?.total}
+              </Text>
+            )}
+          </View>
+
+          <View
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor:
+                  paginationData?.currentPage == paginationData?.totalPages
+                    ? COLORS.sky_grey
+                    : COLORS.white,
+                borderWidth: 1,
+                borderColor:
+                  paginationData?.currentPage == paginationData?.totalPages
+                    ? COLORS.transparent
+                    : COLORS.light_purple,
+              },
+            ]}
+          >
+            <Image
+              source={maskRight}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.graySky
+                      : COLORS.navy_blue,
+                },
+              ]}
+            />
+          </View>
+          <TouchableOpacity
+            style={[
+              styles.unionCon,
+              {
+                backgroundColor:
+                  paginationData?.currentPage == paginationData?.totalPages
+                    ? COLORS.sky_grey
+                    : COLORS.white,
+                borderWidth: 1,
+                borderColor:
+                  paginationData?.currentPage == paginationData?.totalPages
+                    ? COLORS.transparent
+                    : COLORS.light_purple,
+              },
+            ]}
+            onPress={() => setPage(page + 1)}
+            disabled={paginationData?.currentPage == paginationData?.totalPages ? true : false}
+          >
+            <Image
+              source={unionRight}
+              style={[
+                styles.unionStyle,
+                {
+                  tintColor:
+                    paginationData?.currentPage == paginationData?.totalPages
+                      ? COLORS.graySky
+                      : COLORS.navy_blue,
+                },
+              ]}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <View style={{ zIndex: -9, height: ms(350) }}>
         <Table>
           <View style={styles.tableDataHeaderCon}>
@@ -232,7 +394,7 @@ export function WeeklyTransaction({
             </View>
           </View>
 
-          <View style={[styles.tableHeight, { height: windowHeight * 0.67 }]}>
+          <View style={[styles.tableHeight, { height: windowHeight * 0.76 }]}>
             <ScrollView showsVerticalScrollIndicator={false}>
               {isTotalTradetail ? (
                 <View style={{ marginTop: 100 }}>
