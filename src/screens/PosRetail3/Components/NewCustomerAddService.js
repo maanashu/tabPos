@@ -178,7 +178,7 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{
-        flex: Platform.OS === 'ios' ? 1 : 0,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
       }}

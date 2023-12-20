@@ -83,6 +83,14 @@ const AddServiceCart = ({ addServiceCartRef, serviceDetailHanlder }) => {
       setposUserId(itemData?.pos_staff?.[0]?.user?.unique_uuid);
     }
   }, [itemData]);
+  useEffect(() => {
+    const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
+    setmonthDays(daysArray);
+  }, [selectedMonthData, selectedYearData]);
+  useEffect(() => {
+    setColorSelectId(null);
+    setSizeSelectId(null);
+  }, []);
 
   useEffect(() => {
     const params = {
@@ -94,14 +102,6 @@ const AddServiceCart = ({ addServiceCartRef, serviceDetailHanlder }) => {
     dispatch(getTimeSlots(params));
   }, [posUserId, selectedDate]);
 
-  useEffect(() => {
-    const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
-    setmonthDays(daysArray);
-  }, [selectedMonthData, selectedYearData]);
-  useEffect(() => {
-    setColorSelectId(null);
-    setSizeSelectId(null);
-  }, []);
   const isLoadingTimeSlot = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TIME_SLOTS], state)
   );
@@ -362,6 +362,7 @@ const AddServiceCart = ({ addServiceCartRef, serviceDetailHanlder }) => {
                 />
               </View>
             </View>
+
             <View
               style={{
                 marginTop: SH(10),
@@ -374,7 +375,7 @@ const AddServiceCart = ({ addServiceCartRef, serviceDetailHanlder }) => {
                 horizontal
                 data={monthDays}
                 renderItem={renderWeekItem}
-                // contentContainerStyle={{ borderWidth: 1 }}
+                // contentContainerStyle={{ borderWidth: 1, flex: 1 }}
               />
 
               {isLoadingTimeSlot ? (

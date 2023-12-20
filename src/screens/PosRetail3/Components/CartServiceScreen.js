@@ -586,7 +586,9 @@ export function CartServiceScreen({
                     backgroundColor: COLORS.navy_blue,
                   }}
                 >
-                  <Text style={{ color: COLORS.white }}>{holdProductArray?.length}</Text>
+                  <Text style={{ color: COLORS.white, fontSize: ms(5) }}>
+                    {holdProductArray?.length}
+                  </Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity

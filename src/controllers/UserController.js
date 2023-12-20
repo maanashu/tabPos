@@ -14,7 +14,6 @@ export class UserController {
       })
         .then((response) => {
           if (response.status_code === 200) {
-            console.log('---------------', JSON.stringify(response));
             Toast.show({
               type: 'success_toast',
               text2: strings.successMessages.loginSuccess,
