@@ -124,10 +124,17 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
                 <View style={{ width: '20%', alignItems: 'flex-end' }}>
                   <Text style={[styles.priceTitle]} numberOfLines={1}>
                     $
+                    {item?.product_details?.supply?.supply_prices?.offer_price
+                      ? item?.product_details?.supply?.supply_prices?.offer_price?.toFixed(2)
+                      : item?.product_details?.supply?.supply_prices?.selling_price.toFixed(2)}
+                  </Text>
+
+                  {/* <Text style={[styles.priceTitle]} numberOfLines={1}>
+                    $
                     {Number(
                       item?.product_details?.supply?.supply_prices?.selling_price ?? '0.00'
                     )?.toFixed(2)}
-                  </Text>
+                  </Text> */}
                 </View>
               </View>
             );

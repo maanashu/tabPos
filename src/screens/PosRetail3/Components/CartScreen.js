@@ -80,6 +80,7 @@ export function CartScreen({
   const [productIndex, setProductIndex] = useState(0);
   const [productItem, setProductItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState();
+  console.log('cartData', JSON.stringify(cartData));
 
   const availableOfferLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
@@ -414,9 +415,20 @@ export function CartScreen({
                                   style={[styles.unitPriceInput]}
                                   keyboardType="numeric"
                                 />
+                              ) : data?.product_details?.supply?.offer?.offer_price_per_pack &&
+                                data?.product_details?.supply?.supply_prices?.selling_price ? (
+                                <Text numberOfLines={1} style={styles.productPrice}>
+                                  $
+                                  {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                                    2
+                                  )}
+                                </Text>
                               ) : (
-                                <Text style={styles.blueListDataText} numberOfLines={1}>
-                                  ${data?.product_details?.supply?.supply_prices?.selling_price}
+                                <Text numberOfLines={1} style={styles.productPrice}>
+                                  $
+                                  {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                                    2
+                                  )}
                                 </Text>
                               )}
                             </View>
@@ -453,10 +465,12 @@ export function CartScreen({
                             <View style={styles.productCartBody}>
                               <Text style={styles.blueListDataText}>
                                 $
-                                {(
-                                  data.product_details?.supply?.supply_prices?.selling_price *
-                                  data?.qty
-                                ).toFixed(2)}
+                                {(data?.product_details?.supply?.supply_prices?.offer_price
+                                  ? data?.product_details?.supply?.supply_prices?.offer_price *
+                                    data?.qty
+                                  : data?.product_details?.supply?.supply_prices?.selling_price *
+                                    data?.qty
+                                )?.toFixed(2)}
                               </Text>
                             </View>
                             <View style={styles.productCartBody}>

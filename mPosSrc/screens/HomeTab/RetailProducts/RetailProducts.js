@@ -347,9 +347,19 @@ export function RetailProducts(props) {
             <Text style={styles.genderTextStyle} numberOfLines={1}>
               {item?.category?.name}
             </Text>
-            <Text style={styles.priceTextStyle} numberOfLines={1}>
+            {item?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+            item?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+              <Text style={styles.priceTextStyle} numberOfLines={1}>
+                ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+              </Text>
+            ) : (
+              <Text style={styles.priceTextStyle} numberOfLines={1}>
+                ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+              </Text>
+            )}
+            {/* <Text style={styles.priceTextStyle} numberOfLines={1}>
               ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-            </Text>
+            </Text> */}
           </View>
         </View>
 

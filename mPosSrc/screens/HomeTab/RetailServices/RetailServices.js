@@ -326,9 +326,19 @@ export function RetailServices(props) {
                         Est: {item.supplies?.[0]?.approx_service_time} min
                       </Text>
                     )}
-                    <Text style={styles.priceTextStyle} numberOfLines={1}>
+                    {item?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+                    item?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+                      <Text style={styles.priceTextStyle} numberOfLines={1}>
+                        ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                      </Text>
+                    ) : (
+                      <Text style={styles.priceTextStyle} numberOfLines={1}>
+                        ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                      </Text>
+                    )}
+                    {/* <Text style={styles.priceTextStyle} numberOfLines={1}>
                       ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-                    </Text>
+                    </Text> */}
                   </View>
                 </View>
 

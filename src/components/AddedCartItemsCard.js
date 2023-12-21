@@ -43,7 +43,10 @@ const AddedCartItemsCard = ({ item, index }) => {
       </View>
       <View style={{ width: '24%', alignItems: 'flex-end' }}>
         <Text style={styles.priceTitle} numberOfLines={1}>
-          ${item?.product_details?.supply?.supply_prices?.selling_price.toFixed(2) ?? '0.00'}
+          $
+          {item?.product_details?.supply?.supply_prices?.offer_price
+            ? item?.product_details?.supply?.supply_prices?.offer_price?.toFixed(2)
+            : item?.product_details?.supply?.supply_prices?.selling_price.toFixed(2)}
         </Text>
       </View>
     </View>

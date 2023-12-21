@@ -468,33 +468,68 @@ export function CartServiceScreen({
                           </View>
                           <View style={styles.serviceCartRightBody}>
                             <View style={styles.serviceCartBody}>
-                              {cartIndex === ind && cartEditItem ? (
-                                <TextInput
-                                  value={unitPrice.toString()}
-                                  onChangeText={setUnitPrice}
-                                  style={styles.unitPriceInput}
-                                  keyboardType="numeric"
-                                  multiline={false}
-                                />
-                              ) : (
-                                <Text style={styles.blueListDataText}>
-                                  $
-                                  {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
-                                    2
-                                  )}
-                                </Text>
-                              )}
+                              {
+                                cartIndex === ind && cartEditItem ? (
+                                  <TextInput
+                                    value={unitPrice.toString()}
+                                    onChangeText={setUnitPrice}
+                                    style={styles.unitPriceInput}
+                                    keyboardType="numeric"
+                                    multiline={false}
+                                  />
+                                ) : data?.product_details?.supply?.offer?.offer_price_per_pack &&
+                                  data?.product_details?.supply?.supply_prices?.selling_price ? (
+                                  <Text style={styles.blueListDataText}>
+                                    $
+                                    {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                                      2
+                                    )}
+                                  </Text>
+                                ) : (
+                                  <Text style={styles.blueListDataText}>
+                                    $
+                                    {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                                      2
+                                    )}
+                                  </Text>
+                                )
+
+                                // (
+                                //   <Text style={styles.blueListDataText}>
+                                //     $
+                                //     {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
+                                //       2
+                                //     )}
+                                //   </Text>
+                                // )
+                              }
                             </View>
                             <View style={styles.serviceCartBody}>
                               <Text>1</Text>
                             </View>
                             <View style={styles.serviceCartBody}>
-                              <Text style={styles.blueListDataText}>
+                              {data?.product_details?.supply?.offer?.offer_price_per_pack &&
+                              data?.product_details?.supply?.supply_prices?.selling_price ? (
+                                <Text style={styles.blueListDataText}>
+                                  $
+                                  {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                                    2
+                                  )}
+                                </Text>
+                              ) : (
+                                <Text style={styles.blueListDataText}>
+                                  $
+                                  {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                                    2
+                                  )}
+                                </Text>
+                              )}
+                              {/* <Text style={styles.blueListDataText}>
                                 $
                                 {(data?.product_details?.supply?.supply_prices?.selling_price).toFixed(
                                   2
                                 )}
-                              </Text>
+                              </Text> */}
                             </View>
                             <View style={styles.serviceCartBody}>
                               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
