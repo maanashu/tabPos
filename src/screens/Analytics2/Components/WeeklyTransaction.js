@@ -55,6 +55,8 @@ export function WeeklyTransaction({
   FromInvoice,
   appName,
   deliveryOption,
+  start_date,
+  end_date,
 }) {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -102,6 +104,10 @@ export function WeeklyTransaction({
       limit: paginationModalValue,
       sellerId: sellerID,
       calendarDate: formatedDate,
+      orderType: 'none',
+      status: 'none',
+      start_date: start_date,
+      end_date: end_date,
       delivery_option: deliveryOption,
       app_name: appName,
     };
@@ -158,7 +164,7 @@ export function WeeklyTransaction({
           </TouchableOpacity>
           <Text style={styles.deliveryText}>{strings.wallet.totalTransections}</Text>
         </View>
-        <View style={styles.deliveryView}>
+        {/* <View style={styles.deliveryView}>
           <TouchableOpacity
             onPress={() =>
               navigate(NAVIGATION.notificationsList, {
@@ -189,11 +195,18 @@ export function WeeklyTransaction({
           >
             <Image source={scanNew} style={styles.searchImage} />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
 
       <View
-        style={[styles.jbrTypeCon, { zIndex: -2, opacity: orderPayloadLength === 0 ? 0.4 : 1 }]}
+        style={[
+          styles.jbrTypeCon,
+          {
+            zIndex: -2,
+            opacity: orderPayloadLength === 0 ? 0.4 : 1,
+            marginHorizontal: ms(14),
+          },
+        ]}
         pointerEvents={orderPayloadLength === 0 ? 'none' : 'auto'}
       >
         <View
@@ -353,8 +366,8 @@ export function WeeklyTransaction({
           </TouchableOpacity>
         </View>
       </View>
-
-      <View style={{ zIndex: -9, height: ms(350) }}>
+      <Spacer space={ms(10)} />
+      <View style={{ zIndex: -9 }}>
         <Table>
           <View style={styles.tableDataHeaderCon}>
             <View style={styles.displayFlex}>
@@ -394,7 +407,7 @@ export function WeeklyTransaction({
             </View>
           </View>
 
-          <View style={[styles.tableHeight, { height: windowHeight * 0.76 }]}>
+          <View style={[styles.tableHeight, { height: windowHeight * 0.74 }]}>
             <ScrollView showsVerticalScrollIndicator={false}>
               {isTotalTradetail ? (
                 <View style={{ marginTop: 100 }}>

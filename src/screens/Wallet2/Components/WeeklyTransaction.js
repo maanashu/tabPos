@@ -194,9 +194,10 @@ export function WeeklyTransaction({
       sellerID: sellerID,
       start_date: startDated,
       end_date: endDated,
+      orderType: orderTypeSelect,
     };
     dispatch(getTotalTraType(data));
-  }, [selectId, formatedDate, time, startDated, endDated]);
+  }, [selectId, formatedDate, time, startDated, endDated, orderTypeSelect]);
 
   useEffect(() => {
     const data = {
