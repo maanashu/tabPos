@@ -444,12 +444,12 @@ export function CartServiceScreen({
                                 >
                                   <Image
                                     source={
-                                      data?.product_details?.supply?.seller_details?.user_profiles
-                                        ?.profile_photo == null
+                                      data?.pos_user_details?.user?.user_profiles?.profile_photo ==
+                                      null
                                         ? userImage
                                         : {
-                                            uri: data?.product_details?.supply?.seller_details
-                                              ?.user_profiles?.profile_photo,
+                                            uri: data?.pos_user_details?.user?.user_profiles
+                                              ?.profile_photo,
                                           }
                                     }
                                     style={styles.offerImage}
@@ -458,11 +458,9 @@ export function CartServiceScreen({
                                     style={[styles.blueListDataText, { marginLeft: ms(3) }]}
                                     numberOfLines={1}
                                   >
-                                    {data?.product_details?.supply?.seller_details?.user_profiles
-                                      ?.firstname +
+                                    {data?.pos_user_details?.user?.user_profiles?.firstname +
                                       ' ' +
-                                      data?.product_details?.supply?.seller_details?.user_profiles
-                                        ?.lastname}
+                                      data?.pos_user_details?.user?.user_profiles?.lastname}
                                   </Text>
                                 </View>
                               </View>

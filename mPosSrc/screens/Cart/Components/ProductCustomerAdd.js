@@ -40,7 +40,7 @@ const ProductCustomerAdd = ({ crossHandler }) => {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
-  const cartData = presentCart === 'product' ? retailData?.getAllCart : retailData?.getAllCart;
+  const cartData = retailData?.getAllCart;
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
   const [email, setEmail] = useState('');
@@ -57,29 +57,45 @@ const ProductCustomerAdd = ({ crossHandler }) => {
   useEffect(() => {
     textInputRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    if (searchCustomer?.length > 9) {
+      const data = {
+        countryCode: countryCode,
+        phoneNumber: searchCustomer,
+      };
+      dispatch(getUserDetail(data));
+      Keyboard.dismiss();
+      setDetailArea(true);
+    } else if (searchCustomer?.length < 10) {
+      dispatch(getUserDetailSuccess({}));
+      setDetailArea(false);
+    }
+  }, [searchCustomer?.length > 9]);
+
   useEffect(() => {
     dispatch(getUserDetailSuccess({}));
     setDetailArea(false);
   }, []);
 
-  const customerPhoneSearchFun = useCallback(
-    (customerphoneNumber) => {
-      setSearchCustomer(customerphoneNumber);
-      if (customerphoneNumber?.length > 9) {
-        const data = {
-          countryCode: countryCode,
-          phoneNumber: customerphoneNumber,
-        };
-        dispatch(getUserDetail(data));
-        Keyboard.dismiss();
-        setDetailArea(true);
-      } else if (customerphoneNumber?.length < 10) {
-        dispatch(getUserDetailSuccess({}));
-        setDetailArea(false);
-      }
-    },
-    [searchCustomer]
-  );
+  // const customerPhoneSearchFun = useCallback(
+  //   (customerphoneNumber) => {
+  //     setSearchCustomer(customerphoneNumber);
+  //     if (customerphoneNumber?.length > 9) {
+  //       const data = {
+  //         countryCode: countryCode,
+  //         phoneNumber: customerphoneNumber,
+  //       };
+  //       dispatch(getUserDetail(data));
+  //       Keyboard.dismiss();
+  //       setDetailArea(true);
+  //     } else if (customerphoneNumber?.length < 10) {
+  //       dispatch(getUserDetailSuccess({}));
+  //       setDetailArea(false);
+  //     }
+  //   },
+  //   [searchCustomer]
+  // );
 
   const userDetalLoader = useSelector((state) => isLoadingSelector([TYPES.GET_USERDETAIL], state));
 
@@ -129,6 +145,13 @@ const ProductCustomerAdd = ({ crossHandler }) => {
     setSearchCustomer(''), setFirstName(''), setLastName(''), setLastName('');
   };
 
+  useEffect(() => {
+    if (cartData?.user_details) {
+      setCountryCode(cartData?.user_details?.phone_code || '+1');
+      setSearchCustomer(cartData?.user_details?.phone_no || '');
+    }
+  }, []);
+
   return (
     <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.customProductCon}>
@@ -163,7 +186,8 @@ const ProductCustomerAdd = ({ crossHandler }) => {
             <Text style={styles.countryCodeText}>{countryCode}</Text>
             <TextInput
               value={searchCustomer}
-              onChangeText={(searchCustomer) => customerPhoneSearchFun(searchCustomer)}
+              // onChangeText={(searchCustomer) => customerPhoneSearchFun(searchCustomer)}
+              onChangeText={setSearchCustomer}
               style={styles.searchCustomerInput}
               placeholder="Customer Phone Number"
               placeholderTextColor={COLORS.gerySkies}
@@ -395,15 +419,20 @@ const ProductCustomerAdd = ({ crossHandler }) => {
             </View>
           )}
           <View style={{ flex: 1 }} />
-          {userDetalLoader ? null : userLength == 0 && detailArea ? (
-            <TouchableOpacity style={styles.addToCartCon} onPress={() => saveAndAddCustomer()}>
-              <Text style={styles.addTocartText}>Save</Text>
-            </TouchableOpacity>
-          ) : userLength > 0 && detailArea ? (
-            <TouchableOpacity style={styles.addToCartCon} onPress={() => saveCustomer()}>
-              <Text style={styles.addTocartText}>Save</Text>
-            </TouchableOpacity>
-          ) : null}
+          {searchCustomer?.length > 9 &&
+          cartData?.user_details?.phone_no == searchCustomer ? null : (
+            <View>
+              {userDetalLoader ? null : userLength == 0 && detailArea ? (
+                <TouchableOpacity style={styles.addToCartCon} onPress={() => saveAndAddCustomer()}>
+                  <Text style={styles.addTocartText}>Save</Text>
+                </TouchableOpacity>
+              ) : userLength > 0 && detailArea ? (
+                <TouchableOpacity style={styles.addToCartCon} onPress={() => saveCustomer()}>
+                  <Text style={styles.addTocartText}>Save</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          )}
         </View>
       </View>
     </KeyboardAwareScrollView>
