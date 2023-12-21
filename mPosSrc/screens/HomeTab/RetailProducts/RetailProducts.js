@@ -24,6 +24,7 @@ import ProductDetails from './Components/ProductDetails';
 import { FullScreenLoader, Header, ImageView, ScreenWrapper } from '@mPOS/components';
 import { debounce } from 'lodash';
 import {
+  addOpenFrom,
   cartRun,
   clearAllCart,
   createBulkcart,
@@ -205,6 +206,7 @@ export function RetailProducts(props) {
           setSelectedItem(item);
           setProductIndex(index);
           setProductItem(item);
+          dispatch(addOpenFrom('main'));
         }
       } else {
         onClickAddCart(item, index, cartQty);
@@ -328,6 +330,7 @@ export function RetailProducts(props) {
               setSelectedItem(item);
               setProductIndex(index);
               setProductItem(item);
+              dispatch(addOpenFrom('main'));
             }
           }
         }}

@@ -91,7 +91,7 @@ const Graph = ({ graphDetail, newCustomerCheck, onlineCustomerCheck, walkCustome
                   : Dimensions.get('window').width * 1.8
                 : Dimensions.get('window').width * 0.86
             }
-            height={Platform.OS === 'android' ? ms(330) : ms(320)}
+            height={Platform.OS === 'android' ? ms(300) : ms(320)}
             // noOfSections={8}
             chartConfig={{
               backgroundColor: '#000',
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     paddingHorizontal: ms(10),
     // marginTop: ms(10),
-    height: Platform.OS === 'android' ? ms(330) : ms(280),
+    height: Platform.OS === 'android' ? ms(265) : ms(280),
   },
   numberOrdersText: {
     fontSize: SF(16),

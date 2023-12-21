@@ -591,7 +591,7 @@ export function Customers2() {
 
   return (
     <ScreenWrapper>
-      <View style={styles.container}>{bodyView()}</View>
+      {bodyView()}
       {onLoad ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
           <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />

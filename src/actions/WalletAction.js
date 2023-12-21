@@ -64,10 +64,10 @@ export const getTotalTra = (time, sellerID, date) => async (dispatch) => {
     dispatch(getTotalTraError(error.message));
   }
 };
-export const getTotakTraDetail = (sellerID, typeSelectData, filterData) => async (dispatch) => {
+export const getTotakTraDetail = (sellerID, data) => async (dispatch) => {
   dispatch(getTotakTraDetailRequest());
   try {
-    const res = await WalletController.getTotakTraDetail(sellerID, typeSelectData, filterData);
+    const res = await WalletController.getTotakTraDetail(sellerID, data);
     dispatch(getTotakTraDetailSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {

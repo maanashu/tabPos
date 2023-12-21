@@ -28,6 +28,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { formattedReturnPrice } from '@mPOS/utils/GlobalMethods';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import {
+  addOpenFrom,
   changeStatusProductCart,
   clearAllCart,
   getAllCart,
@@ -711,8 +712,10 @@ export function ProductCart({ cartChangeHandler }) {
         availableOfferRef={availableOfferRef}
         productCartOpen={() => {
           addProductCartRef?.current?.present();
+          dispatch(addOpenFrom('available'));
         }}
       />
+
       <AddProductCart {...{ addProductCartRef, productDetailHanlder }} />
       <ProductDetails {...{ productDetailRef, bothSheetClose }} />
       {/* productDetailHanlder */}

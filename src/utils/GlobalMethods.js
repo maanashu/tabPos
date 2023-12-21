@@ -232,7 +232,9 @@ const formattedReturnPrice = (price) => {
   const numericPrice = parseFloat(price) || 0;
 
   // Format the numeric price with 2 decimal places
-  const formattedPrice = numericPrice.toFixed(2);
+  //  const formattedPrice = numericPrice.toFixed(2);
+
+  const formattedPrice = Math.abs(numericPrice).toFixed(2);
 
   // Determine the sign and prepend accordingly
   const sign = numericPrice == 0 ? '' : '-';
@@ -245,7 +247,7 @@ const formattedReturnPriceWithoutSign = (price) => {
   const numericPrice = parseFloat(price) || 0;
 
   // Format the numeric price with 2 decimal places
-  const formattedPrice = numericPrice.toFixed(2);
+  const formattedPrice = Math.abs(numericPrice).toFixed(2);
 
   // Determine the sign and prepend accordingly
   const sign = numericPrice == 0 ? '' : '-';

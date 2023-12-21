@@ -1004,6 +1004,11 @@ export const addServiceFrom = (addServiceFrom) => ({
   payload: { addServiceFrom },
 });
 
+export const addOpenFrom = (addOpenFrom) => ({
+  type: TYPES.ADD_OPEN_FROM_SUCCESS,
+  payload: { addOpenFrom },
+});
+
 //Merchant wallet check
 const merchantWalletCheckRequest = () => ({
   type: TYPES.MERCHANT_WALLET_CHECK_REQUEST,

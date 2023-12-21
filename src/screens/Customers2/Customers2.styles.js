@@ -713,4 +713,13 @@ export const styles = StyleSheet.create({
     fontSize: ms(10),
     fontFamily: Fonts.SemiBold,
   },
+  modalStyle: {
+    borderRadius: ms(15),
+    alignSelf: 'center',
+    backgroundColor: COLORS.white,
+    width: '40%',
+    paddingLeft: ms(20),
+    paddingRight: ms(15),
+    marginVertical: ms(60),
+  },
 });

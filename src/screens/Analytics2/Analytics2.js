@@ -116,6 +116,8 @@ export function Analytics2() {
   const [appName, setAppName] = useState();
   const [deliveryOption, setDeliveryOption] = useState();
 
+  const [orderDate, setOrderDate] = useState(null);
+
   const handleOnPressNext = () => {
     // Perform actions when "Next" button is pressed
   };
@@ -224,6 +226,7 @@ export function Analytics2() {
           setDate(item);
           setDeliveryOption(1);
           setAppName();
+          setOrderDate();
         }}
       />
     ),
@@ -234,6 +237,7 @@ export function Analytics2() {
           setDate(item);
           setDeliveryOption(4);
           setAppName();
+          setOrderDate();
         }}
       />
     ),
@@ -242,9 +246,10 @@ export function Analytics2() {
       <TotalOrders
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
-          setDate(item);
+          setDate();
           setAppName();
           setDeliveryOption();
+          setOrderDate(item);
         }}
       />
     ),
@@ -255,6 +260,7 @@ export function Analytics2() {
           setDate(item);
           setAppName('pos');
           setDeliveryOption();
+          setOrderDate();
         }}
       />
     ),
@@ -289,6 +295,8 @@ export function Analytics2() {
           FromInvoice={fromInVoice}
           appName={appName}
           deliveryOption={deliveryOption}
+          start_date={orderDate}
+          end_date={orderDate}
         />
       );
     }

@@ -1134,6 +1134,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: ms(12),
     paddingVertical: ms(5),
     alignItems: 'center',
+    // alignSelf: 'center',
   },
   indicatorstyle: {
     // borderWidth:1,
