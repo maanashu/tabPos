@@ -107,6 +107,36 @@ const registerSuccess = (register) => ({
   payload: { register },
 });
 
+const forgot2faRequest = () => ({
+  type: TYPES.FORGOT_2FA_REQUEST,
+  payload: null,
+});
+
+const forgot2faError = (error) => ({
+  type: TYPES.FORGOT_2FA_ERROR,
+  payload: { error },
+});
+
+const forgot2faSuccess = (register) => ({
+  type: TYPES.FORGOT_2FA_SUCCESS,
+  payload: { register },
+});
+
+const reset2faRequest = () => ({
+  type: TYPES.RESET_2FA_REQUEST,
+  payload: null,
+});
+
+const reset2faError = (error) => ({
+  type: TYPES.RESET_2FA_ERROR,
+  payload: { error },
+});
+
+const reset2faSuccess = (register) => ({
+  type: TYPES.RESET_2FA_SUCCESS,
+  payload: { register },
+});
+
 const getAllPosUsersRequest = () => ({
   type: TYPES.GET_ALL_POS_USERS_REQUEST,
   payload: null,
@@ -196,6 +226,28 @@ export const register = (data, params) => async (dispatch) => {
     dispatch(registerSuccess(res));
   } catch (error) {
     dispatch(registerError(error.message));
+  }
+};
+export const forgot2fa = () => async (dispatch) => {
+  dispatch(forgot2faRequest());
+  try {
+    const res = await AuthController.forgot2faPin();
+    dispatch(forgot2faSuccess(res));
+    return res;
+  } catch (error) {
+    dispatch(forgot2faError(error.message));
+    return error;
+  }
+};
+export const reset2fa = (data) => async (dispatch) => {
+  dispatch(reset2faRequest());
+  try {
+    const res = await AuthController.reset2faPin(data);
+    dispatch(reset2faSuccess(res));
+    return res;
+  } catch (error) {
+    dispatch(reset2faError(error.message));
+    return error;
   }
 };
 
