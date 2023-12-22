@@ -152,27 +152,27 @@ export function Calender() {
       dispatch(getAppointment(pageNumber));
     }
     getCurrentMonthDays();
-  }, [isFocused, pageNumber, showRequestsView]);
+  }, [isFocused, pageNumber, showRequestsView, calendarDate]);
 
   const getCurrentMonthDays = () => {
     const date = new Date(calendarDate);
-    const days = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+    const year = date.getFullYear();
+    const month = date.getMonth();
 
-    const currentMonthdays = [];
+    // Get the total number of days in the month
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    for (let index = 0; index < days; index++) {
-      var day = index + 1;
+    const monthDays = [];
 
-      const fullDateFortheDay = new Date();
-      fullDateFortheDay.setDate(day);
-      const dayName = weekDays[fullDateFortheDay.getDay()];
-      if (day < 10) {
-        day = `0${day}`;
-      }
-      const objDay = { fullDateFortheDay, day, dayName };
-      currentMonthdays.push(objDay);
+    for (let day = 1; day <= daysInMonth; day++) {
+      const fullDateForTheDay = new Date(year, month, day);
+      const dayName = weekDays[fullDateForTheDay.getDay()];
+
+      const objDay = { fullDateForTheDay, day, dayName };
+
+      monthDays.push(objDay);
     }
-    setMonthDays(currentMonthdays);
+    setMonthDays(monthDays);
   };
 
   useEffect(() => {
