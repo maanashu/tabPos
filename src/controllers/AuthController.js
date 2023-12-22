@@ -294,4 +294,43 @@ export class AuthController {
         });
     });
   }
+
+  static async forgot2faPin() {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.forgot2faPin;
+      console.log('url', endpoint);
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+  static async reset2faPin(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.reset2faPin;
+      const body = data;
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
 }

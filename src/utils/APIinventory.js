@@ -69,6 +69,8 @@ export const ApiUserInventory = {
   departmentList: USER_URL + 'departments',
   updateUserProfile: 'user_profiles',
   merchantWalletCheck: 'users/uuid/',
+  forgot2faPin: 'users/2fa/forgot',
+  reset2faPin: 'users/2fa/reset',
 };
 
 export const ApiProductInventory = {
@@ -218,6 +220,8 @@ export const API_URLS_USING_POS_USER_ACCESS_TOKEN = (sellerID) => [
   USER_URL + ApiUserInventory.verifyGoogleCode,
   USER_URL + ApiUserInventory.configureGoogleCode,
   USER_URL + ApiUserInventory.getGoogleCode,
+  USER_URL + ApiUserInventory.forgot2faPin,
+  USER_URL + ApiUserInventory.reset2faPin,
   // USER_URL + ApiUserInventory.getSetting,
   USER_URL + ApiUserInventory.merchantLogin,
   USER_URL + ApiUserInventory.creatPosUsers,
