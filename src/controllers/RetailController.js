@@ -89,13 +89,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&search=${search}&service_type=product`
+          `?seller_id=${sellerid}&search=${search}&service_type=product&need_subcategory=true`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&service_type=product`
+          `?seller_id=${sellerid}&service_type=product&need_subcategory=true`
         );
       }
     };
@@ -1001,7 +1001,6 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-      console.log('endpoint1111111111111111', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

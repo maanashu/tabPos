@@ -100,6 +100,7 @@ export function ProductCart({ cartChangeHandler }) {
         TYPES.ATTACH_CUSTOMER,
         TYPES.CHANGE_STATUS_PRODUCT_CART,
         TYPES.GET_AVAILABLE_OFFER,
+        TYPES.ADDCART,
       ],
       state
     )
