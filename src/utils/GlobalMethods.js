@@ -237,7 +237,7 @@ const formattedReturnPrice = (price) => {
   const formattedPrice = Math.abs(numericPrice).toFixed(2);
 
   // Determine the sign and prepend accordingly
-  const sign = numericPrice == 0 ? '' : '-';
+  const sign = numericPrice >= 0 ? '' : '-';
 
   return `${sign}$${formattedPrice}`;
 };
@@ -250,7 +250,7 @@ const formattedReturnPriceWithoutSign = (price) => {
   const formattedPrice = Math.abs(numericPrice).toFixed(2);
 
   // Determine the sign and prepend accordingly
-  const sign = numericPrice == 0 ? '' : '-';
+  const sign = numericPrice >= 0 ? '' : '-';
 
   return `${sign}${formattedPrice}`;
 };
