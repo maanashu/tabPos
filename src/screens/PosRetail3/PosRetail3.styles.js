@@ -1819,10 +1819,11 @@ export const styles = StyleSheet.create({
     height: windowHeight * 0.9,
     backgroundColor: COLORS.white,
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 30 : -50,
-    right: Platform.OS === 'ios' ? 15 : -50,
+    top: Platform.OS === 'ios' ? 30 : 10,
+    right: Platform.OS === 'ios' ? 15 : 10,
     borderRadius: ms(15),
     padding: 18,
+    ...ShadowStyles.shadow,
   },
   shortestCartListBody: {
     flex: 1,

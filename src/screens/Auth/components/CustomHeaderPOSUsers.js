@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import {
   cloth,
@@ -18,6 +18,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { strings } from '@/localization';
+import { Images } from '@/assets/new_icon';
 
 const CustomHeaderPOSUsers = ({
   crossHandler,
@@ -28,6 +29,20 @@ const CustomHeaderPOSUsers = ({
 }) => {
   const getUserData = useSelector(getUser);
   const getPosUser = getUserData?.posLoginData;
+  const [currentTime, setCurrentTime] = useState(moment());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(moment());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const isDaytime = () => {
+    const currentHour = currentTime.hour();
+    return currentHour >= 6 && currentHour < 18;
+  };
   return (
     <View style={styles.searchScreenHeader}>
       <View style={[styles.displayflex, { marginHorizontal: ms(24) }]}>
@@ -50,7 +65,20 @@ const CustomHeaderPOSUsers = ({
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image
+            <View style={{ marginRight: ms(3) }}>
+              {isDaytime() ? (
+                <Image
+                  source={Images.sun}
+                  style={{ width: ms(15), height: ms(15), tintColor: COLORS.placeHoldeText }}
+                />
+              ) : (
+                <Image
+                  source={Images.moon}
+                  style={{ width: ms(15), height: ms(15), tintColor: COLORS.placeHoldeText }}
+                />
+              )}
+            </View>
+            {/* <Image
               source={sunIcon}
               style={{
                 height: ms(18),
@@ -58,11 +86,13 @@ const CustomHeaderPOSUsers = ({
                 marginRight: ms(6),
               }}
               resizeMode="contain"
-            />
+            /> */}
             <Text style={styles.cashLabelBold}>{moment().format('hh:mm a')}</Text>
             <View style={styles._border} />
             {/* <Text style={styles.cashLabelBold}>{moment().format('ddd DD MMM, YYYY')}</Text> */}
-            <Text style={styles.cashLabelBold}>{moment().format('LLL')}</Text>
+            <Text style={styles.cashLabelBold}>
+              {moment().format('dddd') + ', ' + moment().format('LL')}
+            </Text>
 
             {/* <View style={styles._border} /> */}
           </View>

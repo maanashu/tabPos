@@ -439,11 +439,27 @@ export function ServiceCart({ cartChangeHandler }) {
                       >
                         <Image source={Images.pencil} style={styles.pencil} />
                       </TouchableOpacity>
-                      <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
+                      {data?.item?.product_details?.supply?.offer?.offer_price_per_pack &&
+                      data?.item?.product_details?.supply?.supply_prices?.selling_price ? (
+                        <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
+                          $
+                          {data?.item?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                            2
+                          )}
+                        </Text>
+                      ) : (
+                        <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
+                          $
+                          {data?.item?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                            2
+                          )}
+                        </Text>
+                      )}
+                      {/* <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
                         $
                         {data?.item?.product_details?.supply?.supply_prices?.selling_price *
                           data?.item?.qty}
-                      </Text>
+                      </Text> */}
                     </View>
                   </View>
                 </View>

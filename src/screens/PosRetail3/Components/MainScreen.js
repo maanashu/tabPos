@@ -169,6 +169,7 @@ export function MainScreen({
   const mainProductArray = getRetailData?.getMainProduct?.data;
   const mainServicesArray = getRetailData?.getMainServices?.data;
   const servicecCart = getRetailData?.getAllCart?.poscart_products ?? [];
+  console.log('mainServicesArray', JSON.stringify(mainServicesArray?.[18]));
 
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
@@ -700,9 +701,19 @@ export function MainScreen({
           <View
             style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
           >
-            <Text numberOfLines={1} style={styles.productPrice}>
+            {item?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+            item?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+              <Text numberOfLines={1} style={styles.productPrice}>
+                ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+              </Text>
+            ) : (
+              <Text numberOfLines={1} style={styles.productPrice}>
+                ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+              </Text>
+            )}
+            {/* <Text numberOfLines={1} style={styles.productPrice}>
               ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-            </Text>
+            </Text> */}
             <TouchableOpacity
               // onPress={() => productFun(item.id, index, item)}
               onPress={() => checkAttributes(item, index, cartAddQty)}
@@ -1119,9 +1130,16 @@ export function MainScreen({
                                 </Text>
                               )}
                               <Spacer space={SH(7)} />
-                              <Text numberOfLines={1} style={styles.productPrice}>
-                                ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-                              </Text>
+                              {item?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+                              item?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+                                <Text numberOfLines={1} style={styles.productPrice}>
+                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                                </Text>
+                              ) : (
+                                <Text numberOfLines={1} style={styles.productPrice}>
+                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                                </Text>
+                              )}
 
                               <Spacer space={SH(7)} />
                               <View style={styles.serviceTimeCon}>

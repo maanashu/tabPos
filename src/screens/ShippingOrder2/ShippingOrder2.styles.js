@@ -162,8 +162,6 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
   },
 
-  // -------------------
-
   shippingOrdersView: {
     backgroundColor: COLORS.white,
     borderRadius: 10,

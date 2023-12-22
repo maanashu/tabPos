@@ -43,6 +43,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const cusotmerPhoneNo = cartData?.user_details?.phone_no;
   const [searchCustomer, setSearchCustomer] = useState('');
   const [monthDays, setmonthDays] = useState([]);
   const getuserDetailByNo = getRetailData?.getUserDetail;
@@ -55,25 +56,40 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   useEffect(() => {
     textInputRef.current.focus();
   }, []);
+  useEffect(() => {
+    if (searchCustomer?.length > 9) {
+      const data = {
+        countryCode: countryCode,
+        phoneNumber: searchCustomer,
+      };
+      dispatch(getUserDetail(data));
+      Keyboard.dismiss();
+      setDetailArea(true);
+    } else if (searchCustomer?.length < 10) {
+      dispatch(getUserDetailSuccess({}));
+      setDetailArea(false);
+    }
+  }, [searchCustomer?.length > 9]);
 
-  const customerPhoneSearchFun = useCallback(
-    (customerphoneNumber) => {
-      setSearchCustomer(customerphoneNumber);
-      if (customerphoneNumber?.length > 9) {
-        const data = {
-          countryCode: countryCode,
-          phoneNumber: customerphoneNumber,
-        };
-        dispatch(getUserDetail(data));
-        Keyboard.dismiss();
-        setDetailArea(true);
-      } else if (customerphoneNumber?.length < 10) {
-        dispatch(getUserDetailSuccess({}));
-        setDetailArea(false);
-      }
-    },
-    [searchCustomer]
-  );
+  // const customerPhoneSearchFun = useCallback(
+  //   (customerphoneNumber) => {
+  //     console.log('-----', customerphoneNumber);
+  //     setSearchCustomer(customerphoneNumber);
+  //     if (customerphoneNumber?.length > 9) {
+  //       const data = {
+  //         countryCode: countryCode,
+  //         phoneNumber: customerphoneNumber,
+  //       };
+  //       dispatch(getUserDetail(data));
+  //       Keyboard.dismiss();
+  //       setDetailArea(true);
+  //     } else if (customerphoneNumber?.length < 10) {
+  //       dispatch(getUserDetailSuccess({}));
+  //       setDetailArea(false);
+  //     }
+  //   },
+  //   [searchCustomer]
+  // );
 
   const userDetalLoader = useSelector((state) => isLoadingSelector([TYPES.GET_USERDETAIL], state));
 
@@ -123,9 +139,16 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
     setSearchCustomer(''), setFirstName(''), setLastName(''), setLastName('');
   };
 
+  useEffect(() => {
+    if (cartData?.user_details) {
+      setCountryCode(cartData?.user_details?.phone_code || '+1');
+      setSearchCustomer(cartData?.user_details?.phone_no || '');
+    }
+  }, []);
+
   return (
     <KeyboardAwareScrollView
-      contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
+      contentContainerStyle={{ flex: 1, justifyContent: 'center' }}
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.addCustomerCon}>
@@ -182,8 +205,9 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
             <Image source={dropdown} style={styles.dropDownIcon} />
             <Text style={styles.countryCodeText}>{countryCode}</Text>
             <TextInput
-              value={searchCustomer}
-              onChangeText={(searchCustomer) => customerPhoneSearchFun(searchCustomer)}
+              value={searchCustomer?.toString()}
+              // onChangeText={(searchCustomer) => customerPhoneSearchFun(searchCustomer)}
+              onChangeText={setSearchCustomer}
               style={styles.searchCustomerInput}
               placeholder="Customer Phone Number"
               placeholderTextColor={COLORS.faded_purple}
@@ -428,33 +452,35 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
             </View>
           )}
         </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: ms(10),
-          }}
-        >
-          <TouchableOpacity style={styles.cancelButtonCon} onPress={crossHandler}>
-            <Text style={styles.cancelText}>{'Cancel'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.addToCartButtonCon}
-            disabled={userDetalLoader ? true : false}
-            onPress={() =>
-              userLength == 0 && detailArea
-                ? saveAndAddCustomer()
-                : userLength > 0 && detailArea
-                ? saveCustomer()
-                : alert('Something went wrong')
-            }
+        {searchCustomer?.length > 9 && cartData?.user_details?.phone_no == searchCustomer ? null : (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingHorizontal: ms(10),
+            }}
           >
-            <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add Costumer'}</Text>
-            <Image source={Images.addProduct} style={styles.plusIconAdd} />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity style={styles.cancelButtonCon} onPress={crossHandler}>
+              <Text style={styles.cancelText}>{'Cancel'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.addToCartButtonCon}
+              disabled={userDetalLoader ? true : false}
+              onPress={() =>
+                userLength == 0 && detailArea
+                  ? saveAndAddCustomer()
+                  : userLength > 0 && detailArea
+                  ? saveCustomer()
+                  : alert('Something went wrong')
+              }
+            >
+              <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add Costumer'}</Text>
+              <Image source={Images.addProduct} style={styles.plusIconAdd} />
+            </TouchableOpacity>
+          </View>
+        )}
+
         <Spacer space={SH(15)} />
       </View>
     </KeyboardAwareScrollView>

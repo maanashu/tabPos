@@ -64,7 +64,7 @@ const AddProductCart = ({
 
   const addToCartHandler = async () => {
     if (attributeArray?.length === 0) {
-      onClickAddCartModal(selectedItem, productIndex, count);
+      retailData?.addOpenFrom == 'main' && onClickAddCartModal(selectedItem, productIndex, count);
       const data = {
         seller_id: sellerID,
         service_id: productDetail?.product_detail?.service_id,
@@ -73,7 +73,7 @@ const AddProductCart = ({
         supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
         supplyPriceID: productDetail?.product_detail?.supplies?.[0]?.supply_prices[0]?.id,
       };
-      addToLocalCart(productItem, productIndex, count);
+      retailData?.addOpenFrom == 'main' && addToLocalCart(productItem, productIndex, count);
       dispatch(addTocart(data));
       addProductCartRef.current.dismiss();
     } else {
@@ -101,7 +101,7 @@ const AddProductCart = ({
             .join(),
           supplyId: productDetail?.product_detail?.supplies?.[0]?.id,
         };
-        onClickAddCartModal(selectedItem, productIndex, count);
+        retailData?.addOpenFrom == 'main' && onClickAddCartModal(selectedItem, productIndex, count);
         const res = await dispatch(checkSuppliedVariant(data));
         if (res?.type === 'CHECK_SUPPLIES_VARIANT_SUCCESS') {
           const data = {
@@ -115,7 +115,8 @@ const AddProductCart = ({
           };
           dispatch(addTocart(data));
           addProductCartRef.current.dismiss();
-          addToLocalCart(selectedItem, productIndex, count, data?.supplyVariantId);
+          retailData?.addOpenFrom == 'main' &&
+            addToLocalCart(selectedItem, productIndex, count, data?.supplyVariantId);
         }
       }
     }

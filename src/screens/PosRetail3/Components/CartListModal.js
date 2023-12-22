@@ -216,12 +216,28 @@ export function CartListModal({
                             </View>
                           </View>
                           <View style={styles.ShorttableListSide2}>
-                            <Text
+                            {data?.product_details?.supply?.offer?.offer_price_per_pack &&
+                            data?.product_details?.supply?.supply_prices?.selling_price ? (
+                              <Text numberOfLines={1} style={styles.productPrice}>
+                                $
+                                {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                                  2
+                                )}
+                              </Text>
+                            ) : (
+                              <Text numberOfLines={1} style={styles.productPrice}>
+                                $
+                                {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                                  2
+                                )}
+                              </Text>
+                            )}
+                            {/* <Text
                               style={[styles.blueListDataText, { width: ms(35) }]}
                               numberOfLines={1}
                             >
                               ${data?.product_details?.supply?.supply_prices?.selling_price}
-                            </Text>
+                            </Text> */}
                             {TYPE == 'product' ? (
                               <View style={styles.listCountCon}>
                                 <TouchableOpacity
@@ -263,10 +279,12 @@ export function CartListModal({
 
                             <Text style={styles.blueListDataText}>
                               $
-                              {(
-                                data.product_details?.supply?.supply_prices?.selling_price *
-                                data?.qty
-                              ).toFixed(2)}
+                              {(data?.product_details?.supply?.supply_prices?.offer_price
+                                ? data?.product_details?.supply?.supply_prices?.offer_price *
+                                  data?.qty
+                                : data?.product_details?.supply?.supply_prices?.selling_price *
+                                  data?.qty
+                              )?.toFixed(2)}
                             </Text>
                             <TouchableOpacity
                               style={{

@@ -41,6 +41,7 @@ const INITIALSTATE = {
   cartFrom: 'product',
   addProductFrom: 'main',
   addServiceFrom: 'main',
+  addOpenFrom: 'main',
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -431,6 +432,11 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         addServiceFrom: payload?.addServiceFrom,
+      };
+    case TYPES.ADD_OPEN_FROM_SUCCESS:
+      return {
+        ...state,
+        addOpenFrom: payload?.addOpenFrom,
       };
 
     case TYPES.CLEAR_RETAIL_STORE:

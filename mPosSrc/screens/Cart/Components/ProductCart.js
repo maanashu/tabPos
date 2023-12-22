@@ -28,6 +28,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { formattedReturnPrice } from '@mPOS/utils/GlobalMethods';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import {
+  addOpenFrom,
   changeStatusProductCart,
   clearAllCart,
   getAllCart,
@@ -451,9 +452,25 @@ export function ProductCart({ cartChangeHandler }) {
                             marginTop: ms(3),
                           }}
                         >
-                          <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
+                          {data?.item?.product_details?.supply?.offer?.offer_price_per_pack &&
+                          data?.item?.product_details?.supply?.supply_prices?.selling_price ? (
+                            <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
+                              $
+                              {data?.item?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                                2
+                              )}
+                            </Text>
+                          ) : (
+                            <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
+                              $
+                              {data?.item?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                                2
+                              )}
+                            </Text>
+                          )}
+                          {/* <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
                             ${data?.item?.product_details?.supply?.supply_prices?.selling_price}
-                          </Text>
+                          </Text> */}
                           <Text style={[styles.colorName, { marginLeft: ms(10) }]}>X</Text>
                           <View style={styles.counterCon}>
                             <TouchableOpacity
@@ -491,11 +508,20 @@ export function ProductCart({ cartChangeHandler }) {
                       </TouchableOpacity>
                       <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
                         $
+                        {(data?.item?.product_details?.supply?.supply_prices?.offer_price
+                          ? data?.item?.product_details?.supply?.supply_prices?.offer_price *
+                            data?.item?.qty
+                          : data?.item?.product_details?.supply?.supply_prices?.selling_price *
+                            data?.item?.qty
+                        )?.toFixed(2)}
+                      </Text>
+                      {/* <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
+                        $
                         {Number(
                           data?.item?.product_details?.supply?.supply_prices?.selling_price *
                             data?.item?.qty
                         )?.toFixed(2)}
-                      </Text>
+                      </Text> */}
                     </View>
                   </View>
                 </View>
@@ -686,8 +712,10 @@ export function ProductCart({ cartChangeHandler }) {
         availableOfferRef={availableOfferRef}
         productCartOpen={() => {
           addProductCartRef?.current?.present();
+          dispatch(addOpenFrom('available'));
         }}
       />
+
       <AddProductCart {...{ addProductCartRef, productDetailHanlder }} />
       <ProductDetails {...{ productDetailRef, bothSheetClose }} />
       {/* productDetailHanlder */}
