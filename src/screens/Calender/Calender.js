@@ -165,10 +165,9 @@ export function Calender() {
     const monthDays = [];
 
     for (let day = 1; day <= daysInMonth; day++) {
-      const fullDateForTheDay = new Date(year, month, day);
-      const dayName = weekDays[fullDateForTheDay.getDay()];
-
-      const objDay = { fullDateForTheDay, day, dayName };
+      const fullDateFortheDay = new Date(year, month, day);
+      const dayName = weekDays[fullDateFortheDay.getDay()];
+      const objDay = { fullDateFortheDay, day, dayName };
 
       monthDays.push(objDay);
     }

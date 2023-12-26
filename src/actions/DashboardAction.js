@@ -209,6 +209,19 @@ const scanBarCodeRequest = () => ({
   payload: null,
 });
 
+const getHomeDataRequest = () => ({
+  type: DASHBOARDTYPE.HOME_DATA_REQUEST,
+  payload: null,
+});
+export const getHomeDataSuccess = (data) => ({
+  type: DASHBOARDTYPE.HOME_DATA_SUCCESS,
+  payload: { data },
+});
+const getHomeDataError = (error) => ({
+  type: DASHBOARDTYPE.HOME_DATA_ERROR,
+  payload: { error },
+});
+
 export const getOrderDeliveries = (sellerID, page, callback) => async (dispatch, getState) => {
   dispatch(getOrderDeliveriesRequest());
   const orderDeleveriesProduct = store.getState()?.dashboard?.getOrderDeliveries;
@@ -399,5 +412,15 @@ export const scanBarCode = (data) => async (dispatch) => {
       dispatch(getOrdersByInvoiceIdReset());
     }
     dispatch(getOrdersByInvoiceIdError(error.message));
+  }
+};
+
+export const homeStatus = () => async (dispatch) => {
+  dispatch(getHomeDataRequest());
+  try {
+    const res = await DashboardController.homeStatusAPI();
+    dispatch(getHomeDataSuccess(res?.payload));
+  } catch (error) {
+    dispatch(getHomeDataError(error.message));
   }
 };

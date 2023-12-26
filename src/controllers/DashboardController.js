@@ -305,4 +305,23 @@ export class DashboardController {
         });
     });
   }
+
+  static async homeStatusAPI() {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const queryParams = {
+        seller_id: sellerID,
+      };
+
+      const params = new URLSearchParams(queryParams).toString();
+      const endpoint = ApiOrderInventory.homeStatus + `?${params}`;
+      HttpClient.get(endpoint, params)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error.msg);
+        });
+    });
+  }
 }
