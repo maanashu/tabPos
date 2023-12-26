@@ -304,7 +304,7 @@ const ReScheduleDetailModal = ({
                   </Text>
                 </View>
                 <Text style={[styles.selected, { fontSize: ms(12) }]}>
-                  {`$${appointmentData?.payable_amount}`}
+                  {`$${appointmentData?.price}`}
                 </Text>
               </View>
               <Spacer space={ms(10)} />
