@@ -117,26 +117,32 @@ const InvoiceDetails = ({
               contentContainerStyle={{ flexGrow: 1, paddingBottom: 10 }}
             />
           </View>
-          <View style={{ width: '85%', alignSelf: 'center', flexDirection: 'row' }}>
+
+          <View style={{ width: '100%', alignSelf: 'center', flexDirection: 'row' }}>
             <FlatList
               data={invoiceData}
               numColumns={3}
               renderItem={({ item, index }) => (
                 <View
                   style={{
-                    width: ms(67),
+                    // width: ms(67),
                     height: ms(30),
-                    justifyContent: 'space-between',
+                    // justifyContent: 'space-between',
                     marginTop: ms(15),
+                    flex: 1,
+                    alignItems: 'center',
                   }}
                 >
-                  <Text style={[styles._payTitle, { letterSpacing: -1 }]}>{item.title}</Text>
-                  <Spacer space={SH(7)} />
-                  <Text style={styles._paySubTitle}>{item.data}</Text>
+                  <Text style={[styles._payTitle, { letterSpacing: -1, flex: 1 }]}>
+                    {item.title}
+                  </Text>
+                  <Spacer space={ms(5)} />
+                  <Text style={[styles._paySubTitle, { flex: 1 }]}>{item.data}</Text>
                 </View>
               )}
             />
           </View>
+
           <Spacer space={SH(10)} />
           <View style={[styles._horizontalLine, { width: '100%', borderStyle: 'dashed' }]} />
           <Spacer space={SH(15)} />
@@ -148,6 +154,11 @@ const InvoiceDetails = ({
             <Spacer space={SH(10)} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._payTitle}>Discount</Text>
+              <Text style={styles._payTitle}>{`${formattedReturnPrice(discount)}`}</Text>
+            </View>
+            <Spacer space={SH(10)} />
+            <View style={styles._subTotalContainer}>
+              <Text style={styles._payTitle}>{deliveryShippingTitle}</Text>
               <Text style={styles._payTitle}>{`${formattedReturnPrice(
                 deliveryShippingCharges
               )}`}</Text>

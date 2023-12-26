@@ -375,7 +375,7 @@ export function Analytics2() {
             </View>
             {/* <Spacer space={ms(5)} /> */}
 
-            <View style={[styles.flexDirectionRow, { zIndex: -999 }]}>
+            <View style={[styles.flexDirectionRow, { zIndex: -999, alignItems: 'flex-start' }]}>
               <View style={styles.container}>{screenChangeView()}</View>
 
               <View style={styles.rightSideView}>
