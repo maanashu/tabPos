@@ -157,7 +157,7 @@ const EventItemCard = ({ item, index }) => {
         <View style={[styles._btnContainer, { flex: 1 }]}>
           <TouchableOpacity
             onPress={() => {
-              const appointmentID = item?.appointment_id ?? '';
+              const appointmentID = item?.id ?? '';
               dispatch(
                 changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER)
               );
