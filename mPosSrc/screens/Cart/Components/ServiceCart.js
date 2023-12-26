@@ -401,7 +401,7 @@ export function ServiceCart({ cartChangeHandler }) {
                           </Text>
                           <Text style={styles.verticalRow}>{'|'}</Text>
                           <Text style={[styles.sukNumber, styles.timeitalic]}>
-                            {moment(data?.item?.date).format('LL')}
+                            {moment.utc(data?.item?.date).format('LL')}
                             {/* {convertUTCTimeToCurrentTime(data?.item?.date)} */}@
                             {data?.item?.start_time + '-' + data?.item?.end_time}
                           </Text>
