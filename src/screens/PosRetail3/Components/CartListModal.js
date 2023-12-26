@@ -221,7 +221,7 @@ export function CartListModal({
                                   </Text>
                                   {data?.product_type === 'service' && (
                                     <Text style={styles.sukNumber}>
-                                      {moment(data?.date).format('LL')} @
+                                      {moment.utc(data?.date).format('LL')} @
                                       {data?.start_time + '-' + data?.end_time}
                                     </Text>
                                   )}
