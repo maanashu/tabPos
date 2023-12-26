@@ -430,16 +430,6 @@ export function Customers2() {
               >
                 <Image source={searchDrawer} style={styles.searchImage} />
               </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.searchView, { marginLeft: ms(10) }]}
-                onPress={() => {
-                  setShowSearchModal(true);
-                  setSearchedCustomer([]);
-                  setSearchedText('');
-                }}
-              >
-                <Image source={scanNew} style={styles.searchImage} />
-              </TouchableOpacity>
             </View>
           </View>
 
