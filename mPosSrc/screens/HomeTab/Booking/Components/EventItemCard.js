@@ -80,7 +80,7 @@ const EventItemCard = ({ item, index }) => {
               ? item?.mode_of_payment?.toUpperCase() + ' '
               : '$'}
 
-            {item?.payable_amount}
+            {`${parseFloat(item?.price).toFixed(2)}`}
           </Text>
         </View>
       </View>
