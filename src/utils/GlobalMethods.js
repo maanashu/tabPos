@@ -1,7 +1,9 @@
 import { Alert, Keyboard, Linking, PermissionsAndroid, ToastAndroid } from 'react-native';
 import { strings } from '@/localization';
 import moment from 'moment';
+import 'moment-timezone';
 import { store } from '@/store';
+import * as RNLocalize from 'react-native-localize';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -427,6 +429,11 @@ const ADMIN = () => {
   return admin;
 };
 
+const convertUTCTimeToCurrentTime = (utcDateTime, dateTimeFormat = 'LL') => {
+  const currentTimeZone = RNLocalize.getTimeZone();
+  return moment.utc(utcDateTime).tz(currentTimeZone).format(dateTimeFormat);
+};
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -452,4 +459,5 @@ export {
   pSBC,
   calculateTimeDuration,
   ADMIN,
+  convertUTCTimeToCurrentTime,
 };

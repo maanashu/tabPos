@@ -67,13 +67,13 @@ export function Home() {
           listedProducts: '125 Products listed',
         }
       : null,
-    merchantServiceProvide?.is_product_exist || merchantServiceProvide?.is_service_exist
-      ? {
-          key: '3',
-          title: 'On-Hold',
-          image: Images.hold,
-        }
-      : null,
+    // merchantServiceProvide?.is_product_exist || merchantServiceProvide?.is_service_exist
+    //   ? {
+    //       key: '3',
+    //       title: 'On-Hold',
+    //       image: Images.hold,
+    //     }
+    //   : null,
     {
       key: '4',
       title: 'Return',
@@ -153,7 +153,10 @@ export function Home() {
           <Text style={styles.storeName} numberOfLines={1}>
             {merchantData?.user?.user_profiles?.organization_name}
           </Text>
-          <Image source={Images.bell} style={styles.bell} />
+
+          <TouchableOpacity onPress={() => navigate(MPOS_NAVIGATION.notificationList)}>
+            <Image source={Images.bell} style={styles.bell} />
+          </TouchableOpacity>
         </View>
         <View style={styles.homePageSearchCon}>
           <Image source={Images.search} style={styles.searchIconStyle} />

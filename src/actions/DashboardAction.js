@@ -245,11 +245,12 @@ export const getDrawerSession = () => async (dispatch) => {
     dispatch(getDrawerSessionError(error.message));
   }
 };
-export const getDrawerSessionPost = (data) => async (dispatch) => {
+export const getDrawerSessionPost = (data, callback) => async (dispatch) => {
   dispatch(getDrawerSessionPostRequest());
   try {
     const res = await DashboardController.getDrawerSessionPost(data);
     dispatch(getDrawerSessionPostSuccess(res?.payload));
+    callback && callback(res);
     if (res) {
       const resData = {
         drawerID: res?.payload?.id,

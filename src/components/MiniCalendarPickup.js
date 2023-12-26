@@ -26,6 +26,7 @@ const MiniCalendarPickup = ({
     <View style={styles.container}>
       <CalendarPicker
         selectedStartDate={selectedStartDate}
+        initialDate={selectedStartDate}
         startFromMonday={true}
         allowRangeSelection={allowRangeSelection}
         minDate={minDate}

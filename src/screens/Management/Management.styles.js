@@ -274,7 +274,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
 
-    minHeight: windowHeight - 300,
+    minHeight: windowHeight - 250,
     // borderWidth:10
   },
   headerView: {
@@ -819,7 +819,6 @@ export const styles = StyleSheet.create({
   },
   absoluteZero: {
     position: 'absolute',
-    top: 0,
   },
   centerSw: {
     width: SW(145),
