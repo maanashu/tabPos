@@ -40,11 +40,27 @@ export function Customers() {
   const [saveCustomeType, setSaveCustomerType] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
+  // const filterHandler = () => {
+  //   if (filterVal === undefined) {
+  //     return {
+  //       start_date: startDated,
+  //       end_date: endDated,
+  //     };
+  //   } else {
+  //     return {
+  //       filter: filterVal,
+  //     };
+  //   }
+  // };
+
+  // const data = filterHandler();
+  const data = { filter: filterVal };
+
   useEffect(() => {
     if (isFocused) {
-      dispatch(getCustomer(filterVal, sellerID));
+      dispatch(getCustomer(data, sellerID));
     }
-  }, [filterVal]);
+  }, [filterVal, isFocused]);
 
   const newCustomerData = [
     {

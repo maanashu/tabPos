@@ -79,7 +79,7 @@ export function TransactionList(props) {
     },
     {
       id: 2,
-      title: 'JOBR',
+      title: 'JBR Coin',
       count: getWalletData?.getTotalTraType?.[1]?.count || 0,
       value: 'jbr',
     },
@@ -155,6 +155,8 @@ export function TransactionList(props) {
   const renderTransList = ({ item, index }) => {
     const date = dayjs(item?.created_at).format('MMM DD, YYYY') || '';
     const time = dayjs(item?.created_at).format('hh:MM A') || '';
+
+    const suffix = item?.mode_of_payment === 'cash' ? '$' : 'JBR';
     return (
       <>
         <Spacer space={SH(10)} />
@@ -170,7 +172,9 @@ export function TransactionList(props) {
             <Text style={styles.amountText}> {DELIVERY_MODE[item?.delivery_option]}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.amountText}>JOBR {item?.payable_amount}</Text>
+            <Text style={styles.amountText}>
+              {suffix} {item?.payable_amount}
+            </Text>
           </View>
           <View style={styles.rowAligned}>
             <Image style={styles.rightIcon} source={Images.tickRound} />
