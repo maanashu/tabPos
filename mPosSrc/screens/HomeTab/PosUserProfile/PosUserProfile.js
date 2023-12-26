@@ -115,8 +115,15 @@ export function PosUserProfile(props) {
         amount: amount,
         notes: notes,
       };
-      dispatch(getDrawerSessionPost(data));
-      setTrackingSession(false);
+      dispatch(
+        getDrawerSessionPost(data, (res) => {
+          console.log('-----', res);
+          if (res?.msg == 'Get drawer session!') {
+            setTrackingSession(false);
+            dispatch(saveDefaultScreen(true));
+          }
+        })
+      );
     }
   };
   const isLoad = useSelector((state) =>

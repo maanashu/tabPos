@@ -239,32 +239,7 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                               </Text>
                             )}
                             <Text>{data.qty}</Text>
-                            {/* <View style={styles.listCountCon}>
-                              <TouchableOpacity
-                                style={{
-                                  width: SW(10),
-                                  alignItems: 'center',
-                                }}
-                                onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
-                              >
-                                <Image source={minus} style={styles.minus} />
-                              </TouchableOpacity>
-                              <Text>{data.qty}</Text>
-                             {isLoading ? (
-                          <ActivityIndicator size="small" color={COLORS.primary} />
-                        ) : (
-                          <Text>{data.qty}</Text>
-                        )} *
-                              <TouchableOpacity
-                                style={{
-                                  width: SW(10),
-                                  alignItems: 'center',
-                                }}
-                                onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
-                              >
-                                <Image source={plus} style={styles.minus} />
-                              </TouchableOpacity>
-                            </View> */}
+
                             {data?.product_details?.supply?.offer?.offer_price_per_pack &&
                             data?.product_details?.supply?.supply_prices?.selling_price ? (
                               <Text style={styles.blueListDataText}>

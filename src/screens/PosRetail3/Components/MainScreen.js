@@ -169,7 +169,6 @@ export function MainScreen({
   const mainProductArray = getRetailData?.getMainProduct?.data;
   const mainServicesArray = getRetailData?.getMainServices?.data;
   const servicecCart = getRetailData?.getAllCart?.poscart_products ?? [];
-  console.log('mainServicesArray', JSON.stringify(mainServicesArray?.[18]));
 
   const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
     product_id: obj.product_id,
