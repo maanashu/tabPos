@@ -3,6 +3,8 @@ import { strings } from '@/localization';
 import moment from 'moment';
 import { store } from '@/store';
 
+import * as RNLocalize from 'react-native-localize';
+
 moment.suppressDeprecationWarnings = true;
 
 const HandleUnhandledTouches = () => {
@@ -427,6 +429,16 @@ const ADMIN = () => {
   return admin;
 };
 
+// const convertUTCTimeToCurrentTime = (utcDateTime, dateTimeFormat = 'LL') => {
+//   console.log('-------', utcDateTime);
+//   const currentTimeZone = RNLocalize.getTimeZone();
+//   moment.tz.setDefault(currentTimeZone);
+//   return moment(utcDateTime).format('LL');
+
+//   // const convertToUTC = moment.utc(utcDateTime).tz(currentTimeZone);
+//   // return convertToUTC.format(dateTimeFormat);
+// };
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -452,4 +464,5 @@ export {
   pSBC,
   calculateTimeDuration,
   ADMIN,
+  // convertUTCTimeToCurrentTime,
 };

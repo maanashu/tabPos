@@ -179,12 +179,7 @@ export function RetailServices(props) {
 
   const isLoading = useSelector((state) =>
     isLoadingSelector(
-      [
-        TYPES.GET_ONE_SERVICE,
-        TYPES.ADD_SERVICE_CART,
-        TYPES.GET_SERVICE_CART,
-        TYPES.GET_CLEAR_ALL_CART,
-      ],
+      [TYPES.GET_ONE_SERVICE, TYPES.ADD_SERVICE_CART, TYPES.GET_CLEAR_ALL_CART, TYPES.GET_ALL_CART],
       state
     )
   );

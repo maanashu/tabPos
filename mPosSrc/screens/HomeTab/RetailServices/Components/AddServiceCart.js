@@ -91,6 +91,16 @@ const AddServiceCart = ({ addServiceCartRef, serviceDetailHanlder }) => {
     setColorSelectId(null);
     setSizeSelectId(null);
   }, []);
+  useEffect(() => {
+    const params = {
+      seller_id: sellerID,
+      product_id: itemData?.id,
+      date: selectedDate,
+      pos_user_id: posUserId,
+    };
+    console.log('1234566');
+    dispatch(getTimeSlots(params));
+  }, []);
 
   useEffect(() => {
     const params = {
@@ -99,6 +109,7 @@ const AddServiceCart = ({ addServiceCartRef, serviceDetailHanlder }) => {
       date: selectedDate,
       pos_user_id: posUserId,
     };
+    console.log('1234566');
     dispatch(getTimeSlots(params));
   }, [posUserId, selectedDate]);
 
