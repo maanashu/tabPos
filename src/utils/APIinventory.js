@@ -178,6 +178,7 @@ export const ApiOrderInventory = {
   customServiceAdd: 'appointment_carts/custom-product',
   getStoreLocation: 'orders/customers/city',
   attachCustomerInService: 'appointment_carts/attach/user/',
+  homeStatus: ORDER_URL + 'orders/pos/seller/multi-status-count',
 };
 
 export const ApiWalletInventory = {

@@ -12,6 +12,7 @@ const INITIALSTATE = {
   invoiceSearchOrders: {},
   skuOrders: {},
   drawerSession: {},
+  homeData: {},
 };
 
 export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -106,6 +107,11 @@ export const dashboardReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         skuOrders: {},
+      };
+    case DASHBOARDTYPE.HOME_DATA_SUCCESS:
+      return {
+        ...state,
+        homeData: payload?.data,
       };
     default:
       return state;
