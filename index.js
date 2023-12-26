@@ -17,6 +17,16 @@ import { navigate } from '@/navigation/NavigationRef';
 import { getPendingOrders } from '@/actions/DashboardAction';
 import { isTablet } from 'react-native-device-info';
 import Orientation from 'react-native-orientation-locker';
+import moment from 'moment';
+import 'moment-timezone';
+import * as RNLocalize from 'react-native-localize';
+
+/**
+ * Set default timezone for all the moment calls inside the app
+ * By doing this it will not be needed to everytime call timezone method to change utc date/time to local date/time
+ */
+const defaultTimezone = RNLocalize.getTimeZone();
+moment.tz.setDefault(defaultTimezone);
 
 if (Platform.OS === 'android') {
   notifee.createChannel({
