@@ -212,7 +212,7 @@ export function CartListModal({
                                   />
                                 </View>
 
-                                <View style={{ marginLeft: 10 }}>
+                                <View style={{ marginLeft: 10, width: ms(75) }}>
                                   <Text
                                     style={[styles.blueListDataText, { width: SW(35) }]}
                                     numberOfLines={1}
