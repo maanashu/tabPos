@@ -35,6 +35,7 @@ import ReactNativeModal from 'react-native-modal';
 import InventoryProducts from './InventoryProducts';
 import RecheckConfirmation from './RecheckConfirmation';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import Header from './Header';
 
 const { width, height } = Dimensions.get('window');
 
@@ -363,7 +364,12 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     <View style={styles.container}>
       {changeView === 'TotalItems' ? (
         <>
-          <CustomHeader />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Header />
+            <View style={{ flex: 0.85, marginHorizontal: ms(15) }}>
+              <CustomHeader />
+            </View>
+          </View>
 
           <View
             style={{
@@ -908,6 +914,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(12),
     color: COLORS.navy_blue,
+    maxHeight: ms(30),
   },
   blueListHeader: {
     backgroundColor: COLORS.white,

@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     // paddingHorizontal: ms(20),
     marginRight: ms(5),
     flex: 0.6,
-    maxHeight: ms(25),
+    maxHeight: ms(35),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -377,6 +377,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.input_border,
     flex: 0.4,
     flexDirection: 'row',
+    maxHeight: ms(35),
   },
   orderandPriceView: {
     flexDirection: 'row',
