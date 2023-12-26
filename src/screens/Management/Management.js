@@ -628,7 +628,16 @@ export function Management() {
                 placeholderTextColor={COLORS.navy_blue}
                 keyboardType="number-pad"
                 value={addCashInput}
-                onChangeText={setAddCashInput}
+                // onChangeText={(text) => {
+                //   if (text.replace(/[^0-9]/g, '')) {
+                //     setAddCashInput(text);
+                //   }
+                // }}
+                onChangeText={(text) => {
+                  // Filter out non-numeric characters
+                  const numericValue = text.replace(/[^0-9]/g, '');
+                  setAddCashInput(numericValue);
+                }}
               />
             </View>
 
@@ -724,8 +733,13 @@ export function Management() {
                   placeholder={strings.management.amount}
                   placeholderTextColor={COLORS.navy_blue}
                   value={countFirst}
-                  onChangeText={setCountFirst}
+                  // onChangeText={setCountFirst}
                   keyboardType="number-pad"
+                  onChangeText={(text) => {
+                    // Filter out non-numeric characters
+                    const numericValue = text.replace(/[^0-9]/g, '');
+                    setCountFirst(numericValue);
+                  }}
                 />
               </View>
               <Spacer space={SH(80)} />
@@ -745,11 +759,13 @@ export function Management() {
               onPress={countCashFirst}
             /> */}
             <TouchableOpacity
+              disabled={countCashFirst == ''}
               activeOpacity={0.5}
               onPress={() => {
-                setEndSession(false), setCashSummary(true);
+                countCashFirst();
+                // setEndSession(false), setCashSummary(true);
               }}
-              style={styles.nextButtonEnd}
+              style={[styles.nextButtonEnd, countFirst == '' && { backgroundColor: 'grey' }]}
             >
               <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
               <Image source={arrowRightTop} style={styles.crossImage} />
@@ -867,7 +883,7 @@ export function Management() {
                 </Text>
               </View>
             </View>
-            <Spacer space={SH(60)} />
+
             {/* <Button
               style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
               textStyle={[styles.buttonText, { color: COLORS.white }]}
@@ -884,7 +900,7 @@ export function Management() {
                 setCashSummary(false), setEndSelectAmount(true);
                 setCountThird(''), setLeaveId(1), setLeaveData('0');
               }}
-              style={styles.nextButtonEnd}
+              style={[styles.nextButtonEnd, { position: 'absolute', bottom: 10 }]}
             >
               <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
               <Image source={arrowRightTop} style={styles.crossImage} />
@@ -939,8 +955,13 @@ export function Management() {
                   placeholder={strings.management.amount}
                   placeholderTextColor={COLORS.navy_blue}
                   value={countThird}
-                  onChangeText={(countThird) => (setCountThird(countThird), setLeavFun(countThird))}
+                  // onChangeText={(countThird) => (setCountThird(countThird), setLeavFun(countThird))}
                   keyboardType="numeric"
+                  onChangeText={(text) => {
+                    // Filter out non-numeric characters
+                    const numericValue = text.replace(/[^0-9]/g, '');
+                    setCountThird(numericValue), setLeavFun(numericValue);
+                  }}
                 />
               </View>
             </View>

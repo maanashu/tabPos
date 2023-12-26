@@ -32,7 +32,7 @@ client.interceptors.request.use(async function (config) {
    */
   const getRole = () => {
     if (API_URLS_USING_POS_USER_ACCESS_TOKEN(sellerID).includes(config.url)) {
-      return { token: register, appName: 'merchant' };
+      return { token: register, appName: 'pos' };
     } else {
       return { token: user, appName: 'pos' };
     }
