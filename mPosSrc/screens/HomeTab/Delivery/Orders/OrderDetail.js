@@ -27,7 +27,7 @@ import { useState } from 'react';
 
 import { useEffect } from 'react';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import { getOrderCount, getReviewDefault } from '@/actions/ShippingAction';
+import { getOrderCount, getReviewDefault } from '@/actions/DeliveryAction';
 
 export function OrderDetail(props) {
   const mapRef = useRef();
