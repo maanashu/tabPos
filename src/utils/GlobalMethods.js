@@ -5,8 +5,6 @@ import 'moment-timezone';
 import { store } from '@/store';
 import * as RNLocalize from 'react-native-localize';
 
-import * as RNLocalize from 'react-native-localize';
-
 moment.suppressDeprecationWarnings = true;
 
 const HandleUnhandledTouches = () => {
