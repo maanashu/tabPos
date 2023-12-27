@@ -34,8 +34,8 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import moment from 'moment';
 import ShipmentTracking from '@/screens/DeliveryOrders2/Components/ShipmentTracking';
 import { getUser } from '@/selectors/UserSelectors';
-import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
 import { DELIVERY_MODE, PAGINATION_DATA } from '@/constants/enums';
+import { formattedPrice } from '@/utils/GlobalMethods';
 
 export function InvoiceDetail({ mapRef, closeHandler }) {
   const dispatch = useDispatch();
@@ -107,7 +107,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
       </View>
       <View style={{ width: '24%', alignItems: 'flex-end' }}>
         <Text style={styles.priceTitle} numberOfLines={1}>
-          {`${formattedReturnPrice(
+          {`${formattedPrice(
             singleOrderDetail?.is_returned_order
               ? item?.order_details?.price * item?.order_details?.qty
               : item?.price * item?.qty ?? '0.00'
@@ -183,35 +183,35 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               <View style={{ width: '85%', alignSelf: 'center' }}>
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>Sub-Total</Text>
-                  <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                  <Text style={styles._payTitle}>{`${formattedPrice(
                     singleOrderDetail?.total_sale_price
                   )}`}</Text>
                 </View>
                 <Spacer space={SH(7)} />
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>{'Discount'}</Text>
-                  <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                  <Text style={styles._payTitle}>{`${formattedPrice(
                     singleOrderDetail?.discount
                   )}`}</Text>
                 </View>
                 <Spacer space={SH(7)} />
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>{'Delivery Charges'}</Text>
-                  <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                  <Text style={styles._payTitle}>{`${formattedPrice(
                     singleOrderDetail?.delivery_charge
                   )}`}</Text>
                 </View>
                 <Spacer space={SH(7)} />
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>{'Shipping Charges'}</Text>
-                  <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                  <Text style={styles._payTitle}>{`${formattedPrice(
                     singleOrderDetail?.shipping_charge
                   )}`}</Text>
                 </View>
                 <Spacer space={SH(7)} />
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>Taxes</Text>
-                  <Text style={[styles._payTitle]}>{`${formattedReturnPrice(
+                  <Text style={[styles._payTitle]}>{`${formattedPrice(
                     singleOrderDetail?.tax
                   )}`}</Text>
                 </View>
@@ -225,7 +225,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                     <Text
                       style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}
                     >
-                      {`${formattedReturnPrice(singleOrderDetail?.payable_amount)}`}
+                      {`${formattedPrice(singleOrderDetail?.payable_amount)}`}
                     </Text>
                   </View>
                 </View>
@@ -387,35 +387,35 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
               <View style={{ width: '85%', alignSelf: 'center' }}>
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>Sub-Total</Text>
-                  <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                  <Text style={styles._payTitle}>{`${formattedPrice(
                     singleOrderDetail?.total_sale_price
                   )}`}</Text>
                 </View>
                 <Spacer space={SH(7)} />
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>{'Discount'}</Text>
-                  <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                  <Text style={styles._payTitle}>{`${formattedPrice(
                     singleOrderDetail?.discount
                   )}`}</Text>
                 </View>
                 <Spacer space={SH(7)} />
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>{'Delivery  Charges'}</Text>
-                  <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                  <Text style={styles._payTitle}>{`${formattedPrice(
                     singleOrderDetail?.delivery_charge
                   )}`}</Text>
                 </View>
                 <Spacer space={SH(7)} />
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>{'Shipping Charges'}</Text>
-                  <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                  <Text style={styles._payTitle}>{`${formattedPrice(
                     singleOrderDetail?.shipping_charge
                   )}`}</Text>
                 </View>
                 <Spacer space={SH(7)} />
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>Taxes</Text>
-                  <Text style={[styles._payTitle]}>{`${formattedReturnPrice(
+                  <Text style={[styles._payTitle]}>{`${formattedPrice(
                     singleOrderDetail?.tax
                   )}`}</Text>
                 </View>
@@ -429,7 +429,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                     <Text
                       style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}
                     >
-                      {`${formattedReturnPrice(singleOrderDetail?.payable_amount)}`}
+                      {`${formattedPrice(singleOrderDetail?.payable_amount)}`}
                     </Text>
                   </View>
                 </View>

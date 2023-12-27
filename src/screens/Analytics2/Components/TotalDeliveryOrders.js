@@ -200,7 +200,7 @@ export function TotalDeliveryOrders({ onPressReview }) {
         />
         <HeaderView
           image={soldProduct}
-          text={'Total Sales'}
+          text={'Total Revenue'}
           count={
             deliveryGraph?.ordersOverView?.total_sales_or_actual_amount
               ? '$' + deliveryGraph?.ordersOverView?.total_sales_or_actual_amount?.toFixed(2)
@@ -237,7 +237,7 @@ export function TotalDeliveryOrders({ onPressReview }) {
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Sales</Text>
+                <Text style={styles.revenueText}>Total Revenue</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Action</Text>
