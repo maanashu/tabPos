@@ -271,10 +271,14 @@ export class SettingController {
     });
   }
 
-  static async verifyGoogleCode(data) {
+  static async verifyGoogleCode(data, authToken) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.verifyGoogleCode;
-      HttpClient.post(endpoint, data)
+      const headers = {
+        Authorization: authToken,
+        'app-name': 'pos',
+      };
+      HttpClient.post(endpoint, data, authToken && { headers })
         .then((response) => {
           resolve(response);
         })
@@ -293,10 +297,15 @@ export class SettingController {
     });
   }
 
-  static async configureGoogleCode(data) {
+  static async configureGoogleCode(data, authToken) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.configureGoogleCode;
-      HttpClient.post(endpoint, data)
+      console.log('data', data);
+      const headers = {
+        Authorization: authToken,
+        'app-name': 'pos',
+      };
+      HttpClient.post(endpoint, data, authToken && { headers })
         .then((response) => {
           resolve(response);
         })

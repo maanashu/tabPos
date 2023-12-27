@@ -472,10 +472,10 @@ export const getGoogleCode = () => async (dispatch) => {
   }
 };
 
-export const verifyGoogleCode = (data) => async (dispatch) => {
+export const verifyGoogleCode = (data, authToken) => async (dispatch) => {
   dispatch(verifyGoogleCodeRequest());
   try {
-    const res = await SettingController.verifyGoogleCode(data);
+    const res = await SettingController.verifyGoogleCode(data, authToken);
     dispatch(verifyGoogleCodeSuccess(res));
     return res;
   } catch (error) {
@@ -495,10 +495,10 @@ export const verifyGoogleCodeMPOS = (data, authToken) => async (dispatch) => {
   }
 };
 
-export const configureGoogleCode = (data) => async (dispatch) => {
+export const configureGoogleCode = (data, authToken) => async (dispatch) => {
   dispatch(configureGoogleCodeRequest());
   try {
-    const res = await SettingController.configureGoogleCode(data);
+    const res = await SettingController.configureGoogleCode(data, authToken);
     dispatch(configureGoogleCodeSuccess(res));
     return res;
   } catch (error) {

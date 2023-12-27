@@ -30,6 +30,7 @@ client.interceptors.request.use(async function (config) {
    * @returns Token for api call
    *
    */
+
   const getRole = () => {
     if (API_URLS_USING_POS_USER_ACCESS_TOKEN(sellerID).includes(config.url)) {
       return { token: register, appName: 'pos' };

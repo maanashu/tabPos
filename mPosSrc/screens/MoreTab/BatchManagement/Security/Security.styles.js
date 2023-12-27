@@ -408,6 +408,16 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     alignSelf: 'flex-start',
   },
+  forgotPin: {
+    position: 'absolute',
+    bottom: 15,
+    flexDirection: 'row',
+  },
+  forgotPinText: {
+    fontSize: SF(16),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.SemiBold,
+  },
   dropdownCon: {
     position: 'absolute',
     top: 45,
@@ -1357,7 +1367,7 @@ export const styles = StyleSheet.create({
 
   verifyContainer: {
     width: '100%',
-    height: '90%',
+    height: '91%',
     borderWidth: 1,
     borderColor: COLORS.solidGrey,
     alignSelf: 'center',
@@ -1515,4 +1525,65 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     alignSelf: 'center',
   },
+  cellRootSix: {
+    backgroundColor: COLORS.white,
+    height: moderateScale(35),
+    width: moderateScale(35),
+    borderRadius: moderateScale(50),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: COLORS.solidGrey,
+    marginHorizontal: moderateScale(5),
+  },
+  cellTextSix: {
+    fontFamily: Fonts.Medium,
+    fontSize: scale(12),
+    color: COLORS.black,
+  },
+  alignSelfCenterSix: {
+    alignSelf: 'center',
+  },
+
+  crossSix: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+  },
+  crossSixNew: {
+    width: SW(20),
+    height: SW(20),
+    resizeMode: 'contain',
+  },
+  flexRowSix: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  flexWidthSix: {
+    width: '100%',
+    justifyContent: 'space-evenly',
+  },
+  subHeadingSix: {
+    fontSize: SF(18),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Regular,
+  },
+  nextButtonNew: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.textInputBackground,
+    width: '80%',
+    alignSelf: 'center',
+    borderRadius: ms(10),
+    paddingVertical: verticalScale(10),
+  },
+  scurityScanNew: {
+    width: SW(300),
+    height: SW(300),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  firstBox: { flex: 1, width: '100%', alignItems: 'center', justifyContent: 'space-evenly' },
 });

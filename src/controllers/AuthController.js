@@ -221,6 +221,7 @@ export class AuthController {
       const endpoint = USER_URL + ApiUserInventory.getProfile + `${id}`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('Ere', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

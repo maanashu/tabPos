@@ -28,6 +28,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { getOrderCount, getReviewDefault } from '@/actions/DeliveryAction';
+import VerifyPickupOtpModal from '../Components/VerifyPickupOtpModal';
 
 export function OrderDetail(props) {
   const mapRef = useRef();
@@ -38,6 +39,7 @@ export function OrderDetail(props) {
   const orders = deliveryData?.getReviewDef ?? [];
   const orderData = orders[props?.route?.params?.index ?? 0];
   // const orderData = props?.route?.params?.data;
+  const [pickupModalVisible, setPickupModalVisible] = useState(false);
 
   const customerDetail = orderData?.user_details;
   const deliveryDate =
@@ -72,21 +74,11 @@ export function OrderDetail(props) {
     }
   };
   const onPressAcceptHandler = () => {
-    const data = {
-      orderId: orderData?.id,
-      status: parseInt(orderData?.status) + 1,
-      sellerID: sellerID,
-    };
-    dispatch(
-      acceptOrder(data, orderData?.status, (res) => {
-        if (res?.msg) {
-          goBack();
-        }
-      })
-    );
-    setTimeout(() => {
-      checkOtherOrder();
-    }, 500);
+    if (orderData?.delivery_option == '3' && selectedStatus == '2') {
+      setPickupModalVisible(true);
+    } else {
+      acceptOrderFn('normal');
+    }
   };
 
   const checkOtherOrder = () => {
@@ -113,6 +105,28 @@ export function OrderDetail(props) {
     dispatch(getReviewDefault(index));
   };
 
+  const changeOrderStatusAfterPickup = (id) => {
+    setPickupModalVisible(false);
+    acceptOrderFn('pickup');
+  };
+
+  const acceptOrderFn = (type) => {
+    const data = {
+      orderId: orderData?.id,
+      status: type == 'pickup' ? 5 : parseInt(orderData?.status) + 1,
+      sellerID: sellerID,
+    };
+    dispatch(
+      acceptOrder(data, orderData?.status, (res) => {
+        if (res?.msg) {
+          goBack();
+        }
+      })
+    );
+    setTimeout(() => {
+      checkOtherOrder();
+    }, 500);
+  };
   return (
     <SafeAreaView style={styles.container}>
       {/* <Header backRequired title={strings.profile.header} /> */}
@@ -259,7 +273,12 @@ export function OrderDetail(props) {
       )}
       {isLoading ? <FullScreenLoader /> : null}
       {orderLoad ? <FullScreenLoader /> : null}
-
+      <VerifyPickupOtpModal
+        visible={pickupModalVisible}
+        orderData={orderData}
+        changeOrderStatus={() => changeOrderStatusAfterPickup(orderData?.id)}
+        onClose={() => setPickupModalVisible(!pickupModalVisible)}
+      />
       <ReactNativeModal
         isVisible={isStatusDrawer}
         animationIn={'slideInRight'}

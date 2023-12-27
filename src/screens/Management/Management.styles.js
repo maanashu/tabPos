@@ -268,13 +268,13 @@ export const styles = StyleSheet.create({
   },
   modalMainView: {
     backgroundColor: COLORS.white,
-    width: SW(140),
+    width: SW(142),
     borderRadius: 30,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
 
-    minHeight: windowHeight - 250,
+    minHeight: windowHeight - 280,
     // borderWidth:10
   },
   headerView: {
@@ -815,10 +815,10 @@ export const styles = StyleSheet.create({
   trackingBodyCon: {
     width: SW(110),
     alignSelf: 'center',
-    height: windowHeight * 0.62,
+    minHeight: windowHeight * 0.6,
   },
   absoluteZero: {
-    position: 'absolute',
+    // position: 'absolute',
   },
   centerSw: {
     width: SW(145),

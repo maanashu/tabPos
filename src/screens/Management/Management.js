@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Dimensions,
 } from 'react-native';
 
 import moment from 'moment';
@@ -97,7 +98,8 @@ import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 import Header from '@/components/Header';
 
 moment.suppressDeprecationWarnings = true;
-
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 export function Management() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -699,9 +701,7 @@ export function Management() {
         <View style={[styles.absoluteZero]}>
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {/* {strings.management.endCashTrackingSession} */}
-              </Text>
+              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}></Text>
             </View>
             <TouchableOpacity
               onPress={() => {
@@ -712,9 +712,6 @@ export function Management() {
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-          {/* <View style={styles.calculatorView}>
-            <Image source={Calculator} style={styles.calculatorStyle} />
-          </View> */}
 
           <View style={styles.trackingBodyCon}>
             <Spacer space={SH(15)} />
@@ -744,20 +741,7 @@ export function Management() {
               </View>
               <Spacer space={SH(80)} />
             </View>
-            {/* <View style={{ flex: 1 }} /> */}
-            {/* <Button
-              style={[
-                styles.saveButton,
-                {
-                  backgroundColor: countFirst == '' ? COLORS.gerySkies : COLORS.navy_blue,
-                  borderRadius: 100,
-                },
-              ]}
-              textStyle={styles.buttonText}
-              title={strings.management.next}
-              // onPress={() => (setEndSession(false), setCashSummary(true))}
-              onPress={countCashFirst}
-            /> */}
+
             <TouchableOpacity
               disabled={countCashFirst == ''}
               activeOpacity={0.5}
@@ -765,7 +749,11 @@ export function Management() {
                 countCashFirst();
                 // setEndSession(false), setCashSummary(true);
               }}
-              style={[styles.nextButtonEnd, countFirst == '' && { backgroundColor: 'grey' }]}
+              style={[
+                styles.nextButtonEnd,
+                { position: 'absolute', bottom: ms(30) },
+                countFirst == '' && { backgroundColor: 'grey' },
+              ]}
             >
               <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
               <Image source={arrowRightTop} style={styles.crossImage} />
@@ -778,9 +766,7 @@ export function Management() {
         <View style={styles.absoluteZero}>
           <View style={styles.headerView}>
             <View style={styles.centerSw}>
-              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}>
-                {/* {strings.management.endCashTrackingSession} */}
-              </Text>
+              <Text style={[styles.trackingButtonText, { fontSize: SF(16) }]}></Text>
             </View>
             <TouchableOpacity
               onPress={() => {
@@ -791,9 +777,6 @@ export function Management() {
               <Image source={crossButton} style={styles.crossIconStyle} />
             </TouchableOpacity>
           </View>
-          {/* <View style={styles.calculatorView}>
-            <Image source={CalculatorColor} style={styles.calculatorStyle} />
-          </View> */}
 
           <View style={styles.trackingBodyCon}>
             <Image source={moneySearch} style={styles.calculatorStyle} />
@@ -801,7 +784,7 @@ export function Management() {
             <Text style={[styles.countCashText, { textAlign: 'center' }]}>
               {strings.management.endCashTrackingSession}
             </Text>
-            <Spacer space={SH(40)} />
+            <Spacer space={SH(30)} />
             <View>
               <Text style={[styles.countCashText, { textAlign: 'left' }]}>
                 {strings.management.cashSummary}
@@ -900,7 +883,7 @@ export function Management() {
                 setCashSummary(false), setEndSelectAmount(true);
                 setCountThird(''), setLeaveId(1), setLeaveData('0');
               }}
-              style={[styles.nextButtonEnd, { position: 'absolute', bottom: 10 }]}
+              style={[styles.nextButtonEnd, { position: 'absolute', bottom: ms(15) }]}
             >
               <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
               <Image source={arrowRightTop} style={styles.crossImage} />
@@ -945,7 +928,7 @@ export function Management() {
               <Spacer space={SH(25)} />
               <View>
                 {/* <Text style={styles.amountCountedText}>{strings.management.otherAmount}</Text> */}
-                <Spacer space={SH(15)} />
+                <Spacer space={SH(8)} />
                 <Text style={[styles.amountCountedText, { fontSize: SF(12) }]}>
                   {strings.management.otherAmount}
                 </Text>
@@ -1185,7 +1168,10 @@ export function Management() {
       >
         <KeyboardAwareScrollView
           keyboardShouldPersistTaps="always"
-          contentContainerStyle={styles.modalMainView}
+          contentContainerStyle={[
+            styles.modalMainView,
+            endSession && { minHeight: windowHeight - 300 },
+          ]}
         >
           {endSessionFunction()}
         </KeyboardAwareScrollView>
