@@ -4,7 +4,6 @@ import { View, TouchableOpacity, TextInput, Image } from 'react-native';
 import { debounce } from 'lodash';
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { SH } from '@/theme';
 import { Images } from '@mPOS/assets';
 import { strings } from '@mPOS/localization';
@@ -13,8 +12,7 @@ import { getDashboard } from '@/selectors/DashboardSelector';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import OrderWithInvoiceNumber from './Components/OrderWithInvoiceNumber';
 import { getOrdersByInvoiceId, scanBarCode } from '@/actions/DashboardAction';
-import { FullScreenLoader, Header, Invoice, ScreenWrapper, Spacer } from '@mPOS/components';
-
+import { FullScreenLoader, Header, ScreenWrapper, Spacer } from '@mPOS/components';
 import styles from './styles';
 
 export function SearchScreen() {

@@ -26,8 +26,7 @@ import styles from './styles';
 export function ReturnOrderDetail(props) {
   const dispatch = useDispatch();
   const orderData = props?.route?.params?.data;
-  const customerDetail = orderData?.order?.user_details?.user_profiles;
-
+  const customerDetail = orderData?.order?.seller_details?.user_profiles;
   const [productUpc, setProductUpc] = useState('');
   const [orderDetails, setOrderDetails] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -144,10 +143,10 @@ export function ReturnOrderDetail(props) {
             }
             style={styles.profileImageStyle}
           />
-          <View style={{ paddingLeft: 10 }}>
-            <Text style={styles.nameTextStyle}>{`${customerDetail?.firstname ?? ''} ${
-              customerDetail?.lastname ?? '-'
-            }`}</Text>
+          <View style={{ paddingLeft: 10, marginRight: ms(30) }}>
+            <Text style={styles.nameTextStyle}>
+              {`${customerDetail?.firstname ?? ''} ${customerDetail?.lastname ?? '-'}`}
+            </Text>
             <Text style={styles.addressTextStyle}>{`${
               customerDetail?.current_address?.street_address ?? ''
             } ${customerDetail?.current_address?.city ?? '-'} ${
