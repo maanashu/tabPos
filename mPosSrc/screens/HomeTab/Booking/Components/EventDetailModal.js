@@ -201,13 +201,13 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image source={eventClockIcon} style={styles.evenclockIcon} />
                 <Text style={styles.eventDay}>
-                  {moment(selectedPosStaffCompleteData?.date).format('dddd')}
+                  {moment.utc(selectedPosStaffCompleteData?.date).format('dddd')}
                 </Text>
               </View>
               <View style={styles.lineStl} />
 
               <Text style={styles.eventDate}>
-                {moment(selectedPosStaffCompleteData?.date).format('ll')}
+                {moment.utc(selectedPosStaffCompleteData?.date).format('ll')}
               </Text>
 
               <View style={styles.lineStl} />
