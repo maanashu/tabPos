@@ -115,8 +115,15 @@ export function PosUserProfile(props) {
         amount: amount,
         notes: notes,
       };
-      dispatch(getDrawerSessionPost(data));
-      setTrackingSession(false);
+      dispatch(
+        getDrawerSessionPost(data, (res) => {
+          console.log('-----', res);
+          if (res?.msg == 'Get drawer session!') {
+            setTrackingSession(false);
+            dispatch(saveDefaultScreen(true));
+          }
+        })
+      );
     }
   };
   const isLoad = useSelector((state) =>
@@ -158,9 +165,13 @@ export function PosUserProfile(props) {
               style={styles.profileName}
             >{`${loginPosUser?.user_profiles?.firstname} ${loginPosUser?.user_profiles?.lastname}`}</Text>
             <Text style={styles.posCashier}>
-              {loginPosUser?.user_roles?.length > 0
-                ? loginPosUser?.user_roles?.map((item) => item.role?.name)
-                : 'admin'}
+              {loginPosUser?.user_roles?.map((item, index) => {
+                if (index === loginPosUser?.user_roles?.length - 1) {
+                  return `${item.role?.name}`;
+                } else {
+                  return `${item.role?.name}, `;
+                }
+              })}
             </Text>
             <Text style={styles.posUserId}>
               {strings.more.id}

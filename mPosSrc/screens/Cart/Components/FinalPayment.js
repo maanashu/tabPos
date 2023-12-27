@@ -27,8 +27,6 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
   const orderInvoice = retailData?.createOrder;
   const saveProductData = saveCart?.poscart_products;
 
-  console.log('saveCart', orderCreateData);
-
   // change due function
   const payAmount = Number(orderCreateData?.tips ?? '0.00')?.toFixed(2);
   const actualAmount = Number(saveCart?.amount?.total_amount ?? '0.00')?.toFixed(2);
@@ -39,7 +37,9 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
       backdropComponent={CustomBackdrop}
       detached
       bottomInset={0}
-      onDismiss={() => finalPaymentCrossHandler()}
+      onDismiss={() => {
+        finalPaymentCrossHandler();
+      }}
       backdropOpacity={0.5}
       ref={finalPaymentRef}
       snapPoints={snapPoints}
@@ -124,10 +124,17 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
                 <View style={{ width: '20%', alignItems: 'flex-end' }}>
                   <Text style={[styles.priceTitle]} numberOfLines={1}>
                     $
+                    {item?.product_details?.supply?.supply_prices?.offer_price
+                      ? item?.product_details?.supply?.supply_prices?.offer_price?.toFixed(2)
+                      : item?.product_details?.supply?.supply_prices?.selling_price.toFixed(2)}
+                  </Text>
+
+                  {/* <Text style={[styles.priceTitle]} numberOfLines={1}>
+                    $
                     {Number(
                       item?.product_details?.supply?.supply_prices?.selling_price ?? '0.00'
                     )?.toFixed(2)}
-                  </Text>
+                  </Text> */}
                 </View>
               </View>
             );

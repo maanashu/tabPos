@@ -127,6 +127,7 @@ export const styles = StyleSheet.create({
   },
   flexDirectionRow: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   modalView: {
     backgroundColor: COLORS.white,

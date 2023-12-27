@@ -23,6 +23,7 @@ import {
   blankCheckBox,
   checkboxSecBlue,
   borderCross,
+  arrowRightTop,
 } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
@@ -34,6 +35,7 @@ import ReactNativeModal from 'react-native-modal';
 import InventoryProducts from './InventoryProducts';
 import RecheckConfirmation from './RecheckConfirmation';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import Header from './Header';
 
 const { width, height } = Dimensions.get('window');
 
@@ -171,14 +173,16 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
             }}
           >
             <Image source={{ uri: item?.product_image }} style={styles.columbiaMen} />
-            <View style={{ marginLeft: 10 }}>
-              <Text style={[styles.blueListDataText, { width: SW(60) }]} numberOfLines={2}>
+            <View style={{ marginLeft: ms(5) }}>
+              <Text style={[styles.blueListDataText]} numberOfLines={2}>
                 {item?.product_name ?? '-'}
               </Text>
-              <Text style={styles.sukNumber}>{item?.product_details?.sku ?? '-'}</Text>
+              <Text style={styles.sukNumber}>{item?.product_details?.sku ?? ''}</Text>
             </View>
           </View>
+        </View>
 
+        <View style={styles.productCartBodyRight}>
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
               ${item?.price ?? '0'}
@@ -221,10 +225,12 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           )}
 
           <View style={styles.productCartBody}>
-            <View style={styles.listCountCon}>
+            <Text style={styles.blueListDataText}>x{`${item?.qty}`}</Text>
+
+            {/* <View style={styles.listCountCon}>
               <TouchableOpacity
                 style={{
-                  width: SW(10),
+                  // width: SW(10),
                   alignItems: 'center',
                 }}
                 onPress={() => addRemoveQty('-', index)}
@@ -234,14 +240,14 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
               <Text>{`${item?.qty}`}</Text>
               <TouchableOpacity
                 style={{
-                  width: SW(10),
+                  // width: SW(10),
                   alignItems: 'center',
                 }}
                 onPress={() => addRemoveQty('+', index)}
               >
                 <Image source={plus} style={styles.minus} />
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
 
           <View style={styles.productCartBody}>
@@ -358,7 +364,12 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     <View style={styles.container}>
       {changeView === 'TotalItems' ? (
         <>
-          <CustomHeader />
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Header />
+            <View style={{ flex: 0.85, marginHorizontal: ms(15) }}>
+              <CustomHeader />
+            </View>
+          </View>
 
           <View
             style={{
@@ -373,17 +384,22 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           >
             <View style={styles.leftMainViewStyle}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text
-                  style={{
-                    fontSize: ms(13),
-                    color: COLORS.navy_blue,
-                    fontFamily: Fonts.SemiBold,
-                    alignSelf: 'flex-start',
-                    flex: 1,
-                  }}
-                >
-                  {'Refunds'}
-                </Text>
+                <View style={{ flex: 1 }}>
+                  <Text
+                    style={{
+                      fontSize: ms(13),
+                      color: COLORS.navy_blue,
+                      fontFamily: Fonts.SemiBold,
+                      alignSelf: 'flex-start',
+                    }}
+                  >
+                    {'Refunds'}
+                    <Text style={{ color: COLORS.light_blue2 }}>({orders?.length})</Text>
+                  </Text>
+                  <Text style={{ color: COLORS.navy_blue, marginTop: ms(2), fontSize: ms(8) }}>
+                    {'Select the items to refund.'}
+                  </Text>
+                </View>
 
                 <View style={styles.rowStyle}>
                   {finalOrder?.order?.delivery_charge == '0' ||
@@ -625,7 +641,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                 </View>
               </View>
 
-              <Spacer space={SH(10)} />
+              <Spacer space={ms(15)} />
 
               <View style={styles.blueListHeader}>
                 <View style={styles.displayflex}>
@@ -646,8 +662,27 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                     <View style={styles.productCartBody}>
                       <Text style={styles.cashLabelWhite}>Line Total</Text>
                     </View>
-                    <View style={styles.productCartBody}>
-                      <Text style={styles.cashLabelWhite}></Text>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: ms(20),
+                      }}
+                    >
+                      <View
+                        style={{
+                          borderColor: COLORS.light_blue2,
+                          borderWidth: 1,
+                          backgroundColor: COLORS.input_border,
+                          borderRadius: ms(2),
+                        }}
+                      >
+                        <Image
+                          source={minus}
+                          resizeMode="contain"
+                          style={{ height: ms(12), width: ms(12), tintColor: COLORS.light_blue2 }}
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>
@@ -665,11 +700,19 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
             </View>
 
             <View style={styles.billAmountViewStyle}>
-              <Text
-                style={styles.totalItemsText}
-              >{`${strings.deliveryOrders.totalRefundItems} ${orderList?.length}`}</Text>
+              <View style={styles.totalViewStyle}>
+                <Text
+                  style={styles.totalItemsText}
+                >{`${strings.deliveryOrders.itemsRefunded} `}</Text>
+                <Text
+                  style={[
+                    styles.totalItemsText,
+                    { justifyContent: 'flex-start', alignSelf: 'flex-start', textAlign: 'left' },
+                  ]}
+                >{`${orderList?.length}`}</Text>
+              </View>
 
-              <Spacer space={SH(10)} />
+              <View style={styles.horizontalLine} />
 
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{strings.deliveryOrders.subTotal}</Text>
@@ -678,14 +721,13 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                 )}`}</Text>
               </View>
 
-              <Spacer space={SH(10)} />
-
               <View style={styles.totalViewStyle}>
                 <Text style={styles.subTotalText}>{strings.deliveryOrders.totalTax}</Text>
                 <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
                   calculateRefundTax()
                 )}`}</Text>
               </View>
+              <View style={styles.horizontalLine} />
 
               {finalOrder?.order?.status === 5 && isRefundDeliveryAmount ? (
                 <>
@@ -700,13 +742,13 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                 </>
               ) : null}
 
-              <Spacer space={SH(10)} />
+              {/* <Spacer space={SH(10)} /> */}
 
               <View style={styles.totalViewStyle}>
-                <Text style={[styles.subTotalText, { fontFamily: Fonts.MaisonBold }]}>
+                <Text style={[styles.totalItemsText, { fontFamily: Fonts.MaisonBold }]}>
                   {strings.wallet.total}
                 </Text>
-                <Text style={[styles.subTotalPrice, { fontFamily: Fonts.MaisonBold }]}>
+                <Text style={[styles.totalItemsText, { fontFamily: Fonts.MaisonBold }]}>
                   {`${formattedReturnPrice(totalRefundableAmount())}`}
                 </Text>
               </View>
@@ -724,14 +766,16 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                 }}
                 disabled={orders?.length > 0 ? false : true}
                 style={[
-                  styles.nextButtonStyle,
+                  styles.saveButtonTax,
                   {
-                    backgroundColor: orders?.length > 0 ? COLORS.primary : COLORS.gerySkies,
+                    backgroundColor: orders?.length > 0 ? COLORS.navy_blue : COLORS.light_blue2,
+                    // borderWidth: orders?.length > 0 ? 0 : 1,
+                    // borderColor: COLORS.navy_blue,
                   },
                 ]}
               >
-                <Text style={styles.nextTextStyle}>{strings.management.next}</Text>
-                <Image source={sellingArrow} style={styles.arrowIconStyle} />
+                <Text style={[styles.saveButtonText]}>{'Confirm'}</Text>
+                <Image source={arrowRightTop} style={styles.arrowButton} />
               </TouchableOpacity>
 
               <Spacer space={SH(20)} />
@@ -791,6 +835,7 @@ const styles = StyleSheet.create({
     width: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: ms(10),
   },
   container: {
     flex: 1,
@@ -869,13 +914,14 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
     fontSize: SF(12),
     color: COLORS.navy_blue,
+    maxHeight: ms(30),
   },
   blueListHeader: {
     backgroundColor: COLORS.white,
     height: SH(40),
     borderRadius: 5,
     justifyContent: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: ms(0),
   },
   displayflex: {
     flexDirection: 'row',
@@ -883,7 +929,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   tableListSide: {
-    width: width * 0.24,
+    width: width * 0.3,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -892,7 +938,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cashLabelWhite: {
-    color: COLORS.navy_blue,
+    color: COLORS.light_blue2,
     fontSize: SF(12),
     fontFamily: Fonts.Medium,
   },
@@ -905,7 +951,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   productCartBody: {
-    width: Platform.OS === 'android' ? ms(82) : ms(60),
+    width: Platform.OS === 'android' ? ms(80) : ms(60),
     height: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
@@ -920,8 +966,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   blueListDataText: {
-    color: COLORS.solid_grey,
-    fontSize: SF(11),
+    color: COLORS.navy_blue,
+    fontSize: ms(8),
     fontFamily: Fonts.Regular,
   },
   sukNumber: {
@@ -933,11 +979,19 @@ const styles = StyleSheet.create({
     width: ms(18),
     height: ms(18),
     resizeMode: 'contain',
+    borderRadius: ms(5),
   },
   totalItemsText: {
     fontFamily: Fonts.MaisonBold,
-    color: COLORS.primary,
+    color: COLORS.navy_blue,
     fontSize: SF(16),
+    // width: ms(150),
+  },
+  horizontalLine: {
+    borderWidth: 0.5,
+    borderColor: COLORS.navy_blue,
+    borderStyle: 'dashed',
+    marginVertical: ms(10),
   },
   arrowIconStyle: {
     width: SH(24),
@@ -948,12 +1002,12 @@ const styles = StyleSheet.create({
   },
   subTotalText: {
     fontFamily: Fonts.MaisonRegular,
-    color: COLORS.dark_grey,
+    color: COLORS.light_blue2,
     fontSize: SF(14),
   },
   subTotalPrice: {
     fontFamily: Fonts.MaisonRegular,
-    color: COLORS.black,
+    color: COLORS.light_blue2,
     fontSize: SF(14),
   },
   nextButtonStyle: {
@@ -978,10 +1032,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   billAmountViewStyle: {
-    justifyContent: 'flex-end',
-    paddingBottom: 10,
     flex: 0.3,
-    paddingHorizontal: 30,
+    padding: 30,
+    backgroundColor: COLORS.input_border,
+    alignSelf: 'flex-end',
+    width: ms(280),
+    borderRadius: ms(10),
   },
   contentContainerStyle: {
     flexGrow: 1,
@@ -1007,6 +1063,32 @@ const styles = StyleSheet.create({
     width: ms(14),
     height: ms(14),
     resizeMode: 'contain',
+  },
+  saveButtonTax: {
+    backgroundColor: COLORS.navy_blue,
+    // flex: 1,
+    marginLeft: ms(10),
+    borderRadius: 100,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: ms(100),
+    paddingVertical: ms(5),
+    alignSelf: 'flex-end',
+  },
+  saveButtonText: {
+    color: COLORS.white,
+    textAlign: 'center',
+    fontSize: ms(11),
+    fontFamily: Fonts.MaisonRegular,
+    letterSpacing: -1,
+  },
+
+  arrowButton: {
+    width: ms(14),
+    height: ms(14),
+    resizeMode: 'contain',
+    // tintColor: COLORS.solid_grey,
   },
 });
 

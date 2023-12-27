@@ -27,7 +27,7 @@ import { useState } from 'react';
 
 import { useEffect } from 'react';
 import { getDelivery } from '@/selectors/DeliverySelector';
-import { getOrderCount, getReviewDefault } from '@/actions/ShippingAction';
+import { getOrderCount, getReviewDefault } from '@/actions/DeliveryAction';
 
 export function OrderDetail(props) {
   const mapRef = useRef();
@@ -37,6 +37,8 @@ export function OrderDetail(props) {
   const statusCount = deliveryData?.getOrderCount;
   const orders = deliveryData?.getReviewDef ?? [];
   const orderData = orders[props?.route?.params?.index ?? 0];
+  // const orderData = props?.route?.params?.data;
+
   const customerDetail = orderData?.user_details;
   const deliveryDate =
     dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') &&
@@ -136,7 +138,7 @@ export function OrderDetail(props) {
               >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
               <Text
                 style={styles.addressTextStyle}
-              >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+              >{`${customerDetail?.current_address?.street_address}\n${customerDetail?.current_address?.city}\n${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
             </View>
           </View>
 

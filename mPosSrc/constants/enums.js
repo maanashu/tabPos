@@ -25,11 +25,11 @@ export const tagLine = [
     id: 4,
     navigation: MPOS_NAVIGATION.analytics,
   },
-  {
-    label: 'Wallet ',
-    image: Images.wallet,
-    id: 5,
-  },
+  // {
+  //   label: 'Wallet ',
+  //   image: Images.wallet,
+  //   id: 5,
+  // },
 ];
 
 export const acccessAndConfirmation = [

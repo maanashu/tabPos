@@ -419,6 +419,16 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: verticalScale(5),
   },
+  nextButtonNew: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.textInputBackground,
+    width: SW(40),
+    alignSelf: 'center',
+    borderRadius: ms(10),
+    paddingVertical: verticalScale(5),
+  },
   checkoutButtonSec: {
     backgroundColor: COLORS.bluish_green,
     width: SW(82),
@@ -453,6 +463,12 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignSelf: 'center',
   },
+  scurityScanNew: {
+    width: SW(150),
+    height: SW(150),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
   scurityScanCon: {
     width: SW(70),
     height: SW(70),
@@ -460,7 +476,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
   },
-
+  subHeadingSix: {
+    fontSize: SF(24),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Regular,
+  },
   // setting security css end
 
   // setting device css start
@@ -1567,14 +1587,22 @@ export const styles = StyleSheet.create({
   // passcode screen css start
 
   verifyContainer: {
+    // width: windowWidth * 0.4,
+    // height: windowHeight * 0.8,
+    // borderWidth: 1,
+    // borderColor: COLORS.solidGrey,
+    // alignSelf: 'center',
+    // borderRadius: 15,
+    // alignItems: 'center',
+    // backgroundColor: '#fff',
     width: windowWidth * 0.4,
     height: windowHeight * 0.8,
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
+    borderColor: 'grey',
     alignSelf: 'center',
-    borderRadius: 15,
+    borderRadius: ms(25),
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
+    ...ShadowStyles.shadow4,
   },
   flexWidth: {
     width: windowWidth * 0.35,
@@ -2163,5 +2191,47 @@ export const styles = StyleSheet.create({
     borderRadius: ms(10),
     borderColor: COLORS.light_purple,
     padding: ms(10),
+  },
+  cellRootSix: {
+    backgroundColor: COLORS.white,
+    height: moderateScale(35),
+    width: moderateScale(35),
+    borderRadius: moderateScale(50),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: COLORS.solidGrey,
+    marginHorizontal: moderateScale(5),
+  },
+  cellTextSix: {
+    fontFamily: Fonts.Medium,
+    fontSize: scale(12),
+    color: COLORS.black,
+  },
+  alignSelfCenterSix: {
+    alignSelf: 'center',
+  },
+  forgotPin: {
+    position: 'absolute',
+    bottom: 20,
+    flexDirection: 'row',
+  },
+  forgotPinText: {
+    fontSize: SF(18),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.SemiBold,
+  },
+  crossSix: {
+    width: SW(10),
+    height: SW(10),
+    resizeMode: 'contain',
+  },
+  flexRowSix: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  flexWidthSix: {
+    width: windowWidth * 0.35,
   },
 });

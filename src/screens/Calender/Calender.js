@@ -22,10 +22,12 @@ import {
   circleTick,
   checkInIcon,
   new_location,
+  clock,
+  userImage,
 } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, SH, SW } from '@/theme';
-import { ScreenWrapper, Spacer } from '@/components';
+import { Button, ScreenWrapper, Spacer } from '@/components';
 import { styles } from '@/screens/Calender/Calender.styles';
 import { ms } from 'react-native-size-matters';
 import { Calendar } from '@/components/CustomCalendar';
@@ -68,6 +70,7 @@ import ProfileImage from '@/components/ProfileImage';
 import { CustomHeader } from '../PosRetail3/Components';
 import { CalendarCustomHeader } from './Components/CalendarCustomHeader';
 import { Images } from '@/assets/new_icon';
+import MiniCalendarPickup from '@/components/MiniCalendarPickup';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -100,6 +103,8 @@ export function Calender() {
   const [isLoadingSearchAppoinment, setIsLoadingSearchAppoinment] = useState(false);
 
   const [showSearchModal, setShowSearchModal] = useState(false);
+  const [isCheckIn, setcheckIn] = useState(false);
+  const [formattedTime, setFormattedTime] = useState(false);
   const [searchedAppointments, setSearchedAppointments] = useState([]);
   const [searchedText, setSearchedText] = useState('');
   const [week, setWeek] = useState(true);
@@ -147,27 +152,26 @@ export function Calender() {
       dispatch(getAppointment(pageNumber));
     }
     getCurrentMonthDays();
-  }, [isFocused, pageNumber, showRequestsView]);
+  }, [isFocused, pageNumber, showRequestsView, calendarDate]);
 
   const getCurrentMonthDays = () => {
     const date = new Date(calendarDate);
-    const days = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+    const year = date.getFullYear();
+    const month = date.getMonth();
 
-    const currentMonthdays = [];
+    // Get the total number of days in the month
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    for (let index = 0; index < days; index++) {
-      var day = index + 1;
+    const monthDays = [];
 
-      const fullDateFortheDay = new Date();
-      fullDateFortheDay.setDate(day);
+    for (let day = 1; day <= daysInMonth; day++) {
+      const fullDateFortheDay = new Date(year, month, day);
       const dayName = weekDays[fullDateFortheDay.getDay()];
-      if (day < 10) {
-        day = `0${day}`;
-      }
       const objDay = { fullDateFortheDay, day, dayName };
-      currentMonthdays.push(objDay);
+
+      monthDays.push(objDay);
     }
-    setMonthDays(currentMonthdays);
+    setMonthDays(monthDays);
   };
 
   useEffect(() => {
@@ -326,6 +330,20 @@ export function Calender() {
 
   const debouncedSearchAppointment = useCallback(debounce(onSearchAppoinment, 300), []);
 
+  const calculateTime = (item) => {
+    const startMoment = moment(item?.start_date_time);
+    const endMoment = moment(item?.end_date_time);
+    const duration = moment.duration(endMoment.diff(startMoment));
+
+    const startFormattedTime = startMoment.format('h:mm A');
+    const endFormattedTime = moment(item?.end_date_time).format('h:mm A');
+
+    const hours = Math.floor(duration.asHours());
+    const minutes = Math.floor(duration.asMinutes()) % 60;
+
+    const newFormattedTime = `${startFormattedTime} - ${endFormattedTime} (${hours} hrs ${minutes} mins)`;
+    setFormattedTime(newFormattedTime);
+  };
   const renderListViewItem = ({ item, index }) => {
     const appointmentId = item?.id;
     return (
@@ -336,7 +354,11 @@ export function Calender() {
         // isSendCheckinOTPLoading={isSendCheckinOTPLoading}
         onPressCheckin={() => {
           setSelectedPosStaffCompleteData(item);
-          dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
+          // dispatch(changeAppointmentStatus(appointmentId, APPOINTMENT_STATUS.CHECKED_IN));
+          // alert('ok');
+          calculateTime(item);
+          setcheckIn(true);
+
           // dispatch(sendCheckinOTP(appointmentId)).then(() => {
           //   setshowVerifyOTPModal(true);
           // });
@@ -487,9 +509,29 @@ export function Calender() {
           {staffUsers?.map((item, index) => {
             const userProfile = item?.user?.user_profiles;
             const userRoles = item?.user?.user_roles[0]?.role?.name;
+            const posUserId = item?.user?.unique_uuid;
             return (
-              <View
-                style={styles.headerEmployeeCard}
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedStaffEmployeeId((prev) => {
+                    if (prev === posUserId) {
+                      setSelectedStaffEmployeeId(null);
+                    } else {
+                      // setshowEmployeeHeader(true);
+                      setSelectedStaffEmployeeId(posUserId);
+                    }
+                  });
+                  setSelectedStaffData(item);
+                }}
+                style={[
+                  styles.headerEmployeeCard,
+                  {
+                    borderColor:
+                      selectedStaffEmployeeId === posUserId
+                        ? item?.color_code
+                        : COLORS.neutral_blue,
+                  },
+                ]}
                 key={index}
                 onLayout={(event) => {
                   const { x, y, width, height } = event.nativeEvent.layout;
@@ -516,7 +558,7 @@ export function Calender() {
                   </Text>
                   <Text style={styles.headerEmployeeDesignation}>{userRoles}</Text>
                 </View>
-              </View>
+              </TouchableOpacity>
             );
           })}
         </ScrollView>
@@ -546,7 +588,7 @@ export function Calender() {
                 shouldShowCalendarModeOptions,
               }}
               onPressCalendarIcon={() => {
-                setshowMiniCalendar(true);
+                setshowMiniCalendar(!showMiniCalendar);
               }}
               onPressNotification={() => {
                 navigate(NAVIGATION.notificationsList, {
@@ -564,7 +606,26 @@ export function Calender() {
               onPressCalendarViewMode={onPressCalendarViewMode}
               onPressListViewMode={onPressListViewMode}
             />
-
+            {showMiniCalendar && (
+              <>
+                <View style={styles.calendarModalView}>
+                  <MiniCalendarPickup
+                    allowRangeSelection={false}
+                    maxDate={maxDate}
+                    selectedStartDate={calendarDate}
+                    onPress={() => setshowMiniCalendar(false)}
+                    onSelectedDate={(date) => {
+                      setCalendarDate(moment(date));
+                      // setshowMiniCalendar(false);
+                    }}
+                    onCancelPress={() => {
+                      setshowMiniCalendar(false);
+                    }}
+                  />
+                </View>
+                <Spacer space={ms(5)} />
+              </>
+            )}
             <View style={styles._calendarContainer}>
               {calendarViewMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW ? (
                 <Calendar
@@ -740,6 +801,8 @@ export function Calender() {
                 renderItem={({ item }) => {
                   const userProfile = item?.user?.user_profiles;
                   const posUserId = item?.user?.unique_uuid;
+                  const imageUrl = item?.user?.user_profiles?.profile_photo;
+                  const isPng = imageUrl?.toLowerCase().endsWith('.png');
                   return (
                     <TouchableOpacity
                       onPress={() => {
@@ -758,7 +821,7 @@ export function Calender() {
                       style={styles.renderItemContainer}
                     >
                       <View>
-                        <Image
+                        <ProfileImage
                           source={{
                             uri: userProfile?.profile_photo,
                           }}
@@ -773,7 +836,19 @@ export function Calender() {
                   );
                 }}
               />
-              <TouchableOpacity style={styles.usersIconView}>
+              <TouchableOpacity
+                style={styles.usersIconView}
+                onPress={() => {
+                  setCalendarViewMode(CALENDAR_VIEW_MODES.CALENDAR_VIEW);
+                  setshouldShowCalendarModeOptions(true);
+                  setSelectedStaffEmployeeId(null);
+                  if (selectedStaffEmployeeId) {
+                    setshowEmployeeHeader(true);
+                  } else {
+                    setshowEmployeeHeader(!showEmployeeHeader);
+                  }
+                }}
+              >
                 <Image
                   source={Images.usersThree}
                   resizeMode="contain"
@@ -801,13 +876,34 @@ export function Calender() {
               </View>
             ) : (
               <View style={{ marginBottom: ms(40) }}>
-                <Text style={styles._requestTitle}>
-                  {`Request (${
-                    selectedStaffEmployeeId
-                      ? getAppointmentByStaffIdList?.length ?? 0
-                      : appointmentListArr?.length ?? 0
-                  })`}
-                </Text>
+                <View
+                  style={[styles.rowAlignedJustified, { marginLeft: ms(10), marginTop: ms(5) }]}
+                >
+                  <View style={styles.rowAligned}>
+                    <Image
+                      source={Images.calendarIcon}
+                      style={styles.requestCalendarIconSmall}
+                      resizeMode="contain"
+                    />
+
+                    <View style={styles.requestCountView}>
+                      <Text style={styles.requestText}>
+                        {selectedStaffEmployeeId
+                          ? getAppointmentByStaffIdList?.length ?? 0
+                          : appointmentListArr?.length ?? 0}
+                      </Text>
+                    </View>
+                    <Text style={styles._requestTitle}>{`Requests`}</Text>
+                  </View>
+
+                  <TouchableOpacity onPress={() => setshowRequestsView(false)}>
+                    <Image
+                      source={crossButton}
+                      style={[styles.closeIcon, { marginRight: ms(10) }]}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                </View>
                 <FlatList
                   extraData={appointmentListArr}
                   data={selectedStaffEmployeeId ? getAppointmentByStaffIdList : appointmentListArr}
@@ -817,6 +913,7 @@ export function Calender() {
                   onEndReached={handleEndReached}
                   onEndReachedThreshold={0.1} // Adjust this value as per your requirements
                   ListFooterComponent={renderLoader}
+                  showsVerticalScrollIndicator={false}
                 />
               </View>
             )}
@@ -837,29 +934,16 @@ export function Calender() {
           {...{ eventData, showEventDetailModal, setshowEventDetailModal, dispatch }}
         />
 
-        <Modal
+        {/* <Modal
           isVisible={showMiniCalendar}
           statusBarTranslucent
           animationIn={'slideInRight'}
           animationInTiming={600}
           animationOutTiming={300}
-        >
-          <View style={styles.calendarModalView}>
-            <CalendarPickerModal
-              allowRangeSelection={false}
-              maxDate={maxDate}
-              selectedStartDate={calendarDate}
-              onPress={() => setshowMiniCalendar(false)}
-              onSelectedDate={(date) => {
-                setCalendarDate(moment(date));
-                setshowMiniCalendar(false);
-              }}
-              onCancelPress={() => {
-                setshowMiniCalendar(false);
-              }}
-            />
-          </View>
-        </Modal>
+          onBackdropPress={() => setshowMiniCalendar(false)}
+        > */}
+
+        {/* </Modal> */}
 
         <PaperModal visible={showSearchModal}>
           <View style={styles.searchAppointmentModalContainer}>
@@ -916,155 +1000,123 @@ export function Calender() {
          * Design Check-in Modal
          * It is in Progress/unfinished due to change of preority
          */}
-        {/* <BlurredModal isVisible={false}>
-          <View
-            style={{
-              width: ms(300),
-              paddingVertical: ms(20),
-              backgroundColor: 'white',
-              alignItems: 'center',
-              alignSelf: 'center',
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 3,
-              },
-              shadowOpacity: 0.29,
-              shadowRadius: 4.65,
-              elevation: 7,
-              borderRadius: ms(15),
-            }}
-          >
-            <Image
-              source={checkInIcon}
-              style={{
-                height: ms(35),
-                width: ms(35),
-                resizeMode: 'contain',
-                tintColor: COLORS.sky_blue,
-              }}
-            />
-            <Text
-              style={{
-                fontSize: ms(14),
-                color: COLORS.navy_blue,
-                fontFamily: Fonts.SemiBold,
-                marginTop: ms(10),
-              }}
-            >
-              Check In
-            </Text>
-            <Text
-              style={{
-                fontSize: ms(11),
-                color: COLORS.navy_blue,
-                fontFamily: Fonts.Regular,
-                marginTop: ms(10),
-              }}
-            >
-              Confirm the details of your appointment
-            </Text>
+        <BlurredModal isVisible={isCheckIn}>
+          <View style={styles.checkInModalContainer}>
+            <TouchableOpacity style={styles.closeIconView} onPress={() => setcheckIn(false)}>
+              <Image source={crossButton} resizeMode="contain" style={styles.closeIcon} />
+            </TouchableOpacity>
+            <Image source={checkInIcon} style={styles.checkInIcon} />
+            <Text style={styles.checkInText}>Check In</Text>
+            <Text style={styles.subHeadingText}>Confirm the details of your appointment</Text>
 
-            <View
-              style={{
-                borderWidth: 0.5,
-                borderColor: COLORS.light_purple,
-                borderRadius: ms(15),
-                padding: ms(10),
-                marginVertical: ms(10),
-                width: '92%',
-              }}
-            >
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text
-                  style={{
-                    fontSize: ms(11),
-                    color: COLORS.navy_blue,
-                    fontFamily: Fonts.Regular,
-                  }}
-                >
-                  Customer
-                </Text>
-                <Text
-                  style={{
-                    fontSize: ms(11),
-                    color: COLORS.navy_blue,
-                    fontFamily: Fonts.Regular,
-                  }}
-                >
-                  Unpaid
+            <View style={styles.serviceDetailContainer}>
+              <View style={styles.rowJustified}>
+                <Text style={styles.customerText}>Customer:</Text>
+                <Text style={styles.unpaidText}>
+                  {selectedPosStaffCompleteData?.mode_of_payment == 'cash' ? 'Unpaid' : 'Paid'}
                 </Text>
               </View>
 
-              <View style={{ marginTop: ms(10), flexDirection: 'row', alignItems: 'center' }}>
-                <ProfileImage source={{ uri: null }} style={{ height: ms(35), width: ms(35) }} />
+              <View style={styles.customerProfileView}>
+                <ProfileImage
+                  source={{
+                    uri: selectedPosStaffCompleteData?.user_details?.profile_photo || null,
+                  }}
+                  style={styles.customerProfileImage}
+                />
                 <View style={{ marginLeft: ms(5) }}>
-                  <Text
-                    style={{
-                      fontSize: ms(11),
-                      color: COLORS.navy_blue,
-                      fontFamily: Fonts.Medium,
-                    }}
-                  >
-                    John Wick
+                  <Text style={styles.customerNameText}>
+                    {`${selectedPosStaffCompleteData?.user_details?.firstname} ${selectedPosStaffCompleteData?.user_details?.lastname}`}
                   </Text>
                   <Spacer space={ms(5)} />
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={[styles.rowAligned, {}]}>
                     <Image source={new_location} style={styles.eventAddressIcon} />
-
-                    <Text
-                      style={{
-                        fontSize: ms(9),
-                        color: COLORS.purple,
-                        fontFamily: Fonts.Medium,
-                        marginLeft: ms(5),
-                      }}
-                    >
-                      San Andreas, LA
-                    </Text>
+                    <View style={{ width: '85%' }}>
+                      <Text
+                        style={styles.addressText}
+                      >{`${selectedPosStaffCompleteData?.user_details?.current_address?.city}, ${selectedPosStaffCompleteData?.user_details?.current_address?.state}`}</Text>
+                    </View>
                   </View>
                 </View>
               </View>
 
-              <View
-                style={{
-                  marginTop: ms(10),
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: ms(9),
-                    color: COLORS.navy_blue,
-                    fontFamily: Fonts.Medium,
-                  }}
+              <View style={styles.requestedServicesView}>
+                <Text style={styles.servicesRequested}>Services requested:</Text>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={{ marginLeft: ms(5) }}
                 >
-                  Services requested:
-                </Text>
-                <ScrollView horizontal>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    {[0, 1].map((item, index) => (
-                      <View
-                        style={{
-                          backgroundColor: COLORS.sky_blue,
-                          margin: ms(5),
-                          padding: ms(5),
-                          borderRadius: ms(10),
-                        }}
-                      >
-                        <Text style={{ fontFamily: Fonts.Medium, color: COLORS.white }}>
-                          Haircut
-                        </Text>
-                      </View>
-                    ))}
+                  <View style={styles.rowAligned}>
+                    {/* {[0, 1, 2, 3, 4, 5].map((item, index) => ( */}
+                    <View style={styles.scrollableServicesView}>
+                      <Text style={styles.servicesName}>
+                        {selectedPosStaffCompleteData?.product_name}
+                      </Text>
+                    </View>
+                    {/* ))} */}
                   </View>
                 </ScrollView>
               </View>
+
+              <View style={styles.serviceTimeView}>
+                <Text style={styles.servicesRequested}>Service Time</Text>
+
+                <Spacer space={ms(10)} />
+                <View style={styles.rowAligned}>
+                  <View style={styles.rowAligned}>
+                    <Image
+                      style={styles.serviceTimeIcons}
+                      resizeMode="contain"
+                      source={Images.calendarIcon}
+                    />
+                    <Text style={styles.serviceTimeText}>
+                      {moment(selectedPosStaffCompleteData?.start_date_time).format(
+                        'dddd, DD/MM/YYYY'
+                      )}
+                    </Text>
+                  </View>
+                  <Spacer horizontal space={ms(10)} />
+                  <View style={styles.rowAligned}>
+                    <Image style={styles.serviceTimeIcons} resizeMode="contain" source={clock} />
+                    <Text style={styles.serviceTimeText}>{formattedTime}</Text>
+                  </View>
+                </View>
+              </View>
+
+              <View style={styles.dashedLine} />
+              <View style={styles.rowAlignedJustified}>
+                <Text style={styles.totalPrice}>Total</Text>
+                <Text
+                  style={styles.totalPrice}
+                >{`$ ${selectedPosStaffCompleteData?.actual_price}`}</Text>
+              </View>
+            </View>
+            <Spacer space={ms(5)} />
+
+            <View style={styles.rowAlignedJustified}>
+              <TouchableOpacity style={styles.declineButtonStyle} onPress={() => setcheckIn(false)}>
+                <Text style={styles.declineText}>Decline</Text>
+              </TouchableOpacity>
+              <Spacer horizontal space={ms(10)} />
+              <TouchableOpacity
+                style={styles.acceptButtonStyle}
+                onPress={() => {
+                  dispatch(
+                    changeAppointmentStatus(
+                      selectedPosStaffCompleteData?.id,
+                      APPOINTMENT_STATUS.CHECKED_IN
+                    )
+                  );
+                  setcheckIn(false);
+                }}
+              >
+                <Text style={styles.acceptText}>Confirm</Text>
+                <Image style={styles.rightArrowStyle} source={Images.arrowUpRightIcon} />
+              </TouchableOpacity>
             </View>
           </View>
-        </BlurredModal> */}
+        </BlurredModal>
       </View>
     </ScreenWrapper>
   );

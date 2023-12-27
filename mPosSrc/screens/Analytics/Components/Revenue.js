@@ -1,23 +1,51 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { View, Text, Image, ScrollView, FlatList, ActivityIndicator } from 'react-native';
 import { Spacer } from '@mPOS/components';
 import { Images } from '@mPOS/assets';
 import { DataTable } from 'react-native-paper';
 import { ms } from 'react-native-size-matters';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { styles } from '../styles';
 import { COLORS } from '@/theme';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { useDebouncedCallback } from 'use-lodash-debounce';
+import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
 
-export function Revenue() {
+export function Revenue({ sellerID, data }) {
+  const dispatch = useDispatch();
+
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
+  const onEndReachedCalledDuringMomentum = useRef(false);
 
   const revenueStatisticsLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
   );
+
+  const paginationData = {
+    total: analyticStatistics?.orderData?.total,
+    totalPages: analyticStatistics?.orderData?.total_pages,
+    perPage: analyticStatistics?.orderData?.per_page,
+    currentPage: analyticStatistics?.orderData?.current_page,
+  };
+
+  const onLoadMoreRevenue = useCallback(() => {
+    if (!revenueStatisticsLoader) {
+      if (paginationData?.currentPage < paginationData?.totalPages) {
+        dispatch(getAnalyticStatistics(sellerID, data, paginationData?.currentPage + 1));
+      }
+    }
+  }, [paginationData]);
+
+  const debouncedLoadMoreRevenue = useDebouncedCallback(onLoadMoreRevenue, 300);
+
+  const renderFooter = () => {
+    return revenueStatisticsLoader ? (
+      <ActivityIndicator size="large" color={COLORS.primary} style={styles.loaderView} />
+    ) : null;
+  };
 
   const getRevenueList = ({ item, index }) => (
     <DataTable.Row>
@@ -153,11 +181,12 @@ export function Revenue() {
             </DataTable.Header>
 
             <View style={styles.mainListContainer}>
-              {revenueStatisticsLoader ? (
+              {/* {revenueStatisticsLoader ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
-              ) : analyticStatistics?.orderData?.data?.length === 0 ? (
+              ) : */}
+              {analyticStatistics?.orderData?.data?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
@@ -167,10 +196,20 @@ export function Revenue() {
                     style={styles.listStyle}
                     data={analyticStatistics?.orderData?.data}
                     renderItem={getRevenueList}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
-                    bounces={false}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                    onMomentumScrollBegin={() => {}}
+                    onMomentumScrollEnd={() => {
+                      if (onEndReachedCalledDuringMomentum.current) {
+                        debouncedLoadMoreRevenue();
+                        onEndReachedCalledDuringMomentum.current = false;
+                      }
+                    }}
+                    removeClippedSubviews={true}
+                    ListFooterComponent={renderFooter}
                   />
                 </View>
               )}

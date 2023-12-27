@@ -62,7 +62,7 @@ import { PinId } from '@mPOS/screens/MoreTab/PinId/PinId';
 import { OldPin } from '@mPOS/screens/MoreTab/OldPin/OldPin';
 import { SetPin } from '@mPOS/screens/MoreTab/SetPin/SetPin';
 import { ReEnterPin } from '@mPOS/screens/MoreTab/ReEnterPin/ReEnterPin';
-import TaxesDuties from '@mPOS/screens/MoreTab/Taxes/TaxesDuties';
+import { CommonOrderDetail } from '@mPOS/components/CommonOrderDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -369,9 +369,9 @@ export function AppNavigator(navigation) {
         component={FaqAnswers}
       />
       <Stack.Screen
-        name={MPOS_NAVIGATION.TaxesDuties}
+        name={MPOS_NAVIGATION.commonOrderDetail}
         options={{ headerShown: false }}
-        component={TaxesDuties}
+        component={CommonOrderDetail}
       />
     </Stack.Navigator>
   );

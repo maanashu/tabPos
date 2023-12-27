@@ -32,11 +32,12 @@ import { memo } from 'react';
 import { emailReg } from '@/utils/validators';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Images } from '@/assets/new_icon';
+import { useEffect } from 'react';
 
 export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
-  const cartServiceData = getRetailData?.getAllCart;
+  const cartData = getRetailData?.getAllCart;
   const [phoneNumber, setPhoneNumber] = useState('');
   const [flag, setFlag] = useState('US');
   const [countryCode, setCountryCode] = useState('+1');
@@ -54,24 +55,39 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
   );
   const [detailArea, setDetailArea] = useState(false);
 
-  const customerPhoneSearchFun = useCallback(
-    (customerphoneNumber) => {
-      setSearchCustomer(customerphoneNumber);
-      if (customerphoneNumber?.length > 9) {
-        const data = {
-          countryCode: countryCode,
-          phoneNumber: customerphoneNumber,
-        };
-        dispatch(getUserDetail(data));
-        Keyboard.dismiss();
-        setDetailArea(true);
-      } else if (customerphoneNumber?.length < 10) {
-        dispatch(getUserDetailSuccess({}));
-        setDetailArea(false);
-      }
-    },
-    [searchCustomer]
-  );
+  useEffect(() => {
+    if (searchCustomer?.length > 9) {
+      const data = {
+        countryCode: countryCode,
+        phoneNumber: searchCustomer,
+      };
+      dispatch(getUserDetail(data));
+      Keyboard.dismiss();
+      setDetailArea(true);
+    } else if (searchCustomer?.length < 10) {
+      dispatch(getUserDetailSuccess({}));
+      setDetailArea(false);
+    }
+  }, [searchCustomer?.length > 9]);
+
+  // const customerPhoneSearchFun = useCallback(
+  //   (customerphoneNumber) => {
+  //     setSearchCustomer(customerphoneNumber);
+  //     if (customerphoneNumber?.length > 9) {
+  //       const data = {
+  //         countryCode: countryCode,
+  //         phoneNumber: customerphoneNumber,
+  //       };
+  //       dispatch(getUserDetail(data));
+  //       Keyboard.dismiss();
+  //       setDetailArea(true);
+  //     } else if (customerphoneNumber?.length < 10) {
+  //       dispatch(getUserDetailSuccess({}));
+  //       setDetailArea(false);
+  //     }
+  //   },
+  //   [searchCustomer]
+  // );
 
   const userDetalLoader = useSelector((state) => isLoadingSelector([TYPES.GET_USERDETAIL], state));
 
@@ -88,7 +104,7 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
       alert('Please enter last name');
     } else {
       const data = {
-        cartId: cartServiceData?.id,
+        cartId: cartData?.id,
         email: email,
         phoneCode: countryCode,
         phoneNumber: searchCustomer,
@@ -112,11 +128,11 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
   const saveCustomer = () => {
     const data = getuserDetailByNo?.invitation?.id
       ? {
-          cartId: cartServiceData?.id,
+          cartId: cartData?.id,
           invitationId: getuserDetailByNo?.invitation?.id,
         }
       : {
-          cartId: cartServiceData?.id,
+          cartId: cartData?.id,
           userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
           customerAdd: 'customerAdd',
         };
@@ -175,10 +191,17 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
   //   }
   // };
 
+  useEffect(() => {
+    if (cartData?.user_details) {
+      setCountryCode(cartData?.user_details?.phone_code || '+1');
+      setSearchCustomer(cartData?.user_details?.phone_no || '');
+    }
+  }, []);
+
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{
-        flex: Platform.OS === 'ios' ? 1 : 0,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
       }}
@@ -225,7 +248,8 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
             <TextInput
               returnKeyType={'done'}
               value={searchCustomer}
-              onChangeText={(searchCustomer) => customerPhoneSearchFun(searchCustomer)}
+              // onChangeText={(searchCustomer) => customerPhoneSearchFun(searchCustomer)}
+              onChangeText={setSearchCustomer}
               style={styles.searchCustomerInput}
               placeholder="Customer Phone Number"
               placeholderTextColor={COLORS.gerySkies}
@@ -264,7 +288,7 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
             <View>
               {userLength > 0 && detailArea ? (
                 getuserDetailByNo?.invitation?.id ? (
-                  <View style={{ borderWidth: 1 }}>
+                  <View style={{}}>
                     <Spacer space={SH(18)} />
                     <View>
                       <Text style={styles.customerDarkLabel}>{strings.retail.phoneNumber}</Text>
@@ -471,32 +495,35 @@ export const NewCustomerAddService = memo(({ crossHandler, comeFrom, sellerID })
             </View>
           )}
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: ms(10),
-          }}
-        >
-          <TouchableOpacity style={styles.cancelButtonCon} onPress={crossHandler}>
-            <Text style={styles.cancelText}>{'Cancel'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.addToCartButtonCon}
-            disabled={userDetalLoader ? true : false}
-            onPress={() =>
-              userLength == 0 && detailArea
-                ? saveAndAddCustomer()
-                : userLength > 0 && detailArea
-                ? saveCustomer()
-                : alert('Something went wrong')
-            }
+        {searchCustomer?.length > 9 && cartData?.user_details?.phone_no == searchCustomer ? null : (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingHorizontal: ms(10),
+            }}
           >
-            <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add Costumer'}</Text>
-            <Image source={Images.addProduct} style={styles.plusIconAdd} />
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity style={styles.cancelButtonCon} onPress={crossHandler}>
+              <Text style={styles.cancelText}>{'Cancel'}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.addToCartButtonCon}
+              disabled={userDetalLoader ? true : false}
+              onPress={() =>
+                userLength == 0 && detailArea
+                  ? saveAndAddCustomer()
+                  : userLength > 0 && detailArea
+                  ? saveCustomer()
+                  : alert('Something went wrong')
+              }
+            >
+              <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add Costumer'}</Text>
+              <Image source={Images.addProduct} style={styles.plusIconAdd} />
+            </TouchableOpacity>
+          </View>
+        )}
+
         <Spacer space={SH(15)} />
       </View>
     </KeyboardAwareScrollView>

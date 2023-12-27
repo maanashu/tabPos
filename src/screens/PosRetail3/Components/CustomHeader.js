@@ -57,7 +57,7 @@ export function CustomHeader({ crossHandler, iconShow }) {
           </Text>
         </View>
 
-        <View style={styles.displayRow}>
+        <View style={[styles.displayRow, { flex: 0.5 }]}>
           <Image
             source={
               getPosUser?.user_profiles?.profile_photo
@@ -67,10 +67,16 @@ export function CustomHeader({ crossHandler, iconShow }) {
             style={styles.iconStyle}
           />
           <Text style={styles.cashLabelBold}>
-            {getPosUser?.user_profiles?.firstname ?? 'username'}(
-            {getPosUser?.user_roles?.length > 0
-              ? getPosUser?.user_roles?.map((item, index) => item.role?.name)
-              : 'admin'}
+            {getPosUser?.user_profiles?.firstname + ' ' + getPosUser?.user_profiles?.lastname ??
+              'username'}
+            (
+            {getPosUser?.user_roles?.map((data, index) => {
+              if (index === getPosUser?.user_roles?.length - 1) {
+                return `${data.role?.name}`;
+              } else {
+                return `${data.role?.name}, `;
+              }
+            })}
             )
           </Text>
         </View>

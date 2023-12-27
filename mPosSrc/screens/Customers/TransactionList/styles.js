@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
       fontSize: ms(11),
       color: item?.value == type ? COLORS.darkBlue : COLORS.text,
       fontFamily: item?.value == type ? Fonts.SemiBold : Fonts.Regular,
+      letterSpacing: -0.5,
     };
   },
 

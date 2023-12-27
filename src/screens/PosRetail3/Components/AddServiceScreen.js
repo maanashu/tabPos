@@ -89,6 +89,12 @@ export const AddServiceScreen = ({ backHandler }) => {
   }, [getRetailData?.timeSlots]);
 
   useEffect(() => {
+    if (itemData) {
+      setposUserId(itemData?.pos_staff?.[0]?.user?.unique_uuid);
+    }
+  }, [itemData]);
+
+  useEffect(() => {
     const params = {
       seller_id: sellerID,
       product_id: itemData?.id,
@@ -97,12 +103,6 @@ export const AddServiceScreen = ({ backHandler }) => {
     };
     dispatch(getTimeSlots(params));
   }, [posUserId, selectedDate]);
-
-  useEffect(() => {
-    if (itemData) {
-      setposUserId(itemData?.pos_staff?.[0]?.user?.unique_uuid);
-    }
-  }, [itemData]);
 
   const isLoadingTimeSlot = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TIME_SLOTS], state)
@@ -206,7 +206,6 @@ export const AddServiceScreen = ({ backHandler }) => {
       posUserId: posUserId,
       // offerId: offerId,
     };
-
     dispatch(addToServiceCart(data));
     backHandler();
   };

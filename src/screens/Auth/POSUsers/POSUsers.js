@@ -32,7 +32,13 @@ import { getSetting } from '@/selectors/SettingSelector';
 import { checkArrow, powerAuth, userImage } from '@/assets';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { getAllPosUsers, logoutFunction, merchantLoginSuccess } from '@/actions/AuthActions';
+import {
+  forgot2fa,
+  getAllPosUsers,
+  logoutFunction,
+  merchantLoginSuccess,
+  reset2fa,
+} from '@/actions/AuthActions';
 import { configureGoogleCode, getSettings, verifyGoogleCode } from '@/actions/SettingAction';
 
 import { styles } from './POSUsers.styles';
@@ -46,6 +52,7 @@ import CustomHeaderPOSUsers from '../components/CustomHeaderPOSUsers';
 
 moment.suppressDeprecationWarnings = true;
 const CELL_COUNT_SIX = 6;
+const CELL_COUNT_Five = 5;
 
 export function POSUsers({ navigation }) {
   const dispatch = useDispatch();
@@ -53,14 +60,18 @@ export function POSUsers({ navigation }) {
   const getAuth = useSelector(getAuthData);
   const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
   const posUserArraydata = getAuth?.getAllPosUsersData;
+
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
   const refSix = useBlurOnFulfill({ value, cellCount: CELL_COUNT_SIX });
+  const refFive = useBlurOnFulfill({ value, cellCount: CELL_COUNT_Five });
   const getSettingData = useSelector(getSetting);
   const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
+  const googleCode = getSettingData?.getGoogleCode;
   const merchantData = getAuth?.merchantLoginData;
   const onEndReachedCalledDuringMomentum = useRef(false);
   const [value, setValue] = useState('');
+  const [forgotValue, setForgotValue] = useState('');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [twoStepModal, setTwoStepModal] = useState(false);
   const [googleAuthScan, setGoogleAuthScan] = useState(false);
@@ -68,6 +79,11 @@ export function POSUsers({ navigation }) {
   const [isLogout, setIsLogout] = useState(false);
   const [isLoadingBottom, setIsLoadingBottom] = useState(false);
   const [isSucessModalVis, setIsSuccessModalVis] = useState(false);
+  const [forgotPinScreen, setForgotPinScreen] = useState(false);
+  const [verificationId, setVerificationId] = useState(null);
+  const [QRCodeUrl, setQRCodeUrl] = useState(null);
+  const [isForgot, setIsForgot] = useState(null);
+
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -116,6 +132,9 @@ export function POSUsers({ navigation }) {
   const getPosUserLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ALL_POS_USERS], state)
   );
+  const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
+  const forgot2faLoader = useSelector((state) => isLoadingSelector([TYPES.FORGOT_2FA], state));
+  const reset2faLoader = useSelector((state) => isLoadingSelector([TYPES.RESET_2FA], state));
 
   const logoutHandler = () => {
     Alert.alert('Logout', 'Are you sure you want to logout ?', [
@@ -178,7 +197,7 @@ export function POSUsers({ navigation }) {
       const data = {
         code: value,
       };
-      const verificationFunction = TWO_FACTOR ? verifyGoogleCode : configureGoogleCode;
+      const verificationFunction = TWO_FACTOR && !isForgot ? verifyGoogleCode : configureGoogleCode;
 
       const res = await verificationFunction(data)(dispatch);
 
@@ -213,6 +232,44 @@ export function POSUsers({ navigation }) {
     }
   };
 
+  const passcodeHandlerFive = async () => {
+    if (!forgotValue) {
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        text2: strings.valiadtion.enterPassCode,
+        visibilityTime: 2000,
+      });
+      return;
+    } else if (forgotValue && forgotValue.length < 5) {
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        text2: strings.valiadtion.validPasscode,
+        visibilityTime: 2000,
+      });
+      return;
+    } else if (forgotValue && digits.test(forgotValue) === false) {
+      Toast.show({
+        position: 'bottom',
+        type: 'error_toast',
+        text2: strings.valiadtion.validPasscode,
+        visibilityTime: 2000,
+      });
+      return;
+    } else {
+      const data = {
+        verification_id: verificationId,
+        verification_otp: forgotValue,
+      };
+      const res = await dispatch(reset2fa(data));
+      console.log('response', res);
+      if (res?.status_code == 201) {
+        setQRCodeUrl(res?.payload?.qrCode);
+        setForgotPinScreen(false);
+      }
+    }
+  };
   const crossHandler = () => {
     if (isLogout) {
       setTwoFactorEnabled(false);
@@ -258,6 +315,23 @@ export function POSUsers({ navigation }) {
       }
     }
   }, [posUserArray]);
+
+  const onForgotPin = async () => {
+    setSixDigit(false);
+    setForgotPinScreen(true);
+    const res = await dispatch(forgot2fa());
+    console.log(res);
+    if (res?.status_code == 200) {
+      setVerificationId(res?.payload?.verification_id);
+    }
+  };
+  const onBackPressHandler = (type) => {
+    if (type == 'Forgot') {
+      setSixDigit(true);
+      setForgotValue('');
+      setIsForgot(false);
+    }
+  };
   return (
     <ScreenWrapper>
       {!twoFactorEnabled ? (
@@ -315,10 +389,14 @@ export function POSUsers({ navigation }) {
                       {`${item.user?.user_profiles?.firstname} ${item.user?.user_profiles?.lastname} `}
                     </Text>
                     <Spacer space={SH(6)} />
-                    <Text style={styles.role} numberOfLines={1}>
-                      {item.user?.user_roles?.length > 0
-                        ? item.user?.user_roles?.map((item) => item.role?.name)
-                        : 'admin'}
+                    <Text style={styles.role} numberOfLines={4}>
+                      {item.user?.user_roles?.map((data, index) => {
+                        if (index === item.user?.user_roles?.length - 1) {
+                          return `${data.role?.name}`;
+                        } else {
+                          return `${data.role?.name}, `;
+                        }
+                      })}
                     </Text>
 
                     <Spacer space={SH(24)} />
@@ -350,7 +428,7 @@ export function POSUsers({ navigation }) {
         </View>
       ) : (
         <View style={styles.containerSix}>
-          {sixDigit && (
+          {sixDigit ? (
             <View style={styles.verifyContainerSix}>
               <Spacer space={SH(25)} />
               <View style={[styles.flexRowSix, styles.flexWidthSix]}>
@@ -392,6 +470,98 @@ export function POSUsers({ navigation }) {
                 setEnteredValue={setValue}
                 onPressContinueButton={passcodeHandlerSix}
               />
+              <TouchableOpacity style={styles.forgotPin} onPress={() => onForgotPin()}>
+                <Text style={styles.forgotPinText}>Forgot Pin</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.verifyContainerSix}>
+              {forgotPinScreen ? (
+                <>
+                  <Spacer space={SH(25)} />
+                  <View style={[styles.flexRowSix, styles.flexWidthSix]}>
+                    <Text>{''}</Text>
+                    <Text style={styles.subHeadingSix}>{'Enter forgot 5-Digit code'}</Text>
+                    <TouchableOpacity onPress={() => onBackPressHandler('Forgot')}>
+                      <Image source={crossButton} style={styles.crossSix} />
+                    </TouchableOpacity>
+                  </View>
+
+                  <Spacer space={SH(40)} />
+
+                  <CodeField
+                    ref={refFive}
+                    {...prop}
+                    value={forgotValue}
+                    onChangeText={setForgotValue}
+                    cellCount={CELL_COUNT_Five}
+                    rootStyle={styles.alignSelfCenterSix}
+                    showSoftInputOnFocus={false}
+                    keyboardType={'number-pad'}
+                    textContentType={'oneTimeCode'}
+                    renderCell={({ index, symbol, isFocused }) => (
+                      <View
+                        onLayout={getCellOnLayoutHandler(index)}
+                        key={index}
+                        style={styles.cellRootSix}
+                      >
+                        <Text style={styles.cellTextSix}>
+                          {symbol || (isFocused ? <Cursor /> : null)}
+                        </Text>
+                      </View>
+                    )}
+                  />
+
+                  <VirtualKeyBoard
+                    maxCharLength={5}
+                    enteredValue={forgotValue}
+                    setEnteredValue={setForgotValue}
+                    onPressContinueButton={passcodeHandlerFive}
+                    onBackPressHandler={() => {
+                      onBackPressHandler('Forgot');
+                    }}
+                    screen="PickupPin"
+                  />
+                  <ActivityIndicator
+                    size={'large'}
+                    color={COLORS.navy_blue}
+                    animating={reset2faLoader}
+                    style={{ position: 'absolute', top: '50%' }}
+                  />
+                </>
+              ) : (
+                <View style={styles.firstBox}>
+                  <View style={[styles.flexRowSix, styles.flexWidthSix]}>
+                    <Text>{''}</Text>
+                    <Text style={styles.subHeadingSix}>{'Scan the code '}</Text>
+                    <TouchableOpacity onPress={() => onBackPressHandler('Forgot')}>
+                      <Image source={crossButton} style={styles.crossSix} />
+                    </TouchableOpacity>
+                  </View>
+                  {QRCodeUrl == null ? (
+                    <ActivityIndicator size="large" color={COLORS.navy_blue} />
+                  ) : (
+                    <Image source={{ uri: QRCodeUrl }} style={styles.scurityScan} />
+                  )}
+                  <Spacer space={SH(30)} />
+
+                  <TouchableOpacity
+                    style={[styles.nextButtonNew, { backgroundColor: COLORS.navy_blue }]}
+                    onPress={() => {
+                      setSixDigit(true);
+                      setIsForgot(true);
+                    }}
+                  >
+                    <Text style={[styles.checkoutText, { color: COLORS.white }]}>
+                      {strings.settings.next}
+                    </Text>
+                    <Image
+                      source={checkArrow}
+                      style={[styles.checkArrow, { tintColor: COLORS.white }]}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           )}
         </View>

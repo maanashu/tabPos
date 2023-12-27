@@ -196,6 +196,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                   height: ms(0.5),
                   backgroundColor: COLORS.input_border,
                   marginVertical: ms(5),
+                  marginRight: ms(15),
                 }}
               />
 
@@ -215,6 +216,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                   height: ms(0.5),
                   backgroundColor: COLORS.input_border,
                   marginVertical: ms(5),
+                  marginRight: ms(15),
                 }}
               />
               <View>
@@ -229,6 +231,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                   height: ms(0.5),
                   backgroundColor: COLORS.input_border,
                   marginVertical: ms(5),
+                  marginRight: ms(15),
                 }}
               />
               <View>
@@ -262,7 +265,10 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
         </View>
       ) : (
         <View style={styles.searchViewStyle}>
-          <Image source={research} style={styles.researchIconstyle} />
+          <Image source={Images.billReceipt} style={styles.researchIconstyle} />
+          <Text style={{ fontSize: ms(11), marginVertical: ms(5), color: COLORS.navy_light_blue }}>
+            {'No invoice selected'}
+          </Text>
         </View>
       )}
     </View>
@@ -356,7 +362,7 @@ const styles = StyleSheet.create({
     // paddingHorizontal: ms(20),
     marginRight: ms(5),
     flex: 0.6,
-    maxHeight: ms(25),
+    maxHeight: ms(35),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -371,6 +377,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.input_border,
     flex: 0.4,
     flexDirection: 'row',
+    maxHeight: ms(35),
   },
   orderandPriceView: {
     flexDirection: 'row',
@@ -433,8 +440,8 @@ const styles = StyleSheet.create({
     borderRadius: ms(5),
   },
   researchIconstyle: {
-    width: SH(210),
-    height: SH(210),
+    width: ms(40),
+    height: ms(40),
     resizeMode: 'contain',
   },
   emptyTextStyle: {

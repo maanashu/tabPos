@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import { View, Text, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 
 import Pdf from 'react-native-pdf';
 import RNPrint from 'react-native-print';
@@ -68,6 +76,32 @@ export function ShippingOrder2() {
   const [calendarDate, setCalendarDate] = useState(moment());
   const maxDate = new Date(2030, 6, 3);
 
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     dispatch(orderStatusCount());
+  //     dispatch(todayShippingStatus());
+  //     dispatch(todayCurrentStatus());
+  //     dispatch(getReviewDefault(0));
+  //     dispatch(getGraphOrders());
+  //     dispatch(getPendingOrders());
+  //     dispatch(getShippingOrderstatistics());
+  //   }, [])
+  // );
+
+  // useEffect(() => {
+  //   setUserDetail(ordersList?.[0] ?? []);
+  //   setOrderDetail(ordersList?.[0]?.order_details ?? []);
+  //   dispatch(getOrderData(ordersList?.[0]?.id));
+  //   setOrderId(ordersList?.[0]?.id);
+  // }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
+
+  // useEffect(() => {
+  //   setUserDetail(ordersList?.[0] ?? []);
+  //   setOrderDetail(ordersList?.[0]?.order_details ?? []);
+  //   dispatch(getOrderData(ordersList?.[0]?.id));
+  //   setOrderId(ordersList?.[0]?.id);
+  // }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
+
   useFocusEffect(
     React.useCallback(() => {
       dispatch(orderStatusCount());
@@ -80,18 +114,23 @@ export function ShippingOrder2() {
     }, [])
   );
 
-  useEffect(() => {
+  const updateOrderDetails = () => {
     setUserDetail(ordersList?.[0] ?? []);
     setOrderDetail(ordersList?.[0]?.order_details ?? []);
     dispatch(getOrderData(ordersList?.[0]?.id));
     setOrderId(ordersList?.[0]?.id);
-  }, [viewAllOrders && getOrderDetail === 'ViewAllScreen']);
+  };
 
   useEffect(() => {
-    setUserDetail(ordersList?.[0] ?? []);
-    setOrderDetail(ordersList?.[0]?.order_details ?? []);
-    dispatch(getOrderData(ordersList?.[0]?.id));
-    setOrderId(ordersList?.[0]?.id);
+    if (viewAllOrders && getOrderDetail === 'ViewAllScreen') {
+      updateOrderDetails();
+    }
+  }, [viewAllOrders, getOrderDetail]);
+
+  useEffect(() => {
+    if (openShippingOrders || viewAllOrders || getGraphOrderData?.getReviewDef) {
+      updateOrderDetails();
+    }
   }, [openShippingOrders, viewAllOrders, getGraphOrderData?.getReviewDef]);
 
   const acceptOrderLoading = useSelector((state) => isLoadingSelector([TYPES.ACCEPT_ORDER], state));
@@ -102,11 +141,16 @@ export function ShippingOrder2() {
     dispatch(orderStatusCount());
   };
 
-  const onpressViewHandler = (id) => {
+  const onpressViewHandler = (id, item, index) => {
     setViewAllOrders(true);
     dispatch(getOrderData(id));
-    setUserDetail(ordersList?.[0] ?? []);
-    setOrderDetail(ordersList?.[0]?.order_details ?? []);
+    if (index == undefined) {
+      setUserDetail(ordersList?.[0] ?? []);
+      setOrderDetail(ordersList?.[0]?.order_details ?? []);
+    } else {
+      setUserDetail(ordersList?.[index] ?? []);
+      setOrderDetail(ordersList?.[index]?.order_details ?? []);
+    }
   };
 
   const trackOrderHandler = (info) => {
@@ -158,6 +202,9 @@ export function ShippingOrder2() {
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
         if (res?.msg) {
+          dispatch(orderStatusCount(getUpdatedCount));
+          dispatch(getReviewDefault(openShippingOrders));
+
           if (
             getDeliveryData?.getReviewDef?.length > 0 &&
             getDeliveryData?.getReviewDef?.length === 1
@@ -175,6 +222,25 @@ export function ShippingOrder2() {
       })
     );
   };
+  // const checkOtherOrder = () => {
+  //   const orderStatusCountData = getGraphOrderData?.orderStatus;
+  //   var index = 0;
+  //   if (orderStatusCountData?.[0]?.count > 0) {
+  //     index = 0;
+  //   } else if (orderStatusCountData?.[3]?.count > 0) {
+  //     index = 3;
+  //   } else if (orderStatusCountData?.[4]?.count > 0) {
+  //     index = 4;
+  //   } else if (orderStatusCountData?.[6]?.count > 0) {
+  //     index = 6;
+  //   } else if (orderStatusCountData?.[6]?.count > 0) {
+  //     index = 6;
+  //   } else if (orderStatusCountData?.[8]?.count > 0) {
+  //     index = 8;
+  //   }
+  //   dispatch(getReviewDefault(index));
+  //   dispatch(orderStatusCount());
+  // };
 
   const declineHandler = (id) => {
     const data = {
@@ -186,7 +252,11 @@ export function ShippingOrder2() {
       acceptOrder(data, () => {
         alert('Order declined successfully');
         setViewAllOrders(false);
-        dispatch(getReviewDefault(0));
+        dispatch(getReviewDefault(openShippingOrders));
+        dispatch(orderStatusCount());
+        setUserDetail(ordersList?.[0] ?? []);
+        setViewAllOrders(true);
+        setOrderDetail(ordersList?.[0]?.order_details ?? []);
       })
     );
   };

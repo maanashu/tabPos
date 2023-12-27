@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { View, Text, Image, ScrollView, FlatList, ActivityIndicator } from 'react-native';
 import { Spacer } from '@mPOS/components';
 import { DataTable } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
 import { COLORS } from '@/theme';
 import { styles } from '../styles';
@@ -10,14 +10,41 @@ import { Images } from '@mPOS/assets';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
+import { useDebouncedCallback } from 'use-lodash-debounce';
 
-export function TotalCost() {
+export function TotalCost({ sellerID, data }) {
+  const dispatch = useDispatch();
   const getAnalyticsData = useSelector(getAnalytics);
   const analyticStatistics = getAnalyticsData?.getAnalyticStatistics;
 
   const costStatisticsLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ANALYTIC_STATISTICS], state)
   );
+  const onEndReachedCalledDuringMomentum = useRef(false);
+
+  const paginationData = {
+    total: analyticStatistics?.orderData?.total,
+    totalPages: analyticStatistics?.orderData?.total_pages,
+    perPage: analyticStatistics?.orderData?.per_page,
+    currentPage: analyticStatistics?.orderData?.current_page,
+  };
+
+  const onLoadMoreCost = useCallback(() => {
+    if (!costStatisticsLoader) {
+      if (paginationData?.currentPage < paginationData?.totalPages) {
+        dispatch(getAnalyticStatistics(sellerID, data, paginationData?.currentPage + 1));
+      }
+    }
+  }, [paginationData]);
+
+  const debouncedLoadMoreCost = useDebouncedCallback(onLoadMoreCost, 300);
+
+  const renderFooter = () => {
+    return costStatisticsLoader ? (
+      <ActivityIndicator size="large" color={COLORS.primary} style={styles.loaderView} />
+    ) : null;
+  };
 
   const getCostList = ({ item, index }) => (
     <DataTable.Row>
@@ -154,11 +181,12 @@ export function TotalCost() {
             </DataTable.Header>
 
             <View style={styles.mainListContainer}>
-              {costStatisticsLoader ? (
+              {/* {costStatisticsLoader ? (
                 <View style={styles.loaderView}>
                   <ActivityIndicator color={COLORS.primary} size={'small'} />
                 </View>
-              ) : analyticStatistics?.orderData?.data?.length === 0 ? (
+              ) :  */}
+              {analyticStatistics?.orderData?.data?.length === 0 ? (
                 <View style={styles.listLoader}>
                   <Text style={styles.noDataFoundText}>{'No data found'}</Text>
                 </View>
@@ -171,7 +199,17 @@ export function TotalCost() {
                     // keyExtractor={(_, index) => index.toString()}
                     showsHorizontalScrollIndicator={false}
                     showsVerticalScrollIndicator={false}
-                    bounces={false}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                    onMomentumScrollBegin={() => {}}
+                    onMomentumScrollEnd={() => {
+                      if (onEndReachedCalledDuringMomentum.current) {
+                        debouncedLoadMoreCost();
+                        onEndReachedCalledDuringMomentum.current = false;
+                      }
+                    }}
+                    removeClippedSubviews={true}
+                    ListFooterComponent={renderFooter}
                   />
                 </View>
               )}

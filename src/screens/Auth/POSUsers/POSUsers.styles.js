@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 
-import { moderateScale, ms, scale } from 'react-native-size-matters';
+import { moderateScale, ms, scale, verticalScale } from 'react-native-size-matters';
 
 import { Fonts } from '@/assets';
 import { COLORS, SF, SH, ShadowStyles, SW } from '@/theme';
@@ -86,22 +86,40 @@ export const styles = StyleSheet.create({
   },
 
   verifyContainerSix: {
-    width: windowWidth * 0.45,
+    // width: windowWidth * 0.45,
+    // height: windowHeight * 0.8,
+    // borderWidth: 1,
+    // borderColor: COLORS.solidGrey,
+    // alignSelf: 'center',
+    // borderRadius: 15,
+    // alignItems: 'center',
+    // backgroundColor: COLORS.white,
+    width: windowWidth * 0.42,
     height: windowHeight * 0.8,
-    borderWidth: 1,
-    borderColor: COLORS.solidGrey,
+    borderColor: 'grey',
     alignSelf: 'center',
-    borderRadius: 15,
+    borderRadius: ms(25),
     alignItems: 'center',
     backgroundColor: COLORS.white,
+    ...ShadowStyles.shadow4,
   },
   flexWidthSix: {
     width: windowWidth * 0.35,
   },
   subHeadingSix: {
     fontSize: SF(24),
-    color: COLORS.solid_grey,
+    color: COLORS.navy_blue,
     fontFamily: Fonts.Regular,
+  },
+  forgotPin: {
+    position: 'absolute',
+    bottom: 20,
+    flexDirection: 'row',
+  },
+  forgotPinText: {
+    fontSize: SF(18),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.SemiBold,
   },
   alignSelfCenterSix: {
     alignSelf: 'center',
@@ -137,5 +155,44 @@ export const styles = StyleSheet.create({
     fontSize: ms(15),
     color: COLORS.navy_blue,
     marginVertical: ms(20),
+  },
+
+  // 2fa security
+
+  firstBox: { flex: 1, width: '100%', alignItems: 'center', justifyContent: 'space-evenly' },
+  scurityScan: {
+    width: SW(150),
+    height: SW(150),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  scurityScanCon: {
+    width: SW(70),
+    height: SW(70),
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  nextButtonNew: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: COLORS.textInputBackground,
+    width: SW(40),
+    alignSelf: 'center',
+    borderRadius: ms(10),
+    paddingVertical: verticalScale(5),
+  },
+  checkoutText: {
+    color: COLORS.darkGray,
+    fontSize: SF(14),
+    fontFamily: Fonts.Regular,
+  },
+  checkArrow: {
+    width: SW(6),
+    height: SW(6),
+    resizeMode: 'contain',
+    paddingHorizontal: moderateScale(6),
+    tintColor: COLORS.darkGray,
   },
 });

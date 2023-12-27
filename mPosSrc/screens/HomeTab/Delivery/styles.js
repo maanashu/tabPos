@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: ms(15),
     backgroundColor: COLORS.white,
+    borderWidth: 1,
   },
   todayStatusTextStyle: {
     fontSize: SF(16),

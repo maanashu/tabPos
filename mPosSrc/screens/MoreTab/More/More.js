@@ -165,7 +165,7 @@ export function More() {
             </View>
           </View>
           {/* tag line section */}
-          <View style={[styles.moreProfileSection, { height: ms(235) }]}>
+          <View style={[styles.moreProfileSection, { height: ms(200) }]}>
             <Text style={styles.profileName}>{strings.more.tagLine}</Text>
             {tagLine?.map((item, index) => (
               <TouchableOpacity onPress={() => tagLineHandler(item, index)} key={index}>

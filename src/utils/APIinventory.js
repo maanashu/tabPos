@@ -69,6 +69,8 @@ export const ApiUserInventory = {
   departmentList: USER_URL + 'departments',
   updateUserProfile: 'user_profiles',
   merchantWalletCheck: 'users/uuid/',
+  forgot2faPin: 'users/2fa/forgot',
+  reset2faPin: 'users/2fa/reset',
 };
 
 export const ApiProductInventory = {
@@ -176,6 +178,7 @@ export const ApiOrderInventory = {
   customServiceAdd: 'appointment_carts/custom-product',
   getStoreLocation: 'orders/customers/city',
   attachCustomerInService: 'appointment_carts/attach/user/',
+  homeStatus: ORDER_URL + 'orders/pos/seller/multi-status-count',
 };
 
 export const ApiWalletInventory = {
@@ -217,8 +220,11 @@ export const plansAPI = {
 export const API_URLS_USING_POS_USER_ACCESS_TOKEN = (sellerID) => [
   USER_URL + ApiUserInventory.verifyGoogleCode,
   USER_URL + ApiUserInventory.configureGoogleCode,
+  USER_URL + ApiUserInventory.getGoogleCode,
+  USER_URL + ApiUserInventory.forgot2faPin,
+  USER_URL + ApiUserInventory.reset2faPin,
   // USER_URL + ApiUserInventory.getSetting,
-  // USER_URL + ApiUserInventory.merchantLogin,
+  USER_URL + ApiUserInventory.merchantLogin,
   USER_URL + ApiUserInventory.creatPosUsers,
   // USER_URL + ApiUserInventory.updateUserProfile,
   // USER_URL + ApiUserInventory.getSetting + `/?app_name=pos&seller_id=${sellerID}`,

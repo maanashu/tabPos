@@ -554,7 +554,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   saleTypeButtonCon: {
-    paddingHorizontal: ms(10),
+    paddingHorizontal: ms(8),
     paddingVertical: ms(2),
     borderRadius: ms(10),
   },
@@ -712,5 +712,14 @@ export const styles = StyleSheet.create({
     color: COLORS.navy_blue,
     fontSize: ms(10),
     fontFamily: Fonts.SemiBold,
+  },
+  modalStyle: {
+    borderRadius: ms(15),
+    alignSelf: 'center',
+    backgroundColor: COLORS.white,
+    width: '40%',
+    paddingLeft: ms(20),
+    paddingRight: ms(15),
+    marginVertical: ms(60),
   },
 });

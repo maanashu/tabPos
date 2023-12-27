@@ -22,11 +22,15 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import styles from '@mPOS/screens/HomeTab/Home/styles';
 import { useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
+import { homeStatus } from '@/actions/DashboardAction';
+import { getDashboard } from '@/selectors/DashboardSelector';
 
 export function Home() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const authData = useSelector(getAuthData);
+  const homeStatusSelector = useSelector(getDashboard);
+  const homeStatusData = homeStatusSelector?.homeData;
   const merchantServiceProvide = authData?.merchantLoginData?.product_existance_status;
   const merchantData = authData?.merchantLoginData;
   const onPressHandler = (item) => {
@@ -50,13 +54,19 @@ export function Home() {
   //   dispatch(getProductRoot())
   // }, [isFocused]);
 
+  useEffect(() => {
+    if (isFocused) {
+      dispatch(homeStatus());
+    }
+  }, [isFocused]);
+
   const homePageData = [
     merchantServiceProvide?.is_product_exist
       ? {
           key: '1',
           title: 'Products',
           image: Images.products,
-          listedProducts: '125 Products listed',
+          listedProducts: `${homeStatusData?.products_count ?? 0} Products listed`,
         }
       : null,
     merchantServiceProvide?.is_service_exist
@@ -64,39 +74,39 @@ export function Home() {
           key: '2',
           title: 'Services',
           image: Images.services,
-          listedProducts: '125 Products listed',
+          listedProducts: `${homeStatusData?.services_count ?? 0} Services listed`,
         }
       : null,
-    merchantServiceProvide?.is_product_exist || merchantServiceProvide?.is_service_exist
-      ? {
-          key: '3',
-          title: 'On-Hold',
-          image: Images.hold,
-        }
-      : null,
+    // merchantServiceProvide?.is_product_exist || merchantServiceProvide?.is_service_exist
+    //   ? {
+    //       key: '3',
+    //       title: 'On-Hold',
+    //       image: Images.hold,
+    //     }
+    //   : null,
     {
       key: '4',
       title: 'Return',
       image: Images.returnIcon,
-      listedProducts: 'Incomplete: 3',
+      listedProducts: `Incomplete: ${homeStatusData?.return_count ?? 0}`, //'Incomplete: 3',
     },
     {
       key: '5',
       title: 'Delivery',
       image: Images.delivery,
-      listedProducts: 'Processing: 16',
+      listedProducts: `Processing: ${homeStatusData?.delivery_orders_count ?? 0}`,
     },
     {
       key: '6',
       title: 'Shipping',
       image: Images.shippingImage,
-      listedProducts: 'On-going: 3',
+      listedProducts: `On-going: ${homeStatusData?.shipping_orders_count ?? 0}`,
     },
     {
       key: '7',
       title: 'Booking',
       image: Images.calendar,
-      listedProducts: 'On-going: 3',
+      listedProducts: `On-going: ${homeStatusData?.shipping_orders_count ?? 0}`,
     },
     {
       key: '8',
@@ -153,7 +163,10 @@ export function Home() {
           <Text style={styles.storeName} numberOfLines={1}>
             {merchantData?.user?.user_profiles?.organization_name}
           </Text>
-          <Image source={Images.bell} style={styles.bell} />
+
+          <TouchableOpacity onPress={() => navigate(MPOS_NAVIGATION.notificationList)}>
+            <Image source={Images.bell} style={styles.bell} />
+          </TouchableOpacity>
         </View>
         <View style={styles.homePageSearchCon}>
           <Image source={Images.search} style={styles.searchIconStyle} />

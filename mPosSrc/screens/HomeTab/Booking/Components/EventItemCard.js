@@ -80,7 +80,7 @@ const EventItemCard = ({ item, index }) => {
               ? item?.mode_of_payment?.toUpperCase() + ' '
               : '$'}
 
-            {item?.payable_amount}
+            {`${parseFloat(item?.price).toFixed(2)}`}
           </Text>
         </View>
       </View>
@@ -91,7 +91,7 @@ const EventItemCard = ({ item, index }) => {
       <View style={styles._btnContainer}>
         <TouchableOpacity
           onPress={() => {
-            const appointmentID = item?.appointment_id ?? '';
+            const appointmentID = item?.id ?? '';
             dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.REJECTED_BY_SELLER));
           }}
           style={styles.declineBtnContainer}
@@ -101,7 +101,7 @@ const EventItemCard = ({ item, index }) => {
 
         <TouchableOpacity
           onPress={() => {
-            const appointmentID = item?.appointment_id ?? '';
+            const appointmentID = item?.id ?? '';
             dispatch(changeAppointmentStatus(appointmentID, APPOINTMENT_STATUS.ACCEPTED_BY_SELLER));
           }}
           style={styles.acceptbtnContainer}

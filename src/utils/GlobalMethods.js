@@ -1,6 +1,9 @@
 import { Alert, Keyboard, Linking, PermissionsAndroid, ToastAndroid } from 'react-native';
 import { strings } from '@/localization';
 import moment from 'moment';
+import 'moment-timezone';
+import { store } from '@/store';
+import * as RNLocalize from 'react-native-localize';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -231,10 +234,12 @@ const formattedReturnPrice = (price) => {
   const numericPrice = parseFloat(price) || 0;
 
   // Format the numeric price with 2 decimal places
-  const formattedPrice = numericPrice.toFixed(2);
+  //  const formattedPrice = numericPrice.toFixed(2);
+
+  const formattedPrice = Math.abs(numericPrice).toFixed(2);
 
   // Determine the sign and prepend accordingly
-  const sign = numericPrice == 0 ? '' : '-';
+  const sign = numericPrice >= 0 ? '' : '-';
 
   return `${sign}$${formattedPrice}`;
 };
@@ -244,10 +249,10 @@ const formattedReturnPriceWithoutSign = (price) => {
   const numericPrice = parseFloat(price) || 0;
 
   // Format the numeric price with 2 decimal places
-  const formattedPrice = numericPrice.toFixed(2);
+  const formattedPrice = Math.abs(numericPrice).toFixed(2);
 
   // Determine the sign and prepend accordingly
-  const sign = numericPrice == 0 ? '' : '-';
+  const sign = numericPrice >= 0 ? '' : '-';
 
   return `${sign}${formattedPrice}`;
 };
@@ -403,6 +408,31 @@ const pSBC = (p, c0, c1, l) => {
         .slice(1, f ? undefined : -2)
     );
 };
+const calculateTimeDuration = (item) => {
+  const startMoment = moment(item?.start_date_time);
+  const endMoment = moment(item?.end_date_time);
+  const duration = moment.duration(endMoment.diff(startMoment));
+
+  const startFormattedTime = startMoment.format('h:mm A');
+  const endFormattedTime = moment(item?.end_date_time).format('h:mm A');
+
+  const hours = Math.floor(duration.asHours());
+  const minutes = Math.floor(duration.asMinutes()) % 60;
+
+  const newFormattedTime = `${startFormattedTime} - ${endFormattedTime} (${hours} hrs ${minutes} mins)`;
+  return newFormattedTime;
+};
+const ADMIN = () => {
+  const admin = store
+    .getState()
+    .user?.posLoginData?.user_roles?.filter((item) => item?.role?.slug == 'pos_admin');
+  return admin;
+};
+
+const convertUTCTimeToCurrentTime = (utcDateTime, dateTimeFormat = 'LL') => {
+  const currentTimeZone = RNLocalize.getTimeZone();
+  return moment.utc(utcDateTime).tz(currentTimeZone).format(dateTimeFormat);
+};
 
 export {
   HandleUnhandledTouches,
@@ -427,4 +457,7 @@ export {
   getCurrentAddress,
   imageSource,
   pSBC,
+  calculateTimeDuration,
+  ADMIN,
+  convertUTCTimeToCurrentTime,
 };

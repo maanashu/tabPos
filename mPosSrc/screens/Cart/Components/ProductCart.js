@@ -28,6 +28,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { formattedReturnPrice } from '@mPOS/utils/GlobalMethods';
 import { isLoadingSelector } from '@mPOS/selectors/StatusSelectors';
 import {
+  addOpenFrom,
   changeStatusProductCart,
   clearAllCart,
   getAllCart,
@@ -53,6 +54,8 @@ import ProductDetails from '@mPOS/screens/HomeTab/RetailProducts/Components/Prod
 import { updateCartLength } from '@/actions/CartAction';
 import { getCartLength } from '@/selectors/CartSelector';
 import CustomAlert from '@/components/CustomAlert';
+import { navigate } from '@mPOS/navigation/NavigationRef';
+import { MPOS_NAVIGATION } from '@common/commonImports';
 
 export function ProductCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -97,6 +100,7 @@ export function ProductCart({ cartChangeHandler }) {
         TYPES.ATTACH_CUSTOMER,
         TYPES.CHANGE_STATUS_PRODUCT_CART,
         TYPES.GET_AVAILABLE_OFFER,
+        TYPES.ADDCART,
       ],
       state
     )
@@ -151,6 +155,7 @@ export function ProductCart({ cartChangeHandler }) {
     finalPaymentRef.current?.dismiss();
     payByCashRef.current?.dismiss();
     cartAmountByPayRef.current?.dismiss();
+    navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.home });
     // commonNavigate(MPOS_NAVIGATION.retailProducts);
   }, []);
 
@@ -448,9 +453,25 @@ export function ProductCart({ cartChangeHandler }) {
                             marginTop: ms(3),
                           }}
                         >
-                          <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
+                          {data?.item?.product_details?.supply?.offer?.offer_price_per_pack &&
+                          data?.item?.product_details?.supply?.supply_prices?.selling_price ? (
+                            <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
+                              $
+                              {data?.item?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                                2
+                              )}
+                            </Text>
+                          ) : (
+                            <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
+                              $
+                              {data?.item?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                                2
+                              )}
+                            </Text>
+                          )}
+                          {/* <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
                             ${data?.item?.product_details?.supply?.supply_prices?.selling_price}
-                          </Text>
+                          </Text> */}
                           <Text style={[styles.colorName, { marginLeft: ms(10) }]}>X</Text>
                           <View style={styles.counterCon}>
                             <TouchableOpacity
@@ -488,11 +509,20 @@ export function ProductCart({ cartChangeHandler }) {
                       </TouchableOpacity>
                       <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
                         $
+                        {(data?.item?.product_details?.supply?.supply_prices?.offer_price
+                          ? data?.item?.product_details?.supply?.supply_prices?.offer_price *
+                            data?.item?.qty
+                          : data?.item?.product_details?.supply?.supply_prices?.selling_price *
+                            data?.item?.qty
+                        )?.toFixed(2)}
+                      </Text>
+                      {/* <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
+                        $
                         {Number(
                           data?.item?.product_details?.supply?.supply_prices?.selling_price *
                             data?.item?.qty
                         )?.toFixed(2)}
-                      </Text>
+                      </Text> */}
                     </View>
                   </View>
                 </View>
@@ -683,8 +713,10 @@ export function ProductCart({ cartChangeHandler }) {
         availableOfferRef={availableOfferRef}
         productCartOpen={() => {
           addProductCartRef?.current?.present();
+          dispatch(addOpenFrom('available'));
         }}
       />
+
       <AddProductCart {...{ addProductCartRef, productDetailHanlder }} />
       <ProductDetails {...{ productDetailRef, bothSheetClose }} />
       {/* productDetailHanlder */}

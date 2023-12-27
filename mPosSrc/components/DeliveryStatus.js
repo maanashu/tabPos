@@ -39,6 +39,7 @@ export function DeliveryStatus(props) {
           style={styles.detailMap}
         >
           <Marker
+            style={{ zIndex: 1 }}
             coordinate={{
               latitude: data?.order_delivery?.order_pickup_latitude ?? 0.0,
               longitude: data?.order_delivery?.order_pickup_longitude ?? 0.0,
@@ -49,6 +50,7 @@ export function DeliveryStatus(props) {
             </View>
           </Marker>
           <Marker
+            style={{ zIndex: 5 }}
             coordinate={{
               latitude: data?.order_delivery?.order_delivery_latitude ?? 0.0,
               longitude: data?.order_delivery?.order_delivery_longitude ?? 0.0,

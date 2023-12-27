@@ -222,43 +222,40 @@ export function ServiceCartListModal({ checkOutHandler, CloseCartModal, clearCar
                             </View>
                           </View>
                           <View style={styles.ShorttableListSide2}>
-                            <Text style={styles.blueListDataText}>
-                              ${data?.product_details?.supply?.supply_prices?.selling_price}
-                            </Text>
+                            {data?.product_details?.supply?.offer?.offer_price_per_pack &&
+                            data?.product_details?.supply?.supply_prices?.selling_price ? (
+                              <Text style={styles.blueListDataText}>
+                                $
+                                {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                                  2
+                                )}
+                              </Text>
+                            ) : (
+                              <Text style={styles.blueListDataText}>
+                                $
+                                {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                                  2
+                                )}
+                              </Text>
+                            )}
                             <Text>{data.qty}</Text>
-                            {/* <View style={styles.listCountCon}>
-                              <TouchableOpacity
-                                style={{
-                                  width: SW(10),
-                                  alignItems: 'center',
-                                }}
-                                onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
-                              >
-                                <Image source={minus} style={styles.minus} />
-                              </TouchableOpacity>
-                              <Text>{data.qty}</Text>
-                             {isLoading ? (
-                          <ActivityIndicator size="small" color={COLORS.primary} />
-                        ) : (
-                          <Text>{data.qty}</Text>
-                        )} *
-                              <TouchableOpacity
-                                style={{
-                                  width: SW(10),
-                                  alignItems: 'center',
-                                }}
-                                onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
-                              >
-                                <Image source={plus} style={styles.minus} />
-                              </TouchableOpacity>
-                            </View> */}
-                            <Text style={styles.blueListDataText}>
-                              ${' '}
-                              {(
-                                data.product_details?.supply?.supply_prices?.selling_price *
-                                data?.qty
-                              ).toFixed(2)}
-                            </Text>
+
+                            {data?.product_details?.supply?.offer?.offer_price_per_pack &&
+                            data?.product_details?.supply?.supply_prices?.selling_price ? (
+                              <Text style={styles.blueListDataText}>
+                                $
+                                {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                                  2
+                                )}
+                              </Text>
+                            ) : (
+                              <Text style={styles.blueListDataText}>
+                                $
+                                {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                                  2
+                                )}
+                              </Text>
+                            )}
                             <TouchableOpacity
                               style={{
                                 width: SW(8),

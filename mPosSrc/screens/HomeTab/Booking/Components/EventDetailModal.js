@@ -252,9 +252,9 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 <View style={styles.paidContainer}>
                   <Text style={styles.paidText}>Paid</Text>
                 </View>
-                <Text
-                  style={styles.totalTile}
-                >{`$${selectedPosStaffCompleteData?.payable_amount}`}</Text>
+                <Text style={styles.totalTile}>{`${`${parseFloat(
+                  selectedPosStaffCompleteData?.price
+                ).toFixed(2)}`}`}</Text>
               </View>
             </View>
             <Text style={styles.invoiceTxt}>

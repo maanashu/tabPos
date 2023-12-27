@@ -210,6 +210,7 @@ export const getReviewDefault = (status) => async (dispatch) => {
     const res = await ShippingController.getReviewDefault(status);
     dispatch(getReviewDefSuccess(res));
   } catch (error) {
+    console.log('ERRORRR', JSON.stringify(error));
     if (error?.statusCode === 204) {
       dispatch(getReviewDefReset());
     }

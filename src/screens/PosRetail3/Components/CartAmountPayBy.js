@@ -215,7 +215,6 @@ export const CartAmountPayBy = ({
     var DATA = {
       payload: arr,
     };
-    console.log('arr', arr);
 
     dispatch(getAllCartSuccess(DATA));
   };
@@ -976,9 +975,7 @@ export const CartAmountPayBy = ({
                 //     ? cartData.poscart_products
                 //     : cartData?.appointment_cart_products
                 // }
-                data={
-                  cartType == 'Product' ? cartData.poscart_products : cartData?.poscart_products
-                }
+                data={cartData.poscart_products}
                 style={{ width: '100%' }}
                 renderItem={({ item, index }) => <AddedCartItemsCard item={item} index={index} />}
               />

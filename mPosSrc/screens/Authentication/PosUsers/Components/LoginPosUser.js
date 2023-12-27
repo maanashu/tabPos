@@ -33,7 +33,9 @@ export function LoginPosUser({ setPosUserModal, selectedUser }) {
         />
 
         <Text style={styles.userNameTextStyle}>
-          {selectedUser?.user?.user_profiles?.firstname ?? '-'}
+          {selectedUser?.user?.user_profiles?.firstname +
+            ' ' +
+            selectedUser?.user?.user_profiles?.lastname ?? '-'}
         </Text>
         <Text style={styles.userNameTextStyle}>ID : {selectedUser?.id}</Text>
 

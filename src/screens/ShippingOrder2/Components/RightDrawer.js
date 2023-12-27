@@ -75,7 +75,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         key: '5',
         image: deliverySending,
         title: 'Delivered',
-        count: orderStatusCountData?.[6]?.count ?? '0',
+        count: orderStatusCountData?.[5]?.count ?? '0',
       },
       {
         key: '7,8',
@@ -87,7 +87,7 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
         key: '9',
         image: deliveryBack,
         title: 'Returned',
-        count: orderStatusCountData?.[8]?.count ?? '0',
+        count: orderStatusCountData?.[7]?.count ?? '0',
       },
     ],
     [orderStatusCountData]

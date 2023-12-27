@@ -88,7 +88,7 @@ export function NewChartKit({
           }}
           width={
             Platform.OS === 'android'
-              ? Dimensions.get('window').width * 0.8
+              ? Dimensions.get('window').width * 0.9
               : Dimensions.get('window').width * 0.85
           }
           height={ms(180)}
@@ -115,7 +115,7 @@ export function NewChartKit({
           }}
           style={{
             borderRadius: 16,
-            marginLeft: Platform.OS === 'android' ? ms(-15) : ms(5),
+            marginLeft: Platform.OS === 'android' ? ms(-6) : ms(5),
             marginTop: ms(10),
           }}
           withShadow={false}

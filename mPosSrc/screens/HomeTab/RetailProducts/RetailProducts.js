@@ -24,6 +24,7 @@ import ProductDetails from './Components/ProductDetails';
 import { FullScreenLoader, Header, ImageView, ScreenWrapper } from '@mPOS/components';
 import { debounce } from 'lodash';
 import {
+  addOpenFrom,
   cartRun,
   clearAllCart,
   createBulkcart,
@@ -205,6 +206,7 @@ export function RetailProducts(props) {
           setSelectedItem(item);
           setProductIndex(index);
           setProductItem(item);
+          dispatch(addOpenFrom('main'));
         }
       } else {
         onClickAddCart(item, index, cartQty);
@@ -328,6 +330,7 @@ export function RetailProducts(props) {
               setSelectedItem(item);
               setProductIndex(index);
               setProductItem(item);
+              dispatch(addOpenFrom('main'));
             }
           }
         }}
@@ -347,9 +350,19 @@ export function RetailProducts(props) {
             <Text style={styles.genderTextStyle} numberOfLines={1}>
               {item?.category?.name}
             </Text>
-            <Text style={styles.priceTextStyle} numberOfLines={1}>
+            {item?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+            item?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+              <Text style={styles.priceTextStyle} numberOfLines={1}>
+                ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+              </Text>
+            ) : (
+              <Text style={styles.priceTextStyle} numberOfLines={1}>
+                ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+              </Text>
+            )}
+            {/* <Text style={styles.priceTextStyle} numberOfLines={1}>
               ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-            </Text>
+            </Text> */}
           </View>
         </View>
 
@@ -451,9 +464,21 @@ export function RetailProducts(props) {
             title={`Back`}
             cartIcon
             cartHandler={() => {
-              bulkCart();
-              dispatch(cartRun('product'));
-              navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+              if (onlyServiceCartArray?.length >= 1) {
+                CustomAlert({
+                  title: 'Alert',
+                  description: 'Please clear service cart',
+                  yesButtonTitle: 'Clear cart',
+                  noButtonTitle: 'Cancel',
+                  onYesPress: () => {
+                    dispatch(clearAllCart());
+                  },
+                });
+              } else {
+                bulkCart();
+                dispatch(cartRun('product'));
+                navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+              }
             }}
             cartLength={cartLength}
           />

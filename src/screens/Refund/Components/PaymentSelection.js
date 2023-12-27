@@ -32,8 +32,17 @@ import BackButton from '@/components/BackButton';
 import ReturnConfirmation from './ReturnConfirmation';
 import { RECIPE_DATA } from '@/constants/flatListData';
 import { CustomKeyboard } from '@/screens/PosRetail3/CustomKeyBoard';
-import { cardPayment, cash, crossButton, dropdown, Fonts, qrCodeIcon } from '@/assets';
+import {
+  cardPayment,
+  cash,
+  crossButton,
+  deliveryIcon,
+  dropdown,
+  Fonts,
+  qrCodeIcon,
+} from '@/assets';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { Images } from '@/assets/new_icon';
 
 const { width, height } = Dimensions.get('window');
 
@@ -65,6 +74,73 @@ const PaymentSelection = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const isCashOrder = orderData?.order?.mode_of_payment === strings.returnOrder.cash;
+
+  const paymentMethodData = [];
+
+  paymentMethodData.push(
+    {
+      title: 'debit/credit',
+      icon: Images.debitCardIcon,
+      id: 3,
+      color:
+        orderData?.order?.mode_of_payment === 'card' ? COLORS.light_sky_blue : COLORS.torquoise,
+      backgroundColor:
+        orderData?.order?.mode_of_payment === 'card' ? COLORS.torquoise : COLORS.light_sky_blue,
+      amount: orderData?.order?.mode_of_payment === 'card' ? '$' + payableAmount.toFixed(2) : 'J0',
+      borderColor:
+        orderData?.order?.mode_of_payment === 'card' ? COLORS.transparent : COLORS.light_skyblue,
+      opacity: orderData?.order?.mode_of_payment === 'card' ? 1 : 0.5,
+    },
+    {
+      title: 'cash',
+      icon: Images.cashFlowIcon,
+      id: 1,
+      color:
+        orderData?.order?.mode_of_payment === 'cash' ? COLORS.light_green : COLORS.medium_green,
+      backgroundColor:
+        orderData?.order?.mode_of_payment === 'cash' ? COLORS.success_green : COLORS.light_green,
+      amount: orderData?.order?.mode_of_payment === 'cash' ? '$' + payableAmount.toFixed(2) : '$0',
+      borderColor:
+        orderData?.order?.mode_of_payment === 'cash' ? COLORS.transparent : COLORS.success_green,
+      opacity: orderData?.order?.mode_of_payment === 'cash' ? 1 : 0.5,
+    },
+    {
+      title: 'jobr coin',
+      icon: Images.jbrFlowIcon,
+      id: 2,
+      color: orderData?.order?.mode_of_payment === 'jbr' ? COLORS.sky_grey : COLORS.navy_blue,
+      backgroundColor:
+        orderData?.order?.mode_of_payment === 'jbr' ? COLORS.navy_blue : COLORS.sky_grey,
+      amount: orderData?.order?.mode_of_payment === 'jbr' ? '$' + payableAmount.toFixed(2) : '$0',
+      borderColor:
+        orderData?.order?.mode_of_payment === 'jbr' ? COLORS.transparent : COLORS.light_purple,
+      opacity: orderData?.order?.mode_of_payment === 'jbr' ? 1 : 0.5,
+    }
+  );
+  const receiptData = [
+    {
+      title: 'SMS',
+      icon: Images.smsReceipt,
+      tintColor: selectedRecipeIndex === 0 ? COLORS.white : COLORS.redish_brown,
+      color: selectedRecipeIndex === 0 ? COLORS.white : COLORS.redish_brown,
+      backgroundColor: selectedRecipeIndex === 0 ? COLORS.orange_bright : COLORS.light_yellow,
+    },
+    {
+      title: 'E-mail',
+      icon: Images.emailReceipt,
+      tintColor: selectedRecipeIndex === 1 ? COLORS.white : COLORS.redish_brown,
+      color: selectedRecipeIndex === 1 ? COLORS.white : COLORS.redish_brown,
+      backgroundColor: selectedRecipeIndex === 1 ? COLORS.orange_bright : COLORS.light_yellow,
+    },
+
+    {
+      title: 'No, thanks',
+      icon: Images.nothanksReceipt,
+      tintColor: selectedRecipeIndex === 2 ? COLORS.white : COLORS.redish_brown,
+      color: selectedRecipeIndex === 2 ? COLORS.white : COLORS.redish_brown,
+      backgroundColor: selectedRecipeIndex === 2 ? COLORS.orange_bright : COLORS.light_yellow,
+    },
+  ];
 
   const onCheckSelectedReceipt = (index) => {
     if (index === 0) {
@@ -164,71 +240,162 @@ const PaymentSelection = ({
   return (
     <View style={styles.container}>
       <View style={styles.leftContainer}>
-        <View style={styles.selectTipsHeader}>
-          <View style={styles.headerRowStyle}>
-            <BackButton onPress={backHandler} title={'Back'} style={styles.backIconStyle} />
+        <BackButton onPress={backHandler} title={'Back'} style={styles.backIconStyle} />
+        <Spacer space={ms(60)} />
 
-            <Text style={styles._totalAmountTitle}>{strings.returnOrder.totalReturnAmount}</Text>
+        <View style={styles.headerRowStyle}>
+          <Text style={styles._totalAmountTitle}>{strings.returnOrder.totalReturnAmount}</Text>
 
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles._dollarSymbol}>{'-' + strings.returnOrder.dollar}</Text>
-              <Text style={styles._amount}>{payableAmount?.toFixed(2)}</Text>
-            </View>
+          <View style={{ flexDirection: 'row', marginTop: ms(2) }}>
+            <Text style={styles._dollarSymbol}>{'-' + strings.returnOrder.dollar}</Text>
+            <Text style={styles._amount}>{payableAmount?.toFixed(2)}</Text>
           </View>
         </View>
-
-        <Spacer space={SH(40)} backgroundColor={COLORS.transparent} />
-
+        <Text style={styles.returnPaymentMethod}>{'Select a method of payment to refund.'}</Text>
         <View style={styles.paymentMethodViewStyle}>
-          <Text style={styles.returnPaymentMethod}>{strings.returnOrder.returnPaymentMethod}</Text>
-
           <Spacer space={SH(10)} backgroundColor={COLORS.transparent} />
 
-          <View style={{ alignItems: 'center' }}>
-            {orderData?.order?.mode_of_payment ? (
-              <TouchableOpacity style={styles._payBYBoxContainer}>
-                <Text style={styles._payByTitle}>{strings.returnOrder.payBy}</Text>
-                <Text style={styles._payByMethod}>
-                  {(orderData?.order?.mode_of_payment).toUpperCase()}
-                </Text>
-                <Text style={styles._payByAmount}>{`${formattedReturnPrice(payableAmount)}`}</Text>
-                <Image
-                  source={
-                    isCashOrder
-                      ? cash
-                      : orderData?.order?.mode_of_payment === strings.returnOrder.jbr
-                      ? qrCodeIcon
-                      : cardPayment
-                  }
-                  style={styles._payByIcon}
-                />
-              </TouchableOpacity>
-            ) : null}
+          <View
+            style={{
+              flexDirection: 'row',
+            }}
+          >
+            {paymentMethodData.map((item, index) => (
+              <View
+                key={index}
+                style={[
+                  styles._payBYBoxContainer,
+                  {
+                    backgroundColor: item?.backgroundColor,
+                    borderColor: item?.borderColor,
+                    opacity: item?.opacity,
+                  },
+                ]}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Image
+                    source={item.icon}
+                    style={[styles._payByIcon, { tintColor: item?.color }]}
+                  />
+                  <Text style={[styles._payByMethod, { color: item?.color }]}>{item.title}</Text>
+                </View>
+
+                <View style={{ flex: 1 }} />
+                {index === 2 && (
+                  // <Text style={styles._payByMethod(selectedPaymentIndex, index)}>
+                  //   5464 6487 7484 93034
+                  // </Text>
+                  <Image
+                    source={Images.cardDot}
+                    style={{
+                      width: ms(80),
+                      height: ms(15),
+                      resizeMode: 'contain',
+                      tintColor: item?.color,
+                    }}
+                  />
+                )}
+                <Spacer space={SH(10)} />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={[styles._payByAmount, { color: item?.color }]}>{item?.amount}</Text>
+                </View>
+              </View>
+            ))}
           </View>
 
           <Spacer space={SH(30)} backgroundColor={COLORS.transparent} />
 
           {isCashOrder && (
-            <Text style={styles.returnPaymentMethod}>{strings.returnOrder.eReceipt}</Text>
+            <View style={{ alignSelf: 'center', alignItems: 'center' }}>
+              <Image
+                source={deliveryIcon}
+                style={{ resizeMode: 'contain', height: ms(20), width: ms(20) }}
+              />
+              <Text
+                style={[
+                  styles.returnPaymentMethod,
+                  {
+                    marginVertical: ms(10),
+                    color: COLORS.navy_blue,
+                    fontFamily: Fonts.Medium,
+                    fontSize: ms(11),
+                  },
+                ]}
+              >
+                {'Send your e-receipt?'}
+              </Text>
+            </View>
           )}
 
           {isCashOrder && (
-            <View style={styles.eReceiptViewStyle}>
-              <FlatList
-                horizontal
-                data={RECIPE_DATA}
-                extraData={RECIPE_DATA}
-                renderItem={renderRecipeMethod}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.contentContainerStyle}
-              />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}
+            >
+              {receiptData.map((item, index) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    onCheckSelectedReceipt(index);
+                    setSelectedRecipeIndex(index);
+                  }}
+                  key={index}
+                  style={[
+                    styles._payBYBoxContainerReceipe,
+                    { backgroundColor: item?.backgroundColor },
+                  ]}
+                >
+                  <Image
+                    source={item.icon}
+                    style={[styles.recipeIcon, { tintColor: item?.tintColor }]}
+                  />
+                  <Spacer space={SH(10)} />
+                  <Text style={[styles._payByMethodReceipe, { color: item?.color }]}>
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
           )}
 
           <Spacer space={SH(60)} backgroundColor={COLORS.transparent} />
 
-          <TouchableOpacity onPress={() => onReturnHandler()} style={styles.buttonStyle}>
-            <Text style={styles.buttonTextStyle}>{strings.returnOrder.return}</Text>
+          <TouchableOpacity
+            onPress={() => onReturnHandler()}
+            style={[
+              styles.buttonStyle,
+              isCashOrder ?? {
+                backgroundColor: selectedRecipeIndex ? COLORS.navy_blue : COLORS.input_border,
+              },
+            ]}
+          >
+            <Text
+              style={[
+                styles.buttonTextStyle,
+                {
+                  marginRight: ms(5),
+                },
+              ]}
+            >
+              {'Continue Return'}
+            </Text>
+            <Image
+              source={Images.shoppingReturn}
+              style={{ resizeMode: 'contain', height: ms(15), width: ms(15) }}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -353,7 +520,7 @@ const PaymentSelection = ({
 
       {isLoading ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.3)' }]}>
-          <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
+          <ActivityIndicator color={COLORS.navy_blue} size="large" style={styles.loader} />
         </View>
       ) : null}
     </View>
@@ -386,6 +553,8 @@ const styles = StyleSheet.create({
   },
   leftContainer: {
     flex: 0.7,
+    backgroundColor: COLORS.white,
+    borderRadius: ms(10),
   },
   rightContainer: {
     flex: 0.28,
@@ -406,40 +575,45 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blue_shade,
   },
   _totalAmountTitle: {
-    fontSize: ms(17),
-    color: COLORS.solid_grey,
-    fontFamily: Fonts.Regular,
+    fontSize: ms(12),
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.SemiBold,
   },
   _dollarSymbol: {
-    fontSize: ms(17),
-    marginTop: ms(2),
-    color: COLORS.primary,
+    fontSize: ms(20),
+    // marginTop: ms(2),
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
   },
   _amount: {
-    fontSize: ms(25),
-    color: COLORS.primary,
+    fontSize: ms(20),
+    color: COLORS.navy_blue,
     fontFamily: Fonts.SemiBold,
   },
   buttonStyle: {
-    height: SH(60),
-    borderRadius: 5,
-    width: width / 2.5,
-    alignSelf: 'center',
+    // height: ms(35),
+    borderRadius: ms(20),
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: COLORS.primary,
+    // marginHorizontal: ms(15),
+    backgroundColor: COLORS.navy_blue,
+    marginBottom: ms(25),
+    flexDirection: 'row',
+    padding: ms(10),
+    alignSelf: 'center',
   },
   buttonTextStyle: {
-    fontSize: SF(20),
+    fontSize: ms(12),
     color: COLORS.white,
-    fontFamily: Fonts.SemiBold,
+    fontFamily: Fonts.Medium,
   },
   returnPaymentMethod: {
-    fontSize: SF(20),
-    color: COLORS.darkGray,
+    fontSize: ms(10),
+    color: COLORS.light_blue2,
     fontFamily: Fonts.Regular,
     paddingHorizontal: ms(12),
+    textAlign: 'center',
+    marginTop: ms(5),
   },
   paymentMethodViewStyle: {
     borderRadius: 7,
@@ -610,6 +784,66 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+
+  _payBYBoxContainer: {
+    borderWidth: 1,
+    height: ms(90),
+    width: Platform.OS === 'ios' ? ms(125) : ms(157),
+    flexShrink: 1,
+    flex: 1,
+    marginHorizontal: ms(4),
+    borderRadius: ms(9),
+    padding: ms(6),
+  },
+  _payBYBoxContainerEmpty: {
+    height: ms(125),
+    width: ms(170),
+    margin: ms(3),
+    alignItems: 'center',
+    padding: ms(10),
+  },
+  _payByTitle: {
+    fontFamily: Fonts.Regular,
+    color: COLORS.solid_grey,
+    fontSize: ms(9),
+    marginBottom: ms(3),
+  },
+  _payByMethod: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(9),
+  },
+  _payByAmount: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(10),
+    marginTop: ms(2),
+  },
+  _payByIcon: {
+    height: ms(18),
+    width: ms(18),
+    resizeMode: 'contain',
+  },
+
+  _payBYBoxContainerReceipe: {
+    borderColor: COLORS.faded_yellow,
+    borderWidth: 1,
+    height: ms(60),
+    width: Platform.OS === 'ios' ? ms(100) : ms(100),
+    // flexShrink: 1,
+    // flex: 1,
+    margin: ms(3),
+    borderRadius: ms(9),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  recipeIcon: {
+    height: ms(18),
+    width: ms(18),
+    resizeMode: 'contain',
+  },
+  _payByMethodReceipe: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(10),
   },
 });
 

@@ -515,7 +515,7 @@ export function Shipping() {
         > */}
         {shippingpickupData?.length > 0 &&
           shippingpickupData.map((item, index) => (
-            <View style={styles.shippingTileBorderStyle}>
+            <View style={[styles.shippingTileBorderStyle, { marginBottom: ms(10) }]}>
               <View style={[styles.dispalyRow, { marginBottom: ms(10) }]}>
                 <Image
                   source={LocationPurple}

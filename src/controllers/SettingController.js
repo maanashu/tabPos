@@ -57,7 +57,6 @@ export class SettingController {
 
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('res', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -84,17 +83,12 @@ export class SettingController {
   static async addressUpdateById(body) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getShippingPickup + '/change-status';
-      console.log('end point', JSON.stringify(endpoint));
-      console.log('Body', JSON.stringify(body));
 
       HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', JSON.stringify(response));
-
           resolve(response);
         })
         .catch((error) => {
-          console.log('Error', JSON.stringify(error));
           Toast.show({
             text2: error.msg,
             position: 'bottom',

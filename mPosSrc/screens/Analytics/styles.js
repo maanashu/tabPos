@@ -171,7 +171,7 @@ export const styles = StyleSheet.create({
   },
   containerStyle: {
     backgroundColor: COLORS.white,
-    width: Platform.OS === 'android' ? ms(120) : ms(98),
+    width: Platform.OS === 'android' ? ms(110) : ms(98),
     padding: 0,
     marginTop: ms(5),
     // height: ms(20),
@@ -356,7 +356,7 @@ export const styles = StyleSheet.create({
   mainListContainer: {
     zIndex: -99,
     backgroundColor: COLORS.white,
-    height: Platform.OS === 'ios' ? ms(255) : ms(260),
+    height: Platform.OS === 'ios' ? ms(255) : ms(250),
     borderBottomRightRadius: ms(10),
     borderBottomLeftRadius: ms(10),
     width: Dimensions.get('window').width * 1.8,

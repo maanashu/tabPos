@@ -146,7 +146,10 @@ export class AuthController {
         phone_number: data.phone_no,
         security_pin: data.pin,
       };
-      HttpClient.post(endpoint, body)
+      const headers = {
+        'app-name': 'merchant',
+      };
+      HttpClient.post(endpoint, body, { headers })
         .then((response) => {
           if (response.status_code === 200) {
             //   Toast.show({
@@ -287,6 +290,45 @@ export class AuthController {
           }
         })
         .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+
+  static async forgot2faPin() {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.forgot2faPin;
+      console.log('url', endpoint);
+      HttpClient.get(endpoint)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
+          reject(error);
+        });
+    });
+  }
+  static async reset2faPin(data) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.reset2faPin;
+      const body = data;
+      HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          Toast.show({
+            position: 'bottom',
+            type: 'error_toast',
+            text2: error?.msg,
+            visibilityTime: 2000,
+          });
           reject(error);
         });
     });

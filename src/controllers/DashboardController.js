@@ -15,15 +15,10 @@ import { HttpClient } from './HttpClient';
 export class DashboardController {
   static async getOrderDeliveries(sellerID, page) {
     return new Promise((resolve, reject) => {
-      // const endpoint =
-      //   ORDER_URL +
-      //   ApiOrderInventory.getOrderUser +
-      //   `?seller_id=${sellerID}&delivery_option=1&page=${page}&limit=10`;
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrderUser +
-        `?seller_id=${sellerID}&delivery_option=1,4&page=${page}&limit=10`;
-
+        `?seller_id=${sellerID}&delivery_option=1,3,4&page=${page}&limit=10&app_name=b2c`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -302,6 +297,25 @@ export class DashboardController {
         barcode: data,
       };
       HttpClient.post(endpoint, body)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error.msg);
+        });
+    });
+  }
+
+  static async homeStatusAPI() {
+    return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const queryParams = {
+        seller_id: sellerID,
+      };
+
+      const params = new URLSearchParams(queryParams).toString();
+      const endpoint = ApiOrderInventory.homeStatus + `?${params}`;
+      HttpClient.get(endpoint, params)
         .then((response) => {
           resolve(response);
         })

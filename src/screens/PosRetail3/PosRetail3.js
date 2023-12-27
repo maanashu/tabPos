@@ -596,9 +596,7 @@ export function PosRetail3() {
       {/* {isLoading && <FullScreenLoader />} */}
 
       <BlurredModal animationType="fade" transparent={true} isVisible={addNotes || addDiscount}>
-        <KeyboardAwareScrollView
-          contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
-        >
+        <KeyboardAwareScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
           {/* <ScrollView> */}
           {addDiscount ? (
             <View style={[styles.addNotesCon, styles.addDiscountConPop]}>
@@ -665,9 +663,7 @@ export function PosRetail3() {
         transparent={true}
         isVisible={addServiceNotes || addServiceDiscount}
       >
-        <KeyboardAwareScrollView
-          contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
-        >
+        <KeyboardAwareScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
           {addServiceDiscount ? (
             <View style={[styles.addNotesCon, styles.addDiscountConPop]}>
               <View style={[styles.addCartDetailConHeader, styles.addCartDetailConHeader2]}>

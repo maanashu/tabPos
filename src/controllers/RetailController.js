@@ -89,13 +89,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&search=${search}&service_type=product`
+          `?seller_id=${sellerid}&search=${search}&service_type=product&need_subcategory=true`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&service_type=product`
+          `?seller_id=${sellerid}&service_type=product&need_subcategory=true`
         );
       }
     };

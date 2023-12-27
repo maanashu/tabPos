@@ -80,6 +80,7 @@ export function CartScreen({
   const [productIndex, setProductIndex] = useState(0);
   const [productItem, setProductItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState();
+  console.log('cartData', JSON.stringify(cartData));
 
   const availableOfferLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
@@ -206,17 +207,23 @@ export function CartScreen({
   const updateQuantity = (cartId, productId, operation, index) => {
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
+    const restProductQty = product?.product_details?.supply?.rest_quantity;
     // const productPrice = product.product_details.price;
     const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
 
     if (operation === '+') {
-      product.qty += 1;
-      arr.amount.total_amount += productPrice;
-      arr.amount.products_price += productPrice;
-      const totalAmount = arr.amount.products_price;
-      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-      arr.amount.tax = parseFloat(TAX); // Update tax value
-      arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
+      if (restProductQty > product.qty) {
+        product.qty += 1;
+        arr.amount.total_amount += productPrice;
+        arr.amount.products_price += productPrice;
+        const totalAmount = arr.amount.products_price;
+        const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+        arr.amount.tax = parseFloat(TAX); // Update tax value
+        arr.amount.total_amount = totalAmount + parseFloat(TAX);
+      } else {
+        alert('There are no more quantity left to add');
+      }
+      // Update total_amount including tax
     } else if (operation === '-') {
       if (product.qty > 0) {
         if (product.qty === 1) {
@@ -408,9 +415,20 @@ export function CartScreen({
                                   style={[styles.unitPriceInput]}
                                   keyboardType="numeric"
                                 />
+                              ) : data?.product_details?.supply?.offer?.offer_price_per_pack &&
+                                data?.product_details?.supply?.supply_prices?.selling_price ? (
+                                <Text numberOfLines={1} style={styles.productPrice}>
+                                  $
+                                  {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                                    2
+                                  )}
+                                </Text>
                               ) : (
-                                <Text style={styles.blueListDataText} numberOfLines={1}>
-                                  ${data?.product_details?.supply?.supply_prices?.selling_price}
+                                <Text numberOfLines={1} style={styles.productPrice}>
+                                  $
+                                  {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                                    2
+                                  )}
                                 </Text>
                               )}
                             </View>
@@ -447,10 +465,12 @@ export function CartScreen({
                             <View style={styles.productCartBody}>
                               <Text style={styles.blueListDataText}>
                                 $
-                                {(
-                                  data.product_details?.supply?.supply_prices?.selling_price *
-                                  data?.qty
-                                ).toFixed(2)}
+                                {(data?.product_details?.supply?.supply_prices?.offer_price
+                                  ? data?.product_details?.supply?.supply_prices?.offer_price *
+                                    data?.qty
+                                  : data?.product_details?.supply?.supply_prices?.selling_price *
+                                    data?.qty
+                                )?.toFixed(2)}
                               </Text>
                             </View>
                             <View style={styles.productCartBody}>
@@ -558,7 +578,9 @@ export function CartScreen({
                     backgroundColor: COLORS.navy_blue,
                   }}
                 >
-                  <Text style={{ color: COLORS.white }}>{holdProductArray?.length}</Text>
+                  <Text style={{ color: COLORS.white, fontSize: ms(5) }}>
+                    {holdProductArray?.length}
+                  </Text>
                 </View>
               </TouchableOpacity>
 

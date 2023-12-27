@@ -58,6 +58,9 @@ import { AddServiceCartModal } from '@mPOS/screens/HomeTab/Services/AddServiceCa
 import AddServiceCart from '@mPOS/screens/HomeTab/RetailServices/Components/AddServiceCart';
 import moment from 'moment';
 import CustomAlert from '@/components/CustomAlert';
+import { navigate } from '@mPOS/navigation/NavigationRef';
+import { MPOS_NAVIGATION } from '@common/commonImports';
+import { convertUTCTimeToCurrentTime } from '@/utils/GlobalMethods';
 
 export function ServiceCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -170,6 +173,7 @@ export function ServiceCart({ cartChangeHandler }) {
     finalPaymentRef.current?.dismiss();
     payByCashRef.current?.dismiss();
     cartAmountByPayRef.current?.dismiss();
+    navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.home });
     // commonNavigate(MPOS_NAVIGATION.retailProducts);
   }, []);
 
@@ -251,14 +255,15 @@ export function ServiceCart({ cartChangeHandler }) {
   const removeOneCartHandler = (index) => {
     var arr = retailData?.getAllCart;
     if (arr?.poscart_products?.length == 1 && index == 0) {
-      dispatch(clearServiceAllCart());
+      // dispatch(clearServiceAllCart());
+      dispatch(clearAllCart());
     } else {
       const product = arr?.poscart_products[index];
       const productPrice = product?.product_details?.supply?.supply_prices?.selling_price;
       if (product?.qty > 0) {
         // arr.amount.total_amount -= productPrice * product.qty;
         arr.amount.products_price -= productPrice * product.qty;
-        arr.appointment_cart_products.splice(index, 1);
+        arr.poscart_products.splice(index, 1);
       }
       const totalAmount = arr.amount.products_price;
       const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
@@ -396,8 +401,9 @@ export function ServiceCart({ cartChangeHandler }) {
                           </Text>
                           <Text style={styles.verticalRow}>{'|'}</Text>
                           <Text style={[styles.sukNumber, styles.timeitalic]}>
-                            {moment(data?.item?.date).format('LL')} @
-                            {data?.item?.start_time + '-' + data?.item?.start_time}
+                            {moment.utc(data?.item?.date).format('LL')}
+                            {/* {convertUTCTimeToCurrentTime(data?.item?.date)} */}@
+                            {data?.item?.start_time + '-' + data?.item?.end_time}
                           </Text>
                         </View>
                         <Spacer space={SH(2)} />
@@ -436,11 +442,27 @@ export function ServiceCart({ cartChangeHandler }) {
                       >
                         <Image source={Images.pencil} style={styles.pencil} />
                       </TouchableOpacity>
-                      <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
+                      {data?.item?.product_details?.supply?.offer?.offer_price_per_pack &&
+                      data?.item?.product_details?.supply?.supply_prices?.selling_price ? (
+                        <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
+                          $
+                          {data?.item?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
+                            2
+                          )}
+                        </Text>
+                      ) : (
+                        <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
+                          $
+                          {data?.item?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
+                            2
+                          )}
+                        </Text>
+                      )}
+                      {/* <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
                         $
                         {data?.item?.product_details?.supply?.supply_prices?.selling_price *
                           data?.item?.qty}
-                      </Text>
+                      </Text> */}
                     </View>
                   </View>
                 </View>
