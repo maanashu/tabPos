@@ -123,8 +123,6 @@ export function Calender() {
 
   const [showMiniCalendar, setshowMiniCalendar] = useState(false);
 
-  const [listViewSelectedDay, setListViewSelectedDay] = useState(null);
-
   //Pagination for appointments
   const [pageNumber, setPageNumber] = useState(1);
   const getAppointmentList2 = getAppointmentList?.filter((item) => item.status !== 3);
@@ -273,7 +271,8 @@ export function Calender() {
 
   const getAppointmentsByDate = useMemo(() => {
     const filteredAppointmentsByDate = getAppointmentList?.filter(
-      (appointment) => moment(appointment?.date).format('L') === moment(calendarDate).format('L')
+      (appointment) =>
+        moment.utc(appointment?.date).format('L') === moment.utc(calendarDate).format('L')
     );
     return filteredAppointmentsByDate;
   }, [calendarDate, getCalenderData]);
@@ -393,7 +392,6 @@ export function Calender() {
         }}
         onPress={() => {
           setCalendarDate(moment(item.fullDateFortheDay));
-          setListViewSelectedDay(item);
         }}
       >
         <Text style={{ color: isSelected ? '#F5F6FC' : COLORS.light_blue2, fontSize: ms(8) }}>
@@ -691,12 +689,11 @@ export function Calender() {
                     <Spacer space={ms(8)} />
                     <View style={styles._mListViewDateHeaderContainer}>
                       <Text style={styles._mListViewDayName}>
-                        {listViewSelectedDay?.dayName ?? moment().format('dddd')}
+                        {moment(calendarDate).format('dddd')}
                       </Text>
                       <Spacer space={ms(5)} horizontal />
                       <Text style={styles._mListViewDate}>
-                        {moment(listViewSelectedDay?.fullDateFortheDay).format('Do') ??
-                          moment().format('Do')}
+                        {moment(calendarDate).format('Do') ?? moment().format('Do')}
                       </Text>
                     </View>
                   </View>
@@ -1071,9 +1068,9 @@ export function Calender() {
                       source={Images.calendarIcon}
                     />
                     <Text style={styles.serviceTimeText}>
-                      {moment(selectedPosStaffCompleteData?.start_date_time).format(
-                        'dddd, DD/MM/YYYY'
-                      )}
+                      {moment
+                        .utc(selectedPosStaffCompleteData?.start_date_time)
+                        .format('dddd, DD/MM/YYYY')}
                     </Text>
                   </View>
                   <Spacer horizontal space={ms(10)} />

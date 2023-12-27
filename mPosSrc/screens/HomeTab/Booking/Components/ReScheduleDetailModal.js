@@ -61,7 +61,7 @@ const ReScheduleDetailModal = ({
   const [providerDetail, setProviderDetail] = useState(null);
   const [selectedTimeSlotData, setSelectedTimeSlotData] = useState('');
   const [selectedDate, setselectedDate] = useState(
-    moment(appointmentData?.date).format('YYYY-MM-DD')
+    moment.utc(appointmentData?.date).format('YYYY-MM-DD')
   );
 
   const [preSelectedStartTime, setpreSelectedStartTime] = useState(appointmentData?.start_time);

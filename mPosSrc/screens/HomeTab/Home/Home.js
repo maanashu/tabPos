@@ -165,7 +165,7 @@ export function Home() {
       key: '7',
       title: 'Booking',
       image: Images.calendar,
-      listedProducts: `On-going: ${homeStatusData?.shipping_orders_count ?? 0}`,
+      listedProducts: `On-going: ${homeStatusData?.booking_count ?? 0}`,
     },
     // {
     //   key: '8',

@@ -217,7 +217,7 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                 source={Images.calendarIcon}
               />
               <Text style={styles.serviceTimeTextSmall}>
-                {moment(completeData?.start_date_time).format('dddd, DD/MM/YYYY')}
+                {moment.utc(completeData?.start_date_time).format('dddd, DD/MM/YYYY')}
               </Text>
             </View>
             <Spacer horizontal space={ms(10)} />

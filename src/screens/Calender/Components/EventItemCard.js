@@ -129,7 +129,7 @@ const EventItemCard = ({ item, index }) => {
               source={Images.calendarIcon}
             />
             <Text style={styles.serviceTimeTextSmall}>
-              {moment(item?.start_date_time).format('dddd, DD/MM/YYYY')}
+              {moment.utc(item?.start_date_time).format('dddd, DD/MM/YYYY')}
             </Text>
           </View>
           <Spacer horizontal space={ms(10)} />
