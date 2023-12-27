@@ -37,12 +37,14 @@ import { useIsFocused } from '@react-navigation/native';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import { getProfile } from '@/actions/AuthActions';
+import DeviceInfo from 'react-native-device-info';
 
 export function Login(props) {
   const isFocused = useIsFocused();
   const CELL_COUNT = 4;
   const dispatch = useDispatch();
   const { posUser } = props?.route?.params;
+  const deviceId = DeviceInfo.getUniqueId();
 
   const getAuth = useSelector(getAuthData);
   const getData = useSelector(getAuthData);
@@ -56,17 +58,19 @@ export function Login(props) {
     value,
     setValue,
   });
-  const hasPosTrue =
-    posUser?.user?.user_profiles?.is_biometric &&
-    posUser?.user?.user_profiles?.is_biometric?.some(
-      (item) => item?.app_name === 'pos' && item?.status === true
-    );
-
   useEffect(() => {
-    if (hasPosTrue) {
-      bioMetricLogin();
-    }
-  }, [hasPosTrue]);
+    DeviceInfo.getUniqueId().then((deviceId) => {
+      const hasPosTrue =
+        posUser?.user?.user_profiles?.is_biometric &&
+        posUser?.user?.user_profiles?.is_biometric?.some(
+          (item) => item?.app_name === 'pos' && item?.status === true && item?.device_id == deviceId
+        );
+
+      if (hasPosTrue) {
+        bioMetricLogin();
+      }
+    });
+  }, []);
 
   useEffect(() => {
     // dispatch(getAllPosUsers(sellerID));
@@ -120,8 +124,6 @@ export function Login(props) {
         checkBioMetricKeyExists();
       } else {
         setBioMetricsAvailable(false);
-        // Handle the case when no biometric option is available (fallback to passcode)
-        promptPasscode();
       }
     });
   };
@@ -137,6 +139,23 @@ export function Login(props) {
     });
   };
 
+  // const promptBioMetricSignin = () => {
+  //   let epochTimeSeconds = Math.round(new Date().getTime() / 1000).toString();
+  //   let payload = epochTimeSeconds + 'some message';
+  //   rnBiometrics
+  //     .createSignature({
+  //       promptMessage: 'Sign in',
+  //       payload: payload,
+  //     })
+  //     .then(resultObject => {
+  //       const { success, signature } = resultObject;
+
+  //       if (success) {
+  //         dispatch(deviceLogin(props?.route?.params?.user_id));
+  //       }
+  //     });
+  // };
+
   const promptBioMetricSignin = () => {
     let epochTimeSeconds = Math.round(new Date().getTime() / 1000).toString();
     let payload = epochTimeSeconds + 'some message';
@@ -150,13 +169,10 @@ export function Login(props) {
         if (success) {
           promptPasscode();
         } else {
-          // Handle failure or use passcode as an alternative
-          promptPasscode();
         }
       })
       .catch((error) => {
         console.error('Biometric signature error:', error);
-        promptPasscode();
       });
   };
 
