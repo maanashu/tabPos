@@ -75,6 +75,12 @@ export const essential = [
     image: Images.devices,
     id: 5,
   },
+  {
+    label: 'Taxes',
+    image: Images.devices,
+    id: 6,
+    navigation: MPOS_NAVIGATION.TaxesDuties,
+  },
 ];
 
 export const moreApp = [
