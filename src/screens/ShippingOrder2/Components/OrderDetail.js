@@ -375,8 +375,8 @@ const OrderDetail = ({
               </Text>
               <Text style={styles.itemCountText}>
                 {userDetail?.date
-                  ? moment(userDetail?.date).format('DD/MM/YYYY')
-                  : moment(userDetail?.created_at).format('DD/MM/YYYY')}
+                  ? moment.utc(userDetail?.date).format('DD/MM/YYYY')
+                  : moment.utc(userDetail?.created_at).format('DD/MM/YYYY')}
               </Text>
             </View>
             <View
