@@ -471,7 +471,10 @@ export const ServiceFilterDropDown = ({
             setCategoryOpenDropDown(false);
             setSubCategoryOpenDropDown(false);
             setBrandOpenDropDown(false);
-            dispatch(getMainServices());
+            const data = {
+              page: 1,
+            };
+            dispatch(getMainServices(data));
             clearInput();
             serviceFilterCount(0);
             closeHandler();

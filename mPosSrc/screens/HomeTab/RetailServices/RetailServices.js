@@ -98,7 +98,10 @@ export function RetailServices(props) {
   }, []);
 
   useEffect(() => {
-    dispatch(getMainServices());
+    const data = {
+      page: 1,
+    };
+    dispatch(getMainServices(data));
   }, []);
   const serviceLoad = useSelector((state) => isLoadingSelector([TYPES.GET_MAIN_SERVICES], state));
 
@@ -109,26 +112,30 @@ export function RetailServices(props) {
       };
       dispatch(getMainServices(searchName));
     } else if (search?.length === 0) {
-      dispatch(getMainServices());
+      const data = {
+        page: 1,
+      };
+      dispatch(getMainServices(data));
     }
   };
 
   const debounceService = useCallback(debounce(serviceSearchFun, 1000), []);
 
-  const servicePagination = {
+  const servicePaginationData = {
     total: serviceData?.total ?? '0',
     totalPages: serviceData?.total_pages ?? '0',
     perPage: serviceData?.per_page ?? '0',
     currentPage: serviceData?.current_page ?? '0',
   };
 
-  const onLoadMoreProduct = useCallback(() => {
-    if (!serviceLoad) {
-      if (servicePagination?.currentPage < servicePagination?.totalPages) {
-        dispatch(getProduct({}, servicePagination?.currentPage + 1));
-      }
+  const onLoadMoreService = useCallback(() => {
+    if (servicePaginationData?.currentPage < servicePaginationData?.totalPages) {
+      const data = {
+        page: servicePaginationData?.currentPage + 1,
+      };
+      dispatch(getMainServices(data));
     }
-  }, [servicePagination]);
+  }, [servicePaginationData]);
 
   const renderRootServiceItem = ({ item, index }) => {
     const color = item.id === rootServiceId ? COLORS.primary : COLORS.darkGray;
@@ -376,15 +383,15 @@ export function RetailServices(props) {
               <Text style={styles.noProduct}>{strings.retail.noService}</Text>
             </View>
           )}
-          // onEndReachedThreshold={0.1}
-          // onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
-          // onMomentumScrollBegin={() => {}}
-          // onMomentumScrollEnd={() => {
-          //   if (onEndReachedCalledDuringMomentum.current) {
-          //     onLoadMoreProduct();
-          //     onEndReachedCalledDuringMomentum.current = false;
-          //   }
-          // }}
+          onEndReachedThreshold={0.1}
+          onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+          onMomentumScrollBegin={() => {}}
+          onMomentumScrollEnd={() => {
+            if (onEndReachedCalledDuringMomentum.current) {
+              onLoadMoreService();
+              onEndReachedCalledDuringMomentum.current = false;
+            }
+          }}
           removeClippedSubviews={true}
           ListFooterComponent={() => (
             <View>{serviceLoad && <ActivityIndicator size="large" color={COLORS.darkBlue} />}</View>

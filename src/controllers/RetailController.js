@@ -1068,6 +1068,8 @@ export class RetailController {
         service_type: 'service',
         need_pos_users: true,
         check_stock_out: true,
+        page: productTypeID.page,
+        limit: 20,
       };
 
       let finalParams;
@@ -1317,6 +1319,7 @@ export class RetailController {
         status: data.status,
       };
       HttpClient.put(endpoint, body)
+
         .then((response) => {
           resolve(response);
         })

@@ -32,6 +32,7 @@ import {
   addTocart,
   checkSuppliedVariant,
   getTimeSlots,
+  cartRun,
 } from '@/actions/RetailAction';
 import { ServiceProviderItem } from '@/components/ServiceProviderItem';
 import moment from 'moment';
@@ -249,6 +250,11 @@ const AddServiceCart = ({ addServiceCartRef, serviceDetailHanlder }) => {
             <View style={styles.detailAndAddBtnCon}>
               <TouchableOpacity
                 // onPress={serviceDetailHanlder}
+                onPress={() => {
+                  addServiceCartRef.current.dismiss();
+                  dispatch(cartRun('service'));
+                  navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+                }}
                 style={[styles.detailView, styles.backToCartView]}
               >
                 <Text style={[styles.detailText, { color: COLORS.dark_grey }]}>

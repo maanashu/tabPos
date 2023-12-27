@@ -129,9 +129,9 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
   const totalRefundableAmount = () => {
     let deliveryCharges;
-    if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '1') {
+    if (finalOrder?.order?.delivery_charge !== '0') {
       deliveryCharges = finalOrder?.order?.delivery_charge;
-    } else if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '3') {
+    } else if (finalOrder?.order?.shipping_charge !== '0') {
       deliveryCharges = finalOrder?.order?.shipping_charge;
     } else {
       deliveryCharges = 0;
@@ -141,17 +141,16 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
     }
     const total_payable_amount =
       parseFloat(deliveryCharges) + calculateRefundTax() + totalRefundAmount;
-
     return total_payable_amount || 0;
   };
 
   const deliveryShippingCharges = () => {
     let deliveryCharges;
     let title;
-    if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '1') {
+    if (finalOrder?.order?.delivery_charge !== '0') {
       deliveryCharges = finalOrder?.order?.delivery_charge;
       title = 'Delivery Charges';
-    } else if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '3') {
+    } else if (finalOrder?.order?.shipping_charge !== '0') {
       deliveryCharges = finalOrder?.order?.shipping_charge;
       title = 'Shipping Charges';
     } else {
@@ -402,8 +401,8 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                 </View>
 
                 <View style={styles.rowStyle}>
-                  {finalOrder?.order?.delivery_charge == '0' ||
-                    (finalOrder?.order?.shipping_charge == '0' && (
+                  {finalOrder?.order?.delivery_charge !== '0' ||
+                    (finalOrder?.order?.shipping_charge !== '0' && (
                       <>
                         <TouchableOpacity
                           onPress={() => {
@@ -729,9 +728,9 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
               </View>
               <View style={styles.horizontalLine} />
 
-              {finalOrder?.order?.status === 5 && isRefundDeliveryAmount ? (
+              {finalOrder?.order?.delivery_charge !== '0' ||
+              finalOrder?.order?.shipping_charge !== '0' ? (
                 <>
-                  <Spacer space={SH(10)} />
                   <View style={styles.totalViewStyle}>
                     <Text style={styles.subTotalText}>{deliveryShippingCharges().title}</Text>
                     <Text style={styles.subTotalPrice}>{`${formattedReturnPrice(
@@ -843,7 +842,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.textInputBackground,
   },
   leftMainViewStyle: {
-    flex: 0.75,
+    flex: 0.58,
     backgroundColor: COLORS.white,
     borderRadius: 10,
     height: height,
@@ -873,7 +872,7 @@ const styles = StyleSheet.create({
     color: COLORS.navy_blue,
     paddingHorizontal: ms(2),
     textAlignVertical: 'center',
-    // letterSpacing: -1,
+    letterSpacing: -1,
   },
   typeViewStyle: {
     flexDirection: 'row',
@@ -1032,12 +1031,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   billAmountViewStyle: {
-    flex: 0.3,
-    padding: 30,
+    // flex: 0.3,
+    paddingHorizontal: 30,
     backgroundColor: COLORS.input_border,
     alignSelf: 'flex-end',
     width: ms(280),
     borderRadius: ms(10),
+    paddingTop: 30,
+    position: 'absolute',
+    right: ms(20),
+    bottom: ms(15),
   },
   contentContainerStyle: {
     flexGrow: 1,

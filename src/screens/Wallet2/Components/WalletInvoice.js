@@ -8,7 +8,7 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { Fonts, logo_full } from '@/assets';
 import { getUser } from '@/selectors/UserSelectors';
-import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { formattedPrice } from '@/utils/GlobalMethods';
 
 const WalletInvoice = ({ orderDetail }) => {
   const getUserData = useSelector(getUser);
@@ -63,7 +63,7 @@ const WalletInvoice = ({ orderDetail }) => {
           </View>
         </View>
       </View>
-      <Text style={styles.priceTitle}>{`${formattedReturnPrice(item?.price * item?.qty)}`}</Text>
+      <Text style={styles.priceTitle}>{`${formattedPrice(item?.price * item?.qty)}`}</Text>
     </View>
   );
   return (

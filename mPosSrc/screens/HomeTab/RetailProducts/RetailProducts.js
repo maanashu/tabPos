@@ -85,6 +85,7 @@ export function RetailProducts(props) {
 
   const productDetailHanlder = () => {
     productDetailRef.current.present();
+    addProductCartRef.current.dismiss();
   };
   const bothSheetClose = () => {
     productDetailRef.current.dismiss();
@@ -120,9 +121,9 @@ export function RetailProducts(props) {
       const searchName = {
         search: search,
       };
-      dispatch(getProduct(searchName, 1));
+      dispatch(getMainProduct(searchName, 1));
     } else if (search?.length === 0) {
-      dispatch(getProduct({}, 1));
+      dispatch(getMainProduct({}, 1));
     }
   };
 

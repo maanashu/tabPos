@@ -21,9 +21,11 @@ export function RootNavigator() {
   const getNavigator = () => {
     if (merchantToken && !posUserToken) {
       return <UserNavigator />;
-    } else if (merchantToken && posUserToken && !defaultScreen) {
-      return <ProfileNavigator />;
-    } else if (merchantToken && posUserToken && defaultScreen) {
+    }
+    // else if (merchantToken && posUserToken && !defaultScreen) {
+    //   return <ProfileNavigator />;
+    // }
+    else if (merchantToken && posUserToken) {
       return <AppNavigator />;
     } else {
       return <AuthNavigator />;
