@@ -235,6 +235,32 @@ const formattedReturnPrice = (price) => {
   const numericPrice = parseFloat(price) || 0;
 
   // Format the numeric price with 2 decimal places
+  const formattedPrice = numericPrice.toFixed(2);
+
+  // Determine the sign and prepend accordingly
+  const sign = numericPrice == 0 ? '' : '-';
+
+  return `${sign}$${formattedPrice}`;
+};
+
+const formattedReturnPriceWithoutSign = (price) => {
+  // Convert price to a number, defaulting to 0 if it's falsy or not a number
+  const numericPrice = parseFloat(price) || 0;
+
+  // Format the numeric price with 2 decimal places
+  const formattedPrice = numericPrice.toFixed(2);
+
+  // Determine the sign and prepend accordingly
+  const sign = numericPrice == 0 ? '' : '-';
+
+  return `${sign}${formattedPrice}`;
+};
+
+const formattedPrice = (price) => {
+  // Convert price to a number, defaulting to 0 if it's falsy or not a number
+  const numericPrice = parseFloat(price) || 0;
+
+  // Format the numeric price with 2 decimal places
   //  const formattedPrice = numericPrice.toFixed(2);
 
   const formattedPrice = Math.abs(numericPrice).toFixed(2);
@@ -245,7 +271,7 @@ const formattedReturnPrice = (price) => {
   return `${sign}$${formattedPrice}`;
 };
 
-const formattedReturnPriceWithoutSign = (price) => {
+const formattedPriceWithoutSign = (price) => {
   // Convert price to a number, defaulting to 0 if it's falsy or not a number
   const numericPrice = parseFloat(price) || 0;
 
@@ -461,4 +487,6 @@ export {
   calculateTimeDuration,
   ADMIN,
   convertUTCTimeToCurrentTime,
+  formattedPrice,
+  formattedPriceWithoutSign,
 };

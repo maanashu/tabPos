@@ -27,6 +27,7 @@ const InvoiceDetails = ({
   applyEachItem,
   shouldRefundDeliveryAmount,
   cartData,
+  discount,
 }) => {
   const dispatch = useDispatch();
   const getOrder = useSelector(getAnalytics);
