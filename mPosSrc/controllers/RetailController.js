@@ -35,11 +35,15 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
+      console.log('------------', endpoint);
+      console.log('');
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           error?.msg && CustomErrorToast({ message: error?.msg });
           reject(error);
         });

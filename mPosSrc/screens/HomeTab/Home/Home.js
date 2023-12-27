@@ -22,13 +22,19 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import styles from '@mPOS/screens/HomeTab/Home/styles';
 import { useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
-import { homeStatus } from '@/actions/DashboardAction';
+import { getDrawerSession, getDrawerSessionPost, homeStatus } from '@/actions/DashboardAction';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { changeStatusProductCart } from '@/actions/RetailAction';
 import { FullScreenLoader } from '@mPOS/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
+import { logoutUserFunction } from '@/actions/UserActions';
+import ReactNativeModal from 'react-native-modal';
+import { digitWithDot } from '@/utils/validators';
+import { useState } from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 
 export function Home() {
   const isFocused = useIsFocused();
@@ -42,12 +48,21 @@ export function Home() {
   const productCartArray = retailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const productCartData = retailData?.getAllCart;
+  const [trackingSession, setTrackingSession] = useState(false);
+  const [amount, setAmount] = useState('');
+  const [notes, setNotes] = useState('');
 
   const isholdCartLoading = useSelector((state) =>
     isLoadingSelector([TYPES.CHANGE_STATUS_PRODUCT_CART], state)
   );
   const isGetAllProductLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ALL_PRODUCT_CART], state)
+  );
+  const isGetDrawerSessionLoading = useSelector((state) =>
+    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION], state)
+  );
+  const isCreateDrawerSessionLoading = useSelector((state) =>
+    isLoadingSelector([DASHBOARDTYPE.GET_DRAWER_SESSION_POST], state)
   );
 
   // hold cart Function
@@ -88,8 +103,20 @@ export function Home() {
   useEffect(() => {
     if (isFocused) {
       dispatch(homeStatus());
+      startTrackingFun();
     }
   }, [isFocused]);
+
+  const startTrackingFun = async () => {
+    const res = await dispatch(getDrawerSession());
+    if (res?.type === 'GET_DRAWER_SESSION_SUCCESS') {
+      setTrackingSession(false);
+      setAmount('');
+      setNotes('');
+    } else {
+      setTrackingSession(true);
+    }
+  };
 
   const homePageData = [
     merchantServiceProvide?.is_product_exist
@@ -188,6 +215,30 @@ export function Home() {
     </TouchableOpacity>
   );
 
+  const startTrackingSesHandler = async () => {
+    if (!amount) {
+      alert('Please Enter Amount');
+    } else if (amount && digitWithDot.test(amount) === false) {
+      alert('Please enter valid amount');
+    } else if (amount <= 0) {
+      alert('Please enter valid amount');
+    } else {
+      const data = {
+        amount: amount,
+        notes: notes,
+      };
+      dispatch(
+        getDrawerSessionPost(data, (res) => {
+          console.log('-----', res);
+          if (res?.msg == 'Get drawer session!') {
+            setTrackingSession(false);
+            // dispatch(saveDefaultScreen(true));
+          }
+        })
+      );
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ borderWidth: 0, flexGrow: 1, paddingHorizontal: ms(10) }}>
@@ -219,7 +270,63 @@ export function Home() {
           }}
         />
       </View>
-      {(isholdCartLoading || isGetAllProductLoading) && <FullScreenLoader />}
+
+      <ReactNativeModal transparent={true} animationType={'fade'} isVisible={trackingSession}>
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.modalMainView}>
+            <View style={styles.headerCon}>
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(logoutUserFunction());
+                }}
+              >
+                <Image source={Images.cross} style={styles.crossIconStyle} />
+              </TouchableOpacity>
+              <Text style={styles.startTracking}>{strings.more.startTracking}</Text>
+            </View>
+            <View style={styles.modalBodyView}>
+              <Text style={styles.countCashDrawer}>{strings.more.countCashDrawer}</Text>
+              <Text style={styles.amountCounted}>{strings.more.amountCounted}</Text>
+              <View style={styles.amountTextStyle}>
+                <Text style={styles.dollarSign}>{'$'}</Text>
+                <TextInput
+                  value={amount.toString()}
+                  onChangeText={setAmount}
+                  keyboardType={'number-pad'}
+                  style={styles.amountInput}
+                  placeholder={strings.cart.amountValue}
+                  placeholderTextColor={COLORS.solid_grey}
+                />
+              </View>
+
+              <Text style={styles.amountCounted}>{strings.more.note}</Text>
+              <TextInput
+                value={notes}
+                onChangeText={setNotes}
+                style={styles.noteTextStyle}
+                placeholder={strings.more.note}
+                placeholderTextColor={COLORS.gerySkies}
+                multiline={true}
+                numberOfLines={3}
+              />
+              <View style={{ flex: 1 }} />
+              <TouchableOpacity
+                onPress={startTrackingSesHandler}
+                style={[
+                  styles.startButton,
+                  { backgroundColor: amount ? COLORS.primary : COLORS.gerySkies },
+                ]}
+              >
+                <Text style={styles.startSession}>{strings.more.startSession}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
+      </ReactNativeModal>
+      {(isholdCartLoading ||
+        isGetAllProductLoading ||
+        isGetDrawerSessionLoading ||
+        isCreateDrawerSessionLoading) && <FullScreenLoader />}
     </SafeAreaView>
   );
 }
