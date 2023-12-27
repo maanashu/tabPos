@@ -191,7 +191,7 @@ const AddProductCart = ({
             <Image source={Images.cross} style={styles.crossImageStyle} />
           </TouchableOpacity>
           <View style={styles.detailAndAddBtnCon}>
-            <TouchableOpacity onPress={productDetailHanlder} style={styles.detailView}>
+            <TouchableOpacity onPress={() => productDetailHanlder(count)} style={styles.detailView}>
               <Text style={styles.detailText}>{strings.retail.detail}</Text>
             </TouchableOpacity>
             <TouchableOpacity

@@ -21,18 +21,23 @@ import { addProductCart } from '@mPOS/actions/RetailActions';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { addTocart } from '@/actions/RetailAction';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
+import { useEffect } from 'react';
 
-const ProductDetails = ({ productDetailRef, bothSheetClose }) => {
+const ProductDetails = ({ productDetailRef, bothSheetClose, productQuantity }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
   const snapPoints = useMemo(() => ['100%'], []);
-  const [count, setCount] = useState(1);
+
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-
+  const Quantity = productQuantity;
+  const [count, setCount] = useState(1);
   const withoutHtmlTags = productDetail?.description?.replace(/<\/?[^>]+(>|$)|&nbsp;/g, '');
-
+  useEffect(() => {
+    // Update the count state when productQuantity changes
+    setCount(productQuantity);
+  }, [productQuantity]);
   // Remove special characters and white spaces
   const withoutSpecialCharsAndSpaces = withoutHtmlTags?.trim().replace(/[^\w\s]/gi, '');
   let deliveryOption =
