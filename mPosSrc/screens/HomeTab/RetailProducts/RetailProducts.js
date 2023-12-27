@@ -75,15 +75,20 @@ export function RetailProducts(props) {
   const [selectedCartItem, setSelectedCartItems] = useState([]);
   const CART_LENGTH = useSelector(getCartLength);
   const cartLength = CART_LENGTH;
+
   const [selectedItem, setSelectedItem] = useState();
   const [productIndex, setProductIndex] = useState(0);
   const [selectedItemQty, setSelectedItemQty] = useState();
+  const [productQuantity, setProductQuantity] = useState('');
+
   const [productItem, setProductItem] = useState(null);
   useEffect(() => {
     setLocalCartArray(LOCAL_CART_ARRAY);
   }, [LOCAL_CART_ARRAY]);
 
-  const productDetailHanlder = () => {
+  const productDetailHanlder = (data) => {
+    setProductQuantity(data);
+
     productDetailRef.current.present();
   };
   const bothSheetClose = () => {
@@ -576,7 +581,7 @@ export function RetailProducts(props) {
           cartQty={selectedItemQty}
           addToLocalCart={onClickAddCart}
         />
-        <ProductDetails {...{ productDetailRef, bothSheetClose }} />
+        <ProductDetails {...{ productDetailRef, bothSheetClose, productQuantity }} />
         <Modal
           style={{ margin: 0 }}
           animationType="fade"
