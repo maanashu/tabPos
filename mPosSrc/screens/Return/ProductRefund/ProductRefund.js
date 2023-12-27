@@ -68,9 +68,9 @@ export function ProductRefund(props) {
 
   const totalRefundableAmount = () => {
     let deliveryCharges;
-    if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '1') {
+    if (finalOrder?.order?.delivery_charge != '0') {
       deliveryCharges = finalOrder?.order?.delivery_charge;
-    } else if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '3') {
+    } else if (finalOrder?.order?.shipping_charge != '0') {
       deliveryCharges = finalOrder?.order?.shipping_charge;
     } else {
       deliveryCharges = 0;
@@ -84,10 +84,10 @@ export function ProductRefund(props) {
   const deliveryShippingCharges = () => {
     let deliveryCharges;
     let title;
-    if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '1') {
+    if (finalOrder?.order?.delivery_charge != '0') {
       deliveryCharges = finalOrder?.order?.delivery_charge;
       title = 'Delivery Charges';
-    } else if (finalOrder?.order?.status === 5 && finalOrder?.order?.delivery_option === '3') {
+    } else if (finalOrder?.order?.shipping_charge != '0') {
       deliveryCharges = finalOrder?.order?.shipping_charge;
       title = 'Shipping Charges';
     } else {
@@ -233,7 +233,8 @@ export function ProductRefund(props) {
           )}`}</Text>
         </View>
 
-        {finalOrder?.order?.status === 5 && isRefundDeliveryAmount ? (
+        {finalOrder?.order?.delivery_charge !== '0' ||
+        finalOrder?.order?.shipping_charge !== '0' ? (
           <>
             <Spacer space={SH(10)} />
             <View style={styles.amountViewStyle}>
