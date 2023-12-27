@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
     "build:androidRelease": "bash build-android-release.sh",
-    "build:androidDebug": "bash build-android-release.sh",
+    "build:androidDebug": "bash build-android-debug.sh",
     "postinstall": "patch-package && npx pod-install"
   },
   "dependencies": {
