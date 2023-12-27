@@ -300,7 +300,6 @@ export class SettingController {
   static async configureGoogleCode(data, authToken) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.configureGoogleCode;
-      console.log('data', data);
       const headers = {
         Authorization: authToken,
         'app-name': 'pos',

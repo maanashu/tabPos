@@ -229,7 +229,6 @@ export function Home() {
       };
       dispatch(
         getDrawerSessionPost(data, (res) => {
-          console.log('-----', res);
           if (res?.msg == 'Get drawer session!') {
             setTrackingSession(false);
             // dispatch(saveDefaultScreen(true));

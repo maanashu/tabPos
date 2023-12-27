@@ -175,7 +175,6 @@ export function Security() {
         verification_otp: forgotValue,
       };
       const res = await dispatch(reset2fa(data));
-      console.log('response', res);
       if (res?.status_code == 201) {
         setQRCodeUrl(res?.payload?.qrCode);
         setForgotPinScreen(false);
