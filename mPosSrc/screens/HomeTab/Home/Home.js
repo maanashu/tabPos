@@ -24,15 +24,47 @@ import { useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import { homeStatus } from '@/actions/DashboardAction';
 import { getDashboard } from '@/selectors/DashboardSelector';
+import { getRetail } from '@/selectors/RetailSelectors';
+import { changeStatusProductCart } from '@/actions/RetailAction';
+import { FullScreenLoader } from '@mPOS/components';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 export function Home() {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const retailData = useSelector(getRetail);
   const authData = useSelector(getAuthData);
   const homeStatusSelector = useSelector(getDashboard);
   const homeStatusData = homeStatusSelector?.homeData;
   const merchantServiceProvide = authData?.merchantLoginData?.product_existance_status;
   const merchantData = authData?.merchantLoginData;
+  const productCartArray = retailData?.getAllProductCart;
+  const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
+  const productCartData = retailData?.getAllCart;
+
+  const isholdCartLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.CHANGE_STATUS_PRODUCT_CART], state)
+  );
+  const isGetAllProductLoading = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_PRODUCT_CART], state)
+  );
+
+  // hold cart Function
+  const cartStatusHandler = () => {
+    const data =
+      holdProductArray?.length > 0
+        ? {
+            status: !holdProductArray?.[0]?.is_on_hold,
+            cartId: holdProductArray?.[0]?.id,
+          }
+        : {
+            status: !productCartData?.is_on_hold,
+            cartId: productCartData?.id,
+          };
+    dispatch(changeStatusProductCart(data));
+  };
+
   const onPressHandler = (item) => {
     if (item?.title === 'Checkout') {
       navigate(MPOS_NAVIGATION.checkout);
@@ -48,11 +80,10 @@ export function Home() {
       navigate(MPOS_NAVIGATION.searchScreen);
     } else if (item?.title === 'Booking') {
       navigate(MPOS_NAVIGATION.booking);
+    } else if (item.title === 'On-Hold') {
+      cartStatusHandler();
     }
   };
-  // useEffect(() => {
-  //   dispatch(getProductRoot())
-  // }, [isFocused]);
 
   useEffect(() => {
     if (isFocused) {
@@ -77,13 +108,14 @@ export function Home() {
           listedProducts: `${homeStatusData?.services_count ?? 0} Services listed`,
         }
       : null,
-    // merchantServiceProvide?.is_product_exist || merchantServiceProvide?.is_service_exist
-    //   ? {
-    //       key: '3',
-    //       title: 'On-Hold',
-    //       image: Images.hold,
-    //     }
-    //   : null,
+    merchantServiceProvide?.is_product_exist || merchantServiceProvide?.is_service_exist
+      ? {
+          key: '3',
+          title: 'On-Hold',
+          image: Images.hold,
+          listedProducts: `Hold  Cart: ${holdProductArray?.length}`,
+        }
+      : null,
     {
       key: '4',
       title: 'Return',
@@ -108,11 +140,11 @@ export function Home() {
       image: Images.calendar,
       listedProducts: `On-going: ${homeStatusData?.shipping_orders_count ?? 0}`,
     },
-    {
-      key: '8',
-      title: 'Add Title',
-      image: Images.addTitle,
-    },
+    // {
+    //   key: '8',
+    //   title: 'Add Title',
+    //   image: Images.addTitle,
+    // },
   ].filter(Boolean); // Remove falsy values (null in this case)
 
   const renderItem = ({ item, index }) => (
@@ -168,14 +200,14 @@ export function Home() {
             <Image source={Images.bell} style={styles.bell} />
           </TouchableOpacity>
         </View>
-        <View style={styles.homePageSearchCon}>
+        {/* <View style={styles.homePageSearchCon}>
           <Image source={Images.search} style={styles.searchIconStyle} />
           <TextInput
             placeholder={strings.homeTab.placeholder}
             style={styles.searchTextInputStyle}
             placeholderTextColor={COLORS.solid_grey}
           />
-        </View>
+        </View> */}
 
         <FlatList
           numColumns={2}
@@ -187,6 +219,7 @@ export function Home() {
           }}
         />
       </View>
+      {(isholdCartLoading || isGetAllProductLoading) && <FullScreenLoader />}
     </SafeAreaView>
   );
 }

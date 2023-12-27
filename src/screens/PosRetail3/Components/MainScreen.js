@@ -206,6 +206,23 @@ export function MainScreen({
   const [isScrolling, setIsScrolling] = useState(false);
   const [onHold, setOnHold] = useState(false);
 
+  //service pagination
+  const servicePaginationData = {
+    total: getRetailData?.getMainServices?.total ?? '0',
+    totalPages: getRetailData?.getMainServices?.total_pages ?? '0',
+    perPage: getRetailData?.getMainServices?.per_page ?? '0',
+    currentPage: getRetailData?.getMainServices?.current_page ?? '0',
+  };
+
+  const onLoadMoreService = useCallback(() => {
+    if (servicePaginationData?.currentPage < servicePaginationData?.totalPages) {
+      const data = {
+        page: servicePaginationData?.currentPage + 1,
+      };
+      dispatch(getMainServices(data));
+    }
+  }, [servicePaginationData]);
+
   const cartStatusHandler = async () => {
     if (localCartArray.length > 0) {
       const dataToSend = {
@@ -228,6 +245,7 @@ export function MainScreen({
                   status: true,
                   cartId: bulkData?.id,
                 };
+          console.log('data11111', data);
           dispatch(changeStatusProductCart(data));
         } else {
           const data =
@@ -240,6 +258,7 @@ export function MainScreen({
                   status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
                   cartId: bulkData?.id,
                 };
+          console.log('data2222', data);
           dispatch(changeStatusProductCart(data));
         }
       } catch (error) {
@@ -247,12 +266,6 @@ export function MainScreen({
       }
     } else {
       console.log('last else');
-      // const dataToSend = {
-      //   seller_id: sellerID,
-      //   products: localCartArray,
-      // };
-      // eraseCart();
-      // const bulkData = await createBulkcart(dataToSend)(dispatch);
 
       const data =
         holdProductArray?.length > 0
@@ -264,17 +277,8 @@ export function MainScreen({
               status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
               cartId: getRetailData?.getAllCart?.id,
             };
+      console.log('data33333', data);
       dispatch(changeStatusProductCart(data));
-      //   if (getRetailData?.getAllCart?.poscart_products?.length > 0) {
-      //     const cartmatchId = getRetailData?.getAllCart?.poscart_products?.map((obj) => ({
-      //       product_id: obj.product_id,
-      //       qty: obj.qty,
-      //       supply_id: obj.supply_id,
-      //       supply_price_id: obj.supply_price_id,
-      //     }));
-      //     dispatch(addLocalCart(cartmatchId));
-      //     setSelectedCartItems(cartmatchId);
-      //   }
     }
   };
   const serviceCartStatusHandler = () => {
@@ -348,7 +352,10 @@ export function MainScreen({
       };
       dispatch(getMainServices(searchName));
     } else if (search?.length === 0) {
-      dispatch(getMainServices());
+      const data = {
+        page: 1,
+      };
+      dispatch(getMainServices(data));
     }
   };
 
@@ -413,6 +420,10 @@ export function MainScreen({
 
   const isLoadingAddCustomProduct = useSelector((state) =>
     isLoadingSelector([TYPES.CUSTOM_PRODUCT_ADD], state)
+  );
+
+  const isLoadingHoldPProduct = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_ALL_PRODUCT_CART], state)
   );
 
   //Common
@@ -1207,6 +1218,20 @@ export function MainScreen({
                         </Text>
                       </View>
                     )}
+                    onEndReachedThreshold={0.1}
+                    onEndReached={() => (onEndReachedCalledDuringMomentum.current = true)}
+                    onMomentumScrollBegin={() => {}}
+                    onMomentumScrollEnd={() => {
+                      if (onEndReachedCalledDuringMomentum.current) {
+                        onLoadMoreService();
+                        onEndReachedCalledDuringMomentum.current = false;
+                      }
+                    }}
+                    ListFooterComponent={() => {
+                      return isLoadingServices ? (
+                        <ActivityIndicator size="large" color={COLORS.primary} />
+                      ) : null;
+                    }}
                   />
                 )}
               </View>
@@ -1368,6 +1393,7 @@ export function MainScreen({
                   <TouchableOpacity
                     style={styles.bucketBackgorund}
                     disabled={onlyServiceCartArray?.length >= 1 ? false : true}
+                    // disabled={onlyServiceCartArray?.length >= 1 ? false : true}
                     onPress={() => {
                       onlyProductCartArray?.length > 0
                         ? CustomAlert({
@@ -1765,9 +1791,10 @@ export function MainScreen({
         isLoadingAddServiceCart ||
         isLoadingClearCart ||
         isLoadingGetAllCart ||
-        isLoadingServices ||
+        // isLoadingServices ||
         isLoadingAddCustomProduct ||
-        isLoadingAddCustomService) && <FullScreenLoader />}
+        isLoadingAddCustomService ||
+        isLoadingHoldPProduct) && <FullScreenLoader />}
 
       {/* <Modal animationType="fade" transparent={true} isVisible={numPadModal} backdropOpacity={0.6}>
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>

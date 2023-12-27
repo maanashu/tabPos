@@ -107,7 +107,10 @@ export function PosRetail3() {
 
   useEffect(() => {
     dispatch(getMainProduct());
-    dispatch(getMainServices());
+    const data = {
+      page: 1,
+    };
+    dispatch(getMainServices(data));
   }, []);
 
   // service Add discount start

@@ -441,7 +441,10 @@ function ProductFilter({ crossHandler, productFilterCount, backfilterValue }) {
               setCategoryOpenDropDown(false);
               setSubCategoryOpenDropDown(false);
               setBrandOpenDropDown(false);
-              dispatch(getMainServices());
+              const data = {
+                page: 1,
+              };
+              dispatch(getMainServices(data));
               clearInput();
               productFilterCount(0);
               crossHandler();

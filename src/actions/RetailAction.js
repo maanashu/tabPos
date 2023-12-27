@@ -1,4 +1,5 @@
 import { RetailController } from '@/controllers';
+import { store } from '@/store';
 import { TYPES } from '@/Types/Types';
 import { updateCartLength } from './CartAction';
 
@@ -1572,9 +1573,21 @@ export const getMainProduct = (productTypeId) => async (dispatch) => {
 
 export const getMainServices = (productTypeId) => async (dispatch) => {
   dispatch(getMainServicesRequest());
+  const mainServices = store.getState()?.retail?.getMainServices;
   try {
     const res = await RetailController.getMainServices(productTypeId);
-    dispatch(getMainServicesSuccess(res?.payload));
+    const prevMainServices = { ...mainServices };
+    if (mainServices && Object.keys(mainServices).length > 0 && productTypeId?.page > 1) {
+      prevMainServices.total = res?.payload?.total;
+      prevMainServices.current_page = res?.payload?.current_page;
+      prevMainServices.total_pages = res?.payload?.total_pages;
+      prevMainServices.per_page = res?.payload?.per_page;
+      prevMainServices.data = prevMainServices.data.concat(res?.payload?.data);
+      dispatch(getMainServicesSuccess(prevMainServices));
+    } else {
+      dispatch(getMainServicesSuccess(res?.payload));
+    }
+    // dispatch(getMainServicesSuccess(res?.payload));
   } catch (error) {
     if (error?.statusCode === 204) {
       dispatch(getMainServicesReset());
@@ -1745,7 +1758,10 @@ export const customServiceAdd = (data) => async (dispatch) => {
     dispatch(customServiceAddSuccess(res));
     // dispatch(getServiceCart());
     dispatch(getAllCart());
-    dispatch(getMainServices());
+    const data = {
+      page: 1,
+    };
+    dispatch(getMainServices(data));
   } catch (error) {
     dispatch(customServiceAddError(error.message));
   }

@@ -273,6 +273,7 @@ export class RetailController {
   static async getAllCart() {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.getAllCart;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -299,8 +300,10 @@ export class RetailController {
   static async getAllProductCart() {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.posCarts + `/`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('11111111', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -1068,6 +1071,8 @@ export class RetailController {
         service_type: 'service',
         need_pos_users: true,
         check_stock_out: true,
+        page: productTypeID.page,
+        limit: 20,
       };
 
       let finalParams;
@@ -1316,11 +1321,16 @@ export class RetailController {
       const body = {
         status: data.status,
       };
+      console.log(endpoint);
+      console.log(body);
       HttpClient.put(endpoint, body)
+
         .then((response) => {
+          console.log('123456', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
+          console.log(error);
           if (error?.statusCode != 204) {
             Toast.show({
               text2: error?.msg,
