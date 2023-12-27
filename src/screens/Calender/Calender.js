@@ -1071,9 +1071,9 @@ export function Calender() {
                       source={Images.calendarIcon}
                     />
                     <Text style={styles.serviceTimeText}>
-                      {moment(selectedPosStaffCompleteData?.start_date_time).format(
-                        'dddd, DD/MM/YYYY'
-                      )}
+                      {moment
+                        .utc(selectedPosStaffCompleteData?.start_date_time)
+                        .format('dddd, DD/MM/YYYY')}
                     </Text>
                   </View>
                   <Spacer horizontal space={ms(10)} />

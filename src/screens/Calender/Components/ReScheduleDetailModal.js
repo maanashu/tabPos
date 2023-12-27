@@ -323,13 +323,13 @@ const ReScheduleDetailModal = ({
                     <Image source={Images.calendarIcon} style={styles.bookedCalendarIcon} />
                     <Spacer horizontal space={ms(3)} />
                     <Text style={styles.bookedDate}>
-                      {moment(appointmentData?.start_date_time).format('DD/MM/YYYY. ')}
+                      {moment.utc(appointmentData?.start_date_time).format('DD/MM/YYYY. ')}
                     </Text>
-                    <Text style={styles.bookedDate}>{`${moment(
-                      appointmentData?.start_date_time
-                    ).format('h:mm A')}-${moment(appointmentData?.end_date_time).format(
-                      'h:mm A'
-                    )}`}</Text>
+                    <Text style={styles.bookedDate}>{`${moment
+                      .utc(appointmentData?.start_date_time)
+                      .format('h:mm A')}-${moment
+                      .utc(appointmentData?.end_date_time)
+                      .format('h:mm A')}`}</Text>
                   </View>
                 </View>
 

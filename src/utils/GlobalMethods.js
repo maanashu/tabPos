@@ -186,13 +186,14 @@ function calculateDuration(start_time, end_time) {
 }
 
 function getDaysAndDates(year = new Date().getFullYear(), month = new Date().getMonth() + 1) {
-  const currentDate = moment();
+  const timezone = RNLocalize.getTimeZone();
+  const currentDate = moment().tz(timezone);
   const daysInMonth = currentDate.daysInMonth();
 
   const daysAndDates = [];
 
   for (let day = 1; day <= daysInMonth; day++) {
-    const date = moment({ year, month: month - 1, day });
+    const date = moment({ year, month: month - 1, day }).tz(timezone);
 
     if (date.isSameOrAfter(currentDate, 'day')) {
       const dayOfWeek = date.format('ddd').toUpperCase();
