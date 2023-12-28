@@ -139,7 +139,9 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                 {getDeliveryType(orderData?.order?.delivery_option)}
               </Text>
               <Text style={styles.orderDateText}>
-                {orderData?.order?.date ? moment(orderData?.order?.date).format('MM/DD/YYYY') : '-'}
+                {orderData?.order?.date
+                  ? moment.utc(orderData?.order?.date).format('MM/DD/YYYY')
+                  : '-'}
               </Text>
             </View>
           </View>
@@ -206,7 +208,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                 </Text>
                 <Text style={styles.itemCountText}>
                   {orderData?.order?.date
-                    ? moment(orderData?.order?.date).format('DD/MM/YYYY')
+                    ? moment.utc(orderData?.order?.date).format('DD/MM/YYYY')
                     : '-'}
                 </Text>
               </View>
