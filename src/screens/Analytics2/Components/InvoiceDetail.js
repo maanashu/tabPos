@@ -82,7 +82,7 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
     },
     {
       title: 'Date',
-      data: moment().format('ddd') + ' ' + moment().subtract(10, 'days').calendar(),
+      data: moment.utc(singleOrderDetail?.date).format('ddd MM/DD/YYYY'),
       id: 2,
     },
     {
@@ -108,7 +108,6 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
       id: 5,
     },
   ];
-
   const renderProductItem = ({ item, index }) => (
     <View style={styles.container}>
       <View style={styles.subContainer}>

@@ -47,7 +47,6 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
     // Update the state with the modified copy of the orders array
     setEditedOrder(updatedOrders);
   };
-
   const renderProductList = ({ item, index }) => {
     return (
       <View style={styles.itemMainViewStyle}>
@@ -56,7 +55,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
 
         <View style={{ width: '60%', paddingHorizontal: ms(5) }}>
           <Text style={styles.productTextStyle}>{item?.product_name ?? '-'}</Text>
-          <View
+          {/* <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -64,7 +63,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
             }}
           >
             <Text style={styles.colorTextStyle}>{item?.sku ? item?.sku : ''}</Text>
-          </View>
+          </View> */}
         </View>
 
         <View style={styles.priceViewStyle}>

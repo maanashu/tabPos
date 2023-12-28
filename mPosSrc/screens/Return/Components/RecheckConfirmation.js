@@ -55,7 +55,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
 
         <View style={{ width: '60%', paddingLeft: ms(8) }}>
           <Text style={styles.productTextStyle}>{item?.product_name ?? '-'}</Text>
-          <View
+          {/* <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -63,7 +63,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
             }}
           >
             <Text style={styles.colorTextStyle}>{item?.sku ? item?.sku : '-'}</Text>
-          </View>
+          </View> */}
         </View>
 
         <View style={styles.priceViewStyle}>
@@ -94,7 +94,7 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
       </View>
     );
   };
-
+  console.log('first', JSON.stringify(editedOrder));
   return (
     <View style={{ backgroundColor: COLORS.white, flex: 1 / 1.2, paddingHorizontal: ms(15) }}>
       <View style={styles.headingRowStyle}>

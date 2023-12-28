@@ -21,16 +21,16 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
   };
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => {
-        orderData?.order?.status === 9
-          ? commonNavigate(MPOS_NAVIGATION.invoice, { data: orderData })
-          : commonNavigate(MPOS_NAVIGATION.returnOrderDetail, { data: orderData });
-      }}
-    >
+    <View style={styles.container}>
       {orderData !== undefined && Object.keys(orderData).length > 0 ? (
-        <View style={styles.orderRowStyle}>
+        <TouchableOpacity
+          style={styles.orderRowStyle}
+          onPress={() => {
+            orderData?.order?.status === 9
+              ? commonNavigate(MPOS_NAVIGATION.invoice, { data: orderData })
+              : commonNavigate(MPOS_NAVIGATION.returnOrderDetail, { data: orderData });
+          }}
+        >
           <Text style={styles.invoiceNumberTextStyle}>
             {`#${orderData?.invoice_number}` ?? '-'}
           </Text>
@@ -66,13 +66,13 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
           <View style={[styles.orderDetailStyle, { width: SH(24) }]}>
             <Image source={Images.rightArrow} style={styles.rightIconStyle} />
           </View>
-        </View>
+        </TouchableOpacity>
       ) : (
         <View style={styles.emptyViewStyle}>
           <Text style={styles.emptyTextStyle}>{strings.return.noOrderFound}</Text>
         </View>
       )}
-    </TouchableOpacity>
+    </View>
   );
 };
 

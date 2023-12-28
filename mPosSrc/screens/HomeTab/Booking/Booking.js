@@ -148,7 +148,7 @@ export function Booking() {
     setGroupedAppointments(grouped);
     const markedDates = Object.keys(grouped).map((el) => {
       const date = el.split(' ')[1];
-      return moment(date, 'dddd DD/MM/YYYY').format('YYYY-MM-DD');
+      return moment.utc(date, 'dddd DD/MM/YYYY').format('YYYY-MM-DD');
     });
     setAppointmentDate(markedDates);
   }, [getAppointmentList]);
@@ -356,6 +356,7 @@ export function Booking() {
   const renderGroupedListViewItem = ({ item, index }) => {
     return (
       <View style={{ flex: 0.4 }}>
+        {console.log('first', item[0])}
         <Text
           style={{ fontSize: ms(14), fontFamily: Fonts.SemiBold, color: COLORS.black, padding: 10 }}
         >
