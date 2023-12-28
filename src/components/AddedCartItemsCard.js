@@ -3,6 +3,7 @@ import React from 'react';
 import { ms } from 'react-native-size-matters';
 import { Fonts } from '@/assets';
 import { COLORS } from '@/theme';
+import moment from 'moment';
 
 const AddedCartItemsCard = ({ item, index }) => {
   const productSize = item?.product_details?.supply?.attributes?.filter(
@@ -11,6 +12,11 @@ const AddedCartItemsCard = ({ item, index }) => {
   const productColor = item?.product_details?.supply?.attributes?.filter(
     (item) => item?.name === 'Color'
   );
+
+  const isBookingDateAvailable = item?.date || item?.start_time || item?.end_time;
+  const bookingDateTime = `${moment.utc(item?.date).format('DD/MM/YYYY')} @ ${item?.start_time}-${
+    item?.end_time
+  }`;
 
   return (
     <View style={styles.container}>
@@ -21,6 +27,8 @@ const AddedCartItemsCard = ({ item, index }) => {
             {item?.product_details?.name}
           </Text>
           <View style={styles.belowSubContainer}>
+            {isBookingDateAvailable && <Text style={styles.colorsTitle}>{bookingDateTime}</Text>}
+
             {productColor?.length > 0 && (
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text style={styles.colorsTitle}>Colors : </Text>
