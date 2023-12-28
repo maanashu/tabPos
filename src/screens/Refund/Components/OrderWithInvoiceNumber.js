@@ -36,11 +36,21 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
             <Text style={styles.revenueText}>Sale</Text>
           </DataTable.Title>
 
-          <DataTable.Title style={[styles.dateTableSetting, { marginLeft: ms(25) }]}>
+          <DataTable.Title
+            style={[
+              styles.dateTableSetting,
+              { marginLeft: Platform.OS === 'android' ? ms(25) : ms(-10) },
+            ]}
+          >
             <Text style={styles.revenueText}>Items</Text>
           </DataTable.Title>
 
-          <DataTable.Title style={[styles.dateTableSetting, { marginLeft: ms(-15) }]}>
+          <DataTable.Title
+            style={[
+              styles.dateTableSetting,
+              { marginLeft: Platform.OS === 'android' ? ms(-15) : ms(-10) },
+            ]}
+          >
             <Text style={styles.revenueText}>Price</Text>
           </DataTable.Title>
           <DataTable.Title style={[styles.dateTableSetting, { marginLeft: ms(-20) }]}>

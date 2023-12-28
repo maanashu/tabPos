@@ -132,6 +132,7 @@ const InvoiceDetails = ({
                     marginTop: ms(15),
                     flex: 1,
                     alignItems: 'center',
+                    marginLeft: ms(5),
                   }}
                 >
                   <Text style={[styles._payTitle, { letterSpacing: -1, flex: 1 }]}>

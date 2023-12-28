@@ -301,7 +301,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
         <View
           style={[
             styles.applyRefundButton,
-            { flexDirection: 'row', paddingHorizontal: ms(12), backgroundColor: 'transparent' },
+            { flexDirection: 'row', paddingHorizontal: ms(10), backgroundColor: 'transparent' },
           ]}
         >
           <Image
@@ -383,19 +383,29 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
           >
             <View style={styles.leftMainViewStyle}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ flex: 1 }}>
+                <View style={{ width: ms(60) }}>
                   <Text
                     style={{
-                      fontSize: ms(13),
+                      fontSize: ms(11),
                       color: COLORS.navy_blue,
                       fontFamily: Fonts.SemiBold,
                       alignSelf: 'flex-start',
+                      letterSpacing: -1,
                     }}
                   >
                     {'Refunds'}
-                    <Text style={{ color: COLORS.light_blue2 }}>({orders?.length})</Text>
+                    <Text style={{ color: COLORS.light_blue2, letterSpacing: -1 }}>
+                      ({orders?.length})
+                    </Text>
                   </Text>
-                  <Text style={{ color: COLORS.navy_blue, marginTop: ms(2), fontSize: ms(8) }}>
+                  <Text
+                    style={{
+                      color: COLORS.navy_blue,
+                      marginTop: ms(2),
+                      fontSize: ms(8),
+                      letterSpacing: -1,
+                    }}
+                  >
                     {'Select the items to refund.'}
                   </Text>
                 </View>
@@ -550,7 +560,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                         style={[
                           styles.dollarViewStyle,
                           {
-                            paddingHorizontal: 10,
+                            paddingHorizontal: ms(2),
                             backgroundColor:
                               selectType === strings.returnOrder.percentageLabel && applyEachItem
                                 ? COLORS.input_border
@@ -729,7 +739,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
               <View style={styles.horizontalLine} />
 
               {finalOrder?.order?.delivery_charge !== '0' ||
-              finalOrder?.order?.shipping_charge !== '0' ? (
+              (finalOrder?.order?.shipping_charge !== '0' && isRefundDeliveryAmount) ? (
                 <>
                   <View style={styles.totalViewStyle}>
                     <Text style={styles.subTotalText}>{deliveryShippingCharges().title}</Text>
@@ -856,7 +866,7 @@ const styles = StyleSheet.create({
   },
   applicableViewStyle: {
     flexDirection: 'row',
-    paddingLeft: ms(5),
+    paddingLeft: ms(2),
     paddingRight: ms(2),
     alignItems: 'center',
   },
@@ -870,7 +880,7 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Regular,
     fontSize: ms(8),
     color: COLORS.navy_blue,
-    paddingHorizontal: ms(2),
+    paddingHorizontal: ms(1),
     textAlignVertical: 'center',
     letterSpacing: -1,
   },
@@ -878,19 +888,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     ...ShadowStyles.shadow2,
     // height: ms(34),
+    paddingVertical: ms(4),
   },
   applyRefundButton: {
     backgroundColor: COLORS.gerySkies,
     borderRadius: ms(15),
     paddingHorizontal: 8,
     paddingVertical: 10,
-    marginHorizontal: 15,
+    marginLeft: ms(2),
+    marginRight: ms(2),
   },
   dollarViewStyle: {
     paddingHorizontal: 13,
     alignItems: 'center',
     justifyContent: 'center',
-    height: SH(28),
+    height: ms(15),
     alignSelf: 'center',
   },
   applyRefundButtonText: {
