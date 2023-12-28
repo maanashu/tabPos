@@ -38,11 +38,13 @@ import StatusDrawer from './Components/StatusDrawer';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { getDelivery } from '@/selectors/DeliverySelector';
+import moment from 'moment';
 
 export function Delivery() {
   const dispatch = useDispatch();
   const deliveryData = useSelector(getDelivery);
   const todayDeliveryOrders = deliveryData?.todayOrderStatus?.[0]?.count ?? '0';
+  const todayDeliveryPickupOrders = deliveryData?.todayOrderStatus?.[1]?.count ?? '0';
   const orders = deliveryData?.getReviewDef ?? [];
 
   const [refreshing, setRefreshing] = useState(false);
@@ -56,7 +58,7 @@ export function Delivery() {
     dispatch(deliOrder());
     dispatch(getReviewDefault(selectedStatus));
     dispatch(getGraphOrders());
-    dispatch(getOrderstatistics(1));
+    dispatch(getOrderstatistics('1,3'));
     dispatch(getOrderCount());
     setHeaderText(selectedStatus);
 
@@ -64,7 +66,10 @@ export function Delivery() {
   }, []);
 
   const renderOrderItem = ({ item, index }) => {
-    const deliveryDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+    const deliveryDate =
+      item?.delivery_option == '3'
+        ? moment.utc(item?.created_at).format('DD MMM YYYY')
+        : moment.utc(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     return (
       <TouchableOpacity
         style={styles.orderItemViewStyle}
@@ -137,7 +142,7 @@ export function Delivery() {
     dispatch(deliOrder());
     dispatch(getReviewDefault(0));
     dispatch(getGraphOrders());
-    dispatch(getOrderstatistics(1));
+    dispatch(getOrderstatistics('1,3'));
     dispatch(getOrderCount());
     setRefreshing(false);
     setHeaderText(selectedStatus);
@@ -194,6 +199,16 @@ export function Delivery() {
               </View>
             ) : (
               <Text style={styles.deliveryOrderTextStyle}>{todayDeliveryOrders ?? '0'}</Text>
+            )}
+          </View>
+          <View style={styles.deliveryOrderViewStyle}>
+            <Text style={styles.deliveryOrderTextStyle}>{'Pickup Orders'}</Text>
+            {isDeliveryOrder ? (
+              <View style={styles.loaderView}>
+                <ActivityIndicator size={'small'} color={COLORS.primary} />
+              </View>
+            ) : (
+              <Text style={styles.deliveryOrderTextStyle}>{todayDeliveryPickupOrders ?? '0'}</Text>
             )}
           </View>
 

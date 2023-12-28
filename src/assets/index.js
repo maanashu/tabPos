@@ -396,6 +396,7 @@ export { default as moneySearch } from '@/assets/new_icon/ic_drawer/moneySearch.
 export { default as removeMoney } from '@/assets/new_icon/ic_drawer/removeMoney.png';
 export { default as info } from '@/assets/new_icon/ic_drawer/info.png';
 export { default as PlusCircle } from '@/assets/new_icon/ic_drawer/plusCircle.png';
+export { default as Message } from '@/assets/new_icon/ic_drawer/message.png';
 
 export { default as lockDrawer } from '@/assets/new_icon/ic_drawer/lock.png';
 export { default as addMoney } from '@/assets/new_icon/ic_drawer/addMoney.png';

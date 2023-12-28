@@ -452,7 +452,7 @@ const Graph = () => {
             />
           )}
 
-          <Text style={styles.monthStyle}>{moment().format('MMMM')}</Text>
+          <Text style={styles.monthStyle}>{moment.utc().format('MMMM')}</Text>
         </View>
       )}
     </View>

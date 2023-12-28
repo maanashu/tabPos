@@ -84,7 +84,7 @@ export function DeliveryOrders2({ route }) {
   if (route?.params && route?.params?.ORDER_DETAIL) {
     ORDER_DATA = route?.params?.ORDER_DETAIL;
   }
-  const todayDate = moment();
+  const todayDate = moment.utc();
 
   const mapRef = useRef(null);
   const dispatch = useDispatch();
@@ -192,8 +192,8 @@ export function DeliveryOrders2({ route }) {
       dispatch(todayOrders());
       dispatch(deliOrder());
       dispatch(getOrderCount());
-      dispatch(getOrderstatistics(1));
-      dispatch(getGraphOrders(1));
+      dispatch(getOrderstatistics('1,3'));
+      dispatch(getGraphOrders('1,3'));
       dispatch(getSellerDriverList());
     }, [])
   );
@@ -382,7 +382,10 @@ export function DeliveryOrders2({ route }) {
   const renderOrderToReview = ({ item }) => {
     const isSelected = viewAllOrder && item?.id === userDetail?.id;
     const orderDetails = item?.order_details || [];
-    const deliveryDate = moment(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+    const deliveryDate =
+      item?.delivery_option == '3'
+        ? moment.utc(item?.created_at).format('DD MMM YYYY')
+        : moment.utc(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     const startTime = item?.preffered_delivery_start_time || '00.00';
     const endTime = item?.preffered_delivery_end_time || '00.00';
     const formattedTime = `${startTime} - ${endTime}`;
@@ -618,8 +621,8 @@ export function DeliveryOrders2({ route }) {
             dispatch(getReviewDefault(openShippingOrders));
             dispatch(orderStatusCount());
             dispatch(todayOrders());
-            dispatch(getOrderstatistics(1));
-            dispatch(getGraphOrders(1));
+            dispatch(getOrderstatistics('1,3'));
+            dispatch(getGraphOrders('1,3'));
             setGetOrderDetail('ViewAllScreen');
             setUserDetail(ordersList?.[0] ?? []);
             setViewAllOrder(true);
@@ -642,7 +645,7 @@ export function DeliveryOrders2({ route }) {
           dispatch(getReviewDefault(openShippingOrders));
           dispatch(orderStatusCount());
           dispatch(todayOrders());
-          dispatch(getOrderstatistics(1));
+          dispatch(getOrderstatistics('1,3'));
           dispatch(getGraphOrders(1));
           setGetOrderDetail('ViewAllScreen');
           setUserDetail(ordersList?.[0] ?? []);
@@ -999,7 +1002,7 @@ export function DeliveryOrders2({ route }) {
             selectedStartDate={calendarDate}
             onPress={() => setshowMiniCalendar(false)}
             onSelectedDate={(date) => {
-              setCalendarDate(moment(date));
+              setCalendarDate(moment.utc(date));
               setshowMiniCalendar(false);
             }}
             onCancelPress={() => {

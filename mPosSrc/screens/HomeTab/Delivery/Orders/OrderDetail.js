@@ -29,6 +29,7 @@ import { useEffect } from 'react';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { getOrderCount, getReviewDefault } from '@/actions/DeliveryAction';
 import VerifyPickupOtpModal from '../Components/VerifyPickupOtpModal';
+import moment from 'moment';
 
 export function OrderDetail(props) {
   const mapRef = useRef();
@@ -40,11 +41,10 @@ export function OrderDetail(props) {
   const orderData = orders[props?.route?.params?.index ?? 0];
   // const orderData = props?.route?.params?.data;
   const [pickupModalVisible, setPickupModalVisible] = useState(false);
-
   const customerDetail = orderData?.user_details;
   const deliveryDate =
-    dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') &&
-    dayjs(orderData?.invoices?.created_at).format('DD MMM YYYY');
+    moment.utc(orderData?.invoices?.delivery_date).format('DD MMM YYYY') &&
+    moment.utc(orderData?.invoices?.created_at).format('DD MMM YYYY');
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
   const getAuth = useSelector(getAuthData);
@@ -172,12 +172,14 @@ export function OrderDetail(props) {
                 <Text style={styles.deliveryTypeText}>{deliveryDate}</Text>
               </View>
 
-              <View style={styles.deliveryTimeViewStyle}>
-                <Image source={Images.clockIcon} style={styles.clockImageStyle} />
-                <Text
-                  style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
-                >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
-              </View>
+              {orderData?.delivery_option !== '3' && (
+                <View style={styles.deliveryTimeViewStyle}>
+                  <Image source={Images.clockIcon} style={styles.clockImageStyle} />
+                  <Text style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}>
+                    {`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}
+                  </Text>
+                </View>
+              )}
             </View>
           )}
         </View>
@@ -230,9 +232,9 @@ export function OrderDetail(props) {
               </Text>
               <Text style={styles.driverArrivalTimeText}>
                 {orderData?.status === 5
-                  ? dayjs(orderData?.status_desc?.status_5_updated_at).format(
-                      'DD MMM, YYYY  |  hh:mm a'
-                    )
+                  ? moment
+                      .utc(orderData?.status_desc?.status_5_updated_at)
+                      .format('DD MMM, YYYY  |  hh:mm a')
                   : null}
               </Text>
             </View>

@@ -163,6 +163,7 @@ export const en = {
     cashAmount: 'Cash amount (USD)',
     enterAmount: 'Enter Amount',
     confirm: 'Confirm',
+    closeBatch: 'Close Batch',
     endTrackingSession: 'End tracking session',
     endCashTrackingSession: 'End Cash Tracking Session',
     next: 'Next',

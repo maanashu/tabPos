@@ -9,6 +9,7 @@ import { strings } from '@mPOS/localization';
 import ButtonComponent from './ButtonComponent';
 
 import styles from '../Orders/styles';
+import moment from 'moment';
 
 const OrderTotal = ({ orderData, onPressAcceptHandler }) => {
   return (
@@ -28,9 +29,12 @@ const OrderTotal = ({ orderData, onPressAcceptHandler }) => {
       <View style={styles.orderDetailView}>
         <View style={{ flex: 0.5 }}>
           <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.orderDate}</Text>
-          <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>{`${dayjs(
+          {/* <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>{`${dayjs(
             orderData?.date
-          ).format('DD/MM/YYYY')}`}</Text>
+          ).format('DD/MM/YYYY')}`}</Text> */}
+          <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>{`${moment
+            .utc(orderData?.date)
+            .format('DD/MM/YYYY')}`}</Text>
         </View>
 
         <View>

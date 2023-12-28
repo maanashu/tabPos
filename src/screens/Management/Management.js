@@ -59,6 +59,7 @@ import {
   arrowDownRound,
   arrowRightTop,
   PlusCircle,
+  Message,
 } from '@/assets';
 import {
   endTrackingSession,
@@ -647,13 +648,17 @@ export function Management() {
             <View>
               <Text style={styles.amountCountedText}>{strings.management.hintText}</Text>
               <Spacer space={SH(5)} />
-              <TextInput
-                placeholder={strings.management.note}
-                style={styles.noteInputStyle}
-                placeholderTextColor={COLORS.navy_blue}
-                value={trackNotes}
-                onChangeText={setTrackNotes}
-              />
+              <View style={[styles.noteInputStyleNew, { flexDirection: 'row' }]}>
+                <Image source={Message} style={[styles.crossIconStyle, { right: SW(5) }]} />
+
+                <TextInput
+                  placeholder={strings.management.note}
+                  // style={styles.noteInputStyleNew}
+                  placeholderTextColor={COLORS.navy_blue}
+                  value={trackNotes}
+                  onChangeText={setTrackNotes}
+                />
+              </View>
             </View>
             <Spacer space={SH(20)} />
             {/* <View>
@@ -675,7 +680,7 @@ export function Management() {
           {/* <Spacer space={SH(90)} /> */}
           {/* <View style={{ flex: 1 }} /> */}
           <Button
-            title={strings.management.confirm}
+            title={strings.management.save}
             textStyle={styles.buttonText}
             style={[
               styles.saveButton,
@@ -1055,7 +1060,7 @@ export function Management() {
             <Image source={moneySearch} style={styles.calculatorStyle} />
             <Spacer space={SH(15)} />
             <Text style={[styles.countCashText, { fontFamily: Fonts.MaisonBold }]}>
-              {strings.management.endCashTrackingSession}
+              {strings.management.closeBatch}
             </Text>
             <Spacer space={SH(30)} />
             <View
@@ -1149,10 +1154,13 @@ export function Management() {
                 setCashSummary('');
                 setSummaryHistory(true), setHistoryHeader(true);
               }}
-              style={styles.nextButtonEnd}
+              style={styles.cancelBatch}
             >
-              <Text style={styles.sessionHistoryTextNew}>{strings.management.confirm}</Text>
-              <Image source={arrowRightTop} style={styles.crossImage} />
+              <Text style={styles.sessionHistoryTextNew}>{strings.management.closeBatch}</Text>
+              <Image
+                source={crossDrawer}
+                style={[styles.crossImage, { tintColor: COLORS.white }]}
+              />
             </TouchableOpacity>
           </View>
         </View>

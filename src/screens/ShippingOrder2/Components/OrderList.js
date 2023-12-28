@@ -44,7 +44,7 @@ const OrderList = ({
   const getOrdersData = useSelector(getDelivery);
   const ordersList = getOrdersData?.getReviewDef;
   const [orderId, setOrderId] = useState(ordersList?.[0]?.id ?? '');
-  const todayDate = moment();
+  const todayDate = moment.utc();
 
   useEffect(() => {
     setOrderId(ordersList?.[0]?.id ?? '');
@@ -502,7 +502,7 @@ const OrderList = ({
         <TouchableOpacity
           style={{ padding: ms(5), flexDirection: 'row', alignItems: 'center' }}
           onPress={() => {
-            setCalendarDate(moment());
+            setCalendarDate(moment.utc());
             setViewAllOrders(false);
           }}
         >
