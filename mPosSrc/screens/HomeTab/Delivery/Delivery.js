@@ -66,10 +66,11 @@ export function Delivery() {
   }, []);
 
   const renderOrderItem = ({ item, index }) => {
+    console.log('iurieure', item);
     const deliveryDate =
       item?.delivery_option == '3'
         ? moment.utc(item?.created_at).format('DD MMM YYYY')
-        : moment.utc(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+        : moment.utc(item?.date).format('DD MMM YYYY');
     return (
       <TouchableOpacity
         style={styles.orderItemViewStyle}

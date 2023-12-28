@@ -20,6 +20,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { SHIPPING_TYPES } from '@mPOS/Types/ShippingTypes';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
+import moment from 'moment';
 
 export function ShippingOrderList(props) {
   const dispatch = useDispatch();
@@ -45,7 +46,10 @@ export function ShippingOrderList(props) {
     }
   }, []);
   const renderOrderItem = ({ item, index }) => {
-    const shippingDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+    console.log('dfsfd', item);
+    // const shippingDate = moment.utc(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+    const shippingDate = moment.utc(item?.date).format('DD MMM YYYY') || '';
+
     return (
       <TouchableOpacity
         onPress={() =>
