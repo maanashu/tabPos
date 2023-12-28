@@ -90,6 +90,11 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
               (item) => item?.name === 'Color'
             );
 
+            const isBookingDateAvailable = item?.date || item?.start_time || item?.end_time;
+            const bookingDateTime = `${moment.utc(item?.date).format('DD/MM/YYYY')} @ ${
+              item?.start_time
+            }-${item?.end_time}`;
+
             return (
               <View style={styles.cartProductCon} key={index}>
                 <View style={styles.subContainer}>
@@ -99,6 +104,10 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
                       {item?.product_details?.name}
                     </Text>
                     <View style={styles.belowSubContainer}>
+                      {isBookingDateAvailable && (
+                        <Text style={styles.colorsTitle}>{bookingDateTime}</Text>
+                      )}
+
                       {productColor?.length > 0 && (
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <Text style={styles.colorsTitle}>Colors : </Text>
