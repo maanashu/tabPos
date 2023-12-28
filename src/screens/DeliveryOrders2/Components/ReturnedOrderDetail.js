@@ -169,7 +169,7 @@ const ReturnedOrderDetail = ({ orderDetail, onPressBackHandler = () => {} }) => 
               {strings.shippingOrder.orderDate}
             </Text>
             <Text style={styles.itemCountText}>
-              {moment(orderDetail?.invoices?.delivery_date).format('DD/MM/YYYY')}
+              {moment.utc(orderDetail?.invoices?.delivery_date).format('DD/MM/YYYY')}
             </Text>
           </View>
 

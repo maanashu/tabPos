@@ -148,7 +148,7 @@ const ReturnInvoice = ({
           </View>
 
           <Text style={style._commonPayTitle}>
-            {moment(orderData?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
+            {moment.utc(orderData?.created_at).format('ddd DD MMM, YYYY HH:mm A') ?? '-'}
           </Text>
 
           <Text style={style._commonPayTitle}>

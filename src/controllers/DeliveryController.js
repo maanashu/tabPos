@@ -16,7 +16,7 @@ export class DeliveryController {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
-        ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${sellerID}&delivery_option=1`;
+        ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${sellerID}&delivery_option=1,3`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -39,7 +39,7 @@ export class DeliveryController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
+        `?status=${status}&seller_id=${sellerID}&delivery_option=1,3`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -56,7 +56,7 @@ export class DeliveryController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerID}&delivery_option=1`;
+        `?status=${status}&seller_id=${sellerID}&delivery_option=1,3`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -123,7 +123,7 @@ export class DeliveryController {
 
   static async deliveryOrd() {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.getOrders + `?delivery_option=1`;
+      const endpoint = ORDER_URL + ApiOrderInventory.getOrders + `?delivery_option=1,3`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -224,7 +224,7 @@ export class DeliveryController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.graphOrders +
-        `?seller_id=${sellerID}&filter=year&delivery_option=1`;
+        `?seller_id=${sellerID}&filter=year&delivery_option=1,3`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

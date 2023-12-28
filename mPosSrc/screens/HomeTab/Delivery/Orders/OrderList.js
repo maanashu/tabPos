@@ -35,7 +35,10 @@ export function OrderList(props) {
   }, []);
 
   const renderOrderItem = ({ item, index }) => {
-    const deliveryDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+    const deliveryDate =
+      item?.delivery_option == '3'
+        ? moment.utc(item?.created_at).format('DD MMM YYYY')
+        : moment.utc(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     return (
       <TouchableOpacity
         onPress={() =>

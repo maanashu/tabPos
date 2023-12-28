@@ -73,7 +73,7 @@ export function ShippingOrder2() {
   const [showLabelPdf, setShowLabelPdf] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const [showMiniCalendar, setshowMiniCalendar] = useState(false);
-  const [calendarDate, setCalendarDate] = useState(moment());
+  const [calendarDate, setCalendarDate] = useState(moment.utc());
   const maxDate = new Date(2030, 6, 3);
 
   // useFocusEffect(
@@ -386,7 +386,7 @@ export function ShippingOrder2() {
                     selectedStartDate={calendarDate}
                     onPress={() => setshowMiniCalendar(false)}
                     onSelectedDate={(date) => {
-                      setCalendarDate(moment(date));
+                      setCalendarDate(moment.utc(date));
                       setshowMiniCalendar(false);
                     }}
                     onCancelPress={() => {
