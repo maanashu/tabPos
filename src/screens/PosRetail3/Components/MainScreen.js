@@ -153,7 +153,7 @@ export function MainScreen({
     (item) => item?.product_type === 'service'
   );
   const productCartArray = getRetailData?.getAllProductCart;
-  const serviceCartArray = getRetailData?.getAllServiceCart;
+  const serviceCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
   const cartLength = CART_LENGTH;
@@ -282,6 +282,7 @@ export function MainScreen({
     }
   };
   const serviceCartStatusHandler = () => {
+    console.log('11111');
     const data =
       holdServiceArray?.length > 0
         ? {
@@ -289,10 +290,11 @@ export function MainScreen({
             cartId: holdServiceArray?.[0]?.id,
           }
         : {
-            status: getRetailData?.getserviceCart?.is_on_hold === false ? true : false,
-            cartId: getRetailData?.getserviceCart?.id,
+            status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
+            cartId: getRetailData?.getAllCart?.id,
           };
-    dispatch(changeStatusServiceCart(data));
+    console.log(data);
+    dispatch(changeStatusProductCart(data));
   };
 
   useEffect(() => {
@@ -1472,7 +1474,8 @@ export function MainScreen({
                   </TouchableOpacity>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
-                    onPress={cartStatusHandler}
+                    // onPress={cartStatusHandler}
+                    onPress={serviceCartStatusHandler}
                     // disabled={holdProductArray?.length > 0 ? false : true}
                   >
                     <Image

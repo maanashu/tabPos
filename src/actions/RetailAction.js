@@ -1758,10 +1758,10 @@ export const customServiceAdd = (data) => async (dispatch) => {
     dispatch(customServiceAddSuccess(res));
     // dispatch(getServiceCart());
     dispatch(getAllCart());
-    const data = {
+    const datas = {
       page: 1,
     };
-    dispatch(getMainServices(data));
+    dispatch(getMainServices(datas));
   } catch (error) {
     dispatch(customServiceAddError(error.message));
   }

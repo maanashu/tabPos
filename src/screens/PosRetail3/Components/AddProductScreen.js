@@ -10,12 +10,12 @@ import {
   View,
 } from 'react-native';
 
-import { ms } from 'react-native-size-matters';
-import { Fonts, clothes, minus, plus } from '@/assets';
+import { moderateScale, ms, verticalScale } from 'react-native-size-matters';
+import { Fonts, clothes, minus, plus, bell } from '@/assets';
 import moment from 'moment';
 
 import { CustomHeader } from './CustomHeader';
-import { COLORS, SH } from '@/theme';
+import { COLORS, SF, SH, SW } from '@/theme';
 import { Images } from '@/assets/new_icon';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,6 +43,7 @@ export const AddProductScreen = ({ backHandler }) => {
   const attrsArr = productDetail?.supplies[0]?.attributes;
   const [count, setCount] = useState(1);
   const restProductQty = productDetail.supplies[0]?.rest_quantity;
+  const stockHandArray = productDetail?.supplies?.[0]?.supply_variants;
   // avaiblity option
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options?.split(',');
@@ -374,9 +375,96 @@ export const AddProductScreen = ({ backHandler }) => {
             </View>
 
             <View style={{ marginTop: ms(10), flex: 1 }}>
-              <Text style={styles.addNewProduct}>{'Stock on hand'}</Text>
-              <View style={styles.stockOnHandCon}>
-                <View>
+              {productDetail?.supplies?.[0]?.supply_variants?.length > 0 && (
+                <>
+                  <Text style={styles.addNewProduct}>{'Stock on hand'}</Text>
+                  <View style={styles.stockOnHandCon}>
+                    <FlatList
+                      data={stockHandArray}
+                      extraData={stockHandArray}
+                      renderItem={({ item, index }) => {
+                        const variant = JSON.parse(item?.attribute_variant?.variants);
+                        const productSize = variant?.filter(
+                          (item) => item.attribute_name === 'Size'
+                        );
+                        const productColor = variant?.filter(
+                          (item) => item.attribute_name === 'Color'
+                        );
+
+                        return (
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              paddingHorizontal: ms(10),
+                            }}
+                          >
+                            <View style={[styles.imageView, { borderColor: COLORS.light_purple }]}>
+                              <Image source={{ uri: item.image }} style={styles.scrollImage} />
+                            </View>
+                            <View style={[styles.sizeSelectItemCon]}>
+                              <View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  <Text style={styles.detailColorSize}>color :</Text>
+                                  <View
+                                    style={{
+                                      width: ms(8),
+                                      height: ms(8),
+                                      borderRadius: ms(2),
+                                      backgroundColor: productColor?.[0]?.attribute_value_name,
+                                      marginHorizontal: ms(3),
+                                    }}
+                                  ></View>
+                                </View>
+
+                                <Text style={styles.detailColorSize}>
+                                  Size : {productSize?.[0]?.attribute_value_name}
+                                </Text>
+                              </View>
+
+                              <Text
+                                style={[
+                                  styles.detailColorSize,
+                                  {
+                                    fontFamily: Fonts.SemiBold,
+                                    color: item?.stock <= 10 ? COLORS.red : COLORS.navy_blue,
+                                  },
+                                ]}
+                              >
+                                {item?.stock}
+                              </Text>
+                            </View>
+
+                            <TouchableOpacity
+                              onPress={() => alert('in progress')}
+                              style={[
+                                styles.sizeSelectItemCon,
+                                styles.adminItemCon,
+                                { opacity: item?.stock <= 10 ? 1 : 0.4 },
+                              ]}
+                              disabled={item?.stock <= 10 ? false : true}
+                            >
+                              <Image source={bell} style={[styles.bell]} />
+                              {/* <Text style={styles.detailColorSize}>Remind Admin</Text> */}
+                            </TouchableOpacity>
+                          </View>
+                        );
+                      }}
+                      keyExtractor={(item, index) => index.toString()}
+                      showsVerticalScrollIndicator={false}
+                      ListHeaderComponent={() => (
+                        <View style={[styles.displayflex, { width: ms(150), marginLeft: ms(70) }]}>
+                          <Text style={[styles.jacketName, { fontSize: SF(14) }]}>Color/Size</Text>
+                          <Text style={[styles.jacketName, { fontSize: SF(14) }]}>Stock</Text>
+                        </View>
+                      )}
+                    />
+                    {/* <View>
                   <FlatList
                     data={[1, 2, 3, 4, 5, 6, 7]}
                     horizontal
@@ -398,9 +486,9 @@ export const AddProductScreen = ({ backHandler }) => {
                       marginTop: ms(10),
                     }}
                   />
-                </View>
+                </View> */}
 
-                <View style={styles.notifySection}>
+                    {/* <View style={styles.notifySection}>
                   <View style={styles.notifyBodyCon}>
                     <Text style={styles.storeText}>{'Sizes'}</Text>
                     <Text style={styles.storeText}>{'S'}</Text>
@@ -422,8 +510,11 @@ export const AddProductScreen = ({ backHandler }) => {
                     <Image source={Images.notify} style={styles.bellIcon} />
                     <Image source={Images.notify} style={styles.bellIcon} />
                   </View>
-                </View>
-              </View>
+                </View> */}
+                  </View>
+                </>
+              )}
+
               <View style={{ marginTop: ms(5) }}>
                 <Text style={styles.addNewProduct}>{'Availability'}</Text>
                 <FlatList
@@ -458,6 +549,34 @@ export const styles = StyleSheet.create({
   _innerContainer: {
     backgroundColor: COLORS.textInputBackground,
     flex: 1,
+  },
+  imageView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    flex: 0.2,
+    height: ms(28),
+    marginVertical: verticalScale(3),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: COLORS.light_purple,
+  },
+  scrollImage: {
+    width: ms(30),
+    height: ms(30),
+    resizeMode: 'contain',
+  },
+  sizeSelectItemCon: {
+    // width: ms(200),
+    flex: 0.6,
+    height: ms(28),
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(10),
+    marginHorizontal: ms(15),
   },
   displayflex: {
     flexDirection: 'row',
@@ -632,6 +751,7 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.light_purple,
     flex: 1,
     marginTop: ms(10),
+    paddingVertical: ms(6),
   },
   avaiblityMainCon: {
     borderWidth: 1,
@@ -707,5 +827,34 @@ export const styles = StyleSheet.create({
     paddingVertical: ms(5),
     flexDirection: 'column',
     justifyContent: 'space-between',
+  },
+  detailColorSize: {
+    fontFamily: Fonts.Regular,
+    fontSize: ms(8),
+    color: COLORS.navy_blue,
+  },
+  bell: {
+    width: SW(7),
+    height: SW(7),
+    resizeMode: 'contain',
+    marginHorizontal: moderateScale(4),
+  },
+  jacketName: {
+    color: COLORS.navy_blue,
+    fontSize: SH(18),
+    fontFamily: Fonts.Medium,
+  },
+  adminItemCon: {
+    // width: ms(140),
+    flex: 0.2,
+    height: ms(28),
+    borderWidth: 1,
+    borderColor: COLORS.light_purple,
+    borderRadius: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(3),
+    marginHorizontal: ms(5),
   },
 });

@@ -1580,12 +1580,16 @@ export class RetailController {
 
         // product_type: 'service',
       };
+      console.log('endpoint', endpoint);
+      console.log('body', body);
       HttpClient.post(endpoint, body)
 
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
