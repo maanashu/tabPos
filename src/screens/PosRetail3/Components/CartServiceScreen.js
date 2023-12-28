@@ -71,7 +71,6 @@ export function CartServiceScreen({
   // let arr = [getRetailData?.getserviceCart];
 
   let arr = [getRetailData?.getAllCart];
-  console.log('getRetailData?.getAllCart', JSON.stringify(getRetailData?.getAllCart));
   const serviceCartArray = getRetailData?.getAllServiceCart;
   const holdServiceArray = serviceCartArray?.filter((item) => item.is_on_hold === true);
   const [addServiceCartModal, setAddServiceCartModal] = useState(false);

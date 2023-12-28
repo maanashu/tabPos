@@ -464,6 +464,7 @@ export function MainScreen({
       setCartModal(false);
     }
   }, [cartLength]);
+
   const checkAttributes = async (item, index, cartQty) => {
     if (onlyServiceCartArray?.length > 0) {
       CustomAlert({
@@ -493,6 +494,7 @@ export function MainScreen({
       }
     }
   };
+
   const onClickAddCart = (item, index, cartQty, supplyVarientId) => {
     const mainProductArray = getRetailData?.getMainProduct;
 

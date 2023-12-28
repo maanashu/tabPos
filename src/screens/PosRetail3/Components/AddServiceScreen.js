@@ -337,11 +337,10 @@ export const AddServiceScreen = ({ backHandler }) => {
                       </View>
                     );
                   }}
-                  contentContainerStyle={
-                    {
-                      // flex: 1,
-                    }
-                  }
+                  contentContainerStyle={{
+                    // borderWidth: 1,
+                    flex: 1,
+                  }}
                   ListEmptyComponent={() => {
                     return (
                       <View
@@ -350,6 +349,7 @@ export const AddServiceScreen = ({ backHandler }) => {
                           alignSelf: 'center',
                           width: '100%',
                           marginLeft: ms(25),
+                          flex: 1,
                         }}
                       >
                         <Text style={styles.serviceNotfound}>{'Service provider not found'}</Text>

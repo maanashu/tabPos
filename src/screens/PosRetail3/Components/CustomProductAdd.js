@@ -164,8 +164,6 @@ export function CustomProductAdd({ crossHandler, comeFrom, sellerID }) {
           qty: count,
           notes: notes,
         };
-        console.log('data111', data);
-        return;
         dispatch(customProductAdd(data));
         crossHandler();
       }
@@ -381,6 +379,7 @@ const styles = StyleSheet.create({
     paddingVertical: ms(12),
     paddingHorizontal: ms(15),
     ...ShadowStyles.shadow,
+    margin: 30,
   },
   headerConCustomProduct: {
     height: ms(80),

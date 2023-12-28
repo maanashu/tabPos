@@ -394,9 +394,12 @@ export function DashBoard({ navigation }) {
       >
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
+          contentContainerStyle={{
+            flex: Platform.OS === 'android' ? 0 : 1,
+            justifyContent: 'center',
+          }}
         >
-          <View style={styles.modalMainView}>
+          <View style={[styles.modalMainView, { margin: ms(50) }]}>
             <View style={styles.headerView}>
               <TouchableOpacity
                 style={styles.crossButonBorder}
