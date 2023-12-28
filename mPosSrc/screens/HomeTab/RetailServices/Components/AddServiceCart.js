@@ -109,6 +109,9 @@ const AddServiceCart = ({ addServiceCartRef, serviceDetailHanlder }) => {
       date: selectedDate,
       pos_user_id: posUserId,
     };
+    if (itemData?.supplies[0]?.seller_address_id) {
+      params['seller_address_id'] = itemData?.supplies[0].seller_address_id;
+    }
     dispatch(getTimeSlots(params));
   }, [posUserId, selectedDate]);
 
