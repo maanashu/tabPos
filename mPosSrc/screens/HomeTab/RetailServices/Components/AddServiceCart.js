@@ -53,7 +53,7 @@ function EmptyTimeSlot({ title }) {
   );
 }
 
-const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
+const AddServiceCart = ({ addServiceCartRef }) => {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const retailData = useSelector(getRetail);
@@ -75,15 +75,12 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
   const [monthDays, setmonthDays] = useState([]);
   const [timeSlotsData, setTimeSlotsData] = useState([]);
 
-  useEffect(() => {
-    addServiceCartRef.current.present();
-  }, []);
-
-  useEffect(() => {
-    if (isFocused) {
+  const useSlideFocusEffect = (effect) => {
+    useEffect(() => {
       setselectedDate(moment(new Date()).format('YYYY-MM-DD'));
-    }
-  }, [isFocused]);
+      return effect();
+    }, [effect]);
+  };
 
   useEffect(() => {
     if (retailData?.timeSlots) {
@@ -129,7 +126,6 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
       style={{
         alignItems: 'center',
         justifyContent: 'center',
-        // width: SW(31.5),
         width: SW(60),
         height: SH(60),
       }}
@@ -230,7 +226,6 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
 
   const dismissBottomSheetModal = () => {
     addServiceCartRef.current.dismiss();
-    setAddServiceCart(false);
   };
 
   const resetSelectedDateAndTimeSlot = () => {
@@ -245,7 +240,9 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
       detached
       bottomInset={0}
       onDismiss={() => {
-        setAddServiceCart(false);
+        resetSelectedDateAndTimeSlot();
+        setselectedYearData(null);
+        setselectedMonthData(null);
       }}
       backdropOpacity={0.5}
       ref={addServiceCartRef}
@@ -256,7 +253,7 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
       stackBehavior={'replace'}
       handleComponent={() => <View />}
     >
-      <BottomSheetScrollView>
+      <BottomSheetScrollView focusHook={useSlideFocusEffect}>
         <View style={{ flex: 1 }}>
           <View style={styles.productHeaderCon}>
             <TouchableOpacity
