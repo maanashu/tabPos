@@ -139,7 +139,9 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                 {getDeliveryType(orderData?.order?.delivery_option)}
               </Text>
               <Text style={styles.orderDateText}>
-                {orderData?.order?.date ? moment(orderData?.order?.date).format('MM/DD/YYYY') : '-'}
+                {orderData?.order?.date
+                  ? moment.utc(orderData?.order?.date).format('MM/DD/YYYY')
+                  : '-'}
               </Text>
             </View>
           </View>
@@ -356,13 +358,13 @@ const styles = StyleSheet.create({
   scanProductView: {
     borderRadius: ms(15),
     // alignItems: 'center',
-    // justifyContent: 'center',
-    paddingHorizontal: ms(20),
+    justifyContent: 'center',
+    // paddingHorizontal: ms(15),
     backgroundColor: COLORS.sky_grey,
     // paddingHorizontal: ms(20),
     marginRight: ms(5),
-    flex: 0.6,
-    maxHeight: ms(35),
+    flex: 0.62,
+    height: ms(28),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -370,14 +372,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: COLORS.white,
     borderRadius: ms(15),
-    paddingHorizontal: ms(20),
+    // paddingHorizontal: ms(10),
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: ms(20),
     borderColor: COLORS.input_border,
-    flex: 0.4,
+    flex: 0.38,
     flexDirection: 'row',
-    maxHeight: ms(35),
+    height: ms(28),
   },
   orderandPriceView: {
     flexDirection: 'row',

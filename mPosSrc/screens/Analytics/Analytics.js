@@ -2,21 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { View, TouchableOpacity, Image, Text, Platform, Dimensions } from 'react-native';
 import { Header, ScreenWrapper, Spacer } from '@mPOS/components';
 
-import {
-  profit,
-  revenueTotal,
-  totalSales,
-  channel,
-  averageOrder,
-  productSelling,
-  locationSales,
-  totalCost,
-  totalOrders,
-  calendar,
-  dropdown,
-  backArrow2,
-  Images,
-} from '@mPOS/assets';
+import { Images } from '@mPOS/assets';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import CalendarPickerModal from '@mPOS/components/CalendarPickerModal';

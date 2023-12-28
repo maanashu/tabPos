@@ -35,7 +35,6 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
   //     </Text>
   //   </View>
   // );
-
   const invoiceData = [
     {
       title: 'Status',
@@ -44,7 +43,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
     },
     {
       title: 'Date',
-      data: moment().format('ddd') + ' ' + moment().subtract(10, 'days').calendar(),
+      data: moment.utc(returnInvoiceData?.updated_at).format('ddd MM/DD/YYYY'),
       id: 2,
     },
     {

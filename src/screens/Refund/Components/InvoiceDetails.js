@@ -68,7 +68,7 @@ const InvoiceDetails = ({
     },
     {
       title: 'Date',
-      data: moment().format('ddd') + ' ' + moment().subtract(10, 'days').calendar(),
+      data: moment.utc(orderDetail?.date).format('ddd MM/DD/YYYY'),
       id: 2,
     },
     {
@@ -132,6 +132,7 @@ const InvoiceDetails = ({
                     marginTop: ms(15),
                     flex: 1,
                     alignItems: 'center',
+                    marginLeft: ms(5),
                   }}
                 >
                   <Text style={[styles._payTitle, { letterSpacing: -1, flex: 1 }]}>

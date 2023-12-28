@@ -115,7 +115,7 @@ export function TotalPosOrder({ onPressReview }) {
         />
         <HeaderView
           image={Images.totalSales}
-          text={'Total Sales'}
+          text={'Total Revenue'}
           count={
             posGraph?.ordersOverView?.total_sales_or_actual_amount
               ? '$' + posGraph?.ordersOverView?.total_sales_or_actual_amount?.toFixed(2)
@@ -152,7 +152,7 @@ export function TotalPosOrder({ onPressReview }) {
               </DataTable.Title>
 
               <DataTable.Title style={styles.dateTableSetting}>
-                <Text style={styles.revenueText}>Total Sales</Text>
+                <Text style={styles.revenueText}>Total Revenue</Text>
               </DataTable.Title>
               <DataTable.Title style={styles.dateTableSetting}>
                 <Text style={styles.revenueText}>Action</Text>

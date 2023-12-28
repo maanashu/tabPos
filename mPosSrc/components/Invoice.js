@@ -11,6 +11,7 @@ import { HorizontalLine } from './HorizontalLine';
 import dayjs from 'dayjs';
 import { getUser } from '@mPOS/selectors/UserSelectors';
 import { Images } from '@mPOS/assets';
+import { formattedReturnPrice } from '@/utils/GlobalMethods';
 
 export function Invoice(props) {
   const data = props?.route?.params?.data;
@@ -51,11 +52,11 @@ export function Invoice(props) {
     );
   };
   const paymentView = (title, amount, total) => {
-    const formattedReturnPrice = (price) => {
-      const numericPrice = parseFloat(price) || 0;
-      const formattedPrice = numericPrice.toFixed(2);
-      return `$${formattedPrice}`;
-    };
+    // const formattedReturnPrice = (price) => {
+    //   const numericPrice = parseFloat(price) || 0;
+    //   const formattedPrice = numericPrice.toFixed(2);
+    //   return `$${formattedPrice}`;
+    // };
     return (
       <>
         <View style={styles.paymentItems}>
@@ -91,13 +92,16 @@ export function Invoice(props) {
         <View>
           <FlatList data={data?.order?.order_details || []} renderItem={renderProducts} />
         </View>
-
+        {console.log('first', data?.order?.delivery_charge)}
         <View style={styles.paymentContainer}>
           {paymentView('Subtotal', data?.order?.actual_amount)}
-          {paymentView(
-            'Delivery/Shipping Charges',
-            data?.order?.delivery_charge || data?.order?.shipping_charge
-          )}
+          {data?.order?.delivery_charge !== 0 || data?.order?.shipping_charge !== 0
+            ? data?.order?.delivery_charge != 0
+              ? paymentView('Delivery Charges', data?.order?.delivery_charge)
+              : data?.order?.shipping_charge != 0
+              ? paymentView('Shipping Charges', data?.order?.shipping_charge)
+              : null
+            : null}
           {paymentView('Discount', data?.order?.discount)}
           {paymentView('Tax', data?.order?.tax)}
           {paymentView('Total', data?.order?.payable_amount)}

@@ -26,7 +26,7 @@ import {
 } from '@/actions/DashboardAction';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { SF, SH, COLORS, SW } from '@/theme';
+import { SF, SH, COLORS, SW, ShadowStyles } from '@/theme';
 import InvoiceDetails from './InvoiceDetails';
 import BackButton from '@/components/BackButton';
 import ReturnConfirmation from './ReturnConfirmation';
@@ -43,8 +43,10 @@ import {
 } from '@/assets';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
+import BlurredModal from '@/components/BlurredModal';
 
 const { width, height } = Dimensions.get('window');
+const windowWidth = Dimensions.get('window').width;
 
 const PaymentSelection = ({
   backHandler,
@@ -422,7 +424,90 @@ const PaymentSelection = ({
         onPressHandler={onPressreturn}
       />
 
-      <ReactNativeModal isVisible={isPhoneVisible}>
+      {/* phone popup */}
+
+      <BlurredModal isVisible={isPhoneVisible}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            // alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}
+        >
+          <View style={styles.emailModalContainer}>
+            {/* <View style={{ borderWidth: 1 }}> */}
+            <View style={styles.modalHeaderCon}>
+              <TouchableOpacity style={styles.crossButtonCon} onPress={() => closeHandler()}>
+                <Image source={crossButton} style={styles.crossButton} />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, paddingHorizontal: ms(12) }}>
+              <Image source={Images.phone} style={styles.emailIcon} />
+              <Text style={styles.emailRec}>
+                What phone number do we {`\n`} send the e-receipt to?
+              </Text>
+              <Spacer space={SH(25)} />
+              <Text style={styles.newCusAdd}>{'Phone Number'}</Text>
+
+              <View style={styles.textInputView}>
+                <CountryPicker
+                  onSelect={(code) => {
+                    setFlag(code.cca2);
+                    if (code.callingCode?.length > 0) {
+                      setCountryCode('+' + code.callingCode.flat());
+                    } else {
+                      setCountryCode('');
+                    }
+                  }}
+                  countryCode={flag}
+                  withFilter
+                  withCallingCode
+                />
+                <Image source={dropdown} style={styles.dropDownIcon} />
+                <Text style={styles.countryCodeText}>{countryCode}</Text>
+                <TextInput
+                  maxLength={10}
+                  returnKeyType="done"
+                  keyboardType="number-pad"
+                  value={phoneNumber.trim()}
+                  onChangeText={(text) => setPhoneNumber(text)}
+                  style={styles.textInputContainer}
+                  placeholder={strings.verifyPhone.placeHolderText}
+                  placeholderTextColor={COLORS.light_purple}
+                  // showSoftInputOnFocus={false}
+                />
+              </View>
+              <View style={{ flex: 1 }} />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <TouchableOpacity style={styles.cancelButtonCon} onPress={() => closeHandler()}>
+                  <Text style={styles.cancelText}>{'Cancel'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.addToCartButtonCon}
+                  onPress={() => {
+                    setIsPhoneVisible(false);
+                    setPhoneNumber(phoneNumber);
+                  }}
+                >
+                  <Text style={[styles.cancelText, { color: COLORS.white }]}>
+                    {'Send E-receipt'}
+                  </Text>
+                  {/* <Image source={Images.addProduct} style={styles.plusIconAdd} /> */}
+                </TouchableOpacity>
+              </View>
+              <Spacer space={SH(25)} />
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
+      </BlurredModal>
+
+      {/* <ReactNativeModal isVisible={isPhoneVisible}>
         <View style={styles.calendarSettingModalContainer}>
           <View>
             <View style={styles.textInputView}>
@@ -465,58 +550,94 @@ const PaymentSelection = ({
             />
           </View>
         </View>
-      </ReactNativeModal>
+      </ReactNativeModal> */}
 
-      <ReactNativeModal isVisible={isEmailVisible}>
+      <BlurredModal isVisible={isEmailVisible}>
         <KeyboardAwareScrollView
           contentContainerStyle={{
-            alignItems: 'center',
+            // alignItems: 'center',
             justifyContent: 'center',
             flex: 1,
           }}
         >
           <View style={styles.emailModalContainer}>
-            <View>
-              <View style={styles.modalHeaderCon}>
-                <View style={styles.flexRow}>
-                  <Text style={[styles.twoStepText, { fontFamily: Fonts.SemiBold }]}>
-                    {strings.retail.eRecipeEmail}
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.crossButtonCon}
-                    onPress={() => {
-                      setIsEmailVisible(false);
-                      setSelectedRecipeIndex(null);
-                      setEmail('');
-                    }}
-                  >
-                    <Image source={crossButton} style={styles.crossButton} />
-                  </TouchableOpacity>
-                </View>
-              </View>
+            {/* <View style={{ borderWidth: 1 }}> */}
+            <View style={styles.modalHeaderCon}>
+              <TouchableOpacity
+                style={styles.crossButtonCon}
+                onPress={() => {
+                  setIsEmailVisible(false);
+                  setSelectedRecipeIndex(null);
+                  setEmail('');
+                }}
+              >
+                <Image source={crossButton} style={styles.crossButton} />
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 1, paddingHorizontal: ms(12) }}>
+              <Image source={Images.email} style={styles.emailIcon} />
+              <Text style={styles.emailRec}>
+                What e-mail address do we {`\n`} send the e-receipt to?
+              </Text>
+              <Spacer space={SH(25)} />
+              <Text style={styles.newCusAdd}>{'E-mail Address'}</Text>
+
               <View style={styles.inputContainer}>
+                <Image source={Images.email} style={styles.emailIconInput} />
                 <TextInput
                   style={styles.textInput}
                   placeholder="you@you.mail"
-                  value={email.trim()}
+                  value={email?.trim()}
                   onChangeText={setEmail}
                   keyboardType="email-address"
-                  placeholderTextColor={COLORS.solidGrey}
+                  placeholderTextColor={COLORS.light_purple}
                 />
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   style={styles.payNowButton}
+                  onPress={() => {
+                    getTipPress();
+                    // payNowHandler(),
+                    payNowByphone(selectedTipAmount);
+                    attachUserByEmail(email);
+                  }}
+                >
+                  <Text style={styles.payNowButtonText}>Pay Now</Text>
+                </TouchableOpacity> */}
+              </View>
+              <View style={{ flex: 1 }} />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <TouchableOpacity
+                  style={styles.cancelButtonCon}
+                  onPress={() => {
+                    setIsEmailVisible(false), setSelectedRecipeIndex(null);
+                  }}
+                >
+                  <Text style={styles.cancelText}>{'Cancel'}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.addToCartButtonCon}
                   onPress={() => {
                     setIsEmailVisible(false);
                     setEmail(email);
                   }}
                 >
-                  <Text style={styles.payNowButtonText}>Continue</Text>
+                  <Text style={[styles.cancelText, { color: COLORS.white }]}>
+                    {'Send E-receipt'}
+                  </Text>
+                  {/* <Image source={Images.addProduct} style={styles.plusIconAdd} /> */}
                 </TouchableOpacity>
               </View>
+              <Spacer space={SH(25)} />
             </View>
           </View>
         </KeyboardAwareScrollView>
-      </ReactNativeModal>
+      </BlurredModal>
 
       {isLoading ? (
         <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0,0.3)' }]}>
@@ -552,12 +673,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   leftContainer: {
-    flex: 0.7,
+    flex: 0.68,
     backgroundColor: COLORS.white,
     borderRadius: ms(10),
   },
   rightContainer: {
-    flex: 0.28,
+    flex: 0.3,
     borderRadius: 15,
     backgroundColor: COLORS.white,
   },
@@ -720,19 +841,24 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Italic,
     width: width * 0.2,
   },
+
+  //email modal
   emailModalContainer: {
-    width: ms(350),
-    height: ms(160),
+    width: ms(280),
+    height: ms(250),
     backgroundColor: 'white',
-    paddingVertical: ms(15),
     alignSelf: 'center',
-    borderRadius: ms(10),
-    alignItems: 'center',
+    borderRadius: ms(22),
+    // alignItems: 'center',
+    ...ShadowStyles.shadow,
   },
   modalHeaderCon: {
-    height: SH(80),
-    width: ms(300),
+    width: ms(280),
+    height: SH(30),
     justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingHorizontal: ms(15),
+    marginTop: ms(15),
   },
   crossButton: {
     width: SW(9),
@@ -742,7 +868,14 @@ const styles = StyleSheet.create({
   crossButtonCon: {
     width: SW(13),
     height: SW(13),
+    // justifyContent: 'center',
     alignItems: 'center',
+    tintColor: COLORS.navy_blue,
+  },
+  modalDataCon: {
+    width: windowWidth * 0.38,
+    alignSelf: 'center',
+    flex: 1,
   },
   flexRow: {
     flexDirection: 'row',
@@ -756,21 +889,24 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    paddingHorizontal: SW(4),
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    width: ms(300),
+    alignItems: 'center',
+    flexDirection: 'row',
     height: ms(40),
-    marginTop: ms(25),
-    padding: 15,
+    borderRadius: ms(20),
+    fontFamily: Fonts.Medium,
+    borderColor: COLORS.light_purple,
+    color: COLORS.navy_blue,
+    marginTop: ms(3),
   },
   textInput: {
     flex: 1,
-    height: 45,
+    height: ms(40),
     fontSize: ms(10),
     paddingHorizontal: 15,
+    color: COLORS.navy_blue,
+    fontFamily: Fonts.Medium,
   },
   payNowButton: {
     height: ms(30),
@@ -779,7 +915,56 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
+    // marginHorizontal:ms(5)
   },
+  emailIcon: {
+    width: ms(25),
+    height: ms(25),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  emailIconInput: {
+    width: ms(18),
+    height: ms(18),
+    resizeMode: 'contain',
+    tintColor: COLORS.lavender,
+  },
+  emailRec: {
+    fontFamily: Fonts.SemiBold,
+    color: COLORS.navy_blue,
+    fontSize: ms(13),
+    textAlign: 'center',
+    marginTop: ms(3),
+  },
+  newCusAdd: {
+    color: COLORS.navy_blue,
+    fontSize: ms(8),
+    fontFamily: Fonts.Medium,
+    marginVertical: ms(4),
+  },
+  cancelButtonCon: {
+    height: ms(38),
+    flex: 0.4,
+    backgroundColor: COLORS.input_border,
+    borderRadius: ms(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addToCartButtonCon: {
+    height: ms(38),
+    flex: 0.55,
+    backgroundColor: COLORS.navy_blue,
+    borderRadius: ms(20),
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  cancelText: {
+    fontFamily: Fonts.Medium,
+    color: COLORS.navy_blue,
+    fontSize: ms(10),
+  },
+
   payNowButtonText: {
     color: 'white',
     fontSize: 16,

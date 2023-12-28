@@ -222,6 +222,9 @@ export class DashboardController {
       const endpoint = ORDER_URL + ApiOrderInventory.invoiceIdSearch + `${invoice}`;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('first', JSON.stringify(response));
+          console.log('second', endpoint);
+
           resolve(response);
         })
         .catch((error) => {
