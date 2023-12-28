@@ -40,16 +40,11 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=1,3`;
-      console.log('enddsd', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
-
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
-
           reject(error);
         });
     });

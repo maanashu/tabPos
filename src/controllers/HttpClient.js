@@ -25,7 +25,7 @@ client.interceptors.request.use(async function (config) {
   const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
   const fcmToken = await getDeviceToken();
   const posNumber = store.getState().user?.posLoginData?.pos_number;
-  console.log('user', user);
+
   /**c
    * @API_URLS_USING_POS_USER_ACCESS_TOKEN - Add URLs of API in this array which requires pos user token
    * @returns Token for api call
@@ -36,7 +36,6 @@ client.interceptors.request.use(async function (config) {
     if (API_URLS_USING_POS_USER_ACCESS_TOKEN(sellerID).includes(config.url)) {
       return { token: register, appName: 'pos' };
     } else {
-      console.log('urr', config.url);
       return { token: user, appName: 'pos' };
     }
   };
