@@ -77,11 +77,11 @@ export const styles = StyleSheet.create({
   },
 
   countView: {
-    width: ms(15),
-    height: ms(15),
+    width: ms(18),
+    height: ms(18),
     position: 'absolute',
     top: 8,
-    right: ms(16),
+    right: ms(14),
     backgroundColor: COLORS.primary,
     borderWidth: 1,
     borderColor: COLORS.white,

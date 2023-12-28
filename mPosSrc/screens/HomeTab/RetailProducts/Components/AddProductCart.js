@@ -51,7 +51,14 @@ const AddProductCart = ({
 
   const [colorSelectId, setColorSelectId] = useState(null);
   const [sizeSelectId, setSizeSelectId] = useState(null);
-  const [count, setCount] = useState(cartQty == 0 || cartQty == undefined ? 1 : cartQty);
+  const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    if (cartQty > 0) {
+      setCount(cartQty);
+    }
+  }, [cartQty]);
+
   const [productDetailExpand, setProductDetailExpand] = useState(false);
   const snapPoints = useMemo(() => ['90%'], []);
   const [colorName, setColorName] = useState();
