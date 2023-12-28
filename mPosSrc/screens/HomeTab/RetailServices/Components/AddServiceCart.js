@@ -1,10 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
   Image,
+  Dimensions,
   TouchableOpacity,
   FlatList,
+  ScrollView,
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
@@ -14,54 +16,50 @@ import { Spacer } from '@mPOS/components';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { strings } from '@mPOS/localization';
 import { ms } from 'react-native-size-matters';
+import { Colors } from '@mPOS/constants/enums';
+import ProductDetails from './ProductDetails';
 import { navigate } from '@mPOS/navigation/NavigationRef';
-import { MPOS_NAVIGATION } from '@common/commonImports';
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
+import { addProductCart } from '@mPOS/actions/RetailActions';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { addToServiceCart, getTimeSlots, cartRun } from '@/actions/RetailAction';
+import {
+  addToServiceCart,
+  addTocart,
+  checkSuppliedVariant,
+  getTimeSlots,
+  cartRun,
+} from '@/actions/RetailAction';
 import { ServiceProviderItem } from '@/components/ServiceProviderItem';
 import moment from 'moment';
 import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { getDaysAndDates } from '@/utils/GlobalMethods';
-import { useIsFocused } from '@react-navigation/native';
 
-function EmptyTimeSlot({ title }) {
-  return (
-    <View
-      style={{
-        height: ms(50),
-        paddingHorizontal: ms(10),
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Text
-        style={{
-          fontFamily: Fonts.SemiBold,
-          fontSize: ms(10),
-        }}
-      >
-        {title}
-      </Text>
-    </View>
-  );
-}
+// import MonthYearPicker, { DATE_TYPE } from '../../../components/MonthYearPicker';
 
-const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
+const AddServiceCart = ({ addServiceCartRef, serviceDetailHanlder }) => {
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
   const retailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const itemData = retailData?.getOneService?.product_detail;
+  const attributeArray = itemData?.product_detail?.supplies?.[0]?.attributes;
 
+  const sizeArray = attributeArray?.filter((item) => item.name === 'Size');
+  const colorArray = attributeArray?.filter((item) => item.name === 'Color');
+
+  const [colorSelectId, setColorSelectId] = useState(null);
+  const [sizeSelectId, setSizeSelectId] = useState(null);
+  const [count, setCount] = useState(1);
+  const [productDetailExpand, setProductDetailExpand] = useState(false);
   const snapPoints = useMemo(() => ['90%'], []);
-
+  const [colorName, setColorName] = useState();
+  const [sizeName, setSizeName] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
 
   const [providerDetail, setProviderDetail] = useState(itemData?.pos_staff?.[0]?.user);
@@ -74,17 +72,6 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
   const [selectedYearData, setselectedYearData] = useState(null);
   const [monthDays, setmonthDays] = useState([]);
   const [timeSlotsData, setTimeSlotsData] = useState([]);
-
-  useEffect(() => {
-    addServiceCartRef.current.present();
-  }, []);
-
-  useEffect(() => {
-    if (isFocused) {
-      setselectedDate(moment(new Date()).format('YYYY-MM-DD'));
-    }
-  }, [isFocused]);
-
   useEffect(() => {
     if (retailData?.timeSlots) {
       const timeSlots = retailData?.timeSlots?.filter((timeSlot) => timeSlot?.is_available);
@@ -97,11 +84,23 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
       setposUserId(itemData?.pos_staff?.[0]?.user?.unique_uuid);
     }
   }, [itemData]);
-
   useEffect(() => {
     const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
+  useEffect(() => {
+    setColorSelectId(null);
+    setSizeSelectId(null);
+  }, []);
+  useEffect(() => {
+    const params = {
+      seller_id: sellerID,
+      product_id: itemData?.id,
+      date: selectedDate,
+      pos_user_id: posUserId,
+    };
+    dispatch(getTimeSlots(params));
+  }, []);
 
   useEffect(() => {
     const params = {
@@ -121,7 +120,7 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
     setposUserId(item?.user?.unique_uuid);
     setProviderDetail(item?.user);
   };
-  const renderWeekItem = ({ item }) => (
+  const renderWeekItem = ({ item, index }) => (
     <TouchableOpacity
       style={{
         alignItems: 'center',
@@ -222,18 +221,7 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
       // offerId: offerId,
     };
     dispatch(addToServiceCart(data));
-    dismissBottomSheetModal();
-  };
-
-  const dismissBottomSheetModal = () => {
     addServiceCartRef.current.dismiss();
-    setAddServiceCart(false);
-  };
-
-  const resetSelectedDateAndTimeSlot = () => {
-    setselectedDate(null);
-    setselectedTimeSlotIndex(null);
-    setSelectedTimeSlotData('');
   };
 
   return (
@@ -242,7 +230,7 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
       detached
       bottomInset={0}
       onDismiss={() => {
-        setAddServiceCart(false);
+        // setTimeSlotsData([]);
       }}
       backdropOpacity={0.5}
       ref={addServiceCartRef}
@@ -256,18 +244,14 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
       <BottomSheetScrollView>
         <View style={{ flex: 1 }}>
           <View style={styles.productHeaderCon}>
-            <TouchableOpacity
-              onPress={() => {
-                dismissBottomSheetModal();
-              }}
-            >
+            <TouchableOpacity onPress={() => addServiceCartRef.current.dismiss()}>
               <Image source={Images.cross} style={styles.crossImageStyle} />
             </TouchableOpacity>
             <View style={styles.detailAndAddBtnCon}>
               <TouchableOpacity
                 // onPress={serviceDetailHanlder}
                 onPress={() => {
-                  dismissBottomSheetModal();
+                  addServiceCartRef.current.dismiss();
                   dispatch(cartRun('service'));
                   navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
                 }}
@@ -359,11 +343,9 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
               <Text style={styles.selected}>
                 Time:{' '}
                 <Text style={{ color: COLORS.primary }}>
-                  {selectedDate &&
-                    (selectedDate === moment(new Date()).format('YYYY-MM-DD')
-                      ? `Today`
-                      : `${moment(selectedDate).format('ll')}`)}
-
+                  {selectedDate === moment(new Date()).format('YYYY-MM-DD')
+                    ? `Today`
+                    : `${moment(selectedDate).format('ll')}`}
                   {selectedTimeSlotData && ` @ ${selectedTimeSlotData?.start_time}`}
                 </Text>
               </Text>
@@ -383,7 +365,6 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
                   defaultYear={selectedYearData?.value ?? moment().year()}
                   onSelect={(monthData) => {
                     setselectedMonthData(monthData);
-                    resetSelectedDateAndTimeSlot();
                   }}
                 />
                 <MonthYearPicker
@@ -392,7 +373,6 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
                   defaultValue={moment().year()}
                   onSelect={(yearData) => {
                     setselectedYearData(yearData);
-                    resetSelectedDateAndTimeSlot();
                   }}
                 />
               </View>
@@ -418,20 +398,25 @@ const AddServiceCart = ({ addServiceCartRef, setAddServiceCart }) => {
                   <ActivityIndicator size={'large'} />
                 </View>
               ) : (
-                <>
-                  {selectedDate ? (
-                    <FlatList
-                      data={timeSlotsData || []}
-                      numColumns={4}
-                      renderItem={renderSlotItem}
-                      ListEmptyComponent={() => (
-                        <EmptyTimeSlot title={'There are no slots available for this day'} />
-                      )}
-                    />
-                  ) : (
-                    <EmptyTimeSlot title={'Please select any day to load time slots'} />
+                <FlatList
+                  data={timeSlotsData || []}
+                  numColumns={4}
+                  renderItem={renderSlotItem}
+                  ListEmptyComponent={() => (
+                    <View
+                      style={{
+                        height: ms(50),
+                        paddingHorizontal: ms(10),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
+                        There are no slots available for this day
+                      </Text>
+                    </View>
                   )}
-                </>
+                />
               )}
             </View>
           </View>

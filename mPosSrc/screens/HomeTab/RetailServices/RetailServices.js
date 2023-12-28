@@ -57,7 +57,6 @@ export function RetailServices(props) {
   const servicecCart = retailData?.getAllCart?.poscart_products ?? [];
   const onlyServiceCartArray = servicecCart?.filter((item) => item?.product_type === 'service');
   const onlyProductCartArray = servicecCart?.filter((item) => item?.product_type === 'product');
-  const [addServiceCart, setAddServiceCart] = useState(false);
   const addServiceCartRef = useRef(null);
   const productDetailRef = useRef(null);
   const [selectedProduct, setSelectedProduct] = useState('');
@@ -72,8 +71,7 @@ export function RetailServices(props) {
   };
   const bothSheetClose = () => {
     productDetailRef.current.dismiss();
-    // addServiceCartRef.current.dismiss();
-    setAddServiceCart(false);
+    addServiceCartRef.current.dismiss();
   };
   const [productSearch, setProductSearch] = useState('');
   const [productFilter, setProductFilter] = useState(false);
@@ -303,8 +301,7 @@ export function RetailServices(props) {
                   } else {
                     const res = await dispatch(getOneService(sellerID, item.id));
                     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-                      // addServiceCartRef.current.present();
-                      setAddServiceCart(true);
+                      addServiceCartRef.current.present();
                     }
                   }
                 }}
@@ -352,8 +349,7 @@ export function RetailServices(props) {
                   onPress={async () => {
                     const res = await dispatch(getOneService(sellerID, item.id));
                     if (res?.type === 'GET_ONE_SERVICE_SUCCESS') {
-                      // addServiceCartRef.current.present();
-                      setAddServiceCart(true);
+                      addServiceCartRef.current.present();
                     }
                   }}
                 >
@@ -401,10 +397,8 @@ export function RetailServices(props) {
             <View>{serviceLoad && <ActivityIndicator size="large" color={COLORS.darkBlue} />}</View>
           )}
         />
-        {addServiceCart && (
-          <AddServiceCart {...{ addServiceCartRef, serviceDetailHanlder, setAddServiceCart }} />
-        )}
 
+        <AddServiceCart {...{ addServiceCartRef, serviceDetailHanlder }} />
         <ProductDetails {...{ productDetailRef, bothSheetClose }} />
         <Modal
           style={{ margin: 0 }}
