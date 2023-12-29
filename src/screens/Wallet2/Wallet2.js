@@ -71,6 +71,7 @@ import { Loader } from '@/components/Loader';
 import WalletInvoice from './Components/WalletInvoice';
 import { height, width } from '@/theme/ScalerDimensions';
 import { Images } from '@/assets/new_icon';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function Wallet2() {
   const mapRef = useRef(null);
@@ -260,7 +261,7 @@ export function Wallet2() {
   const aboutTransactionData = [
     {
       aboutTransaction: 'Total',
-      price: getTotalTraData?.data?.total.toFixed(2) ?? '0',
+      price: amountFormat(getTotalTraData?.data?.total),
       img: profitIcon,
       id: '1',
       type: 'all',
@@ -269,7 +270,7 @@ export function Wallet2() {
     },
     {
       aboutTransaction: 'JBR Coin',
-      price: getTotalTraData?.data?.jbr.toFixed(2) ?? '0',
+      price: amountFormat(getTotalTraData?.data?.jbr, 'noSign'),
       img: new_JBR_coin,
       id: '2',
       type: 'jbr',
@@ -279,7 +280,7 @@ export function Wallet2() {
 
     {
       aboutTransaction: 'Cash',
-      price: getTotalTraData?.data?.cash.toFixed(2) ?? '0',
+      price: amountFormat(getTotalTraData?.data?.cash),
       img: new_cash,
       id: '3',
       type: 'cash',
@@ -288,7 +289,7 @@ export function Wallet2() {
     },
     {
       aboutTransaction: 'Card',
-      price: getTotalTraData?.data?.card.toFixed(2) ?? '0',
+      price: amountFormat(getTotalTraData?.data?.card),
       img: new_visa,
       id: '4',
       type: 'card',
@@ -438,7 +439,6 @@ export function Wallet2() {
                       />
 
                       <Text style={[styles.customerCount, { color: item.color }]}>
-                        {index === 1 ? '' : '$'}
                         {item.price}
                       </Text>
                       <Text style={[styles.newCustomerHeading, { color: item.color }]}>

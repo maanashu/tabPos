@@ -58,6 +58,7 @@ import CalendarPickerModal from '@/components/CalendarPickerModal';
 import { navigate } from '@/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import { useIsFocused } from '@react-navigation/native';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function WeeklyTransaction({
   backHandler,
@@ -404,13 +405,12 @@ export function WeeklyTransaction({
                 {
                   color: COLORS.aqua,
                   fontSize: ms(18),
-                  alignSelf: 'flex-start',
+                  // alignSelf: 'flex-start',
                   fontFamily: Fonts.Medium,
                 },
               ]}
             >
-              {'$'}
-              {getTotalTraData?.data?.total.toFixed(2) ?? '0'}
+              {amountFormat(getTotalTraData?.data?.total)}
             </Text>
           )}
         </View>
@@ -716,7 +716,7 @@ export function WeeklyTransaction({
                 <Text style={styles.tableTextHea}>Amount</Text>
                 {/* <Text style={[styles.tableTextHea, { marginRight: -5 }]}>Refunded</Text> */}
 
-                <Text style={[styles.tableTextHea, { paddingLeft: ms(12), paddingRight: ms(24) }]}>
+                <Text style={[styles.tableTextHea, { paddingLeft: ms(14), paddingRight: ms(24) }]}>
                   Status
                 </Text>
               </View>
@@ -791,6 +791,7 @@ export function WeeklyTransaction({
                               {
                                 fontFamily: Fonts.SemiBold,
                                 color: COLORS.lavender,
+                                marginRight: ms(20),
                               },
                             ]}
                           >
@@ -807,7 +808,7 @@ export function WeeklyTransaction({
                           {/* </View> */}
                           <View
                             style={{
-                              width: ms(70),
+                              width: ms(60),
                               borderRadius: ms(10),
                               backgroundColor:
                                 item.status === 'Delivered'
