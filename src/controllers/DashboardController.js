@@ -219,12 +219,11 @@ export class DashboardController {
 
   static async getOrdersByInvoiceId(invoice) {
     return new Promise((resolve, reject) => {
-      const endpoint = ORDER_URL + ApiOrderInventory.invoiceIdSearch + `${invoice}`;
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.invoiceIdSearch + `${invoice}?seller_id=${sellerID}`;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('first', JSON.stringify(response));
-          console.log('second', endpoint);
-
           resolve(response);
         })
         .catch((error) => {
@@ -295,9 +294,11 @@ export class DashboardController {
 
   static async scanBarCode(data) {
     return new Promise((resolve, reject) => {
+      const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = ORDER_URL + ApiOrderInventory.scanbarcode;
       const body = {
         barcode: data,
+        seller_id: sellerID,
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
