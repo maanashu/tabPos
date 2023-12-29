@@ -70,7 +70,11 @@ import { useIsFocused } from '@react-navigation/native';
 import { DATA } from '@/constants/flatListData';
 import { getUser } from '@/selectors/UserSelectors';
 import { getSetting } from '@/selectors/SettingSelector';
-import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
+import {
+  amountFormat,
+  formattedReturnPrice,
+  formattedReturnPriceWithoutSign,
+} from '@/utils/GlobalMethods';
 import { CustomHeader } from './CustomHeader';
 import { Images } from '@/assets/new_icon';
 import { FullScreenLoader } from '@mPOS/components';
@@ -298,6 +302,7 @@ export const CartAmountPayBy = ({
       parseFloat(produdctPrice) + parseFloat(discount) + parseFloat(tips) + parseFloat(tax);
 
     return payment.toFixed(2);
+    // return amountFormat(payment, 'notSign');
   };
 
   const getTipPress = async () => {
@@ -507,11 +512,12 @@ export const CartAmountPayBy = ({
 
   const totalAmountByPaymentMethod = (index) => {
     if (index === 0) {
-      return `$${paymentShow()}`;
+      return `${amountFormat(paymentShow())}`;
     } else if (index === 1) {
-      return `J ${(paymentShow() * 100).toFixed(0)}`;
+      // return `J${(paymentShow() * 100).toFixed(0)}`;
+      return `J ${amountFormat(paymentShow() * 100, 'notSign')}`;
     } else {
-      return `$${paymentShow()}`;
+      return `${amountFormat(paymentShow())}`;
     }
   };
 
@@ -520,7 +526,7 @@ export const CartAmountPayBy = ({
       return '';
     }
     const percentageValue = (percentage / 100) * parseFloat(value);
-    return percentageValue.toFixed(2) ?? 0.0;
+    return percentageValue.toFixed(2) || '0.00';
   }
   const payNowHandler = () => {
     onPressPaymentMethod({
@@ -769,7 +775,7 @@ export const CartAmountPayBy = ({
                     </Text>
                     {/* {index !== 3 && ( */}
                     <Text style={styles._payByAmountTip(selectedTipIndex, index)}>
-                      {'$'}
+                      {/* {'$'} */}
                       {calculatePercentageValue(cartData?.amount?.products_price, item.title)}
                     </Text>
                     {/* )} */}
@@ -1007,7 +1013,8 @@ export const CartAmountPayBy = ({
               <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Sub-Total</Text>
                 <Text style={styles._payTitle}>
-                  ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
+                  {amountFormat(cartData?.amount?.products_price)}
+                  {/* ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'} */}
                 </Text>
               </View>
               <Spacer space={SH(10)} />
@@ -1020,17 +1027,12 @@ export const CartAmountPayBy = ({
               <Spacer space={SH(10)} />
               <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Tips</Text>
-                <Text style={styles._payTitle}>
-                  {/* {formattedReturnPrice(cartData?.amount?.discount)} */}$
-                  {/* {selectedTipAmount > 0 ? selectedTipAmount : cartData?.amount?.tip ? selectedTipAmount == '0.00' ?  || '0.00'} */}
-                  {/* {selectedTipAmount || '0.00'} */}
-                  {cartData?.amount?.tip?.toFixed(2) || '0.00'}
-                </Text>
+                <Text style={styles._payTitle}>{amountFormat(cartData?.amount?.tip)}</Text>
               </View>
               <Spacer space={SH(10)} />
               <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Total Taxes</Text>
-                <Text style={styles._payTitle}>${cartData?.amount?.tax.toFixed(2) ?? '0.00'}</Text>
+                <Text style={styles._payTitle}>{amountFormat(cartData?.amount?.tax)}</Text>
               </View>
               <Spacer space={SH(15)} />
               <View style={styles._subTotalContainer}>
@@ -1039,12 +1041,11 @@ export const CartAmountPayBy = ({
                 </Text>
                 <View style={styles.totalView}>
                   <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
-                    {/* ${totalPayAmount() ?? '0.00'} */} $
+                    {/* ${totalPayAmount() ?? '0.00'} */}
                     {/* {selectedTipAmount == '0.00'
                       ? totalPayAmount() ?? '0.00'
                       : paymentShow() || '0.00'} */}
-                    {paymentShow() || '0.00'}
-                    {/* {cartData?.amount?.total_amount?.toFixed(2) || '0.00'} */}
+                    {amountFormat(paymentShow())}
                   </Text>
                 </View>
               </View>
@@ -1316,11 +1317,13 @@ export const CartAmountPayBy = ({
 
                   <View style={styles.scanpayBack}>
                     <Text style={[styles._amount, { fontSize: ms(14) }]}>
-                      JBR {(cartData?.amount?.total_amount * 100).toFixed(0)}
+                      {/* JBR {(cartData?.amount?.total_amount * 100).toFixed(0)}
+                       */}
+                      JBR{amountFormat(cartData?.amount?.total_amount * 100, 'notSign')}
                     </Text>
                   </View>
                   <Text style={styles.scanToPay}>
-                    ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'} USD
+                    {amountFormat(cartData?.amount?.total_amount)} USD
                   </Text>
                   <View style={{ flex: 1 }} />
                   <Image

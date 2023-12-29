@@ -1649,8 +1649,8 @@ export const changeStatusProductCart = (data) => async (dispatch) => {
   try {
     const res = await RetailController.changeStatusProductCart(data);
     dispatch(changeStatusProductCartSuccess(res));
-    dispatch(getAllCart());
     dispatch(getAllProductCart());
+    dispatch(getAllCart());
   } catch (error) {
     dispatch(changeStatusProductCartError(error.message));
   }

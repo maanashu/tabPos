@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
-import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { amountFormat, formattedReturnPrice } from '@/utils/GlobalMethods';
 import { CustomHeader } from './CustomHeader';
 import { Spacer } from '@/components';
 import { COLORS, SH } from '@/theme';
@@ -116,15 +116,15 @@ export const FinalPaymentScreen = ({
                   {paymentMethod === 'Card' || paymentMethod === 'Cash' ? '$' : 'JBR'}
                 </Text>
                 {cartType == 'Service' ? (
-                  <Text style={styles._amount}>{payDetail?.tips}</Text>
+                  <Text style={styles._amount}>{amountFormat(payDetail?.tips, 'notSign')}</Text>
                 ) : (
-                  <Text style={styles._amount}>{payDetail?.tips}</Text>
+                  <Text style={styles._amount}>{amountFormat(payDetail?.tips, 'notSign')}</Text>
                 )}
               </View>
               {paymentMethod === 'Cash' && (
                 <>
                   <View style={styles._cashRemainView} />
-                  <Text style={styles._cashRemainText}>Change Due: ${changeDue.toFixed(2)}</Text>
+                  <Text style={styles._cashRemainText}>Change Due: {amountFormat(changeDue)}</Text>
                 </>
               )}
             </View>
@@ -186,7 +186,7 @@ export const FinalPaymentScreen = ({
               <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Sub-Total</Text>
                 <Text style={styles._payTitle}>
-                  ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
+                  {amountFormat(cartData?.amount?.products_price)}
                 </Text>
               </View>
               <Spacer space={SH(10)} />
@@ -199,12 +199,12 @@ export const FinalPaymentScreen = ({
               <Spacer space={SH(10)} />
               <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Tips</Text>
-                <Text style={styles._payTitle}>${tipamount.toFixed(2)}</Text>
+                <Text style={styles._payTitle}>{amountFormat(tipamount)}</Text>
               </View>
               <Spacer space={SH(10)} />
               <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Total Taxes</Text>
-                <Text style={styles._payTitle}>${cartData?.amount?.tax.toFixed(2) ?? '0.00'}</Text>
+                <Text style={styles._payTitle}>{amountFormat(cartData?.amount?.tax)}</Text>
               </View>
               <Spacer space={SH(15)} />
               <View style={styles._subTotalContainer}>
@@ -213,8 +213,7 @@ export const FinalPaymentScreen = ({
                 </Text>
                 <View style={styles.totalView}>
                   <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
-                    {/* ${totalPayAmount() ?? '0.00'} */}$
-                    {cartData?.amount?.total_amount.toFixed(2) || '0.00'}
+                    {amountFormat(cartData?.amount?.total_amount)}
                   </Text>
                 </View>
               </View>

@@ -4,6 +4,7 @@ import { ms } from 'react-native-size-matters';
 import { Fonts } from '@/assets';
 import { COLORS } from '@/theme';
 import moment from 'moment';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 const AddedCartItemsCard = ({ item, index }) => {
   const productSize = item?.product_details?.supply?.attributes?.filter(
@@ -51,10 +52,9 @@ const AddedCartItemsCard = ({ item, index }) => {
       </View>
       <View style={{ width: '24%', alignItems: 'flex-end' }}>
         <Text style={styles.priceTitle} numberOfLines={1}>
-          $
           {item?.product_details?.supply?.supply_prices?.offer_price
-            ? item?.product_details?.supply?.supply_prices?.offer_price?.toFixed(2)
-            : item?.product_details?.supply?.supply_prices?.selling_price.toFixed(2)}
+            ? amountFormat(item?.product_details?.supply?.supply_prices?.offer_price)
+            : amountFormat(item?.product_details?.supply?.supply_prices?.selling_price)}
         </Text>
       </View>
     </View>

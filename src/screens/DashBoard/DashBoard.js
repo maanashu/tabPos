@@ -562,7 +562,7 @@ export function DashBoard({ navigation }) {
               <Text style={styles.saleAmountLable} numberOfLines={1}>
                 {strings.dashboard.jobrCoinSaleAmount}
               </Text>
-              <Text style={styles.cashAmount}>JOBR {todayJbrAmount ?? '0.00'}</Text>
+              <Text style={styles.cashAmount}>JBR {todayJbrAmount ?? '0.00'}</Text>
             </View>
           </View>
           <Spacer space={SH(10)} />

@@ -33,7 +33,12 @@ import { FullScreenLoader, Spacer } from '@mPOS/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import MonthYearPicker, { DATE_TYPE } from '@/components/MonthYearPicker';
-import { calculateTimeSlotSelection, getDaysAndDates, imageSource } from '@/utils/GlobalMethods';
+import {
+  amountFormat,
+  calculateTimeSlotSelection,
+  getDaysAndDates,
+  imageSource,
+} from '@/utils/GlobalMethods';
 import { useEffect } from 'react';
 
 moment.suppressDeprecationWarnings = true;
@@ -271,11 +276,13 @@ export const AddServiceScreen = ({ backHandler }) => {
                 {itemData?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
                 itemData?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
                   <Text style={styles.productName}>
-                    ${itemData?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                    {amountFormat(itemData?.supplies?.[0]?.supply_prices?.[0]?.offer_price)}
+                    {/* ${itemData?.supplies?.[0]?.supply_prices?.[0]?.offer_price} */}
                   </Text>
                 ) : (
                   <Text style={styles.productName}>
-                    ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                    {amountFormat(itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
+                    {/* ${itemData?.supplies?.[0]?.supply_prices?.[0]?.selling_price} */}
                   </Text>
                 )}
               </View>

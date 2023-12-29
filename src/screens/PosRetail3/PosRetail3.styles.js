@@ -1701,14 +1701,15 @@ export const styles = StyleSheet.create({
   saveView: {
     backgroundColor: COLORS.save_yellow,
     height: ms(18),
-    width: ms(60),
-    margin: ms(3),
+    // width: ms(60),
+    flex: 1,
+    marginHorizontal: ms(3),
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: ms(9),
   },
   saveText1: {
-    fontSize: ms(8),
+    fontSize: ms(6),
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
   },

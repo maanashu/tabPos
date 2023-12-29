@@ -403,7 +403,7 @@ export const en = {
     todaySale: "Today's Sales",
     cashSaleAmount: 'Cash sales amount',
     cardSaleAmount: 'Card sales amount',
-    jobrCoinSaleAmount: 'JOBR Coin sales amount',
+    jobrCoinSaleAmount: 'JBR Coin sales amount',
     cashDrawer: 'Cash Drawer',
     openBal: 'Opening Balance',
     closeBal: 'Closing Balance',

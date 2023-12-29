@@ -24,7 +24,7 @@ import AddedCartItemsCard from '@/components/AddedCartItemsCard';
 import { number } from 'prop-types';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
-import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { amountFormat, formattedReturnPrice } from '@/utils/GlobalMethods';
 import { CustomHeader } from '../CustomHeader';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
@@ -58,6 +58,7 @@ export const PayByCash = ({
     // const totalPayment = parseFloat(cartAmount) + parseFloat(tipAmount);
     const totalPayment = parseFloat(cartAmount);
     return totalPayment.toFixed(2);
+    // return amountFormat(totalPayment);
   };
 
   const getuserDetailByNo = getRetailData?.getUserDetail ?? [];
@@ -200,14 +201,15 @@ export const PayByCash = ({
   };
 
   const Item = ({ item, onPress, borderColor, textColor, index }) => {
-    const formattedNumber = (Math.round(item.usd * 100) / 100).toString();
+    const formattedNumber = amountFormat(Math.round(item.usd * 100) / 100);
+    // const formattedNumber = (Math.round(item.usd * 100) / 100).toFixed(2);
     return (
       <TouchableOpacity
         style={[styles._boxView, { flexDirection: 'row', borderColor }]}
         onPress={onPress}
       >
-        <Text style={styles._usdText}>$</Text>
-        <Text style={[styles._usdText, { color: COLORS.navy_blue }]}> {formattedNumber}</Text>
+        {/* <Text style={styles._usdText}>$</Text> */}
+        <Text style={[styles._usdText, { color: COLORS.navy_blue }]}>{formattedNumber}</Text>
       </TouchableOpacity>
     );
   };
@@ -389,7 +391,7 @@ export const PayByCash = ({
               <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Sub-Total</Text>
                 <Text style={styles._payTitle}>
-                  ${cartData?.amount?.products_price?.toFixed(2) ?? '0.00'}
+                  {amountFormat(cartData?.amount?.products_price)}
                 </Text>
               </View>
               <Spacer space={SH(10)} />
@@ -403,12 +405,12 @@ export const PayByCash = ({
               <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Tips</Text>
                 {/* <Text style={styles._payTitle}>${tipamount.toFixed(2) ?? '0.00'}</Text> */}
-                <Text style={styles._payTitle}>${cartData?.amount?.tip.toFixed(2) ?? '0.00'}</Text>
+                <Text style={styles._payTitle}>{amountFormat(cartData?.amount?.tip)}</Text>
               </View>
               <Spacer space={SH(10)} />
               <View style={styles._subTotalContainer}>
                 <Text style={styles._payTitle}>Total Taxes</Text>
-                <Text style={styles._payTitle}>${cartData?.amount?.tax.toFixed(2) ?? '0.00'}</Text>
+                <Text style={styles._payTitle}>{amountFormat(cartData?.amount?.tax)} </Text>
               </View>
               <Spacer space={SH(15)} />
               <View style={styles._subTotalContainer}>
@@ -417,7 +419,9 @@ export const PayByCash = ({
                 </Text>
                 <View style={styles.totalView}>
                   <Text style={[styles._payTitle, { fontFamily: Fonts.Medium, fontSize: ms(11) }]}>
-                    ${totalPayAmount() ?? '0.00'}
+                    {/* ${totalPayAmount() ?? '0.00'}
+                     */}
+                    {amountFormat(totalPayAmount())}
                   </Text>
                 </View>
               </View>

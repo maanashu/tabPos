@@ -43,7 +43,7 @@ import { CustomProductAdd } from './CustomProductAdd';
 import { NewCustomerAdd } from './NewCustomerAdd';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
-import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { amountFormat, amountLocalString, formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
 import { FullScreenLoader } from '@mPOS/components';
 import BlurredModal from '@/components/BlurredModal';
@@ -105,6 +105,9 @@ export function CartScreen({
 
   const isLoadingAddCustomProduct = useSelector((state) =>
     isLoadingSelector([TYPES.CUSTOM_PRODUCT_ADD], state)
+  );
+  const isLoadingHoldCart = useSelector((state) =>
+    isLoadingSelector([TYPES.CHANGE_STATUS_PRODUCT_CART], state)
   );
 
   const beforeDiscountCartLoad = () => {
@@ -418,17 +421,23 @@ export function CartScreen({
                               ) : data?.product_details?.supply?.offer?.offer_price_per_pack &&
                                 data?.product_details?.supply?.supply_prices?.selling_price ? (
                                 <Text numberOfLines={1} style={styles.productPrice}>
-                                  $
+                                  {amountFormat(
+                                    data?.product_details?.supply?.offer?.offer_price_per_pack
+                                  )}
+                                  {/* $
                                   {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
                                     2
-                                  )}
+                                  )} */}
                                 </Text>
                               ) : (
                                 <Text numberOfLines={1} style={styles.productPrice}>
-                                  $
+                                  {amountFormat(
+                                    data?.product_details?.supply?.supply_prices?.selling_price
+                                  )}
+                                  {/* $
                                   {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
                                     2
-                                  )}
+                                  )} */}
                                 </Text>
                               )}
                             </View>
@@ -464,13 +473,15 @@ export function CartScreen({
                             </View>
                             <View style={styles.productCartBody}>
                               <Text style={styles.blueListDataText}>
-                                $
-                                {(data?.product_details?.supply?.supply_prices?.offer_price
-                                  ? data?.product_details?.supply?.supply_prices?.offer_price *
-                                    data?.qty
-                                  : data?.product_details?.supply?.supply_prices?.selling_price *
-                                    data?.qty
-                                )?.toFixed(2)}
+                                {data?.product_details?.supply?.supply_prices?.offer_price
+                                  ? amountFormat(
+                                      data?.product_details?.supply?.supply_prices?.offer_price *
+                                        data?.qty
+                                    )
+                                  : amountFormat(
+                                      data?.product_details?.supply?.supply_prices?.selling_price *
+                                        data?.qty
+                                    )}
                               </Text>
                             </View>
                             <View style={styles.productCartBody}>
@@ -701,7 +712,8 @@ export function CartScreen({
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.subTotal}>Sub Total</Text>
                   <Text style={styles.subTotalDollar}>
-                    ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
+                    {amountFormat(cartData?.amount?.products_price || '0.00')}
+                    {/* ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'} */}
                   </Text>
                 </View>
                 <View style={[styles.displayflex2, styles.paddVertical]}>
@@ -715,9 +727,7 @@ export function CartScreen({
 
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.subTotal}>Total Taxes</Text>
-                  <Text style={styles.subTotalDollar}>
-                    ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
-                  </Text>
+                  <Text style={styles.subTotalDollar}>{amountFormat(cartData?.amount?.tax)}</Text>
                 </View>
 
                 <View
@@ -732,9 +742,10 @@ export function CartScreen({
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.itemValue}>Total</Text>
                   <Text style={styles.itemValue}>
-                    ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                    {amountFormat(cartData?.amount?.total_amount)}
                   </Text>
                 </View>
+
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
                   style={[
@@ -801,6 +812,7 @@ export function CartScreen({
         isLoadingOneProduct ||
         isLoadingAddDiscount ||
         isLoadingAddNote ||
+        isLoadingHoldCart ||
         isLoadingAddCustomProduct) && <FullScreenLoader />}
     </View>
   );
