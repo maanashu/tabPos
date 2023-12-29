@@ -795,12 +795,13 @@ export class RetailController {
       HttpClient.get(endpoint)
         .then((response) => {
           if (response?.msg === 'api wallets found') {
-            Toast.show({
-              position: 'bottom',
-              type: 'success_toast',
-              text2: 'Wallet found successfully',
-              visibilityTime: 2000,
-            });
+            // Toast.show({
+            //   position: 'bottom',
+            //   type: 'success_toast',
+            //   text2: 'Wallet found successfully',
+            //   visibilityTime: 2000,
+            // });
+            alert('Wallet found successfully');
           }
           resolve(response);
         })

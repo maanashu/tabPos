@@ -44,6 +44,7 @@ import { MPOS_NAVIGATION } from '@common/commonImports';
 import { getProfile, reset2fa } from '@/actions/AuthActions';
 import DeviceInfo from 'react-native-device-info';
 import { getUser } from '@/selectors/UserSelectors';
+import { posLoginDetail } from '@/actions/DashboardAction';
 
 export function Login(props) {
   const isFocused = useIsFocused();
@@ -109,6 +110,7 @@ export function Login(props) {
       const res = await dispatch(loginPosUserMPOS(data));
       setIsLoading(false);
       if (res?.type !== TYPES.LOGIN_POS_USER_ERROR) {
+        dispatch(posLoginDetail());
         if (TWO_FACTOR) {
           navigate(MPOS_NAVIGATION.twoFactorLogin, { userResponse: res });
         } else {
