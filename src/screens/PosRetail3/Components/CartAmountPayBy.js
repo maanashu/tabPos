@@ -775,7 +775,7 @@ export const CartAmountPayBy = ({
                     </Text>
                     {/* {index !== 3 && ( */}
                     <Text style={styles._payByAmountTip(selectedTipIndex, index)}>
-                      {/* {'$'} */}
+                      {'$'}
                       {calculatePercentageValue(cartData?.amount?.products_price, item.title)}
                     </Text>
                     {/* )} */}

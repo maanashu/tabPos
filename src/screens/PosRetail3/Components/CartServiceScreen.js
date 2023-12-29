@@ -124,6 +124,9 @@ export function CartServiceScreen({
   const isLoadingAddCustomService = useSelector((state) =>
     isLoadingSelector([TYPES.CUSTOM_SERVICE_ADD], state)
   );
+  const isLoadingHoldCart = useSelector((state) =>
+    isLoadingSelector([TYPES.CHANGE_STATUS_PRODUCT_CART], state)
+  );
 
   const backCartLoad = () => {
     // var arr = getRetailData?.getserviceCart;
@@ -846,7 +849,8 @@ export function CartServiceScreen({
         isLoadingAddNote ||
         isLoadingAttachCustomer ||
         isLoadingCartProductUpdate ||
-        isLoadingAddCustomService) && <FullScreenLoader />}
+        isLoadingAddCustomService ||
+        isLoadingHoldCart) && <FullScreenLoader />}
     </View>
   );
 }
