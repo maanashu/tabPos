@@ -9,7 +9,6 @@ import { strings } from '@mPOS/localization';
 import { Dimensions } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
-import moment from 'moment';
 
 const OrderTotal = ({ orderData, orderDetails }) => {
   const hasCheckedItem = orderData?.order?.order_details?.some((item) => item.isChecked === true);
@@ -39,9 +38,9 @@ const OrderTotal = ({ orderData, orderDetails }) => {
       <View style={styles.orderDetailView}>
         <View style={{ flex: 0.5 }}>
           <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.orderDate}</Text>
-          <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>{`${moment
-            .utc(orderData?.order?.date)
-            .format('DD/MM/YYYY')}`}</Text>
+          <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>{`${dayjs(
+            orderData?.order?.date
+          ).format('DD/MM/YYYY')}`}</Text>
         </View>
 
         <View>

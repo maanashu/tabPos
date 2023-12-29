@@ -43,7 +43,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
     },
     {
       title: 'Date',
-      data: moment.utc(returnInvoiceData?.updated_at).local().format('ddd MM/DD/YYYY'),
+      data: moment.utc(returnInvoiceData?.updated_at).format('ddd MM/DD/YYYY'),
       id: 2,
     },
     {
