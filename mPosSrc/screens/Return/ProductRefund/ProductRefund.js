@@ -303,8 +303,10 @@ export function ProductRefund(props) {
           orderList={orders}
           onPress={(modifiedOrderDetailArr) => {
             setModifiedArray([...modifiedOrderDetailArr]);
-            productDetailRef?.current?.open();
             setIsCheckConfirmationModalVisible(false);
+            setTimeout(() => {
+              productDetailRef.current?.open();
+            }, 500);
           }}
         />
       </ReactNativeModal>
