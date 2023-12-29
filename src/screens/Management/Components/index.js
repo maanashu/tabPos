@@ -664,8 +664,10 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
   const cashIn = drawerData?.drawerHistory?.cash_in;
   const cashOut = drawerData?.drawerHistory?.cash_out;
 
-  const totalNetPayment =
-    drawerData?.drawerHistory?.cash_in?.total + drawerData?.drawerHistory?.cash_out?.total;
+  // const totalNetPayment =
+  //   drawerData?.drawerHistory?.cash_in?.total + drawerData?.drawerHistory?.cash_out?.total;
+
+  const totalNetPayment = drawerData?.drawerHistory?.net_amount;
 
   const correctWay = (transaction_type) => {
     if (transaction_type === 'start_tracking_session') {
