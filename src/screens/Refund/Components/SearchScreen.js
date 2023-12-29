@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: ms(30),
-    width: windowWidth / 2.8,
+    width: windowWidth / 2.9,
   },
   searchStyle: {
     width: SW(7),

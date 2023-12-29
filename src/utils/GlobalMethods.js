@@ -480,6 +480,12 @@ const amountFormat = (price, notSign) => {
 
   return `${dollarSign}${withLocalString || '0.00'}`;
 };
+const numberFormate = (price) => {
+  const stringCheckAmount = typeof price === 'string' ? Number(price) : price;
+  const withLocalString = stringCheckAmount?.toLocaleString();
+
+  return `${withLocalString || '0'}`;
+};
 
 export {
   HandleUnhandledTouches,
@@ -510,4 +516,5 @@ export {
   formattedPrice,
   formattedPriceWithoutSign,
   amountFormat,
+  numberFormate,
 };

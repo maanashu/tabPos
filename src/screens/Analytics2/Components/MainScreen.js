@@ -18,7 +18,7 @@ import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { ms } from 'react-native-size-matters';
 import { useEffect } from 'react';
-import { ADMIN } from '@/utils/GlobalMethods';
+import { ADMIN, amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   // const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -134,8 +134,9 @@ export function MainScreen({
             subHeader={
               analyticStatistics?.revenue?.total_count
                 ? analyticStatistics?.revenue?.total_count < 0
-                  ? '-$' + Math.abs(analyticStatistics?.revenue?.total_count)?.toFixed(2)
-                  : '$' + analyticStatistics?.revenue?.total_count?.toFixed(2)
+                  ? '-$' +
+                    amountFormat(Math.abs(analyticStatistics?.revenue?.total_count), 'notSign')
+                  : amountFormat(analyticStatistics?.revenue?.total_count)
                 : '$0'
             }
             analyticGraphObject={analyticStatistics}
@@ -166,8 +167,8 @@ export function MainScreen({
             subHeader={
               analyticStatistics?.cost?.total_count
                 ? analyticStatistics?.cost?.total_count < 0
-                  ? '-$' + Math.abs(analyticStatistics?.cost?.total_count)?.toFixed(2)
-                  : '$' + analyticStatistics?.cost?.total_count?.toFixed(2)
+                  ? '-$' + amountFormat(Math.abs(analyticStatistics?.cost?.total_count), 'notSign')
+                  : amountFormat(analyticStatistics?.cost?.total_count)
                 : '$0'
             }
             analyticGraphObject={analyticStatistics}
@@ -197,8 +198,9 @@ export function MainScreen({
             subHeader={
               analyticStatistics?.profit?.total_count
                 ? analyticStatistics?.profit?.total_count < 0
-                  ? '-$' + Math.abs(analyticStatistics?.profit?.total_count)?.toFixed(2)
-                  : '$' + analyticStatistics?.profit?.total_count?.toFixed(2)
+                  ? '-$' +
+                    amountFormat(Math.abs(analyticStatistics?.profit?.total_count), 'notSign')
+                  : amountFormat(analyticStatistics?.profit?.total_count)
                 : '$0'
             }
             analyticGraphObject={analyticStatistics}
@@ -227,7 +229,7 @@ export function MainScreen({
           header="Total POS Orders"
           subHeader={
             analyticOrderGraphs?.pos_graph?.total_count
-              ? analyticOrderGraphs?.pos_graph?.total_count
+              ? numberFormate(analyticOrderGraphs?.pos_graph?.total_count)
               : '0'
           }
           analyticGraphObject={analyticOrderGraphs}
@@ -248,7 +250,7 @@ export function MainScreen({
           header="Total Delivery Orders"
           subHeader={
             analyticOrderGraphs?.delivery_graph?.total_count
-              ? analyticOrderGraphs?.delivery_graph?.total_count
+              ? numberFormate(analyticOrderGraphs?.delivery_graph?.total_count)
               : '0'
           }
           onPress={onPressDelivery}
@@ -268,7 +270,7 @@ export function MainScreen({
           header="Total Shipping Orders"
           subHeader={
             analyticOrderGraphs?.shipping_graph?.total_count
-              ? analyticOrderGraphs?.shipping_graph?.total_count
+              ? numberFormate(analyticOrderGraphs?.shipping_graph?.total_count)
               : '0'
           }
           onPress={onPressShipping}
@@ -294,7 +296,7 @@ export function MainScreen({
               {isTotalOrderLoading ? (
                 <ActivityIndicator color={COLORS.navy_blue} size={'small'} />
               ) : totalOrder?.total_orders ? (
-                totalOrder?.total_orders
+                numberFormate(totalOrder?.total_orders)
               ) : (
                 '0'
               )}
@@ -341,7 +343,7 @@ export function MainScreen({
 
         <HomeGraph
           header="Total Inventory"
-          subHeader={totalInventory?.total_count ? totalInventory?.total_count : '0'}
+          subHeader={totalInventory?.total_count ? numberFormate(totalInventory?.total_count) : '0'}
           onPress={onPressInventory}
           analyticGraphObject={totalInventory}
           arrayLength={totalInventory?.graph_data?.datasets?.length}
@@ -355,7 +357,7 @@ export function MainScreen({
 
         <HomeGraph
           header="Total Product Sold"
-          subHeader={soldProduct?.total_count ? soldProduct?.total_count : '0'}
+          subHeader={soldProduct?.total_count ? numberFormate(soldProduct?.total_count) : '0'}
           onPress={onPressProducts}
           analyticGraphObject={soldProduct}
           arrayLength={soldProduct?.graphData?.datasets?.length}
