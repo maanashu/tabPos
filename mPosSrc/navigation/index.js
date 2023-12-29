@@ -10,7 +10,6 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
 import { ProfileNavigator } from './ProfileNavigator';
 import Modals from './Modals';
-import { getDashboard } from '@mPOS/selectors/DashboardSelector';
 
 export function RootNavigator() {
   const auth = useSelector(getAuthData);
@@ -18,9 +17,6 @@ export function RootNavigator() {
   const merchantToken = auth?.merchantLoginData?.token;
   const posUserToken = posUser?.posLoginData?.token;
   const defaultScreen = posUser?.defaultScreen;
-  const getDashboardData = useSelector(getDashboard);
-  const getLoginDeatil = getDashboardData?.posLoginDetail;
-  console.log('getLoginDeatil', JSON.stringify(getLoginDeatil));
 
   const getNavigator = () => {
     if (merchantToken && !posUserToken) {

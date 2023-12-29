@@ -44,6 +44,7 @@ import { MPOS_NAVIGATION } from '@common/commonImports';
 import { getProfile, reset2fa } from '@/actions/AuthActions';
 import DeviceInfo from 'react-native-device-info';
 import { getUser } from '@/selectors/UserSelectors';
+import { posLoginDetail } from '@/actions/DashboardAction';
 
 export function Login(props) {
   const isFocused = useIsFocused();
