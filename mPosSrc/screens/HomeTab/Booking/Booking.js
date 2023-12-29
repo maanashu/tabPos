@@ -358,7 +358,6 @@ export function Booking() {
   const renderGroupedListViewItem = ({ item, index }) => {
     return (
       <View style={{ flex: 0.4 }}>
-        {console.log('first', item[0])}
         <Text
           style={{ fontSize: ms(14), fontFamily: Fonts.SemiBold, color: COLORS.black, padding: 10 }}
         >

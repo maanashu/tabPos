@@ -307,7 +307,7 @@ export function ProductRefund(props) {
           setIsVisible={setIsCheckConfirmationModalVisible}
           orderList={orders}
           onPress={(modifiedOrderDetailArr) => {
-            setModifiedArray([...modifiedOrderDetailArr]);
+            setOrders([...modifiedOrderDetailArr]);
             setIsCheckConfirmationModalVisible(false);
             setTimeout(() => {
               productDetailRef.current?.open();
@@ -329,6 +329,7 @@ export function ProductRefund(props) {
       >
         <PaymentSelection
           closeSheet={() => productDetailRef?.current?.close()}
+          order={orders}
           data={finalOrder}
           totalRefundAmount={totalRefundAmount}
           totalTaxes={calculateRefundTax().toFixed(2)}
