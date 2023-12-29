@@ -34,6 +34,7 @@ import { useRef } from 'react';
 import { getTotalInventory } from '@/actions/AnalyticsAction';
 import { useDebouncedCallback } from 'use-lodash-debounce';
 import { height } from '@/theme/ScalerDimensions';
+import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -185,7 +186,7 @@ export function TotalInventory({ sellerID, data }) {
           text={'Total Inventory'}
           count={
             totalInventory?.inventory_overview?.total_inventory
-              ? totalInventory?.inventory_overview?.total_inventory
+              ? numberFormate(totalInventory?.inventory_overview?.total_inventory)
               : 0
           }
           style={{ marginHorizontal: ms(5) }}
@@ -196,7 +197,7 @@ export function TotalInventory({ sellerID, data }) {
           text={'Total Inventory Value'}
           count={
             totalInventory?.inventory_overview?.total_inventory_cost
-              ? '$' + totalInventory?.inventory_overview?.total_inventory_cost?.toFixed(2)
+              ? amountFormat(totalInventory?.inventory_overview?.total_inventory_cost)
               : '$0'
           }
           isLoading={isInventoryLoading}
@@ -206,7 +207,7 @@ export function TotalInventory({ sellerID, data }) {
           text={'Average Order Value'}
           count={
             totalInventory?.inventory_overview?.average_value
-              ? '$' + totalInventory?.inventory_overview?.average_value?.toFixed(2)
+              ? amountFormat(totalInventory?.inventory_overview?.average_value)
               : '$0'
           }
           isLoading={isInventoryLoading}
@@ -216,7 +217,7 @@ export function TotalInventory({ sellerID, data }) {
           text={'Gross Profit'}
           count={
             totalInventory?.inventory_overview?.total_profit
-              ? '$' + totalInventory?.inventory_overview?.total_profit?.toFixed(2)
+              ? amountFormat(totalInventory?.inventory_overview?.total_profit)
               : '$0'
           }
           isLoading={isInventoryLoading}

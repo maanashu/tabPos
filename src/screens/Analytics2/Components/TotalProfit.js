@@ -35,6 +35,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
 import { useDebouncedCallback } from 'use-lodash-debounce';
 import { height } from '@/theme/ScalerDimensions';
+import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -208,7 +209,7 @@ export function TotalProfit({ sellerID, data }) {
           text={'Total Orders'}
           count={
             analyticStatistics?.overView?.total_orders
-              ? analyticStatistics?.overView?.total_orders
+              ? numberFormate(analyticStatistics?.overView?.total_orders)
               : 0
           }
           style={{ marginHorizontal: ms(5) }}
@@ -220,8 +221,9 @@ export function TotalProfit({ sellerID, data }) {
           count={
             analyticStatistics?.overView?.transaction
               ? analyticStatistics?.overView?.transaction < 0
-                ? '-$' + Math.abs(analyticStatistics?.overView?.transaction)?.toFixed(2)
-                : '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
+                ? '-$' +
+                  amountFormat(Math.abs(analyticStatistics?.overView?.transaction), 'notSign')
+                : amountFormat(analyticStatistics?.overView?.transaction)
               : '$0'
           }
           isLoading={profitStatisticsLoader}
@@ -232,8 +234,9 @@ export function TotalProfit({ sellerID, data }) {
           count={
             analyticStatistics?.overView?.average_value
               ? analyticStatistics?.overView?.average_value < 0
-                ? '-$' + Math.abs(analyticStatistics?.overView?.average_value)?.toFixed(2)
-                : '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
+                ? '-$' +
+                  amountFormat(Math.abs(analyticStatistics?.overView?.average_value), 'notSign')
+                : amountFormat(analyticStatistics?.overView?.average_value)
               : '$0'
           }
           isLoading={profitStatisticsLoader}
@@ -244,8 +247,8 @@ export function TotalProfit({ sellerID, data }) {
           count={
             analyticStatistics?.overView?.profit_sum
               ? analyticStatistics?.overView?.profit_sum < 0
-                ? '-$' + Math.abs(analyticStatistics?.overView?.profit_sum)?.toFixed(2)
-                : '$' + analyticStatistics?.overView?.profit_sum?.toFixed(2)
+                ? '-$' + amountFormat(Math.abs(analyticStatistics?.overView?.profit_sum), 'notSign')
+                : amountFormat(analyticStatistics?.overView?.profit_sum)
               : '$0'
           }
           isLoading={profitStatisticsLoader}
