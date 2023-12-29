@@ -165,9 +165,11 @@ export function Management() {
     cashIn?.delivery_fees?.jobr_coin +
     cashIn?.shipping_fees?.jobr_coin;
 
-  const cashTotalNet =
-    Number(drawerData?.drawerHistory?.cash_in?.total) +
-    Number(drawerData?.drawerHistory?.cash_out?.total);
+  // const cashTotalNet =
+  //   Number(drawerData?.drawerHistory?.cash_in?.total) +
+  //   Number(drawerData?.drawerHistory?.cash_out?.total);
+
+  const cashTotalNet = drawerData?.drawerHistory?.net_amount;
   // alert(cashOut?.total);
   const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
@@ -1340,7 +1342,8 @@ export function Management() {
               <View>
                 <Text style={styles.usdTextNew}>
                   {strings.management.usd}
-                  {Number(SessionData?.cashBalance)?.toFixed(2)}
+                  {/* {Number(SessionData?.cashBalance)?.toFixed(2)} */}
+                  {cashTotalNet.toFixed(2)}
                 </Text>
               </View>
               <Spacer space={SH(15)} />
@@ -1412,7 +1415,8 @@ export function Management() {
                   </View>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashSum?.toFixed(2) ?? '0'}
+                    {/* {cashSum?.toFixed(2) ?? '0'} */}
+                    {cashIn?.total?.toFixed(2) ?? 0}
                   </Text>
                 </TouchableOpacity>
                 {viewCashInArray && (
@@ -1536,7 +1540,8 @@ export function Management() {
                   </View>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashOutSum?.toFixed(2) ?? '0'}
+                    {/* {cashOutSum?.toFixed(2) ?? '0'} */}
+                    {cashOut?.total?.toFixed(2) ?? 0}
                   </Text>
                 </TouchableOpacity>
                 {viewCashOutArray && (

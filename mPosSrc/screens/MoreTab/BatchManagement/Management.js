@@ -146,9 +146,11 @@ export function Management() {
     cashIn?.delivery_fees?.jobr_coin +
     cashIn?.shipping_fees?.jobr_coin;
 
-  const cashTotalNet =
-    Number(drawerData?.drawerHistory?.cash_in?.total) +
-    Number(drawerData?.drawerHistory?.cash_out?.total);
+  // const cashTotalNet =
+  //   Number(drawerData?.drawerHistory?.cash_in?.total) +
+  //   Number(drawerData?.drawerHistory?.cash_out?.total);
+
+  const cashTotalNet = drawerData?.drawerHistory?.net_amount;
   // alert(cashOut?.total);
   const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
