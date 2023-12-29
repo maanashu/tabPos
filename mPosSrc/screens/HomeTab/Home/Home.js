@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
-
 import { COLORS } from '@/theme';
 import { Images } from '@mPOS/assets';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
@@ -25,7 +24,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { getDrawerSession, getDrawerSessionPost, homeStatus } from '@/actions/DashboardAction';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { changeStatusProductCart } from '@/actions/RetailAction';
+import { cartRun, changeStatusProductCart } from '@/actions/RetailAction';
 import { FullScreenLoader } from '@mPOS/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
@@ -35,6 +34,7 @@ import { digitWithDot } from '@/utils/validators';
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { CustomErrorToast } from '@mPOS/components/Toast';
 
 export function Home() {
   const isFocused = useIsFocused();
@@ -51,6 +51,12 @@ export function Home() {
   const [trackingSession, setTrackingSession] = useState(false);
   const [amount, setAmount] = useState('');
   const [notes, setNotes] = useState('');
+  const productCart = retailData?.getAllCart?.poscart_products ?? [];
+  const onlyProductCartArray = productCart?.filter((item) => item?.product_type === 'product');
+  const onlyServiceCartArray = productCart?.filter((item) => item?.product_type === 'service');
+
+  const holdOnlyProductArray = holdProductArray?.filter((item) => item?.product_type === 'product');
+  const holdOnlyServiceArray = holdProductArray?.filter((item) => item?.product_type === 'service');
 
   const isholdCartLoading = useSelector((state) =>
     isLoadingSelector([TYPES.CHANGE_STATUS_PRODUCT_CART], state)
@@ -77,7 +83,20 @@ export function Home() {
             status: !productCartData?.is_on_hold,
             cartId: productCartData?.id,
           };
-    dispatch(changeStatusProductCart(data));
+    dispatch(
+      changeStatusProductCart(data, () => {
+        dispatch(
+          cartRun(
+            onlyProductCartArray?.length >= 1 || holdProductArray?.length >= 1
+              ? 'product'
+              : onlyServiceCartArray?.length >= 1 || holdProductArray?.length >= 1
+              ? 'service'
+              : CustomErrorToast({ message: 'cart not found' })
+          )
+        );
+        navigate(MPOS_NAVIGATION.bottomTab, { screen: MPOS_NAVIGATION.cart });
+      })
+    );
   };
 
   const onPressHandler = (item) => {

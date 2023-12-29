@@ -232,7 +232,7 @@ const getCalendarActionButtonTitle = (status) => {
 
 const formattedReturnPrice = (price) => {
   // Convert price to a number, defaulting to 0 if it's falsy or not a number
-  const numericPrice = typeof price === 'string' ? parseFloat(price) : price || 0;
+  const numericPrice = typeof price === 'string' ? parseFloat(price) : price || 0.0;
 
   // Format the numeric price with 2 decimal places
   // const formattedPrice = numericPrice.toFixed(2);
@@ -240,11 +240,11 @@ const formattedReturnPrice = (price) => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-
+  const amountTwoDecimal = Number(formattedPrice)?.toFixed(2);
   // Determine the sign and prepend accordingly
   const sign = numericPrice == 0 ? '' : '-';
 
-  return `${sign}$${formattedPrice}`;
+  return `${sign}$${amountTwoDecimal}`;
 };
 
 const formattedReturnPriceWithoutSign = (price) => {
@@ -256,11 +256,12 @@ const formattedReturnPriceWithoutSign = (price) => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+  const amountTwoDecimal = Number(formattedPrice)?.toFixed(2);
 
   // Determine the sign and prepend accordingly
   const sign = numericPrice == 0 ? '' : '-';
 
-  return `${sign}${formattedPrice}`;
+  return `${sign}${amountTwoDecimal}`;
 };
 
 const formattedPrice = (price) => {

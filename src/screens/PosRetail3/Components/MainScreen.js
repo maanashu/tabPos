@@ -245,7 +245,6 @@ export function MainScreen({
                   status: true,
                   cartId: bulkData?.id,
                 };
-          console.log('data11111', data);
           dispatch(changeStatusProductCart(data));
         } else {
           const data =
@@ -258,7 +257,7 @@ export function MainScreen({
                   status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
                   cartId: bulkData?.id,
                 };
-          console.log('data2222', data);
+
           dispatch(changeStatusProductCart(data));
         }
       } catch (error) {
@@ -277,12 +276,11 @@ export function MainScreen({
               status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
               cartId: getRetailData?.getAllCart?.id,
             };
-      console.log('data33333', data);
+
       dispatch(changeStatusProductCart(data));
     }
   };
   const serviceCartStatusHandler = () => {
-    console.log('11111');
     const data =
       holdServiceArray?.length > 0
         ? {
@@ -293,7 +291,7 @@ export function MainScreen({
             status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
             cartId: getRetailData?.getAllCart?.id,
           };
-    console.log(data);
+
     dispatch(changeStatusProductCart(data));
   };
 

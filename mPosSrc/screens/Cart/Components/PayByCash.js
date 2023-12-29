@@ -13,6 +13,7 @@ import { digitWithDot } from '@/utils/validators';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { createOrder, createServiceOrder } from '@/actions/RetailAction';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) => {
   const dispatch = useDispatch();
@@ -164,7 +165,7 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
             <Text style={styles.receivedAmountText}>Received Amount</Text>
             <View style={styles.cashSelectCon}>
               {selectCashArray?.map((item, index) => {
-                const formattedNumber = (Math.round(item.usd * 100) / 100).toString();
+                const formattedNumber = amountFormat(Math.round(item.usd * 100) / 100);
                 return (
                   <TouchableOpacity
                     style={[
@@ -181,7 +182,7 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
                       setCashRate(item.usd);
                     }}
                   >
-                    <Text style={styles.cashCardCoin}>${formattedNumber}</Text>
+                    <Text style={styles.cashCardCoin}>{formattedNumber}</Text>
                   </TouchableOpacity>
                 );
               })}

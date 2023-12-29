@@ -80,7 +80,6 @@ export function CartScreen({
   const [productIndex, setProductIndex] = useState(0);
   const [productItem, setProductItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState();
-  console.log('cartData', JSON.stringify(cartData));
 
   const availableOfferLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
@@ -712,7 +711,7 @@ export function CartScreen({
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.subTotal}>Sub Total</Text>
                   <Text style={styles.subTotalDollar}>
-                    {amountFormat(cartData?.amount?.products_price || '0.00')}
+                    {amountFormat(cartData?.amount?.products_price)}
                     {/* ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'} */}
                   </Text>
                 </View>
