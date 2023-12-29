@@ -69,8 +69,8 @@ export function Delivery() {
     console.log('iurieure', item);
     const deliveryDate =
       item?.delivery_option == '3'
-        ? moment.utc(item?.created_at).local().format('DD MMM YYYY')
-        : moment.utc(item?.date).local().format('DD MMM YYYY');
+        ? moment.utc(item?.created_at).format('DD MMM YYYY')
+        : moment.utc(item?.date).format('DD MMM YYYY');
     return (
       <TouchableOpacity
         style={styles.orderItemViewStyle}

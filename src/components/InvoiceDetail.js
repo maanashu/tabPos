@@ -64,7 +64,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
     },
     {
       title: 'Date',
-      data: moment.utc(singleOrderDetail?.date).local().format('ddd MM/DD/YYYY'),
+      data: moment.utc(singleOrderDetail?.date).format('ddd MM/DD/YYYY'),
       id: 2,
     },
     {

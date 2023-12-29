@@ -43,8 +43,8 @@ export function OrderDetail(props) {
   const [pickupModalVisible, setPickupModalVisible] = useState(false);
   const customerDetail = orderData?.user_details;
   const deliveryDate =
-    moment.utc(orderData?.invoices?.delivery_date).local().format('DD MMM YYYY') &&
-    moment.utc(orderData?.invoices?.created_at).local().format('DD MMM YYYY');
+    moment.utc(orderData?.invoices?.delivery_date).format('DD MMM YYYY') &&
+    moment.utc(orderData?.invoices?.created_at).format('DD MMM YYYY');
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
   const getAuth = useSelector(getAuthData);

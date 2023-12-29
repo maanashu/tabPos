@@ -96,7 +96,7 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
             <Text style={styles.statusNameText}>{heading}</Text>
             {date ? (
               <Text style={[styles.currentStatusText, { marginTop: 0 }]}>
-                {date ? moment.utc(date).local().format('DD MMM YYYY | HH:mm A') : ''}
+                {date ? moment.utc(date).format('DD MMM YYYY | HH:mm A') : ''}
               </Text>
             ) : null}
           </View>
