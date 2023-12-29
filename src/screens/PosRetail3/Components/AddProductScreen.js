@@ -26,6 +26,7 @@ import { CustomErrorToast } from '@mPOS/components/Toast';
 import { FullScreenLoader } from '@mPOS/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -239,11 +240,13 @@ export const AddProductScreen = ({ backHandler }) => {
               {productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
               productDetail?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
                 <Text style={styles.productName}>
-                  ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                  {amountFormat(productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price)}
+                  {/* ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price} */}
                 </Text>
               ) : (
                 <Text style={styles.productName}>
-                  ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                  {amountFormat(productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
+                  {/* ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price} */}
                 </Text>
               )}
             </View>

@@ -85,7 +85,7 @@ import { TYPES } from '@/Types/Types';
 import { ServiceCartListModal } from './ServiceCartListModal ';
 import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 import { Images } from '@/assets/new_icon';
-import { imageSource } from '@/utils/GlobalMethods';
+import { amountFormat, imageSource } from '@/utils/GlobalMethods';
 import CustomAlert from '@/components/CustomAlert';
 import { FullScreenLoader } from '@mPOS/components';
 import BlurredModal from '@/components/BlurredModal';
@@ -453,6 +453,9 @@ export function MainScreen({
   const isLoadingAddCustomService = useSelector((state) =>
     isLoadingSelector([TYPES.CUSTOM_SERVICE_ADD], state)
   );
+  const isLoadingHoldCart = useSelector((state) =>
+    isLoadingSelector([TYPES.CHANGE_STATUS_PRODUCT_CART], state)
+  );
 
   useEffect(() => {
     if (selectedCatID) {
@@ -718,11 +721,13 @@ export function MainScreen({
             {item?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
             item?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
               <Text numberOfLines={1} style={styles.productPrice}>
-                ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                {amountFormat(item?.supplies?.[0]?.supply_prices?.[0]?.offer_price)}
+                {/* ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price} */}
               </Text>
             ) : (
               <Text numberOfLines={1} style={styles.productPrice}>
-                ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                {amountFormat(item?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
+                {/* ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price} */}
               </Text>
             )}
             {/* <Text numberOfLines={1} style={styles.productPrice}>
@@ -1147,11 +1152,17 @@ export function MainScreen({
                               {item?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
                               item?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
                                 <Text numberOfLines={1} style={styles.productPrice}>
-                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                                  {amountFormat(
+                                    item?.supplies?.[0]?.supply_prices?.[0]?.offer_price
+                                  )}
+                                  {/* ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price} */}
                                 </Text>
                               ) : (
                                 <Text numberOfLines={1} style={styles.productPrice}>
-                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                                  {amountFormat(
+                                    item?.supplies?.[0]?.supply_prices?.[0]?.selling_price
+                                  )}
+                                  {/* ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price} */}
                                 </Text>
                               )}
 
@@ -1799,6 +1810,7 @@ export function MainScreen({
         // isLoadingServices ||
         isLoadingAddCustomProduct ||
         isLoadingAddCustomService ||
+        isLoadingHoldCart ||
         isLoadingHoldPProduct) && <FullScreenLoader />}
 
       {/* <Modal animationType="fade" transparent={true} isVisible={numPadModal} backdropOpacity={0.6}>

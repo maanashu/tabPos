@@ -47,7 +47,7 @@ import { styles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { CustomProductAdd } from './CustomProductAdd';
 import { NewCustomerAddService } from './NewCustomerAddService';
 import Toast from 'react-native-toast-message';
-import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { amountFormat, formattedReturnPrice } from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
 import { FullScreenLoader } from '@mPOS/components';
 import BlurredModal from '@/components/BlurredModal';
@@ -479,16 +479,14 @@ export function CartServiceScreen({
                                 ) : data?.product_details?.supply?.offer?.offer_price_per_pack &&
                                   data?.product_details?.supply?.supply_prices?.selling_price ? (
                                   <Text style={styles.blueListDataText}>
-                                    $
-                                    {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
-                                      2
+                                    {amountFormat(
+                                      data?.product_details?.supply?.offer?.offer_price_per_pack
                                     )}
                                   </Text>
                                 ) : (
                                   <Text style={styles.blueListDataText}>
-                                    $
-                                    {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
-                                      2
+                                    {amountFormat(
+                                      data?.product_details?.supply?.supply_prices?.selling_price
                                     )}
                                   </Text>
                                 )
@@ -510,16 +508,14 @@ export function CartServiceScreen({
                               {data?.product_details?.supply?.offer?.offer_price_per_pack &&
                               data?.product_details?.supply?.supply_prices?.selling_price ? (
                                 <Text style={styles.blueListDataText}>
-                                  $
-                                  {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
-                                    2
+                                  {amountFormat(
+                                    data?.product_details?.supply?.offer?.offer_price_per_pack
                                   )}
                                 </Text>
                               ) : (
                                 <Text style={styles.blueListDataText}>
-                                  $
-                                  {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
-                                    2
+                                  {amountFormat(
+                                    data?.product_details?.supply?.supply_prices?.selling_price
                                   )}
                                 </Text>
                               )}
@@ -690,16 +686,24 @@ export function CartServiceScreen({
                             item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
                               <View style={{ flexDirection: 'row' }}>
                                 <Text style={[styles.offerPrice, styles.lineTrought]}>
-                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.actual_price}
+                                  {amountFormat(
+                                    item?.supplies?.[0]?.supply_prices?.[0]?.actual_price
+                                  )}
                                 </Text>
                                 <Text style={[styles.offerPriceDark, { marginLeft: ms(3) }]}>
-                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                                  {amountFormat(
+                                    item?.supplies?.[0]?.supply_prices?.[0]?.offer_price
+                                  )}
                                 </Text>
                               </View>
                             ) : (
                               <View style={{ flexDirection: 'row' }}>
                                 <Text style={styles.offerPriceDark}>
-                                  ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                                  {/* ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                                   */}
+                                  {amountFormat(
+                                    item?.supplies?.[0]?.supply_prices?.[0]?.selling_price
+                                  )}
                                 </Text>
                               </View>
                             )}
@@ -752,14 +756,16 @@ export function CartServiceScreen({
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.subTotal}>Sub Total</Text>
                   <Text style={styles.subTotalDollar}>
-                    ${cartServiceData?.amount?.products_price.toFixed(2) ?? '0.00'}
+                    {amountFormat(cartServiceData?.amount?.products_price)}
+                    {/* ${cartServiceData?.amount?.products_price.toFixed(2) ?? '0.00'} */}
                   </Text>
                 </View>
 
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.subTotal}>Total Taxes</Text>
                   <Text style={styles.subTotalDollar}>
-                    ${cartServiceData?.amount?.tax.toFixed(2) ?? '0.00'}
+                    {amountFormat(cartServiceData?.amount?.tax)}
+                    {/* ${cartServiceData?.amount?.tax.toFixed(2) ?? '0.00'} */}
                   </Text>
                 </View>
 
@@ -783,7 +789,7 @@ export function CartServiceScreen({
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.itemValue}>Total</Text>
                   <Text style={styles.itemValue}>
-                    ${cartServiceData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                    {amountFormat(cartServiceData?.amount?.total_amount)}
                   </Text>
                 </View>
                 <View style={{ flex: 1 }} />

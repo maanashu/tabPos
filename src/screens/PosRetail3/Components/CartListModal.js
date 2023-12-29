@@ -28,6 +28,7 @@ import { ms } from 'react-native-size-matters';
 import { Images } from '@/assets/new_icon';
 import { useEffect } from 'react';
 import moment from 'moment';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function CartListModal({
   checkOutHandler,
@@ -251,16 +252,14 @@ export function CartListModal({
                               {data?.product_details?.supply?.offer?.offer_price_per_pack &&
                               data?.product_details?.supply?.supply_prices?.selling_price ? (
                                 <Text numberOfLines={1} style={styles.productPrice}>
-                                  $
-                                  {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
-                                    2
+                                  {amountFormat(
+                                    data?.product_details?.supply?.offer?.offer_price_per_pack
                                   )}
                                 </Text>
                               ) : (
                                 <Text numberOfLines={1} style={styles.productPrice}>
-                                  $
-                                  {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
-                                    2
+                                  {amountFormat(
+                                    data?.product_details?.supply?.supply_prices?.selling_price
                                   )}
                                 </Text>
                               )}
@@ -356,7 +355,7 @@ export function CartListModal({
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.subTotal}>Sub Total</Text>
                   <Text style={styles.subTotalDollar}>
-                    ${cartData?.amount?.products_price.toFixed(2) ?? '0.00'}
+                    {amountFormat(cartData?.amount?.products_price)}
                   </Text>
                 </View>
                 <View style={[styles.displayflex2, styles.paddVertical]}>
@@ -369,14 +368,12 @@ export function CartListModal({
                 </View>
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.subTotal}>Total Taxes</Text>
-                  <Text style={styles.subTotalDollar}>
-                    ${cartData?.amount?.tax.toFixed(2) ?? '0.00'}
-                  </Text>
+                  <Text style={styles.subTotalDollar}>{amountFormat(cartData?.amount?.tax)}</Text>
                 </View>
                 <View style={[styles.displayflex2, styles.paddVertical]}>
                   <Text style={styles.itemValue}>Total</Text>
                   <Text style={styles.itemValue}>
-                    ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
+                    {amountFormat(cartData?.amount?.total_amount)}
                   </Text>
                 </View>
                 <TouchableOpacity
