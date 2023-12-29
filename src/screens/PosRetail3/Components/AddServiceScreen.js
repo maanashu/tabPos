@@ -462,9 +462,7 @@ export const AddServiceScreen = ({ backHandler }) => {
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={renderSlotItem}
                         ListEmptyComponent={() => (
-                          <EmptyTimeSlot
-                            title={'There sdvsdvsdvsdv are no slots available for this day'}
-                          />
+                          <EmptyTimeSlot title={'There are no slots available for this day'} />
                         )}
                       />
                     ) : (
