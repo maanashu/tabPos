@@ -1333,6 +1333,11 @@ export function MainScreen({
                   </TouchableOpacity>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
+                    disabled={
+                      isLoadingGetAllCart || isLoadingHoldCart || isLoadingHoldPProduct
+                        ? true
+                        : false
+                    }
                     onPress={() => {
                       onlyServiceCartArray?.length > 0
                         ? CustomAlert({
@@ -1485,6 +1490,11 @@ export function MainScreen({
                   </TouchableOpacity>
                   <Spacer space={SH(20)} />
                   <TouchableOpacity
+                    disabled={
+                      isLoadingGetAllCart || isLoadingHoldCart || isLoadingHoldPProduct
+                        ? true
+                        : false
+                    }
                     // onPress={cartStatusHandler}
                     onPress={serviceCartStatusHandler}
                     // disabled={holdProductArray?.length > 0 ? false : true}
