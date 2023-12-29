@@ -125,6 +125,7 @@ export function Management() {
   const [endSession, setEndSession] = useState(false);
   const [viewSession, setViewSession] = useState(false);
   const [summaryHistory, setSummaryHistory] = useState(false);
+  const [summaryHistoryLoader, setSummaryHistoryLoader] = useState(false);
   const [cardCoinSummary, setCardCoinSummary] = useState(false);
   const [trackingSession, setTrackingSession] = useState(false);
   const [newTrackingSession, setNewTrackingSession] = useState(false);
@@ -272,7 +273,7 @@ export function Management() {
   );
 
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && !summaryHistory) {
       dispatch(getDrawerSessions());
       dispatch(getPaymentDrawerSessions());
     }
@@ -398,8 +399,8 @@ export function Management() {
 
   const tableTouchHandler = (item) => {
     setUserHistory(item);
-    setSessionHistory(false), setSummaryHistory(true);
-    dispatch(getPaymentDrawerSessions(item.id));
+    setSessionHistory(false), dispatch(getPaymentDrawerSessions(item.id));
+    setSummaryHistory(true);
   };
 
   const emailButtonHandler = async () => {
