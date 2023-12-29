@@ -204,6 +204,7 @@ function getDaysAndDates(year = new Date().getFullYear(), month = new Date().get
 
   return daysAndDates;
 }
+
 function capitalizeFirstLetter(str) {
   if (typeof str !== 'string' || str.length === 0) {
     return str;
