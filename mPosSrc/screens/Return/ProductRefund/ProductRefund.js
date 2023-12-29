@@ -5,7 +5,7 @@ import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-import { SH } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { Fonts, editIcon } from '@/assets';
@@ -271,9 +271,13 @@ export function ProductRefund(props) {
             }
           }}
           disabled={orders?.length > 0 ? false : true}
-          style={styles.buttonStyle}
+          style={[styles.buttonStyle, { backgroundColor: COLORS.primary }]}
         >
-          <Text style={styles.buttonTextStyle}>{strings.management.next}</Text>
+          <Text
+            style={[styles.buttonTextStylem, { color: COLORS.white, fontFamily: Fonts.SemiBold }]}
+          >
+            {strings.management.next}
+          </Text>
         </TouchableOpacity>
 
         <Spacer space={SH(20)} />
@@ -303,7 +307,7 @@ export function ProductRefund(props) {
           setIsVisible={setIsCheckConfirmationModalVisible}
           orderList={orders}
           onPress={(modifiedOrderDetailArr) => {
-            setModifiedArray([...modifiedOrderDetailArr]);
+            setOrders([...modifiedOrderDetailArr]);
             setIsCheckConfirmationModalVisible(false);
             setTimeout(() => {
               productDetailRef.current?.open();
@@ -325,6 +329,7 @@ export function ProductRefund(props) {
       >
         <PaymentSelection
           closeSheet={() => productDetailRef?.current?.close()}
+          order={orders}
           data={finalOrder}
           totalRefundAmount={totalRefundAmount}
           totalTaxes={calculateRefundTax().toFixed(2)}

@@ -9,6 +9,7 @@ import { strings } from '@mPOS/localization';
 import { Dimensions } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import moment from 'moment';
 
 const OrderTotal = ({ orderData, orderDetails }) => {
   const hasCheckedItem = orderData?.order?.order_details?.some((item) => item.isChecked === true);
@@ -38,9 +39,9 @@ const OrderTotal = ({ orderData, orderDetails }) => {
       <View style={styles.orderDetailView}>
         <View style={{ flex: 0.5 }}>
           <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.orderDate}</Text>
-          <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>{`${dayjs(
-            orderData?.order?.date
-          ).format('DD/MM/YYYY')}`}</Text>
+          <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>{`${moment
+            .utc(orderData?.order?.date)
+            .format('DD/MM/YYYY')}`}</Text>
         </View>
 
         <View>
@@ -107,8 +108,21 @@ const OrderTotal = ({ orderData, orderDetails }) => {
 
       <Spacer space={SH(15)} />
 
-      <Pressable onPress={onPressNextHandler} style={styles.buttonStyle}>
-        <Text style={styles.buttonTextStyle}>{strings.return.next}</Text>
+      <Pressable
+        onPress={onPressNextHandler}
+        style={[
+          styles.buttonStyle,
+          { backgroundColor: hasCheckedItem ? COLORS.primary : COLORS.textInputBackground },
+        ]}
+      >
+        <Text
+          style={[
+            styles.buttonTextStyle,
+            { color: hasCheckedItem ? COLORS.white : COLORS.darkGray },
+          ]}
+        >
+          {strings.return.next}
+        </Text>
       </Pressable>
     </View>
   );

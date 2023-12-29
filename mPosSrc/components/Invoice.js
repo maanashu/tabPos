@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { getUser } from '@mPOS/selectors/UserSelectors';
 import { Images } from '@mPOS/assets';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import moment from 'moment';
 
 export function Invoice(props) {
   const data = props?.route?.params?.data;
@@ -25,11 +26,11 @@ export function Invoice(props) {
     3: 'Walkin',
     4: 'Shipping',
   };
-  const parsedDate = dayjs(data?.created_at, {
-    format: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
-  });
-
-  const formattedDate = parsedDate.format('ddd DD MMM , YYYY | h:mm A');
+  // const parsedDate = dayjs(data?.created_at, {
+  //   format: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
+  // });
+  const localDateTime = moment.utc(data?.created_at).local();
+  const formattedDate = localDateTime.format('ddd DD MMM , YYYY | h:mm A'); //parsedDate.format('ddd DD MMM , YYYY | h:mm A');
   const renderProducts = ({ item, index }) => {
     const amount = parseFloat(item?.price) * parseFloat(item?.qty);
     return (

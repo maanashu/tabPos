@@ -272,7 +272,8 @@ export function Calender() {
   const getAppointmentsByDate = useMemo(() => {
     const filteredAppointmentsByDate = getAppointmentList?.filter(
       (appointment) =>
-        moment.utc(appointment?.date).format('L') === moment.utc(calendarDate).format('L')
+        moment.utc(appointment?.date).local().format('L') ===
+        moment.utc(calendarDate).local().format('L')
     );
     return filteredAppointmentsByDate;
   }, [calendarDate, getCalenderData]);

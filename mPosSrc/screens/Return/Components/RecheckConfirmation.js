@@ -94,7 +94,6 @@ const RecheckConfirmation = ({ isVisible, setIsVisible, orderList, onPress }) =>
       </View>
     );
   };
-  console.log('first', JSON.stringify(editedOrder));
   return (
     <View style={{ backgroundColor: COLORS.white, flex: 1 / 1.2, paddingHorizontal: ms(15) }}>
       <View style={styles.headingRowStyle}>

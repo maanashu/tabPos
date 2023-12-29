@@ -41,11 +41,9 @@ const CustomerDetails = ({ orderDetail }) => {
 
         <View style={[styles.userNameView, { paddingLeft: 5 }]}>
           <Text style={[styles.datetextStyle, { color: COLORS.navy_blue }]}>
-            {/* {orderDetail?.invoices?.delivery_date
-              ? moment.utc(orderDetail?.invoices?.delivery_date).format('DD MMM YYYY')
-              : '-'} */}
-
-            {orderDetail?.date ? moment.utc(orderDetail?.date).format('DD MMM YYYY') : '-'}
+            {orderDetail?.invoices?.delivery_date
+              ? moment.utc(orderDetail?.invoices?.delivery_date).local().format('DD MMM YYYY')
+              : '-'}
           </Text>
           <Text style={[styles.preferredTextStyle, { color: COLORS.lavender }]}>
             {`${orderDetail?.preffered_delivery_start_time ?? '-'} - ${

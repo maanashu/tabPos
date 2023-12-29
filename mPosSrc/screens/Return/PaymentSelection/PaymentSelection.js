@@ -18,6 +18,7 @@ import { ActivityIndicator } from 'react-native';
 const PaymentSelection = ({
   closeSheet,
   data,
+  order,
   totalRefundAmount,
   totalTaxes,
   deliveryShippingTitle,
@@ -44,12 +45,16 @@ const PaymentSelection = ({
       return;
     }
     const products =
-      data?.order?.order_details?.map((item) => ({
+      order?.map((item) => ({
         id: item?.product_id,
         qty: item?.qty ?? 1,
         write_off_qty: item?.write_off_qty ?? 0,
         add_to_inventory_qty: item?.add_to_inventory_qty ?? 0,
-        refund_value: `${isApplyAmount ? item?.totalRefundAmount : item?.price * item?.qty}`,
+        refund_value: `${
+          isApplyAmount === 'applicableForAllItems' || isApplyAmount === 'applyForEachItem'
+            ? item?.totalRefundAmount
+            : item?.price * item?.qty
+        }`,
       })) || [];
 
     const dataObj = {
