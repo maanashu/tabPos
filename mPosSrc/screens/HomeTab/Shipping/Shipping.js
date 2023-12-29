@@ -43,6 +43,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { getPendingOrders } from '@/actions/DashboardAction';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { useEffect } from 'react';
+import moment from 'moment';
 
 export function Shipping() {
   const dispatch = useDispatch();
@@ -118,7 +119,7 @@ export function Shipping() {
   );
 
   const renderOrderItem = ({ item, index }) => {
-    const deliveryDate = dayjs(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+    const deliveryDate = moment.utc(item?.date).format('DD MMM YYYY') || '';
     return (
       <TouchableOpacity
         onPress={() =>
