@@ -38,6 +38,7 @@ import { Spacer } from '@/components';
 import { useEffect } from 'react';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { formattedPrice } from '@/utils/GlobalMethods';
+import { DELIVERY_MODE } from '@/constants/enums';
 
 export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
   const dispatch = useDispatch();
@@ -87,7 +88,7 @@ export function InvoiceDetail({ mapRef, closeHandler, orderId }) {
     },
     {
       title: 'Mode',
-      data: 'Walk-In',
+      data: DELIVERY_MODE[singleOrderDetail?.delivery_option],
       id: 3,
     },
     {
