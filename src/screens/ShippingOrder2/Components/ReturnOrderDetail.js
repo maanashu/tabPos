@@ -124,7 +124,9 @@ const ReturnOrderDetail = ({
                 {strings.shippingOrder.orderDate}
               </Text>
               <Text style={styles.itemCountText}>
-                {userDetail?.date ? moment.utc(userDetail?.date).format('DD/MM/YYYY') : '00:00'}
+                {userDetail?.date
+                  ? moment.utc(userDetail?.date).local().format('DD/MM/YYYY')
+                  : '00:00'}
               </Text>
             </View>
 

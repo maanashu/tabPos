@@ -43,6 +43,7 @@ import { Fonts } from '@/assets';
 import ProductList from '@mPOS/screens/HomeTab/Delivery/Components/ProductList';
 import OrderTotal from '@mPOS/screens/Return/Components/OrderTotal';
 import { number } from 'prop-types';
+import moment from 'moment';
 
 export function CommonOrderDetail(props) {
   const mapRef = useRef();
@@ -53,8 +54,8 @@ export function CommonOrderDetail(props) {
 
   const customerDetail = orderData?.user_details;
   const deliveryDate =
-    dayjs(orderData?.invoices?.delivery_date).format('DD MMM YYYY') &&
-    dayjs(orderData?.invoices?.created_at).format('DD MMM YYYY');
+    moment.utc(orderData?.invoices?.delivery_date).local().format('DD MMM YYYY') &&
+    moment.utc(orderData?.invoices?.created_at).local().format('DD MMM YYYY');
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
   const getAuth = useSelector(getAuthData);
@@ -259,7 +260,7 @@ export function CommonOrderDetail(props) {
                       : strings.orderStatus.delivered}
                   </Text>
                   <Text style={styles.driverArrivalTimeText}>
-                    {dayjs(orderData?.date).format('DD MMM, YYYY  |  hh:mm a')}
+                    {moment.utc(orderData?.date).local().format('DD MMM, YYYY  |  hh:mm a')}
                   </Text>
                 </View>
 

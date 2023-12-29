@@ -119,7 +119,7 @@ export function Shipping() {
   );
 
   const renderOrderItem = ({ item, index }) => {
-    const deliveryDate = moment.utc(item?.date).format('DD MMM YYYY') || '';
+    const deliveryDate = moment.utc(item?.date).local().format('DD MMM YYYY') || '';
     return (
       <TouchableOpacity
         onPress={() =>

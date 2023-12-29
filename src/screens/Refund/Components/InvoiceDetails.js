@@ -68,7 +68,7 @@ const InvoiceDetails = ({
     },
     {
       title: 'Date',
-      data: moment.utc(orderDetail?.date).format('ddd MM/DD/YYYY'),
+      data: moment.utc(orderDetail?.date).local().format('ddd MM/DD/YYYY'),
       id: 2,
     },
     {

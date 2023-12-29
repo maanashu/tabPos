@@ -148,7 +148,7 @@ export function Booking() {
     setGroupedAppointments(grouped);
     const markedDates = Object.keys(grouped).map((el) => {
       const date = el.split(' ')[1];
-      return moment.utc(date, 'dddd DD/MM/YYYY').format('YYYY-MM-DD');
+      return moment.utc(date, 'dddd DD/MM/YYYY').local().format('YYYY-MM-DD');
     });
     setAppointmentDate(markedDates);
   }, [getAppointmentList]);
@@ -262,7 +262,8 @@ export function Booking() {
   const getAppointmentsByDate = useMemo(() => {
     const filteredAppointmentsByDate = getAppointmentList?.filter(
       (appointment) =>
-        moment.utc(appointment?.date).format('L') === moment.utc(calendarDate).format('L')
+        moment.utc(appointment?.date).local().format('L') ===
+        moment.utc(calendarDate).local().format('L')
     );
     return filteredAppointmentsByDate;
   }, [calendarDate, getCalenderData]);

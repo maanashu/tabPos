@@ -140,7 +140,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
               </Text>
               <Text style={styles.orderDateText}>
                 {orderData?.order?.date
-                  ? moment.utc(orderData?.order?.date).format('MM/DD/YYYY')
+                  ? moment.utc(orderData?.order?.date).local().format('MM/DD/YYYY')
                   : '-'}
               </Text>
             </View>
@@ -208,7 +208,7 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
                 </Text>
                 <Text style={styles.itemCountText}>
                   {orderData?.order?.date
-                    ? moment.utc(orderData?.order?.date).format('DD/MM/YYYY')
+                    ? moment.utc(orderData?.order?.date).local().format('DD/MM/YYYY')
                     : '-'}
                 </Text>
               </View>
