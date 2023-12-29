@@ -523,9 +523,9 @@ export function SessionHistoryTable({
                     />
                     <DataTable.Cell>
                       {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
-                      {item?.pos_user_detail?.user_profiles?.firstname == undefined
+                      {item?.pos_user_details?.user_profiles?.firstname == undefined
                         ? 'System Ended'
-                        : item?.pos_user_detail?.user_profiles?.firstname}
+                        : item?.pos_user_details?.user_profiles?.firstname}
                     </DataTable.Cell>
                   </View>
                 </View>
