@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useRef } from 'react';
 import {
   View,
   Text,
@@ -56,6 +56,8 @@ import moment from 'moment';
 import Modal from 'react-native-modal';
 import CountryPicker from 'react-native-country-picker-modal';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
 
 const result = Dimensions.get('window').height - 50;
 const windowWidth = Dimensions.get('window').width;
@@ -63,6 +65,7 @@ const windowWidth = Dimensions.get('window').width;
 const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler }) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const ref = useRef(null);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const getCustomerData = useSelector(getCustomers);
@@ -93,13 +96,20 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
   const [flag, setFlag] = useState('US');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+1');
-
+  const [streetAddress, setStreetAddress] = useState('');
   const storeLocationArray = [
     storeLocationData?.map((item, index) => ({
       label: item?.city,
       value: item?.city,
     })),
   ];
+  const [apt, setApt] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [city, setCity] = useState('');
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [state, setState] = useState('');
+  const [country, setCountry] = useState('');
 
   useEffect(() => {
     const data = {
@@ -178,6 +188,35 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
   const isOrderUserLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ORDER_USER], state)
   );
+
+  const getAddress = (data, details, place_id = null) => {
+    const addressDetails = details?.address_components;
+    const { lat, lng } = details?.geometry?.location;
+    setLatitude(lat);
+    setLongitude(lng);
+
+    for (var i = 0; i < addressDetails.length; i++) {
+      if (addressDetails[i].types[0] == 'country') {
+        setCountry(addressDetails?.[i]?.long_name);
+      }
+
+      if (addressDetails[i].types[0] == 'postal_code') {
+        setZipCode(addressDetails?.[i]?.long_name);
+      }
+
+      if (addressDetails[i].types[0] == 'administrative_area_level_1') {
+        setState(addressDetails?.[i]?.long_name);
+      }
+
+      if (
+        addressDetails[i].types[0] == 'administrative_area_level_2' ||
+        addressDetails[i].types[0] == 'administrative_area_level_3' ||
+        addressDetails[i].types[0] == 'locality'
+      ) {
+        setCity(addressDetails?.[i]?.long_name);
+      }
+    }
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -730,7 +769,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                   </View>
                 </View>
                 <View style={{ flex: 1, marginLeft: ms(8) }}>
-                  <Text style={{ fontSize: ms(10), color: COLORS.navy_blue }}>{'Last Name'}</Text>
+                  <Text style={{ fontSize: ms(9), color: COLORS.navy_blue }}>{'Last Name'}</Text>
                   <View style={styles.textInputView}>
                     <TextInput
                       returnKeyType={'done'}
@@ -747,7 +786,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                   </View>
                 </View>
               </View>
-              <Text style={{ fontSize: ms(10), color: COLORS.navy_blue }}>{'Phone Number'}</Text>
+              <Text style={{ fontSize: ms(9), color: COLORS.navy_blue }}>{'Phone Number'}</Text>
 
               <View style={styles.textInputView}>
                 <CountryPicker
@@ -778,13 +817,13 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                   placeholder={strings.verifyPhone.placeHolderText}
                 />
               </View>
-              <Text style={{ fontSize: ms(10), color: COLORS.navy_blue }}>{'Email-Address'}</Text>
 
+              <Text style={{ fontSize: ms(9), color: COLORS.navy_blue }}>{'Email-Address'}</Text>
               <View style={styles.textInputView}>
                 <Image
                   source={email_new}
                   resizeMode="contain"
-                  style={{ width: ms(10), aspectRatio: 1 }}
+                  style={{ width: ms(12), aspectRatio: 1 }}
                 />
                 <TextInput
                   returnKeyType={'done'}
@@ -793,7 +832,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                   onChangeText={(text) => {
                     setEmailAddress(text);
                   }}
-                  style={styles.textInputContainer}
+                  style={[styles.textInputContainer, { marginHorizontal: ms(5) }]}
                   placeholder={'Email'}
                   placeholderTextColor={COLORS.navy_light_blue}
                   // showSoftInputOnFocus={false}
@@ -824,24 +863,113 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                 width: ms(2),
                 backgroundColor: COLORS.light_blue,
                 marginHorizontal: ms(20),
+                marginBottom: ms(10),
               }}
             />
 
             <View style={{ flex: 1 }}>
-              <Text style={styles.phoneText}>{'Name'}</Text>
+              <Text style={styles.phoneText}>{'Street Address'}</Text>
+              <GooglePlacesAutocomplete
+                ref={ref}
+                fetchDetails
+                autoFocus={false}
+                listViewDisplayed={true}
+                returnKeyType={'search'}
+                placeholder={'Street Address'}
+                enablePoweredByContainer={false}
+                query={{
+                  language: 'en',
+                  type: 'address',
+                  key: GOOGLE_MAP.API_KEYS,
+                }}
+                onPress={(data, details) => {
+                  setStreetAddress(data.structured_formatting.main_text);
+                  getAddress(data, details);
+                }}
+                styles={{
+                  textInput: styles.textInputView,
+                  textInputContainer: styles.textInputContainer,
+                }}
+                textInputProps={{
+                  editable: true,
+                  value: streetAddress,
+                  onChange: (text) => setStreetAddress(text),
+                  placeholderTextColor: COLORS.light_blue2,
+                }}
+              />
 
+              <Text style={styles.phoneText}>{'Apartment/Suite'}</Text>
               <View style={styles.textInputView}>
                 <TextInput
                   returnKeyType={'done'}
                   keyboardType={'default'}
-                  value={name.trim()}
+                  value={apt}
                   onChangeText={(text) => {
-                    setName(text);
+                    setApt(text);
                   }}
                   style={styles.textInputContainer}
-                  placeholder={'Name'}
-                  placeholderTextColor={COLORS.darkGray}
-                  // showSoftInputOnFocus={false}
+                  placeholder={'Apartment/Suite'}
+                  placeholderTextColor={COLORS.navy_light_blue}
+                />
+              </View>
+
+              <Text style={styles.phoneText}>{'Country'}</Text>
+              <View style={styles.textInputView}>
+                <TextInput
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={country}
+                  onChangeText={(text) => {
+                    setCountry(text);
+                  }}
+                  style={[styles.textInputContainer]}
+                  placeholder={'Country'}
+                  placeholderTextColor={COLORS.navy_light_blue}
+                />
+              </View>
+
+              <Text style={styles.phoneText}>{'State'}</Text>
+              <View style={styles.textInputView}>
+                <TextInput
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={state}
+                  onChangeText={(text) => {
+                    setState(text);
+                  }}
+                  style={[styles.textInputContainer]}
+                  placeholder={'State'}
+                  placeholderTextColor={COLORS.navy_light_blue}
+                />
+              </View>
+
+              <Text style={styles.phoneText}>{'City'}</Text>
+              <View style={styles.textInputView}>
+                <TextInput
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={city}
+                  onChangeText={(text) => {
+                    setCity(text);
+                  }}
+                  style={[styles.textInputContainer]}
+                  placeholder={'City'}
+                  placeholderTextColor={COLORS.navy_light_blue}
+                />
+              </View>
+
+              <Text style={styles.phoneText}>{'Zip Code'}</Text>
+              <View style={styles.textInputView}>
+                <TextInput
+                  returnKeyType={'done'}
+                  keyboardType={'default'}
+                  value={zipCode}
+                  onChangeText={(text) => {
+                    setZipCode(text);
+                  }}
+                  style={[styles.textInputContainer]}
+                  placeholder={'Zip Code'}
+                  placeholderTextColor={COLORS.navy_light_blue}
                 />
               </View>
             </View>
