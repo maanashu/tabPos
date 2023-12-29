@@ -43,6 +43,28 @@ import { useEffect } from 'react';
 
 moment.suppressDeprecationWarnings = true;
 
+function EmptyTimeSlot({ title }) {
+  return (
+    <View
+      style={{
+        height: ms(50),
+        paddingHorizontal: ms(10),
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Text
+        style={{
+          fontFamily: Fonts.SemiBold,
+          fontSize: ms(10),
+        }}
+      >
+        {title}
+      </Text>
+    </View>
+  );
+}
+
 export const AddServiceScreen = ({ backHandler }) => {
   const dispatch = useDispatch();
   const getRetailData = useSelector(getRetail);
@@ -86,6 +108,7 @@ export const AddServiceScreen = ({ backHandler }) => {
     const daysArray = getDaysAndDates(selectedYearData?.value, selectedMonthData?.value);
     setmonthDays(daysArray);
   }, [selectedMonthData, selectedYearData]);
+
   useEffect(() => {
     if (getRetailData?.timeSlots) {
       const timeSlots = getRetailData?.timeSlots?.filter((timeSlot) => timeSlot?.is_available);
@@ -216,6 +239,12 @@ export const AddServiceScreen = ({ backHandler }) => {
     };
     dispatch(addToServiceCart(data));
     backHandler();
+  };
+
+  const resetSelectedDateAndTimeSlot = () => {
+    setselectedDate(null);
+    setselectedTimeSlotIndex(null);
+    setSelectedTimeSlotData('');
   };
 
   return (
@@ -390,6 +419,7 @@ export const AddServiceScreen = ({ backHandler }) => {
                   defaultYear={selectedYearData?.value ?? moment().year()}
                   onSelect={(monthData) => {
                     setselectedMonthData(monthData);
+                    resetSelectedDateAndTimeSlot();
                   }}
                 />
                 <Spacer space={SH(10)} />
@@ -399,6 +429,7 @@ export const AddServiceScreen = ({ backHandler }) => {
                   defaultValue={moment().year()}
                   onSelect={(yearData) => {
                     setselectedYearData(yearData);
+                    resetSelectedDateAndTimeSlot();
                   }}
                 />
               </View>
@@ -430,25 +461,23 @@ export const AddServiceScreen = ({ backHandler }) => {
                     <ActivityIndicator size={'large'} color={COLORS.navy_blue} />
                   </View>
                 ) : (
-                  <FlatList
-                    data={timeSlotsData || []}
-                    numColumns={4}
-                    renderItem={renderSlotItem}
-                    ListEmptyComponent={() => (
-                      <View
-                        style={{
-                          height: ms(50),
-                          paddingHorizontal: ms(10),
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Text style={{ fontFamily: Fonts.SemiBold, fontSize: ms(10) }}>
-                          There are no slots available for this day
-                        </Text>
-                      </View>
+                  <>
+                    {selectedDate ? (
+                      <FlatList
+                        data={timeSlotsData || []}
+                        numColumns={4}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={renderSlotItem}
+                        ListEmptyComponent={() => (
+                          <EmptyTimeSlot
+                            title={'There sdvsdvsdvsdv are no slots available for this day'}
+                          />
+                        )}
+                      />
+                    ) : (
+                      <EmptyTimeSlot title={'Please select any day to load time slots'} />
                     )}
-                  />
+                  </>
                 )}
               </View>
             </View>

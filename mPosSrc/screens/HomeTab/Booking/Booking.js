@@ -136,7 +136,7 @@ export function Booking() {
   const [time, setTime] = useState(false);
   const [timeValue, setTimeValue] = useState(defaultSettingsForCalendar?.calender_view ?? 'week');
   const [timeItem, setTimeItem] = useState([
-    { label: 'Today', value: 'day' },
+    { label: 'Day', value: 'day' },
     { label: 'Week', value: 'week' },
     { label: 'Month', value: 'month' },
   ]);
