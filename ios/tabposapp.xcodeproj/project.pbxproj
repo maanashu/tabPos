@@ -526,6 +526,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "JOBR POS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "tabposapp requires to access camera for uploading photos to your profile or posts";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) Enabling Face ID allows you quick and secure access to your account";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Allowing access to your location enhances the app's functionality by improving accuracy and providing a better user experience.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "tabposapp requires location access to get current location of the POS ";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "tabposapp would like to upload photos from your photo gallery";
@@ -571,6 +572,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "JOBR POS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "tabposapp requires to access camera for uploading photos to your profile or posts";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) Enabling Face ID allows you quick and secure access to your account";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Allowing access to your location enhances the app's functionality by improving accuracy and providing a better user experience.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "tabposapp requires location access to get current location of the POS ";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "tabposapp would like to upload photos from your photo gallery";
