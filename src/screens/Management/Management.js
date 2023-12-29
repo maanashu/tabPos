@@ -338,6 +338,7 @@ export function Management() {
             transactionType: 'manual_cash_out',
             modeOfcash: 'cash_out',
           };
+
       const res = await dispatch(trackSessionSave(data));
       if (res) {
         dispatch(getDrawerSessions());
@@ -648,11 +649,27 @@ export function Management() {
             <View>
               <Text style={styles.amountCountedText}>{strings.management.hintText}</Text>
               <Spacer space={SH(5)} />
-              <View style={[styles.noteInputStyleNew, { flexDirection: 'row' }]}>
-                <Image source={Message} style={[styles.crossIconStyle, { right: SW(5) }]} />
+              <View
+                style={[styles.noteInputStyleNew, { flexDirection: 'row', alignItems: 'center' }]}
+              >
+                <Image
+                  source={Message}
+                  style={[
+                    styles.crossIconStyle,
+                    { right: SW(5), tintColor: COLORS.lavender, marginStart: ms(10) },
+                  ]}
+                />
 
                 <TextInput
                   placeholder={strings.management.note}
+                  style={{
+                    width: SW(105),
+                    height: SH(60),
+                    borderRadius: 5,
+                    fontFamily: Fonts.Italic,
+                    fontSize: SF(16),
+                    color: COLORS.navy_blue,
+                  }}
                   // style={styles.noteInputStyleNew}
                   placeholderTextColor={COLORS.navy_blue}
                   value={trackNotes}
@@ -1310,7 +1327,10 @@ export function Management() {
                     },
                   ]}
                 >
-                  {moment(SessionData?.createDate).format('dddd, MMMM Do YYYY | h:mm a')}
+                  {moment.utc().format('dddd, Do MMMM YYYY')}
+                  {/* {moment(SessionData?.createDate).format('dddd, MMMM Do YYYY | h:mm a')} */}
+                  {/* const currentTime = moment.utc().format('h:mm A');
+               const currentDate = moment.utc().format('dddd, Do MMMM YYYY'); */}
                 </Text>
               </View>
             </View>

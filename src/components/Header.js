@@ -7,8 +7,8 @@ import { COLORS, SF, Fonts } from '@/theme';
 import { Sun, Divider } from '@/assets';
 
 const Header = ({ invoiceNo, posIn }) => {
-  const currentTime = moment().format('h:mm A');
-  const currentDate = moment().format('dddd, Do MMMM YYYY');
+  const currentTime = moment.utc().format('h:mm A');
+  const currentDate = moment.utc().format('dddd, Do MMMM YYYY');
 
   return (
     <View style={styles.container}>
