@@ -33,6 +33,7 @@ import { COLORS } from '@/theme';
 import { getSoldProduct } from '@/actions/AnalyticsAction';
 import { useDebouncedCallback } from 'use-lodash-debounce';
 import { height } from '@/theme/ScalerDimensions';
+import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -191,7 +192,7 @@ export function TotalProductSold({ sellerID, data }) {
           text={'Unit Sold'}
           count={
             soldProduct?.productOverview?.totalProducts
-              ? soldProduct?.productOverview?.totalProducts
+              ? numberFormate(soldProduct?.productOverview?.totalProducts)
               : 0
           }
           style={{ marginHorizontal: ms(5) }}
@@ -202,7 +203,7 @@ export function TotalProductSold({ sellerID, data }) {
           text={'Total Volume'}
           count={
             soldProduct?.productOverview?.totalVolume
-              ? '$' + soldProduct?.productOverview?.totalVolume?.toFixed(2)
+              ? amountFormat(soldProduct?.productOverview?.totalVolume)
               : '$0'
           }
           isLoading={isSoldProductLoading}
@@ -212,7 +213,7 @@ export function TotalProductSold({ sellerID, data }) {
           text={'Profit Margin'}
           count={
             soldProduct?.productOverview?.totalMargin
-              ? soldProduct?.productOverview?.totalMargin?.toFixed(2) + '%'
+              ? numberFormate(soldProduct?.productOverview?.totalMargin) + '%'
               : '$0'
           }
           isLoading={isSoldProductLoading}
@@ -222,7 +223,7 @@ export function TotalProductSold({ sellerID, data }) {
           text={'Gross Profit'}
           count={
             soldProduct?.productOverview?.totalProfit
-              ? '$' + soldProduct?.productOverview?.totalProfit?.toFixed(2)
+              ? amountFormat(soldProduct?.productOverview?.totalProfit)
               : '$0'
           }
           isLoading={isSoldProductLoading}
