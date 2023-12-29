@@ -399,6 +399,7 @@ export function RetailServices(props) {
         />
 
         <AddServiceCart {...{ addServiceCartRef, serviceDetailHanlder }} />
+
         <ProductDetails {...{ productDetailRef, bothSheetClose }} />
         <Modal
           style={{ margin: 0 }}

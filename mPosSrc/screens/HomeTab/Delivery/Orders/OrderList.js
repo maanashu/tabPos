@@ -19,6 +19,7 @@ import styles from './styles';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import { getOrders, getReviewDefault } from '@/actions/DeliveryAction';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
+import moment from 'moment';
 
 export function OrderList(props) {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ export function OrderList(props) {
     const deliveryDate =
       item?.delivery_option == '3'
         ? moment.utc(item?.created_at).format('DD MMM YYYY')
-        : moment.utc(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+        : moment.utc(item?.date).format('DD MMM YYYY');
     return (
       <TouchableOpacity
         onPress={() =>
