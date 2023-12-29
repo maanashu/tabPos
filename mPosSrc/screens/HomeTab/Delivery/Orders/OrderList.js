@@ -84,16 +84,18 @@ export function OrderList(props) {
 
         <View style={{ flex: 0.45 }}>
           <Text style={styles.deliveryDateTextStyle}>{deliveryDate}</Text>
-
-          <View style={styles.itemAndPaymentView}>
-            <Image
-              source={Images.clockIcon}
-              style={[styles.payIconStyle, { tintColor: COLORS.primary }]}
-            />
-            <Text
-              style={styles.priceTextStyle}
-            >{`${item?.preffered_delivery_start_time} ${item?.preffered_delivery_end_time}`}</Text>
-          </View>
+          {item?.preffered_delivery_start_time !== null ||
+            (item?.preffered_delivery_end_time !== null && (
+              <View style={styles.itemAndPaymentView}>
+                <Image
+                  source={Images.clockIcon}
+                  style={[styles.payIconStyle, { tintColor: COLORS.primary }]}
+                />
+                <Text
+                  style={styles.priceTextStyle}
+                >{`${item?.preffered_delivery_start_time} ${item?.preffered_delivery_end_time}`}</Text>
+              </View>
+            ))}
         </View>
 
         <View style={{ flex: 0.06 }}>
