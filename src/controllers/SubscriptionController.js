@@ -35,6 +35,7 @@ export class SubscriptionController {
       const endpoint = WALLET_URL + plansAPI.activePlan;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('ERere', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -49,6 +50,7 @@ export class SubscriptionController {
       const param = {
         plan_id: plan_id,
       };
+
       HttpClient.post(endpoint, param)
         .then((response) => {
           Toast.show({

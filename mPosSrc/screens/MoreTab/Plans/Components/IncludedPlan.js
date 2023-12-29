@@ -2,9 +2,11 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { COLORS, Fonts } from '@/theme';
 import { ms } from 'react-native-size-matters';
+import { capitalizeFirstLetter } from '@/utils/GlobalMethods';
 
 const IncludedPlan = ({ data }) => {
   const renderIncluded = ({ item }) => {
+    console.log('sdsds', item);
     return (
       <>
         <View style={[styles.rowAligned, { marginVertical: ms(5) }]}>
@@ -12,7 +14,7 @@ const IncludedPlan = ({ data }) => {
             <View style={styles.innerCircle}></View>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.planIncludedText}>{item?.appName}</Text>
+            <Text style={styles.planIncludedText}>{capitalizeFirstLetter(item)}</Text>
           </View>
         </View>
       </>
