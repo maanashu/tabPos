@@ -1,7 +1,6 @@
-import { ScreenWrapper } from '@/components';
 import { Images } from '@mPOS/assets';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import styles from './styles';
 import { strings } from '@/localization';
 import { ms } from 'react-native-size-matters';
@@ -11,12 +10,8 @@ import ReactNativeModal from 'react-native-modal';
 import SmsReceipt from '../Components/SmsReceipt';
 import EmailReceipt from '../Components/EmailReceipt';
 import { COLORS } from '@/theme';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { returnProduct } from '@/actions/DashboardAction';
-import { getDrawerSessions } from '@/actions/CashTrackingAction';
-import { FullScreenLoader } from '@mPOS/components';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { ActivityIndicator } from 'react-native';
 
@@ -68,8 +63,6 @@ const PaymentSelection = ({
       }),
       ...(eReceiptMethod === 2 && { email }),
     };
-
-    dispatch(getDrawerSessions());
 
     const callback = (res) => {
       if (res) {

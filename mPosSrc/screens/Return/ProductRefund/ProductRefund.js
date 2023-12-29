@@ -11,17 +11,17 @@ import { strings } from '@/localization';
 import { Fonts, editIcon } from '@/assets';
 import EditPrice from '../Components/EditPrice';
 import PartialRefund from '../Components/PartialRefund';
-import { FullScreenLoader, Header } from '@mPOS/components';
+import { Header } from '@mPOS/components';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import RecheckConfirmation from '../Components/RecheckConfirmation';
 import PaymentSelection from '../PaymentSelection/PaymentSelection';
 
 import styles from './styles';
-import { useSelector } from 'react-redux';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { useDispatch } from 'react-redux';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 export function ProductRefund(props) {
+  const dispatch = useDispatch();
   const productDetailRef = useRef();
   const [isRefundDeliveryAmount, setIsRefundDeliveryAmount] = useState(false);
   const [orders, setOrders] = useState();
@@ -262,6 +262,7 @@ export function ProductRefund(props) {
 
         <TouchableOpacity
           onPress={() => {
+            dispatch(getDrawerSessions());
             if (finalOrder?.order?.order_type === 'service') {
               setIsCheckConfirmationModalVisible(false);
               getOrdersDetail();
