@@ -91,7 +91,7 @@ const OrderConvertion = () => {
 
               <View style={styles.ordersView}>
                 <Text style={styles.countTextStyle}>
-                  {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
+                  {`${parseInt(pieChartData?.[2]?.percentage ?? 0)}%` ?? '0%'}
                 </Text>
               </View>
             </View>
@@ -103,7 +103,7 @@ const OrderConvertion = () => {
 
               <View style={styles.ordersView}>
                 <Text style={styles.countTextStyle}>
-                  {`${parseInt(pieChartData?.[3]?.percentage)}%` ?? '0'}
+                  {`${parseInt(pieChartData?.[3]?.percentage ?? 0)}%` ?? '0'}
                 </Text>
               </View>
             </View>

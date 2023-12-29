@@ -95,6 +95,16 @@ export const loginPosUser = (data) => async (dispatch) => {
     return dispatch(loginPosUserError(error));
   }
 };
+export const loginPosUserMPOS = (data) => async (dispatch) => {
+  dispatch(loginPosUserRequest());
+  try {
+    const res = await UserController.loginPosUser(data);
+
+    return res?.payload;
+  } catch (error) {
+    return dispatch(loginPosUserError(error));
+  }
+};
 
 export const deviceLogin = (id) => async (dispatch) => {
   dispatch(loginPosUserRequest());

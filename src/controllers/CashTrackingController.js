@@ -14,6 +14,7 @@ export class CashTrackingController {
       };
       HttpClient.post(endpoint, body)
         .then((response) => {
+          // console.log('GETSSSSSS', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -33,8 +34,11 @@ export class CashTrackingController {
       const endpoint = drawerId
         ? USER_URL + `${ApiUserInventory.getPaymentHistory}?drawer_id=${drawerId}`
         : USER_URL + ApiUserInventory.getPaymentHistory;
+
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('REEdsdas', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

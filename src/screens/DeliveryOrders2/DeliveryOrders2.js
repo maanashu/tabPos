@@ -385,7 +385,7 @@ export function DeliveryOrders2({ route }) {
     const deliveryDate =
       item?.delivery_option == '3'
         ? moment.utc(item?.created_at).format('DD MMM YYYY')
-        : moment.utc(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
+        : moment.utc(item?.date).format('DD MMM YYYY');
     const startTime = item?.preffered_delivery_start_time || '00.00';
     const endTime = item?.preffered_delivery_end_time || '00.00';
     const formattedTime = `${startTime} - ${endTime}`;
