@@ -28,7 +28,7 @@ export function StaffSettings() {
   useEffect(() => {
     const data = {
       page: 1,
-      limit: 50,
+      limit: 20,
       seller_id: sellerID,
     };
     dispatch(getAllPosUsers(data));

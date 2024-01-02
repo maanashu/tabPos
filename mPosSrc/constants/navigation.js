@@ -72,4 +72,5 @@ export const NAVIGATION = {
   faqAnswers: 'FaqAnswers',
   faq: 'Faq',
   commonOrderDetail: 'CommonOrderDetail',
+  taxesDuties: 'TaxesDuties',
 };
