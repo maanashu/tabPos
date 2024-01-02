@@ -70,17 +70,8 @@ const groupAppointmentsByDate = (data) => {
   const groupedAppointments = {};
 
   for (const appointment of data) {
-    const date = new Date(appointment.date);
-    const dayOfWeek = date.getDay(); // Get the day of the week (0 to 6)
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const formattedDate =
-      days[dayOfWeek] +
-      ' ' +
-      date.getDate() +
-      '/' +
-      (date.getMonth() + 1) +
-      '/' +
-      date.getFullYear();
+    const date = moment.utc(appointment.date); // Parse the date using Moment.js
+    const formattedDate = date.format('dddd DD/MM/YYYY'); // Format the date as 'dddd DD/MM/YYYY'
 
     if (!groupedAppointments[formattedDate]) {
       groupedAppointments[formattedDate] = [];
@@ -146,6 +137,7 @@ export function Booking() {
   useEffect(() => {
     const grouped = groupAppointmentsByDate(getAppointmentList);
     setGroupedAppointments(grouped);
+
     const markedDates = Object.keys(grouped).map((el) => {
       const date = el.split(' ')[1];
       return moment.utc(date, 'dddd DD/MM/YYYY').format('YYYY-MM-DD');
