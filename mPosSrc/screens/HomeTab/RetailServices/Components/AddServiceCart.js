@@ -423,6 +423,7 @@ const AddServiceCart = ({ addServiceCartRef }) => {
                     <FlatList
                       data={timeSlotsData || []}
                       numColumns={4}
+                      keyExtractor={(item, index) => index.toString()}
                       renderItem={renderSlotItem}
                       ListEmptyComponent={() => (
                         <EmptyTimeSlot title={'There are no slots available for this day'} />

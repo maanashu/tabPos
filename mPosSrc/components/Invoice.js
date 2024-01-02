@@ -17,7 +17,51 @@ export function Invoice(props) {
   const data = props?.route?.params?.data;
   const getUserData = useSelector(getUser);
 
-  const sellerDetail = data?.order?.seller_details;
+  // Normal Invoice Data
+  const normalInvoiceData = data?.order;
+
+  // Return order invoice
+  const isReturnInvoice = !!data?.return;
+  const returnedInvoiceData = data?.return;
+
+  const finalInvoiceData = isReturnInvoice
+    ? returnedInvoiceData?.invoices
+    : normalInvoiceData?.invoices;
+
+  const sellerDetail = isReturnInvoice
+    ? returnedInvoiceData?.seller_details
+    : normalInvoiceData.seller_details;
+
+  const finalSubtotal = isReturnInvoice
+    ? returnedInvoiceData?.products_refunded_amount
+    : normalInvoiceData?.actual_amount;
+
+  const finalDeliveryShippingCharges = isReturnInvoice
+    ? returnedInvoiceData?.delivery_charge || returnedInvoiceData?.shipping_charge
+    : normalInvoiceData?.delivery_charge || normalInvoiceData?.shipping_charge;
+
+  const finalDiscount = isReturnInvoice
+    ? returnedInvoiceData?.discount
+    : normalInvoiceData?.discount;
+
+  const finalTax = isReturnInvoice ? returnedInvoiceData?.tax : normalInvoiceData?.tax;
+  const finalTotal = isReturnInvoice
+    ? returnedInvoiceData?.refunded_amount
+    : normalInvoiceData.payable_amount;
+
+  const finalInvoiceCreationDate = isReturnInvoice
+    ? returnedInvoiceData?.updated_at
+    : normalInvoiceData?.updated_at;
+
+  const finalModeOfPayment = isReturnInvoice
+    ? returnedInvoiceData?.mode_of_payment
+    : normalInvoiceData?.mode_of_payment;
+
+  const finalDeliveryOption = isReturnInvoice
+    ? returnedInvoiceData?.delivery_option
+    : normalInvoiceData?.delivery_option;
+
+  const finalBarcode = finalInvoiceData?.barcode;
 
   const DELIVERY_MODE = {
     1: 'Delivery',
@@ -25,11 +69,10 @@ export function Invoice(props) {
     3: 'Walkin',
     4: 'Shipping',
   };
-  const parsedDate = dayjs(data?.created_at, {
-    format: 'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
-  });
 
-  const formattedDate = parsedDate.format('ddd DD MMM , YYYY | h:mm A');
+  const localDateTime = moment.utc(finalInvoiceCreationDate).local();
+  const formattedDate = localDateTime.format('ddd DD MMM , YYYY | h:mm A');
+
   const renderProducts = ({ item, index }) => {
     const amount = parseFloat(item?.price) * parseFloat(item?.qty);
     return (
@@ -84,7 +127,9 @@ export function Invoice(props) {
           <Text style={styles.addressText}>{sellerDetail?.user_profiles?.full_phone_number}</Text>
           <Spacer space={SH(5)} />
 
-          <Text style={styles.sellerName}>{`Invoice No. #${data?.invoice_number}`}</Text>
+          <Text
+            style={styles.sellerName}
+          >{`Invoice No. #${finalInvoiceData?.invoice_number}`}</Text>
         </View>
 
         <Spacer space={ms(20)} />
@@ -92,19 +137,20 @@ export function Invoice(props) {
         <View>
           <FlatList data={data?.order?.order_details || []} renderItem={renderProducts} />
         </View>
-        {console.log('first', data?.order?.delivery_charge)}
         <View style={styles.paymentContainer}>
-          {paymentView('Subtotal', data?.order?.actual_amount)}
-          {data?.order?.delivery_charge !== 0 || data?.order?.shipping_charge !== 0
+          {paymentView('Subtotal', finalSubtotal)}
+          {/* {data?.order?.delivery_charge !== 0 || data?.order?.shipping_charge !== 0
             ? data?.order?.delivery_charge != 0
               ? paymentView('Delivery Charges', data?.order?.delivery_charge)
               : data?.order?.shipping_charge != 0
               ? paymentView('Shipping Charges', data?.order?.shipping_charge)
               : null
-            : null}
-          {paymentView('Discount', data?.order?.discount)}
-          {paymentView('Tax', data?.order?.tax)}
-          {paymentView('Total', data?.order?.payable_amount)}
+            : null} */}
+          {finalDeliveryShippingCharges != 0 &&
+            paymentView('Delivery / Shipping Charges', finalDeliveryShippingCharges)}
+          {paymentView('Discount', finalDiscount)}
+          {paymentView('Tax', finalTax)}
+          {paymentView('Total', finalTotal)}
         </View>
 
         <View style={styles.paymentDetailsView}>
@@ -112,13 +158,13 @@ export function Invoice(props) {
             Payment Option:
             <Text style={[styles.paymentOptionsText, { fontFamily: Fonts.SemiBold }]}>
               {' '}
-              {data?.order?.mode_of_payment.toUpperCase()}
+              {finalModeOfPayment.toUpperCase()}
             </Text>
           </Text>
           <Text style={styles.paymentOptionsText}>{formattedDate}</Text>
 
           <Text style={[styles.paymentOptionsText, { fontFamily: Fonts.SemiBold }]}>
-            {DELIVERY_MODE[data?.order?.delivery_option]}
+            {DELIVERY_MODE[finalDeliveryOption]}
           </Text>
 
           <Text style={styles.paymentOptionsText}>
@@ -131,7 +177,7 @@ export function Invoice(props) {
 
         <View style={{ alignItems: 'center', marginTop: ms(20) }}>
           <Text style={styles.thankyou}>Thank You</Text>
-          <Image style={styles.barcodeImage} resizeMode="stretch" source={{ uri: data?.barcode }} />
+          <Image style={styles.barcodeImage} resizeMode="stretch" source={{ uri: finalBarcode }} />
 
           <Image style={styles.barcodeImage} resizeMode="contain" source={Images.jobrLogo} />
         </View>

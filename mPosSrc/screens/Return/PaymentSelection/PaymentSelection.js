@@ -1,7 +1,6 @@
-import { ScreenWrapper } from '@/components';
 import { Images } from '@mPOS/assets';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Image, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import styles from './styles';
 import { strings } from '@/localization';
 import { ms } from 'react-native-size-matters';
@@ -11,18 +10,15 @@ import ReactNativeModal from 'react-native-modal';
 import SmsReceipt from '../Components/SmsReceipt';
 import EmailReceipt from '../Components/EmailReceipt';
 import { COLORS } from '@/theme';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { returnProduct } from '@/actions/DashboardAction';
-import { getDrawerSessions } from '@/actions/CashTrackingAction';
-import { FullScreenLoader } from '@mPOS/components';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { ActivityIndicator } from 'react-native';
 
 const PaymentSelection = ({
   closeSheet,
   data,
+  order,
   totalRefundAmount,
   totalTaxes,
   deliveryShippingTitle,
@@ -49,12 +45,16 @@ const PaymentSelection = ({
       return;
     }
     const products =
-      data?.order?.order_details?.map((item) => ({
+      order?.map((item) => ({
         id: item?.product_id,
         qty: item?.qty ?? 1,
         write_off_qty: item?.write_off_qty ?? 0,
         add_to_inventory_qty: item?.add_to_inventory_qty ?? 0,
-        refund_value: `${isApplyAmount ? item?.totalRefundAmount : item?.price * item?.qty}`,
+        refund_value: `${
+          isApplyAmount === 'applicableForAllItems' || isApplyAmount === 'applyForEachItem'
+            ? item?.totalRefundAmount
+            : item?.price * item?.qty
+        }`,
       })) || [];
 
     const dataObj = {
@@ -68,8 +68,6 @@ const PaymentSelection = ({
       }),
       ...(eReceiptMethod === 2 && { email }),
     };
-
-    dispatch(getDrawerSessions());
 
     const callback = (res) => {
       if (res) {

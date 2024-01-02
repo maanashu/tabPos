@@ -26,7 +26,12 @@ import { BiometryTypes } from 'react-native-biometrics';
 
 import { styles } from '@mPOS/screens/Authentication/Login/styles';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { deviceLogin, loginPosUser, loginPosUserSuccess } from '@/actions/UserActions';
+import {
+  deviceLogin,
+  loginPosUser,
+  loginPosUserMPOS,
+  loginPosUserSuccess,
+} from '@/actions/UserActions';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { rnBiometrics } from '@mPOS/navigation/Modals';
@@ -36,8 +41,10 @@ import { getSettings } from '@/actions/SettingAction';
 import { useIsFocused } from '@react-navigation/native';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { MPOS_NAVIGATION } from '@common/commonImports';
-import { getProfile } from '@/actions/AuthActions';
+import { getProfile, reset2fa } from '@/actions/AuthActions';
 import DeviceInfo from 'react-native-device-info';
+import { getUser } from '@/selectors/UserSelectors';
+import { posLoginDetail } from '@/actions/DashboardAction';
 
 export function Login(props) {
   const isFocused = useIsFocused();
@@ -49,6 +56,7 @@ export function Login(props) {
   const getAuth = useSelector(getAuthData);
   const getData = useSelector(getAuthData);
   const TWO_FACTOR = posUser?.user?.user_profiles?.is_two_fa_enabled;
+  const googleAuthenticator = getAuth?.getProfile?.user_profiles?.is_two_fa_enabled ?? false;
 
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,6 +66,7 @@ export function Login(props) {
     value,
     setValue,
   });
+
   useEffect(() => {
     DeviceInfo.getUniqueId().then((deviceId) => {
       const hasPosTrue =
@@ -98,10 +107,11 @@ export function Login(props) {
         pos_security_pin: value,
       };
 
-      const res = await dispatch(loginPosUser(data));
+      const res = await dispatch(loginPosUserMPOS(data));
       setIsLoading(false);
       if (res?.type !== TYPES.LOGIN_POS_USER_ERROR) {
-        if (twoFactorEnabled) {
+        dispatch(posLoginDetail());
+        if (TWO_FACTOR) {
           navigate(MPOS_NAVIGATION.twoFactorLogin, { userResponse: res });
         } else {
           dispatch(loginPosUserSuccess(res));

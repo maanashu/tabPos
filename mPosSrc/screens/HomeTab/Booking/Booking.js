@@ -136,7 +136,7 @@ export function Booking() {
   const [time, setTime] = useState(false);
   const [timeValue, setTimeValue] = useState(defaultSettingsForCalendar?.calender_view ?? 'week');
   const [timeItem, setTimeItem] = useState([
-    { label: 'Today', value: 'day' },
+    { label: 'Day', value: 'day' },
     { label: 'Week', value: 'week' },
     { label: 'Month', value: 'month' },
   ]);
@@ -357,7 +357,6 @@ export function Booking() {
   const renderGroupedListViewItem = ({ item, index }) => {
     return (
       <View style={{ flex: 0.4 }}>
-        {console.log('first', item[0])}
         <Text
           style={{ fontSize: ms(14), fontFamily: Fonts.SemiBold, color: COLORS.black, padding: 10 }}
         >

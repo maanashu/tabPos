@@ -107,8 +107,21 @@ const OrderTotal = ({ orderData, orderDetails }) => {
 
       <Spacer space={SH(15)} />
 
-      <Pressable onPress={onPressNextHandler} style={styles.buttonStyle}>
-        <Text style={styles.buttonTextStyle}>{strings.return.next}</Text>
+      <Pressable
+        onPress={onPressNextHandler}
+        style={[
+          styles.buttonStyle,
+          { backgroundColor: hasCheckedItem ? COLORS.primary : COLORS.textInputBackground },
+        ]}
+      >
+        <Text
+          style={[
+            styles.buttonTextStyle,
+            { color: hasCheckedItem ? COLORS.white : COLORS.darkGray },
+          ]}
+        >
+          {strings.return.next}
+        </Text>
       </Pressable>
     </View>
   );

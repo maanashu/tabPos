@@ -1644,13 +1644,15 @@ export const updateCartByTip = (data) => async (dispatch) => {
   }
 };
 
-export const changeStatusProductCart = (data) => async (dispatch) => {
+export const changeStatusProductCart = (data, callback) => async (dispatch) => {
   dispatch(changeStatusProductCartRequest());
   try {
     const res = await RetailController.changeStatusProductCart(data);
     dispatch(changeStatusProductCartSuccess(res));
+
     dispatch(getAllProductCart());
     dispatch(getAllCart());
+    callback && callback(res);
   } catch (error) {
     dispatch(changeStatusProductCartError(error.message));
   }

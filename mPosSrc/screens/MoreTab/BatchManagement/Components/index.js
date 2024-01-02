@@ -198,9 +198,9 @@ export function SessionHistoryTable({
                     />
                     <DataTable.Cell numeric>
                       {/* {item?.pos_user_detail?.user_profiles?.firstname} */}
-                      {item?.pos_user_detail?.user_profiles?.firstname == undefined
+                      {item?.pos_user_details?.user_profiles?.firstname == undefined
                         ? 'System Ended'
-                        : item?.pos_user_detail?.user_profiles?.firstname}
+                        : item?.pos_user_details?.user_profiles?.firstname}
                     </DataTable.Cell>
                   </View>
                 </View>
@@ -309,8 +309,9 @@ export function SummaryHistory({ historyHeader, sessionHistoryArray }) {
   const cashIn = drawerData?.drawerHistory?.cash_in;
   const cashOut = drawerData?.drawerHistory?.cash_out;
 
-  const totalNetPayment =
-    drawerData?.drawerHistory?.cash_in?.total + drawerData?.drawerHistory?.cash_out?.total;
+  // const totalNetPayment =
+  //   drawerData?.drawerHistory?.cash_in?.total + drawerData?.drawerHistory?.cash_out?.total;
+  const totalNetPayment = drawerData?.drawerHistory?.net_amount;
 
   const correctWay = (transaction_type) => {
     if (transaction_type === 'start_tracking_session') {

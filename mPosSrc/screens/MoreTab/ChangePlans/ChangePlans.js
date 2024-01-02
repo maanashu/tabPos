@@ -74,11 +74,15 @@ export function ChangePlans() {
   };
 
   const updatePlan = async (plan_id) => {
-    await dispatch(buySubscription(plan_id));
-    const data = await dispatch(getActiveSubscription());
+    const dat = await dispatch(buySubscription(plan_id));
+    if (dat) {
+      const data = await dispatch(getActiveSubscription());
+      commonNavigate(MPOS_NAVIGATION.plans);
+    }
   };
 
   const renderPlans = ({ item }) => {
+    // console.log('item', item);
     const amount = parseFloat(item?.amount);
     return (
       <>
@@ -91,6 +95,7 @@ export function ChangePlans() {
           <Text style={styles.everythingText}>{strings?.plans?.perMonth}</Text>
 
           <Spacer space={ms(25)} />
+
           <Text style={styles.subTitleText}>{strings?.plans?.appsIncluded}</Text>
           <Plans data={item?.included_apps} />
 
@@ -106,7 +111,7 @@ export function ChangePlans() {
             }}
             title={'Get Started'}
             textStyle={{ fontFamily: Fonts.Regular, color: COLORS.white }}
-            onPress={() => updatePlan(item?.id)}
+            onPress={() => updatePlan(item?._id)}
           />
 
           <Spacer space={ms(20)} />

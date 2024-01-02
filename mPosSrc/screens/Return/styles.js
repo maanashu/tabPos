@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     alignItems: 'center',
     paddingHorizontal: ms(10),
+    paddingVertical: ms(15),
     backgroundColor: COLORS.blue_shade,
   },
   manualView: {

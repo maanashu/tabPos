@@ -5,23 +5,23 @@ import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-import { SH } from '@/theme';
+import { COLORS, SH } from '@/theme';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { Fonts, editIcon } from '@/assets';
 import EditPrice from '../Components/EditPrice';
 import PartialRefund from '../Components/PartialRefund';
-import { FullScreenLoader, Header } from '@mPOS/components';
+import { Header } from '@mPOS/components';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import RecheckConfirmation from '../Components/RecheckConfirmation';
 import PaymentSelection from '../PaymentSelection/PaymentSelection';
 
 import styles from './styles';
-import { useSelector } from 'react-redux';
-import { isLoadingSelector } from '@/selectors/StatusSelectors';
-import { DASHBOARDTYPE } from '@/Types/DashboardTypes';
+import { useDispatch } from 'react-redux';
+import { getDrawerSessions } from '@/actions/CashTrackingAction';
 
 export function ProductRefund(props) {
+  const dispatch = useDispatch();
   const productDetailRef = useRef();
   const [isRefundDeliveryAmount, setIsRefundDeliveryAmount] = useState(false);
   const [orders, setOrders] = useState();
@@ -262,6 +262,7 @@ export function ProductRefund(props) {
 
         <TouchableOpacity
           onPress={() => {
+            dispatch(getDrawerSessions());
             if (finalOrder?.order?.order_type === 'service') {
               setIsCheckConfirmationModalVisible(false);
               getOrdersDetail();
@@ -270,9 +271,13 @@ export function ProductRefund(props) {
             }
           }}
           disabled={orders?.length > 0 ? false : true}
-          style={styles.buttonStyle}
+          style={[styles.buttonStyle, { backgroundColor: COLORS.primary }]}
         >
-          <Text style={styles.buttonTextStyle}>{strings.management.next}</Text>
+          <Text
+            style={[styles.buttonTextStylem, { color: COLORS.white, fontFamily: Fonts.SemiBold }]}
+          >
+            {strings.management.next}
+          </Text>
         </TouchableOpacity>
 
         <Spacer space={SH(20)} />
@@ -302,9 +307,11 @@ export function ProductRefund(props) {
           setIsVisible={setIsCheckConfirmationModalVisible}
           orderList={orders}
           onPress={(modifiedOrderDetailArr) => {
-            setModifiedArray([...modifiedOrderDetailArr]);
-            productDetailRef?.current?.open();
+            setOrders([...modifiedOrderDetailArr]);
             setIsCheckConfirmationModalVisible(false);
+            setTimeout(() => {
+              productDetailRef.current?.open();
+            }, 500);
           }}
         />
       </ReactNativeModal>
@@ -322,6 +329,7 @@ export function ProductRefund(props) {
       >
         <PaymentSelection
           closeSheet={() => productDetailRef?.current?.close()}
+          order={orders}
           data={finalOrder}
           totalRefundAmount={totalRefundAmount}
           totalTaxes={calculateRefundTax().toFixed(2)}
