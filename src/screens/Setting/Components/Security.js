@@ -43,13 +43,18 @@ import {
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { digits } from '@/utils/validators';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { forgot2fa, merchantLoginSuccess, reset2fa } from '@/actions/AuthActions';
+import { forgot2fa, getProfile, merchantLoginSuccess, reset2fa } from '@/actions/AuthActions';
 import { ms } from 'react-native-size-matters';
 import { Platform } from 'react-native';
+import { getUser } from '@/selectors/UserSelectors';
 
 export function Security() {
   const dispatch = useDispatch();
   const getSettingData = useSelector(getSetting);
+  const getUserData = useSelector(getUser);
+  const posUserData = getUserData?.posLoginData;
+  const getAuth = useSelector(getAuthData);
+
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -57,7 +62,8 @@ export function Security() {
     setValue,
   });
   const refFive = useBlurOnFulfill({ value, cellCount: CELL_COUNT_Five });
-  const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
+  // const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
+  const googleAuthenticator = getAuth?.getProfile?.user_profiles?.is_two_fa_enabled ?? false;
   const googleCode = getSettingData?.getGoogleCode;
   const [twoStepModal, setTwoStepModal] = useState(false);
   const [factorEnable, setFactorEnable] = useState(null);
@@ -67,7 +73,7 @@ export function Security() {
   const [isDisable, setIsDisable] = useState(false);
   const [googleAuthicator, setGoogleAuthicator] = useState(googleAuthenticator);
   const qrCodeLoad = useSelector((state) => isLoadingSelector([TYPES.GET_GOOGLE_CODE], state));
-  const getAuth = useSelector(getAuthData);
+
   const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
   const [forgotPinScreen, setForgotPinScreen] = useState(false);
   const [verificationId, setVerificationId] = useState(null);
@@ -75,12 +81,17 @@ export function Security() {
   const [isForgot, setIsForgot] = useState(null);
   const [forgotValue, setForgotValue] = useState('');
   const [qrCodeScreen, setQrCodeScreen] = useState(false);
+  const merchantToken = getAuth?.merchantLoginData?.token;
+  const posUserToken = posUserData?.token;
 
   useEffect(() => {
-    if (getSettingData?.getSetting) {
-      setGoogleAuthicator(getSettingData?.getSetting?.google_authenticator_status ?? false);
+    dispatch(getProfile(posUserData?.id));
+  }, []);
+  useEffect(() => {
+    if (getAuth?.getProfile) {
+      setGoogleAuthicator(getAuth?.getProfile?.user_profiles?.is_two_fa_enabled ?? false);
     }
-  }, [getSettingData?.getSetting]);
+  }, [getAuth?.getProfile]);
 
   const passcodeHandler = async () => {
     if (!value) {
@@ -114,20 +125,31 @@ export function Security() {
       // };
       // const res = await dispatch(verifyGoogleCode(data));
 
-      const data = {
-        code: value,
-      };
-      const verificationFunction =
-        googleAuthicator && !isForgot ? verifyGoogleCode : configureGoogleCode;
-      const res = await verificationFunction(data)(dispatch);
+      // const data = {
+      //   code: value,
+
+      // };
+
+      var data = {};
+      data = googleAuthicator
+        ? {
+            code: value,
+            disable_2fa: true,
+          }
+        : {
+            code: value,
+          };
+      const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
+      const res = await verificationFunction(data, posUserToken)(dispatch);
       if (res?.msg === 'Code verified successfully') {
         setValue('');
-        const data = {
-          app_name: 'pos',
-          google_authenticator_status: factorEnable,
-        };
-        dispatch(upadteApi(data));
-        dispatch(getSettings());
+        // const data = {
+        //   app_name: 'pos',
+        //   google_authenticator_status: factorEnable,
+        // };
+        // dispatch(upadteApi(data));
+        // dispatch(getSettings());
+        dispatch(getProfile(posUserToken?.id));
         setSixDigit(false);
       } else if (res === undefined) {
         setValue('');
@@ -138,7 +160,7 @@ export function Security() {
   const toggleBtnHandler = () => {
     if (googleAuthicator === false) {
       setFactorEnable(true);
-      setTwoStepModal(true), dispatch(getGoogleCode());
+      setTwoStepModal(true), dispatch(getGoogleCode(posUserToken));
       setIsDisable(false);
     } else {
       setIsDisable(true);
@@ -162,7 +184,7 @@ export function Security() {
   const onForgotPin = async () => {
     // setSixDigit(false);
     setForgotPinScreen(true);
-    const res = await dispatch(forgot2fa());
+    const res = await dispatch(forgot2fa(posUserToken));
     console.log(res);
     if (res?.status_code == 200) {
       setVerificationId(res?.payload?.verification_id);
@@ -207,7 +229,7 @@ export function Security() {
         verification_id: verificationId,
         verification_otp: forgotValue,
       };
-      const res = await dispatch(reset2fa(data));
+      const res = await dispatch(reset2fa(data, posUserToken));
       console.log('response', res);
       if (res?.status_code == 201) {
         setQRCodeUrl(res?.payload?.qrCode);

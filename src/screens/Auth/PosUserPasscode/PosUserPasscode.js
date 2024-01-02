@@ -20,6 +20,7 @@ import { crossButton, userImage } from '@/assets';
 import { strings } from '@/localization';
 import { digits } from '@/utils/validators';
 import { goBack } from '@/navigation/NavigationRef';
+import { navigate } from '@mPOS/navigation/NavigationRef';
 import { loginPosUser } from '@/actions/UserActions';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
@@ -27,6 +28,9 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import { styles } from '@/screens/Auth/PosUserPasscode/PosUserPasscode.styles';
 import CustomHeaderPOSUsers from '../components/CustomHeaderPOSUsers';
+import { forgot2fa, reset2fa } from '@/actions/AuthActions';
+import { MPOS_NAVIGATION } from '@common/commonImports';
+import { navigationRef } from '@mPOS/navigation/NavigationRef';
 
 const CELL_COUNT = 4;
 
@@ -34,6 +38,19 @@ export function PosUserPasscode({ route }) {
   const dispatch = useDispatch();
   const getData = useSelector(getAuthData);
   const [value, setValue] = useState('');
+
+  const [forgotValue, setForgotValue] = useState('');
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [twoStepModal, setTwoStepModal] = useState(false);
+  const [googleAuthScan, setGoogleAuthScan] = useState(false);
+  const [sixDigit, setSixDigit] = useState(false);
+  const [isLogout, setIsLogout] = useState(false);
+  const [isLoadingBottom, setIsLoadingBottom] = useState(false);
+  const [isSucessModalVis, setIsSuccessModalVis] = useState(false);
+  const [forgotPinScreen, setForgotPinScreen] = useState(false);
+  const [verificationId, setVerificationId] = useState(null);
+  const [QRCodeUrl, setQRCodeUrl] = useState(null);
+  const [isForgot, setIsForgot] = useState(null);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -75,6 +92,17 @@ export function PosUserPasscode({ route }) {
         pos_security_pin: value,
       };
       dispatch(loginPosUser(data));
+      // const res = await dispatch(loginPosUser(data));
+
+      // if (res?.token) {
+      //   if (!res?.user_profiles?.is_two_fa_enabled) {
+      //     navigate(MPOS_NAVIGATION.twoFactorLogin, { userResponse: res });
+      //   } else {
+      //     dispatch(loginPosUserSuccess(res));
+      //     dispatch(getSettings());
+      //     dispatch(getProfile(res?.id));
+      //   }
+      // }
     }
   };
   const renderCell = ({ index }) => {
@@ -86,6 +114,62 @@ export function PosUserPasscode({ route }) {
       </View>
     );
   };
+
+  // const passcodeHandlerFive = async () => {
+  //   if (!forgotValue) {
+  //     Toast.show({
+  //       position: 'bottom',
+  //       type: 'error_toast',
+  //       text2: strings.valiadtion.enterPassCode,
+  //       visibilityTime: 2000,
+  //     });
+  //     return;
+  //   } else if (forgotValue && forgotValue.length < 5) {
+  //     Toast.show({
+  //       position: 'bottom',
+  //       type: 'error_toast',
+  //       text2: strings.valiadtion.validPasscode,
+  //       visibilityTime: 2000,
+  //     });
+  //     return;
+  //   } else if (forgotValue && digits.test(forgotValue) === false) {
+  //     Toast.show({
+  //       position: 'bottom',
+  //       type: 'error_toast',
+  //       text2: strings.valiadtion.validPasscode,
+  //       visibilityTime: 2000,
+  //     });
+  //     return;
+  //   } else {
+  //     const data = {
+  //       verification_id: verificationId,
+  //       verification_otp: forgotValue,
+  //     };
+  //     const res = await dispatch(reset2fa(data, merchantToken));
+  //     console.log('response', res);
+  //     if (res?.status_code == 201) {
+  //       setQRCodeUrl(res?.payload?.qrCode);
+  //       setForgotPinScreen(false);
+  //     }
+  //   }
+  // };
+  // const onForgotPin = async () => {
+  //   setSixDigit(false);
+  //   setValue('');
+  //   setForgotPinScreen(true);
+  //   const res = await dispatch(forgot2fa(merchantToken));
+  //   console.log(res);
+  //   if (res?.status_code == 200) {
+  //     setVerificationId(res?.payload?.verification_id);
+  //   }
+  // };
+  // const onBackPressHandler = (type) => {
+  //   if (type == 'Forgot') {
+  //     setSixDigit(true);
+  //     setForgotValue('');
+  //     setIsForgot(false);
+  //   }
+  // };
 
   return (
     <View

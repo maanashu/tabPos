@@ -106,14 +106,14 @@ export function Login(props) {
         pos_user_id: posUser?.user_id.toString(),
         pos_security_pin: value,
       };
-
       const res = await dispatch(loginPosUserMPOS(data));
       setIsLoading(false);
       if (res?.type !== TYPES.LOGIN_POS_USER_ERROR) {
-        dispatch(posLoginDetail());
+        // dispatch(posLoginDetail());
         if (TWO_FACTOR) {
           navigate(MPOS_NAVIGATION.twoFactorLogin, { userResponse: res });
         } else {
+          dispatch(posLoginDetail());
           dispatch(loginPosUserSuccess(res));
           dispatch(getSettings());
           dispatch(getProfile(res?.id));
