@@ -79,6 +79,7 @@ export function Security() {
   const [isForgot, setIsForgot] = useState(null);
   const [forgotValue, setForgotValue] = useState('');
   const [qrCodeScreen, setQrCodeScreen] = useState(false);
+  // console.log('userDetaullsss', JSON.stringify(loginPosUser));
 
   useEffect(() => {
     dispatch(getProfile(loginPosUser?.user_id));
@@ -121,14 +122,22 @@ export function Security() {
       // };
       // const res = await dispatch(verifyGoogleCode(data));
 
-      const data = {
-        code: value,
-      };
+      var data = {};
+      data = googleAuthicator
+        ? {
+            code: value,
+            disable_2fa: true,
+          }
+        : {
+            code: value,
+          };
       const authToken = loginPosUser?.token;
+      console.log('userDetaullsss', JSON.stringify(loginPosUser));
 
       const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
 
       const res = await verificationFunction(data, authToken)(dispatch);
+      console.log('verrrr', res);
       if (res?.status_code === 201) {
         // const data = {
         //   app_name: 'pos',
@@ -174,7 +183,8 @@ export function Security() {
         verification_id: verificationId,
         verification_otp: forgotValue,
       };
-      const res = await dispatch(reset2fa(data));
+      const authToken = loginPosUser?.token;
+      const res = await dispatch(reset2fa(data, authToken));
       if (res?.status_code == 201) {
         setQRCodeUrl(res?.payload?.qrCode);
         setForgotPinScreen(false);
@@ -184,6 +194,7 @@ export function Security() {
     }
   };
   const toggleBtnHandler = (value) => {
+    const authToken = loginPosUser?.token;
     if (googleAuthicator === false) {
       // if (value == true) {
       //   setEnableDisable2fa(false);
@@ -191,7 +202,7 @@ export function Security() {
       //   setEnableDisable2fa(true);
       // }
       setFactorEnable(true);
-      setTwoStepModal(true), dispatch(getGoogleCode());
+      setTwoStepModal(true), dispatch(getGoogleCode(authToken));
       setIsDisable(false);
     } else {
       // if (value == true) {
@@ -208,7 +219,6 @@ export function Security() {
   };
   const renderCell = ({ index }) => {
     const displaySymbol = value[index] ? '*' : '';
-
     return (
       <View key={index} style={styles.cellRoot} onLayout={getCellOnLayoutHandler(index)}>
         <Text style={styles.cellText}>{displaySymbol}</Text>
@@ -218,7 +228,9 @@ export function Security() {
   const onForgotPin = async () => {
     // setSixDigit(false);
     setForgotPinScreen(true);
-    const res = await dispatch(forgot2fa());
+    const authToken = loginPosUser?.token;
+
+    const res = await dispatch(forgot2fa(authToken));
     console.log(res);
     if (res?.status_code == 200) {
       setVerificationId(res?.payload?.verification_id);

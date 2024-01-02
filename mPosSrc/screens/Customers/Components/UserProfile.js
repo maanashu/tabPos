@@ -165,13 +165,7 @@ export function UserProfile(props) {
   );
 
   const handleOrderDetail = (item) => {
-    if (item?.delivery_option == '1') {
-      commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
-    } else if (item?.delivery_option == '4') {
-      commonNavigate(MPOS_NAVIGATION.shippingOrderDetail, { data: item });
-    } else if (item?.delivery_option == '3') {
-      commonNavigate(MPOS_NAVIGATION.orderDetail, { data: item });
-    }
+    commonNavigate(MPOS_NAVIGATION.commonOrderDetail, { data: item });
   };
 
   useEffect(() => {

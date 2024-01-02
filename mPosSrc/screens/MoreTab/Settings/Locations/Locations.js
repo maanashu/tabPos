@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Image, Text, FlatList, ActivityIndicator } from 'react-native';
 import { Images } from '@mPOS/assets';
 import { Header, ScreenWrapper } from '@mPOS/components';
@@ -6,21 +6,16 @@ import { strings } from '@mPOS/localization';
 import styles from './Locations.styles';
 import { ms } from 'react-native-size-matters';
 import { SettingsContainer } from '../Components/SettingsContainer';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
-import { getUserAddress } from '@/actions/SettingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SettingTypes';
 import { COLORS } from '@/theme';
 
 export function Locations() {
-  const dispatch = useDispatch();
   const getSettingData = useSelector(getSetting);
   const getUserLocation = getSettingData?.getUserAddress;
 
-  useEffect(() => {
-    dispatch(getUserAddress());
-  }, []);
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_USER_ADD], state));
 
   const renderLocations = ({ item, index }) => {

@@ -46,6 +46,7 @@ import {
   SupportChat,
   Faq,
   FaqAnswers,
+  TaxesDuties,
 } from '@mPOS/screens';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import BottomTabNavigator from '@mPOS/navigation/BottomTabNavigator';
@@ -372,6 +373,11 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.commonOrderDetail}
         options={{ headerShown: false }}
         component={CommonOrderDetail}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.taxesDuties}
+        options={{ headerShown: false }}
+        component={TaxesDuties}
       />
     </Stack.Navigator>
   );

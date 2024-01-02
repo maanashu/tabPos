@@ -82,7 +82,7 @@ const AddProductCart = ({
       };
       retailData?.addOpenFrom == 'main' && addToLocalCart(productItem, productIndex, count);
       dispatch(addTocart(data));
-      addProductCartRef.current.dismiss();
+      addProductCartRef?.current?.dismiss();
     } else {
       if (colorArray?.length >= 1 && colorSelectId === null) {
         CustomErrorToast({ message: 'Please select the color' });
@@ -121,7 +121,7 @@ const AddProductCart = ({
             supplyVariantId: res?.payload?.id,
           };
           dispatch(addTocart(data));
-          addProductCartRef.current.dismiss();
+          addProductCartRef?.current?.dismiss();
           retailData?.addOpenFrom == 'main' &&
             addToLocalCart(selectedItem, productIndex, count, data?.supplyVariantId);
         }
@@ -194,7 +194,7 @@ const AddProductCart = ({
     >
       <View style={{ flex: 1 }}>
         <View style={styles.productHeaderCon}>
-          <TouchableOpacity onPress={() => addProductCartRef.current.dismiss()}>
+          <TouchableOpacity onPress={() => addProductCartRef?.current?.dismiss()}>
             <Image source={Images.cross} style={styles.crossImageStyle} />
           </TouchableOpacity>
           <View style={styles.detailAndAddBtnCon}>

@@ -79,7 +79,7 @@ export const essential = [
     label: 'Taxes',
     image: Images.devices,
     id: 6,
-    navigation: MPOS_NAVIGATION.TaxesDuties,
+    navigation: MPOS_NAVIGATION.taxesDuties,
   },
 ];
 
