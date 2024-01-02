@@ -43,7 +43,7 @@ export const FinalPaymentScreen = ({
     {
       title: 'Date',
       // data: moment().format('ddd') + ' ' + moment().subtract(10, 'days').calendar();
-      data: moment().format('ddd') + ' ' + moment().format('L'),
+      data: moment().format('ddd') + ' ' + moment().format('MM/DD/YY'),
       id: 2,
     },
     {

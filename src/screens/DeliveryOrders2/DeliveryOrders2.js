@@ -78,6 +78,7 @@ import VerifyPickupOtpModal from './Components/VerifyPickupOtpModal';
 export function DeliveryOrders2({ route }) {
   var screen;
   var ORDER_DATA;
+
   if (route?.params && route?.params.screen) {
     screen = route.params.screen;
   }
@@ -85,6 +86,8 @@ export function DeliveryOrders2({ route }) {
     ORDER_DATA = route?.params?.ORDER_DETAIL;
   }
   const todayDate = moment.utc();
+
+  console.log('----------', screen);
 
   const mapRef = useRef(null);
   const dispatch = useDispatch();
@@ -716,6 +719,7 @@ export function DeliveryOrders2({ route }) {
         </TouchableOpacity>
       );
   };
+
   return (
     <View
       style={{

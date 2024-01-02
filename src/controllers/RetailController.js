@@ -1414,12 +1414,17 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.availableOffer +
-        `?app_name=pos&delivery_options=2&seller_id=${sellerID}&service_type=${data?.servicetype}`;
+        `?app_name=pos&delivery_options=${
+          data?.servicetype == 'product' ? '1,3,4' : '2'
+        }&seller_id=${sellerID}&service_type=${data?.servicetype}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           // error?.statusCode === 204 &&
           //   Toast.show({
           //     text2: 'Offer Not Found',

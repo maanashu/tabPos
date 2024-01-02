@@ -66,6 +66,7 @@ export function CartScreen({
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const availableOfferArray = getRetailData?.availableOffer?.data;
+  console.log('availableOfferArray', JSON.stringify(availableOfferArray));
   const [cartSearch, setCartSearch] = useState('');
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
