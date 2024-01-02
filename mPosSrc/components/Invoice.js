@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { getUser } from '@mPOS/selectors/UserSelectors';
 import { Images } from '@mPOS/assets';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import moment from 'moment';
 
 export function Invoice(props) {
   const data = props?.route?.params?.data;
