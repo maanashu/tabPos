@@ -83,7 +83,7 @@ export function POSUsers({ navigation }) {
   const [verificationId, setVerificationId] = useState(null);
   const [QRCodeUrl, setQRCodeUrl] = useState(null);
   const [isForgot, setIsForgot] = useState(null);
-
+  const merchantToken = merchantData?.token;
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -197,9 +197,9 @@ export function POSUsers({ navigation }) {
       const data = {
         code: value,
       };
-      const verificationFunction = TWO_FACTOR && !isForgot ? verifyGoogleCode : configureGoogleCode;
+      const verificationFunction = TWO_FACTOR ? verifyGoogleCode : configureGoogleCode;
 
-      const res = await verificationFunction(data)(dispatch);
+      const res = await verificationFunction(data, merchantToken)(dispatch);
 
       if (res?.msg === 'Code verified successfully') {
         if (isLogout) {
@@ -262,7 +262,7 @@ export function POSUsers({ navigation }) {
         verification_id: verificationId,
         verification_otp: forgotValue,
       };
-      const res = await dispatch(reset2fa(data));
+      const res = await dispatch(reset2fa(data, merchantToken));
       console.log('response', res);
       if (res?.status_code == 201) {
         setQRCodeUrl(res?.payload?.qrCode);
@@ -318,8 +318,9 @@ export function POSUsers({ navigation }) {
 
   const onForgotPin = async () => {
     setSixDigit(false);
+    setValue('');
     setForgotPinScreen(true);
-    const res = await dispatch(forgot2fa());
+    const res = await dispatch(forgot2fa(merchantToken));
     console.log(res);
     if (res?.status_code == 200) {
       setVerificationId(res?.payload?.verification_id);

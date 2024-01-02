@@ -558,13 +558,13 @@ export function Management() {
             {/* <TransactionDropDown selected={onchangeValue} /> */}
             <Spacer space={SH(20)} />
             {/* <View>
-              <Text style={styles.amountCountedText}>
-                {strings.management.transactionType}
-              </Text>
-              <View style={{ flex: 1 }}>
-             
-              </View>
-            </View> */}
+		    <Text style={styles.amountCountedText}>
+			 {strings.management.transactionType}
+		    </Text>
+		    <View style={{ flex: 1 }}>
+
+		    </View>
+		  </View> */}
           </View>
           <View style={{ flex: 1 }} />
           <Button
@@ -682,19 +682,19 @@ export function Management() {
             </View>
             <Spacer space={SH(20)} />
             {/* <View>
-              <Text style={styles.amountCountedText}>{strings.management.transactionType}</Text>
-              <View style={styles.addCashDrop}>
-               
-                <TextInput
-                  editable={false}
-                  // placeholder={"Manual Cash In"}
-                  style={styles.noteInputStyle}
-                  placeholderTextColor={COLORS.gerySkies}
-                  value={removeCash ? 'Manual Cash Out' : 'Manual Cash In'}
-                  // onChangeText={setTrackNotes}
-                />
-              </View>
-            </View> */}
+		    <Text style={styles.amountCountedText}>{strings.management.transactionType}</Text>
+		    <View style={styles.addCashDrop}>
+
+			 <TextInput
+			   editable={false}
+			   // placeholder={"Manual Cash In"}
+			   style={styles.noteInputStyle}
+			   placeholderTextColor={COLORS.gerySkies}
+			   value={removeCash ? 'Manual Cash Out' : 'Manual Cash In'}
+			   // onChangeText={setTrackNotes}
+			 />
+		    </View>
+		  </View> */}
           </View>
 
           {/* <Spacer space={SH(90)} /> */}
@@ -816,9 +816,9 @@ export function Management() {
               </Text>
               <Spacer space={SH(15)} />
               {/* <Spacer
-                space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
-                backgroundColor={COLORS.gerySkies}
-              /> */}
+			 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
+			 backgroundColor={COLORS.gerySkies}
+		    /> */}
               <View
                 style={{
                   borderColor: COLORS.navy_blue,
@@ -837,9 +837,9 @@ export function Management() {
               </View>
               <Spacer space={SH(12.5)} />
               {/* <Spacer
-                space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
-                backgroundColor={COLORS.gerySkies}
-              /> */}
+			 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
+			 backgroundColor={COLORS.gerySkies}
+		    /> */}
               <View
                 style={{
                   borderColor: COLORS.navy_blue,
@@ -859,9 +859,9 @@ export function Management() {
 
               <Spacer space={SH(12.5)} />
               {/* <Spacer
-                space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
-                backgroundColor={COLORS.gerySkies}
-              /> */}
+			 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
+			 backgroundColor={COLORS.gerySkies}
+		    /> */}
               <View
                 style={{
                   borderColor: COLORS.navy_blue,
@@ -893,14 +893,14 @@ export function Management() {
             </View>
 
             {/* <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
-              textStyle={[styles.buttonText, { color: COLORS.white }]}
-              title={strings.management.next}
-              onPress={() => {
-                setCashSummary(false), setEndSelectAmount(true);
-                setCountThird(''), setLeaveId(1), setLeaveData('0');
-              }}
-            /> */}
+		    style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
+		    textStyle={[styles.buttonText, { color: COLORS.white }]}
+		    title={strings.management.next}
+		    onPress={() => {
+			 setCashSummary(false), setEndSelectAmount(true);
+			 setCountThird(''), setLeaveId(1), setLeaveData('0');
+		    }}
+		  /> */}
 
             <TouchableOpacity
               activeOpacity={0.5}
@@ -976,12 +976,12 @@ export function Management() {
             <Spacer space={SH(30)} />
             {/* <View style={{ flex: 1 }} /> */}
             {/* <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
-              textStyle={[styles.buttonText, { color: COLORS.white }]}
-              title={strings.management.next}
-              // onPress={() => (setEndSelectAmount(false), setRemoveUsd(true))}
-              onPress={endTrackingHandler}
-            /> */}
+		    style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
+		    textStyle={[styles.buttonText, { color: COLORS.white }]}
+		    title={strings.management.next}
+		    // onPress={() => (setEndSelectAmount(false), setRemoveUsd(true))}
+		    onPress={endTrackingHandler}
+		  /> */}
 
             <TouchableOpacity
               activeOpacity={0.5}
@@ -1096,9 +1096,9 @@ export function Management() {
               </Text>
               <Spacer space={SH(15)} />
               {/* <Spacer
-                space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
-                backgroundColor={COLORS.gerySkies}
-              /> */}
+			 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
+			 backgroundColor={COLORS.gerySkies}
+		    /> */}
               <View
                 style={{
                   borderColor: COLORS.navy_blue,
@@ -1131,9 +1131,9 @@ export function Management() {
               </Text>
               <Spacer space={SH(15)} />
               {/* <Spacer
-                space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
-                backgroundColor={COLORS.gerySkies}
-              /> */}
+			 space={Platform.OS == 'ios' ? SH(0.3) : SH(1)}
+			 backgroundColor={COLORS.gerySkies}
+		    /> */}
               <View
                 style={{
                   borderColor: COLORS.navy_blue,
@@ -1154,17 +1154,17 @@ export function Management() {
             </View>
             <Spacer space={SH(30)} />
             {/* <Button
-              style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
-              textStyle={[styles.buttonText, { color: COLORS.white }]}
-              title={strings.management.confirm}
-              onPress={() => {
-                dispatch(getDrawerSessionById(endBalance?.drawer_id));
-                setCardCoinSummary(false);
-                setEndSession(false);
-                setCashSummary('');
-                setSummaryHistory(true), setHistoryHeader(true);
-              }}
-            /> */}
+		    style={[styles.saveButton, { backgroundColor: COLORS.navy_blue, borderRadius: 100 }]}
+		    textStyle={[styles.buttonText, { color: COLORS.white }]}
+		    title={strings.management.confirm}
+		    onPress={() => {
+			 dispatch(getDrawerSessionById(endBalance?.drawer_id));
+			 setCardCoinSummary(false);
+			 setEndSession(false);
+			 setCashSummary('');
+			 setSummaryHistory(true), setHistoryHeader(true);
+		    }}
+		  /> */}
             <TouchableOpacity
               activeOpacity={0.5}
               onPress={() => {
@@ -1333,7 +1333,7 @@ export function Management() {
                   {moment.utc().format('dddd, Do MMMM YYYY')}
                   {/* {moment(SessionData?.createDate).format('dddd, MMMM Do YYYY | h:mm a')} */}
                   {/* const currentTime = moment.utc().format('h:mm A');
-               const currentDate = moment.utc().format('dddd, Do MMMM YYYY'); */}
+			const currentDate = moment.utc().format('dddd, Do MMMM YYYY'); */}
                 </Text>
               </View>
             </View>
@@ -1679,28 +1679,28 @@ export function Management() {
           {/* <Spacer space={SH(40)} /> */}
           {/* <View style={{ flex: 1.5 }} /> */}
           {/* <Button
-            onPress={() => {
-              //  setEndSession(true),
-              //  setCountFirst('');
-              setViewSession(false);
-              setCloseBatch(true);
-            }}
-            style={[
-              styles.buttonStyle,
-              {
-                backgroundColor: COLORS.navy_blue,
-                borderRadius: 100,
-                width: SW(100),
-                alignSelf: 'flex-end',
-                marginHorizontal: SW(5),
-                height: SH(60),
-                width: SW(70),
-                bottom: -20,
-              },
-            ]}
-            textStyle={[styles.cashDrawerText, { color: COLORS.white }]}
-            title={strings.management.closeBatch}
-          /> */}
+		  onPress={() => {
+		    //  setEndSession(true),
+		    //  setCountFirst('');
+		    setViewSession(false);
+		    setCloseBatch(true);
+		  }}
+		  style={[
+		    styles.buttonStyle,
+		    {
+			 backgroundColor: COLORS.navy_blue,
+			 borderRadius: 100,
+			 width: SW(100),
+			 alignSelf: 'flex-end',
+			 marginHorizontal: SW(5),
+			 height: SH(60),
+			 width: SW(70),
+			 bottom: -20,
+		    },
+		  ]}
+		  textStyle={[styles.cashDrawerText, { color: COLORS.white }]}
+		  title={strings.management.closeBatch}
+		/> */}
 
           <TouchableOpacity
             activeOpacity={0.5}

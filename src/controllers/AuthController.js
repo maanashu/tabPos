@@ -6,6 +6,7 @@ import Toast from 'react-native-toast-message';
 import { strings } from '@/localization';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { isTablet } from 'react-native-device-info';
+import axios from 'axios';
 
 export class AuthController {
   static async verifyPhone(phoneNumber, countryCode) {
@@ -219,11 +220,16 @@ export class AuthController {
   static async getProfile(id) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getProfile + `${id}`;
+      console.log('profile edddcvd', JSON.stringify(endpoint));
+
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('profile rferere', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
+          console.log('profile error', JSON.stringify(error));
+
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -295,11 +301,17 @@ export class AuthController {
     });
   }
 
-  static async forgot2faPin() {
+  static async forgot2faPin(authToken) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.forgot2faPin;
       console.log('url', endpoint);
-      HttpClient.get(endpoint)
+      const headers = {
+        Authorization: authToken,
+        'app-name': 'pos',
+      };
+
+      axios
+        .get(endpoint, { headers })
         .then((response) => {
           resolve(response);
         })
@@ -314,21 +326,35 @@ export class AuthController {
         });
     });
   }
-  static async reset2faPin(data) {
+  static async reset2faPin(data, authToken) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.reset2faPin;
       const body = data;
-      HttpClient.post(endpoint, body)
+      const headers = {
+        Authorization: authToken,
+        'app-name': 'pos',
+      };
+      axios
+        .post(endpoint, body, { headers })
         .then((response) => {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            position: 'bottom',
-            type: 'error_toast',
-            text2: error?.msg,
-            visibilityTime: 2000,
-          });
+          if ((error = '[AxiosError: Request failed with status code 409]')) {
+            Toast.show({
+              position: 'bottom',
+              type: 'error_toast',
+              text2: 'Invalid Code',
+              visibilityTime: 2000,
+            });
+          } else {
+            Toast.show({
+              position: 'bottom',
+              type: 'error_toast',
+              text2: error?.msg,
+              visibilityTime: 2000,
+            });
+          }
           reject(error);
         });
     });

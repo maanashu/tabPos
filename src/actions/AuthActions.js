@@ -228,23 +228,23 @@ export const register = (data, params) => async (dispatch) => {
     dispatch(registerError(error.message));
   }
 };
-export const forgot2fa = () => async (dispatch) => {
+export const forgot2fa = (authToken) => async (dispatch) => {
   dispatch(forgot2faRequest());
   try {
-    const res = await AuthController.forgot2faPin();
+    const res = await AuthController.forgot2faPin(authToken);
     dispatch(forgot2faSuccess(res));
-    return res;
+    return res?.data;
   } catch (error) {
     dispatch(forgot2faError(error.message));
     return error;
   }
 };
-export const reset2fa = (data) => async (dispatch) => {
+export const reset2fa = (data, authToken) => async (dispatch) => {
   dispatch(reset2faRequest());
   try {
-    const res = await AuthController.reset2faPin(data);
+    const res = await AuthController.reset2faPin(data, authToken);
     dispatch(reset2faSuccess(res));
-    return res;
+    return res?.data;
   } catch (error) {
     dispatch(reset2faError(error.message));
     return error;
