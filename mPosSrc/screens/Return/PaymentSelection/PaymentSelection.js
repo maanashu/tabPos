@@ -79,6 +79,7 @@ const PaymentSelection = ({
       }
       setIsLoading(true);
     };
+    setIsLoading(true);
     dispatch(returnProduct(dataObj, 'refundPaymentSelection', callback));
   };
 
