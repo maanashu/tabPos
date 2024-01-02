@@ -77,7 +77,7 @@ const PaymentSelection = ({
       } else {
         setIsLoading(false);
       }
-      setIsLoading(true);
+      // setIsLoading(true);
     };
     setIsLoading(true);
     dispatch(returnProduct(dataObj, 'refundPaymentSelection', callback));
