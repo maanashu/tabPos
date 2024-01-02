@@ -166,7 +166,10 @@ export function SearchScreen(props) {
               <OrderWithInvoiceNumber orderData={order} />
             </View>
 
-            {(order?.order?.status === 9 && order?.return !== null) ||
+            {((order?.order?.status === 9 ||
+              order?.order?.status === 7 ||
+              order?.order?.status === 8) &&
+              order?.return !== null) ||
             (order?.order === null && order?.return !== null) ? (
               <View style={styles.invoiceContainer}>
                 <ReturnOrderInvoice orderDetail={order} />
