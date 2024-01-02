@@ -115,18 +115,18 @@ export function POSUsers({ navigation }) {
   }, [isFocused]);
 
   const useEffectFun = async () => {
-    if (TWO_FACTOR) {
-      setSixDigit(true);
-      setTwoFactorEnabled(true);
-      setTwoStepModal(true);
-    } else {
-      const data = {
-        page: 1,
-        limit: 10,
-        seller_id: sellerID,
-      };
-      dispatch(getAllPosUsers(data));
-    }
+    // if (TWO_FACTOR) {
+    //   setSixDigit(true);
+    //   setTwoFactorEnabled(true);
+    //   setTwoStepModal(true);
+    // } else {
+    const data = {
+      page: 1,
+      limit: 10,
+      seller_id: sellerID,
+    };
+    dispatch(getAllPosUsers(data));
+    // }
   };
 
   const getPosUserLoading = useSelector((state) =>
@@ -153,19 +153,19 @@ export function POSUsers({ navigation }) {
   };
 
   const confirmLogout = () => {
-    if (googleAuthenticator) {
-      setTwoFactorEnabled(true);
-      setSixDigit(true);
-      setIsLogout(true);
-    } else {
-      dispatch(logoutFunction());
-      setIsLogout(false);
-      setValue('');
-      setTwoFactorEnabled(false);
-      setTwoStepModal(false);
-      setGoogleAuthScan(false);
-      setSixDigit(false);
-    }
+    // if (googleAuthenticator) {
+    //   setTwoFactorEnabled(true);
+    //   setSixDigit(true);
+    //   setIsLogout(true);
+    // } else {
+    dispatch(logoutFunction());
+    setIsLogout(false);
+    setValue('');
+    setTwoFactorEnabled(false);
+    setTwoStepModal(false);
+    setGoogleAuthScan(false);
+    setSixDigit(false);
+    // }
   };
 
   const passcodeHandlerSix = async () => {

@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NAVIGATION } from '@/constants';
 import { POSUsers, LoginIntial, PosUserPasscode, WeeklyTransaction } from '@/screens';
 import { HomeNavigator } from '@/navigation/HomeNavigator';
+import { TwoFactorLogin } from '@/screens/Auth/PosUserPasscode/Components/TwoFactorLogin';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,11 @@ export function UserNavigator() {
       <Stack.Screen
         component={PosUserPasscode}
         name={NAVIGATION.posUserPasscode}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={TwoFactorLogin}
+        name={NAVIGATION.twoFactorLogin}
         options={{ headerShown: false }}
       />
       {/* <Stack.Screen component={HomeNavigator} name={'HOME'} options={{ headerShown: false }} /> */}

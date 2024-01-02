@@ -84,12 +84,12 @@ const clearStore = () => ({
 });
 
 export const loginPosUser = (data) => async (dispatch) => {
-  dispatch(loginPosUserRequest());
+  // dispatch(loginPosUserRequest());
   try {
     const res = await UserController.loginPosUser(data);
-    dispatch(loginPosUserSuccess(res?.payload));
-    dispatch(getSettings());
-    dispatch(getProfile(res?.payload?.id));
+    // dispatch(loginPosUserSuccess(res?.payload));
+    // dispatch(getSettings());
+    // dispatch(getProfile(res?.payload?.id));
     return res?.payload;
   } catch (error) {
     return dispatch(loginPosUserError(error));
