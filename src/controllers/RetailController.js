@@ -1420,11 +1420,9 @@ export class RetailController {
       console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           // error?.statusCode === 204 &&
           //   Toast.show({
           //     text2: 'Offer Not Found',

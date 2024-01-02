@@ -25,6 +25,7 @@ client.interceptors.request.use(async function (config) {
   const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
   const fcmToken = await getDeviceToken();
   const posNumber = store.getState().user?.posLoginData?.pos_number;
+
   console.log('user', user);
 
   /**c

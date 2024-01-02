@@ -37,7 +37,7 @@ import { AddCartModal } from './AddCartModal';
 import Modal from 'react-native-modal';
 import { updateCartLength } from '@/actions/CartAction';
 import { getCartLength } from '@/selectors/CartSelector';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { CustomProductAdd } from './CustomProductAdd';
 import { NewCustomerAdd } from './NewCustomerAdd';
@@ -635,12 +635,12 @@ export function CartScreen({
                               <Text style={styles.offerText} numberOfLines={1}>
                                 {item?.name}
                               </Text>
-                              <Text
+                              {/* <Text
                                 style={[styles.offerText, styles.offerTextYellow]}
                                 numberOfLines={1}
                               >
                                 Yellow / M
-                              </Text>
+                              </Text> */}
                               <Spacer space={SH(10)} />
                               {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
                               item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
@@ -667,6 +667,20 @@ export function CartScreen({
                         </TouchableOpacity>
                       );
                     }}
+                    refreshControl={
+                      <RefreshControl
+                        // refreshing={isRefreshing}
+                        onRefresh={() => {
+                          const data = {
+                            seller_id: sellerID,
+                            servicetype: 'product',
+                          };
+                          dispatch(getAvailableOffer(data));
+                        }}
+                        tintColor={COLORS.primary} // Change the color of the loading spinner
+                        title="Pull to Refresh" // Optional, you can customize the text
+                      />
+                    }
                     style={{ flex: 1 }}
                     scrollEnabled={true}
                     showsVerticalScrollIndicator={false}
