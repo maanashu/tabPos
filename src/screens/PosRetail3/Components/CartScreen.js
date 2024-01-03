@@ -66,7 +66,8 @@ export function CartScreen({
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const availableOfferArray = getRetailData?.availableOffer?.data;
-  console.log('availableOfferArray', JSON.stringify(availableOfferArray));
+  // console.log('availableOfferArray', JSON.stringify(availableOfferArray));
+  console.log('getRetailData?.getAllCart', JSON.stringify(getRetailData?.getAllCart));
   const [cartSearch, setCartSearch] = useState('');
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
@@ -213,6 +214,7 @@ export function CartScreen({
     const restProductQty = product?.product_details?.supply?.rest_quantity;
     // const productPrice = product.product_details.price;
     const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+    console.log('------', restProductQty, productPrice);
 
     if (operation === '+') {
       if (restProductQty > product.qty) {
@@ -263,6 +265,7 @@ export function CartScreen({
       const product = arr?.poscart_products[index];
       // const productPrice = product.product_details.price;
       const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+      console.log('productPrice', productPrice);
       if (product.qty > 0) {
         arr.amount.total_amount -= productPrice * product.qty;
         arr.amount.products_price -= productPrice * product.qty;
@@ -275,6 +278,7 @@ export function CartScreen({
       var DATA = {
         payload: arr,
       };
+      console.log(DATA);
       dispatch(updateCartLength(CART_LENGTH - 1));
       dispatch(getAllCartSuccess(DATA));
     }
@@ -369,172 +373,176 @@ export function CartScreen({
               <ScrollView style={{ paddingBottom: ms(40) }} showsVerticalScrollIndicator={false}>
                 {arr?.map((item, index) => (
                   <View key={index}>
-                    {item?.poscart_products?.map((data, ind) => (
-                      <View
-                        style={styles.blueListData}
-                        key={ind}
-                        // onPress={() => {
-                        //   productPopupFun(data?.product_id);
-                        //   beforeDiscountCartLoad();
-                        // }}
-                      >
-                        <View style={styles.displayflex}>
-                          <View style={[styles.tableListSide, styles.listLeft]}>
-                            <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
-                              {ind + 1}
-                            </Text>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                marginVertical: ms(3),
-                              }}
-                            >
-                              <View style={styles.cartImageCon}>
-                                <Image
-                                  source={{ uri: data.product_details?.image }}
-                                  style={styles.columbiaMen}
-                                />
-                              </View>
-                              <View style={{ marginLeft: 10 }}>
-                                <Text
-                                  style={[styles.blueListDataText, { width: SW(40) }]}
-                                  numberOfLines={3}
-                                >
-                                  {data.product_details?.name}
-                                </Text>
-                                <Text style={styles.sukNumber}>
-                                  UPC: {data?.product_details?.upc}
-                                </Text>
-                              </View>
-                            </View>
-                          </View>
-                          <View style={styles.productCartBodyRight}>
-                            <View style={styles.productCartBody}>
-                              {cartIndex === ind && cartEditItem ? (
-                                <TextInput
-                                  value={unitPrice}
-                                  onChangeText={setUnitPrice}
-                                  style={[styles.unitPriceInput]}
-                                  keyboardType="numeric"
-                                />
-                              ) : data?.product_details?.supply?.offer?.offer_price_per_pack &&
-                                data?.product_details?.supply?.supply_prices?.selling_price ? (
-                                <Text numberOfLines={1} style={styles.productPrice}>
-                                  {amountFormat(
-                                    data?.product_details?.supply?.offer?.offer_price_per_pack
-                                  )}
-                                  {/* $
-                                  {data?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
-                                    2
-                                  )} */}
-                                </Text>
-                              ) : (
-                                <Text numberOfLines={1} style={styles.productPrice}>
-                                  {amountFormat(
-                                    data?.product_details?.supply?.supply_prices?.selling_price
-                                  )}
-                                  {/* $
-                                  {data?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
-                                    2
-                                  )} */}
-                                </Text>
-                              )}
-                            </View>
-                            <View style={styles.productCartBody}>
-                              <View
-                                style={styles.listCountCon}
-                                pointerEvents={cartEditItem ? 'none' : 'auto'}
-                              >
-                                <TouchableOpacity
-                                  style={{
-                                    width: ms(10),
-                                    alignItems: 'center',
-                                  }}
-                                  onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
-                                  disabled={data.qty == 1 ? true : false}
-                                >
-                                  <Image source={minus} style={styles.minus} />
-                                </TouchableOpacity>
-                                <View style={styles.dataQtyCon}>
-                                  <Text style={styles.dataQty}>{data.qty}</Text>
-                                </View>
-
-                                <TouchableOpacity
-                                  style={{
-                                    width: ms(10),
-                                    alignItems: 'center',
-                                  }}
-                                  onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
-                                >
-                                  <Image source={plus} style={styles.minus} />
-                                </TouchableOpacity>
-                              </View>
-                            </View>
-                            <View style={styles.productCartBody}>
-                              <Text style={styles.blueListDataText}>
-                                {data?.product_details?.supply?.supply_prices?.offer_price
-                                  ? amountFormat(
-                                      data?.product_details?.supply?.supply_prices?.offer_price *
-                                        data?.qty
-                                    )
-                                  : amountFormat(
-                                      data?.product_details?.supply?.supply_prices?.selling_price *
-                                        data?.qty
-                                    )}
+                    {item?.poscart_products?.map((data, ind) => {
+                      const suppliesPrice = data?.product_details?.supply?.supply_prices;
+                      return (
+                        <View
+                          style={styles.blueListData}
+                          key={ind}
+                          // onPress={() => {
+                          //   productPopupFun(data?.product_id);
+                          //   beforeDiscountCartLoad();
+                          // }}
+                        >
+                          <View style={styles.displayflex}>
+                            <View style={[styles.tableListSide, styles.listLeft]}>
+                              <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
+                                {ind + 1}
                               </Text>
-                            </View>
-                            <View style={styles.productCartBody}>
                               <View
                                 style={{
-                                  width: ms(45),
                                   flexDirection: 'row',
-                                  justifyContent: 'flex-end',
                                   alignItems: 'center',
+                                  marginVertical: ms(3),
                                 }}
                               >
+                                <View style={styles.cartImageCon}>
+                                  <Image
+                                    source={{ uri: data.product_details?.image }}
+                                    style={styles.columbiaMen}
+                                  />
+                                </View>
+                                <View style={{ marginLeft: 10 }}>
+                                  <Text
+                                    style={[styles.blueListDataText, { width: SW(40) }]}
+                                    numberOfLines={3}
+                                  >
+                                    {data.product_details?.name}
+                                  </Text>
+                                  <Text style={styles.sukNumber}>
+                                    UPC: {data?.product_details?.upc}
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                            <View style={styles.productCartBodyRight}>
+                              <View style={styles.productCartBody}>
                                 {cartIndex === ind && cartEditItem ? (
-                                  <TouchableOpacity
-                                    style={[
-                                      styles.saveButtonCon,
-                                      {
-                                        backgroundColor: unitPrice
-                                          ? COLORS.navy_blue
-                                          : COLORS.textInputBackground,
-                                      },
-                                    ]}
-                                    onPress={saveCartEditFun}
-                                    disabled={unitPrice ? false : true}
-                                  >
-                                    <Text
-                                      style={[
-                                        styles.saveText,
-                                        { color: unitPrice ? COLORS.white : COLORS.darkGray },
-                                      ]}
-                                    >
-                                      Save
-                                    </Text>
-                                  </TouchableOpacity>
+                                  <TextInput
+                                    value={unitPrice}
+                                    onChangeText={setUnitPrice}
+                                    style={[styles.unitPriceInput]}
+                                    keyboardType="numeric"
+                                  />
                                 ) : (
-                                  <TouchableOpacity
-                                    style={[styles.cartEditCon, { marginRight: ms(14) }]}
-                                    onPress={() => cartProductedit(data, ind)}
-                                  >
-                                    <Image source={cartEdit} style={styles.cartEdit} />
-                                  </TouchableOpacity>
-                                )}
+                                  // data?.product_details?.supply?.offer?.offer_price_per_pack &&
+                                  //   data?.product_details?.supply?.supply_prices?.selling_price ? (
+                                  //   <Text numberOfLines={1} style={styles.productPrice}>
+                                  //     {amountFormat(
+                                  //       data?.product_details?.supply?.offer?.offer_price_per_pack
+                                  //     )}
+                                  //   </Text>
+                                  // ) : (
+                                  //   <Text numberOfLines={1} style={styles.productPrice}>
+                                  //     {amountFormat(
+                                  //       data?.product_details?.supply?.supply_prices?.selling_price
+                                  //     )}
+                                  //   </Text>
+                                  // )
 
-                                <TouchableOpacity
-                                  onPress={() => removeOneCartHandler(data.id, ind)}
+                                  <Text numberOfLines={1} style={styles.productPrice}>
+                                    {suppliesPrice?.selling_price &&
+                                    suppliesPrice?.offer_price &&
+                                    suppliesPrice?.offer_applicable_qty < 1
+                                      ? amountFormat(suppliesPrice?.offer_price)
+                                      : amountFormat(suppliesPrice?.selling_price)}
+                                  </Text>
+                                )}
+                              </View>
+                              <View style={styles.productCartBody}>
+                                <View
+                                  style={styles.listCountCon}
+                                  pointerEvents={cartEditItem ? 'none' : 'auto'}
                                 >
-                                  <Image source={crossButton} style={styles.borderCross} />
-                                </TouchableOpacity>
+                                  <TouchableOpacity
+                                    style={{
+                                      width: ms(10),
+                                      alignItems: 'center',
+                                    }}
+                                    onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
+                                    disabled={data.qty == 1 ? true : false}
+                                  >
+                                    <Image source={minus} style={styles.minus} />
+                                  </TouchableOpacity>
+                                  <View style={styles.dataQtyCon}>
+                                    <Text style={styles.dataQty}>{data.qty}</Text>
+                                  </View>
+
+                                  <TouchableOpacity
+                                    style={{
+                                      width: ms(10),
+                                      alignItems: 'center',
+                                    }}
+                                    onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
+                                  >
+                                    <Image source={plus} style={styles.minus} />
+                                  </TouchableOpacity>
+                                </View>
+                              </View>
+                              <View style={styles.productCartBody}>
+                                <Text style={styles.blueListDataText}>
+                                  {suppliesPrice?.selling_price &&
+                                  suppliesPrice?.offer_price &&
+                                  suppliesPrice?.offer_applicable_qty < 1
+                                    ? amountFormat(
+                                        suppliesPrice?.offer_price *
+                                          (suppliesPrice?.offer_applicable_qty > 1 ? 1 : data?.qty)
+                                      )
+                                    : amountFormat(suppliesPrice?.selling_price * data?.qty)}
+                                </Text>
+                              </View>
+                              <View style={styles.productCartBody}>
+                                <View
+                                  style={{
+                                    width: ms(45),
+                                    flexDirection: 'row',
+                                    justifyContent: 'flex-end',
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  {cartIndex === ind && cartEditItem ? (
+                                    <TouchableOpacity
+                                      style={[
+                                        styles.saveButtonCon,
+                                        {
+                                          backgroundColor: unitPrice
+                                            ? COLORS.navy_blue
+                                            : COLORS.textInputBackground,
+                                        },
+                                      ]}
+                                      onPress={saveCartEditFun}
+                                      disabled={unitPrice ? false : true}
+                                    >
+                                      <Text
+                                        style={[
+                                          styles.saveText,
+                                          { color: unitPrice ? COLORS.white : COLORS.darkGray },
+                                        ]}
+                                      >
+                                        Save
+                                      </Text>
+                                    </TouchableOpacity>
+                                  ) : (
+                                    <TouchableOpacity
+                                      style={[styles.cartEditCon, { marginRight: ms(14) }]}
+                                      onPress={() => cartProductedit(data, ind)}
+                                    >
+                                      <Image source={cartEdit} style={styles.cartEdit} />
+                                    </TouchableOpacity>
+                                  )}
+
+                                  <TouchableOpacity
+                                    onPress={() => removeOneCartHandler(data.id, ind)}
+                                  >
+                                    <Image source={crossButton} style={styles.borderCross} />
+                                  </TouchableOpacity>
+                                </View>
                               </View>
                             </View>
                           </View>
                         </View>
-                      </View>
-                    ))}
+                      );
+                    })}
                   </View>
                 ))}
               </ScrollView>
@@ -635,13 +643,13 @@ export function CartScreen({
                               <Text style={styles.offerText} numberOfLines={1}>
                                 {item?.name}
                               </Text>
-                              <Text
+                              {/* <Text
                                 style={[styles.offerText, styles.offerTextYellow]}
                                 numberOfLines={1}
                               >
                                 Yellow / M
-                              </Text>
-                              <Spacer space={SH(10)} />
+                              </Text> */}
+                              <Spacer space={SH(3)} />
                               {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
                               item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
                                 <View style={{ flexDirection: 'row' }}>
@@ -659,6 +667,15 @@ export function CartScreen({
                                   </Text>
                                 </View>
                               )}
+                              <Spacer space={SH(3)} />
+                              <Text
+                                style={[styles.offerText, styles.offerTextYellow]}
+                                numberOfLines={1}
+                              >
+                                Offer qty :{' '}
+                                {item?.supplies?.[0]?.supply_prices?.[0]?.offer_applicable_qty ||
+                                  '0'}
+                              </Text>
                             </View>
                           </View>
                           <View style={styles.offerImagebackground}>
