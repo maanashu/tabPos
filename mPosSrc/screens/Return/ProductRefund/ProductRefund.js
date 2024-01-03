@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList, SafeAreaView } from 'react-native';
 
 import { ms } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal';
@@ -189,7 +189,7 @@ export function ProductRefund(props) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header backRequired title={strings.deliveryOrders.back} />
 
       <Spacer space={SH(10)} />
@@ -340,6 +340,6 @@ export function ProductRefund(props) {
           isApplyAmount={isApplyAmount}
         />
       </RBSheet>
-    </View>
+    </SafeAreaView>
   );
 }

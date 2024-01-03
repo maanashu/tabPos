@@ -13,27 +13,43 @@ const EditPrice = ({ setIsVisible, selected, index, productsList, saveRefundAmou
   const [refundAmount, setRefundAmount] = useState('');
   const [products, setProducts] = useState();
 
+  let selectedProduct = selected;
+
   const refundHandler = (newText) => {
     const parsedNewText = parseFloat(newText);
     const finalText = isNaN(parsedNewText) ? 0 : parsedNewText;
     const isSmallerThanUnitPrice = finalText <= parseFloat(selected?.price);
-
-    const updatedDataArray = productsList?.map((order, ind) => {
-      if (ind === index) {
-        return {
-          ...order,
-          refundAmount: isSmallerThanUnitPrice ? finalText : '',
-          totalRefundAmount: isSmallerThanUnitPrice ? finalText * selected.qty : 0.0,
-        };
-      }
-
-      return order;
-    });
-
-    setProducts(updatedDataArray);
     if (!isSmallerThanUnitPrice) {
       alert('Refund amount should not be greater than unit price');
+      setRefundAmount('');
+      return;
     }
+    selectedProduct['refundAmount'] = isSmallerThanUnitPrice ? finalText : selectedProduct?.price;
+    selectedProduct['totalRefundAmount'] = isSmallerThanUnitPrice
+      ? finalText * selectedProduct.qty
+      : 0.0;
+
+    const updatedProductsList = productsList.map((product, ind) => {
+      if (ind !== index) {
+        if (product.refundAmount > 0 || product.totalRefundAmount > 0) {
+          // If refundAmount or totalRefundAmount is already greater than 0, keep the existing values
+          return product;
+        } else {
+          // Update refundAmount and totalRefundAmount for non-selected products to their original prices
+          return {
+            ...product,
+            refundAmount: product.price,
+            totalRefundAmount: product.price * product.qty,
+          };
+        }
+      }
+      return product;
+    });
+
+    const oldProductList = [...updatedProductsList];
+    oldProductList[index] = selectedProduct;
+
+    setProducts(oldProductList);
   };
 
   return (
@@ -73,7 +89,16 @@ const EditPrice = ({ setIsVisible, selected, index, productsList, saveRefundAmou
 
       <Spacer space={SH(20)} />
 
-      <TouchableOpacity onPress={() => saveRefundAmount(products)} style={styles.buttonStyle}>
+      <TouchableOpacity
+        onPress={() => {
+          if (refundAmount !== '') {
+            saveRefundAmount(products);
+          } else {
+            alert('Please enter the amount');
+          }
+        }}
+        style={styles.buttonStyle}
+      >
         <Text style={styles.buttonTextStyle}>{strings.management.save}</Text>
       </TouchableOpacity>
     </View>

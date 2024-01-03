@@ -252,12 +252,17 @@ export class SettingController {
     });
   }
 
-  static async getGoogleCode() {
+  static async getGoogleCode(authToken) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getGoogleCode;
-      HttpClient.get(endpoint)
+      const headers = {
+        Authorization: authToken,
+        'app-name': 'pos',
+      };
+      axios
+        .get(endpoint, authToken && { headers })
         .then((response) => {
-          resolve(response);
+          resolve(response?.data);
         })
         .catch((error) => {
           Toast.show({
@@ -278,12 +283,22 @@ export class SettingController {
         Authorization: authToken,
         'app-name': 'pos',
       };
-      HttpClient.post(endpoint, data, authToken && { headers })
+      console.log('SDsad', data);
+      axios
+        .post(endpoint, data, authToken && { headers })
         .then((response) => {
-          resolve(response);
+          resolve(response?.data);
         })
         .catch((error) => {
+          console.log('ererer', error);
           if (error?.msg === 'Invalid code.') {
+            Toast.show({
+              text2: 'Token Code Expire',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          } else if ((error = '[AxiosError: Request failed with status code 500]')) {
             Toast.show({
               text2: 'Token Code Expire',
               position: 'bottom',
@@ -304,12 +319,20 @@ export class SettingController {
         Authorization: authToken,
         'app-name': 'pos',
       };
-      HttpClient.post(endpoint, data, authToken && { headers })
+      axios
+        .post(endpoint, data, authToken && { headers })
         .then((response) => {
-          resolve(response);
+          resolve(response?.data);
         })
         .catch((error) => {
           if (error?.msg === 'Invalid code.') {
+            Toast.show({
+              text2: 'Token Code Expire',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          } else if ((error = '[AxiosError: Request failed with status code 500]')) {
             Toast.show({
               text2: 'Token Code Expire',
               position: 'bottom',

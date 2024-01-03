@@ -218,11 +218,11 @@ export const plansAPI = {
 
 // Add URLS which is required to send POS USER token
 export const API_URLS_USING_POS_USER_ACCESS_TOKEN = (sellerID) => [
-  USER_URL + ApiUserInventory.verifyGoogleCode,
-  USER_URL + ApiUserInventory.configureGoogleCode,
-  USER_URL + ApiUserInventory.getGoogleCode,
-  USER_URL + ApiUserInventory.forgot2faPin,
-  USER_URL + ApiUserInventory.reset2faPin,
+  // USER_URL + ApiUserInventory.verifyGoogleCode,
+  // USER_URL + ApiUserInventory.configureGoogleCode,
+  // USER_URL + ApiUserInventory.getGoogleCode,
+  // USER_URL + ApiUserInventory.forgot2faPin,
+  // USER_URL + ApiUserInventory.reset2faPin,
   // USER_URL + ApiUserInventory.getSetting,
   USER_URL + ApiUserInventory.merchantLogin,
   USER_URL + ApiUserInventory.creatPosUsers,

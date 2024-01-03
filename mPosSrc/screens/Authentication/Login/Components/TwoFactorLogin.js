@@ -54,24 +54,24 @@ export function TwoFactorLogin(props) {
   const { userResponse } = props?.route?.params;
 
   const getAuth = useSelector(getAuthData);
-  const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
-  const posUserArraydata = getAuth?.getAllPosUsersData;
-  const sellerID = getAuth?.merchantLoginData?.uniqe_id;
-  const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
+  // const posUserArray = getAuth?.getAllPosUsersData?.pos_staff;
+  // const posUserArraydata = getAuth?.getAllPosUsersData;
+  // const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  // const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
 
-  const refSix = useBlurOnFulfill({ value, cellCount: CELL_COUNT_SIX });
+  // const refSix = useBlurOnFulfill({ value, cellCount: CELL_COUNT_SIX });
   const refFive = useBlurOnFulfill({ value, cellCount: CELL_COUNT_Five });
   const getSettingData = useSelector(getSetting);
   const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
   const [googleAuthicator, setGoogleAuthicator] = useState(googleAuthenticator);
-  const merchantData = getAuth?.merchantLoginData;
-  const onEndReachedCalledDuringMomentum = useRef(false);
-  const [factorEnable, setFactorEnable] = useState(null);
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
-  const [twoStepModal, setTwoStepModal] = useState(false);
-  const [googleAuthScan, setGoogleAuthScan] = useState(false);
+  // const merchantData = getAuth?.merchantLoginData;
+  // const onEndReachedCalledDuringMomentum = useRef(false);
+  // const [factorEnable, setFactorEnable] = useState(null);
+  // const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  // const [twoStepModal, setTwoStepModal] = useState(false);
+  // const [googleAuthScan, setGoogleAuthScan] = useState(false);
   const [sixDigit, setSixDigit] = useState(false);
-  const [isLogout, setIsLogout] = useState(false);
+  // const [isLogout, setIsLogout] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState('');
 
@@ -92,7 +92,7 @@ export function TwoFactorLogin(props) {
     if (isFocused) {
       setSixDigit(true);
       setForgotPinScreen(false);
-      dispatch(getSettings());
+      // dispatch(getSettings());
       // useEffectFun();
     }
   }, [isFocused]);
@@ -145,6 +145,7 @@ export function TwoFactorLogin(props) {
       const data = {
         code: value,
       };
+      console.log('userResponse', userResponse);
       const authToken = userResponse?.token;
       // const verificationFunction = verifyGoogleCodeMPOS;
       const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
@@ -164,7 +165,8 @@ export function TwoFactorLogin(props) {
   const onForgotPin = async () => {
     // setSixDigit(false);
     setForgotPinScreen(true);
-    const res = await dispatch(forgot2fa());
+    const authToken = userResponse?.token;
+    const res = await dispatch(forgot2fa(authToken));
     console.log(res);
     if (res?.status_code == 200) {
       setVerificationId(res?.payload?.verification_id);
@@ -200,7 +202,9 @@ export function TwoFactorLogin(props) {
         verification_id: verificationId,
         verification_otp: forgotValue,
       };
-      const res = await dispatch(reset2fa(data));
+      const authToken = userResponse?.token;
+
+      const res = await dispatch(reset2fa(data, authToken));
       if (res?.status_code == 201) {
         setQRCodeUrl(res?.payload?.qrCode);
         setForgotPinScreen(false);
