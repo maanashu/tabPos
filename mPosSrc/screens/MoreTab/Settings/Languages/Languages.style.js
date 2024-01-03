@@ -286,8 +286,8 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   toggleSecurity: {
-    width: SW(8),
-    height: SW(8),
+    width: ms(30),
+    height: ms(30),
     resizeMode: 'contain',
   },
 
@@ -865,7 +865,7 @@ export const styles = StyleSheet.create({
     marginRight: moderateScale(10),
   },
   cancelbuttonCon: {
-    width: width * 0.127,
+    width: '45%',
     height: height * 0.05,
     backgroundColor: COLORS.sky_grey,
     borderRadius: 50,
@@ -873,7 +873,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nextbuttonCon: {
-    width: width * 0.127,
+    width: '45%',
     height: height * 0.05,
     backgroundColor: COLORS.navy_blue,
     borderRadius: 50,
@@ -1126,10 +1126,11 @@ export const styles = StyleSheet.create({
   container1: {
     backgroundColor: 'white',
     borderRadius: 20,
-    width: windowWidth * 0.33,
-    height: windowHeight * 0.6,
+    width: '100%',
+    // height: '70%',
     alignSelf: 'center',
     position: 'absolute',
+    paddingVertical: ms(20),
   },
   modalViewStyle: {
     backgroundColor: '#F5F6F7',
