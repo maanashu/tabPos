@@ -25,6 +25,7 @@ import { useCallback } from 'react';
 import { ms } from 'react-native-size-matters';
 import { width } from '@/theme/ScalerDimensions';
 import { Images } from '@/assets/new_icon';
+import { goBack, navigate } from '@mPOS/navigation/NavigationRef';
 
 // const addLanguage = [
 //   {
@@ -167,7 +168,7 @@ export function Languages() {
         { borderColor: COLORS.light_purple, backgroundColor: 'transparent', borderWidth: 1 },
       ]}
     >
-      <View style={styles.flexRow}>
+      <View style={[styles.flexRow, { paddingHorizontal: 10 }]}>
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
           <Image source={{ uri: item.image }} style={[styles.toggleSecurity, { marginRight: 3 }]} />
           <View style={styles.twoStepVerifiCon}>
@@ -260,7 +261,9 @@ export function Languages() {
       <Spacer space={SH(20)} /> */}
       <View style={styles.securityMainConNew}>
         <View style={[styles.dispalyRow, { alignItems: 'flex-start' }]}>
-          <Image source={arrowLeftUp} style={styles.securityLogo} />
+          <TouchableOpacity onPress={() => goBack()}>
+            <Image source={arrowLeftUp} style={styles.securityLogo} />
+          </TouchableOpacity>
           <View style={styles.twoStepVerifiCon}>
             <Text style={styles.twoStepText}>{strings.Languages.Publishedlanguages}</Text>
             <Spacer space={SH(10)} />
@@ -284,12 +287,13 @@ export function Languages() {
         <View
           style={{
             borderWidth: 2,
-            height: 32,
-            width: 32,
+            height: 22,
+            width: 22,
             borderRadius: 32,
             borderColor: COLORS.navy_blue,
             justifyContent: 'center',
             alignItems: 'center',
+            marginLeft: ms(20),
           }}
         >
           <Image
@@ -319,12 +323,12 @@ export function Languages() {
               <Image source={XImage} style={styles.toggleSecurity} />
             </TouchableOpacity>
           </View> */}
-          <Spacer space={SH(30)} />
+          {/* <Spacer space={SH(30)} /> */}
           <Image source={langu} style={{ alignSelf: 'center', height: ms(30), width: ms(30) }} />
           <Text
             style={{
               fontFamily: Fonts.Medium,
-              fontSize: ms(12),
+              fontSize: ms(16),
               color: COLORS.navy_blue,
               textAlign: 'center',
               marginTop: 8,
@@ -335,7 +339,7 @@ export function Languages() {
           <Text
             style={{
               fontFamily: Fonts.Regular,
-              fontSize: ms(8),
+              fontSize: ms(10),
               color: COLORS.navy_blue,
               textAlign: 'center',
               marginTop: 10,
@@ -343,7 +347,7 @@ export function Languages() {
           >
             Select one or more languages to add
           </Text>
-          <View style={{ paddingHorizontal: SW(10), paddingBottom: SW(10) }}>
+          <View style={{ paddingHorizontal: SW(10) }}>
             <Spacer space={SH(15)} />
 
             <View style={styles.countrySelectCon}>
@@ -355,11 +359,12 @@ export function Languages() {
                 showsVerticalScrollIndicator={false}
               />
             </View>
-            <Spacer space={SH(30)} />
+            <Spacer space={SH(20)} />
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <Button
@@ -368,7 +373,7 @@ export function Languages() {
                 textStyle={styles.cancel}
                 style={styles.cancelbuttonCon}
               />
-
+              <Spacer horizontal={true} space={SH(5)} />
               <TouchableOpacity style={styles.nextbuttonCon} onPress={() => onAddLanguage()}>
                 <Text style={{ fontFamily: Fonts.Regular, fontSize: ms(9), color: COLORS.white }}>
                   Add
