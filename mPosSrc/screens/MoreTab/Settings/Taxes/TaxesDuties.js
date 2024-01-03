@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Spacer, TableDropdown } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
@@ -9,28 +9,19 @@ import {
   Image,
   FlatList,
   TextInput,
-  KeyboardAvoidingView,
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import {
-  Fonts,
-  addState,
-  blankCircle,
   changePlan,
   checkboxSec,
   checkboxSecBlue,
-  columbiaMen,
   crossButton,
   invoice2,
   rightBack,
   squareBlank,
-  taxVerified,
   taxmap,
-  taxpencil,
-  teamMember,
-  toggleSecBlue,
   toggleSecurity,
   usaFlag,
   vector,
@@ -40,8 +31,6 @@ import {
   Flag,
   SubLine,
   verifyGreen,
-  toggle,
-  cartEdit,
   editIcon,
   ToggleOnNew,
 } from '@/assets';
@@ -50,17 +39,17 @@ import { moderateScale, ms } from 'react-native-size-matters';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
-import { getCountries, getState, getTax, getTaxTrue, taxPayer } from '@/actions/SettingAction';
+import { getCountries, getState, taxPayer } from '@/actions/SettingAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/SettingTypes';
 import { getAuthData } from '@/selectors/AuthSelector';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { store } from '@/store';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { log } from 'react-native-reanimated';
 import { Header, ScreenWrapper } from '@mPOS/components';
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { Images } from '@/assets/new_icon';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
 
 export function TaxesDuties() {
   const isFocused = useIsFocused();
@@ -69,6 +58,9 @@ export function TaxesDuties() {
   const getAuth = useSelector(getAuthData);
 
   const taxPayerRef = useRef();
+  const activateStateRef = useRef();
+  const createTaxRef = useRef();
+  const googlePlacesRef = useRef();
 
   const merchantProfile = getAuth?.merchantLoginData?.user_profile;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -82,6 +74,7 @@ export function TaxesDuties() {
   const [countryId, setCountryId] = useState(null);
   const [stateId, setStateId] = useState([]);
   const [verifiedArea, setVerifiedArea] = useState(false);
+  const [isIncludeTaxPrice, setIncludeTaxPrice] = useState(true);
   const [stateTax, setStateTax] = useState(false);
   const [createTaxBtn, setCreateTaxBtn] = useState(false);
   const [createTaxModal, setCreateTaxModal] = useState(false);
@@ -97,13 +90,18 @@ export function TaxesDuties() {
   const [streetAdd, setStreetAdd] = useState(merchantProfile?.current_address?.street_address);
   const [appartment, setAppartment] = useState(merchantProfile?.current_address?.address_type);
   const [country, setCountry] = useState(merchantProfile?.current_address?.country);
+  const [countryCode, setCountryCode] = useState(merchantProfile?.current_address?.country_code);
   const [state, setState] = useState(merchantProfile?.current_address?.state);
+  const [stateCode, setStateCode] = useState(merchantProfile?.current_address?.state_code);
   const [city, setCity] = useState(merchantProfile?.current_address?.city);
   const [zipCode, setZipCode] = useState(merchantProfile?.current_address?.zipcode);
   const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
   const [isToggle, setIsToggle] = useState(false);
   const [activeTaxes, setActiveTaxes] = useState(false);
   const [stateActive, setStateActive] = useState(false);
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
+  console.log('counry', country);
 
   const taxPayerHandler = () => {
     if (!name || !ssn || !streetAdd || !appartment || !country || !state || !city || !zipCode) {
@@ -203,6 +201,35 @@ export function TaxesDuties() {
     return (
       <STATEITEM item={item} onPress={() => setStateId(item.id)} color={color} image={image} />
     );
+  };
+  const getAddress = (details, geometry) => {
+    for (var i = 0; i < details.length; i++) {
+      if (details[i].types[0] == 'country') {
+        setCountry(details?.[i]?.long_name);
+        setCountryCode(details?.[i]?.short_name);
+      }
+
+      if (details[i].types[0] == 'postal_code') {
+        setZipCode(details?.[i]?.long_name);
+      }
+
+      if (details[i].types[0] == 'administrative_area_level_1') {
+        setState(details?.[i]?.long_name);
+        setStateCode(details?.[i]?.short_name);
+      }
+
+      if (
+        details[i].types[0] == 'administrative_area_level_2' ||
+        details[i].types[0] == 'administrative_area_level_3' ||
+        details[i].types[0] == 'locality'
+      ) {
+        setCity(details?.[i]?.long_name);
+      }
+      if (geometry) {
+        setLatitude(geometry?.location?.lat);
+        setLongitude(geometry?.location?.lng);
+      }
+    }
   };
 
   const dataChangeFun = () => {
@@ -342,141 +369,6 @@ export function TaxesDuties() {
           </View>
         </View>
       );
-    } else if (taxPayerModel) {
-      return (
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 100}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 100}
-        >
-          <ScrollView>
-            <View style={[styles.countryModCon, styles.taxPayerModCon]}>
-              <View style={styles.countryModHeader}>
-                {/* <View style={styles.flexRow}>
-                  <Text style={styles.selectHead}>{strings.settings.taxPayerHeadl}</Text>
-                  <TouchableOpacity
-                    style={styles.crossButtonCon}
-                    onPress={() => (setTaxPayerModel(false), setStateModel(true))}
-                  >
-                    <Image source={crossButton} style={styles.cntryCrossButton} />
-                  </TouchableOpacity>
-                </View> */}
-                <Text style={styles.selectHead}>{strings.settings.taxPayerHeadl}</Text>
-              </View>
-              <View style={styles.countryModBody}>
-                <Spacer space={ms(8)} />
-                <Text style={styles.name}>{strings.settings.fullName}</Text>
-                <TextInput
-                  placeholder="Full Name "
-                  style={styles.nameInput}
-                  placeholderTextColor={COLORS.light_blue2}
-                  value={name}
-                  onChangeText={setName}
-                />
-                <Spacer space={ms(8)} />
-                <Text style={styles.name}>{strings.settings.ssn}</Text>
-                <TextInput
-                  placeholder={strings.settings.ssn}
-                  style={styles.nameInput}
-                  placeholderTextColor={COLORS.light_blue2}
-                  value={ssn}
-                  onChangeText={setSsn}
-                  keyboardType="numeric"
-                />
-                <Spacer space={ms(8)} />
-                <Text style={styles.name}>{strings.settings.streetAdd}</Text>
-                <TextInput
-                  placeholder={strings.settings.streetAdd}
-                  style={styles.nameInput}
-                  placeholderTextColor={COLORS.light_blue2}
-                  value={streetAdd}
-                  onChangeText={setStreetAdd}
-                />
-                <Spacer space={ms(8)} />
-                <Text style={styles.name}>{strings.settings.appartement}</Text>
-                <TextInput
-                  placeholder={strings.settings.appartement}
-                  style={styles.nameInput}
-                  placeholderTextColor={COLORS.light_blue2}
-                  value={appartment}
-                  onChangeText={setAppartment}
-                />
-                <Spacer space={ms(8)} />
-                <View style={[styles.dispalyRow, styles.countryStateWidth]}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.name}>{strings.settings.country}</Text>
-                    <TextInput
-                      placeholder="country"
-                      style={styles.countryInput}
-                      placeholderTextColor={COLORS.light_blue2}
-                      value={country}
-                      onChangeText={setCountry}
-                    />
-                  </View>
-                  <View style={{ flex: 1, marginLeft: ms(10) }}>
-                    <Text style={styles.name}>State</Text>
-                    <TextInput
-                      placeholder="state"
-                      style={styles.countryInput}
-                      placeholderTextColor={COLORS.light_blue2}
-                      value={state}
-                      onChangeText={setState}
-                    />
-                  </View>
-                </View>
-                <Spacer space={ms(8)} />
-                <View style={[styles.dispalyRow, styles.countryStateWidth]}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.name}>City</Text>
-                    <TextInput
-                      placeholder="city"
-                      style={styles.countryInput}
-                      placeholderTextColor={COLORS.light_blue2}
-                      value={city}
-                      onChangeText={setCity}
-                    />
-                  </View>
-                  <View style={{ flex: 1, marginLeft: ms(10) }}>
-                    <Text style={styles.name}>Zip Code</Text>
-                    <TextInput
-                      placeholder="zipCode"
-                      style={styles.countryInput}
-                      placeholderTextColor={COLORS.light_blue2}
-                      value={zipCode}
-                      onChangeText={setZipCode}
-                      keyboardType="numeric"
-                    />
-                  </View>
-                </View>
-
-                <Spacer space={ms(8)} />
-                <View style={{ flex: 1 }} />
-                <View style={styles.activeTaxButtonStyle}>
-                  <View style={[styles.dispalyRow, { justifyContent: 'space-between' }]}>
-                    <Button
-                      onPress={() => setTaxPayerModel(false)}
-                      title={strings.settings.cancel}
-                      textStyle={styles.cancelButtonText}
-                      style={styles.cancelButtonTax}
-                    />
-                    <TouchableOpacity
-                      onPress={() => {
-                        setTaxPayerModel(false);
-                        setActivateTaxModal(true);
-                      }}
-                      style={styles.saveButtonTax}
-                    >
-                      <Text style={styles.saveButtonText}>{strings.management.save}</Text>
-                      <Image source={arrowRightTop} style={styles.arrowButton} />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <Spacer space={ms(20)} />
-              </View>
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      );
     } else if (stateTax) {
       return (
         <View style={styles.countryModCon}>
@@ -548,379 +440,350 @@ export function TaxesDuties() {
     }
   };
 
-  // const createTaxFun = () => {
-  //   if (createTaxModal) {
-  //     return (
-  //       <View style={[styles.createTaxModCon, addExmption ? styles.createTaxModHeight : null]}>
-  //         <View style={styles.createtaxModHeader}>
-  //           <View style={styles.flexRow}>
-  //             <Text style={styles.selectHead}>{strings.settings.craeteTax}</Text>
-  //             <TouchableOpacity
-  //               style={styles.crossButtonCon}
-  //               onPress={() => setCreateTaxModal(false)}
-  //             >
-  //               <Image source={crossButton} style={styles.cntryCrossButton} />
-  //             </TouchableOpacity>
-  //           </View>
-  //         </View>
-  //         <View style={styles.createTaxModBodyNew}>
-  //           <Spacer space={SH(10)} />
-  //           <Text style={styles.details}>{strings.settings.details}</Text>
-  //           <Spacer space={SH(5)} />
-  //           <View style={styles.saleInputMain}>
-  //             <Text style={styles.taxName}>{strings.settings.taxName}</Text>
-  //             <TextInput
-  //               placeholder="Sales"
-  //               style={styles.taxInput}
-  //               placeholderStyle={styles.namePlaceholder}
-  //             />
-  //           </View>
-  //           <View style={styles.saleInputMain}>
-  //             <Text style={styles.taxName}>{strings.settings.taxRate}</Text>
-  //             <TextInput
-  //               placeholder="%"
-  //               style={styles.taxInput}
-  //               placeholderStyle={styles.namePlaceholder}
-  //             />
-  //           </View>
-  //           <View style={styles.saleInputMain}>
-  //             <Text style={styles.taxName}>{strings.settings.location}</Text>
-  //             <TextInput
-  //               placeholder="Input box label "
-  //               style={styles.taxInput}
-  //               placeholderStyle={styles.namePlaceholder}
-  //             />
-  //           </View>
-  //           <Spacer space={SH(10)} />
-  //           <Text style={styles.details}>{strings.settings.taxCalculation}</Text>
-  //           <Spacer space={SH(8)} />
-  //           <View style={styles.twoStepMemberCon}>
-  //             <View style={styles.flexRow}>
-  //               <View style={styles.dispalyRow}>
-  //                 <Image source={squareBlank} style={styles.blankSquare} />
-  //                 <View style={styles.marginLeft}>
-  //                   <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-  //                     {strings.settings.includeTax}
-  //                   </Text>
-  //                   <Spacer space={SH(3)} />
-  //                   <Text numberOfLines={1} style={[styles.securitysubhead, { fontSize: SF(11) }]}>
-  //                     {strings.settings.includetaxSubhead}
-  //                   </Text>
-  //                 </View>
-  //               </View>
-  //             </View>
-  //           </View>
-  //           <Spacer space={SH(5)} />
-  //           <View style={[styles.twoStepMemberCon]}>
-  //             <View style={styles.flexRow}>
-  //               <View style={styles.dispalyRow}>
-  //                 <TouchableOpacity onPress={() => setAddExmption(!addExmption)}>
-  //                   <Image
-  //                     source={addExmption ? toggleSecBlue : toggleSecurity}
-  //                     style={styles.toggleSecurity}
-  //                   />
-  //                 </TouchableOpacity>
-  //                 <View style={styles.marginLeft}>
-  //                   <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-  //                     {strings.settings.addRule}
-  //                   </Text>
-  //                   <Spacer space={SH(3)} />
-  //                   <Text style={[styles.securitysubhead, { fontSize: SF(11) }]}>
-  //                     {strings.settings.notApplied}
-  //                   </Text>
-  //                 </View>
-  //               </View>
-  //             </View>
-  //             <Spacer space={SH(5)} />
-  //             {addExmption ? (
-  //               <View style={styles.taxFormConNew}>
-  //                 <View style={styles.taxExmptionCon}>
-  //                   <Text style={styles.taxEmption}>{strings.settings.taxexmption}</Text>
-  //                   <TextInput
-  //                     placeholder="Tax name"
-  //                     style={styles.taxImptionInput}
-  //                     placeholderStyle={styles.namePlaceholder}
-  //                   />
-  //                 </View>
-  //                 <View style={styles.taxExmptionCon}>
-  //                   <Text style={styles.taxEmption}>{strings.settings.location}</Text>
-  //                   <TextInput
-  //                     placeholder="Select location"
-  //                     style={styles.taxImptionInput}
-  //                     placeholderStyle={styles.namePlaceholder}
-  //                   />
-  //                 </View>
-  //                 <View style={styles.taxExmptionCon}>
-  //                   <Text style={styles.taxEmption}>{strings.settings.exempttax}</Text>
-  //                   <TextInput
-  //                     placeholder="Select Exempt tax option"
-  //                     style={styles.taxImptionInput}
-  //                     placeholderStyle={styles.namePlaceholder}
-  //                   />
-  //                 </View>
-  //                 <View style={styles.taxExmptionCon}>
-  //                   <Text style={styles.taxEmption}>{strings.settings.amount}</Text>
-  //                   <TextInput
-  //                     placeholder="$00.00"
-  //                     style={styles.taxImptionInput}
-  //                     placeholderStyle={styles.namePlaceholder}
-  //                   />
-  //                 </View>
-  //               </View>
-  //             ) : null}
-  //           </View>
-  //           <Spacer space={SH(10)} />
+  const createTaxView = () => {
+    return (
+      <BottomSheetScrollView
+        style={{ padding: ms(20) }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <Spacer space={SH(20)} />
 
-  //           <Button
-  //             onPress={() => (setAddStateBtn(true), setCreateTaxModal(false))}
-  //             title={strings.settings.save}
-  //             textStyle={styles.selectedText}
-  //             style={styles.saveButtons}
-  //           />
-  //         </View>
-  //       </View>
-  //     );
-  //   }
-  // };
+        <View style={styles.taxPayerHeadingContainer}>
+          <Text style={styles.taxPayerHeading}>{strings.settings.craeteTax}</Text>
+        </View>
+        <Spacer space={ms(40)} />
 
-  const createTaxFunNew = () => {
-    if (createTaxModal) {
-      return (
-        <View style={[styles.createTaxModConNew, addExmption ? styles.createTaxModHeight : null]}>
-          <View style={styles.createtaxModHeaderTax}>
-            <Text style={styles.createText}>{strings.settings.craeteTax}</Text>
+        <View style={styles.createTaxModBodyNew}>
+          <View style={styles.saleInputMainTax}>
+            <Text style={styles.inputHeaderText}>{strings.settings.taxName}</Text>
+            <Spacer space={ms(8)} />
+            <TextInput
+              placeholder="Tax Name"
+              style={styles.taxPayerInput}
+              placeholderStyle={styles.namePlaceholderTax}
+            />
           </View>
-          <View style={styles.createTaxModBodyNew}>
-            <View style={styles.saleInputMainTax}>
-              <Text style={styles.taxName}>{strings.settings.taxName}</Text>
+
+          <Spacer space={ms(15)} />
+
+          <View style={[styles.rowJustified]}>
+            <View style={[styles.saleInputMainTax, { flex: 1 }]}>
+              <Text style={styles.inputHeaderText}>{strings.settings.taxRate}</Text>
+              <Spacer space={ms(8)} />
               <TextInput
-                placeholder="Tax Name"
-                style={styles.taxInputTax}
+                placeholder="Tax Rate"
+                style={styles.taxPayerInput}
                 placeholderStyle={styles.namePlaceholderTax}
               />
             </View>
-            <View style={[styles.flexRow]}>
-              <View style={[styles.saleInputMainTax, { flex: 1 }]}>
-                <Text style={styles.taxName}>{strings.settings.taxRate}</Text>
-                <TextInput
-                  placeholder="Tax Rate"
-                  style={styles.taxInputTax}
-                  placeholderStyle={styles.namePlaceholderTax}
-                />
-              </View>
-              <View style={[styles.saleInputMainTax, { flex: 1 }]}>
-                <Text style={styles.taxName}>{strings.settings.location}</Text>
-                <TextInput
-                  placeholder="Location"
-                  style={styles.taxInputTax}
-                  placeholderStyle={styles.namePlaceholderTax}
-                />
-              </View>
-            </View>
-            <Spacer space={SH(3)} />
-            <Text style={styles.taxCalculation}>{strings.settings.taxCalculation}</Text>
-            <View style={[styles.twoStepMemberConNew, { backgroundColor: null }]}>
-              <View style={styles.flexRow}>
-                <View style={styles.dispalyRow}>
-                  <Image source={squareBlank} style={styles.blankSquare} />
-                  <View style={styles.marginLeft}>
-                    <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-                      {strings.settings.includeTax}
-                    </Text>
-                    <Spacer space={SH(3)} />
-                    <Text style={[styles.securitysubhead, { fontSize: SF(11) }]}>
-                      {strings.settings.includetaxSubhead}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <View style={[styles.twoStepMemberConTax]}>
-              <View style={styles.flexRow}>
-                <View style={styles.dispalyRow}>
-                  <TouchableOpacity onPress={() => setAddExmption(!addExmption)}>
-                    <Image
-                      source={addExmption ? toggleSecurity : newToggleOff}
-                      style={[
-                        styles.toggleSecurity,
-                        { tintColor: addExmption ? COLORS.navy_blue : null },
-                      ]}
-                    />
-                  </TouchableOpacity>
-                  <View style={[styles.marginLeft, { marginLeft: ms(5) }]}>
-                    <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-                      {strings.settings.addRule}
-                    </Text>
-                    <Spacer space={SH(3)} />
-                    <Text style={[styles.securitysubhead, { fontSize: SF(11) }]}>
-                      {strings.settings.notApplied}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <View
-                style={{
-                  height: 1,
-                  borderWidth: 1,
-                  borderStyle: 'dotted',
-                  marginVertical: ms(5),
-                  // marginHorizontal: ms(20),
-                  borderColor: COLORS.lavender,
-                }}
+            <Spacer space={ms(10)} horizontal />
+            <View style={[styles.saleInputMainTax, { flex: 1 }]}>
+              <Text style={styles.inputHeaderText}>{strings.settings.location}</Text>
+              <Spacer space={ms(8)} />
+              <TextInput
+                placeholder="Location"
+                style={styles.taxPayerInput}
+                placeholderStyle={styles.namePlaceholderTax}
               />
-              {addExmption ? (
-                <View style={styles.taxFormConNew}>
-                  <View style={[styles.flexRow]}>
-                    <View style={[styles.saleInputMainTax, { flex: 1 }]}>
-                      <Text style={styles.taxName}>{strings.settings.taxexmption}</Text>
-                      <TextInput
-                        placeholder="Tax Rate"
-                        style={styles.taxInputTax}
-                        placeholderStyle={styles.namePlaceholderTax}
-                      />
-                    </View>
-                    <View style={[styles.saleInputMainTax, { flex: 1 }]}>
-                      <Text style={styles.taxName}>{strings.settings.location}</Text>
-                      <TextInput
-                        placeholder="Location"
-                        style={styles.taxInputTax}
-                        placeholderStyle={styles.namePlaceholderTax}
-                      />
-                    </View>
-                  </View>
-                  <View style={[styles.flexRow]}>
-                    <View style={[styles.saleInputMainTax, { flex: 1 }]}>
-                      <Text style={styles.taxName}>{strings.settings.exempttax}</Text>
-                      <TextInput
-                        placeholder="Select Exempt Tax"
-                        style={styles.taxInputTax}
-                        placeholderStyle={styles.namePlaceholderTax}
-                      />
-                    </View>
-                    <View style={[styles.saleInputMainTax, { flex: 1 }]}>
-                      <Text style={styles.taxName}>{strings.settings.amount}</Text>
-                      <TextInput
-                        placeholder="$0.00"
-                        style={styles.taxInputTax}
-                        placeholderStyle={styles.namePlaceholderTax}
-                      />
-                    </View>
-                  </View>
-                </View>
-              ) : null}
             </View>
+          </View>
+          <Spacer space={SH(3)} />
+          <Text style={styles.taxCalculation}>{strings.settings.taxCalculation}</Text>
 
-            <View style={[styles.dispalyRow, { justifyContent: 'space-between' }]}>
-              <Button
-                onPress={() => setCreateTaxModal(false)}
-                title={strings.settings.cancel}
-                textStyle={styles.cancelButtonText}
-                style={styles.cancelButtonTax}
+          <Spacer space={SH(20)} />
+
+          <View style={[styles.rowAligned, { alignItems: 'flex-start' }]}>
+            <TouchableOpacity
+              style={{ padding: ms(5) }}
+              onPress={() => setIncludeTaxPrice(!isIncludeTaxPrice)}
+            >
+              <Image
+                source={isIncludeTaxPrice ? Images.checkboxSquare : squareBlank}
+                resizeMode="contain"
+                style={styles.checkBoxStyle}
               />
-              <TouchableOpacity
-                onPress={() => (setAddStateBtn(true), setCreateTaxModal(false))}
-                style={styles.saveButtonTax}
-              >
-                <Text style={styles.saveButtonText}>{strings.settings.save}</Text>
-                <Image source={arrowRightTop} style={styles.arrowButton} />
-              </TouchableOpacity>
+            </TouchableOpacity>
+
+            <View style={{ left: ms(5), flex: 1 }}>
+              <Text style={styles.includeTaxText}>{strings.settings.includeTax}</Text>
+              <Spacer space={SH(3)} />
+              <Text style={styles.securitysubhead}>{strings.settings.includetaxSubhead}</Text>
             </View>
+          </View>
+
+          <Spacer space={SH(30)} />
+
+          <View style={styles.exceptionContainer}>
+            <View style={[styles.rowAligned, { alignItems: 'flex-start' }]}>
+              <TouchableOpacity onPress={() => setAddExmption(!addExmption)}>
+                <Image
+                  source={addExmption ? ToggleOnNew : newToggleOff}
+                  style={[styles.toggleIcon]}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <View style={{ flex: 1, left: ms(10) }}>
+                <Text style={[styles.includeTaxText, { top: ms(3) }]}>
+                  {strings.settings.addRule}
+                </Text>
+                <Spacer space={SH(3)} />
+                <Text style={styles.securitysubhead}>{strings.settings.notApplied}</Text>
+              </View>
+            </View>
+            {/* 
+            {addExmption ? (
+              <View style={styles.taxFormConNew}>
+                <View style={[styles.flexRow]}>
+                  <View style={[styles.saleInputMainTax, { flex: 1 }]}>
+                    <Text style={styles.taxName}>{strings.settings.taxexmption}</Text>
+                    <TextInput
+                      placeholder="Tax Rate"
+                      style={styles.taxInputTax}
+                      placeholderStyle={styles.namePlaceholderTax}
+                    />
+                  </View>
+                  <View style={[styles.saleInputMainTax, { flex: 1 }]}>
+                    <Text style={styles.taxName}>{strings.settings.location}</Text>
+                    <TextInput
+                      placeholder="Location"
+                      style={styles.taxInputTax}
+                      placeholderStyle={styles.namePlaceholderTax}
+                    />
+                  </View>
+                </View>
+                <View style={[styles.flexRow]}>
+                  <View style={[styles.saleInputMainTax, { flex: 1 }]}>
+                    <Text style={styles.taxName}>{strings.settings.exempttax}</Text>
+                    <TextInput
+                      placeholder="Select Exempt Tax"
+                      style={styles.taxInputTax}
+                      placeholderStyle={styles.namePlaceholderTax}
+                    />
+                  </View>
+                  <View style={[styles.saleInputMainTax, { flex: 1 }]}>
+                    <Text style={styles.taxName}>{strings.settings.amount}</Text>
+                    <TextInput
+                      placeholder="$0.00"
+                      style={styles.taxInputTax}
+                      placeholderStyle={styles.namePlaceholderTax}
+                    />
+                  </View>
+                </View>
+              </View>
+            ) : null} */}
           </View>
         </View>
-      );
-    }
-  };
-
-  const activeTaxFun = () => {
-    if (activateTaxModal) {
-      return (
-        <View style={[styles.activeTaxMain, { padding: ms(10) }]}>
-          <View style={styles.activeTaxHeader}>
-            <Text style={styles.createText}>{strings.settings.activeStateTax}</Text>
-            <Text style={styles.financialtax}>{strings.settings.financialReport}</Text>
-          </View>
-
-          <View style={styles.activeTaxBody}>
-            <View style={styles.view1Styles}>
-              <View style={[styles.dispalyRow, {}]}>
-                <Image source={Flag} style={{ height: ms(20), width: ms(20) }} />
-                <View style={{ marginHorizontal: ms(5) }}>
-                  <Text
-                    style={{
-                      fontFamily: Fonts.MaisonBold,
-                      fontSize: ms(10),
-                      color: COLORS.navy_blue,
-                    }}
-                  >
-                    Operating Country
-                  </Text>
-                  <Text
-                    style={{
-                      fontFamily: Fonts.Regular,
-                      fontSize: ms(8),
-                      color: COLORS.navy_blue,
-                    }}
-                  >
-                    United States
-                  </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.dispalyRow}>
-              <Image source={SubLine} style={{ height: ms(50), width: ms(50) }} />
-
-              <View style={styles.view2Styles}>
-                <View style={[styles.dispalyRow, {}]}>
-                  <Image source={Flag} style={{ height: ms(20), width: ms(20) }} />
-                  <View style={{ marginHorizontal: ms(5) }}>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.MaisonBold,
-                        fontSize: ms(10),
-                        color: COLORS.navy_blue,
-                      }}
-                    >
-                      Operating Country
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: Fonts.Regular,
-                        fontSize: ms(8),
-                        color: COLORS.navy_blue,
-                      }}
-                    >
-                      United States
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={styles.activeTaxButtonStyle}>
-            <View style={[styles.dispalyRow, { justifyContent: 'space-between' }]}>
-              <Button
-                onPress={() => setActivateTaxModal(false)}
-                title={strings.settings.cancel}
-                textStyle={styles.cancelButtonText}
+        <View
+          style={[
+            styles.activeTaxButtonStyle,
+            { justifyContent: 'flex-end', flex: 1, marginBottom: ms(20) },
+          ]}
+        >
+          <View style={styles.rowJustified}>
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity
+                onPress={() => createTaxRef.current.dismiss()}
                 style={styles.cancelButtonTax}
-              />
+              >
+                <Text style={styles.cancelButtonText}>{'Cancel'}</Text>
+              </TouchableOpacity>
+            </View>
+            <Spacer horizontal space={ms(8)} />
+            <View style={{ flex: 1 }}>
               <TouchableOpacity
                 onPress={() => {
-                  setActivateTaxModal(false);
-                  setStateActive(true);
-                  // setTaxPayerModel(true);
+                  createTaxRef.current.dismiss();
+                  setAddStateBtn(true);
                 }}
-                style={styles.saveButtonTax}
+                style={[styles.saveButtonTax, { justifyContent: 'center' }]}
               >
-                <Text style={styles.saveButtonText}>{strings.settings.activate}</Text>
-                <Image source={arrowRightTop} style={styles.arrowButton} />
+                <Text style={styles.saveButtonText}>{'Save'}</Text>
+                <Image source={arrowRightTop} style={styles.arrowIcon} />
               </TouchableOpacity>
             </View>
           </View>
         </View>
-      );
-    }
+      </BottomSheetScrollView>
+    );
   };
+
+  const addEmployeeView = () => {
+    return (
+      <BottomSheetScrollView style={{ padding: ms(20) }} showsVerticalScrollIndicator={false}>
+        <Spacer space={ms(30)} />
+
+        <View>
+          <View style={styles.taxPayerHeadingContainer}>
+            <Text style={styles.taxPayerHeading}>{strings.settings.taxPayerHeadl}</Text>
+          </View>
+
+          <Spacer space={ms(50)} />
+
+          <View style={styles.countryModBody}>
+            <Spacer space={ms(8)} />
+            <Text style={styles.inputHeaderText}>{strings.settings.fullName}</Text>
+            <Spacer space={ms(8)} />
+
+            <TextInput
+              placeholder="Full Name "
+              style={styles.taxPayerInput}
+              placeholderTextColor={COLORS.navy_light_blue}
+              value={name}
+              onChangeText={setName}
+            />
+            <Spacer space={ms(20)} />
+            <Text style={styles.inputHeaderText}>{strings.settings.ssn}</Text>
+
+            <Spacer space={ms(8)} />
+
+            <TextInput
+              placeholder={strings.settings.ssn}
+              style={styles.taxPayerInput}
+              placeholderTextColor={COLORS.light_blue2}
+              value={ssn}
+              onChangeText={setSsn}
+              keyboardType="numeric"
+            />
+            <Spacer space={ms(20)} />
+            <Text style={styles.inputHeaderText}>{strings.settings.streetAdd}</Text>
+            <Spacer space={ms(8)} />
+
+            <GooglePlacesAutocomplete
+              ref={googlePlacesRef}
+              fetchDetails
+              autoFocus={false}
+              listViewDisplayed={true}
+              returnKeyType={'search'}
+              placeholder={'Street Address'}
+              enablePoweredByContainer={false}
+              textInputProps={{
+                placeholderTextColor: COLORS.light_blue2,
+                returnKeyType: 'search',
+              }}
+              query={{
+                language: 'en',
+                type: 'address',
+                components: 'country:us',
+                key: GOOGLE_MAP.API_KEYS,
+              }}
+              onPress={(data, details) => {
+                setStreetAdd(data.structured_formatting.main_text);
+                getAddress(details.address_components, details?.geometry);
+              }}
+              styles={{
+                container: styles.placesContainerStyle,
+                textInput: styles.textInputView,
+                textInputContainer: styles.textInputContainer,
+                predefinedPlacesDescription: styles.predefinedStyles,
+              }}
+              // textInputProps={{
+              //   editable: true,
+              //   value: streetAdd,
+              //   onChange: (text) => setStreetAddress(text),
+              // }}
+            />
+            <Spacer space={ms(20)} />
+            <Text style={styles.inputHeaderText}>{strings.settings.appartement}</Text>
+            <Spacer space={ms(8)} />
+
+            <TextInput
+              placeholder={strings.settings.appartement}
+              style={styles.taxPayerInput}
+              placeholderTextColor={COLORS.light_blue2}
+              value={appartment}
+              onChangeText={setAppartment}
+            />
+            <Spacer space={ms(20)} />
+            <View style={styles.rowJustified}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.inputHeaderText}>{strings.settings.country}</Text>
+                <Spacer space={ms(8)} />
+
+                <TextInput
+                  placeholder="Country"
+                  style={styles.taxPayerInput}
+                  placeholderTextColor={COLORS.light_blue2}
+                  value={country}
+                  onChangeText={setCountry}
+                />
+              </View>
+              <Spacer horizontal space={ms(10)} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.inputHeaderText}>State</Text>
+                <Spacer space={ms(8)} />
+
+                <TextInput
+                  placeholder="State"
+                  style={styles.taxPayerInput}
+                  placeholderTextColor={COLORS.light_blue2}
+                  value={state}
+                  onChangeText={setState}
+                />
+              </View>
+            </View>
+            <Spacer space={ms(20)} />
+            <View style={styles.rowJustified}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.inputHeaderText}>City</Text>
+                <Spacer space={ms(8)} />
+                <TextInput
+                  placeholder="City"
+                  style={styles.taxPayerInput}
+                  placeholderTextColor={COLORS.light_blue2}
+                  value={city}
+                  onChangeText={setCity}
+                />
+              </View>
+              <Spacer horizontal space={ms(10)} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.inputHeaderText}>Zip Code</Text>
+                <Spacer space={ms(8)} />
+                <TextInput
+                  placeholder="ZipCode"
+                  style={styles.taxPayerInput}
+                  placeholderTextColor={COLORS.light_blue2}
+                  value={zipCode}
+                  onChangeText={setZipCode}
+                  keyboardType="numeric"
+                />
+              </View>
+            </View>
+
+            <Spacer space={ms(20)} />
+            <View style={{ flex: 1 }} />
+            <View style={styles.activeTaxButtonStyle}>
+              <View style={styles.rowJustified}>
+                <View style={{ flex: 1 }}>
+                  <TouchableOpacity
+                    onPress={() => taxPayerRef.current.dismiss()}
+                    style={styles.cancelButtonTax}
+                  >
+                    <Text style={styles.cancelButtonText}>{'Cancel'}</Text>
+                  </TouchableOpacity>
+                </View>
+                <Spacer horizontal space={ms(8)} />
+                <View style={{ flex: 1 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      taxPayerRef.current.dismiss();
+                      setActiveTaxes(true);
+                    }}
+                    style={styles.saveButtonTax}
+                  >
+                    <Text style={styles.saveButtonText}>{'Add Employee'}</Text>
+                    <Image source={arrowRightTop} style={styles.arrowIcon} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+            <Spacer space={ms(50)} />
+          </View>
+        </View>
+      </BottomSheetScrollView>
+    );
+  };
+
   const verifiedAreaFun = () => {
     if (getTaxData?.length === 0) {
       return (
@@ -1216,143 +1079,180 @@ export function TaxesDuties() {
 
   const activeTax = () => {
     return (
-      <View>
-        <View
-          style={{
-            backgroundColor: COLORS.light_blue,
-            padding: ms(10),
-            borderRadius: ms(16),
-          }}
-        >
-          <View style={{}}>
-            <Text style={styles.employeeNameText}>{'Charles Reineer'}</Text>
-            <Text style={styles.employeeInfoText}>
-              {'SSN: '}
-              <Text style={{ fontSize: ms(12), color: COLORS.navy_blue }}>
-                {`\u25CF\u25CF\u25CF \u25CF\u25CF  `}
+      <>
+        <View>
+          <View
+            style={{
+              backgroundColor: COLORS.light_blue,
+              padding: ms(10),
+              borderRadius: ms(16),
+            }}
+          >
+            <View style={{}}>
+              <Text style={styles.employeeNameText}>{'Charles Reineer'}</Text>
+              <Text style={styles.employeeInfoText}>
+                {'SSN: '}
+                <Text style={{ fontSize: ms(12), color: COLORS.navy_blue }}>
+                  {`\u25CF\u25CF\u25CF \u25CF\u25CF  `}
+                </Text>
+                {'3786'}
               </Text>
-              {'3786'}
-            </Text>
-            <Text style={styles.employeeInfoText}>
-              {'3755 Williams Mine Road, Newark, NJ 07102'}
-            </Text>
-          </View>
-          <TouchableOpacity onPress={() => {}} style={styles.verifiedButtonView}>
-            <Text style={{ color: COLORS.white, fontSize: ms(13), marginRight: ms(3) }}>
-              {'Verified'}
-            </Text>
-            <Image source={verifyGreen} style={styles.verifiedIcon} resizeMode="contain" />
-          </TouchableOpacity>
-        </View>
-
-        <Spacer space={ms(10)} />
-
-        <View style={styles.operatingCountryContainer}>
-          <View style={[styles.rowAligned, { flex: 1 }]}>
-            <Image source={Flag} style={{ height: ms(15), width: ms(15) }} />
-            <View style={{ marginHorizontal: ms(5) }}>
-              <Text style={styles.employeeNameText}>Operating Country</Text>
-              <Text style={[styles.employeeInfoText, { marginTop: ms(2) }]}>United States</Text>
+              <Text style={styles.employeeInfoText}>
+                {'3755 Williams Mine Road, Newark, NJ 07102'}
+              </Text>
             </View>
+            <TouchableOpacity onPress={() => {}} style={styles.verifiedButtonView}>
+              <Text style={{ color: COLORS.white, fontSize: ms(13), marginRight: ms(3) }}>
+                {'Verified'}
+              </Text>
+              <Image source={verifyGreen} style={styles.verifiedIcon} resizeMode="contain" />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => setIsToggle(!isToggle)}>
-            <Image
-              source={isToggle ? ToggleOnNew : newToggleOff}
-              style={styles.toggleIcon}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-        </View>
-        {isToggle ? (
-          <View style={styles.rowAligned}>
-            <Image source={SubLine} style={{ height: ms(50), width: ms(50) }} />
-            <View style={{ flex: 1, top: ms(25) }}>
-              <View style={styles.operatingCountryContainer}>
-                <View style={[styles.rowAligned, { flex: 1, alignItems: 'flex-start' }]}>
+
+          <Spacer space={ms(10)} />
+
+          <View style={styles.operatingCountryContainer}>
+            <View style={[styles.rowAligned, { flex: 1 }]}>
+              <Image source={Flag} style={{ height: ms(15), width: ms(15) }} />
+              <View style={{ marginHorizontal: ms(5) }}>
+                <Text style={styles.employeeNameText}>Operating Country</Text>
+                <Text style={[styles.employeeInfoText, { marginTop: ms(2) }]}>United States</Text>
+              </View>
+            </View>
+            <TouchableOpacity onPress={() => setIsToggle(!isToggle)}>
+              <Image
+                source={isToggle ? ToggleOnNew : newToggleOff}
+                style={styles.toggleIcon}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
+          {isToggle ? (
+            <View style={styles.rowAligned}>
+              <Image source={SubLine} style={{ height: ms(50), width: ms(50) }} />
+              <View style={{ flex: 1, top: ms(25) }}>
+                <View style={styles.activeStateContainer}>
                   <Image source={Flag} style={{ height: ms(15), width: ms(15) }} />
                   <View style={{ marginHorizontal: ms(5) }}>
                     <Text style={styles.employeeNameText}>Miami, FL</Text>
                     <Text style={styles.smallText}>
                       1899 Rollins Road, Grand Island Nebraska 68801, United State
                     </Text>
+
+                    {stateActive ? (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setStateActive(false);
+                        }}
+                        style={{ alignSelf: 'flex-end' }}
+                      >
+                        <Image
+                          source={stateActive ? ToggleOnNew : newToggleOff}
+                          style={styles.toggleIcon}
+                          resizeMode="contain"
+                        />
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        style={styles.stateActiveButton}
+                        onPress={() => {
+                          activateStateRef.current.present();
+                          // setStateActive(!stateActive);
+                        }}
+                      >
+                        <Text style={styles.activeText}>Activate</Text>
+                      </TouchableOpacity>
+                    )}
                   </View>
                 </View>
-                {/* {stateActive ? (
-                  <TouchableOpacity
-                    style={styles.toggleBtnCon}
-                    onPress={() => setStateActive(!stateActive)}
-                  >
-                    <Image
-                      source={toggle}
-                      style={stateActive ? styles.toggleBtnStyle : styles.toggleBtnStyle2}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => setActivateTaxModal(true)}
-                    style={[
-                      styles.activeTaxButton,
-                      {
-                        height: ms(20),
-                        marginLeft: ms(15),
-                        alignSelf: 'flex-start',
-                        paddingVertical: 0,
-                        marginVertical: 0,
-                      },
-                    ]}
-                  >
-                    <Text style={styles.activeText}>Active</Text>
-                  </TouchableOpacity>
-                )} */}
+              </View>
+            </View>
+          ) : null}
+        </View>
+        {stateActive && isToggle && (
+          <TouchableOpacity
+            style={styles.createTaxButton}
+            onPress={() => createTaxRef.current.present()}
+          >
+            <Text style={styles.createTaxText}>{'Create Tax'}</Text>
+            <Image source={editIcon} style={styles.editIconStyle} resizeMode="contain" />
+          </TouchableOpacity>
+        )}
+      </>
+    );
+  };
+  const activeStateTaxView = () => {
+    return (
+      <BottomSheetScrollView
+        style={{ padding: ms(20) }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Spacer space={ms(30)} />
+
+        <View style={{ flex: 1 }}>
+          <View style={styles.taxPayerHeadingContainer}>
+            <Text style={styles.taxPayerHeading}>{strings.settings.activeStateTax}</Text>
+          </View>
+
+          <Spacer space={ms(80)} />
+          <View style={styles.operatingCountryContainer}>
+            <View style={[styles.rowAligned, { flex: 1 }]}>
+              <Image source={Flag} style={{ height: ms(15), width: ms(15) }} />
+              <View style={{ marginHorizontal: ms(5) }}>
+                <Text style={styles.employeeNameText}>Operating Country</Text>
+                <Text style={[styles.employeeInfoText, { marginTop: ms(2) }]}>United States</Text>
               </View>
             </View>
           </View>
-        ) : null}
-
-        {stateActive ? (
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: COLORS.light_blue,
-              marginVertical: ms(10),
-              marginLeft: ms(50),
-              width: ms(75),
-              alignContent: 'center',
-              justifyContent: 'center',
-              borderRadius: ms(20),
-              paddingVertical: ms(5),
-            }}
-            onPress={() => setCreateTaxModal(true)}
-          >
-            <Text style={{ fontSize: ms(9.5), marginHorizontal: ms(4), color: COLORS.navy_blue }}>
-              {'Create Tax'}
-            </Text>
-            <Image
-              source={editIcon}
-              style={{
-                height: ms(15),
-                width: ms(15),
-                resizeMode: 'contain',
-                tintColor: COLORS.navy_blue,
-              }}
-            />
-          </TouchableOpacity>
-        ) : (
-          <></>
-        )}
-      </View>
+          <View style={styles.rowAligned}>
+            <Image source={SubLine} style={{ height: ms(50), width: ms(50) }} />
+            <View style={{ flex: 1, top: ms(25) }}>
+              <View style={styles.activeStateContainer}>
+                <Image source={Flag} style={{ height: ms(15), width: ms(15) }} />
+                <View style={{ marginHorizontal: ms(5) }}>
+                  <Text style={styles.employeeNameText}>Miami, FL</Text>
+                  <Text style={styles.smallText}>
+                    1899 Rollins Road, Grand Island Nebraska 68801, United State
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <Spacer space={ms(80)} />
+        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+          <View style={styles.rowJustified}>
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity
+                onPress={() => activateStateRef.current.dismiss()}
+                style={styles.cancelButtonTax}
+              >
+                <Text style={styles.cancelButtonText}>{'Cancel'}</Text>
+              </TouchableOpacity>
+            </View>
+            <Spacer horizontal space={ms(8)} />
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity
+                onPress={() => {
+                  activateStateRef.current.dismiss();
+                  setStateActive(true);
+                }}
+                style={[styles.saveButtonTax, { justifyContent: 'center' }]}
+              >
+                <Text style={styles.saveButtonText}>{'Activate'}</Text>
+                <Image source={arrowRightTop} style={styles.arrowIcon} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </BottomSheetScrollView>
     );
   };
-
   return (
     <ScreenWrapper>
       <Header backRequired title={'Taxes and duties'} />
       <View style={{ paddingHorizontal: ms(20) }}>
-        {/* <View style={[styles.flexRow, { height: SW(30) }]}>
-        <Text style={styles.HeaderLabelText}>{strings.settings.taxes}</Text>
-      </View> */}
-
         <Text style={styles.taxDesc}>{strings.settings.taxSubHead}</Text>
         <Spacer space={SH(15)} />
 
@@ -1377,9 +1277,9 @@ export function TaxesDuties() {
           style={{ flex: 1, backgroundColor: '#FFFFFF' }}
           animationType="slide"
           transparent={true}
-          isVisible={countryModel || stateModel || stateTax || activateTaxModal}
+          isVisible={countryModel || stateModel || stateTax}
         >
-          {dataChangeFun() || activeTaxFun()}
+          {dataChangeFun()}
         </Modal>
         <BottomSheetModal
           ref={taxPayerRef}
@@ -1387,161 +1287,24 @@ export function TaxesDuties() {
           snapPoints={['100%']}
           handleIndicatorStyle={{ height: 0 }}
         >
-          <BottomSheetScrollView style={{ padding: ms(20) }} showsVerticalScrollIndicator={false}>
-            <View style={{ flex: 1 }}>
-              <Spacer space={ms(30)} />
-              <View style={styles.taxPayerHeadingContainer}>
-                <Text style={styles.taxPayerHeading}>{strings.settings.taxPayerHeadl}</Text>
-              </View>
-
-              <Spacer space={ms(30)} />
-
-              <View style={styles.countryModBody}>
-                <Spacer space={ms(8)} />
-                <Text style={styles.inputHeaderText}>{strings.settings.fullName}</Text>
-                <Spacer space={ms(8)} />
-
-                <TextInput
-                  placeholder="Full Name "
-                  style={styles.taxPayerInput}
-                  placeholderTextColor={COLORS.navy_light_blue}
-                  value={name}
-                  onChangeText={setName}
-                />
-                <Spacer space={ms(20)} />
-                <Text style={styles.inputHeaderText}>{strings.settings.ssn}</Text>
-
-                <Spacer space={ms(8)} />
-
-                <TextInput
-                  placeholder={strings.settings.ssn}
-                  style={styles.taxPayerInput}
-                  placeholderTextColor={COLORS.light_blue2}
-                  value={ssn}
-                  onChangeText={setSsn}
-                  keyboardType="numeric"
-                />
-                <Spacer space={ms(20)} />
-                <Text style={styles.inputHeaderText}>{strings.settings.streetAdd}</Text>
-                <Spacer space={ms(8)} />
-
-                <TextInput
-                  placeholder={strings.settings.streetAdd}
-                  style={styles.taxPayerInput}
-                  placeholderTextColor={COLORS.light_blue2}
-                  value={streetAdd}
-                  onChangeText={setStreetAdd}
-                />
-                <Spacer space={ms(20)} />
-                <Text style={styles.inputHeaderText}>{strings.settings.appartement}</Text>
-                <Spacer space={ms(8)} />
-
-                <TextInput
-                  placeholder={strings.settings.appartement}
-                  style={styles.taxPayerInput}
-                  placeholderTextColor={COLORS.light_blue2}
-                  value={appartment}
-                  onChangeText={setAppartment}
-                />
-                <Spacer space={ms(20)} />
-                <View style={styles.rowJustified}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.inputHeaderText}>{strings.settings.country}</Text>
-                    <Spacer space={ms(8)} />
-
-                    <TextInput
-                      placeholder="Country"
-                      style={styles.taxPayerInput}
-                      placeholderTextColor={COLORS.light_blue2}
-                      value={country}
-                      onChangeText={setCountry}
-                    />
-                  </View>
-                  <Spacer horizontal space={ms(10)} />
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.inputHeaderText}>State</Text>
-                    <Spacer space={ms(8)} />
-
-                    <TextInput
-                      placeholder="State"
-                      style={styles.taxPayerInput}
-                      placeholderTextColor={COLORS.light_blue2}
-                      value={state}
-                      onChangeText={setState}
-                    />
-                  </View>
-                </View>
-                <Spacer space={ms(20)} />
-                <View style={styles.rowJustified}>
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.inputHeaderText}>City</Text>
-                    <Spacer space={ms(8)} />
-                    <TextInput
-                      placeholder="City"
-                      style={styles.taxPayerInput}
-                      placeholderTextColor={COLORS.light_blue2}
-                      value={city}
-                      onChangeText={setCity}
-                    />
-                  </View>
-                  <Spacer horizontal space={ms(10)} />
-                  <View style={{ flex: 1 }}>
-                    <Text style={styles.inputHeaderText}>Zip Code</Text>
-                    <Spacer space={ms(8)} />
-                    <TextInput
-                      placeholder="ZipCode"
-                      style={styles.taxPayerInput}
-                      placeholderTextColor={COLORS.light_blue2}
-                      value={zipCode}
-                      onChangeText={setZipCode}
-                      keyboardType="numeric"
-                    />
-                  </View>
-                </View>
-
-                <Spacer space={ms(30)} />
-                <View style={{ flex: 1 }} />
-                <View style={styles.activeTaxButtonStyle}>
-                  <View style={styles.rowJustified}>
-                    <View style={{ flex: 1 }}>
-                      <TouchableOpacity
-                        onPress={() => taxPayerRef.current.dismiss()}
-                        style={styles.cancelButtonTax}
-                      >
-                        <Text style={styles.cancelButtonText}>{'Cancel'}</Text>
-                      </TouchableOpacity>
-                    </View>
-                    <Spacer horizontal space={ms(8)} />
-                    <View style={{ flex: 1 }}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          taxPayerRef.current.dismiss();
-                          setActiveTaxes(true);
-                        }}
-                        style={styles.saveButtonTax}
-                      >
-                        <Text style={styles.saveButtonText}>{'Add Employee'}</Text>
-                        <Image source={arrowRightTop} style={styles.arrowIcon} />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-                <Spacer space={ms(20)} />
-              </View>
-            </View>
-          </BottomSheetScrollView>
+          {addEmployeeView()}
         </BottomSheetModal>
-
-        <Modal animationType="slide" transparent={true} isVisible={createTaxModal}>
-          {createTaxFunNew()}
-        </Modal>
-        {/* <Modal
-        animationType="slide"
-        transparent={true}
-        isVisible={activateTaxModal || taxPayerModel || stateModel}
-      >
-        {activeTaxFun() || dataChangeFun()}
-      </Modal> */}
+        <BottomSheetModal
+          ref={activateStateRef}
+          detached
+          snapPoints={['100%']}
+          handleIndicatorStyle={{ height: 0 }}
+        >
+          {activeStateTaxView()}
+        </BottomSheetModal>
+        <BottomSheetModal
+          ref={createTaxRef}
+          detached
+          snapPoints={['100%']}
+          handleIndicatorStyle={{ height: 0 }}
+        >
+          {createTaxView()}
+        </BottomSheetModal>
       </View>
     </ScreenWrapper>
   );
