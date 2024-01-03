@@ -202,32 +202,31 @@ export function TaxesDuties() {
       <STATEITEM item={item} onPress={() => setStateId(item.id)} color={color} image={image} />
     );
   };
-  const getAddress = (details, geometry) => {
-    for (var i = 0; i < details.length; i++) {
-      if (details[i].types[0] == 'country') {
-        setCountry(details?.[i]?.long_name);
-        setCountryCode(details?.[i]?.short_name);
+  const getAddress = (data, details) => {
+    const addressDetails = details?.address_components;
+    for (var i = 0; i < addressDetails.length; i++) {
+      if (addressDetails[i].types[0] == 'country') {
+        setCountry(addressDetails?.[i]?.long_name);
+        setCountryCode(addressDetails?.[i]?.short_name);
       }
-
-      if (details[i].types[0] == 'postal_code') {
-        setZipCode(details?.[i]?.long_name);
+      if (addressDetails[i].types[0] == 'postal_code') {
+        setZipCode(addressDetails?.[i]?.long_name);
+        console.log('fjodnbodfnb', addressDetails?.[i]?.long_name);
       }
-
-      if (details[i].types[0] == 'administrative_area_level_1') {
-        setState(details?.[i]?.long_name);
-        setStateCode(details?.[i]?.short_name);
+      if (addressDetails[i].types[0] == 'administrative_area_level_1') {
+        setState(addressDetails?.[i]?.long_name);
+        setStateCode(addressDetails?.[i]?.short_name);
       }
-
       if (
-        details[i].types[0] == 'administrative_area_level_2' ||
-        details[i].types[0] == 'administrative_area_level_3' ||
-        details[i].types[0] == 'locality'
+        addressDetails[i].types[0] == 'administrative_area_level_2' ||
+        addressDetails[i].types[0] == 'administrative_area_level_3' ||
+        addressDetails[i].types[0] == 'locality'
       ) {
-        setCity(details?.[i]?.long_name);
+        setCity(addressDetails?.[i]?.long_name);
       }
-      if (geometry) {
-        setLatitude(geometry?.location?.lat);
-        setLongitude(geometry?.location?.lng);
+      if (details?.geometry) {
+        setLatitude(details?.geometry?.location?.lat);
+        setLongitude(details?.geometry?.location?.lng);
       }
     }
   };
@@ -643,6 +642,7 @@ export function TaxesDuties() {
               placeholderTextColor={COLORS.light_blue2}
               value={ssn}
               onChangeText={setSsn}
+              maxLength={9}
               keyboardType="numeric"
             />
             <Spacer space={ms(20)} />
@@ -669,7 +669,7 @@ export function TaxesDuties() {
               }}
               onPress={(data, details) => {
                 setStreetAdd(data.structured_formatting.main_text);
-                getAddress(details.address_components, details?.geometry);
+                getAddress(data, details);
               }}
               styles={{
                 container: styles.placesContainerStyle,
@@ -764,13 +764,7 @@ export function TaxesDuties() {
                 </View>
                 <Spacer horizontal space={ms(8)} />
                 <View style={{ flex: 1 }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      taxPayerRef.current.dismiss();
-                      setActiveTaxes(true);
-                    }}
-                    style={styles.saveButtonTax}
-                  >
+                  <TouchableOpacity onPress={() => addEmployee()} style={styles.saveButtonTax}>
                     <Text style={styles.saveButtonText}>{'Add Employee'}</Text>
                     <Image source={arrowRightTop} style={styles.arrowIcon} />
                   </TouchableOpacity>
@@ -1078,6 +1072,9 @@ export function TaxesDuties() {
   };
 
   const activeTax = () => {
+    var str = ssn;
+    var replaced = str.replace(/.(?=.{4,}$)/g, '');
+
     return (
       <>
         <View>
@@ -1089,13 +1086,13 @@ export function TaxesDuties() {
             }}
           >
             <View style={{}}>
-              <Text style={styles.employeeNameText}>{'Charles Reineer'}</Text>
+              <Text style={styles.employeeNameText}>{name || ''}</Text>
               <Text style={styles.employeeInfoText}>
                 {'SSN: '}
-                <Text style={{ fontSize: ms(12), color: COLORS.navy_blue }}>
+                <Text style={{ fontSize: ms(10), color: COLORS.navy_blue }}>
                   {`\u25CF\u25CF\u25CF \u25CF\u25CF  `}
                 </Text>
-                {'3786'}
+                {replaced}
               </Text>
               <Text style={styles.employeeInfoText}>
                 {'3755 Williams Mine Road, Newark, NJ 07102'}
@@ -1248,6 +1245,31 @@ export function TaxesDuties() {
         </View>
       </BottomSheetScrollView>
     );
+  };
+
+  const addEmployee = () => {
+    if (!name) {
+      alert('Please enter a name');
+    } else if (!ssn) {
+      alert('Please enter ssn');
+    } else if (ssn && ssn?.length != 9) {
+      alert('Please enter valid ssn');
+    } else if (ssn && ssn?.length == 9 && !/^\d+$/.test(ssn)) {
+      alert('Please enter valid ssn');
+    } else if (!streetAdd) {
+      alert('Please enter street address');
+    } else if (!country) {
+      alert('Please enter country');
+    } else if (!state) {
+      alert('Please enter state');
+    } else if (!city) {
+      alert('Please enter city');
+    } else if (!zipCode) {
+      alert('Please enter zip code');
+    } else {
+      taxPayerRef.current.dismiss();
+      setActiveTaxes(true);
+    }
   };
   return (
     <ScreenWrapper>
