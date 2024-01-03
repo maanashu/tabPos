@@ -255,7 +255,6 @@ export const verifyPickupOtp = (data, callback) => async (dispatch) => {
   try {
     const res = await DeliveryController.verifyPickupOtp(data);
     dispatch(verifyPickupOtpSuccess(res));
-    console.log('ressss', JSON.stringify(res));
 
     return res;
     // await dispatch(getOrderCount());

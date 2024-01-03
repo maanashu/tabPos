@@ -301,7 +301,10 @@ export const styles = StyleSheet.create({
     flex: 0.8,
   },
   marginLeftNew: {
-    marginLeft: ms(-40),
+    position: 'absolute',
+    left: ms(30),
+    flex: 1,
+    width: '80%',
     // marginLeft: moderateScale(8),
     // flex: -50,
   },
