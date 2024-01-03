@@ -68,7 +68,7 @@ export const styles = StyleSheet.create({
   deliveryText: {
     fontFamily: Fonts.SemiBold,
     color: COLORS.navy_blue,
-    fontSize: ms(14),
+    fontSize: ms(13),
     paddingLeft: SW(2),
   },
   searchView: {
@@ -1469,11 +1469,11 @@ export const styles = StyleSheet.create({
     marginLeft: ms(4),
   },
   invoiceContainer: {
-    flex: 0.48,
+    flex: 0.35,
     backgroundColor: COLORS.white,
     marginBottom: ms(10),
     right: SW(5),
-    height: SH(700),
+    height: ms(465),
   },
   rowAligned: {
     flexDirection: 'row',

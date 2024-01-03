@@ -35,6 +35,7 @@ import {
   new_visa,
   new_cash,
   crossButton,
+  arrowLeftUp,
 } from '@/assets';
 import moment from 'moment';
 import { debounce } from 'lodash';
@@ -261,7 +262,11 @@ export function Wallet2() {
   const aboutTransactionData = [
     {
       aboutTransaction: 'Total',
-      price: amountFormat(getTotalTraData?.data?.total),
+      price: getTotalTraData?.data?.total
+        ? getTotalTraData?.data?.total < 0
+          ? '-$' + amountFormat(Math.abs(getTotalTraData?.data?.total), 'notSign')
+          : amountFormat(getTotalTraData?.data?.total)
+        : '$0',
       img: profitIcon,
       id: '1',
       type: 'all',
@@ -280,7 +285,11 @@ export function Wallet2() {
 
     {
       aboutTransaction: 'Cash',
-      price: amountFormat(getTotalTraData?.data?.cash),
+      price: getTotalTraData?.data?.cash
+        ? getTotalTraData?.data?.cash < 0
+          ? '-$' + amountFormat(Math.abs(getTotalTraData?.data?.cash), 'notSign')
+          : amountFormat(getTotalTraData?.data?.cash)
+        : '$0',
       img: new_cash,
       id: '3',
       type: 'cash',
@@ -289,7 +298,11 @@ export function Wallet2() {
     },
     {
       aboutTransaction: 'Card',
-      price: amountFormat(getTotalTraData?.data?.card),
+      price: getTotalTraData?.data?.card
+        ? getTotalTraData?.data?.card < 0
+          ? '-$' + amountFormat(Math.abs(getTotalTraData?.data?.card), 'notSign')
+          : amountFormat(getTotalTraData?.data?.card)
+        : '$0',
       img: new_visa,
       id: '4',
       type: 'card',
@@ -514,12 +527,15 @@ export function Wallet2() {
                   setInvoiceView(false);
                 }}
               >
-                <Image source={backArrow} style={[styles.truckStyle, { marginLeft: 10 }]} />
+                <Image source={arrowLeftUp} style={[styles.backButtonArrow, { marginLeft: 10 }]} />
               </TouchableOpacity>
-              <Image source={wallet} style={[styles.truckStyle, { marginLeft: 10 }]} />
+              <Image
+                source={new_wallet}
+                style={[styles.backButtonArrow, { marginHorizontal: 10 }]}
+              />
               <Text style={styles.deliveryText}>{strings.wallet.orderDetail}</Text>
             </View>
-            <View style={styles.deliveryView}>
+            {/* <View style={styles.deliveryView}>
               <TouchableOpacity
                 onPress={() =>
                   navigate(NAVIGATION.notificationsList, {
@@ -545,11 +561,16 @@ export function Wallet2() {
                 </View>
                 <Image source={scn} style={styles.scnStyle} />
               </View>
-            </View>
+            </View> */}
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-            <View style={{ flex: 0.85 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+            }}
+          >
+            <View style={{ flex: 0.65, marginRight: ms(10) }}>
               {onSeachLoad ? (
                 <View style={{ marginTop: SH(50) }}>
                   <Loader />
@@ -559,6 +580,7 @@ export function Wallet2() {
               )}
             </View>
             <Spacer horizontal={SW(10)} />
+
             <View style={styles.invoiceContainer}>
               <WalletInvoice orderDetail={searchData} />
             </View>
