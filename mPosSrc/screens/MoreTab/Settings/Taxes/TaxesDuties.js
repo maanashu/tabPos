@@ -50,6 +50,7 @@ import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { Images } from '@/assets/new_icon';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { GOOGLE_MAP } from '@/constants/ApiKey';
+import { getCurrentAddress } from '@/utils/GlobalMethods';
 
 export function TaxesDuties() {
   const isFocused = useIsFocused();
@@ -101,7 +102,8 @@ export function TaxesDuties() {
   const [stateActive, setStateActive] = useState(false);
   const [latitude, setLatitude] = useState();
   const [longitude, setLongitude] = useState();
-  console.log('counry', country);
+  const [placeId, setPlaceId] = useState();
+  const [formattedAddress, setFormattedAddress] = useState();
 
   const taxPayerHandler = () => {
     if (!name || !ssn || !streetAdd || !appartment || !country || !state || !city || !zipCode) {
@@ -203,6 +205,7 @@ export function TaxesDuties() {
     );
   };
   const getAddress = (data, details) => {
+    setPlaceId(data.place_id);
     const addressDetails = details?.address_components;
     for (var i = 0; i < addressDetails.length; i++) {
       if (addressDetails[i].types[0] == 'country') {
@@ -211,7 +214,6 @@ export function TaxesDuties() {
       }
       if (addressDetails[i].types[0] == 'postal_code') {
         setZipCode(addressDetails?.[i]?.long_name);
-        console.log('fjodnbodfnb', addressDetails?.[i]?.long_name);
       }
       if (addressDetails[i].types[0] == 'administrative_area_level_1') {
         setState(addressDetails?.[i]?.long_name);
@@ -1094,9 +1096,7 @@ export function TaxesDuties() {
                 </Text>
                 {replaced}
               </Text>
-              <Text style={styles.employeeInfoText}>
-                {'3755 Williams Mine Road, Newark, NJ 07102'}
-              </Text>
+              <Text style={styles.employeeInfoText}>{getCurrentAddress(formattedAddress)}</Text>
             </View>
             <TouchableOpacity onPress={() => {}} style={styles.verifiedButtonView}>
               <Text style={{ color: COLORS.white, fontSize: ms(13), marginRight: ms(3) }}>
@@ -1130,11 +1130,9 @@ export function TaxesDuties() {
               <View style={{ flex: 1, top: ms(25) }}>
                 <View style={styles.activeStateContainer}>
                   <Image source={Flag} style={{ height: ms(15), width: ms(15) }} />
-                  <View style={{ marginHorizontal: ms(5) }}>
-                    <Text style={styles.employeeNameText}>Miami, FL</Text>
-                    <Text style={styles.smallText}>
-                      1899 Rollins Road, Grand Island Nebraska 68801, United State
-                    </Text>
+                  <View style={{ marginHorizontal: ms(5), flex: 1 }}>
+                    <Text style={styles.employeeNameText}>{`${city}, ${stateCode}`}</Text>
+                    <Text style={styles.smallText}>{getCurrentAddress(formattedAddress)}</Text>
 
                     {stateActive ? (
                       <TouchableOpacity
@@ -1207,11 +1205,9 @@ export function TaxesDuties() {
             <View style={{ flex: 1, top: ms(25) }}>
               <View style={styles.activeStateContainer}>
                 <Image source={Flag} style={{ height: ms(15), width: ms(15) }} />
-                <View style={{ marginHorizontal: ms(5) }}>
-                  <Text style={styles.employeeNameText}>Miami, FL</Text>
-                  <Text style={styles.smallText}>
-                    1899 Rollins Road, Grand Island Nebraska 68801, United State
-                  </Text>
+                <View style={{ marginHorizontal: ms(5), flex: 1 }}>
+                  <Text style={styles.employeeNameText}>{`${city}, ${stateCode}`}</Text>
+                  <Text style={styles.smallText}>{getCurrentAddress(formattedAddress)}</Text>
                 </View>
               </View>
             </View>
@@ -1267,9 +1263,24 @@ export function TaxesDuties() {
     } else if (!zipCode) {
       alert('Please enter zip code');
     } else {
+      formatAddress();
       taxPayerRef.current.dismiss();
       setActiveTaxes(true);
     }
+  };
+  const formatAddress = () => {
+    const data = {
+      place_id: placeId,
+      city: city,
+      state: state,
+      country: country,
+      postal_code: zipCode,
+      formatted_address: streetAdd,
+      country_code: countryCode,
+      state_code: stateCode,
+      ...(appartment && { custom_address: appartment }),
+    };
+    setFormattedAddress(data);
   };
   return (
     <ScreenWrapper>
