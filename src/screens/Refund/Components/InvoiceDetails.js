@@ -38,27 +38,45 @@ const InvoiceDetails = ({
     dispatch(getOrderData(orderData?.order_id));
   }, []);
 
-  const renderProductItem = ({ item, index }) => (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.count}>x {item?.qty}</Text>
-        <View style={{ marginLeft: ms(10) }}>
-          <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-            {item?.product_name}
-          </Text>
+  const renderProductItem = ({ item, index }) => {
+    const isBookingDateAvailable =
+      orderDetail?.appointments?.[0]?.date ||
+      orderDetail?.appointments[0]?.start_time ||
+      orderDetail?.appointments?.[0]?.end_time;
+    const bookingDateTime = `${moment
+      .utc(orderDetail?.appointments?.[0]?.date)
+      .format('DD/MM/YYYY')} @ ${orderDetail?.appointments?.[0]?.start_time}-${
+      orderDetail?.appointments?.[0]?.end_time
+    }`;
+    return (
+      <View style={{ height: ms(28) }}>
+        <View style={styles.container}>
+          <View style={styles.subContainer}>
+            <Text style={styles.count}>x {item?.qty}</Text>
+            <View style={{ marginLeft: ms(10) }}>
+              <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
+                {item?.product_name}
+              </Text>
+            </View>
+          </View>
+          <View style={{ width: '24%', alignItems: 'flex-end' }}>
+            <Text style={styles.priceTitle} numberOfLines={1}>
+              {`${
+                applicableForAllItems || applyEachItem
+                  ? formattedReturnPrice(item?.totalRefundAmount)
+                  : formattedReturnPrice(item?.price * item?.qty)
+              }`}
+            </Text>
+          </View>
         </View>
+        {isBookingDateAvailable && (
+          <Text style={[styles.priceTitle, styles.container, { marginTop: ms(2) }]}>
+            {bookingDateTime}
+          </Text>
+        )}
       </View>
-      <View style={{ width: '24%', alignItems: 'flex-end' }}>
-        <Text style={styles.priceTitle} numberOfLines={1}>
-          {`${
-            applicableForAllItems || applyEachItem
-              ? formattedReturnPrice(item?.totalRefundAmount)
-              : formattedReturnPrice(item?.price * item?.qty)
-          }`}
-        </Text>
-      </View>
-    </View>
-  );
+    );
+  };
 
   const invoiceData = [
     {

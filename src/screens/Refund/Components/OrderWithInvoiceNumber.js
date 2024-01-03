@@ -20,7 +20,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
         return strings.returnOrder.reservation;
     }
   };
-
+  console.log('hsdgfjsgdfj', orderData);
   return (
     <View style={styles.container}>
       <DataTable style={styles.tableView}>
@@ -74,7 +74,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
             <Text style={styles.nameTextStyle}>
               {orderData?.order?.user_details
                 ? `${orderData?.order?.user_details?.user_profiles?.firstname} ${orderData?.order?.user_details?.user_profiles?.lastname}`
-                : '-'}
+                : `${orderData?.return?.user_details?.user_profiles?.firstname} ${orderData?.return?.user_details?.user_profiles?.lastname}`}
             </Text>
 
             {/* {orderData?.order?.delivery_option !== '3' ? (
@@ -98,7 +98,11 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
           </View>
 
           <View>
-            <Text style={styles.nameTextStyle}>{orderData?.order?.total_items ?? '-'}</Text>
+            <Text style={styles.nameTextStyle}>
+              {orderData?.return
+                ? orderData?.return?.order?.total_items
+                : orderData?.order?.total_items}
+            </Text>
           </View>
 
           <View
@@ -112,7 +116,9 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
               style={[styles.pinImageStyle, { tintColor: COLORS.success_green }]}
             />
             <Text style={[styles.distanceTextStyle, { color: COLORS.success_green }]}>
-              {orderData?.order?.payable_amount ?? '-'}
+              {orderData?.return
+                ? orderData?.return?.order?.payable_amount
+                : orderData?.order?.payable_amount}
             </Text>
           </View>
 
