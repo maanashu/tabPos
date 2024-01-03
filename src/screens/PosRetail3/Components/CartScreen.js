@@ -443,9 +443,18 @@ export function CartScreen({
                                   <Text numberOfLines={1} style={styles.productPrice}>
                                     {suppliesPrice?.selling_price &&
                                     suppliesPrice?.offer_price &&
-                                    suppliesPrice?.offer_applicable_qty < 1
+                                    suppliesPrice?.offer_applicable_qty != data?.qty
+                                      ? amountFormat(suppliesPrice?.selling_price)
+                                      : suppliesPrice?.selling_price &&
+                                        suppliesPrice?.offer_price &&
+                                        suppliesPrice?.offer_applicable_qty == data?.qty
                                       ? amountFormat(suppliesPrice?.offer_price)
                                       : amountFormat(suppliesPrice?.selling_price)}
+                                    {/* {suppliesPrice?.selling_price &&
+                                    suppliesPrice?.offer_price &&
+                                    suppliesPrice?.offer_applicable_qty < 1
+                                      ? amountFormat(suppliesPrice?.offer_price)
+                                      : amountFormat(suppliesPrice?.selling_price)} */}
                                   </Text>
                                 )}
                               </View>
@@ -483,12 +492,25 @@ export function CartScreen({
                                 <Text style={styles.blueListDataText}>
                                   {suppliesPrice?.selling_price &&
                                   suppliesPrice?.offer_price &&
-                                  suppliesPrice?.offer_applicable_qty < 1
+                                  suppliesPrice?.offer_applicable_qty != data?.qty
+                                    ? amountFormat(suppliesPrice?.selling_price * data?.qty)
+                                    : suppliesPrice?.selling_price &&
+                                      suppliesPrice?.offer_price &&
+                                      suppliesPrice?.offer_applicable_qty == data?.qty
                                     ? amountFormat(
                                         suppliesPrice?.offer_price *
                                           (suppliesPrice?.offer_applicable_qty > 1 ? 1 : data?.qty)
                                       )
                                     : amountFormat(suppliesPrice?.selling_price * data?.qty)}
+
+                                  {/* {suppliesPrice?.selling_price &&
+                                  suppliesPrice?.offer_price &&
+                                  suppliesPrice?.offer_applicable_qty < 1
+                                    ? amountFormat(
+                                        suppliesPrice?.offer_price *
+                                          (suppliesPrice?.offer_applicable_qty > 1 ? 1 : data?.qty)
+                                      )
+                                    : amountFormat(suppliesPrice?.selling_price * data?.qty)} */}
                                 </Text>
                               </View>
                               <View style={styles.productCartBody}>
