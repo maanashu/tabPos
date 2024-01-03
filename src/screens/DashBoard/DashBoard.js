@@ -316,9 +316,12 @@ export function DashBoard({ navigation }) {
   const tableListItem = ({ item, index }) => (
     <TouchableOpacity
       onPress={() => {
-        if (item?.delivery_option == 1) {
+        if (item?.delivery_option == 1 || item?.delivery_option == 3) {
           dispatch(addSellingSelection(2));
-          navigation.navigate(NAVIGATION.deliveryOrders2, { ORDER_DETAIL: item });
+          navigation.navigate(NAVIGATION.deliveryOrders2, {
+            ORDER_DETAIL: item,
+            screen: 'dashboard',
+          });
         } else if (item?.delivery_option == 4) {
           dispatch(addSellingSelection(3));
           navigation.navigate(NAVIGATION.shippingOrder2, { ORDER_DETAIL: item });

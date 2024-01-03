@@ -722,4 +722,8 @@ export const styles = StyleSheet.create({
     paddingRight: ms(15),
     marginVertical: ms(60),
   },
+  phoneText: {
+    fontSize: ms(9),
+    color: COLORS.navy_blue,
+  },
 });

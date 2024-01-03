@@ -245,6 +245,7 @@ export function MainScreen({
                   status: true,
                   cartId: bulkData?.id,
                 };
+          console.log('data11111', data);
           dispatch(changeStatusProductCart(data));
         } else {
           const data =
@@ -257,6 +258,7 @@ export function MainScreen({
                   status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
                   cartId: bulkData?.id,
                 };
+          console.log('data2222', data);
 
           dispatch(changeStatusProductCart(data));
         }
@@ -264,8 +266,6 @@ export function MainScreen({
         console.log('catch', error);
       }
     } else {
-      console.log('last else');
-
       const data =
         holdProductArray?.length > 0
           ? {
@@ -276,7 +276,7 @@ export function MainScreen({
               status: getRetailData?.getAllCart?.is_on_hold === false ? true : false,
               cartId: getRetailData?.getAllCart?.id,
             };
-
+      console.log('data3333', data);
       dispatch(changeStatusProductCart(data));
     }
   };
@@ -453,6 +453,15 @@ export function MainScreen({
   );
   const isLoadingHoldCart = useSelector((state) =>
     isLoadingSelector([TYPES.CHANGE_STATUS_PRODUCT_CART], state)
+  );
+  const isLoadingClearLocalCart = useSelector((state) =>
+    isLoadingSelector([TYPES.CLEAR_LOCAL_CART], state)
+  );
+  const isLoadingUpdateCartLength = useSelector((state) =>
+    isLoadingSelector([TYPES.UPDATE_CART_LENGTH], state)
+  );
+  const isLoadingCreateBulkCart = useSelector((state) =>
+    isLoadingSelector([TYPES.CREATE_BULK_CART], state)
   );
 
   useEffect(() => {
@@ -682,7 +691,9 @@ export function MainScreen({
     return (
       <TouchableOpacity
         key={index}
-        style={styles.productCon(updatedItem?.cart_qty)}
+        style={styles.productCon(
+          isLoadingHoldPProduct || isLoadingHoldCart || isLoadingProduct ? 0 : updatedItem?.cart_qty
+        )}
         onPress={() => productFun(item.id, index, item)}
         activeOpacity={0.7}
         // onPress={() => checkAttributes(item, index, cartAddQty)}
@@ -696,11 +707,13 @@ export function MainScreen({
             style={styles.categoryshoes}
             resizeMode={FastImage.resizeMode.contain}
           />
-          {updatedItem?.cart_qty > 0 && (
-            <View style={styles.imageInnerView}>
-              <Image source={plus} style={[styles.plusButton, { tintColor: COLORS.white }]} />
-            </View>
-          )}
+          {isLoadingHoldPProduct || isLoadingHoldCart || isLoadingProduct
+            ? null
+            : updatedItem?.cart_qty > 0 && (
+                <View style={styles.imageInnerView}>
+                  <Image source={plus} style={[styles.plusButton, { tintColor: COLORS.white }]} />
+                </View>
+              )}
         </View>
 
         <View style={{ padding: ms(5) }}>
@@ -742,11 +755,14 @@ export function MainScreen({
                 resizeMode={FastImage.resizeMode.contain}
               />
 
-              {updatedItem.cart_qty > 0 && (
-                <View style={styles.productBadge}>
-                  <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
-                </View>
-              )}
+              {isLoadingHoldPProduct || isLoadingHoldCart || isLoadingProduct
+                ? null
+                : updatedItem.cart_qty > 0 && (
+                    <View style={styles.productBadge}>
+                      <Text style={styles.productBadgeText}>{updatedItem.cart_qty}</Text>
+                    </View>
+                  )}
+
               {/* isProductMatchArray */}
             </TouchableOpacity>
           </View>
@@ -1280,18 +1296,27 @@ export function MainScreen({
                     <View
                       style={
                         cartLength > 0
-                          ? [styles.bucketBadge, styles.bucketBadgePrimary]
+                          ? [
+                              styles.bucketBadge,
+                              isLoadingHoldPProduct || isLoadingHoldCart || isLoadingProduct
+                                ? styles.bucketBadge
+                                : styles.bucketBadgePrimary,
+                            ]
                           : styles.bucketBadge
                       }
                     >
                       <Text
                         style={
-                          cartLength > 0
+                          isLoadingHoldPProduct || isLoadingHoldCart || isLoadingProduct
+                            ? 0
+                            : cartLength > 0
                             ? [styles.badgetext, { color: COLORS.white }]
                             : styles.badgetext
                         }
                       >
-                        {cartLength ?? '0'}
+                        {isLoadingHoldPProduct || isLoadingHoldCart || isLoadingProduct
+                          ? '0'
+                          : cartLength ?? '0'}
                       </Text>
                     </View>
                   </TouchableOpacity>

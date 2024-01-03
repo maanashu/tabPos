@@ -35,8 +35,6 @@ import moment from 'moment';
 import { COLORS, SF, SH } from '@/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-
-import Modal, { ReactNativeModal } from 'react-native-modal';
 import { strings } from '@/localization';
 import { CustomKeyboard } from '../CustomKeyBoard';
 import { digits, emailReg } from '@/utils/validators';
@@ -231,7 +229,7 @@ export const CartAmountPayBy = ({
     },
     {
       title: 'Date',
-      data: moment().format('ddd') + ' ' + moment().format('L'),
+      data: moment().format('ddd') + ' ' + moment().format('MM/DD/YY'),
       id: 2,
     },
     {
@@ -1410,7 +1408,7 @@ export const CartAmountPayBy = ({
                           <Image source={dropdown} style={styles.dropDownIcon} />
                           <Text style={styles.countryCodeText}>{walletCountryCode}</Text>
                           <TextInput
-                            maxLength={15}
+                            maxLength={10}
                             returnKeyType="done"
                             keyboardType="number-pad"
                             value={walletIdInp?.trim()}
@@ -1493,7 +1491,7 @@ export const CartAmountPayBy = ({
           {/* </ScrollView> */}
         </KeyboardAwareScrollView>
       </BlurredModal>
-      {isLoadingAttachCustomer || (isLoadingMerchantWalletCheck && <FullScreenLoader />)}
+      {(isLoadingAttachCustomer || isLoadingMerchantWalletCheck) && <FullScreenLoader />}
     </SafeAreaView>
   );
 };

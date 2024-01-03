@@ -26,7 +26,9 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
         <TouchableOpacity
           style={styles.orderRowStyle}
           onPress={() => {
-            orderData?.order?.status === 9
+            orderData?.order?.status === 9 ||
+            orderData?.order?.status === 7 ||
+            orderData?.order?.status === 8
               ? commonNavigate(MPOS_NAVIGATION.invoice, { data: orderData })
               : commonNavigate(MPOS_NAVIGATION.returnOrderDetail, { data: orderData });
           }}

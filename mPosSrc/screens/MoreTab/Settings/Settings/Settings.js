@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Image, TouchableOpacity, Text, FlatList } from 'react-native';
 import { Images } from '@mPOS/assets';
 import { Header, HorizontalLine, ScreenWrapper } from '@mPOS/components';
@@ -6,14 +6,28 @@ import { strings } from '@mPOS/localization';
 import styles from './Settings.styles';
 import { ms } from 'react-native-size-matters';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuthData } from '@/selectors/AuthSelector';
+import { getUser } from '@/selectors/UserSelectors';
+import { getUserAddress } from '@/actions/SettingAction';
+import { getSetting } from '@/selectors/SettingSelector';
 
 export function Settings() {
+  const dispatch = useDispatch();
+  const getAuth = useSelector(getAuthData);
+  const posUser = useSelector(getUser);
+  const getSettingData = useSelector(getSetting);
+  const getUserLocation = getSettingData?.getUserAddress;
+
+  useEffect(() => {
+    dispatch(getUserAddress());
+  }, []);
   const options = [
     {
       id: 1,
       title: strings?.settings?.locations,
       image: Images.pin,
-      subTitle: '1 Locations',
+      subTitle: getUserLocation?.length || '0',
       navigation: MPOS_NAVIGATION.locations,
     },
     {
@@ -23,19 +37,20 @@ export function Settings() {
       subTitle: 'Defaults',
       navigation: MPOS_NAVIGATION.receipts,
     },
-    { id: 3, title: strings?.settings?.taxes, image: Images.tax, subTitle: 'Not updated' },
+    // { id: 3, title: strings?.settings?.taxes, image: Images.tax, subTitle: 'Not updated' },
     {
       id: 4,
       title: strings?.settings?.wallet,
       image: Images.wallet,
-      subTitle: 'Not connected',
+      subTitle:
+        posUser?.posLoginData?.user_profiles?.wallet_steps == 5 ? 'Connected' : 'Not connected',
       navigation: MPOS_NAVIGATION.walletSettings,
     },
     {
       id: 5,
       title: strings?.settings?.staffs,
       image: Images.staff,
-      subTitle: '3',
+      subTitle: getAuth?.getAllPosUsersData?.pos_staff?.length || '0',
       navigation: MPOS_NAVIGATION.staffSettings,
     },
     { id: 6, title: strings?.settings?.language, image: Images.language, subTitle: 'Defaults' },
@@ -61,6 +76,7 @@ export function Settings() {
       commonNavigate(item?.navigation);
     }
   };
+
   const renderSettings = ({ item, index }) => {
     return (
       <>

@@ -1414,7 +1414,10 @@ export class RetailController {
       const endpoint =
         PRODUCT_URL +
         ApiProductInventory.availableOffer +
-        `?app_name=pos&delivery_options=2&seller_id=${sellerID}&service_type=${data?.servicetype}`;
+        `?app_name=pos&delivery_options=${
+          data?.servicetype == 'product' ? '1,3,4' : '2'
+        }&seller_id=${sellerID}&service_type=${data?.servicetype}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
