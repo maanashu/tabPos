@@ -224,4 +224,18 @@ export const styles = StyleSheet.create({
     paddingVertical: ms(15),
     borderColor: COLORS.light_purple,
   },
+  textInputView: {
+    fontSize: ms(13),
+  },
+  placesContainerStyle: {
+    borderRadius: ms(30),
+    borderWidth: ms(1),
+    paddingHorizontal: ms(10),
+    paddingVertical: ms(3),
+    borderColor: COLORS.light_purple,
+  },
+  textInputContainer: {
+    color: 'red',
+    top: ms(2),
+  },
 });

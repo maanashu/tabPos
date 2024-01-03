@@ -48,6 +48,8 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { Header, ScreenWrapper } from '@mPOS/components';
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { Images } from '@/assets/new_icon';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GOOGLE_MAP } from '@/constants/ApiKey';
 
 export function TaxesDuties() {
   const isFocused = useIsFocused();
@@ -58,6 +60,7 @@ export function TaxesDuties() {
   const taxPayerRef = useRef();
   const activateStateRef = useRef();
   const createTaxRef = useRef();
+  const googlePlacesRef = useRef();
 
   const merchantProfile = getAuth?.merchantLoginData?.user_profile;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -71,6 +74,7 @@ export function TaxesDuties() {
   const [countryId, setCountryId] = useState(null);
   const [stateId, setStateId] = useState([]);
   const [verifiedArea, setVerifiedArea] = useState(false);
+  const [isIncludeTaxPrice, setIncludeTaxPrice] = useState(true);
   const [stateTax, setStateTax] = useState(false);
   const [createTaxBtn, setCreateTaxBtn] = useState(false);
   const [createTaxModal, setCreateTaxModal] = useState(false);
@@ -86,13 +90,18 @@ export function TaxesDuties() {
   const [streetAdd, setStreetAdd] = useState(merchantProfile?.current_address?.street_address);
   const [appartment, setAppartment] = useState(merchantProfile?.current_address?.address_type);
   const [country, setCountry] = useState(merchantProfile?.current_address?.country);
+  const [countryCode, setCountryCode] = useState(merchantProfile?.current_address?.country_code);
   const [state, setState] = useState(merchantProfile?.current_address?.state);
+  const [stateCode, setStateCode] = useState(merchantProfile?.current_address?.state_code);
   const [city, setCity] = useState(merchantProfile?.current_address?.city);
   const [zipCode, setZipCode] = useState(merchantProfile?.current_address?.zipcode);
   const posRole = store.getState().user?.posLoginData?.user_profiles?.pos_role;
   const [isToggle, setIsToggle] = useState(false);
   const [activeTaxes, setActiveTaxes] = useState(false);
   const [stateActive, setStateActive] = useState(false);
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
+  console.log('counry', country);
 
   const taxPayerHandler = () => {
     if (!name || !ssn || !streetAdd || !appartment || !country || !state || !city || !zipCode) {
@@ -192,6 +201,35 @@ export function TaxesDuties() {
     return (
       <STATEITEM item={item} onPress={() => setStateId(item.id)} color={color} image={image} />
     );
+  };
+  const getAddress = (details, geometry) => {
+    for (var i = 0; i < details.length; i++) {
+      if (details[i].types[0] == 'country') {
+        setCountry(details?.[i]?.long_name);
+        setCountryCode(details?.[i]?.short_name);
+      }
+
+      if (details[i].types[0] == 'postal_code') {
+        setZipCode(details?.[i]?.long_name);
+      }
+
+      if (details[i].types[0] == 'administrative_area_level_1') {
+        setState(details?.[i]?.long_name);
+        setStateCode(details?.[i]?.short_name);
+      }
+
+      if (
+        details[i].types[0] == 'administrative_area_level_2' ||
+        details[i].types[0] == 'administrative_area_level_3' ||
+        details[i].types[0] == 'locality'
+      ) {
+        setCity(details?.[i]?.long_name);
+      }
+      if (geometry) {
+        setLatitude(geometry?.location?.lat);
+        setLongitude(geometry?.location?.lng);
+      }
+    }
   };
 
   const dataChangeFun = () => {
@@ -402,7 +440,7 @@ export function TaxesDuties() {
     }
   };
 
-  const createTaxFunNew = () => {
+  const createTaxView = () => {
     return (
       <BottomSheetScrollView
         style={{ padding: ms(20) }}
@@ -452,30 +490,16 @@ export function TaxesDuties() {
           </View>
           <Spacer space={SH(3)} />
           <Text style={styles.taxCalculation}>{strings.settings.taxCalculation}</Text>
-          {/* <View style={[styles.twoStepMemberConNew, { backgroundColor: null }]}>
-            <View style={styles.rowAligned}>
-              <View style={styles.dispalyRow}>
-                <Image source={squareBlank} style={[styles.blankSquare, {}]} />
-                <Image source={Images.checkboxSquare} style={[styles.blankSquare, {}]} />
-                <View style={styles.marginLeft}>
-                  <Text style={[styles.twoStepText, { fontSize: SF(14) }]}>
-                    {strings.settings.includeTax}
-                  </Text>
-                  <Spacer space={SH(3)} />
-                  <Text style={[styles.securitysubhead, { fontSize: SF(11) }]}>
-                    {strings.settings.includetaxSubhead}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View> */}
 
           <Spacer space={SH(20)} />
 
           <View style={[styles.rowAligned, { alignItems: 'flex-start' }]}>
-            <TouchableOpacity style={{ padding: ms(5) }}>
+            <TouchableOpacity
+              style={{ padding: ms(5) }}
+              onPress={() => setIncludeTaxPrice(!isIncludeTaxPrice)}
+            >
               <Image
-                source={Images.checkboxSquare}
+                source={isIncludeTaxPrice ? Images.checkboxSquare : squareBlank}
                 resizeMode="contain"
                 style={styles.checkBoxStyle}
               />
@@ -587,6 +611,8 @@ export function TaxesDuties() {
   const addEmployeeView = () => {
     return (
       <BottomSheetScrollView style={{ padding: ms(20) }} showsVerticalScrollIndicator={false}>
+        <Spacer space={ms(30)} />
+
         <View>
           <View style={styles.taxPayerHeadingContainer}>
             <Text style={styles.taxPayerHeading}>{strings.settings.taxPayerHeadl}</Text>
@@ -623,12 +649,39 @@ export function TaxesDuties() {
             <Text style={styles.inputHeaderText}>{strings.settings.streetAdd}</Text>
             <Spacer space={ms(8)} />
 
-            <TextInput
-              placeholder={strings.settings.streetAdd}
-              style={styles.taxPayerInput}
-              placeholderTextColor={COLORS.light_blue2}
-              value={streetAdd}
-              onChangeText={setStreetAdd}
+            <GooglePlacesAutocomplete
+              ref={googlePlacesRef}
+              fetchDetails
+              autoFocus={false}
+              listViewDisplayed={true}
+              returnKeyType={'search'}
+              placeholder={'Street Address'}
+              enablePoweredByContainer={false}
+              textInputProps={{
+                placeholderTextColor: COLORS.light_blue2,
+                returnKeyType: 'search',
+              }}
+              query={{
+                language: 'en',
+                type: 'address',
+                components: 'country:us',
+                key: GOOGLE_MAP.API_KEYS,
+              }}
+              onPress={(data, details) => {
+                setStreetAdd(data.structured_formatting.main_text);
+                getAddress(details.address_components, details?.geometry);
+              }}
+              styles={{
+                container: styles.placesContainerStyle,
+                textInput: styles.textInputView,
+                textInputContainer: styles.textInputContainer,
+                predefinedPlacesDescription: styles.predefinedStyles,
+              }}
+              // textInputProps={{
+              //   editable: true,
+              //   value: streetAdd,
+              //   onChange: (text) => setStreetAddress(text),
+              // }}
             />
             <Spacer space={ms(20)} />
             <Text style={styles.inputHeaderText}>{strings.settings.appartement}</Text>
@@ -1135,6 +1188,8 @@ export function TaxesDuties() {
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
+        <Spacer space={ms(30)} />
+
         <View style={{ flex: 1 }}>
           <View style={styles.taxPayerHeadingContainer}>
             <Text style={styles.taxPayerHeading}>{strings.settings.activeStateTax}</Text>
@@ -1248,7 +1303,7 @@ export function TaxesDuties() {
           snapPoints={['100%']}
           handleIndicatorStyle={{ height: 0 }}
         >
-          {createTaxFunNew()}
+          {createTaxView()}
         </BottomSheetModal>
       </View>
     </ScreenWrapper>
