@@ -69,6 +69,7 @@ export const Images = {
   emailBlueIcon: require('@/assets/new_icon/Settings/email_blue_icon.png'),
   phoneMsgIcon: require('@/assets/new_icon/Settings/phone_message.png'),
   printerIcon: require('@/assets/new_icon/Settings/printer_icon.png'),
+  checkboxSquare: require('@/assets/new_icon/Settings/checkboxSquare.png'),
   deliveryHandIcon: require('@/assets/new_icon/Settings/delivery_hand.png'),
   planeIcon: require('@/assets/new_icon/Settings/plane.png'),
   postMotorIcon: require('@/assets/new_icon/Settings/post_motor.png'),

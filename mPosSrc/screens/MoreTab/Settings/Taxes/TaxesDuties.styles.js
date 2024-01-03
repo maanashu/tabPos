@@ -194,4 +194,34 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     tintColor: COLORS.navy_blue,
   },
+  taxCalculation: {
+    alignSelf: 'center',
+    fontFamily: Fonts.Medium,
+    fontSize: ms(26),
+    color: COLORS.navy_blue,
+    marginTop: ms(20),
+  },
+  includeTaxText: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(18),
+    color: COLORS.navy_blue,
+    marginTop: ms(3),
+  },
+  securitysubhead: {
+    fontFamily: Fonts.Medium,
+    fontSize: ms(12),
+    color: COLORS.faded_purple,
+    marginTop: ms(3),
+  },
+  checkBoxStyle: {
+    height: ms(20),
+    width: ms(20),
+  },
+  exceptionContainer: {
+    borderWidth: 1,
+    borderRadius: ms(16),
+    paddingHorizontal: ms(20),
+    paddingVertical: ms(15),
+    borderColor: COLORS.light_purple,
+  },
 });
