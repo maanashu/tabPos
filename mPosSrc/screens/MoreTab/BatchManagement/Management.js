@@ -1116,7 +1116,7 @@ export function Management() {
               </View>
 
               <Text style={[styles.drawerIdText, { top: 2 }]}>
-                {moment(SessionData?.createDate).format('dddd, MMMM Do YYYY | h:mm a')}
+                {moment.utc(SessionData?.createDate)?.format('dddd, MMMM Do YYYY | h:mm a')}
               </Text>
             </View>
 
@@ -1397,7 +1397,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.manual?.cash.toFixed(2)}
+                            {cashOut?.manual?.cash?.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1405,7 +1405,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.manual?.card.toFixed(2)}
+                            {cashOut?.manual?.card?.toFixed(2)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1413,7 +1413,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.manual?.jobr_coin.toFixed(2)}
+                            {cashOut?.manual?.jobr_coin?.toFixed(2)}
                           </Text>
                         </View>
                       </View>
@@ -1425,7 +1425,7 @@ export function Management() {
                   <Text style={styles.cashDrawerText}>{strings.management.netPayment}</Text>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashTotalNet.toFixed(2)}
+                    {cashTotalNet?.toFixed(2)}
                     {/* {SessionData?.cashBalance} */}
                   </Text>
                 </View>

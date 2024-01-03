@@ -409,7 +409,10 @@ export function Security() {
                 >
                   <Image
                     source={googleAuthicator ? vector : vectorOff}
-                    style={styles.toggleSecurity}
+                    style={[
+                      styles.toggleSecurity,
+                      googleAuthicator && { tintColor: COLORS.navy_blue },
+                    ]}
                   />
                 </TouchableOpacity>
               </View>
