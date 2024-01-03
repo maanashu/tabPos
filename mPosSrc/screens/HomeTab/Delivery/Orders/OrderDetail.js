@@ -127,6 +127,25 @@ export function OrderDetail(props) {
       checkOtherOrder();
     }, 500);
   };
+
+  const declineHandler = () => {
+    const data = {
+      orderId: orderData?.id,
+      status: 8,
+      sellerID: sellerID,
+    };
+    dispatch(
+      acceptOrder(data, orderData?.status, (res) => {
+        if (res?.msg) {
+          goBack();
+        }
+      })
+    );
+    setTimeout(() => {
+      checkOtherOrder();
+    }, 500);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <Header backRequired title={strings.profile.header} /> */}
@@ -263,6 +282,7 @@ export function OrderDetail(props) {
       {orders.length > 0 && (
         <OrderTotal
           orderData={orderData}
+          declineHandler={declineHandler}
           onPressAcceptHandler={onPressAcceptHandler}
 
           // {...{ orderData, onPressAcceptHandler }}

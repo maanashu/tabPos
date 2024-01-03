@@ -149,8 +149,8 @@ export const styles = StyleSheet.create({
     // padding: 15,
   },
   securityLogo: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(18),
+    height: SW(18),
     // top: SH(-6),
   },
   twoStepVerifiCon: {
@@ -158,7 +158,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   twoStepText: {
-    fontSize: ms(10),
+    fontSize: ms(16),
     fontFamily: Fonts.MaisonBold,
     color: COLORS.navy_blue,
   },
@@ -204,7 +204,7 @@ export const styles = StyleSheet.create({
     marginBottom: SH(8),
   },
   securitysubhead: {
-    fontSize: SF(10),
+    fontSize: SF(14),
     fontFamily: Fonts.Regular,
     color: COLORS.lavender,
   },
@@ -299,11 +299,6 @@ export const styles = StyleSheet.create({
   marginLeft: {
     // marginLeft: moderateScale(8),
     flex: 0.8,
-  },
-  marginLeftNew: {
-    marginLeft: ms(-40),
-    // marginLeft: moderateScale(8),
-    // flex: -50,
   },
   confirmModalView: {
     width: windowWidth * 0.32,

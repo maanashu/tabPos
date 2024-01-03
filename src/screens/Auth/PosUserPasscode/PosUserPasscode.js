@@ -21,17 +21,18 @@ import { strings } from '@/localization';
 import { digits } from '@/utils/validators';
 import { goBack, navigate } from '@/navigation/NavigationRef';
 
-import { loginPosUser } from '@/actions/UserActions';
+import { loginPosUser, loginPosUserSuccess } from '@/actions/UserActions';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import { styles } from '@/screens/Auth/PosUserPasscode/PosUserPasscode.styles';
 import CustomHeaderPOSUsers from '../components/CustomHeaderPOSUsers';
-import { forgot2fa, reset2fa } from '@/actions/AuthActions';
+import { forgot2fa, getProfile, reset2fa } from '@/actions/AuthActions';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import { navigationRef } from '@mPOS/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
+import { getSettings } from '@/actions/SettingAction';
 
 const CELL_COUNT = 4;
 

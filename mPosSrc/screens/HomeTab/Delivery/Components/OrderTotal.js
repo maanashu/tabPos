@@ -11,7 +11,7 @@ import ButtonComponent from './ButtonComponent';
 import styles from '../Orders/styles';
 import moment from 'moment';
 
-const OrderTotal = ({ orderData, onPressAcceptHandler }) => {
+const OrderTotal = ({ orderData, declineHandler, onPressAcceptHandler }) => {
   return (
     <View style={styles.billViewStyle}>
       <Text style={styles.totalItemsStyles}>
@@ -101,6 +101,7 @@ const OrderTotal = ({ orderData, onPressAcceptHandler }) => {
       <ButtonComponent
         status={orderData?.status}
         orderId={orderData?.id}
+        declineHandler={declineHandler}
         onPressHandler={onPressAcceptHandler}
       />
     </View>

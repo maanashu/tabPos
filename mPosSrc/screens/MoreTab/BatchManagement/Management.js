@@ -151,6 +151,7 @@ export function Management() {
   //   Number(drawerData?.drawerHistory?.cash_out?.total);
 
   const cashTotalNet = drawerData?.drawerHistory?.net_amount;
+
   // alert(cashOut?.total);
   const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
@@ -1124,7 +1125,8 @@ export function Management() {
               <View>
                 <Text style={styles.usdText}>
                   {strings.management.usd}
-                  {Number(SessionData?.cashBalance)?.toFixed(2)}
+                  {/* {Number(SessionData?.cashBalance)?.toFixed(2)} */}
+                  {cashTotalNet.toFixed(2)}
                 </Text>
               </View>
               <Text

@@ -6,12 +6,12 @@ import { ms } from 'react-native-size-matters';
 import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF } from '@/theme';
 
-const ButtonComponent = ({ status, onPressHandler }) => {
+const ButtonComponent = ({ status, declineHandler, onPressHandler }) => {
   return (
     <>
       {status === 0 ? (
         <View style={styles.buttonViewStyle}>
-          <TouchableOpacity style={styles.declineButtonStyle}>
+          <TouchableOpacity onPress={declineHandler} style={styles.declineButtonStyle}>
             <Text style={styles.declineButtonText}>{strings.delivery.decline}</Text>
           </TouchableOpacity>
 

@@ -141,6 +141,7 @@ export class SettingController {
       const endpoint = USER_URL + ApiUserInventory.getUserAddress;
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('locationssa', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

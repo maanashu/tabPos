@@ -1388,12 +1388,13 @@ export function TaxesDuties() {
           handleIndicatorStyle={{ height: 0 }}
         >
           <BottomSheetScrollView style={{ padding: ms(20) }} showsVerticalScrollIndicator={false}>
-            <View>
+            <View style={{ flex: 1 }}>
+              <Spacer space={ms(30)} />
               <View style={styles.taxPayerHeadingContainer}>
                 <Text style={styles.taxPayerHeading}>{strings.settings.taxPayerHeadl}</Text>
               </View>
 
-              <Spacer space={ms(50)} />
+              <Spacer space={ms(30)} />
 
               <View style={styles.countryModBody}>
                 <Spacer space={ms(8)} />
@@ -1498,7 +1499,7 @@ export function TaxesDuties() {
                   </View>
                 </View>
 
-                <Spacer space={ms(20)} />
+                <Spacer space={ms(30)} />
                 <View style={{ flex: 1 }} />
                 <View style={styles.activeTaxButtonStyle}>
                   <View style={styles.rowJustified}>
