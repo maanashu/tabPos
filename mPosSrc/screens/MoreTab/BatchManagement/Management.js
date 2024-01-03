@@ -1116,6 +1116,7 @@ export function Management() {
               </View>
 
               <Text style={[styles.drawerIdText, { top: 2 }]}>
+                {/* {moment.utc().format('dddd, Do MMMM YYYY')} */}
                 {moment.utc(SessionData?.createDate)?.format('dddd, MMMM Do YYYY | h:mm a')}
               </Text>
             </View>
