@@ -78,7 +78,7 @@ export function ShippingOrderDetail(props) {
         return strings.orderStatus.deliveryReturns;
     }
   };
-  const onPressAcceptHandler = () => {
+  const onPressAcceptHandler = async () => {
     if (orderData?.status == 3) {
       printLabelHandler(orderData);
     } else {
@@ -87,22 +87,20 @@ export function ShippingOrderDetail(props) {
         status: orderData?.status === 0 ? 3 : 4,
         sellerID: sellerID,
       };
-      dispatch(
+      const res = await dispatch(
         acceptOrderMPOS(data, data?.status, (res) => {
           if (res?.msg) {
             goBack();
           }
         })
       );
-      // console.log('tesdsdsd', JSON.stringify(res));
-      // if (res) {
-      //   checkOtherOrder();
-      // }
-    }
 
-    setTimeout(() => {
-      checkOtherOrder();
-    }, 200);
+      if (res) {
+        setTimeout(() => {
+          checkOtherOrder();
+        }, 200);
+      }
+    }
   };
 
   const onPressDeclineHandler = () => {
@@ -191,6 +189,11 @@ export function ShippingOrderDetail(props) {
 
     var index = 0;
     if (statusData[0].count > 0) {
+      if (statusData[3].count == 1) {
+        index = 3;
+      } else {
+        index = 0;
+      }
     } else if (statusData[3].count > 0) {
       if (statusData[3].count == 1) {
         index = 4;
@@ -216,11 +219,11 @@ export function ShippingOrderDetail(props) {
         index = 6;
       }
     }
-    dispatch(orderStatusCount());
-    dispatch(getOrders(index));
     dispatch(getReviewDefault(index));
-    dispatch(getOrderCount());
-    dispatch(getPendingOrders());
+    dispatch(getOrders(index));
+
+    // dispatch(getOrderCount());
+    // dispatch(getPendingOrders());
   };
 
   const isLoading = useSelector((state) =>
