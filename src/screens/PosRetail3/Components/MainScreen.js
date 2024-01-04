@@ -729,21 +729,19 @@ export function MainScreen({
           <View
             style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
           >
-            {item?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+            {/* {item?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
             item?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
               <Text numberOfLines={1} style={styles.productPrice}>
                 {amountFormat(item?.supplies?.[0]?.supply_prices?.[0]?.offer_price)}
-                {/* ${item?.supplies?.[0]?.supply_prices?.[0]?.offer_price} */}
               </Text>
             ) : (
               <Text numberOfLines={1} style={styles.productPrice}>
                 {amountFormat(item?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
-                {/* ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price} */}
               </Text>
-            )}
-            {/* <Text numberOfLines={1} style={styles.productPrice}>
-              ${item.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-            </Text> */}
+            )} */}
+            <Text numberOfLines={1} style={styles.productPrice}>
+              {amountFormat(item?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
+            </Text>
             <TouchableOpacity
               // onPress={() => productFun(item.id, index, item)}
               onPress={() => checkAttributes(item, index, cartAddQty)}

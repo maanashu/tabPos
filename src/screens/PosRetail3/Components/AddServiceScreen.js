@@ -70,6 +70,7 @@ export const AddServiceScreen = ({ backHandler }) => {
   const getRetailData = useSelector(getRetail);
   const itemData = getRetailData?.getOneService?.product_detail;
   const posStaffArray = itemData?.pos_staff;
+  console.log(' getRetailData?.getOneService', JSON.stringify(getRetailData?.getOneService));
 
   function modifiedPosArray(arr, size) {
     const posStaffedArray = [];
