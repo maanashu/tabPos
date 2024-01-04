@@ -34,12 +34,17 @@ import { getAllPlans } from '@/actions/SubscriptionAction';
 import { getAppointmentSelector } from '@/selectors/AppointmentSelector';
 import { DeviceDetails } from './Components/DeviceDetails';
 import { ms } from 'react-native-size-matters';
+import moment from 'moment';
+import { getAllPlansData } from '@/selectors/SubscriptionSelector';
 
 export function Setting() {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const getSettingData = useSelector(getSetting);
   const getAuth = useSelector(getAuthData);
+  const shippingpickupData = getSettingData?.getShippingPickup;
+  const getPlanData = useSelector(getAllPlansData);
+
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const posUserArray = getAuth?.getAllPosUsers;
   const [selectedId, setSelectedId] = useState(1);
@@ -116,7 +121,33 @@ export function Setting() {
       </View>
     </TouchableOpacity>
   );
-
+  const retrurnCount = (type, subHead) => {
+    //types
+    //  Security
+    //  Devices
+    //  Notifications
+    //  Locations
+    //  Plans
+    //  Receipts
+    //  Taxes
+    //  Wallet
+    //  Shipping & Pickups
+    //  Staffs
+    //  Language
+    //  Legal
+    //  Policies
+    //  Device Details
+    var count = subHead;
+    if (type == 'Locations') {
+      count = shippingpickupData.length;
+    } else if (type == 'Plans') {
+      const data = getPlanData?.activeSubscription[0];
+      count = moment(data?.expiry_date).format('MMMM D, YYYY');
+    } else if (type == 'Staffs') {
+      count = posUserArray?.length;
+    }
+    return count;
+  };
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? COLORS.white : COLORS.sky_grey;
     const tintAndColor = item.id === selectedId ? COLORS.navy_blue : COLORS.lavender;
@@ -142,7 +173,8 @@ export function Setting() {
               <View style={{ marginLeft: ms(8) }}>
                 <Text style={[styles.securityText, { color: color }]}>{item.name}</Text>
                 <Text style={[styles.notUpdated, { color: tintAndColor }]}>
-                  {item?.name == 'Staffs' ? posUserArray?.length : item.subhead}
+                  {/* {item?.name == 'Staffs' ? posUserArray?.length : item.subhead} */}
+                  {retrurnCount(item?.name, item.subhead)}
                 </Text>
               </View>
             </View>

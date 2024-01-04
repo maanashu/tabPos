@@ -44,6 +44,7 @@ import { getPendingOrders } from '@/actions/DashboardAction';
 import { getOrderData } from '@/actions/AnalyticsAction';
 import { useEffect } from 'react';
 import moment from 'moment';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function Shipping() {
   const dispatch = useDispatch();
@@ -150,7 +151,10 @@ export function Shipping() {
 
           <View style={styles.itemAndPaymentView}>
             <Image source={Images.pay} style={styles.payIconStyle} />
-            <Text style={styles.priceTextStyle}>{`$${item?.actual_amount}`}</Text>
+            <Text style={styles.priceTextStyle}>{`$${amountFormat(
+              item?.actual_amount,
+              true
+            )}`}</Text>
           </View>
         </View>
 

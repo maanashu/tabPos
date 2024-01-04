@@ -17,7 +17,11 @@ import mapCustomStyle from '@/components/MapCustomStyles';
 import { deliveryHomeIcon, expand, Fonts, gps, pay, scooter } from '@/assets';
 
 import styles from '../styles';
-import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
+import {
+  amountFormat,
+  formattedReturnPrice,
+  formattedReturnPriceWithoutSign,
+} from '@/utils/GlobalMethods';
 
 const OrderDetail = ({
   userDetail,
@@ -46,13 +50,13 @@ const OrderDetail = ({
           <CustomerDetails orderDetail={userDetail} />
 
           <View style={{ height: SH(400) }}>
-            <FlatList
+            {/* <FlatList
               scrollEnabled
               data={orderDetail}
               renderItem={renderOrderProducts}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}
-            />
+            /> */}
           </View>
 
           <View style={styles.orderandPriceView}>
@@ -149,7 +153,11 @@ const OrderDetail = ({
                     { paddingTop: 0, fontFamily: Fonts.MaisonBold, color: COLORS.navy_blue },
                   ]}
                 >
-                  ${userDetail?.actual_amount ? Number(userDetail?.actual_amount).toFixed(2) : '0'}
+                  $
+                  {amountFormat(
+                    userDetail?.actual_amount ? Number(userDetail?.actual_amount).toFixed(2) : '0',
+                    true
+                  )}
                 </Text>
               </View>
 
@@ -169,7 +177,7 @@ const OrderDetail = ({
                 <View style={styles.flexDirectionRow}>
                   <Text style={[styles.totalTextStyle2, { color: COLORS.navy_blue }]}>{'$'}</Text>
                   <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
-                    {Number(userDetail?.tips).toFixed(2) ?? '0'}
+                    {amountFormat(Number(userDetail?.tips).toFixed(2) ?? '0', true)}
                   </Text>
                 </View>
               </View>
@@ -181,7 +189,7 @@ const OrderDetail = ({
                 <View style={styles.flexDirectionRow}>
                   <Text style={[styles.totalTextStyle2, { color: COLORS.navy_blue }]}>{'$'}</Text>
                   <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
-                    {userDetail?.tax ? Number(userDetail?.tax).toFixed(2) : '0'}
+                    {amountFormat(userDetail?.tax ? Number(userDetail?.tax).toFixed(2) : '0', true)}
                   </Text>
                 </View>
               </View>
@@ -193,7 +201,7 @@ const OrderDetail = ({
                     <Text
                       style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}
                     >
-                      {Number(userDetail?.delivery_charge)?.toFixed(2)}
+                      {amountFormat(Number(userDetail?.delivery_charge)?.toFixed(2), true)}
                     </Text>
                   </View>
                 </View>
@@ -226,7 +234,7 @@ const OrderDetail = ({
                     {'$'}
                   </Text>
                   <Text style={[styles.totalText, { paddingTop: 0, color: COLORS.navy_blue }]}>
-                    {Number(userDetail?.payable_amount).toFixed(2)}
+                    {amountFormat(Number(userDetail?.payable_amount).toFixed(2), true)}
                   </Text>
                 </View>
               </View>

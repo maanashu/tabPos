@@ -34,7 +34,7 @@ export class ShippingController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerID}&delivery_option=4`;
+        `?status=${status}&seller_id=${sellerID}&delivery_option=4&need_walkin=false`;
 
       // const endpoint =
       //   ORDER_URL +
@@ -240,6 +240,7 @@ export class ShippingController {
       console.log('sellerID', sellerID);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('res[pomnswe', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

@@ -17,7 +17,7 @@ export function Settings() {
   const getAuth = useSelector(getAuthData);
   const posUser = useSelector(getUser);
   const getSettingData = useSelector(getSetting);
-  const getUserLocation = getSettingData?.getUserAddress;
+  const getUserLocation = getSettingData?.getShippingPickup;
 
   useEffect(() => {
     dispatch(getUserAddress());
