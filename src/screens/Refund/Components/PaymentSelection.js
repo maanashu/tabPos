@@ -671,6 +671,7 @@ const styles = StyleSheet.create({
     top: ms(10),
     left: ms(10),
     backgroundColor: 'transparent',
+    zIndex: 999,
   },
   leftContainer: {
     flex: 0.68,

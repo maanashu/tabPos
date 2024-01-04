@@ -277,7 +277,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
   const applyRefundHandler = () => {
     if (applicableIsCheck || applyEachItem) {
-      if (applicableIsCheck && !amount) {
+      if (applicableIsCheck && amount == '') {
         alert('Please add refund amount');
       } else if (applyEachItem) {
         const hasCheckedItem = orders?.every((item) => item?.refundAmount !== 0);
