@@ -39,6 +39,9 @@ export function OrderDetail(props) {
   const statusCount = deliveryData?.getOrderCount;
   const orders = deliveryData?.getReviewDef ?? [];
   const orderData = orders[props?.route?.params?.index ?? 0];
+  // const orderData = props?.route.params.data;
+  // console.log('orderData', JSON.stringify(orderData));
+
   // const orderData = props?.route?.params?.data;
   const [pickupModalVisible, setPickupModalVisible] = useState(false);
   const customerDetail = orderData?.user_details;
@@ -138,23 +141,27 @@ export function OrderDetail(props) {
       />
       {orders.length > 0 && (
         <View style={styles.userDetailView}>
-          <View style={{ flexDirection: 'row' }}>
-            <Image
-              source={
-                customerDetail?.profile_photo ? { uri: customerDetail?.profile_photo } : Images.user
-              }
-              style={styles.profileImageStyle}
-            />
+          {customerDetail && (
+            <View style={{ flexDirection: 'row' }}>
+              <Image
+                source={
+                  customerDetail?.profile_photo
+                    ? { uri: customerDetail?.profile_photo }
+                    : Images.user
+                }
+                style={styles.profileImageStyle}
+              />
 
-            <View style={{ paddingLeft: 10 }}>
-              <Text
-                style={styles.nameTextStyle}
-              >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
-              <Text
-                style={styles.addressTextStyle}
-              >{`${customerDetail?.current_address?.street_address}\n${customerDetail?.current_address?.city}\n${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+              <View style={{ paddingLeft: 10 }}>
+                <Text
+                  style={styles.nameTextStyle}
+                >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
+                <Text
+                  style={styles.addressTextStyle}
+                >{`${customerDetail?.current_address?.street_address}\n${customerDetail?.current_address?.city}\n${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+              </View>
             </View>
-          </View>
+          )}
 
           <Spacer space={SH(20)} />
 

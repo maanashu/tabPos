@@ -347,42 +347,50 @@ export function CustomerList(props) {
                             : paginationModalValue} */}
                             {currentIndex}
                           </Text>
-                          <View style={[styles.flexAlign, { marginLeft: 10 }]}>
-                            <Image
-                              source={
-                                item?.user_details?.profile_photo == null ||
-                                item?.user_details?.profile_photo == ''
-                                  ? userImage
-                                  : { uri: item?.user_details?.profile_photo }
-                              }
-                              style={styles.lovingStyleData}
-                            />
-                            {/* <Image source={userImage} style={styles.lovingStyleData} /> */}
-                            <View
-                              style={{
-                                flexDirection: 'column',
-                                marginLeft: ms(5),
-                                marginRight: ms(5),
-                              }}
-                            >
-                              <Text style={styles.tableTextDataName}>
-                                {item?.user_details?.firstname == undefined
-                                  ? 'Unknown'
-                                  : item?.user_details?.firstname}
-                              </Text>
-                              {item?.user_details ? (
-                                <Text
-                                  style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
-                                  numberOfLines={1}
-                                >
-                                  {item?.user_details?.current_address?.city}{' '}
-                                  {item?.user_details?.current_address?.zipcode}
+                          {item?.user_details ? (
+                            <View style={[styles.flexAlign, { marginLeft: 10 }]}>
+                              <Image
+                                source={
+                                  item?.user_details?.profile_photo == null ||
+                                  item?.user_details?.profile_photo == ''
+                                    ? userImage
+                                    : { uri: item?.user_details?.profile_photo }
+                                }
+                                style={styles.lovingStyleData}
+                              />
+                              {/* <Image source={userImage} style={styles.lovingStyleData} /> */}
+                              <View
+                                style={{
+                                  flexDirection: 'column',
+                                  marginLeft: ms(5),
+                                  marginRight: ms(5),
+                                }}
+                              >
+                                <Text style={styles.tableTextDataName}>
+                                  {item?.user_details?.firstname == undefined
+                                    ? 'Unknown'
+                                    : item?.user_details?.firstname}
                                 </Text>
-                              ) : (
-                                <Text></Text>
-                              )}
+                                {item?.user_details ? (
+                                  <Text
+                                    style={[styles.tableTextDataAdd, { color: COLORS.gerySkies }]}
+                                    numberOfLines={1}
+                                  >
+                                    {item?.user_details?.current_address?.city}{' '}
+                                    {item?.user_details?.current_address?.zipcode}
+                                  </Text>
+                                ) : (
+                                  <Text></Text>
+                                )}
+                              </View>
                             </View>
-                          </View>
+                          ) : (
+                            <View style={[styles.flexAlign, { marginLeft: 10, flex: 1 }]}>
+                              <Text style={[styles.tableTextDataName, { marginLeft: ms(20) }]}>
+                                N/A
+                              </Text>
+                            </View>
+                          )}
                         </View>
                         <View style={styles.tableHeaderRight}>
                           <View style={styles.tableHeaderRightInner}>

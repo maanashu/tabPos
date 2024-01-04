@@ -241,39 +241,41 @@ export function UserProfile(props) {
   return (
     <ScreenWrapper>
       <Header backRequired title={'Back'} edit editHandler={() => setShowEditModal(true)} />
-
-      <View style={styles.profileCon}>
-        <Image
-          source={
-            data?.profilePhoto == null || data?.profilePhoto == ''
-              ? userImage
-              : { uri: data?.profilePhoto }
-          }
-          style={styles.lovingStyle}
-        />
-        <View style={{ paddingHorizontal: moderateScale(10) }}>
-          <Text style={styles.angelaText}>{data?.firstName ? data?.firstName : 'Unknown'}</Text>
-          <Spacer space={SH(5)} />
-          <View style={styles.flexAlign}>
-            <Image source={Phone_light} style={styles.Phonelight} />
-            <Text style={styles.adressText}>{data?.phoneNumber}</Text>
-          </View>
-          <Spacer space={SH(5)} />
-          <View style={styles.flexAlign}>
-            <Image source={email} style={styles.Phonelight} />
-            <Text style={styles.adressText}>{data?.userEmail}</Text>
-          </View>
-          <Spacer space={SH(5)} />
-          <View style={styles.flexAlign}>
-            <Image source={location} style={styles.Phonelight} />
-            {userDetail?.user_details?.current_address ? (
-              <Text style={styles.adressText} numberOfLines={1}>
-                {data?.streetAdd} {data?.city} {data?.state} {data?.country} {data?.postalCode}
-              </Text>
-            ) : null}
+      {user_details && (
+        <View style={styles.profileCon}>
+          <Image
+            source={
+              data?.profilePhoto == null || data?.profilePhoto == ''
+                ? userImage
+                : { uri: data?.profilePhoto }
+            }
+            style={styles.lovingStyle}
+          />
+          <View style={{ paddingHorizontal: moderateScale(10) }}>
+            <Text style={styles.angelaText}>{data?.firstName ? data?.firstName : 'Unknown'}</Text>
+            <Spacer space={SH(5)} />
+            <View style={styles.flexAlign}>
+              <Image source={Phone_light} style={styles.Phonelight} />
+              <Text style={styles.adressText}>{data?.phoneNumber}</Text>
+            </View>
+            <Spacer space={SH(5)} />
+            <View style={styles.flexAlign}>
+              <Image source={email} style={styles.Phonelight} />
+              <Text style={styles.adressText}>{data?.userEmail}</Text>
+            </View>
+            <Spacer space={SH(5)} />
+            <View style={styles.flexAlign}>
+              <Image source={location} style={styles.Phonelight} />
+              {userDetail?.user_details?.current_address ? (
+                <Text style={styles.adressText} numberOfLines={1}>
+                  {data?.streetAdd} {data?.city} {data?.state} {data?.country} {data?.postalCode}
+                </Text>
+              ) : null}
+            </View>
           </View>
         </View>
-      </View>
+      )}
+
       <View style={styles.searchContainer}>
         <View style={{ flex: 1 }}>
           <TouchableOpacity
