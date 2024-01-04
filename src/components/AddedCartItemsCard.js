@@ -7,6 +7,7 @@ import moment from 'moment';
 import { amountFormat } from '@/utils/GlobalMethods';
 
 const AddedCartItemsCard = ({ item, index }) => {
+  console.log('item', JSON.stringify(item));
   const productSize = item?.product_details?.supply?.attributes?.filter(
     (item) => item?.name === 'Size'
   );
@@ -18,6 +19,8 @@ const AddedCartItemsCard = ({ item, index }) => {
   const bookingDateTime = `${moment.utc(item?.date).format('DD/MM/YYYY')} @ ${item?.start_time}-${
     item?.end_time
   }`;
+
+  const suppliesPrice = item?.product_details?.supply?.supply_prices;
 
   return (
     <View style={styles.container}>
@@ -52,9 +55,13 @@ const AddedCartItemsCard = ({ item, index }) => {
       </View>
       <View style={{ width: '24%', alignItems: 'flex-end' }}>
         <Text style={styles.priceTitle} numberOfLines={1}>
-          {item?.product_details?.supply?.supply_prices?.offer_price
+          {suppliesPrice?.offer_applicable_qty == item?.qty
             ? amountFormat(item?.product_details?.supply?.supply_prices?.offer_price)
-            : amountFormat(item?.product_details?.supply?.supply_prices?.selling_price)}
+            : amountFormat(item?.product_details?.supply?.supply_prices?.actual_price)}
+
+          {/* {item?.product_details?.supply?.supply_prices?.offer_price
+            ? amountFormat(item?.product_details?.supply?.supply_prices?.offer_price)
+            : amountFormat(item?.product_details?.supply?.supply_prices?.selling_price)} */}
         </Text>
       </View>
     </View>

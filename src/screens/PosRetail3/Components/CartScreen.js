@@ -67,7 +67,7 @@ export function CartScreen({
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const availableOfferArray = getRetailData?.availableOffer?.data;
   // console.log('availableOfferArray', JSON.stringify(availableOfferArray));
-  console.log('getRetailData?.getAllCart', JSON.stringify(getRetailData?.getAllCart));
+  // console.log('getRetailData?.getAllCart', JSON.stringify(getRetailData?.getAllCart));
   const [cartSearch, setCartSearch] = useState('');
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
@@ -208,18 +208,25 @@ export function CartScreen({
     const percentageValue = (percentage / 100) * parseFloat(value);
     return percentageValue.toFixed(2) ?? 0.0;
   }
-  const updateQuantity = (cartId, productId, operation, index) => {
+  const updateQuantity = (cartId, productId, operation, index, suppliesPrice) => {
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
+    const productQty = operation === '+' ? product.qty + 1 : product.qty - 1;
     const restProductQty = product?.product_details?.supply?.rest_quantity;
     // const productPrice = product.product_details.price;
+    // const productPrice =
+    //   suppliesPrice?.offer_applicable_qty !== productQty
+    //     ? product.product_details?.supply?.supply_prices?.selling_price
+    //     : product.product_details?.supply?.supply_prices?.offer_price;
     const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
-    console.log('------', restProductQty, productPrice);
+    const offerPrice = product.product_details?.supply?.supply_prices?.offer_price;
+    console.log('------', productPrice, offerPrice, productQty);
 
     if (operation === '+') {
-      if (restProductQty > product.qty) {
+      if (restProductQty > productQty) {
         product.qty += 1;
         arr.amount.total_amount += productPrice;
+
         arr.amount.products_price += productPrice;
         const totalAmount = arr.amount.products_price;
         const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
@@ -425,23 +432,19 @@ export function CartScreen({
                                     keyboardType="numeric"
                                   />
                                 ) : (
-                                  // data?.product_details?.supply?.offer?.offer_price_per_pack &&
-                                  //   data?.product_details?.supply?.supply_prices?.selling_price ? (
-                                  //   <Text numberOfLines={1} style={styles.productPrice}>
-                                  //     {amountFormat(
-                                  //       data?.product_details?.supply?.offer?.offer_price_per_pack
-                                  //     )}
-                                  //   </Text>
-                                  // ) : (
-                                  //   <Text numberOfLines={1} style={styles.productPrice}>
-                                  //     {amountFormat(
-                                  //       data?.product_details?.supply?.supply_prices?.selling_price
-                                  //     )}
-                                  //   </Text>
-                                  // )
-
                                   <Text numberOfLines={1} style={styles.productPrice}>
-                                    {suppliesPrice?.selling_price &&
+                                    {suppliesPrice?.actual_price &&
+                                    suppliesPrice?.offer_price &&
+                                    suppliesPrice?.offer_applicable_qty !== data?.qty
+                                      ? 'aaa' + amountFormat(suppliesPrice?.actual_price)
+                                      : suppliesPrice?.actual_price &&
+                                        suppliesPrice?.offer_price &&
+                                        suppliesPrice?.offer_applicable_qty == data?.qty
+                                      ? 'bbb' + amountFormat(suppliesPrice?.offer_price)
+                                      : suppliesPrice?.actual_price && suppliesPrice?.offer_price
+                                      ? 'ccc' + amountFormat(suppliesPrice?.offer_price)
+                                      : 'ddd' + amountFormat(suppliesPrice?.actual_price)}
+                                    {/* {suppliesPrice?.selling_price &&
                                     suppliesPrice?.offer_price &&
                                     suppliesPrice?.offer_applicable_qty != data?.qty
                                       ? amountFormat(suppliesPrice?.selling_price)
@@ -449,7 +452,7 @@ export function CartScreen({
                                         suppliesPrice?.offer_price &&
                                         suppliesPrice?.offer_applicable_qty == data?.qty
                                       ? amountFormat(suppliesPrice?.offer_price)
-                                      : amountFormat(suppliesPrice?.selling_price)}
+                                      : amountFormat(suppliesPrice?.selling_price)} */}
                                     {/* {suppliesPrice?.selling_price &&
                                     suppliesPrice?.offer_price &&
                                     suppliesPrice?.offer_applicable_qty < 1
@@ -468,7 +471,9 @@ export function CartScreen({
                                       width: ms(10),
                                       alignItems: 'center',
                                     }}
-                                    onPress={() => updateQuantity(item?.id, data?.id, '-', ind)}
+                                    onPress={() =>
+                                      updateQuantity(item?.id, data?.id, '-', ind, suppliesPrice)
+                                    }
                                     disabled={data.qty == 1 ? true : false}
                                   >
                                     <Image source={minus} style={styles.minus} />
@@ -482,7 +487,9 @@ export function CartScreen({
                                       width: ms(10),
                                       alignItems: 'center',
                                     }}
-                                    onPress={() => updateQuantity(item?.id, data?.id, '+', ind)}
+                                    onPress={() =>
+                                      updateQuantity(item?.id, data?.id, '+', ind, suppliesPrice)
+                                    }
                                   >
                                     <Image source={plus} style={styles.minus} />
                                   </TouchableOpacity>
@@ -490,7 +497,18 @@ export function CartScreen({
                               </View>
                               <View style={styles.productCartBody}>
                                 <Text style={styles.blueListDataText}>
-                                  {suppliesPrice?.selling_price &&
+                                  {suppliesPrice?.actual_price &&
+                                  suppliesPrice?.offer_price &&
+                                  suppliesPrice?.offer_applicable_qty != data?.qty
+                                    ? 'aaa' + amountFormat(suppliesPrice?.actual_price * data?.qty)
+                                    : suppliesPrice?.actual_price &&
+                                      suppliesPrice?.offer_price &&
+                                      suppliesPrice?.offer_applicable_qty == data?.qty
+                                    ? 'bbb' + amountFormat(suppliesPrice?.offer_price)
+                                    : suppliesPrice?.actual_price && suppliesPrice?.offer_price
+                                    ? 'ccc' + amountFormat(suppliesPrice?.offer_price * data?.qty)
+                                    : 'ddd' + amountFormat(suppliesPrice?.actual_price * data?.qty)}
+                                  {/* {suppliesPrice?.selling_price &&
                                   suppliesPrice?.offer_price &&
                                   suppliesPrice?.offer_applicable_qty != data?.qty
                                     ? amountFormat(suppliesPrice?.selling_price * data?.qty)
@@ -501,7 +519,7 @@ export function CartScreen({
                                         suppliesPrice?.offer_price *
                                           (suppliesPrice?.offer_applicable_qty > 1 ? 1 : data?.qty)
                                       )
-                                    : amountFormat(suppliesPrice?.selling_price * data?.qty)}
+                                    : amountFormat(suppliesPrice?.selling_price * data?.qty)} */}
 
                                   {/* {suppliesPrice?.selling_price &&
                                   suppliesPrice?.offer_price &&
