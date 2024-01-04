@@ -237,12 +237,12 @@ export function CartScreen({
       }
       // Update total_amount including tax
     } else if (operation === '-') {
-      if (product.qty > 0) {
-        if (product.qty === 1) {
+      if (productQty > 0) {
+        if (productQty === 1) {
           arr?.poscart_products.splice(index, 1);
           dispatch(updateCartLength(CART_LENGTH - 1));
         }
-        product.qty -= 1;
+        productQty -= 1;
 
         arr.amount.products_price -= productPrice;
         const totalAmount = arr.amount.products_price;
@@ -436,14 +436,14 @@ export function CartScreen({
                                     {suppliesPrice?.actual_price &&
                                     suppliesPrice?.offer_price &&
                                     suppliesPrice?.offer_applicable_qty !== data?.qty
-                                      ? 'aaa' + amountFormat(suppliesPrice?.actual_price)
+                                      ? amountFormat(suppliesPrice?.actual_price)
                                       : suppliesPrice?.actual_price &&
                                         suppliesPrice?.offer_price &&
                                         suppliesPrice?.offer_applicable_qty == data?.qty
-                                      ? 'bbb' + amountFormat(suppliesPrice?.offer_price)
+                                      ? amountFormat(suppliesPrice?.offer_price)
                                       : suppliesPrice?.actual_price && suppliesPrice?.offer_price
-                                      ? 'ccc' + amountFormat(suppliesPrice?.offer_price)
-                                      : 'ddd' + amountFormat(suppliesPrice?.actual_price)}
+                                      ? amountFormat(suppliesPrice?.offer_price)
+                                      : amountFormat(suppliesPrice?.actual_price)}
                                     {/* {suppliesPrice?.selling_price &&
                                     suppliesPrice?.offer_price &&
                                     suppliesPrice?.offer_applicable_qty != data?.qty
@@ -500,14 +500,14 @@ export function CartScreen({
                                   {suppliesPrice?.actual_price &&
                                   suppliesPrice?.offer_price &&
                                   suppliesPrice?.offer_applicable_qty != data?.qty
-                                    ? 'aaa' + amountFormat(suppliesPrice?.actual_price * data?.qty)
+                                    ? amountFormat(suppliesPrice?.actual_price * data?.qty)
                                     : suppliesPrice?.actual_price &&
                                       suppliesPrice?.offer_price &&
                                       suppliesPrice?.offer_applicable_qty == data?.qty
-                                    ? 'bbb' + amountFormat(suppliesPrice?.offer_price)
+                                    ? amountFormat(suppliesPrice?.offer_price)
                                     : suppliesPrice?.actual_price && suppliesPrice?.offer_price
-                                    ? 'ccc' + amountFormat(suppliesPrice?.offer_price * data?.qty)
-                                    : 'ddd' + amountFormat(suppliesPrice?.actual_price * data?.qty)}
+                                    ? amountFormat(suppliesPrice?.offer_price * data?.qty)
+                                    : amountFormat(suppliesPrice?.actual_price * data?.qty)}
                                   {/* {suppliesPrice?.selling_price &&
                                   suppliesPrice?.offer_price &&
                                   suppliesPrice?.offer_applicable_qty != data?.qty
