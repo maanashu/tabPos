@@ -25,7 +25,11 @@ import {
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 
 import styles from '../ShippingOrder2.styles';
-import { formattedReturnPrice, formattedReturnPriceWithoutSign } from '@/utils/GlobalMethods';
+import {
+  amountFormat,
+  formattedReturnPrice,
+  formattedReturnPriceWithoutSign,
+} from '@/utils/GlobalMethods';
 
 const OrderDetail = ({
   openShippingOrders,
@@ -451,7 +455,7 @@ const OrderDetail = ({
                 {strings.deliveryOrders.subTotal}
               </Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
-                ${Number(userDetail?.actual_amount)?.toFixed(2) ?? '0.00'}
+                ${amountFormat(Number(userDetail?.actual_amount)?.toFixed(2) ?? '0.00', true)}
               </Text>
             </View>
 
@@ -471,7 +475,7 @@ const OrderDetail = ({
                 {strings.deliveryOrders.tips}
               </Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
-                ${Number(userDetail?.tips)?.toFixed(2) ?? '0.00'}
+                ${amountFormat(Number(userDetail?.tips)?.toFixed(2) ?? '0.00', true)}
               </Text>
             </View>
 
@@ -480,7 +484,7 @@ const OrderDetail = ({
                 {strings.deliveryOrders.tax}
               </Text>
               <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
-                ${Number(userDetail?.tax)?.toFixed(2) ?? '0.00'}
+                ${amountFormat(Number(userDetail?.tax)?.toFixed(2) ?? '0.00', true)}
               </Text>
             </View>
             {userDetail?.shipping_charge !== '0' && (
@@ -489,7 +493,7 @@ const OrderDetail = ({
                   {strings.deliveryOrders.shippingCharges}
                 </Text>
                 <Text style={[styles.totalTextStyle, { paddingTop: 0, color: COLORS.navy_blue }]}>
-                  ${Number(userDetail?.shipping_charge)?.toFixed(2)}
+                  ${amountFormat(Number(userDetail?.shipping_charge)?.toFixed(2), true)}
                 </Text>
               </View>
             )}

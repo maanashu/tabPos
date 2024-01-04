@@ -39,6 +39,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/DeliveringOrderTypes';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import moment from 'moment';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function Delivery() {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ export function Delivery() {
   const [selectedStatus, setSelectedStatus] = useState('0');
   const [isStatusDrawer, setIsStatusDrawer] = useState(false);
 
-  useFocusEffect(React.useCallback(() => {}, []));
+  // useFocusEffect(React.useCallback(() => {}, []));
 
   React.useEffect(() => {
     dispatch(todayOrders());
@@ -66,7 +67,6 @@ export function Delivery() {
   }, []);
 
   const renderOrderItem = ({ item, index }) => {
-    console.log('iurieure', item);
     const deliveryDate =
       item?.delivery_option == '3'
         ? moment.utc(item?.created_at).format('DD MMM YYYY')
@@ -87,7 +87,10 @@ export function Delivery() {
         }
       >
         <View style={{ flex: 0.4 }}>
-          <Text style={styles.deliveryOrderTextStyle}>{`${item?.user_details?.firstname}`}</Text>
+          <Text style={styles.deliveryOrderTextStyle}>
+            {/* {`${item?.user_details?.firstname}`} */}
+            {`${item?.user_details?.firstname == null ? '' : item?.user_details?.firstname}`}
+          </Text>
 
           <View style={styles.itemAndPaymentView}>
             <Image
@@ -109,7 +112,10 @@ export function Delivery() {
 
           <View style={styles.itemAndPaymentView}>
             <Image source={Images.pay} style={styles.payIconStyle} />
-            <Text style={styles.priceTextStyle}>{`$${item?.actual_amount}`}</Text>
+            <Text style={styles.priceTextStyle}>{`$${amountFormat(
+              item?.actual_amount,
+              true
+            )}`}</Text>
           </View>
         </View>
 
@@ -121,7 +127,10 @@ export function Delivery() {
               source={Images.clockIcon}
               style={[styles.payIconStyle, { tintColor: COLORS.primary }]}
             />
-            <Text style={styles.priceTextStyle}>{`$${item?.payable_amount}`}</Text>
+            <Text style={styles.priceTextStyle}>{`$${amountFormat(
+              item?.payable_amount,
+              true
+            )}`}</Text>
           </View>
         </View>
 

@@ -17,6 +17,7 @@ export class DeliveryController {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL + ApiOrderInventory.getOrderCount + `?seller_id=${sellerID}&delivery_option=1,3`;
+
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -39,7 +40,9 @@ export class DeliveryController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerID}&delivery_option=1,3`;
+        `?status=${status}&seller_id=${sellerID}&delivery_option=1,3&need_walkin=false`;
+      console.log('endoiiuntttt', endpoint);
+
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

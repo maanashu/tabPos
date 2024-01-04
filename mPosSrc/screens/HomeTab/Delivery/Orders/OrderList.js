@@ -56,7 +56,9 @@ export function OrderList(props) {
         style={[styles.orderItemViewStyle, { marginHorizontal: ms(15) }]}
       >
         <View style={{ flex: 0.35 }}>
-          <Text style={styles.deliveryOrderTextStyle}>{`${item?.user_details?.firstname}`}</Text>
+          <Text style={styles.deliveryOrderTextStyle}>
+            {`${item?.user_details?.firstname == null ? '' : item?.user_details?.firstname}`}
+          </Text>
 
           <View style={styles.itemAndPaymentView}>
             <Image

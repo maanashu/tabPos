@@ -247,6 +247,7 @@ export const acceptOrder = (data, openShippingOrders, delivery, callback) => asy
     dispatch(getPendingOrders());
   } catch (error) {
     dispatch(acceptOrderError(error.message));
+    return error;
   }
 };
 

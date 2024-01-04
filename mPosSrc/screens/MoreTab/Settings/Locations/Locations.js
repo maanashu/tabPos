@@ -46,7 +46,22 @@ export function Locations() {
         <Image source={Images.store} resizeMode="contain" style={styles.storeIcon} />
         <View style={{ marginLeft: ms(10), flex: 1 }}>
           <Text style={styles.addressTypeText}>{item?.address_type?.toUpperCase()}</Text>
-          <Text style={styles.addressText}>{item?.formatted_address}</Text>
+          {/* <Text style={styles.addressText}>
+            {item?.formatted_address}
+            {'\n'}
+            {item?.street_address}
+          </Text> */}
+          <Text numberOfLines={2} style={styles.addressText}>
+            {item?.formatted_address ? (
+              <>
+                {item.formatted_address}
+                {'\n'}
+                {item.street_address}
+              </>
+            ) : (
+              item.street_address
+            )}
+          </Text>
         </View>
         <TouchableOpacity
           onPress={() => changeLocationStatus(item?.id, item?.is_active)}
