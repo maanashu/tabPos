@@ -188,7 +188,6 @@ export function ShippingOrderDetail(props) {
 
   const checkOtherOrder = () => {
     const statusData = shippingData?.orderStatus;
-    console.log('SDfsdfsdf', JSON.stringify(statusData));
 
     var index = 0;
     if (statusData[0].count > 0) {
@@ -217,7 +216,6 @@ export function ShippingOrderDetail(props) {
         index = 6;
       }
     }
-    console.log('indec-----------------', index);
     dispatch(orderStatusCount());
     dispatch(getOrders(index));
     dispatch(getReviewDefault(index));
