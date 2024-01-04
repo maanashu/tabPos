@@ -277,7 +277,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
   const applyRefundHandler = () => {
     if (applicableIsCheck || applyEachItem) {
-      if (applicableIsCheck && !amount) {
+      if (applicableIsCheck && amount == '') {
         alert('Please add refund amount');
       } else if (applyEachItem) {
         const hasCheckedItem = orders?.every((item) => item?.refundAmount !== 0);
@@ -480,15 +480,22 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                         const isPercentageLabel =
                           selectType === strings.returnOrder.percentageLabel;
 
-                        const updatedDataArray = orders.map((item) => ({
-                          ...item,
-                          refundAmount: isPercentageLabel
-                            ? (item.price * parseFloat(text)) / 100
-                            : parseFloat(text),
-                          totalRefundAmount: isPercentageLabel
-                            ? (item.price * parseFloat(text) * item.qty) / 100
-                            : parseFloat(text) * item.qty,
-                        }));
+                        const updatedDataArray = orders?.map((item) => {
+                          let newPrice = isPercentageLabel
+                            ? (text * item.price) / 100
+                            : parseFloat(text);
+
+                          // Check if the entered price is less than the current item price
+                          if (newPrice >= parseFloat(item.price)) {
+                            newPrice = parseFloat(item.price); // Retain the current item price
+                          }
+
+                          return {
+                            ...item,
+                            refundAmount: newPrice,
+                            totalRefundAmount: newPrice * item.qty,
+                          };
+                        });
 
                         setOrders(updatedDataArray);
                         setButtonText('Apply Refund');
@@ -766,11 +773,17 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
               <TouchableOpacity
                 onPress={() => {
-                  if (finalOrder?.order?.order_type === 'service') {
-                    setIsCheckConfirmationModalVisible(false);
-                    getOrdersDetail();
+                  if (applicableIsCheck && amount == '') {
+                    alert('Please enter the refund amount');
+                  } else if ((applicableIsCheck || applyEachItem) && buttonText == 'Apply Refund') {
+                    alert('Please apply refund');
                   } else {
-                    setIsCheckConfirmationModalVisible(true);
+                    if (finalOrder?.order?.order_type === 'service') {
+                      setIsCheckConfirmationModalVisible(false);
+                      getOrdersDetail();
+                    } else {
+                      setIsCheckConfirmationModalVisible(true);
+                    }
                   }
                 }}
                 disabled={orders?.length > 0 ? false : true}
