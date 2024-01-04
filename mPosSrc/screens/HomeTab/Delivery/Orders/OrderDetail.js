@@ -224,9 +224,9 @@ export function OrderDetail(props) {
                 />
 
                 <View style={{ paddingLeft: 10 }}>
-                  <Text
-                    style={styles.nameTextStyle}
-                  >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
+                  <Text style={styles.nameTextStyle}>
+                    {`${customerDetail?.firstname} ${customerDetail?.lastname}`}
+                  </Text>
                   <Text
                     style={styles.addressTextStyle}
                   >{`${customerDetail?.current_address?.street_address}\n${customerDetail?.current_address?.city}\n${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>

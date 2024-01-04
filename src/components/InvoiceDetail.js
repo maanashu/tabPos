@@ -94,7 +94,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
   const renderProductItem = ({ item, index }) => {
     const isBookingDateAvailable =
       singleOrderDetail?.appointments?.[0]?.date ||
-      singleOrderDetail?.appointments[0]?.start_time ||
+      singleOrderDetail?.appointments?.[0]?.start_time ||
       singleOrderDetail?.appointments?.[0]?.end_time;
     const bookingDateTime = `${moment
       .utc(singleOrderDetail?.appointments?.[0]?.date)

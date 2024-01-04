@@ -166,53 +166,58 @@ export function CommonOrderDetail(props) {
     <ScreenWrapper>
       <Header backRequired title={strings.profile.header} />
       <View style={styles.container}>
-        <View style={styles.userDetailView}>
-          <View style={{ flexDirection: 'row' }}>
-            <Image
-              source={
-                customerDetail?.profile_photo ? { uri: customerDetail?.profile_photo } : Images.user
-              }
-              style={styles.profileImageStyle}
-            />
+        {customerDetail && (
+          <View style={styles.userDetailView}>
+            <View style={{ flexDirection: 'row' }}>
+              <Image
+                source={
+                  customerDetail?.profile_photo
+                    ? { uri: customerDetail?.profile_photo }
+                    : Images.user
+                }
+                style={styles.profileImageStyle}
+              />
 
-            <View style={{ paddingLeft: 10 }}>
-              <Text
-                style={styles.nameTextStyle}
-              >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
-              <Text
-                style={styles.addressTextStyle}
-              >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+              <View style={{ paddingLeft: 10 }}>
+                <Text style={styles.nameTextStyle}>
+                  {`${customerDetail?.firstname} ${customerDetail?.lastname}`}
+                </Text>
+                <Text
+                  style={styles.addressTextStyle}
+                >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+              </View>
             </View>
-          </View>
 
-          {orderData?.delivery_option == '1' ||
-            (orderData?.delivery_option == '4' && (
-              <>
-                <Spacer space={SH(20)} />
-                <View style={styles.deliveryDetailsView}>
-                  <View style={{ flex: 0.35 }}>
-                    {orderData?.shipping_details ? (
-                      <Text style={styles.deliveryTypeText}>
-                        {orderData?.shipping_details?.title}
-                      </Text>
-                    ) : orderData?.shipping_details ? (
-                      <Text style={styles.deliveryTypeText}>
-                        {orderData?.delivery_details?.title}
-                      </Text>
-                    ) : null}
-                  </View>
-                  {orderData?.delivery_option == '1' && (
-                    <View style={styles.deliveryTimeViewStyle}>
-                      <Image source={Images.clockIcon} style={styles.clockImageStyle} />
-                      <Text
-                        style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
-                      >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
+            {orderData?.delivery_option == '1' ||
+              (orderData?.delivery_option == '4' && (
+                <>
+                  <Spacer space={SH(20)} />
+                  <View style={styles.deliveryDetailsView}>
+                    <View style={{ flex: 0.35 }}>
+                      {orderData?.shipping_details ? (
+                        <Text style={styles.deliveryTypeText}>
+                          {orderData?.shipping_details?.title}
+                        </Text>
+                      ) : orderData?.shipping_details ? (
+                        <Text style={styles.deliveryTypeText}>
+                          {orderData?.delivery_details?.title}
+                        </Text>
+                      ) : null}
                     </View>
-                  )}
-                </View>
-              </>
-            ))}
-        </View>
+                    {orderData?.delivery_option == '1' && (
+                      <View style={styles.deliveryTimeViewStyle}>
+                        <Image source={Images.clockIcon} style={styles.clockImageStyle} />
+                        <Text
+                          style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
+                        >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
+                      </View>
+                    )}
+                  </View>
+                </>
+              ))}
+          </View>
+        )}
+
         <Spacer space={SH(10)} />
         {orderData?.delivery_option == '1' ||
           (orderData?.delivery_option == '4' && (

@@ -41,7 +41,7 @@ const InvoiceDetails = ({
   const renderProductItem = ({ item, index }) => {
     const isBookingDateAvailable =
       orderDetail?.appointments?.[0]?.date ||
-      orderDetail?.appointments[0]?.start_time ||
+      orderDetail?.appointments?.[0]?.start_time ||
       orderDetail?.appointments?.[0]?.end_time;
     const bookingDateTime = `${moment
       .utc(orderDetail?.appointments?.[0]?.date)
