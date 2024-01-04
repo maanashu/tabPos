@@ -206,9 +206,9 @@ export function OrderDetail(props) {
         title={strings.profile.header}
         rightIconOnpress={() => setIsStatusDrawer(true)}
       />
-      {orders.length > 0 ? (
+      {orders?.length > 0 ? (
         <>
-          {orders.length > 0 && customerDetail !== null && (
+          {orders?.length > 0 && customerDetail !== null && (
             <View style={styles.userDetailView}>
               <View style={{ flexDirection: 'row' }}>
                 <Image
