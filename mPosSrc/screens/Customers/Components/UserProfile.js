@@ -55,6 +55,7 @@ import Modal from 'react-native-modal';
 import CountryPicker from 'react-native-country-picker-modal';
 import { strings } from '@mPOS/localization';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function UserProfile(props) {
   const dispatch = useDispatch();
@@ -414,7 +415,11 @@ export function UserProfile(props) {
 
                         <View style={styles.profileheaderChildView}>
                           <Text style={styles.tableTextData} numberOfLines={1}>
-                            ${item?.payable_amount}
+                            {item?.payable_amount
+                              ? item?.payable_amount < 0
+                                ? '-$' + amountFormat(Math.abs(item?.payable_amount), 'notSign')
+                                : amountFormat(item?.payable_amount)
+                              : '$0'}
                           </Text>
                         </View>
                       </View>

@@ -104,10 +104,16 @@ export function TotalDeliveryOrders({ onPressReview }) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.count}</Text>
+        <Text style={styles.revenueDataText}>{item?.count ? numberFormate(item?.count) : 0}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.averageValue.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.averageValue
+            ? item?.averageValue < 0
+              ? '-$' + amountFormat(Math.abs(item?.averageValue), 'notSign')
+              : amountFormat(item?.averageValue)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
@@ -116,7 +122,13 @@ export function TotalDeliveryOrders({ onPressReview }) {
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText2}>
+          {item?.amount
+            ? item?.amount < 0
+              ? '-$' + amountFormat(Math.abs(item?.amount), 'notSign')
+              : amountFormat(item?.amount)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
@@ -211,7 +223,13 @@ export function TotalDeliveryOrders({ onPressReview }) {
           text={'Total Revenue'}
           count={
             deliveryGraph?.ordersOverView?.total_sales_or_actual_amount
-              ? '$' + deliveryGraph?.ordersOverView?.total_sales_or_actual_amount?.toFixed(2)
+              ? deliveryGraph?.ordersOverView?.total_sales_or_actual_amount < 0
+                ? '-$' +
+                  amountFormat(
+                    Math.abs(deliveryGraph?.ordersOverView?.total_sales_or_actual_amount),
+                    'notSign'
+                  )
+                : amountFormat(deliveryGraph?.ordersOverView?.total_sales_or_actual_amount)
               : '$0'
           }
           isLoading={isAnalyticOrderGraphLoading}

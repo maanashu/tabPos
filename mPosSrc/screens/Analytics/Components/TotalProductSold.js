@@ -21,6 +21,7 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getSoldProduct } from '@/actions/AnalyticsAction';
+import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 export function TotalProductSold({ sellerID, data }) {
   const dispatch = useDispatch();
@@ -66,13 +67,21 @@ export function TotalProductSold({ sellerID, data }) {
         <Text style={styles.revenueDataText}>{item?.product_upc}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.total_price}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.total_price
+            ? item?.total_price < 0
+              ? '-$' + amountFormat(Math.abs(item?.total_price), 'notSign')
+              : amountFormat(item?.total_price)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
         {/* <Text style={styles.revenueDataText}>{item?.order?.total_items}</Text> */}
 
-        <Text style={styles.revenueDataText}>{item?.in_stock_qty}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.in_stock_qty ? numberFormate(item?.in_stock_qty) : 0}
+        </Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -113,7 +122,7 @@ export function TotalProductSold({ sellerID, data }) {
           text={'Unit Sold'}
           count={
             soldProduct?.productOverview?.totalProducts
-              ? soldProduct?.productOverview?.totalProducts
+              ? numberFormate(soldProduct?.productOverview?.totalProducts)
               : 0
           }
           style={{ marginHorizontal: ms(5) }}
@@ -124,7 +133,7 @@ export function TotalProductSold({ sellerID, data }) {
           text={'Total Volume'}
           count={
             soldProduct?.productOverview?.totalVolume
-              ? '$' + soldProduct?.productOverview?.totalVolume?.toFixed(2)
+              ? amountFormat(soldProduct?.productOverview?.totalVolume)
               : '$0'
           }
           isLoading={isSoldProductLoading}
@@ -134,7 +143,7 @@ export function TotalProductSold({ sellerID, data }) {
           text={'Profit Margin'}
           count={
             soldProduct?.productOverview?.totalMargin
-              ? soldProduct?.productOverview?.totalMargin?.toFixed(2) + '%'
+              ? numberFormate(soldProduct?.productOverview?.totalMargin) + '%'
               : '$0'
           }
           isLoading={isSoldProductLoading}
@@ -144,7 +153,7 @@ export function TotalProductSold({ sellerID, data }) {
           text={'Gross Profit'}
           count={
             soldProduct?.productOverview?.totalProfit
-              ? '$' + soldProduct?.productOverview?.totalProfit?.toFixed(2)
+              ? amountFormat(soldProduct?.productOverview?.totalProfit)
               : '$0'
           }
           isLoading={isSoldProductLoading}
