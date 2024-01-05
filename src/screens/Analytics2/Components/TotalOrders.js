@@ -31,6 +31,7 @@ import { ms } from 'react-native-size-matters';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { height } from '@/theme/ScalerDimensions';
+import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 export function TotalOrders({ onPressReview }) {
   const getAnalyticsData = useSelector(getAnalytics);
@@ -66,10 +67,16 @@ export function TotalOrders({ onPressReview }) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.total_orders}</Text>
+        <Text style={styles.revenueDataText}>{item?.count ? numberFormate(item?.count) : 0}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.new_consumer}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.new_consumer
+            ? item?.new_consumer < 0
+              ? '-$' + amountFormat(Math.abs(item?.new_consumer), 'notSign')
+              : amountFormat(item?.new_consumer)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>{item?.consumer_returning}</Text>
@@ -78,8 +85,8 @@ export function TotalOrders({ onPressReview }) {
         <Text style={styles.revenueDataText2}>
           {item?.amount
             ? item?.amount < 0
-              ? '-$' + Math.abs(item?.amount)?.toFixed(2)
-              : '$' + item?.amount?.toFixed(2)
+              ? '-$' + amountFormat(Math.abs(item?.amount), 'notSign')
+              : amountFormat(item?.amount)
             : '$0'}
         </Text>
       </DataTable.Cell>
@@ -139,7 +146,11 @@ export function TotalOrders({ onPressReview }) {
         <HeaderView
           image={total_orders}
           text={'Total Orders'}
-          count={totalOrder?.ordersOverView?.total_orders}
+          count={
+            totalOrder?.ordersOverView?.total_orders
+              ? numberFormate(totalOrder?.ordersOverView?.total_orders)
+              : 0
+          }
           style={{ marginHorizontal: ms(5) }}
           isLoading={isTotalOrderLoading}
         />
@@ -149,8 +160,8 @@ export function TotalOrders({ onPressReview }) {
           count={
             totalOrder?.ordersOverView?.total_volume
               ? totalOrder?.ordersOverView?.total_volume < 0
-                ? '-$' + Math.abs(totalOrder?.ordersOverView?.total_volume)?.toFixed(2)
-                : '$' + totalOrder?.ordersOverView?.total_volume?.toFixed(2)
+                ? '-$' + amountFormat(Math.abs(totalOrder?.ordersOverView?.total_volume), 'notSign')
+                : amountFormat(totalOrder?.ordersOverView?.total_volume)
               : '$0'
           }
           isLoading={isTotalOrderLoading}
@@ -161,8 +172,8 @@ export function TotalOrders({ onPressReview }) {
           count={
             totalOrder?.ordersOverView?.averageValue
               ? totalOrder?.ordersOverView?.averageValue < 0
-                ? '-$' + Math.abs(totalOrder?.ordersOverView?.averageValue)?.toFixed(2)
-                : '$' + totalOrder?.ordersOverView?.averageValue?.toFixed(2)
+                ? '-$' + amountFormat(Math.abs(totalOrder?.ordersOverView?.averageValue), 'notSign')
+                : amountFormat(totalOrder?.ordersOverView?.averageValue)
               : '$0'
           }
           isLoading={isTotalOrderLoading}
@@ -173,8 +184,8 @@ export function TotalOrders({ onPressReview }) {
           count={
             totalOrder?.ordersOverView?.total_profit
               ? totalOrder?.ordersOverView?.total_profit < 0
-                ? '-$' + Math.abs(totalOrder?.ordersOverView?.total_profit)?.toFixed(2)
-                : '$' + totalOrder?.ordersOverView?.total_profit?.toFixed(2)
+                ? '-$' + amountFormat(Math.abs(totalOrder?.ordersOverView?.total_profit), 'notSign')
+                : amountFormat(totalOrder?.ordersOverView?.total_profit)
               : '$0'
           }
           isLoading={isTotalOrderLoading}

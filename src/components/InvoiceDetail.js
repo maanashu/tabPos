@@ -56,6 +56,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
     longitude: singleOrderDetail?.coordinates?.[1] ?? 0.0,
   };
 
+  console.log('first', singleOrderDetail);
   const invoiceData = [
     {
       title: 'Payment Option',
@@ -64,7 +65,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
     },
     {
       title: 'Date',
-      data: moment.utc(singleOrderDetail?.date).format('ddd MM/DD/YYYY'),
+      data: moment.utc(singleOrderDetail?.created_at).format('ddd MM/DD/YYYY'),
       id: 2,
     },
     {

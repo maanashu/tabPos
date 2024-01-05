@@ -52,6 +52,7 @@ import { debounce } from 'lodash';
 import CustomerListView from './CustomerListView';
 import { useCallback } from 'react';
 import { TYPES as Types } from '@/Types/AnalyticsTypes';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 const AllUsers = ({
   backHandler,
@@ -741,8 +742,11 @@ const AllUsers = ({
                           </View>
                           <View style={styles.tableHeaderRightInner}>
                             <Text style={styles.tableTextData} numberOfLines={1}>
-                              {'$'}
-                              {item?.life_time_spent?.toFixed(2)}
+                              {item?.life_time_spent
+                                ? item?.life_time_spent < 0
+                                  ? '-$' + amountFormat(Math.abs(item?.life_time_spent), 'notSign')
+                                  : amountFormat(item?.life_time_spent)
+                                : '$0'}
                             </Text>
                           </View>
                         </View>

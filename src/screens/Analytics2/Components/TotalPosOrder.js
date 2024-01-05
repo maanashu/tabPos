@@ -35,6 +35,7 @@ import { navigate } from '@/navigation/NavigationRef';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { height } from '@/theme/ScalerDimensions';
+import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -105,14 +106,14 @@ export function TotalPosOrder({ onPressReview }) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.count}</Text>
+        <Text style={styles.revenueDataText}>{item?.count ? numberFormate(item?.count) : 0}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
           {item?.averageValue
             ? item?.averageValue < 0
-              ? '-$' + Math.abs(item?.averageValue)?.toFixed(2)
-              : '$' + item?.averageValue?.toFixed(2)
+              ? '-$' + amountFormat(Math.abs(item?.averageValue), 'notSign')
+              : amountFormat(item?.averageValue)
             : '$0'}
         </Text>
       </DataTable.Cell>
@@ -126,8 +127,8 @@ export function TotalPosOrder({ onPressReview }) {
         <Text style={styles.revenueDataText2}>
           {item?.amount
             ? item?.amount < 0
-              ? '-$' + Math.abs(item?.amount)?.toFixed(2)
-              : '$' + item?.amount?.toFixed(2)
+              ? '-$' + amountFormat(Math.abs(item?.amount), 'notSign')
+              : amountFormat(item?.amount)
             : '$0'}
         </Text>
       </DataTable.Cell>
@@ -160,16 +161,6 @@ export function TotalPosOrder({ onPressReview }) {
     []
   );
 
-  const averageValue =
-    posGraph?.ordersOverView?.averageValue < 0
-      ? Math.abs(posGraph?.ordersOverView?.averageValue)
-      : posGraph?.ordersOverView?.averageValue;
-
-  const totalSalesValue =
-    posGraph?.ordersOverView?.total_sales_or_actual_amount < 0
-      ? Math.abs(posGraph?.ordersOverView?.total_sales_or_actual_amount)
-      : posGraph?.ordersOverView?.total_sales_or_actual_amount;
-
   return (
     <View
       style={{
@@ -198,7 +189,11 @@ export function TotalPosOrder({ onPressReview }) {
         <HeaderView
           image={total_orders}
           text={'Total Orders'}
-          count={posGraph?.ordersOverView?.total_orders}
+          count={
+            posGraph?.ordersOverView?.total_orders
+              ? numberFormate(posGraph?.ordersOverView?.total_orders)
+              : 0
+          }
           style={{ marginHorizontal: ms(5) }}
           isLoading={isAnalyticOrderGraphLoading}
         />
@@ -218,8 +213,8 @@ export function TotalPosOrder({ onPressReview }) {
           count={
             posGraph?.ordersOverView?.averageValue
               ? posGraph?.ordersOverView?.averageValue < 0
-                ? '-$' + averageValue?.toFixed(2)
-                : '$' + averageValue?.toFixed(2)
+                ? '-$' + amountFormat(Math.abs(posGraph?.ordersOverView?.averageValue), 'notSign')
+                : amountFormat(posGraph?.ordersOverView?.averageValue)
               : '$0'
           }
           isLoading={isAnalyticOrderGraphLoading}
@@ -230,8 +225,12 @@ export function TotalPosOrder({ onPressReview }) {
           count={
             posGraph?.ordersOverView?.total_sales_or_actual_amount
               ? posGraph?.ordersOverView?.total_sales_or_actual_amount < 0
-                ? '-$' + totalSalesValue?.toFixed(2)
-                : '$' + totalSalesValue?.toFixed(2)
+                ? '-$' +
+                  amountFormat(
+                    Math.abs(posGraph?.ordersOverView?.total_sales_or_actual_amount),
+                    'notSign'
+                  )
+                : amountFormat(posGraph?.ordersOverView?.total_sales_or_actual_amount)
               : '$0'
           }
           isLoading={isAnalyticOrderGraphLoading}
