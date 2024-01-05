@@ -87,8 +87,6 @@ export function DeliveryOrders2({ route }) {
   }
   const todayDate = moment.utc();
 
-  console.log('----------', screen);
-
   const mapRef = useRef(null);
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
@@ -131,53 +129,6 @@ export function DeliveryOrders2({ route }) {
   const [isMaximizeStatusView, SetIsMaximizeStatusView] = useState(false);
   const [pickupModalVisible, setPickupModalVisible] = useState(false);
 
-  // useEffect(() => {
-  //   if (ORDER_DATA) {
-  //     setOpenShippingOrders(ORDER_DATA?.status?.toString());
-  //     setOrderId(ORDER_DATA?.id);
-  //     dispatch(getReviewDefault(ORDER_DATA?.status));
-  //     setTrackingView(false);
-  //   }
-  // }, [ORDER_DATA]);
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     dispatch(getReviewDefault(0));
-  //     dispatch(getPendingOrders());
-  //     dispatch(todayOrders());
-  //     dispatch(deliOrder());
-  //     dispatch(getOrderCount());
-  //     dispatch(getOrderstatistics(1));
-  //     dispatch(getGraphOrders(1));
-  //     dispatch(getSellerDriverList());
-  //   }, [])
-  // );
-
-  // useEffect(() => {
-  //   if (screen) {
-  //     setViewAllOrder(false);
-  //     setTrackingView(false);
-  //     setChangeViewToRecheck(false);
-  //     dispatch(getReviewDefault(0));
-  //     dispatch(getOrderCount());
-  //     setOpenShippingOrders('0');
-  //   }
-  // }, [screen]);
-
-  // useEffect(() => {
-  //   setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
-  //   setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
-  //   dispatch(getOrderData(getDeliveryData?.getReviewDef?.[0]?.id));
-  //   setOrderId(getDeliveryData?.getReviewDef?.[0]?.id);
-  // }, [viewAllOrder && getOrderDetail === 'ViewAllScreen']);
-
-  // useEffect(() => {
-  //   setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
-  //   setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
-  //   dispatch(getOrderData(getDeliveryData?.getReviewDef?.[0]?.id));
-  //   setOrderId(getDeliveryData?.getReviewDef?.[0]?.id);
-  // }, [openShippingOrders, viewAllOrder, getDeliveryData?.getReviewDef]);
-  // Effect to handle changes in ORDER_DATA
   useEffect(() => {
     if (ORDER_DATA) {
       setOpenShippingOrders(ORDER_DATA?.status?.toString());
@@ -187,7 +138,6 @@ export function DeliveryOrders2({ route }) {
     }
   }, [ORDER_DATA]);
 
-  // Focus effect for initial data fetching
   useFocusEffect(
     React.useCallback(() => {
       dispatch(getReviewDefault(0));
@@ -201,7 +151,6 @@ export function DeliveryOrders2({ route }) {
     }, [])
   );
 
-  // Effect to handle changes in 'screen'
   useEffect(() => {
     if (screen) {
       setViewAllOrder(false);
@@ -213,7 +162,6 @@ export function DeliveryOrders2({ route }) {
     }
   }, [screen]);
 
-  // Function to update user and order details
   const updateDeliveryDetails = () => {
     setUserDetail(getDeliveryData?.getReviewDef?.[0] ?? []);
     setOrderDetail(getDeliveryData?.getReviewDef?.[0]?.order_details ?? []);
@@ -221,14 +169,12 @@ export function DeliveryOrders2({ route }) {
     setOrderId(getDeliveryData?.getReviewDef?.[0]?.id);
   };
 
-  // Effect to handle changes in 'viewAllOrder' and 'getOrderDetail'
   useEffect(() => {
     if (viewAllOrder && getOrderDetail === 'ViewAllScreen') {
       updateDeliveryDetails();
     }
   }, [viewAllOrder, getOrderDetail]);
 
-  // Effect to handle changes in 'openShippingOrders', 'viewAllOrder', and 'getDeliveryData'
   useEffect(() => {
     if (openShippingOrders || viewAllOrder || getDeliveryData?.getReviewDef) {
       updateDeliveryDetails();

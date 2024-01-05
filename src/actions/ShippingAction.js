@@ -215,7 +215,6 @@ export const getReviewDefault = (status) => async (dispatch) => {
     // dispatch(getPendingOrders());
     // dispatch(getShippingOrderstatistics());
   } catch (error) {
-    console.log('ERRORRR', JSON.stringify(error));
     if (error?.statusCode === 204) {
       dispatch(getReviewDefReset());
     }
