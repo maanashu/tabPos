@@ -152,12 +152,10 @@ export function TwoFactorLogin(props) {
       const data = {
         code: value,
       };
-      console.log('userResponse', userResponse);
       const authToken = userResponse?.token;
       // const verificationFunction = verifyGoogleCodeMPOS;
       const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
       const res = await verificationFunction(data, authToken)(dispatch);
-      console.log('resss', res);
       setIsLoading(false);
       if (res?.status_code === 201) {
         dispatch(loginPosUserSuccess(userResponse));
@@ -174,7 +172,6 @@ export function TwoFactorLogin(props) {
     setForgotPinScreen(true);
     const authToken = userResponse?.token;
     const res = await dispatch(forgot2fa(authToken));
-    console.log(res);
     if (res?.status_code == 200) {
       setVerificationId(res?.payload?.verification_id);
     }

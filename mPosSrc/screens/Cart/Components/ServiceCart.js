@@ -199,9 +199,7 @@ export function ServiceCart({ cartChangeHandler }) {
     finalPaymentRef.current?.present();
   };
 
-  const onRowDidOpen = (rowKey) => {
-    console.log('This row opened', rowKey);
-  };
+  const onRowDidOpen = (rowKey) => {};
 
   // hold product Function
   // const cartStatusHandler = () => {

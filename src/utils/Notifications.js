@@ -13,7 +13,7 @@ const requestPermission = async () => {
   if (settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED) {
     getDeviceToken();
   } else {
-    console.log('User declined permissions');
+    // console.log('User declined permissions');
   }
 };
 

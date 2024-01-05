@@ -41,11 +41,9 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=1,3&need_walkin=false`;
-      console.log('endoiiuntttt', endpoint);
 
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('Sfdssdf', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -206,11 +204,8 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrderstatistics +
         `?seller_id=${sellerID}&filter=week&delivery_option=${delivery}`;
-      console.log('endponrtretert', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('responsee', response);
-
           resolve(response);
         })
         .catch((error) => {

@@ -1417,7 +1417,6 @@ export class RetailController {
         `?app_name=pos&delivery_options=${
           data?.servicetype == 'product' ? '1,3,4' : '2'
         }&seller_id=${sellerID}&service_type=${data?.servicetype}`;
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1584,16 +1583,12 @@ export class RetailController {
 
         // product_type: 'service',
       };
-      console.log('endpoint', endpoint);
-      console.log('body', body);
-      HttpClient.post(endpoint, body)
 
+      HttpClient.post(endpoint, body)
         .then((response) => {
-          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
-          console.log('error', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',

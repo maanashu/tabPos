@@ -98,7 +98,7 @@ export function OrderDetail(props) {
         break;
       }
     }
-
+    setSelectedStatus(index.toString());
     dispatch(getReviewDefault(index));
   };
 
@@ -170,7 +170,6 @@ export function OrderDetail(props) {
     };
     dispatch(
       acceptOrder(data, orderData?.status, (res) => {
-        console.log('red=-=-=-=-=-', res);
         if (res?.msg) {
           goBack();
         }

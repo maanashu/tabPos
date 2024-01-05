@@ -237,10 +237,8 @@ export class ShippingController {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
         ORDER_URL + ApiOrderInventory.orderStatusCount + `?seller_id=${sellerID}&delivery_option=4`;
-      console.log('sellerID', sellerID);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('res[pomnswe', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

@@ -479,8 +479,6 @@ export const CartAmountPayBy = ({
       amount: (paymentShow() * 100).toFixed(0),
       wallletAdd: walletUser?.wallet_address,
     };
-    // console.log('amount', data);
-    // return;
 
     const res = await dispatch(requestMoney(data)).then((res) => {
       setRequestId(res?.payload?._id);

@@ -20,7 +20,6 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
         return strings.returnOrder.reservation;
     }
   };
-  console.log('hsdgfjsgdfj', orderData);
   return (
     <View style={styles.container}>
       <DataTable style={styles.tableView}>
