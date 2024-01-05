@@ -121,12 +121,22 @@ export function TotalInventory({ sellerID, data }) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting2}>
         <Text style={styles.revenueDataText}>
-          ${(item?.supplies[0]?.cost_price * item?.supplies[0]?.rest_quantity).toFixed(2)}
+          {item?.supplies[0]?.cost_price
+            ? item?.supplies[0]?.cost_price < 0
+              ? '-$' +
+                amountFormat(
+                  Math.abs(item?.supplies[0]?.cost_price * item?.supplies[0]?.rest_quantity),
+                  'notSign'
+                )
+              : amountFormat(item?.supplies[0]?.cost_price * item?.supplies[0]?.rest_quantity)
+            : '$0'}
         </Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting2}>
-        <Text style={styles.revenueDataText}>{item?.supplies[0]?.rest_quantity}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.supplies[0]?.rest_quantity ? numberFormate(item?.supplies[0]?.rest_quantity) : 0}
+        </Text>
       </DataTable.Cell>
 
       <DataTable.Cell style={styles.dateTableSetting2}>

@@ -40,7 +40,6 @@ export function Shipping() {
   const getSettingData = useSelector(getSetting);
   const shippingpickupData = getSettingData?.getShippingPickup ?? [];
   const filteredItems = shippingpickupData.filter((item) => item?.is_active === true);
-  // console.log('shiping data: ' + JSON.stringify(shippingpickupData));
 
   const convertShippinDataToArr = () => {
     let arr = [];

@@ -35,7 +35,6 @@ export const AddProductScreen = ({ backHandler }) => {
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
-  console.log('getRetailData?.getOneProduct', JSON.stringify(getRetailData?.getOneProduct));
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;

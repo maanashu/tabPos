@@ -104,10 +104,6 @@ export function Analytics() {
   const maxDate = new Date(2030, 6, 3);
 
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
-  const [invoiceDetail, setInvoiceDetail] = useState(false);
-  const [orderId, setOrderId] = useState(null);
-  const [appName, setAppName] = useState();
-  const [deliveryOption, setDeliveryOption] = useState();
 
   const handleOnPressNext = () => {
     // Perform actions when "Next" button is pressed
@@ -184,11 +180,6 @@ export function Analytics() {
     selectedScreen === 'MainScreen' ? goBack() : setselectedScreen('MainScreen');
   };
 
-  const onViewInvoiceDetail = async (orderId) => {
-    setFromInvoice(false);
-    setOrderId(orderId);
-    setInvoiceDetail(true);
-  };
   const showTransDetail = () => {
     if (startDate && endDate) {
       commonNavigate(MPOS_NAVIGATION.transactionList, {
@@ -272,39 +263,6 @@ export function Analytics() {
     ['TotalPosOrder']: <TotalPosOrder onPressReview={(item) => showTransDetail()} />,
     ['TotalInventory']: <TotalInventory />,
   };
-  const closeHandler = () => {
-    setFromInvoice(true);
-    setInvoiceDetail(false);
-  };
-  const transactionList = () => {
-    if (invoiceDetail) {
-      return (
-        <InvoiceDetail
-          {...{
-            mapRef,
-            closeHandler,
-            orderId,
-          }}
-        />
-      );
-    } else if (weeklyTransaction) {
-      return (
-        <WeeklyTransaction
-          backHandler={() => {
-            setFromInvoice(false);
-            setWeeklyTrasaction(false);
-          }}
-          orderClickHandler={(orderId) => {
-            onViewInvoiceDetail(orderId);
-          }}
-          selectTime={date}
-          FromInvoice={fromInVoice}
-          appName={appName}
-          deliveryOption={deliveryOption}
-        />
-      );
-    }
-  };
 
   const screenChangeView = () => {
     return renderScreen[selectedScreen];
@@ -312,139 +270,135 @@ export function Analytics() {
 
   return (
     <ScreenWrapper>
-      {weeklyTransaction ? (
-        transactionList()
-      ) : (
-        <View style={styles.container}>
-          <View style={styles.homeMainContainer}>
-            <TouchableOpacity onPress={() => goBackHandler()} style={styles.headerMainView}>
-              <Image source={Images.back} style={styles.backImage} />
-              <Text style={styles.headerText}>{headerTitle}</Text>
-            </TouchableOpacity>
+      <View style={styles.container}>
+        <View style={styles.homeMainContainer}>
+          <TouchableOpacity onPress={() => goBackHandler()} style={styles.headerMainView}>
+            <Image source={Images.back} style={styles.backImage} />
+            <Text style={styles.headerText}>{headerTitle}</Text>
+          </TouchableOpacity>
 
-            <View style={styles.flexDirectionRow}>
-              <View>
-                <Spacer space={ms(5)} />
-                <TouchableOpacity
-                  onPress={() => setShowCalendarModal(!showCalendarModal)}
-                  style={[
-                    styles.headerView,
-                    {
-                      borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
-                    },
-                  ]}
-                >
-                  <Image source={Images.calendar2} style={styles.calenderImage} />
-                  <Text style={styles.dateText}>
-                    {startDate
-                      ? dayjs(startDate).format('MMM D') +
-                        ' - ' +
-                        dayjs(endDate).format('MMM D, YYYY')
-                      : dateRange}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.calendarView}>
-                <DropDownPicker
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={Images.dropdown} style={styles.dropDownIcon} />
-                  )}
-                  open={channels}
-                  value={channelValue}
-                  items={channelItem}
-                  setOpen={setChannels}
-                  setValue={setChannelValue}
-                  setItems={setChannelItem}
-                  placeholder="All Channels"
-                  placeholderStyle={{
-                    color: '#A7A7A7',
-                    fontFamily: Fonts.Regular,
-                    fontSize: ms(10),
-                  }}
-                  zIndex={2000}
-                  zIndexInverse={2000}
-                  containerStyle={styles.containerStyle}
-                  style={styles.dropdown}
-                  arrowIconStyle={styles.arrowIconStyle}
-                  textStyle={{
-                    color: COLORS.white,
-                    fontFamily: Fonts.SemiBold,
-                    fontSize: ms(12),
-                  }}
-                  listItemLabelStyle={{ color: COLORS.black, fontFamily: Fonts.Regular }}
-                />
-              </View>
-              <View style={[styles.calendarView, { marginHorizontal: ms(5) }]}>
-                <DropDownPicker
-                  ArrowDownIconComponent={({ style }) => (
-                    <Image source={Images.dropdown} style={styles.dropDownIcon} />
-                  )}
-                  // style={[styles.dropdown]}
-                  // containerStyle={[
-                  //   styles.containerStyle,
-                  //   { zIndex: Platform.OS === 'ios' ? 100 : 2, width: ms(90) },
-                  // ]}
-                  open={time}
-                  value={timeValue}
-                  items={timeItem}
-                  setOpen={setTime}
-                  setValue={(value) => {
-                    setTimeValue(value);
-                    setSelectedStartDate('');
-                    setSelectedEndDate('');
-                  }}
-                  setItems={setTimeItem}
-                  placeholder="Weekly"
-                  placeholderStyle={{
-                    color: '#A7A7A7',
-                    fontFamily: Fonts.Regular,
-                    fontSize: ms(10),
-                  }}
-                  zIndex={2000}
-                  zIndexInverse={2000}
-                  containerStyle={[
-                    styles.containerStyle,
-                    { width: Platform.OS === 'android' ? ms(95) : ms(98) },
-                  ]}
-                  style={styles.dropdown}
-                  arrowIconStyle={styles.arrowIconStyle}
-                  textStyle={{
-                    color: COLORS.white,
-                    fontFamily: Fonts.SemiBold,
-                    fontSize: ms(12),
-                  }}
-                  listItemLabelStyle={{ color: COLORS.black, fontFamily: Fonts.Regular }}
-                />
-              </View>
+          <View style={styles.flexDirectionRow}>
+            <View>
+              <Spacer space={ms(5)} />
+              <TouchableOpacity
+                onPress={() => setShowCalendarModal(!showCalendarModal)}
+                style={[
+                  styles.headerView,
+                  {
+                    borderColor: selectedStartDate ? COLORS.primary : COLORS.gerySkies,
+                  },
+                ]}
+              >
+                <Image source={Images.calendar2} style={styles.calenderImage} />
+                <Text style={styles.dateText}>
+                  {startDate
+                    ? dayjs(startDate).format('MMM D') +
+                      ' - ' +
+                      dayjs(endDate).format('MMM D, YYYY')
+                    : dateRange}
+                </Text>
+              </TouchableOpacity>
             </View>
-            <Spacer space={ms(10)} />
 
-            <View style={[styles.flexDirectionRow, { zIndex: -999 }]}>
-              <View style={styles.container}>{screenChangeView()}</View>
-            </View>
-          </View>
-          <Modal
-            isVisible={showCalendarModal}
-            statusBarTranslucent
-            animationIn={'slideInRight'}
-            animationInTiming={600}
-            animationOutTiming={300}
-          >
-            <View style={styles.calendarModalView}>
-              <CalendarPickerModal
-                onPress={() => setShowCalendarModal(false)}
-                onDateChange={onDateChange}
-                handleOnPressNext={handleOnPressNext}
-                onSelectedDate={onSelect}
-                allowRangeSelection={true}
-                maxDate={maxDate}
-                onCancelPress={() => setShowCalendarModal(false)}
+            <View style={styles.calendarView}>
+              <DropDownPicker
+                ArrowDownIconComponent={({ style }) => (
+                  <Image source={Images.dropdown} style={styles.dropDownIcon} />
+                )}
+                open={channels}
+                value={channelValue}
+                items={channelItem}
+                setOpen={setChannels}
+                setValue={setChannelValue}
+                setItems={setChannelItem}
+                placeholder="All Channels"
+                placeholderStyle={{
+                  color: '#A7A7A7',
+                  fontFamily: Fonts.Regular,
+                  fontSize: ms(10),
+                }}
+                zIndex={2000}
+                zIndexInverse={2000}
+                containerStyle={styles.containerStyle}
+                style={styles.dropdown}
+                arrowIconStyle={styles.arrowIconStyle}
+                textStyle={{
+                  color: COLORS.white,
+                  fontFamily: Fonts.SemiBold,
+                  fontSize: ms(12),
+                }}
+                listItemLabelStyle={{ color: COLORS.black, fontFamily: Fonts.Regular }}
               />
             </View>
-          </Modal>
+            <View style={[styles.calendarView, { marginHorizontal: ms(5) }]}>
+              <DropDownPicker
+                ArrowDownIconComponent={({ style }) => (
+                  <Image source={Images.dropdown} style={styles.dropDownIcon} />
+                )}
+                // style={[styles.dropdown]}
+                // containerStyle={[
+                //   styles.containerStyle,
+                //   { zIndex: Platform.OS === 'ios' ? 100 : 2, width: ms(90) },
+                // ]}
+                open={time}
+                value={timeValue}
+                items={timeItem}
+                setOpen={setTime}
+                setValue={(value) => {
+                  setTimeValue(value);
+                  setSelectedStartDate('');
+                  setSelectedEndDate('');
+                }}
+                setItems={setTimeItem}
+                placeholder="Weekly"
+                placeholderStyle={{
+                  color: '#A7A7A7',
+                  fontFamily: Fonts.Regular,
+                  fontSize: ms(10),
+                }}
+                zIndex={2000}
+                zIndexInverse={2000}
+                containerStyle={[
+                  styles.containerStyle,
+                  { width: Platform.OS === 'android' ? ms(95) : ms(98) },
+                ]}
+                style={styles.dropdown}
+                arrowIconStyle={styles.arrowIconStyle}
+                textStyle={{
+                  color: COLORS.white,
+                  fontFamily: Fonts.SemiBold,
+                  fontSize: ms(12),
+                }}
+                listItemLabelStyle={{ color: COLORS.black, fontFamily: Fonts.Regular }}
+              />
+            </View>
+          </View>
+          <Spacer space={ms(10)} />
+
+          <View style={[styles.flexDirectionRow, { zIndex: -999 }]}>
+            <View style={styles.container}>{screenChangeView()}</View>
+          </View>
         </View>
-      )}
+        <Modal
+          isVisible={showCalendarModal}
+          statusBarTranslucent
+          animationIn={'slideInRight'}
+          animationInTiming={600}
+          animationOutTiming={300}
+        >
+          <View style={styles.calendarModalView}>
+            <CalendarPickerModal
+              onPress={() => setShowCalendarModal(false)}
+              onDateChange={onDateChange}
+              handleOnPressNext={handleOnPressNext}
+              onSelectedDate={onSelect}
+              allowRangeSelection={true}
+              maxDate={maxDate}
+              onCancelPress={() => setShowCalendarModal(false)}
+            />
+          </View>
+        </Modal>
+      </View>
     </ScreenWrapper>
   );
 }

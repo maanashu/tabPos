@@ -33,6 +33,7 @@ import { ms } from 'react-native-size-matters';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { height } from '@/theme/ScalerDimensions';
+import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 const generateLabels = (dataLabels, interval, maxLabel, daysLength) => {
   const labelInterval = Math.ceil(dataLabels?.length / daysLength);
@@ -103,10 +104,16 @@ export function TotalShippingOrders({ onPressReview }) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.count}</Text>
+        <Text style={styles.revenueDataText}>{item?.count ? numberFormate(item?.count) : 0}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.averageValue.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.averageValue
+            ? item?.averageValue < 0
+              ? '-$' + amountFormat(Math.abs(item?.averageValue), 'notSign')
+              : amountFormat(item?.averageValue)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
@@ -115,7 +122,13 @@ export function TotalShippingOrders({ onPressReview }) {
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.amount.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText2}>
+          {item?.amount
+            ? item?.amount < 0
+              ? '-$' + amountFormat(Math.abs(item?.amount), 'notSign')
+              : amountFormat(item?.amount)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
@@ -174,7 +187,11 @@ export function TotalShippingOrders({ onPressReview }) {
         <HeaderView
           image={total_orders}
           text={'Total Orders'}
-          count={shippingGraph?.ordersOverView?.total_orders}
+          count={
+            shippingGraph?.ordersOverView?.total_orders
+              ? numberFormate(shippingGraph?.ordersOverView?.total_orders)
+              : 0
+          }
           style={{ marginHorizontal: ms(5) }}
           isLoading={isAnalyticOrderGraphLoading}
         />
@@ -183,7 +200,7 @@ export function TotalShippingOrders({ onPressReview }) {
           text={'Order Frequency'}
           count={
             shippingGraph?.ordersOverView?.order_frequency
-              ? shippingGraph?.ordersOverView?.order_frequency + '/Hour'
+              ? numberFormate(shippingGraph?.ordersOverView?.order_frequency) + '/Hour'
               : '0/Hour'
           }
           isLoading={isAnalyticOrderGraphLoading}
@@ -193,7 +210,10 @@ export function TotalShippingOrders({ onPressReview }) {
           text={'Average Order Value'}
           count={
             shippingGraph?.ordersOverView?.averageValue
-              ? '$' + shippingGraph?.ordersOverView?.averageValue?.toFixed(2)
+              ? shippingGraph?.ordersOverView?.averageValue < 0
+                ? '-$' +
+                  amountFormat(Math.abs(shippingGraph?.ordersOverView?.averageValue), 'notSign')
+                : amountFormat(shippingGraph?.ordersOverView?.averageValue)
               : '$0'
           }
           isLoading={isAnalyticOrderGraphLoading}
@@ -203,7 +223,13 @@ export function TotalShippingOrders({ onPressReview }) {
           text={'Total Revenue'}
           count={
             shippingGraph?.ordersOverView?.total_sales_or_actual_amount
-              ? '$' + shippingGraph?.ordersOverView?.total_sales_or_actual_amount?.toFixed(2)
+              ? shippingGraph?.ordersOverView?.total_sales_or_actual_amount < 0
+                ? '-$' +
+                  amountFormat(
+                    Math.abs(shippingGraph?.ordersOverView?.total_sales_or_actual_amount),
+                    'notSign'
+                  )
+                : amountFormat(shippingGraph?.ordersOverView?.total_sales_or_actual_amount)
               : '$0'
           }
           isLoading={isAnalyticOrderGraphLoading}

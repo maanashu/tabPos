@@ -242,6 +242,7 @@ export const acceptOrder = (data, openShippingOrders, delivery, callback) => asy
   try {
     const res = await DeliveryController.acceptOrder(data);
     await dispatch(getOrderCount());
+    dispatch(orderStatusCount());
     callback && callback(res);
     dispatch(acceptOrderSuccess(res));
     dispatch(getPendingOrders());

@@ -46,7 +46,6 @@ export function ShippingOrderList(props) {
     }
   }, []);
   const renderOrderItem = ({ item, index }) => {
-    console.log('dfsfd', item);
     // const shippingDate = moment.utc(item?.invoices?.delivery_date).format('DD MMM YYYY') || '';
     const shippingDate = moment.utc(item?.date).format('DD MMM YYYY') || '';
 

@@ -19,6 +19,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import {
   getGraphOrders,
+  getOrders,
   getReviewDefault,
   getShippingOrderstatistics,
   orderStatusCount,
@@ -59,6 +60,8 @@ export function ShippingOrder2() {
   const dispatch = useDispatch();
   const getAuth = useSelector(getAuthData);
   const getGraphOrderData = useSelector(getShipping);
+
+  const shipingCount = getGraphOrderData?.orderStatus;
   const getAnalyticsData = useSelector(getAnalytics);
   const ordersList = getGraphOrderData?.getReviewDef;
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
@@ -204,7 +207,6 @@ export function ShippingOrder2() {
         if (res?.msg) {
           dispatch(orderStatusCount(getUpdatedCount));
           dispatch(getReviewDefault(openShippingOrders));
-
           if (
             getDeliveryData?.getReviewDef?.length > 0 &&
             getDeliveryData?.getReviewDef?.length === 1
@@ -222,25 +224,47 @@ export function ShippingOrder2() {
       })
     );
   };
-  // const checkOtherOrder = () => {
-  //   const orderStatusCountData = getGraphOrderData?.orderStatus;
-  //   var index = 0;
-  //   if (orderStatusCountData?.[0]?.count > 0) {
-  //     index = 0;
-  //   } else if (orderStatusCountData?.[3]?.count > 0) {
-  //     index = 3;
-  //   } else if (orderStatusCountData?.[4]?.count > 0) {
-  //     index = 4;
-  //   } else if (orderStatusCountData?.[6]?.count > 0) {
-  //     index = 6;
-  //   } else if (orderStatusCountData?.[6]?.count > 0) {
-  //     index = 6;
-  //   } else if (orderStatusCountData?.[8]?.count > 0) {
-  //     index = 8;
-  //   }
-  //   dispatch(getReviewDefault(index));
-  //   dispatch(orderStatusCount());
-  // };
+  const checkOtherOrder = () => {
+    const statusData = shipingCount;
+
+    var index = 0;
+    if (statusData[0].count > 0) {
+      if (statusData[3].count == 1) {
+        index = 3;
+      } else {
+        index = 0;
+      }
+    } else if (statusData[3].count > 0) {
+      if (statusData[3].count == 1) {
+        index = 4;
+      } else {
+        index = 3;
+      }
+    } else if (statusData[4].count > 0) {
+      if (statusData[4].count == 1) {
+        index = 5;
+      } else {
+        index = 4;
+      }
+    } else if (statusData[5].count > 0) {
+      if (statusData[5].count == 1) {
+        index = 6;
+      } else {
+        index = 5;
+      }
+    } else if (statusData[6].count > 0) {
+      if (statusData[6].count == 1) {
+        index = 7;
+      } else {
+        index = 6;
+      }
+    }
+    dispatch(getReviewDefault(index));
+    dispatch(getOrders(index));
+
+    // dispatch(getOrderCount());
+    // dispatch(getPendingOrders());
+  };
 
   const declineHandler = (id) => {
     const data = {
