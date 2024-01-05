@@ -98,7 +98,7 @@ export function OrderDetail(props) {
         break;
       }
     }
-    setSelectedStatus(index);
+    setSelectedStatus(index.toString());
     dispatch(getReviewDefault(index));
   };
 
