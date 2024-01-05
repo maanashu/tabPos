@@ -8,6 +8,8 @@ import { ms } from 'react-native-size-matters';
 import { DataTable } from 'react-native-paper';
 
 const OrderWithInvoiceNumber = ({ orderData }) => {
+  const userDetails = orderData?.order?.user_details ?? orderData?.return?.user_details;
+
   const getDeliveryType = (type) => {
     switch (type) {
       case '1':
@@ -20,7 +22,6 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
         return strings.returnOrder.reservation;
     }
   };
-  console.log('hsdgfjsgdfj', orderData);
   return (
     <View style={styles.container}>
       <DataTable style={styles.tableView}>
@@ -72,9 +73,9 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
           >
             <Image source={user} resizeMode="contain" style={{ height: ms(20), width: ms(20) }} />
             <Text style={styles.nameTextStyle}>
-              {orderData?.order?.user_details
-                ? `${orderData?.order?.user_details?.user_profiles?.firstname} ${orderData?.order?.user_details?.user_profiles?.lastname}`
-                : `${orderData?.return?.user_details?.user_profiles?.firstname} ${orderData?.return?.user_details?.user_profiles?.lastname}`}
+              {`${userDetails?.user_profiles?.firstname ?? 'N/A'} ${
+                userDetails?.user_profiles?.lastname ?? ''
+              }`}
             </Text>
 
             {/* {orderData?.order?.delivery_option !== '3' ? (
@@ -127,7 +128,6 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
           </View>
         </View>
       ) : (
-        // </View>
         <View style={styles.emptyViewStyle}>
           <Text style={styles.emptyTextStyle}>{strings.returnOrder.noInvoices}</Text>
         </View>
