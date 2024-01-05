@@ -38,6 +38,7 @@ const OrderDetail = ({
   data,
 }) => {
   const detailView = () => {
+    console.log('Dsfdsfds', JSON.stringify(userDetail));
     if (
       userDetail?.status === 0 ||
       userDetail?.status === 1 ||
@@ -50,13 +51,13 @@ const OrderDetail = ({
           <CustomerDetails orderDetail={userDetail} />
 
           <View style={{ height: SH(400) }}>
-            {/* <FlatList
+            <FlatList
               scrollEnabled
               data={orderDetail}
               renderItem={renderOrderProducts}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ flexGrow: 1, paddingBottom: 70 }}
-            /> */}
+            />
           </View>
 
           <View style={styles.orderandPriceView}>
