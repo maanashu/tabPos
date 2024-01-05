@@ -56,7 +56,6 @@ export function OrderDetail(props) {
   const orderLoad = useSelector((state) =>
     isLoadingSelector([TYPES.TODAY_ORDER_STATUS, TYPES.DELIVERING_ORDER], state)
   );
-  console.log('ordsdedsd', JSON.stringify(orderData));
   const setHeaderText = (value) => {
     switch (value) {
       case '0':

@@ -1293,6 +1293,10 @@ export const CartAmountPayBy = ({
                   setQrPopUp(false);
                   dispatch(requestCheckSuccess(''));
                   dispatch(qrCodeStatusSuccess(''));
+                  setsendRequest(false);
+                  sendRequest && alert('Payment Request cancel');
+                  setDuration(120);
+                  setWalletIdInp('');
                 }}
               >
                 <Image source={crossButton} style={styles.crossButton} />
@@ -1427,6 +1431,10 @@ export const CartAmountPayBy = ({
                               setQrPopUp(false);
                               dispatch(requestCheckSuccess(''));
                               dispatch(qrCodeStatusSuccess(''));
+                              setsendRequest(false);
+                              sendRequest && alert('Payment Request cancel');
+                              setDuration(120);
+                              setWalletIdInp('');
                             }}
                           >
                             <Text style={styles.cancelText}>{'Cancel'}</Text>
