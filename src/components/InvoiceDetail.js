@@ -56,7 +56,6 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
     longitude: singleOrderDetail?.coordinates?.[1] ?? 0.0,
   };
 
-  console.log('first', singleOrderDetail);
   const invoiceData = [
     {
       title: 'Payment Option',
