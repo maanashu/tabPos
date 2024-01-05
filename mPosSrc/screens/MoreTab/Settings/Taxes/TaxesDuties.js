@@ -101,7 +101,6 @@ export function TaxesDuties() {
   const [stateActive, setStateActive] = useState(false);
   const [latitude, setLatitude] = useState();
   const [longitude, setLongitude] = useState();
-  console.log('counry', country);
 
   const taxPayerHandler = () => {
     if (!name || !ssn || !streetAdd || !appartment || !country || !state || !city || !zipCode) {

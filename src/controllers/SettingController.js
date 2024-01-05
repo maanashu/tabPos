@@ -141,7 +141,6 @@ export class SettingController {
       const endpoint = USER_URL + ApiUserInventory.getUserAddress;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('locationssa', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -284,14 +283,12 @@ export class SettingController {
         Authorization: authToken,
         'app-name': 'pos',
       };
-      console.log('SDsad', data);
       axios
         .post(endpoint, data, authToken && { headers })
         .then((response) => {
           resolve(response?.data);
         })
         .catch((error) => {
-          console.log('ererer', error);
           if (error?.msg === 'Invalid code.') {
             Toast.show({
               text2: 'Token Code Expire',

@@ -466,7 +466,6 @@ export const getGoogleCode = (authToken) => async (dispatch) => {
   dispatch(getGoogleCodeRequest());
   try {
     const res = await SettingController.getGoogleCode(authToken);
-    console.log('resss', JSON.stringify(res));
     dispatch(getGoogleCodeSuccess(res?.payload));
   } catch (error) {
     dispatch(getGoogleCodeError(error.message));

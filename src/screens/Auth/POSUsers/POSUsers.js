@@ -263,7 +263,6 @@ export function POSUsers({ navigation }) {
         verification_otp: forgotValue,
       };
       const res = await dispatch(reset2fa(data, merchantToken));
-      console.log('response', res);
       if (res?.status_code == 201) {
         setQRCodeUrl(res?.payload?.qrCode);
         setForgotPinScreen(false);
@@ -321,7 +320,6 @@ export function POSUsers({ navigation }) {
     setValue('');
     setForgotPinScreen(true);
     const res = await dispatch(forgot2fa(merchantToken));
-    console.log(res);
     if (res?.status_code == 200) {
       setVerificationId(res?.payload?.verification_id);
     }

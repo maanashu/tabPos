@@ -7,7 +7,6 @@ import moment from 'moment';
 import { amountFormat } from '@/utils/GlobalMethods';
 
 const AddedCartItemsCard = ({ item, index }) => {
-  console.log('item', JSON.stringify(item));
   const productSize = item?.product_details?.supply?.attributes?.filter(
     (item) => item?.name === 'Size'
   );

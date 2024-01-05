@@ -66,8 +66,7 @@ export function CartScreen({
   const productCartArray = getRetailData?.getAllProductCart;
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const availableOfferArray = getRetailData?.availableOffer?.data;
-  // console.log('availableOfferArray', JSON.stringify(availableOfferArray));
-  // console.log('getRetailData?.getAllCart', JSON.stringify(getRetailData?.getAllCart));
+
   const [cartSearch, setCartSearch] = useState('');
   const [addCartModal, setAddCartModal] = useState(false);
   const [addCartDetailModal, setAddCartDetailModal] = useState(false);
@@ -220,7 +219,6 @@ export function CartScreen({
     //     : product.product_details?.supply?.supply_prices?.offer_price;
     const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
     const offerPrice = product.product_details?.supply?.supply_prices?.offer_price;
-    console.log('------', productPrice, offerPrice, productQty);
 
     if (operation === '+') {
       if (restProductQty > productQty) {
@@ -272,7 +270,6 @@ export function CartScreen({
       const product = arr?.poscart_products[index];
       // const productPrice = product.product_details.price;
       const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
-      console.log('productPrice', productPrice);
       if (product.qty > 0) {
         arr.amount.total_amount -= productPrice * product.qty;
         arr.amount.products_price -= productPrice * product.qty;
@@ -285,7 +282,6 @@ export function CartScreen({
       var DATA = {
         payload: arr,
       };
-      console.log(DATA);
       dispatch(updateCartLength(CART_LENGTH - 1));
       dispatch(getAllCartSuccess(DATA));
     }

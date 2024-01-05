@@ -6,7 +6,6 @@ import { capitalizeFirstLetter } from '@/utils/GlobalMethods';
 
 const IncludedPlan = ({ data }) => {
   const renderIncluded = ({ item }) => {
-    console.log('sdsds', item);
     return (
       <>
         <View style={[styles.rowAligned, { marginVertical: ms(5) }]}>
