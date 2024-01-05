@@ -18,6 +18,7 @@ import { styles } from '../styles';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 export function TotalPosOrder({ onPressReview }) {
   const getAnalyticsData = useSelector(getAnalytics);
@@ -32,15 +33,21 @@ export function TotalPosOrder({ onPressReview }) {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '.        '}</Text>
+          <Text>{index + 1 + '.      '}</Text>
           <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.count}</Text>
+        <Text style={styles.revenueDataText}>{item?.count ? numberFormate(item?.count) : 0}</Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>${item?.averageValue?.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.averageValue
+            ? item?.averageValue < 0
+              ? '-$' + amountFormat(Math.abs(item?.averageValue), 'notSign')
+              : amountFormat(item?.averageValue)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
@@ -49,7 +56,14 @@ export function TotalPosOrder({ onPressReview }) {
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText2}>${item?.amount?.toFixed(2)}</Text>
+        <Text style={styles.revenueDataText2}>
+          {' '}
+          {item?.amount
+            ? item?.amount < 0
+              ? '-$' + amountFormat(Math.abs(item?.amount), 'notSign')
+              : amountFormat(item?.amount)
+            : '$0'}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <TouchableOpacity style={styles.reviewView} onPress={() => onPressReview(item?.order_date)}>
@@ -89,7 +103,11 @@ export function TotalPosOrder({ onPressReview }) {
         <HeaderView
           image={Images.locationSales}
           text={'Total Orders'}
-          count={posGraph?.ordersOverView?.total_orders}
+          count={
+            posGraph?.ordersOverView?.total_orders
+              ? numberFormate(posGraph?.ordersOverView?.total_orders)
+              : 0
+          }
           style={{ marginHorizontal: ms(5) }}
           isLoading={isAnalyticOrderGraphLoading}
         />
@@ -108,7 +126,9 @@ export function TotalPosOrder({ onPressReview }) {
           text={'Average Order Value'}
           count={
             posGraph?.ordersOverView?.averageValue
-              ? '$' + posGraph?.ordersOverView?.averageValue?.toFixed(2)
+              ? posGraph?.ordersOverView?.averageValue < 0
+                ? '-$' + amountFormat(Math.abs(posGraph?.ordersOverView?.averageValue), 'notSign')
+                : amountFormat(posGraph?.ordersOverView?.averageValue)
               : '$0'
           }
           isLoading={isAnalyticOrderGraphLoading}
@@ -118,7 +138,13 @@ export function TotalPosOrder({ onPressReview }) {
           text={'Total Revenue'}
           count={
             posGraph?.ordersOverView?.total_sales_or_actual_amount
-              ? '$' + posGraph?.ordersOverView?.total_sales_or_actual_amount?.toFixed(2)
+              ? posGraph?.ordersOverView?.total_sales_or_actual_amount < 0
+                ? '-$' +
+                  amountFormat(
+                    Math.abs(posGraph?.ordersOverView?.total_sales_or_actual_amount),
+                    'notSign'
+                  )
+                : amountFormat(posGraph?.ordersOverView?.total_sales_or_actual_amount)
               : '$0'
           }
           isLoading={isAnalyticOrderGraphLoading}

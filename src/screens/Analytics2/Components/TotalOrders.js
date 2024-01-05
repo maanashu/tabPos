@@ -67,19 +67,19 @@ export function TotalOrders({ onPressReview }) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.count ? numberFormate(item?.count) : 0}</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          {item?.new_consumer
-            ? item?.new_consumer < 0
-              ? '-$' + amountFormat(Math.abs(item?.new_consumer), 'notSign')
-              : amountFormat(item?.new_consumer)
-            : '$0'}
+          {item?.total_orders ? numberFormate(item?.total_orders) : 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.consumer_returning}</Text>
+        <Text style={styles.revenueDataText}>
+          {item?.new_consumer ? numberFormate(item?.new_consumer) : 0}
+        </Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>
+          {item?.consumer_returning ? numberFormate(item?.consumer_returning) : 0}
+        </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText2}>

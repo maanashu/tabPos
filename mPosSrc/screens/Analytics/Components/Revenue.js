@@ -12,6 +12,7 @@ import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { useDebouncedCallback } from 'use-lodash-debounce';
 import { getAnalyticStatistics } from '@/actions/AnalyticsAction';
+import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 export function Revenue({ sellerID, data }) {
   const dispatch = useDispatch();
@@ -51,21 +52,31 @@ export function Revenue({ sellerID, data }) {
     <DataTable.Row>
       <DataTable.Cell style={styles.dateTablealignStart}>
         <View style={styles.flexDirectionRow}>
-          <Text>{index + 1 + '.        '}</Text>
+          <Text>{index + 1 + '.     '}</Text>
           <Text style={styles.revenueDataText}> {item?.order_date ? item?.order_date : ''}</Text>
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.total_items ? item?.total_items : 0}</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          ${item?.total_price ? item?.total_price.toFixed(2) : 0}
+          {item?.total_orders ? numberFormate(item?.total_orders) : 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          ${item?.cost_sum ? item?.cost_sum.toFixed(2) : 0}
+          {item?.total_price
+            ? item?.total_price < 0
+              ? '-$' + amountFormat(Math.abs(item?.total_price), 'notSign')
+              : amountFormat(item?.total_price)
+            : '$0'}
+        </Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>
+          {item?.cost_sum
+            ? item?.cost_sum < 0
+              ? '-$' + amountFormat(Math.abs(item?.cost_sum), 'notSign')
+              : amountFormat(item?.cost_sum)
+            : '$0'}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -73,7 +84,11 @@ export function Revenue({ sellerID, data }) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText2}>
-          ${item?.transaction ? item?.transaction.toFixed(2) : 0}
+          {item?.transaction
+            ? item?.transaction < 0
+              ? '-$' + amountFormat(Math.abs(item?.transaction), 'notSign')
+              : amountFormat(item?.transaction)
+            : '$0'}
         </Text>
       </DataTable.Cell>
     </DataTable.Row>
@@ -109,7 +124,7 @@ export function Revenue({ sellerID, data }) {
           text={'Total Orders'}
           count={
             analyticStatistics?.overView?.total_orders
-              ? analyticStatistics?.overView?.total_orders
+              ? numberFormate(analyticStatistics?.overView?.total_orders)
               : 0
           }
           isLoading={revenueStatisticsLoader}
@@ -119,7 +134,10 @@ export function Revenue({ sellerID, data }) {
           text={'Total Revenue'}
           count={
             analyticStatistics?.overView?.total_revenue
-              ? '$' + analyticStatistics?.overView?.total_revenue?.toFixed(2)
+              ? analyticStatistics?.overView?.total_revenue < 0
+                ? '-$' +
+                  amountFormat(Math.abs(analyticStatistics?.overView?.total_revenue), 'notSign')
+                : amountFormat(analyticStatistics?.overView?.total_revenue)
               : '$0'
           }
           isLoading={revenueStatisticsLoader}
@@ -129,7 +147,10 @@ export function Revenue({ sellerID, data }) {
           text={'Average order value'}
           count={
             analyticStatistics?.overView?.average_value
-              ? '$' + analyticStatistics?.overView?.average_value?.toFixed(2)
+              ? analyticStatistics?.overView?.average_value < 0
+                ? '-$' +
+                  amountFormat(Math.abs(analyticStatistics?.overView?.average_value), 'notSign')
+                : amountFormat(analyticStatistics?.overView?.average_value)
               : '$0'
           }
           isLoading={revenueStatisticsLoader}
@@ -139,7 +160,10 @@ export function Revenue({ sellerID, data }) {
           text={'Total Volume'}
           count={
             analyticStatistics?.overView?.transaction
-              ? '$' + analyticStatistics?.overView?.transaction?.toFixed(2)
+              ? analyticStatistics?.overView?.transaction < 0
+                ? '-$' +
+                  amountFormat(Math.abs(analyticStatistics?.overView?.transaction), 'notSign')
+                : amountFormat(analyticStatistics?.overView?.transaction)
               : '$0'
           }
           isLoading={revenueStatisticsLoader}

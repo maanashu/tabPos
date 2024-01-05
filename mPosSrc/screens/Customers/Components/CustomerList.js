@@ -52,6 +52,7 @@ import { Images } from '@mPOS/assets';
 import SearchList from './SearchList';
 import { commonNavigate, MPOS_NAVIGATION } from '@common/commonImports';
 import { height } from '@/theme/ScalerDimensions';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function CustomerList(props) {
   const dispatch = useDispatch();
@@ -408,8 +409,11 @@ export function CustomerList(props) {
                           </View> */}
                           <View style={styles.tableHeaderRightInner}>
                             <Text style={styles.tableTextData} numberOfLines={1}>
-                              {'$'}
-                              {item?.life_time_spent.toFixed(2)}
+                              {item?.life_time_spent
+                                ? item?.life_time_spent < 0
+                                  ? '-$' + amountFormat(Math.abs(item?.life_time_spent), 'notSign')
+                                  : amountFormat(item?.life_time_spent)
+                                : '$0'}
                             </Text>
                           </View>
                         </View>

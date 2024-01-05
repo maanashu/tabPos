@@ -19,11 +19,12 @@ import { Images } from '@mPOS/assets';
 import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import { TYPES } from '@/Types/AnalyticsTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 
 export function TotalInventory() {
   const getAnalyticsData = useSelector(getAnalytics);
   const totalInventory = getAnalyticsData?.getTotalInventory;
-
+  console.log('first', totalInventory);
   const isInventoryLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TOTAL_INVENTORY], state)
   );
@@ -33,7 +34,7 @@ export function TotalInventory() {
     return (
       <DataTable.Row>
         <DataTable.Cell style={styles.dateTablealignStart2}>
-          <Text>{index + 1 + '.     '}</Text>
+          <Text>{index + 1 + '.   '}</Text>
           <Text style={styles.revenueDataText}>{item?.name}</Text>
         </DataTable.Cell>
         <DataTable.Cell style={styles.dateTableSetting2}>
@@ -43,11 +44,23 @@ export function TotalInventory() {
           <Text style={styles.revenueDataText}>{item?.upc}</Text>
         </DataTable.Cell>
         <DataTable.Cell style={styles.dateTableSetting2}>
-          <Text style={styles.revenueDataText}>${price?.toFixed(2)}</Text>
+          <Text style={styles.revenueDataText}>
+            {item?.supplies[0]?.cost_price
+              ? item?.supplies[0]?.cost_price < 0
+                ? '-$' +
+                  amountFormat(
+                    Math.abs(item?.supplies[0]?.cost_price * item?.supplies[0]?.rest_quantity),
+                    'notSign'
+                  )
+                : amountFormat(item?.supplies[0]?.cost_price * item?.supplies[0]?.rest_quantity)
+              : '$0'}
+          </Text>
         </DataTable.Cell>
 
         <DataTable.Cell style={styles.dateTableSetting2}>
-          <Text style={styles.revenueDataText}>{item?.supplies[0]?.rest_quantity}</Text>
+          <Text style={styles.revenueDataText}>
+            {item?.supplies[0]?.rest_quantity ? numberFormate(item?.supplies[0]?.rest_quantity) : 0}
+          </Text>
         </DataTable.Cell>
 
         <DataTable.Cell style={styles.dateTableSetting2}>
@@ -88,7 +101,7 @@ export function TotalInventory() {
           text={'Total Inventory'}
           count={
             totalInventory?.inventory_overview?.total_inventory
-              ? totalInventory?.inventory_overview?.total_inventory
+              ? numberFormate(totalInventory?.inventory_overview?.total_inventory)
               : 0
           }
           style={{ marginHorizontal: ms(5) }}
@@ -99,7 +112,7 @@ export function TotalInventory() {
           text={'Total Inventory Value'}
           count={
             totalInventory?.inventory_overview?.total_inventory_cost
-              ? '$' + totalInventory?.inventory_overview?.total_inventory_cost?.toFixed(2)
+              ? amountFormat(totalInventory?.inventory_overview?.total_inventory_cost)
               : '$0'
           }
           isLoading={isInventoryLoading}
@@ -109,7 +122,7 @@ export function TotalInventory() {
           text={'Average Order Value'}
           count={
             totalInventory?.inventory_overview?.average_value
-              ? '$' + totalInventory?.inventory_overview?.average_value?.toFixed(2)
+              ? amountFormat(totalInventory?.inventory_overview?.average_value)
               : '$0'
           }
           isLoading={isInventoryLoading}
@@ -119,7 +132,7 @@ export function TotalInventory() {
           text={'Gross Profit'}
           count={
             totalInventory?.inventory_overview?.total_profit
-              ? '$' + totalInventory?.inventory_overview?.total_profit?.toFixed(2)
+              ? amountFormat(totalInventory?.inventory_overview?.total_profit)
               : '$0'
           }
           isLoading={isInventoryLoading}
