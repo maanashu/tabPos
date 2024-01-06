@@ -65,6 +65,7 @@ import { SetPin } from '@mPOS/screens/MoreTab/SetPin/SetPin';
 import { ReEnterPin } from '@mPOS/screens/MoreTab/ReEnterPin/ReEnterPin';
 import { CommonOrderDetail } from '@mPOS/components/CommonOrderDetail';
 import { Languages } from '@mPOS/screens/MoreTab/Settings/Languages/Languages';
+import { ReturnOrderInvoice } from '@mPOS/screens/Return/Components/ReturnOrderInvoice';
 
 const Stack = createNativeStackNavigator();
 
@@ -198,6 +199,11 @@ export function AppNavigator(navigation) {
         name={MPOS_NAVIGATION.invoice}
         options={{ headerShown: false }}
         component={Invoice}
+      />
+      <Stack.Screen
+        name={MPOS_NAVIGATION.returnOrderInvoice}
+        options={{ headerShown: false }}
+        component={ReturnOrderInvoice}
       />
       <Stack.Screen
         name={MPOS_NAVIGATION.returnOrderDetail}
