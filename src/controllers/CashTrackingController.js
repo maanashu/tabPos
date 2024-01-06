@@ -35,10 +35,8 @@ export class CashTrackingController {
         ? USER_URL + `${ApiUserInventory.getPaymentHistory}?drawer_id=${drawerId}`
         : USER_URL + ApiUserInventory.getPaymentHistory;
 
-      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('REEdsdas', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

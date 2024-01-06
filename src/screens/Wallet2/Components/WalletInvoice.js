@@ -10,7 +10,6 @@ import { getUser } from '@/selectors/UserSelectors';
 const windowWidth = Dimensions.get('window').width;
 
 const WalletInvoice = ({ orderDetail }) => {
-  console.log('fsdfsdfirst', JSON.stringify(orderDetail));
   const getUserData = useSelector(getUser);
 
   const tax = orderDetail?.return ? orderDetail?.return?.tax : orderDetail?.order?.tax;

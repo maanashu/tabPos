@@ -16,11 +16,20 @@ const OrderConvertion = () => {
   const getData = useSelector(getShipping);
   const pieChartData = getData?.getOrderstatistics?.data;
 
+  // const series = [
+  //   pieChartData?.[0]?.count ?? 0,
+  //   pieChartData?.[1]?.count ?? 0,
+  //   pieChartData?.[2]?.count ?? 0,
+  //   pieChartData?.[3]?.count ?? 0,
+  // ];
+
+  // let sum = 0;
+  // series?.forEach((num) => (sum += num));
   const series = [
-    pieChartData?.[0]?.count ?? 0,
-    pieChartData?.[1]?.count ?? 0,
-    pieChartData?.[2]?.count ?? 0,
     pieChartData?.[3]?.count ?? 0,
+    pieChartData?.[4]?.count ?? 0,
+    pieChartData?.[5]?.count ?? 0,
+    pieChartData?.[6]?.count ?? 0,
   ];
 
   let sum = 0;
@@ -67,7 +76,7 @@ const OrderConvertion = () => {
 
               <View style={styles.ordersView}>
                 <Text style={styles.countTextStyle}>
-                  {`${parseInt(pieChartData?.[0]?.percentage)}%` ?? '0%'}
+                  {`${parseInt(pieChartData?.[3]?.percentage)}%` ?? '0%'}
                 </Text>
               </View>
             </View>
@@ -79,7 +88,7 @@ const OrderConvertion = () => {
 
               <View style={styles.ordersView}>
                 <Text style={styles.countTextStyle}>
-                  {`${parseInt(pieChartData?.[1]?.percentage)}%` ?? '0%'}
+                  {`${parseInt(pieChartData?.[4]?.percentage)}%` ?? '0%'}
                 </Text>
               </View>
             </View>
@@ -91,7 +100,7 @@ const OrderConvertion = () => {
 
               <View style={styles.ordersView}>
                 <Text style={styles.countTextStyle}>
-                  {`${parseInt(pieChartData?.[2]?.percentage)}%` ?? '0%'}
+                  {`${parseInt(pieChartData?.[5]?.percentage)}%` ?? '0%'}
                 </Text>
               </View>
             </View>
@@ -103,7 +112,7 @@ const OrderConvertion = () => {
 
               <View style={styles.ordersView}>
                 <Text style={styles.countTextStyle}>
-                  {`${parseInt(pieChartData?.[3]?.percentage ?? 0)}%` ?? '0'}
+                  {`${parseInt(pieChartData?.[6]?.percentage ?? 0)}%` ?? '0'}
                 </Text>
               </View>
             </View>

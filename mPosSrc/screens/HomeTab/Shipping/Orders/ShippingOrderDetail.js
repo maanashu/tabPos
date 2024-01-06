@@ -219,6 +219,7 @@ export function ShippingOrderDetail(props) {
         index = 6;
       }
     }
+    setSelectedStatus(index.toString());
     dispatch(getReviewDefault(index));
     dispatch(getOrders(index));
 

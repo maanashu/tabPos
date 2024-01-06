@@ -56,7 +56,6 @@ export function OrderDetail(props) {
   const orderLoad = useSelector((state) =>
     isLoadingSelector([TYPES.TODAY_ORDER_STATUS, TYPES.DELIVERING_ORDER], state)
   );
-  console.log('ordsdedsd', JSON.stringify(orderData));
   const setHeaderText = (value) => {
     switch (value) {
       case '0':
@@ -99,7 +98,7 @@ export function OrderDetail(props) {
         break;
       }
     }
-
+    setSelectedStatus(index.toString());
     dispatch(getReviewDefault(index));
   };
 
@@ -171,7 +170,6 @@ export function OrderDetail(props) {
     };
     dispatch(
       acceptOrder(data, orderData?.status, (res) => {
-        console.log('red=-=-=-=-=-', res);
         if (res?.msg) {
           goBack();
         }

@@ -82,7 +82,6 @@ export function ChangePlans() {
   };
 
   const renderPlans = ({ item }) => {
-    // console.log('item', item);
     const amount = parseFloat(item?.amount);
     return (
       <>

@@ -220,16 +220,11 @@ export class AuthController {
   static async getProfile(id) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.getProfile + `${id}`;
-      console.log('profile edddcvd', JSON.stringify(endpoint));
-
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('profile rferere', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
-          console.log('profile error', JSON.stringify(error));
-
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
@@ -304,7 +299,6 @@ export class AuthController {
   static async forgot2faPin(authToken) {
     return new Promise((resolve, reject) => {
       const endpoint = USER_URL + ApiUserInventory.forgot2faPin;
-      console.log('url', endpoint);
       const headers = {
         Authorization: authToken,
         'app-name': 'pos',

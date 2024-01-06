@@ -41,7 +41,6 @@ export class DeliveryController {
         ORDER_URL +
         ApiOrderInventory.getOrders +
         `?status=${status}&seller_id=${sellerID}&delivery_option=1,3&need_walkin=false`;
-      console.log('endoiiuntttt', endpoint);
 
       HttpClient.get(endpoint)
         .then((response) => {
