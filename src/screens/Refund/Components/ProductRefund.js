@@ -382,8 +382,8 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
             }}
           >
             <View style={styles.leftMainViewStyle}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ width: ms(60) }}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{}}>
                   <Text
                     style={{
                       fontSize: ms(11),
@@ -404,13 +404,14 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                       marginTop: ms(2),
                       fontSize: ms(8),
                       letterSpacing: -1,
+                      width: ms(90),
                     }}
                   >
                     {'Select the items to refund.'}
                   </Text>
                 </View>
 
-                <View style={styles.rowStyle}>
+                <View style={[styles.rowStyle, { position: 'absolute', right: ms(0) }]}>
                   {finalOrder?.order?.delivery_charge !== '0' ||
                     (finalOrder?.order?.shipping_charge !== '0' && (
                       <>

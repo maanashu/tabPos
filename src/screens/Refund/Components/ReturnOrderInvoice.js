@@ -35,6 +35,8 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
   //     </Text>
   //   </View>
   // );
+
+  console.log('returnInvoiceData', JSON.stringify(returnedData));
   const invoiceData = [
     {
       title: 'Status',
