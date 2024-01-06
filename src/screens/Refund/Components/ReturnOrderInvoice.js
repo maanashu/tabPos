@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
@@ -36,7 +36,6 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
   //   </View>
   // );
 
-  console.log('returnInvoiceData', JSON.stringify(returnedData));
   const invoiceData = [
     {
       title: 'Status',
@@ -70,23 +69,53 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
     },
   ];
 
-  const renderProductItem = ({ item, index }) => (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.count}>x {item?.order_details?.qty}</Text>
-        <View style={{ marginLeft: ms(10) }}>
-          <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-            {item?.order_details?.product_name}
-          </Text>
+  const [appointments, setAppointments] = useState(returnInvoiceData?.appointments ?? []);
+  useEffect(() => {
+    if (returnInvoiceData?.appointments) {
+      const appointmentDate = returnInvoiceData?.appointments?.map((item) => {
+        return {
+          date: moment.utc(item.date).format('DD/MM/YYYY'),
+          startTime: item.start_time,
+          endTime: item.end_time,
+        };
+      });
+      setAppointments(appointmentDate);
+    }
+  }, [returnInvoiceData?.appointments]);
+
+  const renderProductItem = ({ item, index }) => {
+    const appointment = appointments[index];
+    const isBookingDateAvailable =
+      appointment && appointment.date && appointment.startTime && appointment.endTime;
+    const bookingDateTime = isBookingDateAvailable
+      ? `${appointment.date} @ ${appointment.startTime}-${appointment.endTime}`
+      : 'Booking date not available';
+
+    return (
+      <View style={{ height: ms(28) }}>
+        <View style={styles.container}>
+          <View style={styles.subContainer}>
+            <Text style={styles.count}>x {item?.order_details?.qty}</Text>
+            <View style={{ marginLeft: ms(10) }}>
+              <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
+                {item?.order_details?.product_name}
+              </Text>
+            </View>
+          </View>
+          <View style={{ width: '24%', alignItems: 'flex-end' }}>
+            <Text style={styles.priceTitle} numberOfLines={1}>
+              {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
+            </Text>
+          </View>
         </View>
+        {isBookingDateAvailable && (
+          <Text style={[styles.priceTitle, styles.container, { marginTop: ms(2) }]}>
+            {bookingDateTime}
+          </Text>
+        )}
       </View>
-      <View style={{ width: '24%', alignItems: 'flex-end' }}>
-        <Text style={styles.priceTitle} numberOfLines={1}>
-          {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
-        </Text>
-      </View>
-    </View>
-  );
+    );
+  };
   return (
     <>
       <View style={styles.rightCon}>
