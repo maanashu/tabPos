@@ -52,7 +52,7 @@ export function SearchScreen(props) {
   const [orderDetail, setOrderDetail] = useState([]);
   const [finalOrderDetail, setFinalOrderDetail] = useState([]);
   const [isCheckConfirmationModalVisible, setIsCheckConfirmationModalVisible] = useState(false);
-
+  console.log('firstgsdf', JSON.stringify(order));
   useFocusEffect(
     useCallback(() => {
       if (param === 'return' || param === 'Dashboard') {

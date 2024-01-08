@@ -15,64 +15,15 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
   const returnedData = orderDetail?.return;
   const returnInvoiceData = returnedData?.invoices;
   const sellerDetails = returnedData?.seller_details;
+  const returnOrderDetail = returnedData?.order;
 
-  // const renderProductItem = ({ item, index }) => (
-  //   <View style={styles.container}>
-  //     <View style={styles.subContainer}>
-  //       <Text style={styles.count}>{index + 1}</Text>
-  //       <View style={{ marginLeft: ms(10) }}>
-  //         <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-  //           {item?.order_details?.product_name ?? '-'}
-  //         </Text>
-  //         <View style={styles.belowSubContainer}>
-  //           <Text style={styles.colorsTitle}>{'Qty: '}</Text>
-  //           <Text style={styles.colorsTitle}>{item?.order_details?.qty ?? '-'}</Text>
-  //         </View>
-  //       </View>
-  //     </View>
-  //     <Text style={styles.priceTitle}>
-  //       {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
-  //     </Text>
-  //   </View>
-  // );
-
-  const invoiceData = [
-    {
-      title: 'Status',
-      data: 'Returned',
-      id: 1,
-    },
-    {
-      title: 'Date',
-      data: moment.utc(returnInvoiceData?.updated_at).format('ddd MM/DD/YYYY'),
-      id: 2,
-    },
-    {
-      title: 'Mode',
-      data: 'Walk-In',
-      id: 3,
-    },
-    {
-      title: 'Invoice',
-      data: returnInvoiceData?.invoice_number,
-      id: 4,
-    },
-    {
-      title: 'POS No.',
-      data: getUserData?.posLoginData?.pos_number,
-      id: 4,
-    },
-    {
-      title: 'User ID',
-      data: getUserData?.posLoginData?.id,
-      id: 5,
-    },
-  ];
-
-  const [appointments, setAppointments] = useState(returnInvoiceData?.appointments ?? []);
+  const address = returnOrderDetail?.seller_address_id;
+  const [appointments, setAppointments] = useState(returnOrderDetail?.appointments ?? []);
+  const [selleraddress, setSellerAddress] = useState([]);
+  const [formateAddress, setFormateAddress] = useState('');
   useEffect(() => {
-    if (returnInvoiceData?.appointments) {
-      const appointmentDate = returnInvoiceData?.appointments?.map((item) => {
+    if (returnOrderDetail?.appointments) {
+      const appointmentDate = returnOrderDetail?.appointments?.map((item) => {
         return {
           date: moment.utc(item.date).format('DD/MM/YYYY'),
           startTime: item.start_time,
@@ -81,7 +32,33 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
       });
       setAppointments(appointmentDate);
     }
-  }, [returnInvoiceData?.appointments]);
+  }, [returnOrderDetail?.appointments]);
+
+  useEffect(() => {
+    if (address) {
+      const sellerAddressDetail = sellerDetails?.seller_addresses?.map((item) => {
+        return {
+          address: item?.format_address,
+          address_id: item?.id,
+        };
+      });
+      setSellerAddress(sellerAddressDetail);
+    }
+  }, [address, sellerDetails?.seller_addresses]);
+
+  useEffect(() => {
+    const matchingAddresses = selleraddress?.filter((item) => {
+      return item?.address_id === address;
+    });
+
+    if (matchingAddresses && matchingAddresses.length > 0) {
+      const addressMatched = matchingAddresses[0];
+      setFormateAddress(addressMatched?.address);
+    } else {
+      setFormateAddress(''); // Set a default value or handle the case where address is not found.
+      console.log('Address with address_id not found.');
+    }
+  }, [address, selleraddress]);
 
   const renderProductItem = ({ item, index }) => {
     const appointment = appointments[index];
@@ -116,6 +93,39 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
       </View>
     );
   };
+
+  const invoiceData = [
+    {
+      title: 'Status',
+      data: 'Returned',
+      id: 1,
+    },
+    {
+      title: 'Date',
+      data: moment.utc(returnInvoiceData?.updated_at).format('ddd MM/DD/YYYY'),
+      id: 2,
+    },
+    {
+      title: 'Mode',
+      data: 'Walk-In',
+      id: 3,
+    },
+    {
+      title: 'Invoice',
+      data: returnInvoiceData?.invoice_number,
+      id: 4,
+    },
+    {
+      title: 'POS No.',
+      data: getUserData?.posLoginData?.pos_number,
+      id: 4,
+    },
+    {
+      title: 'User ID',
+      data: returnedData?.user_details?.id,
+      id: 5,
+    },
+  ];
   return (
     <>
       <View style={styles.rightCon}>
@@ -124,9 +134,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
             <Text style={styles._kSubCenterContainer}>
               {`${sellerDetails?.user_profiles?.organization_name}` ?? '-'}
             </Text>
-            <Text style={styles._kAddress}>
-              {`${sellerDetails?.user_locations[0]?.custom_address}` ?? '-'}{' '}
-            </Text>
+            <Text style={styles._kAddress}>{`${formateAddress}` ?? '-'} </Text>
             <Text style={styles._kNumber}>
               {`${sellerDetails?.user_profiles?.full_phone_number}` ?? '-'}
             </Text>
@@ -337,7 +345,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.washGrey,
     borderWidth: 1,
     paddingHorizontal: ms(8),
-    height: ms(28),
+    // height: ms(28),
     borderRadius: ms(5),
     alignItems: 'center',
     alignSelf: 'center',
@@ -537,7 +545,7 @@ const styles = StyleSheet.create({
 
   container: {
     paddingHorizontal: ms(8),
-    height: ms(28),
+    // height: ms(28),
     borderRadius: ms(5),
     alignItems: 'center',
     alignSelf: 'center',
