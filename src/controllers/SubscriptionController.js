@@ -35,7 +35,6 @@ export class SubscriptionController {
       const endpoint = WALLET_URL + plansAPI.activePlan;
       HttpClient.get(endpoint)
         .then((response) => {
-          console.log('ERere', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {

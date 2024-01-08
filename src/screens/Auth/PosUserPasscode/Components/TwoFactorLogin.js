@@ -19,20 +19,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { COLORS, SH } from '@/theme';
 import { strings } from '@mPOS/localization';
-import Header from './Header';
+
 import { Button, Spacer } from '@mPOS/components';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { BiometryTypes } from 'react-native-biometrics';
 
-import { styles } from '@mPOS/screens/Authentication/Login/styles';
+// import { styles } from '@mPOS/screens/Authentication/Login/styles';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { deviceLogin, loginPosUser, loginPosUserSuccess } from '@/actions/UserActions';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { rnBiometrics } from '@mPOS/navigation/Modals';
 import { checkArrow, crossButton } from '@/assets';
-import { VirtualKeyBoard } from '@mPOS/components/VirtualKeyBoard';
+
 import {
   configureGoogleCode,
   getSettings,
@@ -44,11 +44,16 @@ import { getSetting } from '@/selectors/SettingSelector';
 import { useRef } from 'react';
 import { digits } from '@/utils/validators';
 import { forgot2fa, getProfile, reset2fa } from '@/actions/AuthActions';
+import { styles } from '../../POSUsers/POSUsers.styles';
+import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
+import { navigate } from '@/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
 
 export function TwoFactorLogin(props) {
   const isFocused = useIsFocused();
   const CELL_COUNT = 4;
   const CELL_COUNT_SIX = 6;
+
   const CELL_COUNT_Five = 5;
   const dispatch = useDispatch();
   const { userResponse } = props?.route?.params;
@@ -59,7 +64,7 @@ export function TwoFactorLogin(props) {
   // const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   // const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
 
-  // const refSix = useBlurOnFulfill({ value, cellCount: CELL_COUNT_SIX });
+  const refSix = useBlurOnFulfill({ value, cellCount: CELL_COUNT_SIX });
   const refFive = useBlurOnFulfill({ value, cellCount: CELL_COUNT_Five });
   const getSettingData = useSelector(getSetting);
   const googleAuthenticator = getSettingData?.getSetting?.google_authenticator_status ?? false;
@@ -106,6 +111,8 @@ export function TwoFactorLogin(props) {
   // };
 
   // const isLoading = useSelector((state) => isLoadingSelector([TYPES.LOGIN_POS_USER], state));
+  const reset2faLoader = useSelector((state) => isLoadingSelector([TYPES.RESET_2FA], state));
+
   const renderCell = ({ index }) => {
     const displaySymbol = value[index] ? '*' : '';
 
@@ -145,12 +152,10 @@ export function TwoFactorLogin(props) {
       const data = {
         code: value,
       };
-
       const authToken = userResponse?.token;
       // const verificationFunction = verifyGoogleCodeMPOS;
       const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
       const res = await verificationFunction(data, authToken)(dispatch);
-
       setIsLoading(false);
       if (res?.status_code === 201) {
         dispatch(loginPosUserSuccess(userResponse));
@@ -163,7 +168,7 @@ export function TwoFactorLogin(props) {
   };
 
   const onForgotPin = async () => {
-    // setSixDigit(false);
+    setSixDigit(false);
     setForgotPinScreen(true);
     const authToken = userResponse?.token;
     const res = await dispatch(forgot2fa(authToken));
@@ -221,133 +226,148 @@ export function TwoFactorLogin(props) {
       setIsForgot(false);
     }
   };
+  const crossHandler = () => {};
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
-
-      {sixDigit && !forgotPinScreen && !qrCodeScreen ? (
-        <View style={styles.verifyContainer}>
-          <Spacer space={SH(25)} />
-          <View style={[styles.flexRow]}>
-            <Text>{''}</Text>
-            <Text style={styles.subHeading}>{'Enter 6-Digit code'}</Text>
-          </View>
-          <Spacer space={SH(40)} />
-          <CodeField
-            ref={ref}
-            {...prop}
-            value={value}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT_SIX}
-            rootStyle={[styles.alignSelfCenter]}
-            showSoftInputOnFocus={false}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={renderCell}
-          />
-
-          <VirtualKeyBoard
-            maxCharLength={6}
-            enteredValue={value}
-            setEnteredValue={setValue}
-            onPressContinueButton={passcodeHandler}
-          />
-          <TouchableOpacity style={styles.forgotPin} onPress={() => onForgotPin()}>
-            <Text style={styles.forgotPinText}>Forgot Pin</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <>
-          {forgotPinScreen && !qrCodeScreen ? (
-            <>
-              <Spacer space={SH(25)} />
-              <View style={[styles.flexRowSix, styles.flexWidthSix]}>
-                <Text>{''}</Text>
-                <Text style={styles.subHeadingSix}>{'Enter forgot 5-Digit code'}</Text>
-                <TouchableOpacity onPress={() => onBackPressHandler('Forgot')}>
-                  <Image source={crossButton} style={styles.crossSixNew} />
-                </TouchableOpacity>
-              </View>
-
-              <Spacer space={SH(40)} />
-
-              <CodeField
-                ref={refFive}
-                {...prop}
-                value={forgotValue}
-                onChangeText={setForgotValue}
-                cellCount={CELL_COUNT_Five}
-                rootStyle={styles.alignSelfCenterSix}
-                showSoftInputOnFocus={false}
-                keyboardType={'number-pad'}
-                textContentType={'oneTimeCode'}
-                renderCell={({ index, symbol, isFocused }) => (
-                  <View
-                    onLayout={getCellOnLayoutHandler(index)}
-                    key={index}
-                    style={styles.cellRootSix}
-                  >
-                    <Text style={styles.cellTextSix}>
-                      {symbol || (isFocused ? <Cursor /> : null)}
-                    </Text>
-                  </View>
-                )}
-              />
-
-              <VirtualKeyBoard
-                maxCharLength={5}
-                enteredValue={forgotValue}
-                setEnteredValue={setForgotValue}
-                onPressContinueButton={passcodeHandlerFive}
-                onBackPressHandler={() => {
-                  onBackPressHandler('Forgot');
-                }}
-                screen="PickupPin"
-              />
-              {/* <ActivityIndicator
-     size={'large'}
-     color={COLORS.navy_blue}
-     animating={reset2faLoader}
-     style={{ position: 'absolute', top: '50%' }}
-   /> */}
-            </>
-          ) : (
-            <View style={styles.firstBox}>
-              <View style={[styles.flexRowSix, styles.flexWidthSix]}>
-                <Text>{''}</Text>
-                <Text style={styles.subHeadingSix}>{'Scan the code '}</Text>
-                <TouchableOpacity onPress={() => onBackPressHandler('Forgot')}>
-                  <Image source={crossButton} style={styles.crossSixNew} />
-                </TouchableOpacity>
-              </View>
-              {QRCodeUrl == null ? (
-                <ActivityIndicator size="large" color={COLORS.navy_blue} />
-              ) : (
-                <Image source={{ uri: QRCodeUrl }} style={styles.scurityScanNew} />
-              )}
-              <Spacer space={SH(30)} />
-
-              <TouchableOpacity
-                style={[styles.nextButtonNew, { backgroundColor: COLORS.navy_blue }]}
-                onPress={() => {
-                  setSixDigit(true);
-                  setIsForgot(true);
-                  setForgotPinScreen(false);
-                  setQrCodeScreen(false);
-                }}
-              >
-                <Text style={[styles.checkoutText, { color: COLORS.white }]}>
-                  {strings.settings.next}
-                </Text>
-                <Image
-                  source={checkArrow}
-                  style={[styles.checkArrow, { tintColor: COLORS.white }]}
-                />
-              </TouchableOpacity>
+      <View style={styles.containerSix}>
+        {sixDigit ? (
+          <View style={styles.verifyContainerSix}>
+            <Spacer space={SH(25)} />
+            <View style={[styles.flexRowSix, styles.flexWidthSix]}>
+              <Text>{''}</Text>
+              <Text style={styles.subHeadingSix}>{'Enter 6-Digit code'}</Text>
+              {/* <TouchableOpacity onPress={() => crossHandler()}>
+                <Image source={crossButton} style={styles.crossSix} />
+              </TouchableOpacity> */}
+              <Text>{''}</Text>
             </View>
-          )}
-        </>
-      )}
+
+            <Spacer space={SH(40)} />
+
+            <CodeField
+              ref={refSix}
+              {...prop}
+              value={value}
+              onChangeText={setValue}
+              cellCount={CELL_COUNT_SIX}
+              rootStyle={styles.alignSelfCenterSix}
+              showSoftInputOnFocus={false}
+              keyboardType={'number-pad'}
+              textContentType={'oneTimeCode'}
+              renderCell={({ index, symbol, isFocused }) => (
+                <View
+                  onLayout={getCellOnLayoutHandler(index)}
+                  key={index}
+                  style={styles.cellRootSix}
+                >
+                  <Text style={styles.cellTextSix}>
+                    {symbol || (isFocused ? <Cursor /> : null)}
+                  </Text>
+                </View>
+              )}
+            />
+
+            <VirtualKeyBoard
+              maxCharLength={6}
+              enteredValue={value}
+              setEnteredValue={setValue}
+              onPressContinueButton={passcodeHandler}
+            />
+            <TouchableOpacity style={styles.forgotPin} onPress={() => onForgotPin()}>
+              <Text style={styles.forgotPinText}>Forgot Pin</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.verifyContainerSix}>
+            {forgotPinScreen ? (
+              <>
+                <Spacer space={SH(25)} />
+                <View style={[styles.flexRowSix, styles.flexWidthSix]}>
+                  <Text>{''}</Text>
+                  <Text style={styles.subHeadingSix}>{'Enter forgot 5-Digit code'}</Text>
+                  <TouchableOpacity onPress={() => onBackPressHandler('Forgot')}>
+                    <Image source={crossButton} style={styles.crossSix} />
+                  </TouchableOpacity>
+                </View>
+
+                <Spacer space={SH(40)} />
+
+                <CodeField
+                  ref={refFive}
+                  {...prop}
+                  value={forgotValue}
+                  onChangeText={setForgotValue}
+                  cellCount={CELL_COUNT_Five}
+                  rootStyle={styles.alignSelfCenterSix}
+                  showSoftInputOnFocus={false}
+                  keyboardType={'number-pad'}
+                  textContentType={'oneTimeCode'}
+                  renderCell={({ index, symbol, isFocused }) => (
+                    <View
+                      onLayout={getCellOnLayoutHandler(index)}
+                      key={index}
+                      style={styles.cellRootSix}
+                    >
+                      <Text style={styles.cellTextSix}>
+                        {symbol || (isFocused ? <Cursor /> : null)}
+                      </Text>
+                    </View>
+                  )}
+                />
+
+                <VirtualKeyBoard
+                  maxCharLength={5}
+                  enteredValue={forgotValue}
+                  setEnteredValue={setForgotValue}
+                  onPressContinueButton={passcodeHandlerFive}
+                  onBackPressHandler={() => {
+                    onBackPressHandler('Forgot');
+                  }}
+                  screen="PickupPin"
+                />
+                <ActivityIndicator
+                  size={'large'}
+                  color={COLORS.navy_blue}
+                  animating={reset2faLoader}
+                  style={{ position: 'absolute', top: '50%' }}
+                />
+              </>
+            ) : (
+              <View style={styles.firstBox}>
+                <View style={[styles.flexRowSix, styles.flexWidthSix]}>
+                  <Text>{''}</Text>
+                  <Text style={styles.subHeadingSix}>{'Scan the code '}</Text>
+                  <TouchableOpacity onPress={() => onBackPressHandler('Forgot')}>
+                    <Image source={crossButton} style={styles.crossSix} />
+                  </TouchableOpacity>
+                </View>
+                {QRCodeUrl == null ? (
+                  <ActivityIndicator size="large" color={COLORS.navy_blue} />
+                ) : (
+                  <Image source={{ uri: QRCodeUrl }} style={styles.scurityScan} />
+                )}
+                <Spacer space={SH(30)} />
+
+                <TouchableOpacity
+                  style={[styles.nextButtonNew, { backgroundColor: COLORS.navy_blue }]}
+                  onPress={() => {
+                    setSixDigit(true);
+                    setIsForgot(true);
+                  }}
+                >
+                  <Text style={[styles.checkoutText, { color: COLORS.white }]}>
+                    {strings.settings.next}
+                  </Text>
+                  <Image
+                    source={checkArrow}
+                    style={[styles.checkArrow, { tintColor: COLORS.white }]}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        )}
+      </View>
       {isLoading ? (
         <View style={styles.loaderViewStyle}>
           <ActivityIndicator color={COLORS.primary} size={'large'} style={styles.loaderViewStyle} />

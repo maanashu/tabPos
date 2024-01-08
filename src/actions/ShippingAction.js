@@ -1,5 +1,6 @@
 import { ShippingController } from '@/controllers';
 import { TYPES } from '@/Types/ShippingOrderTypes';
+import { getPendingOrders } from './DashboardAction';
 
 const getOrderCountRequest = () => ({
   type: TYPES.GET_ORDER_COUNT_REQUEST,
@@ -209,8 +210,11 @@ export const getReviewDefault = (status) => async (dispatch) => {
   try {
     const res = await ShippingController.getReviewDefault(status);
     dispatch(getReviewDefSuccess(res));
+    // dispatch(orderStatusCount());
+    // dispatch(getOrderCount());
+    // dispatch(getPendingOrders());
+    // dispatch(getShippingOrderstatistics());
   } catch (error) {
-    console.log('ERRORRR', JSON.stringify(error));
     if (error?.statusCode === 204) {
       dispatch(getReviewDefReset());
     }
@@ -235,6 +239,23 @@ export const acceptOrder = (data) => async (dispatch) => {
     dispatch(acceptOrderSuccess(res));
     dispatch(getOrderCount(data.sellerID));
     dispatch(getReviewDefault(0));
+  } catch (error) {
+    dispatch(acceptOrderError(error.message));
+  }
+};
+
+export const acceptOrderMPOS = (data) => async (dispatch) => {
+  dispatch(acceptOrderRequest());
+  try {
+    const res = await ShippingController.acceptOrder(data);
+    dispatch(acceptOrderSuccess(res));
+    dispatch(orderStatusCount());
+    dispatch(getOrderCount(data.sellerID));
+
+    // dispatch(orderStatusCount());
+    // dispatch(orderStatusCount());
+    // dispatch(getReviewDefault(0));
+    return res;
   } catch (error) {
     dispatch(acceptOrderError(error.message));
   }

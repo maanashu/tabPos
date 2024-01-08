@@ -43,6 +43,7 @@ import { Fonts } from '@/assets';
 import ProductList from '@mPOS/screens/HomeTab/Delivery/Components/ProductList';
 import OrderTotal from '@mPOS/screens/Return/Components/OrderTotal';
 import { number } from 'prop-types';
+import moment from 'moment/moment';
 
 export function CommonOrderDetail(props) {
   const mapRef = useRef();
@@ -125,94 +126,118 @@ export function CommonOrderDetail(props) {
     dispatch(getReviewDefault(index));
   };
 
-  const renderProductItem = ({ item, index }) => (
-    <View style={styles.productItemViewStyle}>
-      <View style={{ justifyContent: 'center' }}>
-        <Image
-          source={
-            item?.product_image || item?.order_details
-              ? {
-                  uri: item?.order_details
-                    ? item?.order_details?.product_image
-                    : item?.product_image,
-                }
-              : Images.noproduct
-          }
-          style={styles.productImageStyle}
-        />
-      </View>
+  const renderProductItem = ({ item, index }) => {
+    const isBookingDateAvailable =
+      orderData?.appointments?.[0]?.date ||
+      orderData?.appointments?.[0]?.start_time ||
+      orderData?.appointments?.[0]?.end_time;
+    const bookingDateTime = `${moment
+      .utc(orderData?.appointments?.[0]?.date)
+      .format('DD/MM/YYYY')} @ ${orderData?.appointments?.[0]?.start_time}-${
+      orderData?.appointments?.[0]?.end_time
+    }`;
+    return (
+      <View>
+        <View style={styles.productItemViewStyle}>
+          <View style={{ justifyContent: 'center' }}>
+            <Image
+              source={
+                item?.product_image || item?.order_details
+                  ? {
+                      uri: item?.order_details
+                        ? item?.order_details?.product_image
+                        : item?.product_image,
+                    }
+                  : Images.noproduct
+              }
+              style={styles.productImageStyle}
+            />
+          </View>
 
-      <View style={styles.productDetailView}>
-        <Text numberOfLines={1} style={styles.productnameTextStyle}>
-          {item?.order_details ? item?.order_details?.product_name : item?.product_name}
-        </Text>
+          <View style={styles.productDetailView}>
+            <Text numberOfLines={1} style={styles.productnameTextStyle}>
+              {item?.order_details ? item?.order_details?.product_name : item?.product_name}
+            </Text>
 
-        <Text style={styles.productQtyPriceText}>{`$${
-          item?.order_details ? item?.order_details?.price : item?.price
-        } X ${item?.order_details ? item?.order_details?.qty : item?.qty}`}</Text>
-      </View>
+            <Text style={styles.productQtyPriceText}>{`$${
+              item?.order_details ? item?.order_details?.price : item?.price
+            } X ${item?.order_details ? item?.order_details?.qty : item?.qty}`}</Text>
 
-      <View style={styles.totalAmountView}>
-        <Text style={styles.productQtyPriceText}>{`$${
-          item?.order_details
-            ? item?.order_details?.price * item?.order_details?.qty
-            : item?.price * item?.qty
-        }`}</Text>
+            {isBookingDateAvailable && (
+              <Text style={[styles.priceTitle, { fontSize: ms(7), color: COLORS.black }]}>
+                {bookingDateTime}
+              </Text>
+            )}
+          </View>
+
+          <View style={styles.totalAmountView}>
+            <Text style={styles.productQtyPriceText}>{`$${
+              item?.order_details
+                ? item?.order_details?.price * item?.order_details?.qty
+                : item?.price * item?.qty
+            }`}</Text>
+          </View>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <ScreenWrapper>
       <Header backRequired title={strings.profile.header} />
       <View style={styles.container}>
-        <View style={styles.userDetailView}>
-          <View style={{ flexDirection: 'row' }}>
-            <Image
-              source={
-                customerDetail?.profile_photo ? { uri: customerDetail?.profile_photo } : Images.user
-              }
-              style={styles.profileImageStyle}
-            />
+        {customerDetail && (
+          <View style={styles.userDetailView}>
+            <View style={{ flexDirection: 'row' }}>
+              <Image
+                source={
+                  customerDetail?.profile_photo
+                    ? { uri: customerDetail?.profile_photo }
+                    : Images.user
+                }
+                style={styles.profileImageStyle}
+              />
 
-            <View style={{ paddingLeft: 10 }}>
-              <Text
-                style={styles.nameTextStyle}
-              >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
-              <Text
-                style={styles.addressTextStyle}
-              >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+              <View style={{ paddingLeft: 10 }}>
+                <Text style={styles.nameTextStyle}>
+                  {`${customerDetail?.firstname} ${customerDetail?.lastname}`}
+                </Text>
+                <Text
+                  style={styles.addressTextStyle}
+                >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+              </View>
             </View>
-          </View>
 
-          {orderData?.delivery_option == '1' ||
-            (orderData?.delivery_option == '4' && (
-              <>
-                <Spacer space={SH(20)} />
-                <View style={styles.deliveryDetailsView}>
-                  <View style={{ flex: 0.35 }}>
-                    {orderData?.shipping_details ? (
-                      <Text style={styles.deliveryTypeText}>
-                        {orderData?.shipping_details?.title}
-                      </Text>
-                    ) : orderData?.shipping_details ? (
-                      <Text style={styles.deliveryTypeText}>
-                        {orderData?.delivery_details?.title}
-                      </Text>
-                    ) : null}
-                  </View>
-                  {orderData?.delivery_option == '1' && (
-                    <View style={styles.deliveryTimeViewStyle}>
-                      <Image source={Images.clockIcon} style={styles.clockImageStyle} />
-                      <Text
-                        style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
-                      >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
+            {orderData?.delivery_option == '1' ||
+              (orderData?.delivery_option == '4' && (
+                <>
+                  <Spacer space={SH(20)} />
+                  <View style={styles.deliveryDetailsView}>
+                    <View style={{ flex: 0.35 }}>
+                      {orderData?.shipping_details ? (
+                        <Text style={styles.deliveryTypeText}>
+                          {orderData?.shipping_details?.title}
+                        </Text>
+                      ) : orderData?.shipping_details ? (
+                        <Text style={styles.deliveryTypeText}>
+                          {orderData?.delivery_details?.title}
+                        </Text>
+                      ) : null}
                     </View>
-                  )}
-                </View>
-              </>
-            ))}
-        </View>
+                    {orderData?.delivery_option == '1' && (
+                      <View style={styles.deliveryTimeViewStyle}>
+                        <Image source={Images.clockIcon} style={styles.clockImageStyle} />
+                        <Text
+                          style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
+                        >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
+                      </View>
+                    )}
+                  </View>
+                </>
+              ))}
+          </View>
+        )}
+
         <Spacer space={SH(10)} />
         {orderData?.delivery_option == '1' ||
           (orderData?.delivery_option == '4' && (

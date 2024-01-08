@@ -132,12 +132,10 @@ export function Security() {
             code: value,
           };
       const authToken = loginPosUser?.token;
-      console.log('userDetaullsss', JSON.stringify(loginPosUser));
 
       const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
 
       const res = await verificationFunction(data, authToken)(dispatch);
-      console.log('verrrr', res);
       if (res?.status_code === 201) {
         // const data = {
         //   app_name: 'pos',

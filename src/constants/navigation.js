@@ -35,4 +35,5 @@ export const NAVIGATION = {
   productRefund: 'ProductRefund',
   paymentSelection: 'PaymentSelection',
   oldPin: 'OldPin',
+  twoFactorLogin: 'TwoFactorLogin',
 };

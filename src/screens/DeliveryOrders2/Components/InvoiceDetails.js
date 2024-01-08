@@ -227,6 +227,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
               strokeColor={COLORS.primary}
             />
             <Marker
+              zIndex={1}
               coordinate={{
                 latitude: orderDetail?.order_delivery?.order_pickup_latitude ?? 0.0,
                 longitude: orderDetail?.order_delivery?.order_pickup_longitude ?? 0.0,
@@ -237,6 +238,7 @@ const InvoiceDetails = ({ trackingView, mapRef, orderData }) => {
               </View>
             </Marker>
             <Marker
+              zIndex={5}
               coordinate={{
                 latitude: orderDetail?.order_delivery?.order_delivery_latitude ?? 0.0,
                 longitude: orderDetail?.order_delivery?.order_delivery_longitude ?? 0.0,

@@ -19,18 +19,20 @@ import { Spacer } from '@/components';
 import { crossButton, userImage } from '@/assets';
 import { strings } from '@/localization';
 import { digits } from '@/utils/validators';
-import { goBack } from '@/navigation/NavigationRef';
-import { navigate } from '@mPOS/navigation/NavigationRef';
-import { loginPosUser } from '@/actions/UserActions';
+import { goBack, navigate } from '@/navigation/NavigationRef';
+
+import { loginPosUser, loginPosUserSuccess } from '@/actions/UserActions';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import { styles } from '@/screens/Auth/PosUserPasscode/PosUserPasscode.styles';
 import CustomHeaderPOSUsers from '../components/CustomHeaderPOSUsers';
-import { forgot2fa, reset2fa } from '@/actions/AuthActions';
+import { forgot2fa, getProfile, reset2fa } from '@/actions/AuthActions';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import { navigationRef } from '@mPOS/navigation/NavigationRef';
+import { NAVIGATION } from '@/constants';
+import { getSettings } from '@/actions/SettingAction';
 
 const CELL_COUNT = 4;
 
@@ -91,18 +93,17 @@ export function PosUserPasscode({ route }) {
         pos_user_id: posuser.user_id.toString(),
         pos_security_pin: value,
       };
-      dispatch(loginPosUser(data));
-      // const res = await dispatch(loginPosUser(data));
-
-      // if (res?.token) {
-      //   if (!res?.user_profiles?.is_two_fa_enabled) {
-      //     navigate(MPOS_NAVIGATION.twoFactorLogin, { userResponse: res });
-      //   } else {
-      //     dispatch(loginPosUserSuccess(res));
-      //     dispatch(getSettings());
-      //     dispatch(getProfile(res?.id));
-      //   }
-      // }
+      // dispatch(loginPosUser(data));
+      const res = await dispatch(loginPosUser(data));
+      if (res) {
+        if (res?.user_profiles?.is_two_fa_enabled) {
+          navigate(NAVIGATION.twoFactorLogin, { userResponse: res });
+        } else {
+          dispatch(loginPosUserSuccess(res));
+          dispatch(getSettings());
+          dispatch(getProfile(res?.id));
+        }
+      }
     }
   };
   const renderCell = ({ index }) => {

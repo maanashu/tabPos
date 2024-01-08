@@ -242,11 +242,13 @@ export const acceptOrder = (data, openShippingOrders, delivery, callback) => asy
   try {
     const res = await DeliveryController.acceptOrder(data);
     await dispatch(getOrderCount());
+    dispatch(orderStatusCount());
     callback && callback(res);
     dispatch(acceptOrderSuccess(res));
     dispatch(getPendingOrders());
   } catch (error) {
     dispatch(acceptOrderError(error.message));
+    return error;
   }
 };
 
@@ -255,7 +257,6 @@ export const verifyPickupOtp = (data, callback) => async (dispatch) => {
   try {
     const res = await DeliveryController.verifyPickupOtp(data);
     dispatch(verifyPickupOtpSuccess(res));
-    console.log('ressss', JSON.stringify(res));
 
     return res;
     // await dispatch(getOrderCount());

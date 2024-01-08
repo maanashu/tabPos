@@ -34,7 +34,7 @@ export class ShippingController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerID}&delivery_option=4`;
+        `?status=${status}&seller_id=${sellerID}&delivery_option=4&need_walkin=false`;
 
       // const endpoint =
       //   ORDER_URL +
@@ -235,8 +235,8 @@ export class ShippingController {
   static async orderStatusCount() {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
-      const endpoint = ORDER_URL + ApiOrderInventory.orderStatusCount + `?seller_id=${sellerID}`;
-      console.log('sellerID', sellerID);
+      const endpoint =
+        ORDER_URL + ApiOrderInventory.orderStatusCount + `?seller_id=${sellerID}&delivery_option=4`;
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);

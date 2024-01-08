@@ -149,8 +149,8 @@ export const styles = StyleSheet.create({
     // padding: 15,
   },
   securityLogo: {
-    width: SW(8),
-    height: SW(8),
+    width: SW(18),
+    height: SW(18),
     // top: SH(-6),
   },
   twoStepVerifiCon: {
@@ -158,7 +158,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   twoStepText: {
-    fontSize: ms(10),
+    fontSize: ms(16),
     fontFamily: Fonts.MaisonBold,
     color: COLORS.navy_blue,
   },
@@ -204,7 +204,7 @@ export const styles = StyleSheet.create({
     marginBottom: SH(8),
   },
   securitysubhead: {
-    fontSize: SF(10),
+    fontSize: SF(14),
     fontFamily: Fonts.Regular,
     color: COLORS.lavender,
   },
@@ -286,8 +286,8 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   toggleSecurity: {
-    width: SW(8),
-    height: SW(8),
+    width: ms(30),
+    height: ms(30),
     resizeMode: 'contain',
   },
 
@@ -299,14 +299,6 @@ export const styles = StyleSheet.create({
   marginLeft: {
     // marginLeft: moderateScale(8),
     flex: 0.8,
-  },
-  marginLeftNew: {
-    position: 'absolute',
-    left: ms(30),
-    flex: 1,
-    width: '80%',
-    // marginLeft: moderateScale(8),
-    // flex: -50,
   },
   confirmModalView: {
     width: windowWidth * 0.32,
@@ -873,7 +865,7 @@ export const styles = StyleSheet.create({
     marginRight: moderateScale(10),
   },
   cancelbuttonCon: {
-    width: width * 0.127,
+    width: '45%',
     height: height * 0.05,
     backgroundColor: COLORS.sky_grey,
     borderRadius: 50,
@@ -881,7 +873,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   nextbuttonCon: {
-    width: width * 0.127,
+    width: '45%',
     height: height * 0.05,
     backgroundColor: COLORS.navy_blue,
     borderRadius: 50,
@@ -1134,10 +1126,11 @@ export const styles = StyleSheet.create({
   container1: {
     backgroundColor: 'white',
     borderRadius: 20,
-    width: windowWidth * 0.33,
-    height: windowHeight * 0.6,
+    width: '100%',
+    // height: '70%',
     alignSelf: 'center',
     position: 'absolute',
+    paddingVertical: ms(20),
   },
   modalViewStyle: {
     backgroundColor: '#F5F6F7',

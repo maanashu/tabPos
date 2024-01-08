@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   taxPayerHeading: {
-    fontSize: ms(36),
+    fontSize: ms(20),
     color: COLORS.navy_blue,
     fontFamily: Fonts.Medium,
     flex: 1,
@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: ms(50),
     paddingHorizontal: ms(20),
-    height: ms(55),
+    height: ms(45),
     borderColor: COLORS.light_purple,
   },
   rowJustified: {
@@ -86,7 +86,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: ms(15),
     borderRadius: ms(30),
-    height: ms(55),
+    height: ms(50),
   },
   saveButtonText: {
     color: COLORS.white,
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: ms(15),
     borderRadius: ms(30),
-    height: ms(55),
+    height: ms(50),
   },
   verifiedIcon: {
     tintColor: COLORS.white,

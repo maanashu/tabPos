@@ -34,7 +34,7 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
   const shopAddress = orderData?.seller_details?.current_address?.street_address;
 
   const [isHideView, setisHideView] = useState(false);
-
+  console.log('Asdfsfsdfdsf', JSON.stringify(orderData));
   const currentStatus = (status) => {
     if (status == 1) {
       return strings.deliveryOrders.orderAccepted;
@@ -234,7 +234,8 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
               {returnStatusView('Return to Shop')}
               {returnStatusView(strings.deliveryOrders.cancelled)}
               {returnStatusView(strings.deliveryOrders.pickup)}
-              {returnStatusView(strings.deliveryOrders.driverAssigned)}
+              {orderData?.delivery_option !== '3' &&
+                returnStatusView(strings.deliveryOrders.driverAssigned)}
               {returnStatusView(strings.deliveryOrders.readyToPickup)}
               {returnStatusView(strings.deliveryOrders.orderAccepted)}
             </View>
@@ -277,7 +278,8 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
               {returnStatusView('Return to Shop', StepPurpleStop)}
               {returnStatusView(strings.deliveryOrders.cancelled, StepCross)}
               {returnStatusView(strings.deliveryOrders.pickup, StepPurpleStop)}
-              {returnStatusView(strings.deliveryOrders.driverAssigned, StepSkypStop)}
+              {orderData?.delivery_option !== '3' &&
+                returnStatusView(strings.deliveryOrders.driverAssigned, StepSkypStop)}
               {returnStatusView(strings.deliveryOrders.readyToPickup, StepSkypStop)}
               {returnStatusView(strings.deliveryOrders.orderAccepted, StepYellow)}
             </View>
@@ -323,13 +325,14 @@ const ShipmentTracking = ({ orderData, onPressShop, isMaximizeStatusView }) => {
                 orderStatus,
                 StepPurpleStop
               )}
-              {statusView(
-                strings.deliveryOrders.driverAssigned,
-                orderStatus >= 3 && true,
-                orderData?.status_desc?.status_3_updated_at,
-                orderStatus,
-                StepSkypStop
-              )}
+              {orderData?.delivery_option !== '3' &&
+                statusView(
+                  strings.deliveryOrders.driverAssigned,
+                  orderStatus >= 3 && true,
+                  orderData?.status_desc?.status_3_updated_at,
+                  orderStatus,
+                  StepSkypStop
+                )}
               {statusView(
                 strings.deliveryOrders.readyToPickup,
                 orderStatus >= 2 && true,

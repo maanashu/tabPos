@@ -66,7 +66,6 @@ export function ReEnterPin(props) {
           })
         )
           .then((res) => {
-            console.log(res);
             setIsLoading(false);
             if (res.status_code == '200') {
               dispatch(logoutFunction());

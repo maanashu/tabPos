@@ -78,6 +78,7 @@ import { goBack } from '@mPOS/navigation/NavigationRef';
 import { styles } from './Management.styles';
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@gorhom/bottom-sheet';
 import { SessionHistoryTable, SummaryHistory } from './Components';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -151,6 +152,7 @@ export function Management() {
   //   Number(drawerData?.drawerHistory?.cash_out?.total);
 
   const cashTotalNet = drawerData?.drawerHistory?.net_amount;
+
   // alert(cashOut?.total);
   const [countFirst, setCountFirst] = useState();
   const [countThird, setCountThird] = useState();
@@ -1115,7 +1117,8 @@ export function Management() {
               </View>
 
               <Text style={[styles.drawerIdText, { top: 2 }]}>
-                {moment(SessionData?.createDate).format('dddd, MMMM Do YYYY | h:mm a')}
+                {moment.utc().format('dddd, Do MMMM YYYY')}
+                {/* {moment.utc(SessionData?.createDate)?.format('dddd, MMMM Do YYYY | h:mm a')} */}
               </Text>
             </View>
 
@@ -1124,7 +1127,8 @@ export function Management() {
               <View>
                 <Text style={styles.usdText}>
                   {strings.management.usd}
-                  {Number(SessionData?.cashBalance)?.toFixed(2)}
+                  {/* {Number(SessionData?.cashBalance)?.toFixed(2)} */}
+                  {amountFormat(cashTotalNet?.toFixed(2), true)}
                 </Text>
               </View>
               <Text
@@ -1184,7 +1188,7 @@ export function Management() {
                   </View>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashSum?.toFixed(2) ?? '0'}
+                    {amountFormat(cashIn?.total?.toFixed(2), true)}
                   </Text>
                 </TouchableOpacity>
                 {viewCashInArray && (
@@ -1208,7 +1212,7 @@ export function Management() {
                       </View>
                       <Text style={styles.paymentBodyText}>
                         {strings.management.usd}
-                        {cashIn?.sales?.total.toFixed(2)}
+                        {amountFormat(cashIn?.sales?.total.toFixed(2), true)}
                       </Text>
                     </TouchableOpacity>
                     {salesExpandedView && (
@@ -1218,7 +1222,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.sales?.cash.toFixed(2)}
+                            {amountFormat(cashIn?.sales?.cash.toFixed(2))}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1226,7 +1230,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.sales?.card.toFixed(2)}
+                            {amountFormat(cashIn?.sales?.card.toFixed(2), true)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1234,7 +1238,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.sales?.jobr_coin.toFixed(2)}
+                            {amountFormat(cashIn?.sales?.jobr_coin.toFixed(2), true)}
                           </Text>
                         </View>
                       </View>
@@ -1259,7 +1263,7 @@ export function Management() {
                       </View>
                       <Text style={styles.paymentBodyText}>
                         {strings.management.usd}
-                        {cashIn?.manual?.total.toFixed(2)}
+                        {amountFormat(cashIn?.manual?.total.toFixed(2), true)}
                       </Text>
                     </TouchableOpacity>
                     {manualInExpandedView && (
@@ -1269,7 +1273,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.manual?.cash.toFixed(2)}
+                            {amountFormat(cashIn?.manual?.cash.toFixed(2), true)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1277,7 +1281,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.manual?.card.toFixed(2)}
+                            {amountFormat(cashIn?.manual?.card.toFixed(2), true)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1285,7 +1289,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashIn?.manual?.jobr_coin.toFixed(2)}
+                            {amountFormat(cashIn?.manual?.jobr_coin.toFixed(2), true)}
                           </Text>
                         </View>
                       </View>
@@ -1308,7 +1312,7 @@ export function Management() {
                   </View>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashOutSum?.toFixed(2) ?? '0'}
+                    {amountFormat(cashOut?.total?.toFixed(2) ?? '0', true)}
                   </Text>
                 </TouchableOpacity>
                 {viewCashOutArray && (
@@ -1331,7 +1335,7 @@ export function Management() {
                       </View>
                       <Text style={styles.paymentBodyText}>
                         {strings.management.usd}
-                        {cashOut?.refund?.total.toFixed(2)}
+                        {amountFormat(cashOut?.refund?.total.toFixed(2), true)}
                       </Text>
                     </TouchableOpacity>
                     {salesOutExpandedView && (
@@ -1341,7 +1345,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.refund?.cash.toFixed(2)}
+                            {amountFormat(cashOut?.refund?.cash.toFixed(2), true)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1349,7 +1353,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.refund?.card.toFixed(2)}
+                            {amountFormat(cashOut?.refund?.card.toFixed(2), true)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1357,7 +1361,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.refund?.jobr_coin.toFixed(2)}
+                            {amountFormat(cashOut?.refund?.jobr_coin.toFixed(2), true)}
                           </Text>
                         </View>
                       </View>
@@ -1385,7 +1389,7 @@ export function Management() {
                       </View>
                       <Text style={styles.paymentBodyText}>
                         {strings.management.usd}
-                        {cashOut?.manual?.total.toFixed(2)}
+                        {amountFormat(cashOut?.manual?.total.toFixed(2), true)}
                       </Text>
                     </TouchableOpacity>
                     {manualOutExpandedView && (
@@ -1395,7 +1399,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.manual?.cash.toFixed(2)}
+                            {amountFormat(cashOut?.manual?.cash?.toFixed(2), true)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1403,7 +1407,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.manual?.card.toFixed(2)}
+                            {amountFormat(cashOut?.manual?.card?.toFixed(2), true)}
                           </Text>
                         </View>
                         <View style={[styles.paymentBodyCon, { paddingLeft: SW(10) }]}>
@@ -1411,7 +1415,7 @@ export function Management() {
 
                           <Text style={styles.paymentBodyText}>
                             {strings.management.usd}
-                            {cashOut?.manual?.jobr_coin.toFixed(2)}
+                            {amountFormat(cashOut?.manual?.jobr_coin?.toFixed(2), true)}
                           </Text>
                         </View>
                       </View>
@@ -1423,7 +1427,7 @@ export function Management() {
                   <Text style={styles.cashDrawerText}>{strings.management.netPayment}</Text>
                   <Text style={styles.cashDrawerText}>
                     {strings.management.usd}
-                    {cashTotalNet.toFixed(2)}
+                    {amountFormat(cashTotalNet?.toFixed(2), true)}
                     {/* {SessionData?.cashBalance} */}
                   </Text>
                 </View>

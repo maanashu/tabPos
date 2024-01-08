@@ -678,13 +678,13 @@ export function CartServiceScreen({
                             <Text style={styles.offerText} numberOfLines={1}>
                               {item?.name}
                             </Text>
-                            <Text
+                            {/* <Text
                               style={[styles.offerText, styles.offerTextYellow]}
                               numberOfLines={1}
                             >
                               Today at 10hrs / Dr. Africa ...
-                            </Text>
-                            <Spacer space={SH(10)} />
+                            </Text> */}
+                            <Spacer space={SH(5)} />
                             {item?.supplies?.[0]?.supply_prices?.[0]?.actual_price &&
                             item?.supplies?.[0]?.supply_prices?.[0]?.offer_price ? (
                               <View style={{ flexDirection: 'row' }}>

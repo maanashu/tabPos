@@ -73,4 +73,5 @@ export const NAVIGATION = {
   faq: 'Faq',
   commonOrderDetail: 'CommonOrderDetail',
   taxesDuties: 'TaxesDuties',
+  languages: 'Languages',
 };

@@ -127,20 +127,26 @@ export function Revenue({ sellerID, data }) {
         </View>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
-        <Text style={styles.revenueDataText}>{item?.total_items ? item?.total_items : 0}</Text>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          {item?.total_price < 0
-            ? '-$' + Math.abs(item?.total_price)?.toFixed(2)
-            : '$' + item?.total_price?.toFixed(2) ?? 0}
+          {item?.total_orders ? numberFormate(item?.total_orders) : 0}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText}>
-          {item?.cost_sum < 0
-            ? '-$' + Math.abs(item?.cost_sum)?.toFixed(2)
-            : '$' + item?.cost_sum?.toFixed(2) ?? 0}
+          {item?.total_price
+            ? item?.total_price < 0
+              ? '-$' + amountFormat(Math.abs(item?.total_price), 'notSign')
+              : amountFormat(item?.total_price)
+            : '$0'}
+        </Text>
+      </DataTable.Cell>
+      <DataTable.Cell style={styles.dateTableSetting}>
+        <Text style={styles.revenueDataText}>
+          {item?.cost_sum
+            ? item?.cost_sum < 0
+              ? '-$' + amountFormat(Math.abs(item?.cost_sum), 'notSign')
+              : amountFormat(item?.cost_sum)
+            : '$0'}
         </Text>
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
@@ -148,9 +154,11 @@ export function Revenue({ sellerID, data }) {
       </DataTable.Cell>
       <DataTable.Cell style={styles.dateTableSetting}>
         <Text style={styles.revenueDataText2}>
-          {item?.transaction < 0
-            ? '-$' + Math.abs(item?.transaction)?.toFixed(2)
-            : '$' + item?.transaction?.toFixed(2) ?? 0}
+          {item?.transaction
+            ? item?.transaction < 0
+              ? '-$' + amountFormat(Math.abs(item?.transaction), 'notSign')
+              : amountFormat(item?.transaction)
+            : '$0'}
         </Text>
       </DataTable.Cell>
     </DataTable.Row>

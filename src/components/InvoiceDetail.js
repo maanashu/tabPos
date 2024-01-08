@@ -64,7 +64,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
     },
     {
       title: 'Date',
-      data: moment.utc(singleOrderDetail?.date).format('ddd MM/DD/YYYY'),
+      data: moment.utc(singleOrderDetail?.created_at).format('ddd MM/DD/YYYY'),
       id: 2,
     },
     {
@@ -91,32 +91,49 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
     },
   ];
 
-  const renderProductItem = ({ item, index }) => (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.count}>
-          x {singleOrderDetail?.is_returned_order ? item?.order_details?.qty : item?.qty}
-        </Text>
-        <View style={{ marginLeft: ms(10) }}>
-          <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-            {singleOrderDetail?.is_returned_order
-              ? item?.order_details?.product_name
-              : item?.product_details?.name}
-          </Text>
+  const renderProductItem = ({ item, index }) => {
+    const isBookingDateAvailable =
+      singleOrderDetail?.appointments?.[0]?.date ||
+      singleOrderDetail?.appointments?.[0]?.start_time ||
+      singleOrderDetail?.appointments?.[0]?.end_time;
+    const bookingDateTime = `${moment
+      .utc(singleOrderDetail?.appointments?.[0]?.date)
+      .format('DD/MM/YYYY')} @ ${singleOrderDetail?.appointments?.[0]?.start_time}-${
+      singleOrderDetail?.appointments?.[0]?.end_time
+    }`;
+    return (
+      <View style={{ height: ms(28) }}>
+        <View style={styles.container}>
+          <View style={styles.subContainer}>
+            <Text style={styles.count}>
+              x {singleOrderDetail?.is_returned_order ? item?.order_details?.qty : item?.qty}
+            </Text>
+            <View style={{ marginLeft: ms(10) }}>
+              <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
+                {singleOrderDetail?.is_returned_order
+                  ? item?.order_details?.product_name
+                  : item?.product_details?.name}
+              </Text>
+            </View>
+          </View>
+          <View style={{ width: '24%', alignItems: 'flex-end' }}>
+            <Text style={styles.priceTitle} numberOfLines={1}>
+              {`${formattedPrice(
+                singleOrderDetail?.is_returned_order
+                  ? item?.order_details?.price * item?.order_details?.qty
+                  : item?.price * item?.qty ?? '0.00'
+              )}`}
+            </Text>
+          </View>
         </View>
+        {isBookingDateAvailable && (
+          <Text style={[styles.priceTitle, styles.container, { marginTop: ms(2) }]}>
+            {bookingDateTime}
+          </Text>
+        )}
       </View>
-      <View style={{ width: '24%', alignItems: 'flex-end' }}>
-        <Text style={styles.priceTitle} numberOfLines={1}>
-          {`${formattedPrice(
-            singleOrderDetail?.is_returned_order
-              ? item?.order_details?.price * item?.order_details?.qty
-              : item?.price * item?.qty ?? '0.00'
-          )}`}
-        </Text>
-      </View>
-    </View>
-  );
-
+    );
+  };
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}>
       {singleOrderDetail?.delivery_option == 1 || singleOrderDetail?.delivery_option == 4 ? (
@@ -630,7 +647,7 @@ const styles = StyleSheet.create({
 
   container: {
     paddingHorizontal: ms(8),
-    height: ms(28),
+    // height: ms(28),
     borderRadius: ms(5),
     alignItems: 'center',
     alignSelf: 'center',

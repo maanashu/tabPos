@@ -10,8 +10,9 @@ import ButtonComponent from './ButtonComponent';
 
 import styles from '../Orders/styles';
 import moment from 'moment';
+import { amountFormat } from '@/utils/GlobalMethods';
 
-const OrderTotal = ({ orderData, onPressAcceptHandler }) => {
+const OrderTotal = ({ orderData, declineHandler, onPressAcceptHandler }) => {
   return (
     <View style={styles.billViewStyle}>
       <Text style={styles.totalItemsStyles}>
@@ -93,7 +94,10 @@ const OrderTotal = ({ orderData, onPressAcceptHandler }) => {
 
       <View style={styles.amountViewStyle}>
         <Text style={styles.totalValueText}>{strings.delivery.total}</Text>
-        <Text style={styles.totalValueText}>{`$${orderData?.payable_amount}`}</Text>
+        <Text style={styles.totalValueText}>{`$${amountFormat(
+          orderData?.payable_amount,
+          true
+        )}`}</Text>
       </View>
 
       <Spacer space={SH(15)} />
@@ -101,6 +105,7 @@ const OrderTotal = ({ orderData, onPressAcceptHandler }) => {
       <ButtonComponent
         status={orderData?.status}
         orderId={orderData?.id}
+        declineHandler={declineHandler}
         onPressHandler={onPressAcceptHandler}
       />
     </View>

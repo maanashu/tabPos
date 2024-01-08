@@ -37,8 +37,6 @@ const RightDrawer = ({ onPressDrawerHandler, openShippingOrders }) => {
   const orderStatusCountData = shippingData?.orderStatus;
   const [showFullSideMenu, setShowFullSideMenu] = useState(false);
 
-  // console.log(JSON.stringify(orderStatusCountData), 'order drawer backend values');
-
   const statusCount = useMemo(
     () => [
       {

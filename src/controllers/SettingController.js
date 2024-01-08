@@ -283,14 +283,12 @@ export class SettingController {
         Authorization: authToken,
         'app-name': 'pos',
       };
-      console.log('SDsad', data);
       axios
         .post(endpoint, data, authToken && { headers })
         .then((response) => {
           resolve(response?.data);
         })
         .catch((error) => {
-          console.log('ererer', error);
           if (error?.msg === 'Invalid code.') {
             Toast.show({
               text2: 'Token Code Expire',

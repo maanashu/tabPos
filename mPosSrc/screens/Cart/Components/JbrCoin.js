@@ -151,7 +151,6 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
         dispatch(qrcodestatus(cartData.id));
       }, 5000);
     } else if (retailData?.qrStatuskey?.status == 'success' && sendRequest == false) {
-      // alert('fghjk');
       createOrderHandler();
       clearInterval(interval);
     }
@@ -198,6 +197,9 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
         dispatch(requestCheckSuccess(''));
         dispatch(qrCodeStatusSuccess(''));
         setWalletIdInp('');
+        setsendRequest(false);
+        sendRequest && alert('Payment Request cancel');
+        setDuration(120);
       }}
       backdropOpacity={0.5}
       ref={jbrCoinRef}
@@ -218,6 +220,9 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
                 dispatch(requestCheckSuccess(''));
                 dispatch(qrCodeStatusSuccess(''));
                 setWalletIdInp('');
+                setsendRequest(false);
+                sendRequest && alert('Payment request cancel');
+                setDuration(120);
               }}
             >
               <Image source={Images.cross} style={styles.crossImageStyle} />

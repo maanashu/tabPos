@@ -51,7 +51,7 @@ const PartialRefund = ({ setIsVisible, productsList, onPressApplyRefund }) => {
               const isPercentageLabel = selectedMethod === strings.returnOrder.percentageLabel;
 
               const updatedDataArray = productsList?.map((item) => {
-                let newPrice = parseFloat(text);
+                let newPrice = isPercentageLabel ? (text * item.price) / 100 : parseFloat(text);
 
                 // Check if the entered price is less than the current item price
                 if (newPrice >= parseFloat(item.price)) {
@@ -60,10 +60,8 @@ const PartialRefund = ({ setIsVisible, productsList, onPressApplyRefund }) => {
 
                 return {
                   ...item,
-                  refundAmount: isPercentageLabel ? (item.price * newPrice) / 100 : newPrice,
-                  totalRefundAmount: isPercentageLabel
-                    ? (item.price * newPrice * item.qty) / 100
-                    : newPrice * item.qty,
+                  refundAmount: newPrice,
+                  totalRefundAmount: newPrice * item.qty,
                 };
               });
 

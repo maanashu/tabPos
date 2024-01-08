@@ -55,6 +55,7 @@ import Modal from 'react-native-modal';
 import CountryPicker from 'react-native-country-picker-modal';
 import { strings } from '@mPOS/localization';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function UserProfile(props) {
   const dispatch = useDispatch();
@@ -235,39 +236,41 @@ export function UserProfile(props) {
   return (
     <ScreenWrapper>
       <Header backRequired title={'Back'} edit editHandler={() => setShowEditModal(true)} />
-
-      <View style={styles.profileCon}>
-        <Image
-          source={
-            data?.profilePhoto == null || data?.profilePhoto == ''
-              ? userImage
-              : { uri: data?.profilePhoto }
-          }
-          style={styles.lovingStyle}
-        />
-        <View style={{ paddingHorizontal: moderateScale(10) }}>
-          <Text style={styles.angelaText}>{data?.firstName ? data?.firstName : 'Unknown'}</Text>
-          <Spacer space={SH(5)} />
-          <View style={styles.flexAlign}>
-            <Image source={Phone_light} style={styles.Phonelight} />
-            <Text style={styles.adressText}>{data?.phoneNumber}</Text>
-          </View>
-          <Spacer space={SH(5)} />
-          <View style={styles.flexAlign}>
-            <Image source={email} style={styles.Phonelight} />
-            <Text style={styles.adressText}>{data?.userEmail}</Text>
-          </View>
-          <Spacer space={SH(5)} />
-          <View style={styles.flexAlign}>
-            <Image source={location} style={styles.Phonelight} />
-            {userDetail?.user_details?.current_address ? (
-              <Text style={styles.adressText} numberOfLines={1}>
-                {data?.streetAdd} {data?.city} {data?.state} {data?.country} {data?.postalCode}
-              </Text>
-            ) : null}
+      {user_details && (
+        <View style={styles.profileCon}>
+          <Image
+            source={
+              data?.profilePhoto == null || data?.profilePhoto == ''
+                ? userImage
+                : { uri: data?.profilePhoto }
+            }
+            style={styles.lovingStyle}
+          />
+          <View style={{ paddingHorizontal: moderateScale(10) }}>
+            <Text style={styles.angelaText}>{data?.firstName ? data?.firstName : 'Unknown'}</Text>
+            <Spacer space={SH(5)} />
+            <View style={styles.flexAlign}>
+              <Image source={Phone_light} style={styles.Phonelight} />
+              <Text style={styles.adressText}>{data?.phoneNumber}</Text>
+            </View>
+            <Spacer space={SH(5)} />
+            <View style={styles.flexAlign}>
+              <Image source={email} style={styles.Phonelight} />
+              <Text style={styles.adressText}>{data?.userEmail}</Text>
+            </View>
+            <Spacer space={SH(5)} />
+            <View style={styles.flexAlign}>
+              <Image source={location} style={styles.Phonelight} />
+              {userDetail?.user_details?.current_address ? (
+                <Text style={styles.adressText} numberOfLines={1}>
+                  {data?.streetAdd} {data?.city} {data?.state} {data?.country} {data?.postalCode}
+                </Text>
+              ) : null}
+            </View>
           </View>
         </View>
-      </View>
+      )}
+
       <View style={styles.searchContainer}>
         <View style={{ flex: 1 }}>
           <TouchableOpacity
@@ -412,7 +415,11 @@ export function UserProfile(props) {
 
                         <View style={styles.profileheaderChildView}>
                           <Text style={styles.tableTextData} numberOfLines={1}>
-                            ${item?.payable_amount}
+                            {item?.payable_amount
+                              ? item?.payable_amount < 0
+                                ? '-$' + amountFormat(Math.abs(item?.payable_amount), 'notSign')
+                                : amountFormat(item?.payable_amount)
+                              : '$0'}
                           </Text>
                         </View>
                       </View>

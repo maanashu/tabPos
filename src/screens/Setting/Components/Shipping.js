@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { View, Text, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import { styles } from '@/screens/Setting/Setting.styles';
 import {
@@ -38,8 +38,8 @@ export function Shipping() {
   const sellerID = getAuthdata?.merchantLoginData?.uniqe_id;
   const merchantDetails = getAuthdata?.merchantLoginData?.user;
   const getSettingData = useSelector(getSetting);
-  const shippingpickupData = getSettingData?.getShippingPickup;
-  // console.log('shiping data: ' + JSON.stringify(shippingpickupData));
+  const shippingpickupData = getSettingData?.getShippingPickup ?? [];
+  const filteredItems = shippingpickupData.filter((item) => item?.is_active === true);
 
   const convertShippinDataToArr = () => {
     let arr = [];
@@ -514,7 +514,7 @@ export function Shipping() {
           ]}
         > */}
         {shippingpickupData?.length > 0 &&
-          shippingpickupData.map((item, index) => (
+          filteredItems.map((item, index) => (
             <View style={[styles.shippingTileBorderStyle, { marginBottom: ms(10) }]}>
               <View style={[styles.dispalyRow, { marginBottom: ms(10) }]}>
                 <Image
@@ -669,6 +669,18 @@ export function Shipping() {
               </View>
             </View>
           ))}
+        {filteredItems.length == 0 && (
+          <Text
+            style={{
+              textAlign: 'center',
+              fontFamily: Fonts.MaisonBold,
+              color: COLORS.navy_blue,
+              fontSize: SF(18),
+            }}
+          >
+            No Active location
+          </Text>
+        )}
         {/* </View> */}
       </ScrollView>
     </View>

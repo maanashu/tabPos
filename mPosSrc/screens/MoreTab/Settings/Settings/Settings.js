@@ -17,7 +17,7 @@ export function Settings() {
   const getAuth = useSelector(getAuthData);
   const posUser = useSelector(getUser);
   const getSettingData = useSelector(getSetting);
-  const getUserLocation = getSettingData?.getUserAddress;
+  const getUserLocation = getSettingData?.getShippingPickup;
 
   useEffect(() => {
     dispatch(getUserAddress());
@@ -53,7 +53,13 @@ export function Settings() {
       subTitle: getAuth?.getAllPosUsersData?.pos_staff?.length || '0',
       navigation: MPOS_NAVIGATION.staffSettings,
     },
-    { id: 6, title: strings?.settings?.language, image: Images.language, subTitle: 'Defaults' },
+    {
+      id: 6,
+      title: strings?.settings?.language,
+      image: Images.language,
+      subTitle: 'Defaults',
+      navigation: MPOS_NAVIGATION.languages,
+    },
     {
       id: 7,
       title: strings?.settings?.legal,

@@ -237,16 +237,24 @@ export const AddProductScreen = ({ backHandler }) => {
                 <View style={styles.dot} />
                 <Text style={styles.skuText}>{productDetail?.sku}</Text>
               </View>
-              {productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
+              {/* {productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
               productDetail?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
                 <Text style={styles.productName}>
                   {amountFormat(productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price)}
-                  {/* ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price} */}
                 </Text>
               ) : (
                 <Text style={styles.productName}>
                   {amountFormat(productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
-                  {/* ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price} */}
+                </Text>
+              )} */}
+              <Text style={styles.productName}>
+                {amountFormat(productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
+              </Text>
+              {productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_applicable_qty && (
+                <Text style={[styles.productName, { marginTop: ms(5) }]}>
+                  Offer qty :{' '}
+                  {productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_applicable_qty}(
+                  {amountFormat(productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price)})
                 </Text>
               )}
             </View>
