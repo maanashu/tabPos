@@ -1,120 +1,67 @@
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts, SH } from '@/theme';
 import { useSelector } from 'react-redux';
-import { Spacer } from './Spacer';
-import { ScreenWrapper } from './ScreenWrapper';
-import { Header } from './Header';
 import { FlatList } from 'react-native-gesture-handler';
-import { HorizontalLine } from './HorizontalLine';
-import dayjs from 'dayjs';
 import { getUser } from '@mPOS/selectors/UserSelectors';
 import { Images } from '@mPOS/assets';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import moment from 'moment';
-import { useState } from 'react';
+import { Header, HorizontalLine, ScreenWrapper, Spacer } from '@mPOS/components';
 
-export function Invoice(props) {
+export function ReturnOrderInvoice(props) {
   const data = props?.route?.params?.data;
-  const getUserData = useSelector(getUser);
 
+  const getUserData = useSelector(getUser);
   const returnedData = data?.return;
   const returnInvoiceData = returnedData?.invoices;
   const sellerDetails = returnedData?.seller_details;
-  const returnOrderDetail = data?.order ? data?.order : returnedData?.order;
-  const returnAddress = data?.order ? data?.order?.seller_details : sellerDetails;
-
-  const address = data?.order
-    ? data?.order?.seller_address_id
-    : returnOrderDetail?.seller_address_id;
-  const [appointments, setAppointments] = useState(returnOrderDetail?.appointments ?? []);
-  const [selleraddress, setSellerAddress] = useState([]);
-  const [formateAddress, setFormateAddress] = useState('');
-  useEffect(() => {
-    if (returnOrderDetail?.appointments) {
-      const appointmentDate = returnOrderDetail?.appointments?.map((item) => {
-        return {
-          date: moment.utc(item.date).format('DD/MM/YYYY'),
-          startTime: item.start_time,
-          endTime: item.end_time,
-        };
-      });
-      setAppointments(appointmentDate);
-    }
-  }, [returnOrderDetail?.appointments]);
-
-  useEffect(() => {
-    if (address) {
-      const sellerAddressDetail = returnAddress?.seller_addresses?.map((item) => {
-        return {
-          address: item?.format_address,
-          address_id: item?.id,
-        };
-      });
-      setSellerAddress(sellerAddressDetail);
-    }
-  }, [address, sellerDetails?.seller_addresses, data?.order?.seller_details?.seller_addresses]);
-  useEffect(() => {
-    const matchingAddresses = selleraddress?.filter((item) => {
-      return item?.address_id === address;
-    });
-
-    if (matchingAddresses && matchingAddresses.length > 0) {
-      const addressMatched = matchingAddresses[0];
-      setFormateAddress(addressMatched?.address);
-    } else {
-      setFormateAddress(''); // Set a default value or handle the case where address is not found.
-      console.log('Address with address_id not found.');
-    }
-  }, [address, selleraddress]);
 
   // Normal Invoice Data
   const normalInvoiceData = data?.order;
 
   // Return order invoice
   const isReturnInvoice = data?.return && data?.order_id == null;
-  const returnedInvoiceData = data?.return;
 
   const finalInvoiceData = isReturnInvoice
-    ? returnedInvoiceData?.invoices
-    : normalInvoiceData?.invoices || returnedInvoiceData?.invoices;
+    ? returnedData?.invoices
+    : normalInvoiceData?.invoices || returnedData?.invoices;
+
+  console.log('finalInvoiceData', finalInvoiceData, isReturnInvoice);
 
   const sellerDetail = isReturnInvoice
-    ? returnedInvoiceData?.seller_details
+    ? returnedData?.seller_details
     : normalInvoiceData.seller_details;
 
   const finalSubtotal = isReturnInvoice
-    ? returnedInvoiceData?.products_refunded_amount
+    ? returnedData?.products_refunded_amount
     : normalInvoiceData?.actual_amount;
 
   const finalDeliveryShippingCharges = isReturnInvoice
-    ? (returnedInvoiceData?.order?.delivery_charge != 0 &&
-        returnedInvoiceData?.order?.delivery_charge) ||
-      (returnedInvoiceData?.order?.shipping_charge != 0 &&
-        returnedInvoiceData?.order?.shipping_charge)
+    ? (returnedData?.order?.delivery_charge != 0 && returnedData?.order?.delivery_charge) ||
+      (returnedData?.order?.shipping_charge != 0 && returnedData?.order?.shipping_charge)
     : (normalInvoiceData?.delivery_charge != 0 && normalInvoiceData?.delivery_charge) ||
       (normalInvoiceData?.shipping_charge != 0 && normalInvoiceData?.shipping_charge);
 
-  const finalDiscount = isReturnInvoice
-    ? returnedInvoiceData?.discount
-    : normalInvoiceData?.discount;
+  console.log('check finalDeliveryShippingCharges', finalDeliveryShippingCharges);
+  const finalDiscount = isReturnInvoice ? returnedData?.discount : normalInvoiceData?.discount;
 
-  const finalTax = isReturnInvoice ? returnedInvoiceData?.tax : normalInvoiceData?.tax;
+  const finalTax = isReturnInvoice ? returnedData?.tax : normalInvoiceData?.tax;
   const finalTotal = isReturnInvoice
-    ? returnedInvoiceData?.refunded_amount
+    ? returnedData?.refunded_amount
     : normalInvoiceData.payable_amount;
 
   const finalInvoiceCreationDate = isReturnInvoice
-    ? returnedInvoiceData?.updated_at
+    ? returnedData?.updated_at
     : normalInvoiceData?.updated_at;
 
   const finalModeOfPayment = isReturnInvoice
-    ? returnedInvoiceData?.mode_of_payment
+    ? returnedData?.mode_of_payment
     : normalInvoiceData?.mode_of_payment;
 
   const finalDeliveryOption = isReturnInvoice
-    ? returnedInvoiceData?.delivery_option
+    ? returnedData?.delivery_option
     : normalInvoiceData?.delivery_option;
 
   const finalBarcode = finalInvoiceData?.barcode;
@@ -135,13 +82,6 @@ export function Invoice(props) {
       : formattedReturnPrice(item?.price * item?.qty);
     const productName = isReturnInvoice ? item?.order_details?.product_name : item?.product_name;
     const productQty = isReturnInvoice ? item?.order_details?.qty : item?.qty;
-
-    const appointment = appointments[index];
-    const isBookingDateAvailable =
-      appointment && appointment.date && appointment.startTime && appointment.endTime;
-    const bookingDateTime = isBookingDateAvailable
-      ? `${appointment.date} @ ${appointment.startTime}-${appointment.endTime}`
-      : 'Booking date not available';
     return (
       <>
         <View style={styles.itemContainer}>
@@ -151,16 +91,12 @@ export function Invoice(props) {
             <View style={{ flex: 1 }}>
               <Text style={styles.productName}>{productName}</Text>
               <Text style={styles.qtyText}>Qty: {productQty}</Text>
-              {isBookingDateAvailable && (
-                <Text style={{ fontSize: ms(10) }}>{bookingDateTime}</Text>
-              )}
             </View>
           </View>
           <View style={{ marginLeft: ms(15) }}>
             <Text style={styles.priceText}>{normalOrderAmount}</Text>
           </View>
         </View>
-
         <Spacer space={ms(5)} />
       </>
     );
@@ -190,7 +126,9 @@ export function Invoice(props) {
         <View style={styles.sellerInfoView}>
           <Text style={styles.sellerName}>{sellerDetail?.user_profiles?.organization_name}</Text>
           <Spacer space={SH(6)} />
-          <Text style={styles.addressText}>{formateAddress}</Text>
+          <Text style={styles.addressText}>
+            {sellerDetail?.user_locations?.[0]?.formatted_address}
+          </Text>
           <Spacer space={SH(4)} />
 
           <Text style={styles.addressText}>{sellerDetail?.user_profiles?.full_phone_number}</Text>
@@ -204,20 +142,11 @@ export function Invoice(props) {
         <Spacer space={ms(20)} />
 
         <View>
-          <FlatList
-            data={data?.order?.order_details || data?.return?.return_details}
-            renderItem={renderProducts}
-          />
+          <FlatList data={returnedData?.return_details ?? []} renderItem={renderProducts} />
         </View>
         <View style={styles.paymentContainer}>
           {paymentView('Subtotal', finalSubtotal)}
-          {/* {data?.order?.delivery_charge !== 0 || data?.order?.shipping_charge !== 0
-            ? data?.order?.delivery_charge != 0
-              ? paymentView('Delivery Charges', data?.order?.delivery_charge)
-              : data?.order?.shipping_charge != 0
-              ? paymentView('Shipping Charges', data?.order?.shipping_charge)
-              : null
-            : null} */}
+
           {finalDeliveryShippingCharges != '0' &&
             paymentView('Delivery / Shipping Charges', finalDeliveryShippingCharges)}
           {paymentView('Discount', finalDiscount)}
@@ -243,8 +172,7 @@ export function Invoice(props) {
             POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
           </Text>
           <Text style={styles.paymentOptionsText}>
-            User ID : #
-            {data?.order ? data?.order?.user_details?.id : returnedData?.user_details?.id ?? '-'}
+            User ID : #{getUserData?.posLoginData?.id ?? '-'}
           </Text>
         </View>
 

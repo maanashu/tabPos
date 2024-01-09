@@ -329,7 +329,13 @@ export function UserProfile(props) {
 
           <View
             style={{
-              height: Platform.OS === 'android' ? height - ms(287) : height - ms(360),
+              height: user_details
+                ? Platform.OS === 'android'
+                  ? height - ms(287)
+                  : height - ms(360)
+                : Platform.OS === 'android'
+                ? height - ms(190)
+                : height - ms(255),
               backgroundColor: COLORS.white,
               borderBottomLeftRadius: ms(10),
               borderBottomRightRadius: ms(10),

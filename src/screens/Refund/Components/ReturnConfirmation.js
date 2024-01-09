@@ -56,7 +56,7 @@ export default memo(ReturnConfirmation);
 
 const styles = StyleSheet.create({
   modalStyle: {
-    flex: 0.45,
+    flex: 0.5,
     width: width / 3.8,
     borderRadius: ms(20),
     alignSelf: 'center',

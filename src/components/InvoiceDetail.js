@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -91,16 +91,27 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
     },
   ];
 
+  const [appointments, setAppointments] = useState(singleOrderDetail?.appointments ?? []);
+  useEffect(() => {
+    if (singleOrderDetail?.appointments) {
+      const appointmentDate = singleOrderDetail?.appointments?.map((item) => {
+        return {
+          date: moment.utc(item.date).format('DD/MM/YYYY'),
+          startTime: item.start_time,
+          endTime: item.end_time,
+        };
+      });
+      setAppointments(appointmentDate);
+    }
+  }, [singleOrderDetail?.appointments]);
+
   const renderProductItem = ({ item, index }) => {
+    const appointment = appointments[index];
     const isBookingDateAvailable =
-      singleOrderDetail?.appointments?.[0]?.date ||
-      singleOrderDetail?.appointments?.[0]?.start_time ||
-      singleOrderDetail?.appointments?.[0]?.end_time;
-    const bookingDateTime = `${moment
-      .utc(singleOrderDetail?.appointments?.[0]?.date)
-      .format('DD/MM/YYYY')} @ ${singleOrderDetail?.appointments?.[0]?.start_time}-${
-      singleOrderDetail?.appointments?.[0]?.end_time
-    }`;
+      appointment && appointment.date && appointment.startTime && appointment.endTime;
+    const bookingDateTime = isBookingDateAvailable
+      ? `${appointment.date} @ ${appointment.startTime}-${appointment.endTime}`
+      : 'Booking date not available';
     return (
       <View style={{ height: ms(28) }}>
         <View style={styles.container}>
