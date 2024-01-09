@@ -1,5 +1,5 @@
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts, SH } from '@/theme';
 import { useSelector } from 'react-redux';
@@ -13,10 +13,61 @@ import { getUser } from '@mPOS/selectors/UserSelectors';
 import { Images } from '@mPOS/assets';
 import { formattedReturnPrice } from '@/utils/GlobalMethods';
 import moment from 'moment';
+import { useState } from 'react';
 
 export function Invoice(props) {
   const data = props?.route?.params?.data;
   const getUserData = useSelector(getUser);
+
+  const returnedData = data?.return;
+  const returnInvoiceData = returnedData?.invoices;
+  const sellerDetails = returnedData?.seller_details;
+  const returnOrderDetail = data?.order ? data?.order : returnedData?.order;
+  const returnAddress = data?.order ? data?.order?.seller_details : sellerDetails;
+
+  const address = data?.order
+    ? data?.order?.seller_address_id
+    : returnOrderDetail?.seller_address_id;
+  const [appointments, setAppointments] = useState(returnOrderDetail?.appointments ?? []);
+  const [selleraddress, setSellerAddress] = useState([]);
+  const [formateAddress, setFormateAddress] = useState('');
+  useEffect(() => {
+    if (returnOrderDetail?.appointments) {
+      const appointmentDate = returnOrderDetail?.appointments?.map((item) => {
+        return {
+          date: moment.utc(item.date).format('DD/MM/YYYY'),
+          startTime: item.start_time,
+          endTime: item.end_time,
+        };
+      });
+      setAppointments(appointmentDate);
+    }
+  }, [returnOrderDetail?.appointments]);
+
+  useEffect(() => {
+    if (address) {
+      const sellerAddressDetail = returnAddress?.seller_addresses?.map((item) => {
+        return {
+          address: item?.format_address,
+          address_id: item?.id,
+        };
+      });
+      setSellerAddress(sellerAddressDetail);
+    }
+  }, [address, sellerDetails?.seller_addresses, data?.order?.seller_details?.seller_addresses]);
+  useEffect(() => {
+    const matchingAddresses = selleraddress?.filter((item) => {
+      return item?.address_id === address;
+    });
+
+    if (matchingAddresses && matchingAddresses.length > 0) {
+      const addressMatched = matchingAddresses[0];
+      setFormateAddress(addressMatched?.address);
+    } else {
+      setFormateAddress(''); // Set a default value or handle the case where address is not found.
+      console.log('Address with address_id not found.');
+    }
+  }, [address, selleraddress]);
 
   // Normal Invoice Data
   const normalInvoiceData = data?.order;
@@ -28,8 +79,6 @@ export function Invoice(props) {
   const finalInvoiceData = isReturnInvoice
     ? returnedInvoiceData?.invoices
     : normalInvoiceData?.invoices || returnedInvoiceData?.invoices;
-
-  console.log('finalInvoiceData', finalInvoiceData, isReturnInvoice);
 
   const sellerDetail = isReturnInvoice
     ? returnedInvoiceData?.seller_details
@@ -86,6 +135,13 @@ export function Invoice(props) {
       : formattedReturnPrice(item?.price * item?.qty);
     const productName = isReturnInvoice ? item?.order_details?.product_name : item?.product_name;
     const productQty = isReturnInvoice ? item?.order_details?.qty : item?.qty;
+
+    const appointment = appointments[index];
+    const isBookingDateAvailable =
+      appointment && appointment.date && appointment.startTime && appointment.endTime;
+    const bookingDateTime = isBookingDateAvailable
+      ? `${appointment.date} @ ${appointment.startTime}-${appointment.endTime}`
+      : 'Booking date not available';
     return (
       <>
         <View style={styles.itemContainer}>
@@ -95,12 +151,16 @@ export function Invoice(props) {
             <View style={{ flex: 1 }}>
               <Text style={styles.productName}>{productName}</Text>
               <Text style={styles.qtyText}>Qty: {productQty}</Text>
+              {isBookingDateAvailable && (
+                <Text style={{ fontSize: ms(10) }}>{bookingDateTime}</Text>
+              )}
             </View>
           </View>
           <View style={{ marginLeft: ms(15) }}>
             <Text style={styles.priceText}>{normalOrderAmount}</Text>
           </View>
         </View>
+
         <Spacer space={ms(5)} />
       </>
     );
@@ -130,9 +190,7 @@ export function Invoice(props) {
         <View style={styles.sellerInfoView}>
           <Text style={styles.sellerName}>{sellerDetail?.user_profiles?.organization_name}</Text>
           <Spacer space={SH(6)} />
-          <Text style={styles.addressText}>
-            {sellerDetail?.user_locations?.[0]?.formatted_address}
-          </Text>
+          <Text style={styles.addressText}>{formateAddress}</Text>
           <Spacer space={SH(4)} />
 
           <Text style={styles.addressText}>{sellerDetail?.user_profiles?.full_phone_number}</Text>
@@ -185,7 +243,8 @@ export function Invoice(props) {
             POS No. {getUserData?.posLoginData?.pos_number ?? '-'}
           </Text>
           <Text style={styles.paymentOptionsText}>
-            User ID : #{getUserData?.posLoginData?.id ?? '-'}
+            User ID : #
+            {data?.order ? data?.order?.user_details?.id : returnedData?.user_details?.id ?? '-'}
           </Text>
         </View>
 

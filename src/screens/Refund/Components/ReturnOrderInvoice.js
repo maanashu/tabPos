@@ -16,8 +16,11 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
   const returnInvoiceData = returnedData?.invoices;
   const sellerDetails = returnedData?.seller_details;
   const returnOrderDetail = returnedData?.order;
-
-  const address = returnOrderDetail?.seller_address_id;
+  const returnAddress = orderDetail?.order ? orderDetail?.order?.seller_details : sellerDetails;
+  // console.log('orderDetail', returnAddress);
+  const address = orderDetail?.order
+    ? orderDetail?.order?.seller_address_id
+    : returnOrderDetail?.seller_address_id;
   const [appointments, setAppointments] = useState(returnOrderDetail?.appointments ?? []);
   const [selleraddress, setSellerAddress] = useState([]);
   const [formateAddress, setFormateAddress] = useState('');
@@ -36,7 +39,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
 
   useEffect(() => {
     if (address) {
-      const sellerAddressDetail = sellerDetails?.seller_addresses?.map((item) => {
+      const sellerAddressDetail = returnAddress?.seller_addresses?.map((item) => {
         return {
           address: item?.format_address,
           address_id: item?.id,
@@ -44,8 +47,11 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
       });
       setSellerAddress(sellerAddressDetail);
     }
-  }, [address, sellerDetails?.seller_addresses]);
-
+  }, [
+    address,
+    sellerDetails?.seller_addresses,
+    orderDetail?.order?.seller_details?.seller_addresses,
+  ]);
   useEffect(() => {
     const matchingAddresses = selleraddress?.filter((item) => {
       return item?.address_id === address;
@@ -122,7 +128,9 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
     },
     {
       title: 'User ID',
-      data: returnedData?.user_details?.id,
+      data: orderDetail?.order
+        ? orderDetail?.order?.user_details?.id
+        : returnedData?.user_details?.id,
       id: 5,
     },
   ];

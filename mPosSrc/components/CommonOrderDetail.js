@@ -127,6 +127,7 @@ export function CommonOrderDetail(props) {
     dispatch(getReviewDefault(index));
   };
   const [appointments, setAppointments] = useState(orderData?.appointments ?? []);
+  console.log('first', orderData?.appointments);
 
   useEffect(() => {
     if (orderData?.appointments) {
@@ -139,7 +140,7 @@ export function CommonOrderDetail(props) {
       });
       setAppointments(appointmentDate);
     }
-  }, [singleOrderDetail?.appointments]);
+  }, [orderData?.appointments]);
 
   const renderProductItem = ({ item, index }) => {
     const appointment = appointments[index];
