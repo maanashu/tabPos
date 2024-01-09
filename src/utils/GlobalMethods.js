@@ -331,40 +331,37 @@ const calculateTimeSlotSelection = ({
     resolve(updatedTimeSlotsData);
   });
 };
+
 const getCurrentAddress = (current_location) => {
   if (current_location) {
     if (current_location?.custom_address) {
-      if (current_location?.formatted_address) {
-        return current_location?.custom_address.trim() + ', ' + current_location?.formatted_address;
-      }
-
       return (
+        (current_location?.formatted_address ? current_location?.formatted_address + ', ' : '') +
         current_location?.custom_address.trim() +
         ', ' +
-        current_location?.city +
+        (current_location?.city ? current_location?.city + ', ' : '') +
+        (current_location?.state ? current_location?.state + ', ' : '') +
+        (current_location?.postal_code ? current_location?.postal_code + ', ' : '') +
+        current_location?.country
+      );
+    } else if (current_location?.formatted_address) {
+      return (
+        current_location?.formatted_address.trim() +
         ', ' +
-        current_location?.state +
-        ', ' +
-        (current_location?.state_code ? current_location?.state_code : '') +
+        (current_location?.city ? current_location?.city + ', ' : '') +
+        (current_location?.state ? current_location?.state + ', ' : ' ') +
+        (current_location?.postal_code ? current_location?.postal_code + ', ' : ' ') +
+        current_location?.country_code
+      );
+    } else {
+      return (
+        (current_location?.city ? current_location?.city + ', ' : '') +
+        (current_location?.state ? current_location?.state + ', ' : '') +
+        (current_location?.state_code ? current_location?.state_code + ', ' : '') +
         ' ' +
         (current_location?.postal_code ? current_location?.postal_code + ', ' : '') +
         current_location?.country
       );
-    } else if (current_location?.street_address) {
-      return (
-        current_location?.street_address.trim() +
-        ', ' +
-        current_location?.city +
-        ', ' +
-        current_location?.state +
-        ', ' +
-        (current_location?.state_code ? current_location?.state_code : '') +
-        ' ' +
-        (current_location?.zipcode ? current_location?.zipcode + ', ' : '') +
-        current_location?.country
-      );
-    } else {
-      return current_location?.formatted_address;
     }
   }
 

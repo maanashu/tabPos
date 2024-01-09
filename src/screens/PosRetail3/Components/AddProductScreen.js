@@ -191,7 +191,7 @@ export const AddProductScreen = ({ backHandler }) => {
     {
       id: 1,
       image: Images.storeIcon,
-      toggle: inStoreImage === 3 ? Images.toggleOn : Images.toggleOff,
+      toggle: inStoreImage === '3' ? Images.toggleOn : Images.toggleOff,
       name: 'Store',
     },
     {
