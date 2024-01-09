@@ -49,13 +49,13 @@ export const AddProductScreen = ({ backHandler }) => {
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options?.split(',');
   let deliveryOptionImage = deliveryOption?.find((item) => {
-    return item === '1';
+    return item == '1';
   });
   let inStoreImage = deliveryOption.find((item) => {
-    return item === '3';
+    return item == '3';
   });
   let shippingImage = deliveryOption.find((item) => {
-    return item === '4';
+    return item == '4';
   });
 
   const isChecksSuppliesVariant = useSelector((state) =>
