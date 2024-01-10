@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 
 import moment from 'moment';
@@ -38,16 +38,28 @@ const InvoiceDetails = ({
     dispatch(getOrderData(orderData?.order_id));
   }, []);
 
+  const [appointments, setAppointments] = useState(orderDetail?.appointments ?? []);
+  useEffect(() => {
+    if (orderDetail?.appointments) {
+      const appointmentDate = orderDetail?.appointments?.map((item) => {
+        return {
+          date: moment.utc(item.date).format('DD/MM/YYYY'),
+          startTime: item.start_time,
+          endTime: item.end_time,
+        };
+      });
+      setAppointments(appointmentDate);
+    }
+  }, [orderDetail?.appointments]);
+
   const renderProductItem = ({ item, index }) => {
+    const appointment = appointments[index];
     const isBookingDateAvailable =
-      orderDetail?.appointments?.[0]?.date ||
-      orderDetail?.appointments?.[0]?.start_time ||
-      orderDetail?.appointments?.[0]?.end_time;
-    const bookingDateTime = `${moment
-      .utc(orderDetail?.appointments?.[0]?.date)
-      .format('DD/MM/YYYY')} @ ${orderDetail?.appointments?.[0]?.start_time}-${
-      orderDetail?.appointments?.[0]?.end_time
-    }`;
+      appointment && appointment.date && appointment.startTime && appointment.endTime;
+    const bookingDateTime = isBookingDateAvailable
+      ? `${appointment.date} @ ${appointment.startTime}-${appointment.endTime}`
+      : 'Booking date not available';
+
     return (
       <View style={{ height: ms(28) }}>
         <View style={styles.container}>
@@ -70,7 +82,7 @@ const InvoiceDetails = ({
           </View>
         </View>
         {isBookingDateAvailable && (
-          <Text style={[styles.priceTitle, styles.container, { marginTop: ms(2) }]}>
+          <Text style={[styles.priceTitle, styles.container, { marginTop: ms(0) }]}>
             {bookingDateTime}
           </Text>
         )}
@@ -176,13 +188,20 @@ const InvoiceDetails = ({
               <Text style={styles._payTitle}>Discount</Text>
               <Text style={styles._payTitle}>{`${formattedReturnPrice(discount)}`}</Text>
             </View>
-            <Spacer space={SH(10)} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._payTitle}>{deliveryShippingTitle}</Text>
-              <Text style={styles._payTitle}>{`${formattedReturnPrice(
-                deliveryShippingCharges
-              )}`}</Text>
-            </View>
+
+            {deliveryShippingTitle ? (
+              <>
+                <Spacer space={SH(10)} />
+                <View style={styles._subTotalContainer}>
+                  <Text style={styles._payTitle}>{deliveryShippingTitle}</Text>
+                  <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                    deliveryShippingCharges
+                  )}`}</Text>
+                </View>
+              </>
+            ) : (
+              <></>
+            )}
             <Spacer space={SH(10)} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._payTitle}>Taxes</Text>

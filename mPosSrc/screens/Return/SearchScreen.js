@@ -30,7 +30,7 @@ export function SearchScreen() {
     } else {
       setOrder('');
     }
-  }, [orderData]);
+  }, [orderData, invoiceNumber]);
 
   const onSearchInvoiceHandler = (text) => {
     if (text) {

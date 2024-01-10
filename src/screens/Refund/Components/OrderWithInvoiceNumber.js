@@ -8,6 +8,8 @@ import { ms } from 'react-native-size-matters';
 import { DataTable } from 'react-native-paper';
 
 const OrderWithInvoiceNumber = ({ orderData }) => {
+  const userDetails = orderData?.order?.user_details ?? orderData?.return?.user_details;
+
   const getDeliveryType = (type) => {
     switch (type) {
       case '1':
@@ -16,8 +18,10 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
         return strings.returnOrder.inStore;
       case '4':
         return strings.shipping.shippingText;
-      default:
+      case '2':
         return strings.returnOrder.reservation;
+      default:
+        return strings.returnOrder.inStore;
     }
   };
   return (
@@ -47,7 +51,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
           <DataTable.Title
             style={[
               styles.dateTableSetting,
-              { marginLeft: Platform.OS === 'android' ? ms(-15) : ms(-10) },
+              { marginLeft: Platform.OS === 'android' ? ms(-20) : ms(-10) },
             ]}
           >
             <Text style={styles.revenueText}>Price</Text>
@@ -71,9 +75,9 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
           >
             <Image source={user} resizeMode="contain" style={{ height: ms(20), width: ms(20) }} />
             <Text style={styles.nameTextStyle}>
-              {orderData?.order?.user_details
-                ? `${orderData?.order?.user_details?.user_profiles?.firstname} ${orderData?.order?.user_details?.user_profiles?.lastname}`
-                : `${orderData?.return?.user_details?.user_profiles?.firstname} ${orderData?.return?.user_details?.user_profiles?.lastname}`}
+              {`${userDetails?.user_profiles?.firstname ?? 'N/A'} ${
+                userDetails?.user_profiles?.lastname ?? ''
+              }`}
             </Text>
 
             {/* {orderData?.order?.delivery_option !== '3' ? (
@@ -126,7 +130,6 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
           </View>
         </View>
       ) : (
-        // </View>
         <View style={styles.emptyViewStyle}>
           <Text style={styles.emptyTextStyle}>{strings.returnOrder.noInvoices}</Text>
         </View>

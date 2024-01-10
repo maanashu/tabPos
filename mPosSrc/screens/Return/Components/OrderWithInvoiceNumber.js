@@ -26,9 +26,11 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
         <TouchableOpacity
           style={styles.orderRowStyle}
           onPress={() => {
-            orderData?.order?.status === 9 ||
-            orderData?.order?.status === 7 ||
-            orderData?.order?.status === 8
+            ((orderData?.order?.status === 9 ||
+              orderData?.order?.status === 7 ||
+              orderData?.order?.status === 8) &&
+              orderData?.return !== null) ||
+            (orderData?.order === null && orderData?.return !== null)
               ? commonNavigate(MPOS_NAVIGATION.invoice, { data: orderData })
               : commonNavigate(MPOS_NAVIGATION.returnOrderDetail, { data: orderData });
           }}
@@ -39,15 +41,15 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
 
           <View style={[styles.orderDetailStyle, { paddingHorizontal: 2 }]}>
             <Text style={styles.nameTextStyle}>
-              {orderData?.order?.order_details?.length > 1
-                ? `${orderData?.order?.order_details?.length} Items`
+              {orderData?.order === null && orderData?.return !== null
+                ? `${orderData?.return?.return_details?.length} Items`
                 : `${orderData?.order?.order_details?.length} Item`}
             </Text>
 
             <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
               <Image source={Images.pay} style={styles.pinImageStyle} />
               <Text style={styles.distanceTextStyle}>
-                {orderData?.order?.payable_amount ?? '-'}
+                {orderData?.order?.payable_amount ?? orderData?.return?.refunded_amount}
               </Text>
             </View>
           </View>

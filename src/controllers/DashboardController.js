@@ -19,11 +19,14 @@ export class DashboardController {
         ORDER_URL +
         ApiOrderInventory.getOrderUser +
         `?seller_id=${sellerID}&delivery_option=1,3,4&page=${page}&limit=10&app_name=b2c`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error111111', error);
           reject(error);
         });
     });
@@ -201,11 +204,14 @@ export class DashboardController {
   static async getPendingOrders(sellerID) {
     return new Promise((resolve, reject) => {
       const endpoint = ORDER_URL + ApiOrderInventory.pendingOrders + `?seller_id=${sellerID}`;
+      console.log('endpoint', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error?.msg);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',

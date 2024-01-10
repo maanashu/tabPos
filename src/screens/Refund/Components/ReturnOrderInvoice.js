@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
@@ -15,26 +15,91 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
   const returnedData = orderDetail?.return;
   const returnInvoiceData = returnedData?.invoices;
   const sellerDetails = returnedData?.seller_details;
+  const returnOrderDetail = returnedData?.order;
+  const returnAddress = orderDetail?.order ? orderDetail?.order?.seller_details : sellerDetails;
+  // console.log('orderDetail', returnAddress);
+  const address = orderDetail?.order
+    ? orderDetail?.order?.seller_address_id
+    : returnOrderDetail?.seller_address_id;
+  const [appointments, setAppointments] = useState(returnOrderDetail?.appointments ?? []);
+  const [selleraddress, setSellerAddress] = useState([]);
+  const [formateAddress, setFormateAddress] = useState('');
+  useEffect(() => {
+    if (returnOrderDetail?.appointments) {
+      const appointmentDate = returnOrderDetail?.appointments?.map((item) => {
+        return {
+          date: moment.utc(item.date).format('DD/MM/YYYY'),
+          startTime: item.start_time,
+          endTime: item.end_time,
+        };
+      });
+      setAppointments(appointmentDate);
+    }
+  }, [returnOrderDetail?.appointments]);
 
-  // const renderProductItem = ({ item, index }) => (
-  //   <View style={styles.container}>
-  //     <View style={styles.subContainer}>
-  //       <Text style={styles.count}>{index + 1}</Text>
-  //       <View style={{ marginLeft: ms(10) }}>
-  //         <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-  //           {item?.order_details?.product_name ?? '-'}
-  //         </Text>
-  //         <View style={styles.belowSubContainer}>
-  //           <Text style={styles.colorsTitle}>{'Qty: '}</Text>
-  //           <Text style={styles.colorsTitle}>{item?.order_details?.qty ?? '-'}</Text>
-  //         </View>
-  //       </View>
-  //     </View>
-  //     <Text style={styles.priceTitle}>
-  //       {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
-  //     </Text>
-  //   </View>
-  // );
+  useEffect(() => {
+    if (address) {
+      const sellerAddressDetail = returnAddress?.seller_addresses?.map((item) => {
+        return {
+          address: item?.format_address,
+          address_id: item?.id,
+        };
+      });
+      setSellerAddress(sellerAddressDetail);
+    }
+  }, [
+    address,
+    sellerDetails?.seller_addresses,
+    orderDetail?.order?.seller_details?.seller_addresses,
+  ]);
+  useEffect(() => {
+    const matchingAddresses = selleraddress?.filter((item) => {
+      return item?.address_id === address;
+    });
+
+    if (matchingAddresses && matchingAddresses.length > 0) {
+      const addressMatched = matchingAddresses[0];
+      setFormateAddress(addressMatched?.address);
+    } else {
+      setFormateAddress(''); // Set a default value or handle the case where address is not found.
+      console.log('Address with address_id not found.');
+    }
+  }, [address, selleraddress]);
+
+  const renderProductItem = ({ item, index }) => {
+    const appointment = appointments[index];
+    const isBookingDateAvailable =
+      appointment && appointment.date && appointment.startTime && appointment.endTime;
+    const bookingDateTime = isBookingDateAvailable
+      ? `${appointment.date} @ ${appointment.startTime}-${appointment.endTime}`
+      : 'Booking date not available';
+
+    return (
+      <View style={{ height: ms(28) }}>
+        <View style={styles.container}>
+          <View style={styles.subContainer}>
+            <Text style={styles.count}>x {item?.order_details?.qty}</Text>
+            <View style={{ marginLeft: ms(10) }}>
+              <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
+                {item?.order_details?.product_name}
+              </Text>
+            </View>
+          </View>
+          <View style={{ width: '24%', alignItems: 'flex-end' }}>
+            <Text style={styles.priceTitle} numberOfLines={1}>
+              {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
+            </Text>
+          </View>
+        </View>
+        {isBookingDateAvailable && (
+          <Text style={[styles.priceTitle, styles.container, { marginTop: ms(2) }]}>
+            {bookingDateTime}
+          </Text>
+        )}
+      </View>
+    );
+  };
+
   const invoiceData = [
     {
       title: 'Status',
@@ -63,28 +128,12 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
     },
     {
       title: 'User ID',
-      data: getUserData?.posLoginData?.id,
+      data: orderDetail?.order
+        ? orderDetail?.order?.user_details?.id
+        : returnedData?.user_details?.id,
       id: 5,
     },
   ];
-
-  const renderProductItem = ({ item, index }) => (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.count}>x {item?.order_details?.qty}</Text>
-        <View style={{ marginLeft: ms(10) }}>
-          <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
-            {item?.order_details?.product_name}
-          </Text>
-        </View>
-      </View>
-      <View style={{ width: '24%', alignItems: 'flex-end' }}>
-        <Text style={styles.priceTitle} numberOfLines={1}>
-          {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
-        </Text>
-      </View>
-    </View>
-  );
   return (
     <>
       <View style={styles.rightCon}>
@@ -93,9 +142,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
             <Text style={styles._kSubCenterContainer}>
               {`${sellerDetails?.user_profiles?.organization_name}` ?? '-'}
             </Text>
-            <Text style={styles._kAddress}>
-              {`${sellerDetails?.user_locations[0]?.custom_address}` ?? '-'}{' '}
-            </Text>
+            <Text style={styles._kAddress}>{`${formateAddress}` ?? '-'} </Text>
             <Text style={styles._kNumber}>
               {`${sellerDetails?.user_profiles?.full_phone_number}` ?? '-'}
             </Text>
@@ -152,12 +199,16 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
               )}`}</Text>
             </View>
             <Spacer space={SH(10)} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._payTitle}>{'Delivery / Shipping Charges'}</Text>
-              <Text style={styles._payTitle}>{`${formattedReturnPrice(
-                returnedData?.delivery_charge || returnedData?.shipping_charge
-              )}`}</Text>
-            </View>
+            {(returnedData?.delivery_charge || returnedData?.shipping_charge) > 0 ? (
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>{'Delivery / Shipping Charges'}</Text>
+                <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                  returnedData?.delivery_charge || returnedData?.shipping_charge
+                )}`}</Text>
+              </View>
+            ) : (
+              <></>
+            )}
             <Spacer space={SH(10)} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._payTitle}>Taxes</Text>
@@ -306,7 +357,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.washGrey,
     borderWidth: 1,
     paddingHorizontal: ms(8),
-    height: ms(28),
+    // height: ms(28),
     borderRadius: ms(5),
     alignItems: 'center',
     alignSelf: 'center',
@@ -506,7 +557,7 @@ const styles = StyleSheet.create({
 
   container: {
     paddingHorizontal: ms(8),
-    height: ms(28),
+    // height: ms(28),
     borderRadius: ms(5),
     alignItems: 'center',
     alignSelf: 'center',

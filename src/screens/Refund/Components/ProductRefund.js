@@ -382,8 +382,8 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
             }}
           >
             <View style={styles.leftMainViewStyle}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ width: ms(60) }}>
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{}}>
                   <Text
                     style={{
                       fontSize: ms(11),
@@ -404,13 +404,14 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                       marginTop: ms(2),
                       fontSize: ms(8),
                       letterSpacing: -1,
+                      width: ms(90),
                     }}
                   >
                     {'Select the items to refund.'}
                   </Text>
                 </View>
 
-                <View style={styles.rowStyle}>
+                <View style={[styles.rowStyle, { position: 'absolute', right: ms(0) }]}>
                   {finalOrder?.order?.delivery_charge !== '0' ||
                     (finalOrder?.order?.shipping_charge !== '0' && (
                       <>
@@ -504,7 +505,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                       }}
                       placeholderTextColor={COLORS.faded_purple}
                       placeholder={
-                        selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '% 0'
+                        selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '0 %'
                       }
                     />
 
@@ -934,7 +935,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   textInputStyle: {
-    width: SH(60),
+    width: ms(40),
     fontFamily: Fonts.SemiBold,
     fontSize: SF(12),
     color: COLORS.navy_blue,

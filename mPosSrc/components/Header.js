@@ -36,7 +36,7 @@ export function Header({
   editHandler,
   backFunction,
 }) {
-  const maxDate = new Date(2023, 10, 29);
+  const maxDate = new Date();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);

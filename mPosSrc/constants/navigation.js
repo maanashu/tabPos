@@ -35,6 +35,7 @@ export const NAVIGATION = {
   searchScreen: 'SearchScreen',
   returnOrderDetail: 'ReturnOrderDetail',
   invoice: 'Invoice',
+  returnOrderInvoice: 'ReturnOrderInvoice',
   booking: 'Booking',
   productRefund: 'ProductRefund',
   paymentSelection: 'PaymentSelection',
