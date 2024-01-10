@@ -18,8 +18,10 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
         return strings.returnOrder.inStore;
       case '4':
         return strings.shipping.shippingText;
-      default:
+      case '2':
         return strings.returnOrder.reservation;
+      default:
+        return strings.returnOrder.inStore;
     }
   };
   return (
@@ -49,7 +51,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
           <DataTable.Title
             style={[
               styles.dateTableSetting,
-              { marginLeft: Platform.OS === 'android' ? ms(-15) : ms(-10) },
+              { marginLeft: Platform.OS === 'android' ? ms(-20) : ms(-10) },
             ]}
           >
             <Text style={styles.revenueText}>Price</Text>

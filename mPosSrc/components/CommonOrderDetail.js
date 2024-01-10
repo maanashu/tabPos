@@ -64,6 +64,7 @@ export function CommonOrderDetail(props) {
   const orderLoad = useSelector((state) =>
     isLoadingSelector([TYPES.TODAY_ORDER_STATUS, TYPES.DELIVERING_ORDER], state)
   );
+
   const setHeaderText = (value) => {
     switch (value) {
       case '0':
@@ -125,17 +126,28 @@ export function CommonOrderDetail(props) {
     }
     dispatch(getReviewDefault(index));
   };
+  const [appointments, setAppointments] = useState(orderData?.appointments ?? []);
+
+  useEffect(() => {
+    if (orderData?.appointments) {
+      const appointmentDate = orderData?.appointments?.map((item) => {
+        return {
+          date: moment.utc(item.date).format('DD/MM/YYYY'),
+          startTime: item.start_time,
+          endTime: item.end_time,
+        };
+      });
+      setAppointments(appointmentDate);
+    }
+  }, [orderData?.appointments]);
 
   const renderProductItem = ({ item, index }) => {
+    const appointment = appointments[index];
     const isBookingDateAvailable =
-      orderData?.appointments?.[0]?.date ||
-      orderData?.appointments?.[0]?.start_time ||
-      orderData?.appointments?.[0]?.end_time;
-    const bookingDateTime = `${moment
-      .utc(orderData?.appointments?.[0]?.date)
-      .format('DD/MM/YYYY')} @ ${orderData?.appointments?.[0]?.start_time}-${
-      orderData?.appointments?.[0]?.end_time
-    }`;
+      appointment && appointment.date && appointment.startTime && appointment.endTime;
+    const bookingDateTime = isBookingDateAvailable
+      ? `${appointment.date} @ ${appointment.startTime}-${appointment.endTime}`
+      : 'Booking date not available';
     return (
       <View>
         <View style={styles.productItemViewStyle}>
