@@ -207,22 +207,88 @@ export function CartScreen({
     const percentageValue = (percentage / 100) * parseFloat(value);
     return percentageValue.toFixed(2) ?? 0.0;
   }
+
+  const calculateOrderAmount = (cart) => {
+    if (cart?.poscart_products) {
+      var subTotalAmount = cartData?.poscart_products?.reduce((acc, curr) => {
+        const productPrice = getProductFinalPrice(curr);
+
+        return acc + productPrice;
+
+        // return acc + productPrice * curr.qty;
+      }, 0);
+      // var subTotalAmount = cartData?.amout?.total_amount;
+
+      var discountAmount = 0;
+      var deliveryFee = 0;
+      var taxesAndOtherCharges = 0;
+
+      // if coupon applied
+      // if (objCoupon) {
+      //   const couponDetail = objCoupon;
+      //   if (couponDetail.discount_percentage) {
+      //     discountAmount =
+      //       (subTotalAmount * couponDetail.discount_percentage) / 100;
+      //     discountAmount = Number(discountAmount).toFixed(2);
+      //   }
+
+      //   if (
+      //     couponDetail.max_discount &&
+      //     discountAmount > couponDetail.max_discount
+      //   ) {
+      //     discountAmount = couponDetail.max_discount;
+      //   }
+      // }
+
+      // var productsDiscountAmount = cartData?.cart_products?.reduce(
+      //   (acc, curr) =>
+      //     acc +
+      //     (curr.product_details?.supply?.supply_prices?.offer_price
+      //       ? curr.product_details?.supply?.supply_prices?.actual_price -
+      //         curr.product_details?.supply?.supply_prices?.offer_price
+      //       : 0) *
+      //       curr.qty,
+      //   0
+      // );
+
+      // if (productsDiscountAmount > 0) {
+      //   discountAmount = discountAmount + productsDiscountAmount;
+      // }
+
+      // if (cartData?.amout?.tax_percentage) {
+      //   taxesAndOtherCharges =
+      //     ((subTotalAmount - discountAmount) *
+      //       cartData?.amout?.tax_percentage) /
+      //     100;
+      // }
+
+      taxesAndOtherCharges = parseFloat(
+        calculatePercentageValue(subTotalAmount, parseInt(cart.amount.tax_percentage))
+      );
+
+      var totalOrderAmount = subTotalAmount - discountAmount + deliveryFee + taxesAndOtherCharges;
+
+      cart.amount.tax = parseFloat(taxesAndOtherCharges); // Update tax value
+      cart.amount.total_amount = totalOrderAmount;
+      cart.amount.products_price = subTotalAmount;
+
+      var DATA = {
+        payload: cart,
+      };
+      dispatch(getAllCartSuccess(DATA));
+    }
+  };
+
   const updateQuantity = (cartId, productId, operation, index, suppliesPrice) => {
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
     const restProductQty = product?.product_details?.supply?.rest_quantity;
-    const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+    // const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
 
     if (operation === '+') {
       if (restProductQty > product.qty) {
         product.qty += 1;
-        arr.amount.total_amount += productPrice;
-
-        arr.amount.products_price += productPrice;
-        const totalAmount = arr.amount.products_price;
-        const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-        arr.amount.tax = parseFloat(TAX); // Update tax value
-        arr.amount.total_amount = totalAmount + parseFloat(TAX);
+        calculateOrderAmount(arr);
       } else {
         alert('There are no more quantity left to add');
       }
@@ -234,17 +300,74 @@ export function CartScreen({
           dispatch(updateCartLength(CART_LENGTH - 1));
         }
         product.qty -= 1;
-        arr.amount.products_price -= productPrice;
-        const totalAmount = arr.amount.products_price;
-        const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-        arr.amount.tax = parseFloat(TAX); // Update tax value
-        arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
+        calculateOrderAmount(arr);
       }
     }
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(getAllCartSuccess(DATA));
+  };
+
+  function getProductPrice(supply_offers, selling_price, productQty = 1) {
+    if (!productQty || productQty == 0) {
+      productQty = 1;
+    }
+
+    var productOfferPrice = selling_price;
+
+    if (supply_offers?.length > 0) {
+      var applicableOffer = null;
+      const supplyOffers = supply_offers;
+      for (let index = 0; index < supplyOffers.length; index++) {
+        const offer = supplyOffers[index];
+
+        if (productQty >= offer?.offer?.quantity) {
+          applicableOffer = offer;
+        }
+      }
+
+      if (applicableOffer) {
+        if (applicableOffer.offer.price_flag == 'percentage') {
+          productOfferPrice = Number(
+            productOfferPrice - (productOfferPrice * applicableOffer.offer.offer_price) / 100
+          );
+        } else {
+          productOfferPrice = applicableOffer.offer.offer_price;
+        }
+
+        if (applicableOffer.offer.offer_flag == 'per_box') {
+          productOfferPrice = productOfferPrice / applicableOffer.offer.quantity;
+        }
+      }
+    }
+    return productOfferPrice;
+  }
+
+  const getProductFinalPrice = (item) => {
+    var productPrice = 0;
+
+    productPrice = getProductPrice(
+      item.product_details?.supply?.supply_offers,
+      item.product_details?.supply?.supply_prices?.selling_price,
+      item?.qty
+    );
+
+    // var productPrice =
+    //   item?.product_details?.supply?.supply_prices?.selling_price;
+    var attributePrice = 0;
+
+    const supplyVariants = item.product_details?.supply?.supply_variants;
+
+    if (supplyVariants) {
+      if (Array.isArray(supplyVariants)) {
+        attributePrice = supplyVariants.reduce(function (a, b) {
+          return a + b?.price;
+        }, 0);
+      } else if (typeof supplyVariants === 'object' && supplyVariants !== null) {
+        attributePrice = supplyVariants?.price;
+      }
+    }
+
+    productPrice = productPrice + attributePrice;
+
+    return productPrice * item?.qty;
   };
 
   //  const updateQuantity = (cartId, productId, operation, index) => {
@@ -479,7 +602,15 @@ export function CartScreen({
                                   />
                                 ) : (
                                   <Text numberOfLines={1} style={styles.productPrice}>
-                                    {suppliesPrice?.actual_price &&
+                                    {amountFormat(
+                                      getProductPrice(
+                                        data.product_details?.supply?.supply_offers,
+                                        data.product_details?.supply?.supply_prices?.selling_price,
+                                        data.qty
+                                      )
+                                    )}
+
+                                    {/* {suppliesPrice?.actual_price &&
                                     suppliesPrice?.offer_price &&
                                     suppliesPrice?.offer_applicable_qty !== data?.qty
                                       ? amountFormat(suppliesPrice?.actual_price)
@@ -489,7 +620,7 @@ export function CartScreen({
                                       ? amountFormat(suppliesPrice?.offer_price)
                                       : suppliesPrice?.actual_price && suppliesPrice?.offer_price
                                       ? amountFormat(suppliesPrice?.offer_price)
-                                      : amountFormat(suppliesPrice?.actual_price)}
+                                      : amountFormat(suppliesPrice?.actual_price)} */}
                                     {/* {suppliesPrice?.selling_price &&
                                     suppliesPrice?.offer_price &&
                                     suppliesPrice?.offer_applicable_qty != data?.qty
@@ -567,14 +698,16 @@ export function CartScreen({
                                       )
                                     : amountFormat(suppliesPrice?.selling_price * data?.qty)} */}
 
-                                  {suppliesPrice?.selling_price &&
+                                  {/* {suppliesPrice?.selling_price &&
                                   suppliesPrice?.offer_price &&
                                   suppliesPrice?.offer_applicable_qty < 1
                                     ? amountFormat(
                                         suppliesPrice?.offer_price *
                                           (suppliesPrice?.offer_applicable_qty > 1 ? 1 : data?.qty)
                                       )
-                                    : amountFormat(suppliesPrice?.selling_price * data?.qty)}
+                                    : amountFormat(suppliesPrice?.selling_price * data?.qty)} */}
+
+                                  {amountFormat(getProductFinalPrice(data))}
                                 </Text>
                               </View>
                               <View style={styles.productCartBody}>
