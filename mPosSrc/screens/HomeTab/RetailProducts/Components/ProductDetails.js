@@ -43,13 +43,13 @@ const ProductDetails = ({ productDetailRef, bothSheetClose, productQuantity }) =
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options?.split(',');
   let deliveryOptionImage = deliveryOption?.find((item) => {
-    return item === '1';
+    return item == '1';
   });
   let inStoreImage = deliveryOption?.find((item) => {
-    return item === '3';
+    return item == '3';
   });
   let shippingImage = deliveryOption?.find((item) => {
-    return item === '4';
+    return item == '4';
   });
   const productAddCartHandler = () => {
     const data = {
@@ -132,7 +132,7 @@ const ProductDetails = ({ productDetailRef, bothSheetClose, productQuantity }) =
             <View style={styles.tableContainer}>
               <View style={styles.tableView}>
                 <Text style={styles.tableSectionText}>{'SKU'}</Text>
-                <Text style={styles.tableSectionData}>{productDetail?.sku}</Text>
+                <Text style={styles.tableSectionData}>{productDetail?.sku || 'NA'}</Text>
               </View>
               <View style={styles.lineSeprator} />
 
@@ -198,21 +198,21 @@ const ProductDetails = ({ productDetailRef, bothSheetClose, productQuantity }) =
             <View style={styles.toggleView}>
               <Text style={styles.inStoreText}>{strings.retail.inStore}</Text>
               <Image
-                source={inStoreImage === '3' ? Images.onToggle : Images.offToggle}
+                source={inStoreImage == '3' ? Images.onToggle : Images.offToggle}
                 style={styles.toggleImage}
               />
             </View>
             <View style={styles.toggleView}>
               <Text style={styles.inStoreText}>{strings.retail.onlineDelivery}</Text>
               <Image
-                source={deliveryOptionImage === '3' ? Images.onToggle : Images.offToggle}
+                source={deliveryOptionImage == '1' ? Images.onToggle : Images.offToggle}
                 style={styles.toggleImage}
               />
             </View>
             <View style={styles.toggleView}>
               <Text style={styles.inStoreText}>{strings.retail.onlineShipping}</Text>
               <Image
-                source={shippingImage === '3' ? Images.onToggle : Images.offToggle}
+                source={shippingImage == '4' ? Images.onToggle : Images.offToggle}
                 style={styles.toggleImage}
               />
             </View>

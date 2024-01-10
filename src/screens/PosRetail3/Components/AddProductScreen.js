@@ -23,7 +23,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
 import { CustomErrorToast } from '@mPOS/components/Toast';
-import { FullScreenLoader } from '@mPOS/components';
+import { FullScreenLoader, Spacer } from '@mPOS/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { amountFormat } from '@/utils/GlobalMethods';
@@ -35,12 +35,13 @@ export const AddProductScreen = ({ backHandler }) => {
   const getRetailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const productDetail = getRetailData?.getOneProduct?.product_detail;
+
   const [colorId, setColorId] = useState(null);
   const [sizeId, setSizeId] = useState(null);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const sizeAndColorArray = productDetail?.supplies?.[0]?.attributes;
-  const sizeArray = sizeAndColorArray?.filter((item) => item.name === 'Size');
-  const colorArray = sizeAndColorArray?.filter((item) => item.name === 'Color');
+  const sizeArray = sizeAndColorArray?.filter((item) => item.name == 'Size');
+  const colorArray = sizeAndColorArray?.filter((item) => item.name == 'Color');
   const attrsArr = productDetail?.supplies[0]?.attributes;
   const [count, setCount] = useState(1);
   const restProductQty = productDetail.supplies[0]?.rest_quantity;
@@ -49,13 +50,13 @@ export const AddProductScreen = ({ backHandler }) => {
   let deliveryOption =
     getRetailData?.getOneProduct?.product_detail?.supplies?.[0]?.delivery_options?.split(',');
   let deliveryOptionImage = deliveryOption?.find((item) => {
-    return item === '1';
+    return item == '1';
   });
   let inStoreImage = deliveryOption.find((item) => {
-    return item === '3';
+    return item == '3';
   });
   let shippingImage = deliveryOption.find((item) => {
-    return item === '4';
+    return item == '4';
   });
 
   const isChecksSuppliesVariant = useSelector((state) =>
@@ -161,11 +162,13 @@ export const AddProductScreen = ({ backHandler }) => {
   );
 
   const productDetailArray = [
-    {
-      id: 1,
-      key: 'SKU',
-      value: productDetail?.sku,
-    },
+    productDetail?.sku
+      ? {
+          id: 1,
+          key: 'SKU',
+          value: productDetail?.sku,
+        }
+      : null,
     {
       id: 2,
       key: 'Barcode',
@@ -186,24 +189,24 @@ export const AddProductScreen = ({ backHandler }) => {
       key: 'Other Locations',
       value: 'NA',
     },
-  ];
+  ].filter(Boolean);
   const availblityArray = [
     {
       id: 1,
       image: Images.storeIcon,
-      toggle: inStoreImage === 3 ? Images.toggleOn : Images.toggleOff,
+      toggle: inStoreImage == '3' ? Images.toggleOn : Images.toggleOff,
       name: 'Store',
     },
     {
       id: 2,
       image: Images.delivery,
-      toggle: deliveryOptionImage === '1' ? Images.toggleOn : Images.toggleOff,
+      toggle: deliveryOptionImage == '1' ? Images.toggleOn : Images.toggleOff,
       name: 'Delivery',
     },
     {
       id: 3,
       image: Images.shipping,
-      toggle: shippingImage === '4' ? Images.toggleOn : Images.toggleOff,
+      toggle: shippingImage == '4' ? Images.toggleOn : Images.toggleOff,
       name: 'Shipping',
     },
   ];
@@ -233,10 +236,13 @@ export const AddProductScreen = ({ backHandler }) => {
               <Text style={styles.productName} numberOfLines={2}>
                 {productDetail?.name}
               </Text>
-              <View style={styles.skuCon}>
-                <View style={styles.dot} />
-                <Text style={styles.skuText}>{productDetail?.sku}</Text>
-              </View>
+              {productDetail?.sku && (
+                <View style={styles.skuCon}>
+                  <View style={styles.dot} />
+                  <Text style={styles.skuText}>{productDetail?.sku}</Text>
+                </View>
+              )}
+
               {/* {productDetail?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
               productDetail?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
                 <Text style={styles.productName}>
@@ -247,6 +253,7 @@ export const AddProductScreen = ({ backHandler }) => {
                   {amountFormat(productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
                 </Text>
               )} */}
+              <Spacer space={SH(3)} />
               <Text style={styles.productName}>
                 {amountFormat(productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
               </Text>
@@ -415,27 +422,30 @@ export const AddProductScreen = ({ backHandler }) => {
                             </View>
                             <View style={[styles.sizeSelectItemCon]}>
                               <View>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                  }}
-                                >
-                                  <Text style={styles.detailColorSize}>color :</Text>
+                                {colorArray?.length >= 1 && (
                                   <View
                                     style={{
-                                      width: ms(8),
-                                      height: ms(8),
-                                      borderRadius: ms(2),
-                                      backgroundColor: productColor?.[0]?.attribute_value_name,
-                                      marginHorizontal: ms(3),
+                                      flexDirection: 'row',
+                                      alignItems: 'center',
                                     }}
-                                  ></View>
-                                </View>
-
-                                <Text style={styles.detailColorSize}>
-                                  Size : {productSize?.[0]?.attribute_value_name}
-                                </Text>
+                                  >
+                                    <Text style={styles.detailColorSize}>color :</Text>
+                                    <View
+                                      style={{
+                                        width: ms(8),
+                                        height: ms(8),
+                                        borderRadius: ms(2),
+                                        backgroundColor: productColor?.[0]?.attribute_value_name,
+                                        marginHorizontal: ms(3),
+                                      }}
+                                    ></View>
+                                  </View>
+                                )}
+                                {sizeArray?.length >= 1 && (
+                                  <Text style={styles.detailColorSize}>
+                                    Size : {productSize?.[0]?.attribute_value_name}
+                                  </Text>
+                                )}
                               </View>
 
                               <Text
@@ -470,7 +480,11 @@ export const AddProductScreen = ({ backHandler }) => {
                       showsVerticalScrollIndicator={false}
                       ListHeaderComponent={() => (
                         <View style={[styles.displayflex, { width: ms(150), marginLeft: ms(70) }]}>
-                          <Text style={[styles.jacketName, { fontSize: SF(14) }]}>Color/Size</Text>
+                          <Text style={[styles.jacketName, { fontSize: SF(14) }]}>
+                            {colorArray?.length >= 1 && 'Color'}
+                            {colorArray?.length >= 1 && sizeArray?.length >= 1 && '/'}
+                            {sizeArray?.length >= 1 && 'Size'}
+                          </Text>
                           <Text style={[styles.jacketName, { fontSize: SF(14) }]}>Stock</Text>
                         </View>
                       )}

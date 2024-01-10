@@ -54,13 +54,9 @@ const AddedCartItemsCard = ({ item, index }) => {
       </View>
       <View style={{ width: '24%', alignItems: 'flex-end' }}>
         <Text style={styles.priceTitle} numberOfLines={1}>
-          {suppliesPrice?.offer_applicable_qty == item?.qty
+          {suppliesPrice?.offer_applicable_qty <= item?.qty
             ? amountFormat(item?.product_details?.supply?.supply_prices?.offer_price)
             : amountFormat(item?.product_details?.supply?.supply_prices?.actual_price)}
-
-          {/* {item?.product_details?.supply?.supply_prices?.offer_price
-            ? amountFormat(item?.product_details?.supply?.supply_prices?.offer_price)
-            : amountFormat(item?.product_details?.supply?.supply_prices?.selling_price)} */}
         </Text>
       </View>
     </View>
