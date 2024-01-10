@@ -234,12 +234,9 @@ export function CartScreen({
           dispatch(updateCartLength(CART_LENGTH - 1));
         }
         product.qty -= 1;
-
         arr.amount.products_price -= productPrice;
         const totalAmount = arr.amount.products_price;
-
         const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-
         arr.amount.tax = parseFloat(TAX); // Update tax value
         arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
       }
@@ -250,64 +247,64 @@ export function CartScreen({
     dispatch(getAllCartSuccess(DATA));
   };
 
-  // const updateQuantity = (cartId, productId, operation, index) => {
-  //   // console.log('print JSON response ==>', JSON.stringify(getRetailData?.getAllCart));
-  //   const arr = getRetailData?.getAllCart;
-  //   const product = arr?.poscart_products[index];
-  //   // const productQty = operation === '+' ? product.qty + 1 : product.qty - 1;
-  //   const restProductQty = product?.product_details?.supply?.rest_quantity;
-  //   const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
-  //   const offerPricePerBatch = product.product_details?.supply?.supply_prices?.offer_price;
-  //   const offerApplicableOnQty =
-  //     product.product_details?.supply?.supply_prices?.offer_applicable_qty;
-  //   const offerPricePerQty = offerPricePerBatch / offerApplicableOnQty;
+  //  const updateQuantity = (cartId, productId, operation, index) => {
+  //     // console.log('print JSON response ==>', JSON.stringify(getRetailData?.getAllCart));
+  //     const arr = getRetailData?.getAllCart;
+  //     const product = arr?.poscart_products[index];
+  //     // const productQty = operation === '+' ? product.qty + 1 : product.qty - 1;
+  //     const restProductQty = product?.product_details?.supply?.rest_quantity;
+  //     const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+  //     const offerPricePerBatch = product.product_details?.supply?.supply_prices?.offer_price;
+  //     const offerApplicableOnQty =
+  //       product.product_details?.supply?.supply_prices?.offer_applicable_qty;
+  //     const offerPricePerQty = offerPricePerBatch / offerApplicableOnQty;
 
-  //   if (operation === '+') {
-  //     if (restProductQty > product.qty) {
-  //       product.qty += 1;
-  //       arr.amount.total_amount += productPrice;
-
-  //       arr.amount.products_price += productPrice;
-  //       const totalAmount = arr.amount.products_price;
-  //       const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-  //       arr.amount.tax = parseFloat(TAX); // Update tax value
-  //       arr.amount.total_amount = totalAmount + parseFloat(TAX);
-
-  //       if (product.qty >= offerApplicableOnQty) {
-  //       } else {
+  //     if (operation === '+') {
+  //       if (restProductQty > product.qty) {
+  //         product.qty += 1;
   //         arr.amount.total_amount += productPrice;
+
   //         arr.amount.products_price += productPrice;
   //         const totalAmount = arr.amount.products_price;
   //         const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
   //         arr.amount.tax = parseFloat(TAX); // Update tax value
   //         arr.amount.total_amount = totalAmount + parseFloat(TAX);
+
+  //         if (product.qty >= offerApplicableOnQty) {
+  //         } else {
+  //           arr.amount.total_amount += productPrice;
+  //           arr.amount.products_price += productPrice;
+  //           const totalAmount = arr.amount.products_price;
+  //           const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+  //           arr.amount.tax = parseFloat(TAX); // Update tax value
+  //           arr.amount.total_amount = totalAmount + parseFloat(TAX);
+  //         }
+  //       } else {
+  //         alert('There are no more quantity left to add');
   //       }
-  //     } else {
-  //       alert('There are no more quantity left to add');
-  //     }
-  //     // Update total_amount including tax
-  //   } else if (operation === '-') {
-  //     if (product.qty > 0) {
-  //       if (product.qty === 1) {
-  //         arr?.poscart_products.splice(index, 1);
-  //         dispatch(updateCartLength(CART_LENGTH - 1));
+  //       // Update total_amount including tax
+  //     } else if (operation === '-') {
+  //       if (product.qty > 0) {
+  //         if (product.qty === 1) {
+  //           arr?.poscart_products.splice(index, 1);
+  //           dispatch(updateCartLength(CART_LENGTH - 1));
+  //         }
+  //         product.qty -= 1;
+
+  //         arr.amount.products_price -= productPrice;
+  //         const totalAmount = arr.amount.products_price;
+
+  //         const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+
+  //         arr.amount.tax = parseFloat(TAX); // Update tax value
+  //         arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
   //       }
-  //       product.qty -= 1;
-
-  //       arr.amount.products_price -= productPrice;
-  //       const totalAmount = arr.amount.products_price;
-
-  //       const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-
-  //       arr.amount.tax = parseFloat(TAX); // Update tax value
-  //       arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
   //     }
-  //   }
-  //   var DATA = {
-  //     payload: arr,
+  //     var DATA = {
+  //       payload: arr,
+  //     };
+  //     dispatch(getAllCartSuccess(DATA));
   //   };
-  //   dispatch(getAllCartSuccess(DATA));
-  // };
 
   const clearCartHandler = async () => {
     const res = await dispatch(clearAllCart());
