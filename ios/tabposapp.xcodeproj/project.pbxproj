@@ -518,7 +518,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = tabposapp/tabposapp.entitlements;
-				CURRENT_PROJECT_VERSION = 217;
+				CURRENT_PROJECT_VERSION = 218;
 				DEVELOPMENT_TEAM = AX5AQQF424;
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -526,7 +526,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "JOBR POS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "tabposapp requires to access camera for uploading photos to your profile or posts";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) Enabling Face ID allows you quick and secure access to your account";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "tabposapp Enabling Face ID allows you quick and secure access to your account";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Allowing access to your location enhances the app's functionality by improving accuracy and providing a better user experience.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "tabposapp requires location access to get current location of the POS ";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "tabposapp would like to upload photos from your photo gallery";
@@ -536,6 +536,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -565,14 +566,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = tabposapp/tabposapp.entitlements;
-				CURRENT_PROJECT_VERSION = 217;
+				CURRENT_PROJECT_VERSION = 218;
 				DEVELOPMENT_TEAM = AX5AQQF424;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = tabposapp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "JOBR POS";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "tabposapp requires to access camera for uploading photos to your profile or posts";
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) Enabling Face ID allows you quick and secure access to your account";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "tabposapp Enabling Face ID allows you quick and secure access to your account";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Allowing access to your location enhances the app's functionality by improving accuracy and providing a better user experience.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "tabposapp requires location access to get current location of the POS ";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "tabposapp would like to upload photos from your photo gallery";
@@ -582,6 +583,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
