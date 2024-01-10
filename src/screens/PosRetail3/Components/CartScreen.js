@@ -370,65 +370,6 @@ export function CartScreen({
     return productPrice * item?.qty;
   };
 
-  //  const updateQuantity = (cartId, productId, operation, index) => {
-  //     // console.log('print JSON response ==>', JSON.stringify(getRetailData?.getAllCart));
-  //     const arr = getRetailData?.getAllCart;
-  //     const product = arr?.poscart_products[index];
-  //     // const productQty = operation === '+' ? product.qty + 1 : product.qty - 1;
-  //     const restProductQty = product?.product_details?.supply?.rest_quantity;
-  //     const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
-  //     const offerPricePerBatch = product.product_details?.supply?.supply_prices?.offer_price;
-  //     const offerApplicableOnQty =
-  //       product.product_details?.supply?.supply_prices?.offer_applicable_qty;
-  //     const offerPricePerQty = offerPricePerBatch / offerApplicableOnQty;
-
-  //     if (operation === '+') {
-  //       if (restProductQty > product.qty) {
-  //         product.qty += 1;
-  //         arr.amount.total_amount += productPrice;
-
-  //         arr.amount.products_price += productPrice;
-  //         const totalAmount = arr.amount.products_price;
-  //         const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-  //         arr.amount.tax = parseFloat(TAX); // Update tax value
-  //         arr.amount.total_amount = totalAmount + parseFloat(TAX);
-
-  //         if (product.qty >= offerApplicableOnQty) {
-  //         } else {
-  //           arr.amount.total_amount += productPrice;
-  //           arr.amount.products_price += productPrice;
-  //           const totalAmount = arr.amount.products_price;
-  //           const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-  //           arr.amount.tax = parseFloat(TAX); // Update tax value
-  //           arr.amount.total_amount = totalAmount + parseFloat(TAX);
-  //         }
-  //       } else {
-  //         alert('There are no more quantity left to add');
-  //       }
-  //       // Update total_amount including tax
-  //     } else if (operation === '-') {
-  //       if (product.qty > 0) {
-  //         if (product.qty === 1) {
-  //           arr?.poscart_products.splice(index, 1);
-  //           dispatch(updateCartLength(CART_LENGTH - 1));
-  //         }
-  //         product.qty -= 1;
-
-  //         arr.amount.products_price -= productPrice;
-  //         const totalAmount = arr.amount.products_price;
-
-  //         const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-
-  //         arr.amount.tax = parseFloat(TAX); // Update tax value
-  //         arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
-  //       }
-  //     }
-  //     var DATA = {
-  //       payload: arr,
-  //     };
-  //     dispatch(getAllCartSuccess(DATA));
-  //   };
-
   const clearCartHandler = async () => {
     const res = await dispatch(clearAllCart());
     setTimeout(() => {
@@ -552,14 +493,7 @@ export function CartScreen({
                     {item?.poscart_products?.map((data, ind) => {
                       const suppliesPrice = data?.product_details?.supply?.supply_prices;
                       return (
-                        <View
-                          style={styles.blueListData}
-                          key={ind}
-                          // onPress={() => {
-                          //   productPopupFun(data?.product_id);
-                          //   beforeDiscountCartLoad();
-                          // }}
-                        >
+                        <View style={styles.blueListData} key={ind}>
                           <View style={styles.displayflex}>
                             <View style={[styles.tableListSide, styles.listLeft]}>
                               <Text style={[styles.blueListDataText, styles.cashLabelWhiteHash]}>
@@ -609,32 +543,6 @@ export function CartScreen({
                                         data.qty
                                       )
                                     )}
-
-                                    {/* {suppliesPrice?.actual_price &&
-                                    suppliesPrice?.offer_price &&
-                                    suppliesPrice?.offer_applicable_qty !== data?.qty
-                                      ? amountFormat(suppliesPrice?.actual_price)
-                                      : suppliesPrice?.actual_price &&
-                                        suppliesPrice?.offer_price &&
-                                        suppliesPrice?.offer_applicable_qty == data?.qty
-                                      ? amountFormat(suppliesPrice?.offer_price)
-                                      : suppliesPrice?.actual_price && suppliesPrice?.offer_price
-                                      ? amountFormat(suppliesPrice?.offer_price)
-                                      : amountFormat(suppliesPrice?.actual_price)} */}
-                                    {/* {suppliesPrice?.selling_price &&
-                                    suppliesPrice?.offer_price &&
-                                    suppliesPrice?.offer_applicable_qty != data?.qty
-                                      ? amountFormat(suppliesPrice?.selling_price)
-                                      : suppliesPrice?.selling_price &&
-                                        suppliesPrice?.offer_price &&
-                                        suppliesPrice?.offer_applicable_qty == data?.qty
-                                      ? amountFormat(suppliesPrice?.offer_price)
-                                      : amountFormat(suppliesPrice?.selling_price)} */}
-                                    {/* {suppliesPrice?.selling_price &&
-                                    suppliesPrice?.offer_price &&
-                                    suppliesPrice?.offer_applicable_qty < 1
-                                      ? amountFormat(suppliesPrice?.offer_price)
-                                      : amountFormat(suppliesPrice?.selling_price)} */}
                                   </Text>
                                 )}
                               </View>
@@ -674,39 +582,6 @@ export function CartScreen({
                               </View>
                               <View style={styles.productCartBody}>
                                 <Text style={styles.blueListDataText}>
-                                  {/* {suppliesPrice?.actual_price &&
-                                  suppliesPrice?.offer_price &&
-                                  suppliesPrice?.offer_applicable_qty != data?.qty
-                                    ? amountFormat(suppliesPrice?.actual_price * data?.qty)
-                                    : suppliesPrice?.actual_price &&
-                                      suppliesPrice?.offer_price &&
-                                      suppliesPrice?.offer_applicable_qty == data?.qty
-                                    ? amountFormat(suppliesPrice?.offer_price)
-                                    : suppliesPrice?.actual_price && suppliesPrice?.offer_price
-                                    ? amountFormat(suppliesPrice?.offer_price * data?.qty)
-                                    : amountFormat(suppliesPrice?.actual_price * data?.qty)} */}
-                                  {/* {suppliesPrice?.selling_price &&
-                                  suppliesPrice?.offer_price &&
-                                  suppliesPrice?.offer_applicable_qty != data?.qty
-                                    ? amountFormat(suppliesPrice?.selling_price * data?.qty)
-                                    : suppliesPrice?.selling_price &&
-                                      suppliesPrice?.offer_price &&
-                                      suppliesPrice?.offer_applicable_qty == data?.qty
-                                    ? amountFormat(
-                                        suppliesPrice?.offer_price *
-                                          (suppliesPrice?.offer_applicable_qty > 1 ? 1 : data?.qty)
-                                      )
-                                    : amountFormat(suppliesPrice?.selling_price * data?.qty)} */}
-
-                                  {/* {suppliesPrice?.selling_price &&
-                                  suppliesPrice?.offer_price &&
-                                  suppliesPrice?.offer_applicable_qty < 1
-                                    ? amountFormat(
-                                        suppliesPrice?.offer_price *
-                                          (suppliesPrice?.offer_applicable_qty > 1 ? 1 : data?.qty)
-                                      )
-                                    : amountFormat(suppliesPrice?.selling_price * data?.qty)} */}
-
                                   {amountFormat(getProductFinalPrice(data))}
                                 </Text>
                               </View>
