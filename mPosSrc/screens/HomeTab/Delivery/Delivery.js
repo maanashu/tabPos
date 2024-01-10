@@ -97,7 +97,7 @@ export function Delivery() {
               source={Images.pin}
               style={[styles.payIconStyle, { tintColor: COLORS.darkGray }]}
             />
-            <Text style={styles.priceTextStyle}>{`$${
+            <Text style={styles.priceTextStyle}>{`${
               item?.distance ? `${item.distance} miles` : '0'
             }`}</Text>
           </View>

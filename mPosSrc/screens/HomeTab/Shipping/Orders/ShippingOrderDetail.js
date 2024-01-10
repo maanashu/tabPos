@@ -186,10 +186,9 @@ export function ShippingOrderDetail(props) {
 
   const checkOtherOrder = () => {
     const statusData = shippingData?.orderStatus;
-
     var index = 0;
     if (statusData[0].count > 0) {
-      if (statusData[3].count == 1) {
+      if (statusData[0].count == 1) {
         index = 3;
       } else {
         index = 0;
@@ -212,11 +211,11 @@ export function ShippingOrderDetail(props) {
       } else {
         index = 5;
       }
-    } else if (statusData[6].count > 0) {
-      if (statusData[6].count == 1) {
-        index = 7;
+    } else if (statusData[7].count > 0) {
+      if (statusData[7].count == 1) {
+        index = 9;
       } else {
-        index = 6;
+        index = 7;
       }
     }
     setSelectedStatus(index.toString());

@@ -65,7 +65,7 @@ export function OrderList(props) {
               source={Images.pin}
               style={[styles.payIconStyle, { tintColor: COLORS.dark_grey }]}
             />
-            <Text style={styles.priceTextStyle}>{`$${
+            <Text style={styles.priceTextStyle}>{`${
               item?.distance ? `${item.distance} miles` : '0'
             }`}</Text>
           </View>

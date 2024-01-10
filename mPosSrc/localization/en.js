@@ -319,6 +319,7 @@ export const en = {
     express: 'Express delivery',
     oneHour: '1 hour delivery window',
     track: 'Track',
+    tip: 'Tip',
   },
   retail: {
     noProduct: ' No Product found',

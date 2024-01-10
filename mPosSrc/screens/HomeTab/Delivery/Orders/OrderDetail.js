@@ -84,78 +84,83 @@ export function OrderDetail(props) {
     }
   };
 
+  // const checkOtherOrder = () => {
+  //   const statusData = deliveryData?.getOrderCount;
+  //   let index = 0;
+  //   for (let i = 0; i < statusData.length; i++) {
+  //     const currentCount = statusData[i].count;
+  //     if (currentCount > 0) {
+  //       if (currentCount === 1 && i !== statusData.length - 1) {
+  //         index = i + 1;
+  //       } else {
+  //         index = i;
+  //       }
+  //       break;
+  //     }
+  //   }
+  //   setSelectedStatus(index.toString());
+  //   dispatch(getReviewDefault(index));
+  // };
+
   const checkOtherOrder = () => {
     const statusData = deliveryData?.getOrderCount;
-    let index = 0;
-    for (let i = 0; i < statusData.length; i++) {
-      const currentCount = statusData[i].count;
-      if (currentCount > 0) {
-        if (currentCount === 1 && i !== statusData.length - 1) {
-          index = i + 1;
-        } else {
-          index = i;
-        }
-        break;
+
+    var index = 0;
+    if (statusData[0].count > 0) {
+      if (statusData[0].count == 1) {
+        index = 1;
+      } else {
+        index = 0;
       }
+    } else if (statusData[1].count > 0) {
+      if (statusData[1].count == 1) {
+        index = 1 + 1;
+      } else {
+        index = 1;
+      }
+    } else if (statusData[2].count > 0) {
+      if (statusData[2].count == 1) {
+        index = 2 + 1;
+      } else {
+        index = 2;
+      }
+    } else if (statusData[3].count > 0) {
+      if (statusData[3].count == 1) {
+        index = 3 + 1;
+      } else {
+        index = 3;
+      }
+    } else if (statusData[4].count > 0) {
+      if (statusData[4].count == 1) {
+        index = 4 + 1;
+      } else {
+        index = 4;
+      }
+    } else if (statusData[5].count > 0) {
+      if (statusData[5].count == 1) {
+        index = 5 + 1;
+      } else {
+        index = 5;
+      }
+    } else if (statusData[6].count > 0) {
+      if (statusData[6].count == 1) {
+        index = 6 + 1;
+      } else {
+        index = 6;
+      }
+    } else if (parseInt(statusCount?.[7]?.count) + parseInt(statusCount?.[8]?.count) > 0) {
+      if (statusData[7].count == 1) {
+        index = 9;
+      } else {
+        index = 7;
+      }
+    } else if (statusData[9].count > 0) {
+      index = 9;
     }
+
     setSelectedStatus(index.toString());
     dispatch(getReviewDefault(index));
   };
-
-  // const checkOtherOrder = () => {
-  //   const statusData = deliveryData?.getOrderCount;
-  //   console.log('STATUSSS', JSON.stringify(statusData));
-  //   var index = 0;
-  //   if (statusData[0].count > 0) {
-  //   } else if (statusData[1].count > 0) {
-  //     if (statusData[1].count == 1) {
-  //       index = 1 + 1;
-  //     } else {
-  //       index = 1;
-  //     }
-  //   } else if (statusData[2].count > 0) {
-  //     if (statusData[1].count == 1) {
-  //       index = 2 + 1;
-  //     } else {
-  //       index = 2;
-  //     }
-  //   } else if (statusData[3].count > 0) {
-  //     if (statusData[1].count == 1) {
-  //       index = 3 + 1;
-  //     } else {
-  //       index = 3;
-  //     }
-  //   } else if (statusData[4].count > 0) {
-  //     if (statusData[1].count == 1) {
-  //       index = 4 + 1;
-  //     } else {
-  //       index = 4;
-  //     }
-  //   } else if (statusData[5].count > 0) {
-  //     if (statusData[1].count == 1) {
-  //       index = 5 + 1;
-  //     } else {
-  //       index = 5;
-  //     }
-  //   } else if (statusData[6].count > 0) {
-  //     if (statusData[1].count == 1) {
-  //       index = 6 + 1;
-  //     } else {
-  //       index = 6;
-  //     }
-  //   } else if (parseInt(statusCount?.[7]?.count) + parseInt(statusCount?.[8]?.count) > 0) {
-  //     if (statusData[1].count == 1) {
-  //       index = 9;
-  //     } else {
-  //       index = 7;
-  //     }
-  //   } else if (statusData[9].count > 0) {
-  //     index = 9;
-  //   }
-  //   console.log('STATUSSS_INDEX', JSON.stringify(index));
-
-  //   dispatch(getReviewDefault(index));
-  // };
 
   const changeOrderStatusAfterPickup = (id) => {
     setPickupModalVisible(false);
@@ -195,7 +200,7 @@ export function OrderDetail(props) {
     );
     setTimeout(() => {
       checkOtherOrder();
-    }, 100);
+    }, 200);
   };
 
   return (

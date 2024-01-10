@@ -34,7 +34,7 @@ export class ShippingController {
       const endpoint =
         ORDER_URL +
         ApiOrderInventory.getOrders +
-        `?status=${status}&seller_id=${sellerID}&delivery_option=4&need_walkin=false`;
+        `?status=${status}&seller_id=${sellerID}&delivery_option=4&need_walkin=false&need_returned=false`;
 
       // const endpoint =
       //   ORDER_URL +

@@ -124,12 +124,13 @@ const ShipmentTracking = ({ orderData }) => {
             orderData?.status_desc?.status_4_updated_at,
             orderStatus
           )}
-          {statusView(
-            strings.orderStatus.driverAssigned,
-            orderStatus >= 3 && true,
-            orderData?.status_desc?.status_3_updated_at,
-            orderStatus
-          )}
+          {orderData?.delivery_option !== '3' &&
+            statusView(
+              strings.orderStatus.driverAssigned,
+              orderStatus >= 3 && true,
+              orderData?.status_desc?.status_3_updated_at,
+              orderStatus
+            )}
           {statusView(
             strings.orderStatus.readyToPickup,
             orderStatus >= 2 && true,

@@ -75,6 +75,12 @@ const OrderTotal = ({ orderData, declineHandler, onPressAcceptHandler }) => {
       <Spacer space={SH(4)} />
 
       <View style={styles.amountViewStyle}>
+        <Text style={styles.labelTextStyle}>{strings.delivery.tip}</Text>
+        <Text style={styles.priceValueText}>{`$${orderData?.tips}`}</Text>
+      </View>
+      <Spacer space={SH(4)} />
+
+      <View style={styles.amountViewStyle}>
         <Text style={styles.labelTextStyle}>{strings.delivery.discount}</Text>
         <Text style={styles.priceValueText}>{`$${orderData?.discount}`}</Text>
       </View>
