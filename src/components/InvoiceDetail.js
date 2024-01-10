@@ -222,25 +222,45 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                     singleOrderDetail?.discount
                   )}`}</Text>
                 </View>
-                <Spacer space={SH(7)} />
-                <View style={styles._subTotalContainer}>
-                  <Text style={styles._payTitle}>{'Delivery Charges'}</Text>
-                  <Text style={styles._payTitle}>{`${formattedPrice(
-                    singleOrderDetail?.delivery_charge
-                  )}`}</Text>
-                </View>
-                <Spacer space={SH(7)} />
-                <View style={styles._subTotalContainer}>
-                  <Text style={styles._payTitle}>{'Shipping Charges'}</Text>
-                  <Text style={styles._payTitle}>{`${formattedPrice(
-                    singleOrderDetail?.shipping_charge
-                  )}`}</Text>
-                </View>
+                {singleOrderDetail?.delivery_charge > 0 ? (
+                  <>
+                    <Spacer space={SH(7)} />
+                    <View style={styles._subTotalContainer}>
+                      <Text style={styles._payTitle}>{'Delivery Charges'}</Text>
+                      <Text style={styles._payTitle}>{`${formattedPrice(
+                        singleOrderDetail?.delivery_charge
+                      )}`}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <></>
+                )}
+                {singleOrderDetail?.shipping_charge > 0 ? (
+                  <>
+                    <Spacer space={SH(7)} />
+                    <View style={styles._subTotalContainer}>
+                      <Text style={styles._payTitle}>{'Shipping Charges'}</Text>
+                      <Text style={styles._payTitle}>{`${formattedPrice(
+                        singleOrderDetail?.shipping_charge
+                      )}`}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <></>
+                )}
                 <Spacer space={SH(7)} />
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>Taxes</Text>
                   <Text style={[styles._payTitle]}>{`${formattedPrice(
                     singleOrderDetail?.tax
+                  )}`}</Text>
+                </View>
+
+                <Spacer space={SH(7)} />
+                <View style={styles._subTotalContainer}>
+                  <Text style={styles._payTitle}>Tips</Text>
+                  <Text style={[styles._payTitle]}>{`${formattedPrice(
+                    singleOrderDetail?.tips
                   )}`}</Text>
                 </View>
 
@@ -426,25 +446,45 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
                     singleOrderDetail?.discount
                   )}`}</Text>
                 </View>
-                <Spacer space={SH(7)} />
-                <View style={styles._subTotalContainer}>
-                  <Text style={styles._payTitle}>{'Delivery  Charges'}</Text>
-                  <Text style={styles._payTitle}>{`${formattedPrice(
-                    singleOrderDetail?.delivery_charge
-                  )}`}</Text>
-                </View>
-                <Spacer space={SH(7)} />
-                <View style={styles._subTotalContainer}>
-                  <Text style={styles._payTitle}>{'Shipping Charges'}</Text>
-                  <Text style={styles._payTitle}>{`${formattedPrice(
-                    singleOrderDetail?.shipping_charge
-                  )}`}</Text>
-                </View>
+                {singleOrderDetail?.delivery_charge > 0 ? (
+                  <>
+                    <Spacer space={SH(7)} />
+                    <View style={styles._subTotalContainer}>
+                      <Text style={styles._payTitle}>{'Delivery Charges'}</Text>
+                      <Text style={styles._payTitle}>{`${formattedPrice(
+                        singleOrderDetail?.delivery_charge
+                      )}`}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <></>
+                )}
+                {singleOrderDetail?.shipping_charge > 0 ? (
+                  <>
+                    <Spacer space={SH(7)} />
+                    <View style={styles._subTotalContainer}>
+                      <Text style={styles._payTitle}>{'Shipping Charges'}</Text>
+                      <Text style={styles._payTitle}>{`${formattedPrice(
+                        singleOrderDetail?.shipping_charge
+                      )}`}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <></>
+                )}
                 <Spacer space={SH(7)} />
                 <View style={styles._subTotalContainer}>
                   <Text style={styles._payTitle}>Taxes</Text>
                   <Text style={[styles._payTitle]}>{`${formattedPrice(
                     singleOrderDetail?.tax
+                  )}`}</Text>
+                </View>
+
+                <Spacer space={SH(7)} />
+                <View style={styles._subTotalContainer}>
+                  <Text style={styles._payTitle}>Tips</Text>
+                  <Text style={[styles._payTitle]}>{`${formattedPrice(
+                    singleOrderDetail?.tips
                   )}`}</Text>
                 </View>
 

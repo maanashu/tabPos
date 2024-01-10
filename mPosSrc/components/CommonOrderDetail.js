@@ -127,7 +127,6 @@ export function CommonOrderDetail(props) {
     dispatch(getReviewDefault(index));
   };
   const [appointments, setAppointments] = useState(orderData?.appointments ?? []);
-  console.log('first', orderData?.appointments);
 
   useEffect(() => {
     if (orderData?.appointments) {

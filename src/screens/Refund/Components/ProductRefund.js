@@ -505,7 +505,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                       }}
                       placeholderTextColor={COLORS.faded_purple}
                       placeholder={
-                        selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '% 0'
+                        selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '0 %'
                       }
                     />
 
@@ -935,7 +935,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   textInputStyle: {
-    width: SH(60),
+    width: ms(40),
     fontFamily: Fonts.SemiBold,
     fontSize: SF(12),
     color: COLORS.navy_blue,

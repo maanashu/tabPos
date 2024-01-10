@@ -223,10 +223,10 @@ export function Analytics2() {
       <TotalDeliveryOrders
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
-          setDate(item);
+          setDate();
           setDeliveryOption(1);
           setAppName();
-          setOrderDate();
+          setOrderDate(item);
         }}
       />
     ),
@@ -234,10 +234,10 @@ export function Analytics2() {
       <TotalShippingOrders
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
-          setDate(item);
+          setDate();
           setDeliveryOption(4);
           setAppName();
-          setOrderDate();
+          setOrderDate(item);
         }}
       />
     ),
@@ -257,10 +257,10 @@ export function Analytics2() {
       <TotalPosOrder
         onPressReview={(item) => {
           setWeeklyTrasaction(true);
-          setDate(item);
+          setDate();
           setAppName('pos');
           setDeliveryOption();
-          setOrderDate();
+          setOrderDate(item);
         }}
       />
     ),

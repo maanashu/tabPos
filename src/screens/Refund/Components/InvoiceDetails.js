@@ -188,13 +188,20 @@ const InvoiceDetails = ({
               <Text style={styles._payTitle}>Discount</Text>
               <Text style={styles._payTitle}>{`${formattedReturnPrice(discount)}`}</Text>
             </View>
-            <Spacer space={SH(10)} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._payTitle}>{deliveryShippingTitle}</Text>
-              <Text style={styles._payTitle}>{`${formattedReturnPrice(
-                deliveryShippingCharges
-              )}`}</Text>
-            </View>
+
+            {deliveryShippingTitle ? (
+              <>
+                <Spacer space={SH(10)} />
+                <View style={styles._subTotalContainer}>
+                  <Text style={styles._payTitle}>{deliveryShippingTitle}</Text>
+                  <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                    deliveryShippingCharges
+                  )}`}</Text>
+                </View>
+              </>
+            ) : (
+              <></>
+            )}
             <Spacer space={SH(10)} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._payTitle}>Taxes</Text>

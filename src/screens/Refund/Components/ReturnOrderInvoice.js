@@ -199,12 +199,16 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
               )}`}</Text>
             </View>
             <Spacer space={SH(10)} />
-            <View style={styles._subTotalContainer}>
-              <Text style={styles._payTitle}>{'Delivery / Shipping Charges'}</Text>
-              <Text style={styles._payTitle}>{`${formattedReturnPrice(
-                returnedData?.delivery_charge || returnedData?.shipping_charge
-              )}`}</Text>
-            </View>
+            {(returnedData?.delivery_charge || returnedData?.shipping_charge) > 0 ? (
+              <View style={styles._subTotalContainer}>
+                <Text style={styles._payTitle}>{'Delivery / Shipping Charges'}</Text>
+                <Text style={styles._payTitle}>{`${formattedReturnPrice(
+                  returnedData?.delivery_charge || returnedData?.shipping_charge
+                )}`}</Text>
+              </View>
+            ) : (
+              <></>
+            )}
             <Spacer space={SH(10)} />
             <View style={styles._subTotalContainer}>
               <Text style={styles._payTitle}>Taxes</Text>
