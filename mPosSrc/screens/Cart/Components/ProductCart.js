@@ -56,12 +56,14 @@ import { getCartLength } from '@/selectors/CartSelector';
 import CustomAlert from '@/components/CustomAlert';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { MPOS_NAVIGATION } from '@common/commonImports';
+import { amountFormat, getProductFinalPrice, getProductPrice } from '@/utils/GlobalMethods';
 
 export function ProductCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const productCartData = retailData?.getAllCart;
+  const cartData = retailData?.getAllCart;
   const CART_LENGTH = useSelector(getCartLength);
   const payByCashRef = useRef(null);
   const availableOfferRef = useRef(null);
@@ -223,19 +225,90 @@ export function ProductCart({ cartChangeHandler }) {
     return percentageValue.toFixed(2) ?? 0.0;
   }
 
-  const updateQuantity = (operation, index) => {
+  const calculateOrderAmount = (cart) => {
+    if (cart?.poscart_products) {
+      var subTotalAmount = cartData?.poscart_products?.reduce((acc, curr) => {
+        const productPrice = getProductFinalPrice(curr);
+
+        return acc + productPrice;
+
+        // return acc + productPrice * curr.qty;
+      }, 0);
+      // var subTotalAmount = cartData?.amout?.total_amount;
+
+      var discountAmount = 0;
+      var deliveryFee = 0;
+      var taxesAndOtherCharges = 0;
+
+      // if coupon applied
+      // if (objCoupon) {
+      //   const couponDetail = objCoupon;
+      //   if (couponDetail.discount_percentage) {
+      //     discountAmount =
+      //       (subTotalAmount * couponDetail.discount_percentage) / 100;
+      //     discountAmount = Number(discountAmount).toFixed(2);
+      //   }
+
+      //   if (
+      //     couponDetail.max_discount &&
+      //     discountAmount > couponDetail.max_discount
+      //   ) {
+      //     discountAmount = couponDetail.max_discount;
+      //   }
+      // }
+
+      // var productsDiscountAmount = cartData?.cart_products?.reduce(
+      //   (acc, curr) =>
+      //     acc +
+      //     (curr.product_details?.supply?.supply_prices?.offer_price
+      //       ? curr.product_details?.supply?.supply_prices?.actual_price -
+      //         curr.product_details?.supply?.supply_prices?.offer_price
+      //       : 0) *
+      //       curr.qty,
+      //   0
+      // );
+
+      // if (productsDiscountAmount > 0) {
+      //   discountAmount = discountAmount + productsDiscountAmount;
+      // }
+
+      // if (cartData?.amout?.tax_percentage) {
+      //   taxesAndOtherCharges =
+      //     ((subTotalAmount - discountAmount) *
+      //       cartData?.amout?.tax_percentage) /
+      //     100;
+      // }
+
+      taxesAndOtherCharges = parseFloat(
+        calculatePercentageValue(subTotalAmount, parseInt(cart.amount.tax_percentage))
+      );
+
+      var totalOrderAmount = subTotalAmount - discountAmount + deliveryFee + taxesAndOtherCharges;
+
+      cart.amount.tax = parseFloat(taxesAndOtherCharges); // Update tax value
+      cart.amount.total_amount = totalOrderAmount;
+      cart.amount.products_price = subTotalAmount;
+
+      var DATA = {
+        payload: cart,
+      };
+      dispatch(getAllCartSuccess(DATA));
+    }
+  };
+
+  const updateQuantity = (operation, index, suppliesPrice) => {
     var arr = retailData?.getAllCart;
     const product = arr?.poscart_products[index];
-    // const productPrice = product.product_details.price;
-    const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+    const restProductQty = product?.product_details?.supply?.rest_quantity;
+
     if (operation === '+') {
-      product.qty += 1;
-      arr.amount.total_amount += productPrice;
-      arr.amount.products_price += productPrice;
-      const totalAmount = arr.amount.products_price;
-      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-      arr.amount.tax = parseFloat(TAX); // Update tax value
-      arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
+      if (restProductQty > product.qty) {
+        product.qty += 1;
+        calculateOrderAmount(arr);
+      } else {
+        alert('There are no more quantity left to add');
+      }
+      // Update total_amount including tax
     } else if (operation === '-') {
       if (product.qty > 0) {
         if (product.qty === 1) {
@@ -243,38 +316,41 @@ export function ProductCart({ cartChangeHandler }) {
           dispatch(updateCartLength(CART_LENGTH - 1));
         }
         product.qty -= 1;
-
-        arr.amount.products_price -= productPrice;
-        const totalAmount = arr.amount.products_price;
-
-        const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
-
-        arr.amount.tax = parseFloat(TAX); // Update tax value
-        arr.amount.total_amount = totalAmount + parseFloat(TAX); // Update total_amount including tax
+        calculateOrderAmount(arr);
       }
     }
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(getAllCartSuccess(DATA));
   };
+  const removeOneCartHandler = (index, data) => {
+    console.log('index', index);
+    console.log('data', JSON.stringify(data));
 
-  const removeOneCartHandler = (index) => {
+    const offeyKey = data?.product_details?.supply?.supply_offers;
     var arr = retailData?.getAllCart;
-    if (arr?.poscart_products.length == 1 && index == 0) {
+    if (arr?.poscart_products?.length == 1 && index == 0) {
       dispatch(clearAllCart());
     } else {
-      const product = arr?.poscart_products[index];
-      const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
-      if (product.qty > 0) {
-        arr.amount.total_amount -= productPrice * product.qty;
-        arr.amount.products_price -= productPrice * product.qty;
-        arr?.poscart_products.splice(index, 1);
+      if (offeyKey?.length > 0) {
+        const product = arr?.poscart_products[index];
+        const productPrice = getProductFinalPrice(data);
+        if (product.qty > 0) {
+          arr.amount.total_amount -= productPrice;
+          arr.amount.products_price -= productPrice;
+          arr?.poscart_products.splice(index, 1);
+        }
+      } else {
+        const product = arr?.poscart_products[index];
+        const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+        if (product.qty > 0) {
+          arr.amount.total_amount -= productPrice * product.qty;
+          arr.amount.products_price -= productPrice * product.qty;
+          arr?.poscart_products.splice(index, 1);
+        }
       }
       const totalAmount = arr.amount.products_price;
       const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
       arr.amount.tax = parseFloat(TAX); // Update tax value
       arr.amount.total_amount = totalAmount + parseFloat(TAX);
+
       var DATA = {
         payload: arr,
       };
@@ -282,6 +358,30 @@ export function ProductCart({ cartChangeHandler }) {
       dispatch(getAllCartSuccess(DATA));
     }
   };
+
+  // const removeOneCartHandler = (index) => {
+  //   var arr = retailData?.getAllCart;
+  //   if (arr?.poscart_products.length == 1 && index == 0) {
+  //     dispatch(clearAllCart());
+  //   } else {
+  //     const product = arr?.poscart_products[index];
+  //     const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+  //     if (product.qty > 0) {
+  //       arr.amount.total_amount -= productPrice * product.qty;
+  //       arr.amount.products_price -= productPrice * product.qty;
+  //       arr?.poscart_products.splice(index, 1);
+  //     }
+  //     const totalAmount = arr.amount.products_price;
+  //     const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+  //     arr.amount.tax = parseFloat(TAX); // Update tax value
+  //     arr.amount.total_amount = totalAmount + parseFloat(TAX);
+  //     var DATA = {
+  //       payload: arr,
+  //     };
+  //     dispatch(updateCartLength(CART_LENGTH - 1));
+  //     dispatch(getAllCartSuccess(DATA));
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
@@ -451,25 +551,15 @@ export function ProductCart({ cartChangeHandler }) {
                             marginTop: ms(3),
                           }}
                         >
-                          {data?.item?.product_details?.supply?.offer?.offer_price_per_pack &&
-                          data?.item?.product_details?.supply?.supply_prices?.selling_price ? (
-                            <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
-                              $
-                              {data?.item?.product_details?.supply?.offer?.offer_price_per_pack?.toFixed(
-                                2
-                              )}
-                            </Text>
-                          ) : (
-                            <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
-                              $
-                              {data?.item?.product_details?.supply?.supply_prices?.selling_price?.toFixed(
-                                2
-                              )}
-                            </Text>
-                          )}
-                          {/* <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
-                            ${data?.item?.product_details?.supply?.supply_prices?.selling_price}
-                          </Text> */}
+                          <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
+                            {amountFormat(
+                              getProductPrice(
+                                data?.item?.product_details?.supply?.supply_offers,
+                                data?.item?.product_details?.supply?.supply_prices?.selling_price,
+                                data?.item?.qty
+                              )
+                            )}
+                          </Text>
                           <Text style={[styles.colorName, { marginLeft: ms(10) }]}>X</Text>
                           <View style={styles.counterCon}>
                             <TouchableOpacity
@@ -506,21 +596,8 @@ export function ProductCart({ cartChangeHandler }) {
                         <Image source={Images.pencil} style={styles.pencil} />
                       </TouchableOpacity>
                       <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
-                        $
-                        {(data?.item?.product_details?.supply?.supply_prices?.offer_price
-                          ? data?.item?.product_details?.supply?.supply_prices?.offer_price *
-                            data?.item?.qty
-                          : data?.item?.product_details?.supply?.supply_prices?.selling_price *
-                            data?.item?.qty
-                        )?.toFixed(2)}
+                        {amountFormat(getProductFinalPrice(data?.item))}
                       </Text>
-                      {/* <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
-                        $
-                        {Number(
-                          data?.item?.product_details?.supply?.supply_prices?.selling_price *
-                            data?.item?.qty
-                        )?.toFixed(2)}
-                      </Text> */}
                     </View>
                   </View>
                 </View>
@@ -530,7 +607,7 @@ export function ProductCart({ cartChangeHandler }) {
               <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
                 // onPress={() => deleteRow(rowMap, data.item.key)}
-                onPress={() => removeOneCartHandler(data?.index)}
+                onPress={() => removeOneCartHandler(data?.index, data?.item)}
               >
                 <Image
                   source={Images.cross}

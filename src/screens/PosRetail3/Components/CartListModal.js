@@ -28,7 +28,7 @@ import { ms } from 'react-native-size-matters';
 import { Images } from '@/assets/new_icon';
 import { useEffect } from 'react';
 import moment from 'moment';
-import { amountFormat } from '@/utils/GlobalMethods';
+import { amountFormat, getProductFinalPrice, getProductPrice } from '@/utils/GlobalMethods';
 
 export function CartListModal({
   checkOutHandler,
@@ -52,37 +52,131 @@ export function CartListModal({
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
   const CART_LENGTH = useSelector(getCartLength);
 
-  const updateQuantity = (cartId, productId, operation, index) => {
+  // const updateQuantity = (cartId, productId, operation, index) => {
+  //   var arr = getRetailData?.getAllCart;
+  //   const product = arr?.poscart_products[index];
+  //   const productPrice = product.product_details.price;
+  //   const restProductQty = product?.product_details?.supply?.rest_quantity;
+  //   if (operation === '+') {
+  //     if (restProductQty > product.qty) {
+  //       product.qty += 1;
+  //       arr.amount.total_amount += productPrice;
+  //       arr.amount.products_price += productPrice;
+  //     } else {
+  //       alert('There are no more quantity left to add');
+  //     }
+  //   } else if (operation === '-') {
+  //     if (product.qty > 0) {
+  //       if (product.qty == 1) {
+  //         arr?.poscart_products.splice(index, 1);
+  //         dispatch(updateCartLength(CART_LENGTH - 1));
+  //       }
+  //       product.qty -= 1;
+  //       arr.amount.total_amount -= productPrice;
+  //       arr.amount.products_price -= productPrice;
+  //     }
+  //   }
+  //   var DATA = {
+  //     payload: arr,
+  //   };
+  //   dispatch(getAllCartSuccess(DATA));
+  //   setTimeout(() => {
+  //     cartQtyUpdate();
+  //   }, 1000);
+  // };
+  const calculateOrderAmount = (cart) => {
+    if (cart?.poscart_products) {
+      var subTotalAmount = cartData?.poscart_products?.reduce((acc, curr) => {
+        const productPrice = getProductFinalPrice(curr);
+
+        return acc + productPrice;
+
+        // return acc + productPrice * curr.qty;
+      }, 0);
+      // var subTotalAmount = cartData?.amout?.total_amount;
+
+      var discountAmount = 0;
+      var deliveryFee = 0;
+      var taxesAndOtherCharges = 0;
+
+      // if coupon applied
+      // if (objCoupon) {
+      //   const couponDetail = objCoupon;
+      //   if (couponDetail.discount_percentage) {
+      //     discountAmount =
+      //       (subTotalAmount * couponDetail.discount_percentage) / 100;
+      //     discountAmount = Number(discountAmount).toFixed(2);
+      //   }
+
+      //   if (
+      //     couponDetail.max_discount &&
+      //     discountAmount > couponDetail.max_discount
+      //   ) {
+      //     discountAmount = couponDetail.max_discount;
+      //   }
+      // }
+
+      // var productsDiscountAmount = cartData?.cart_products?.reduce(
+      //   (acc, curr) =>
+      //     acc +
+      //     (curr.product_details?.supply?.supply_prices?.offer_price
+      //       ? curr.product_details?.supply?.supply_prices?.actual_price -
+      //         curr.product_details?.supply?.supply_prices?.offer_price
+      //       : 0) *
+      //       curr.qty,
+      //   0
+      // );
+
+      // if (productsDiscountAmount > 0) {
+      //   discountAmount = discountAmount + productsDiscountAmount;
+      // }
+
+      // if (cartData?.amout?.tax_percentage) {
+      //   taxesAndOtherCharges =
+      //     ((subTotalAmount - discountAmount) *
+      //       cartData?.amout?.tax_percentage) /
+      //     100;
+      // }
+
+      taxesAndOtherCharges = parseFloat(
+        calculatePercentageValue(subTotalAmount, parseInt(cart.amount.tax_percentage))
+      );
+
+      var totalOrderAmount = subTotalAmount - discountAmount + deliveryFee + taxesAndOtherCharges;
+
+      cart.amount.tax = parseFloat(taxesAndOtherCharges); // Update tax value
+      cart.amount.total_amount = totalOrderAmount;
+      cart.amount.products_price = subTotalAmount;
+
+      var DATA = {
+        payload: cart,
+      };
+      dispatch(getAllCartSuccess(DATA));
+    }
+  };
+  const updateQuantity = (cartId, productId, operation, index, suppliesPrice) => {
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
-    const productPrice = product.product_details.price;
     const restProductQty = product?.product_details?.supply?.rest_quantity;
+
     if (operation === '+') {
       if (restProductQty > product.qty) {
         product.qty += 1;
-        arr.amount.total_amount += productPrice;
-        arr.amount.products_price += productPrice;
+        calculateOrderAmount(arr);
       } else {
         alert('There are no more quantity left to add');
       }
+      // Update total_amount including tax
     } else if (operation === '-') {
       if (product.qty > 0) {
-        if (product.qty == 1) {
+        if (product.qty === 1) {
           arr?.poscart_products.splice(index, 1);
           dispatch(updateCartLength(CART_LENGTH - 1));
         }
         product.qty -= 1;
-        arr.amount.total_amount -= productPrice;
-        arr.amount.products_price -= productPrice;
+        calculateOrderAmount(arr);
       }
     }
-    var DATA = {
-      payload: arr,
-    };
-    dispatch(getAllCartSuccess(DATA));
-    setTimeout(() => {
-      cartQtyUpdate();
-    }, 1000);
   };
 
   const clearCartHandler = async () => {
@@ -93,18 +187,41 @@ export function CartListModal({
     //   crossHandler();
     // }, 2000);
   };
-  const removeOneCartHandler = (productId, index) => {
+  function calculatePercentageValue(value, percentage) {
+    if (percentage == '') {
+      return '';
+    }
+    const percentageValue = (percentage / 100) * parseFloat(value);
+    return percentageValue.toFixed(2) ?? 0.0;
+  }
+  const removeOneCartHandler = (productId, index, data) => {
+    const offeyKey = data?.product_details?.supply?.supply_offers;
     var arr = getRetailData?.getAllCart;
-    if (arr?.poscart_products.length == 1 && index == 0) {
+    if (arr?.poscart_products?.length == 1 && index == 0) {
       clearCartHandler();
     } else {
-      const product = arr?.poscart_products[index];
-      const productPrice = product.product_details.price;
-      if (product.qty > 0) {
-        arr.amount.total_amount -= productPrice * product.qty;
-        arr.amount.products_price -= productPrice * product.qty;
-        arr?.poscart_products.splice(index, 1);
+      if (offeyKey?.length > 0) {
+        const product = arr?.poscart_products[index];
+        const productPrice = getProductFinalPrice(data);
+        if (product.qty > 0) {
+          arr.amount.total_amount -= productPrice;
+          arr.amount.products_price -= productPrice;
+          arr?.poscart_products.splice(index, 1);
+        }
+      } else {
+        const product = arr?.poscart_products[index];
+        const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+        if (product.qty > 0) {
+          arr.amount.total_amount -= productPrice * product.qty;
+          arr.amount.products_price -= productPrice * product.qty;
+          arr?.poscart_products.splice(index, 1);
+        }
       }
+      const totalAmount = arr.amount.products_price;
+      const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
+      arr.amount.tax = parseFloat(TAX); // Update tax value
+      arr.amount.total_amount = totalAmount + parseFloat(TAX);
+
       var DATA = {
         payload: arr,
       };
@@ -112,6 +229,25 @@ export function CartListModal({
       dispatch(getAllCartSuccess(DATA));
     }
   };
+  // const removeOneCartHandler = (productId, index) => {
+  //   var arr = getRetailData?.getAllCart;
+  //   if (arr?.poscart_products.length == 1 && index == 0) {
+  //     clearCartHandler();
+  //   } else {
+  //     const product = arr?.poscart_products[index];
+  //     const productPrice = product.product_details.price;
+  //     if (product.qty > 0) {
+  //       arr.amount.total_amount -= productPrice * product.qty;
+  //       arr.amount.products_price -= productPrice * product.qty;
+  //       arr?.poscart_products.splice(index, 1);
+  //     }
+  //     var DATA = {
+  //       payload: arr,
+  //     };
+  //     dispatch(updateCartLength(CART_LENGTH - 1));
+  //     dispatch(getAllCartSuccess(DATA));
+  //   }
+  // };
   // useFocusEffect(
   //   React.useCallback(() => {
   //     return () => {
@@ -249,7 +385,7 @@ export function CartListModal({
                               </View>
                             </View>
                             <View style={styles.ShorttableListSide2}>
-                              {data?.product_details?.supply?.offer?.offer_price_per_pack &&
+                              {/* {data?.product_details?.supply?.offer?.offer_price_per_pack &&
                               data?.product_details?.supply?.supply_prices?.selling_price ? (
                                 <Text numberOfLines={1} style={styles.productPrice}>
                                   {amountFormat(
@@ -262,13 +398,17 @@ export function CartListModal({
                                     data?.product_details?.supply?.supply_prices?.selling_price
                                   )}
                                 </Text>
-                              )}
-                              {/* <Text
-                              style={[styles.blueListDataText, { width: ms(35) }]}
-                              numberOfLines={1}
-                            >
-                              ${data?.product_details?.supply?.supply_prices?.selling_price}
-                            </Text> */}
+                              )} */}
+                              <Text numberOfLines={1} style={styles.productPrice}>
+                                {amountFormat(
+                                  getProductPrice(
+                                    data.product_details?.supply?.supply_offers,
+                                    data.product_details?.supply?.supply_prices?.selling_price,
+                                    data.qty
+                                  )
+                                )}
+                              </Text>
+
                               {TYPE == 'product' ? (
                                 <View style={styles.listCountCon}>
                                   <TouchableOpacity
@@ -309,13 +449,15 @@ export function CartListModal({
                               )}
 
                               <Text style={styles.blueListDataText}>
-                                $
+                                {amountFormat(getProductFinalPrice(data))}
+
+                                {/* $
                                 {(data?.product_details?.supply?.supply_prices?.offer_price
                                   ? data?.product_details?.supply?.supply_prices?.offer_price *
                                     data?.qty
                                   : data?.product_details?.supply?.supply_prices?.selling_price *
                                     data?.qty
-                                )?.toFixed(2)}
+                                )?.toFixed(2)} */}
                               </Text>
                               <TouchableOpacity
                                 style={{
@@ -324,7 +466,7 @@ export function CartListModal({
                                   justifyContent: 'center',
                                   alignItems: 'center',
                                 }}
-                                onPress={() => removeOneCartHandler(data.id, ind)}
+                                onPress={() => removeOneCartHandler(data.id, ind, data)}
                               >
                                 <Image source={borderCross} style={styles.borderCross} />
                               </TouchableOpacity>

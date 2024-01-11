@@ -10,7 +10,7 @@ import { getRetail } from '@/selectors/RetailSelectors';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import moment from 'moment';
 import { getUser } from '@/selectors/UserSelectors';
-import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { amountFormat, formattedReturnPrice, getProductPrice } from '@/utils/GlobalMethods';
 import { getAuthData } from '@/selectors/AuthSelector';
 
 const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }) => {
@@ -132,10 +132,13 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
                 </View>
                 <View style={{ width: '20%', alignItems: 'flex-end' }}>
                   <Text style={[styles.priceTitle]} numberOfLines={1}>
-                    $
-                    {item?.product_details?.supply?.supply_prices?.offer_price
-                      ? item?.product_details?.supply?.supply_prices?.offer_price?.toFixed(2)
-                      : item?.product_details?.supply?.supply_prices?.selling_price.toFixed(2)}
+                    {amountFormat(
+                      getProductPrice(
+                        item?.product_details?.supply?.supply_offers,
+                        item?.product_details?.supply?.supply_prices?.selling_price,
+                        item?.qty
+                      )
+                    )}
                   </Text>
 
                   {/* <Text style={[styles.priceTitle]} numberOfLines={1}>

@@ -1450,26 +1450,27 @@ export function MainScreen({
                     <Image
                       source={Images.cartIcon}
                       style={
-                        cartLength > 0
+                        onlyServiceCartArray?.length > 0
                           ? [styles.sideBarImage, { tintColor: COLORS.navy_blue }]
                           : styles.sideBarImage
                       }
                     />
                     <View
                       style={
-                        cartLength > 0
+                        onlyServiceCartArray?.length > 0
                           ? [styles.bucketBadge, styles.bucketBadgePrimary]
                           : styles.bucketBadge
                       }
                     >
                       <Text
                         style={
-                          cartLength > 0
+                          onlyServiceCartArray?.length > 0
                             ? [styles.badgetext, { color: COLORS.white }]
                             : styles.badgetext
                         }
                       >
-                        {cartLength ?? '0'}
+                        {/* {cartLength ?? '0'} */}
+                        {onlyServiceCartArray?.length || '0'}
                       </Text>
                     </View>
                   </TouchableOpacity>
