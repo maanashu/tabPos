@@ -280,9 +280,9 @@ export const en = {
     teamMemeber: '2-step verification for team members',
     enableSecurity: 'Enable Two-Steps Security',
     enableSecurityNew: 'Enable 2-Steps Security',
-    securityStep1: 'Step 1:Donwload Google authenticator from',
+    securityStep1: 'Step 1:Download Google authenticator from',
     securityStep2: 'Step 2:Scan the code to activate Google Authenticator',
-    donwloadGoogleAuth: 'Donwload Google Authenticator ',
+    donwloadGoogleAuth: 'Download Google Authenticator ',
     firstDownloader: 'First, download Google Authenticator from the ',
     googleAuth: 'Google authenticator',
     instead:
