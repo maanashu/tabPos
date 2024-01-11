@@ -4,6 +4,8 @@ import moment from 'moment';
 import 'moment-timezone';
 import { store } from '@/store';
 import * as RNLocalize from 'react-native-localize';
+import { useSelector } from 'react-redux';
+import { getRetail } from '@/selectors/RetailSelectors';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -497,6 +499,71 @@ const numberFormate = (price) => {
   return `${withLocalString || '0'}`;
 };
 
+const getProductPrice = (supply_offers, selling_price, productQty = 1) => {
+  if (!productQty || productQty == 0) {
+    productQty = 1;
+  }
+
+  var productOfferPrice = selling_price;
+
+  if (supply_offers?.length > 0) {
+    var applicableOffer = null;
+    const supplyOffers = supply_offers;
+    for (let index = 0; index < supplyOffers.length; index++) {
+      const offer = supplyOffers[index];
+
+      if (productQty >= offer?.offer?.quantity) {
+        applicableOffer = offer;
+      }
+    }
+
+    if (applicableOffer) {
+      if (applicableOffer.offer.price_flag == 'percentage') {
+        productOfferPrice = Number(
+          productOfferPrice - (productOfferPrice * applicableOffer.offer.offer_price) / 100
+        );
+      } else {
+        productOfferPrice = applicableOffer.offer.offer_price;
+      }
+
+      if (applicableOffer.offer.offer_flag == 'per_box') {
+        productOfferPrice = productOfferPrice / applicableOffer.offer.quantity;
+      }
+    }
+  }
+  return productOfferPrice;
+};
+
+const getProductFinalPrice = (item) => {
+  var productPrice = 0;
+
+  productPrice = getProductPrice(
+    item.product_details?.supply?.supply_offers,
+    item.product_details?.supply?.supply_prices?.selling_price,
+    item?.qty
+  );
+
+  // var productPrice =
+  //   item?.product_details?.supply?.supply_prices?.selling_price;
+  var attributePrice = 0;
+
+  const supplyVariants = item.product_details?.supply?.supply_variants;
+
+  if (supplyVariants) {
+    if (Array.isArray(supplyVariants)) {
+      attributePrice = supplyVariants.reduce(function (a, b) {
+        return a + b?.price;
+      }, 0);
+    } else if (typeof supplyVariants === 'object' && supplyVariants !== null) {
+      attributePrice = supplyVariants?.price;
+    }
+  }
+
+  productPrice = productPrice + attributePrice;
+
+  return productPrice * item?.qty;
+};
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -527,4 +594,6 @@ export {
   formattedPriceWithoutSign,
   amountFormat,
   numberFormate,
+  getProductPrice,
+  getProductFinalPrice,
 };

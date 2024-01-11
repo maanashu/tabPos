@@ -43,7 +43,13 @@ import { CustomProductAdd } from './CustomProductAdd';
 import { NewCustomerAdd } from './NewCustomerAdd';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
-import { amountFormat, amountLocalString, formattedReturnPrice } from '@/utils/GlobalMethods';
+import {
+  amountFormat,
+  amountLocalString,
+  formattedReturnPrice,
+  getProductFinalPrice,
+  getProductPrice,
+} from '@/utils/GlobalMethods';
 import { Images } from '@/assets/new_icon';
 import { FullScreenLoader } from '@mPOS/components';
 import BlurredModal from '@/components/BlurredModal';
@@ -283,7 +289,6 @@ export function CartScreen({
     var arr = getRetailData?.getAllCart;
     const product = arr?.poscart_products[index];
     const restProductQty = product?.product_details?.supply?.rest_quantity;
-    // const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
 
     if (operation === '+') {
       if (restProductQty > product.qty) {
@@ -305,94 +310,40 @@ export function CartScreen({
     }
   };
 
-  function getProductPrice(supply_offers, selling_price, productQty = 1) {
-    if (!productQty || productQty == 0) {
-      productQty = 1;
-    }
-
-    var productOfferPrice = selling_price;
-
-    if (supply_offers?.length > 0) {
-      var applicableOffer = null;
-      const supplyOffers = supply_offers;
-      for (let index = 0; index < supplyOffers.length; index++) {
-        const offer = supplyOffers[index];
-
-        if (productQty >= offer?.offer?.quantity) {
-          applicableOffer = offer;
-        }
-      }
-
-      if (applicableOffer) {
-        if (applicableOffer.offer.price_flag == 'percentage') {
-          productOfferPrice = Number(
-            productOfferPrice - (productOfferPrice * applicableOffer.offer.offer_price) / 100
-          );
-        } else {
-          productOfferPrice = applicableOffer.offer.offer_price;
-        }
-
-        if (applicableOffer.offer.offer_flag == 'per_box') {
-          productOfferPrice = productOfferPrice / applicableOffer.offer.quantity;
-        }
-      }
-    }
-    return productOfferPrice;
-  }
-
-  const getProductFinalPrice = (item) => {
-    var productPrice = 0;
-
-    productPrice = getProductPrice(
-      item.product_details?.supply?.supply_offers,
-      item.product_details?.supply?.supply_prices?.selling_price,
-      item?.qty
-    );
-
-    // var productPrice =
-    //   item?.product_details?.supply?.supply_prices?.selling_price;
-    var attributePrice = 0;
-
-    const supplyVariants = item.product_details?.supply?.supply_variants;
-
-    if (supplyVariants) {
-      if (Array.isArray(supplyVariants)) {
-        attributePrice = supplyVariants.reduce(function (a, b) {
-          return a + b?.price;
-        }, 0);
-      } else if (typeof supplyVariants === 'object' && supplyVariants !== null) {
-        attributePrice = supplyVariants?.price;
-      }
-    }
-
-    productPrice = productPrice + attributePrice;
-
-    return productPrice * item?.qty;
-  };
-
   const clearCartHandler = async () => {
     const res = await dispatch(clearAllCart());
     setTimeout(() => {
       crossHandler();
     }, 2000);
   };
-  const removeOneCartHandler = (productId, index) => {
+  const removeOneCartHandler = (productId, index, data) => {
+    const offeyKey = data?.product_details?.supply?.supply_offers;
     var arr = getRetailData?.getAllCart;
-    if (arr?.poscart_products.length == 1 && index == 0) {
+    if (arr?.poscart_products?.length == 1 && index == 0) {
       clearCartHandler();
     } else {
-      const product = arr?.poscart_products[index];
-      // const productPrice = product.product_details.price;
-      const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
-      if (product.qty > 0) {
-        arr.amount.total_amount -= productPrice * product.qty;
-        arr.amount.products_price -= productPrice * product.qty;
-        arr?.poscart_products.splice(index, 1);
+      if (offeyKey?.length > 0) {
+        const product = arr?.poscart_products[index];
+        const productPrice = getProductFinalPrice(data);
+        if (product.qty > 0) {
+          arr.amount.total_amount -= productPrice;
+          arr.amount.products_price -= productPrice;
+          arr?.poscart_products.splice(index, 1);
+        }
+      } else {
+        const product = arr?.poscart_products[index];
+        const productPrice = product.product_details?.supply?.supply_prices?.selling_price;
+        if (product.qty > 0) {
+          arr.amount.total_amount -= productPrice * product.qty;
+          arr.amount.products_price -= productPrice * product.qty;
+          arr?.poscart_products.splice(index, 1);
+        }
       }
       const totalAmount = arr.amount.products_price;
       const TAX = calculatePercentageValue(totalAmount, parseInt(arr.amount.tax_percentage));
       arr.amount.tax = parseFloat(TAX); // Update tax value
       arr.amount.total_amount = totalAmount + parseFloat(TAX);
+
       var DATA = {
         payload: arr,
       };
@@ -626,7 +577,7 @@ export function CartScreen({
                                   )}
 
                                   <TouchableOpacity
-                                    onPress={() => removeOneCartHandler(data.id, ind)}
+                                    onPress={() => removeOneCartHandler(data.id, ind, data)}
                                   >
                                     <Image source={crossButton} style={styles.borderCross} />
                                   </TouchableOpacity>
