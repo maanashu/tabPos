@@ -55,6 +55,12 @@ export function TransactionList(props) {
       : startDate && endDate
       ? { start_date: startDate, end_date: endDate }
       : { filter_by: filterVal }),
+    ...(props?.route?.params?.delivery_option && {
+      delivery_option: props?.route?.params?.delivery_option,
+    }),
+    ...(props?.route?.params?.app_name && {
+      app_name: props?.route?.params?.app_name,
+    }),
   };
   const object = {
     seller_id: sellerID,
@@ -64,7 +70,7 @@ export function TransactionList(props) {
       ? { start_date: startDate, end_date: endDate }
       : { filter: filterVal }),
   };
-
+  console.log('first', body);
   useEffect(() => {
     dispatch(getTotakTraDetail(body));
     dispatch(getTotalTraType(object));
