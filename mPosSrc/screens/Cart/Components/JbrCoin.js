@@ -15,6 +15,7 @@ import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import {
   createOrder,
   getAllCart,
+  paymentRequestCancel,
   qrcodestatus,
   qrCodeStatusSuccess,
   requestCheck,
@@ -193,12 +194,13 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
       detached
       bottomInset={0}
       onDismiss={() => {
+        sendRequest && dispatch(paymentRequestCancel(requestId));
         // setWalletIdInp('');
         dispatch(requestCheckSuccess(''));
         dispatch(qrCodeStatusSuccess(''));
         setWalletIdInp('');
         setsendRequest(false);
-        sendRequest && alert('Payment Request cancel');
+        //  && alert('Payment Request cancel');
         setDuration(120);
       }}
       backdropOpacity={0.5}
@@ -216,12 +218,13 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
           <View style={styles.productHeaderCon}>
             <TouchableOpacity
               onPress={() => {
+                sendRequest && dispatch(paymentRequestCancel(requestId));
                 jbrCoinCrossHandler();
                 dispatch(requestCheckSuccess(''));
                 dispatch(qrCodeStatusSuccess(''));
                 setWalletIdInp('');
                 setsendRequest(false);
-                sendRequest && alert('Payment request cancel');
+                // sendRequest && alert('Payment request cancel');
                 setDuration(120);
               }}
             >

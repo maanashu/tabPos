@@ -1291,6 +1291,7 @@ export const CartAmountPayBy = ({
               <TouchableOpacity
                 style={styles.crossBg}
                 onPress={() => {
+                  sendRequest && dispatch(paymentRequestCancel(requestId));
                   setQrPopUp(false);
                   dispatch(requestCheckSuccess(''));
                   dispatch(qrCodeStatusSuccess(''));
@@ -1298,7 +1299,6 @@ export const CartAmountPayBy = ({
                   // sendRequest && alert('Payment Request cancel');
                   setDuration(120);
                   setWalletIdInp('');
-                  sendRequest && dispatch(paymentRequestCancel(requestId));
                 }}
               >
                 <Image source={crossButton} style={styles.crossButton} />
@@ -1435,7 +1435,6 @@ export const CartAmountPayBy = ({
                               dispatch(requestCheckSuccess(''));
                               dispatch(qrCodeStatusSuccess(''));
                               setsendRequest(false);
-
                               setDuration(120);
                               setWalletIdInp('');
                               // sendRequest && alert('Payment Request cancel');
