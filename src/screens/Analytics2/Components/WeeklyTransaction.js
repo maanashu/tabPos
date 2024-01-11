@@ -124,34 +124,24 @@ export function WeeklyTransaction({
     switch (status) {
       case 0:
         return 'Review';
-        break;
       case 1:
         return 'Accepted';
-        break;
       case 2:
         return 'Prepare';
-        break;
       case 3:
         return 'Ready For Pickup';
-        break;
       case 4:
-        return 'Walkin';
-        break;
+        return 'Pickup';
       case 5:
         return 'Delivered';
-        break;
       case 6:
         return 'Pickup By Customer';
-        break;
       case 7:
         return 'Cancelled';
-        break;
       case 8:
         return 'Rejected';
-        break;
       case 9:
         return 'Refunded';
-        break;
     }
   };
 

@@ -28,6 +28,7 @@ export class WalletController {
   }
 
   static async getTotakTraDetail(data) {
+    console.log('sfhsagfsa', data);
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
 
@@ -87,6 +88,7 @@ export class WalletController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           reject(error);
         });
     });

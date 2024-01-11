@@ -104,6 +104,9 @@ export function Analytics() {
   const maxDate = new Date(2030, 6, 3);
 
   const [weeklyTransaction, setWeeklyTrasaction] = useState(false);
+  const [appName, setAppName] = useState();
+  const [deliveryOption, setDeliveryOption] = useState();
+  const [orderDate, setOrderDate] = useState(null);
 
   const handleOnPressNext = () => {
     // Perform actions when "Next" button is pressed
@@ -146,7 +149,7 @@ export function Analytics() {
       dispatch(getTotalInventory(sellerID, data, 1));
       dispatch(getSoldProduct(sellerID, data, 1));
       getData();
-    }, [timeValue, channelValue, selectDate])
+    }, [timeValue, channelValue, selectDate, appName, orderDate, deliveryOption])
   );
 
   const orderOnPress = (value) => {
@@ -180,17 +183,31 @@ export function Analytics() {
     selectedScreen === 'MainScreen' ? goBack() : setselectedScreen('MainScreen');
   };
 
-  const showTransDetail = () => {
-    if (startDate && endDate) {
+  const showTransDetail = (item) => {
+    if (item) {
       commonNavigate(MPOS_NAVIGATION.transactionList, {
-        start_date: startDate,
-        end_date: endDate,
+        start_date: item,
+        end_date: item,
         transactionType: 'all',
+        delivery_option:
+          selectedScreen === 'TotalShippingOrders'
+            ? 4
+            : selectedScreen === 'TotalDeliveryOrders'
+            ? 1
+            : null,
+        app_name: selectedScreen === 'TotalPosOrder' ? 'pos' : null,
       });
     } else {
       commonNavigate(MPOS_NAVIGATION.transactionList, {
         filter_by: timeValue,
         transactionType: 'all',
+        delivery_option:
+          selectedScreen === 'TotalShippingOrders'
+            ? 4
+            : selectedScreen === 'TotalDeliveryOrders'
+            ? 1
+            : null,
+        app_name: selectedScreen === 'TotalPosOrder' ? 'pos' : null,
       });
     }
   };
@@ -241,14 +258,14 @@ export function Analytics() {
     ['TotalDeliveryOrders']: (
       <TotalDeliveryOrders
         onPressReview={(item) => {
-          showTransDetail();
+          showTransDetail(item);
         }}
       />
     ),
     ['TotalShippingOrders']: (
       <TotalShippingOrders
         onPressReview={(item) => {
-          showTransDetail();
+          showTransDetail(item);
         }}
       />
     ),
@@ -256,14 +273,20 @@ export function Analytics() {
     ['TotalOrders']: (
       <TotalOrders
         onPressReview={(item) => {
-          showTransDetail();
+          showTransDetail(item);
         }}
       />
     ),
-    ['TotalPosOrder']: <TotalPosOrder onPressReview={(item) => showTransDetail()} />,
+    ['TotalPosOrder']: (
+      <TotalPosOrder
+        onPressReview={(item) => {
+          showTransDetail(item);
+        }}
+      />
+    ),
     ['TotalInventory']: <TotalInventory />,
   };
-
+  console.log('asfsafas', orderDate);
   const screenChangeView = () => {
     return renderScreen[selectedScreen];
   };
