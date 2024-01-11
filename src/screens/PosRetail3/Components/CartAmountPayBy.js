@@ -58,6 +58,7 @@ import {
   getServiceCart,
   getAllCartSuccess,
   merchantWalletCheck,
+  paymentRequestCancel,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -186,6 +187,7 @@ export const CartAmountPayBy = ({
   const qrStatus = getRetailData.qrStatuskey;
   const [status, setstatus] = useState('');
   const [sendRequest, setsendRequest] = useState(false);
+  console.log('sendRequest', sendRequest);
   const [duration, setDuration] = useState(120);
   const [paused, setPaused] = useState(true);
   const getTips = getRetailData?.getTips;
@@ -407,6 +409,10 @@ export const CartAmountPayBy = ({
   const isLoadingMerchantWalletCheck = useSelector((state) =>
     isLoadingSelector([TYPES.MERCHANT_WALLET_CHECK], state)
   );
+  const isLoadingPaymentRequestCancel = useSelector((state) =>
+    isLoadingSelector([TYPES.PAYMENT_REQUEST_CANCEL], state)
+  );
+  console.log('isLoadingPaymentRequestCancel', isLoadingPaymentRequestCancel);
 
   useEffect(() => {
     let interval;
@@ -485,6 +491,7 @@ export const CartAmountPayBy = ({
       const data = {
         requestId: res?.payload?._id,
       };
+
       dispatch(requestCheck(data));
     });
   };
@@ -1278,11 +1285,7 @@ export const CartAmountPayBy = ({
 
       {/* qr code scan pop */}
       <BlurredModal isVisible={qrPopUp}>
-        <KeyboardAwareScrollView
-          contentContainerStyle={{ flex: Platform.OS === 'ios' ? 1 : 0, justifyContent: 'center' }}
-          // behavior={Platform.OS === 'ios' ? 'padding' : 100}
-        >
-          {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+        <KeyboardAwareScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
           <View style={styles.scanPopUpCon}>
             <View style={styles.scanPopHeader}>
               <TouchableOpacity
@@ -1292,9 +1295,10 @@ export const CartAmountPayBy = ({
                   dispatch(requestCheckSuccess(''));
                   dispatch(qrCodeStatusSuccess(''));
                   setsendRequest(false);
-                  sendRequest && alert('Payment Request cancel');
+                  // sendRequest && alert('Payment Request cancel');
                   setDuration(120);
                   setWalletIdInp('');
+                  sendRequest && dispatch(paymentRequestCancel(requestId));
                 }}
               >
                 <Image source={crossButton} style={styles.crossButton} />
@@ -1426,13 +1430,15 @@ export const CartAmountPayBy = ({
                           <TouchableOpacity
                             style={styles.cancelButtonCon}
                             onPress={() => {
+                              sendRequest && dispatch(paymentRequestCancel(requestId));
                               setQrPopUp(false);
                               dispatch(requestCheckSuccess(''));
                               dispatch(qrCodeStatusSuccess(''));
                               setsendRequest(false);
-                              sendRequest && alert('Payment Request cancel');
+
                               setDuration(120);
                               setWalletIdInp('');
+                              // sendRequest && alert('Payment Request cancel');
                             }}
                           >
                             <Text style={styles.cancelText}>{'Cancel'}</Text>
@@ -1488,13 +1494,12 @@ export const CartAmountPayBy = ({
               </View>
             </View>
 
-            {/* {isLoading ? (
+            {/* {isLoadingPaymentRequestCancel ? (
               <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
                 <ActivityIndicator color={COLORS.primary} size="large" style={styles.loader} />
               </View>
             ) : null} */}
           </View>
-          {/* </ScrollView> */}
         </KeyboardAwareScrollView>
       </BlurredModal>
       {(isLoadingAttachCustomer || isLoadingMerchantWalletCheck) && <FullScreenLoader />}

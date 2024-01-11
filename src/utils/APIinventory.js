@@ -187,6 +187,7 @@ export const ApiWalletInventory = {
   walletGetByPhone: 'wallets/other',
   requestMoney: 'transactions/request-money',
   requestCheck: 'transactions/',
+  paymentRequestCancel: 'transactions/request/cancel/',
 };
 export const ApiChatInverntory = {
   sendChat: 'messages',

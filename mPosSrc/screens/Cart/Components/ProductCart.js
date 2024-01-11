@@ -321,9 +321,6 @@ export function ProductCart({ cartChangeHandler }) {
     }
   };
   const removeOneCartHandler = (index, data) => {
-    console.log('index', index);
-    console.log('data', JSON.stringify(data));
-
     const offeyKey = data?.product_details?.supply?.supply_offers;
     var arr = retailData?.getAllCart;
     if (arr?.poscart_products?.length == 1 && index == 0) {

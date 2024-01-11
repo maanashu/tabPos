@@ -1024,6 +1024,20 @@ const merchantWalletCheckError = (error) => ({
   payload: { error },
 });
 
+//Payment request cancel
+const paymentRequestCancelRequest = () => ({
+  type: TYPES.PAYMENT_REQUEST_CANCEL_REQUEST,
+  payload: null,
+});
+const paymentRequestCancelSuccess = () => ({
+  type: TYPES.PAYMENT_REQUEST_CANCEL_SUCCESS,
+  payload: null,
+});
+const paymentRequestCancelError = (error) => ({
+  type: TYPES.PAYMENT_REQUEST_CANCEL_ERROR,
+  payload: { error },
+});
+
 export const getCategory = (sellerID, search) => async (dispatch) => {
   dispatch(getCategoryRequest());
   try {
@@ -1790,5 +1804,17 @@ export const merchantWalletCheck = (data, callback) => async (dispatch) => {
     callback && callback(res?.payload);
   } catch (error) {
     dispatch(merchantWalletCheckError(error.message));
+  }
+};
+
+export const paymentRequestCancel = (requestId) => async (dispatch) => {
+  dispatch(paymentRequestCancelRequest());
+  try {
+    const res = await RetailController.paymentRequestCancel(requestId);
+    dispatch(paymentRequestCancelSuccess());
+
+    // callback && callback(res?.payload);
+  } catch (error) {
+    dispatch(paymentRequestCancelError(error.message));
   }
 };

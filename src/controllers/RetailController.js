@@ -1002,7 +1002,6 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-      console.log('---------', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1089,7 +1088,6 @@ export class RetailController {
 
       const convertToQueryParam = new URLSearchParams(finalParams).toString();
       const endpoint = PRODUCT_URL + ApiProductInventory.product + '?' + convertToQueryParam;
-      console.log('endpoint123', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
           resolve(response);
@@ -1634,6 +1632,27 @@ export class RetailController {
               visibilityTime: 1500,
             });
 
+          reject(error);
+        });
+    });
+  }
+
+  static async paymentRequestCancel(requestId) {
+    return new Promise((resolve, reject) => {
+      const endpoint = WALLET_URL + ApiWalletInventory.paymentRequestCancel + `${requestId}`;
+
+      HttpClient.patch(endpoint)
+        .then((response) => {
+          resolve(response);
+          response?.msg == 'Transaction cancelled' &&
+            Toast.show({
+              text2: 'Payment Request Cancel',
+              position: 'bottom',
+              type: 'success_toast',
+              visibilityTime: 1500,
+            });
+        })
+        .catch((error) => {
           reject(error);
         });
     });
