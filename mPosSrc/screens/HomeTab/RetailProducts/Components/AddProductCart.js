@@ -29,6 +29,7 @@ import { CustomErrorToast } from '@mPOS/components/Toast';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { addTocart, checkSuppliedVariant } from '@/actions/RetailAction';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 const AddProductCart = ({
   addProductCartRef,
@@ -214,21 +215,32 @@ const AddProductCart = ({
         </View>
         <View style={styles.productCartBody}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.flexDirectionRow}>
-              <Text style={styles.headerText}>{productDetail?.product_detail?.name}</Text>
-              {/* <Text style={styles.headerText}>
-                {productDetail?.product_detail?.category?.name}
-              </Text> */}
-              {productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.offer_price &&
-              productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.actual_price ? (
+            <View style={[styles.flexDirectionRow]}>
+              <Text style={[styles.headerText, { flex: 0.7 }]}>
+                {productDetail?.product_detail?.name}
+              </Text>
+              <View style={{ flex: 0.3, alignItems: 'center' }}>
                 <Text style={styles.amount}>
-                  ${productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.offer_price}
+                  {amountFormat(
+                    productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.selling_price
+                  )}
                 </Text>
-              ) : (
-                <Text style={styles.amount}>
-                  ${productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
-                </Text>
-              )}
+                {productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]
+                  ?.offer_applicable_qty && (
+                  <Text style={styles.detailKey}>
+                    Offer qty :{' '}
+                    {
+                      productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]
+                        ?.offer_applicable_qty
+                    }
+                    (
+                    {amountFormat(
+                      productDetail?.product_detail?.supplies?.[0]?.supply_prices?.[0]?.offer_price
+                    )}
+                    )
+                  </Text>
+                )}
+              </View>
             </View>
             <Spacer space={ms(2)} />
             {colorSelectId === null ? (

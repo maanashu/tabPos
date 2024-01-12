@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sellerOtpViewStyle: {
-    width: ms(30),
+    width: ms(50),
     height: ms(18),
     borderRadius: 10,
     alignItems: 'center',

@@ -9,7 +9,7 @@ import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getUser } from '@/selectors/UserSelectors';
-import { getUserAddress } from '@/actions/SettingAction';
+import { getShippingPickup, getUserAddress } from '@/actions/SettingAction';
 import { getSetting } from '@/selectors/SettingSelector';
 
 export function Settings() {
@@ -21,6 +21,7 @@ export function Settings() {
 
   useEffect(() => {
     dispatch(getUserAddress());
+    dispatch(getShippingPickup());
   }, []);
   const options = [
     {

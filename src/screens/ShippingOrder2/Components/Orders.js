@@ -16,6 +16,7 @@ import { strings } from '@/localization';
 import { COLORS, SF, SH, SW } from '@/theme';
 import {
   arrowRightTop,
+  backArrow2,
   cashShippingNew,
   clock,
   fedexNew,

@@ -61,7 +61,6 @@ export function Plans() {
       }
     });
   }
-
   const getActiveSubLoader = useSelector((state) =>
     isLoadingSelector([TYPES.GET_ACTIVE_SUBSCRIPTION], state)
   );
@@ -356,7 +355,7 @@ export function Plans() {
             </View>
           </View>
           <Spacer horizontal space={SW(5)} />
-          <View style={styles.billingDateCon}>
+          {/* <View style={styles.billingDateCon}>
             <Text style={styles.changePlanText}>{strings.settings.paymentMethod}</Text>
             <Spacer space={SH(10)} />
             <View style={styles.dispalyRow}>
@@ -365,7 +364,7 @@ export function Plans() {
                 {'Visa ending in 2275'}
               </Text>
             </View>
-          </View>
+          </View> */}
         </View>
       </View>
     ),
