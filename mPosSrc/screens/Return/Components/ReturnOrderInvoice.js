@@ -15,54 +15,27 @@ export function ReturnOrderInvoice(props) {
 
   const getUserData = useSelector(getUser);
   const returnedData = data?.return;
-  const returnInvoiceData = returnedData?.invoices;
-  const sellerDetails = returnedData?.seller_details;
 
-  // Normal Invoice Data
-  const normalInvoiceData = data?.order;
+  const finalInvoiceData = returnedData?.invoices;
 
-  // Return order invoice
-  const isReturnInvoice = data?.return && data?.order_id == null;
+  const sellerDetail = returnedData?.seller_details;
 
-  const finalInvoiceData = isReturnInvoice
-    ? returnedData?.invoices
-    : normalInvoiceData?.invoices || returnedData?.invoices;
+  const finalSubtotal = returnedData?.products_refunded_amount;
 
-  console.log('finalInvoiceData', finalInvoiceData, isReturnInvoice);
+  const finalDeliveryShippingCharges =
+    (returnedData?.order?.delivery_charge != 0 && returnedData?.order?.delivery_charge) ||
+    (returnedData?.order?.shipping_charge != 0 && returnedData?.order?.shipping_charge);
 
-  const sellerDetail = isReturnInvoice
-    ? returnedData?.seller_details
-    : normalInvoiceData.seller_details;
+  const finalDiscount = returnedData?.discount;
 
-  const finalSubtotal = isReturnInvoice
-    ? returnedData?.products_refunded_amount
-    : normalInvoiceData?.actual_amount;
+  const finalTax = returnedData?.tax;
+  const finalTotal = returnedData?.refunded_amount;
 
-  const finalDeliveryShippingCharges = isReturnInvoice
-    ? (returnedData?.order?.delivery_charge != 0 && returnedData?.order?.delivery_charge) ||
-      (returnedData?.order?.shipping_charge != 0 && returnedData?.order?.shipping_charge)
-    : (normalInvoiceData?.delivery_charge != 0 && normalInvoiceData?.delivery_charge) ||
-      (normalInvoiceData?.shipping_charge != 0 && normalInvoiceData?.shipping_charge);
+  const finalInvoiceCreationDate = returnedData?.updated_at;
 
-  console.log('check finalDeliveryShippingCharges', finalDeliveryShippingCharges);
-  const finalDiscount = isReturnInvoice ? returnedData?.discount : normalInvoiceData?.discount;
+  const finalModeOfPayment = returnedData?.mode_of_payment;
 
-  const finalTax = isReturnInvoice ? returnedData?.tax : normalInvoiceData?.tax;
-  const finalTotal = isReturnInvoice
-    ? returnedData?.refunded_amount
-    : normalInvoiceData.payable_amount;
-
-  const finalInvoiceCreationDate = isReturnInvoice
-    ? returnedData?.updated_at
-    : normalInvoiceData?.updated_at;
-
-  const finalModeOfPayment = isReturnInvoice
-    ? returnedData?.mode_of_payment
-    : normalInvoiceData?.mode_of_payment;
-
-  const finalDeliveryOption = isReturnInvoice
-    ? returnedData?.delivery_option
-    : normalInvoiceData?.delivery_option;
+  const finalDeliveryOption = returnedData?.delivery_option;
 
   const finalBarcode = finalInvoiceData?.barcode;
 
@@ -77,11 +50,12 @@ export function ReturnOrderInvoice(props) {
   const formattedDate = localDateTime.format('ddd DD MMM , YYYY | h:mm A');
 
   const renderProducts = ({ item, index }) => {
-    const normalOrderAmount = isReturnInvoice
-      ? formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)
-      : formattedReturnPrice(item?.price * item?.qty);
-    const productName = isReturnInvoice ? item?.order_details?.product_name : item?.product_name;
-    const productQty = isReturnInvoice ? item?.order_details?.qty : item?.qty;
+    const normalOrderAmount = formattedReturnPrice(
+      item?.order_details?.price * item?.order_details?.qty
+    );
+
+    const productName = item?.order_details?.product_name;
+    const productQty = item?.order_details?.qty;
     return (
       <>
         <View style={styles.itemContainer}>

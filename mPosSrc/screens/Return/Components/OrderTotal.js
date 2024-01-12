@@ -74,6 +74,19 @@ const OrderTotal = ({ orderData, orderDetails }) => {
         <Text style={styles.priceValueText}>{`$${orderData?.order?.discount}`}</Text>
       </View>
 
+      {orderData?.order?.tips >= 0 ? (
+        <>
+          <Spacer space={SH(4)} />
+
+          <View style={styles.amountViewStyle}>
+            <Text style={styles.labelTextStyle}>{strings.delivery.tip}</Text>
+            <Text style={styles.priceValueText}>{`$${orderData?.order?.tips}`}</Text>
+          </View>
+        </>
+      ) : (
+        <></>
+      )}
+
       <Spacer space={SH(4)} />
 
       {(orderData?.order?.delivery_charge !== '0' || orderData?.order?.shipping_charge !== '0') && (
