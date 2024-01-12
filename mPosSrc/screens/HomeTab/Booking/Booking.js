@@ -280,9 +280,9 @@ export function Booking() {
 
   const getFormattedHeaderDate = () => {
     if (timeValue === 'month' || timeValue === 'week') {
-      return calendarDate.format('MMM YYYY');
+      return moment.utc(calendarDate).format('MMM YYYY');
     } else if (timeValue === 'day') {
-      return calendarDate.format('DD MMM YYYY');
+      return moment.utc(calendarDate).format('DD MMM YYYY');
     }
   };
   const isRequestLoading = useSelector((state) =>
