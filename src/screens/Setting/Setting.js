@@ -21,7 +21,7 @@ import {
   Policies,
   Staff,
 } from '@/screens/Setting/Components';
-import { getSettings } from '@/actions/SettingAction';
+import { getSettings, getShippingPickup } from '@/actions/SettingAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSetting } from '@/selectors/SettingSelector';
 import { ActivityIndicator } from 'react-native';
@@ -61,6 +61,7 @@ export function Setting() {
   useEffect(() => {
     if (isFocused) {
       dispatch(getSettings());
+      dispatch(getShippingPickup());
 
       // dispatch(getShippingPickup());
     }
@@ -122,6 +123,7 @@ export function Setting() {
     </TouchableOpacity>
   );
   const retrurnCount = (type, subHead) => {
+    console.log('datataaaa', getPlanData?.activeSubscription[0]);
     //types
     //  Security
     //  Devices
@@ -142,7 +144,9 @@ export function Setting() {
       count = shippingpickupData.length;
     } else if (type == 'Plans') {
       const data = getPlanData?.activeSubscription[0];
-      count = moment(data?.expiry_date).format('MMMM D, YYYY');
+      if (data !== undefined) {
+        count = moment(data?.expiry_date).format('MMMM D, YYYY');
+      }
     } else if (type == 'Staffs') {
       count = posUserArray?.length;
     }

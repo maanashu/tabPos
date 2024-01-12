@@ -110,10 +110,11 @@ export function ShippingOrder2() {
       dispatch(orderStatusCount());
       dispatch(todayShippingStatus());
       dispatch(todayCurrentStatus());
-      dispatch(getReviewDefault(0));
+      dispatch(getReviewDefault('0'));
       dispatch(getGraphOrders());
       dispatch(getPendingOrders());
       dispatch(getShippingOrderstatistics());
+      setOpenShippingOrders('0');
     }, [])
   );
 
@@ -204,22 +205,27 @@ export function ShippingOrder2() {
     };
     dispatch(
       acceptOrder(data, openShippingOrders, 4, (res) => {
+        console.log('RESPONSE _SCREEN ', JSON.stringify(res));
         if (res?.msg) {
-          dispatch(orderStatusCount(getUpdatedCount));
-          dispatch(getReviewDefault(openShippingOrders));
-          if (
-            getDeliveryData?.getReviewDef?.length > 0 &&
-            getDeliveryData?.getReviewDef?.length === 1
-          ) {
-            dispatch(orderStatusCount(getUpdatedCount));
-          } else {
-            dispatch(getReviewDefault(openShippingOrders));
-            dispatch(orderStatusCount());
-            setGetOrderDetail('ViewAllScreen');
-            setUserDetail(ordersList?.[0] ?? []);
-            setViewAllOrders(true);
-            setOrderDetail(ordersList?.[0]?.order_details ?? []);
-          }
+          //New code
+          checkOtherOrder();
+
+          // dispatch(orderStatusCount(getUpdatedCount));
+          // dispatch(getReviewDefault(openShippingOrders));
+          // if (
+          //   getDeliveryData?.getReviewDef?.length > 0 &&
+          //   getDeliveryData?.getReviewDef?.length === 1
+          // ) {
+          //   dispatch(orderStatusCount(getUpdatedCount));
+          // }
+          // else {
+          //   dispatch(getReviewDefault(openShippingOrders));
+          //   dispatch(orderStatusCount());
+          //   setGetOrderDetail('ViewAllScreen');
+          //   setUserDetail(ordersList?.[0] ?? []);
+          //   setViewAllOrders(true);
+          //   setOrderDetail(ordersList?.[0]?.order_details ?? []);
+          // }
         }
       })
     );
@@ -229,7 +235,7 @@ export function ShippingOrder2() {
 
     var index = 0;
     if (statusData[0].count > 0) {
-      if (statusData[3].count == 1) {
+      if (statusData[0].count == 1) {
         index = 3;
       } else {
         index = 0;
@@ -252,15 +258,21 @@ export function ShippingOrder2() {
       } else {
         index = 5;
       }
-    } else if (statusData[6].count > 0) {
+    } else if (statusData[7].count > 0) {
       if (statusData[6].count == 1) {
-        index = 7;
+        index = 8;
       } else {
-        index = 6;
+        index = 7;
       }
     }
+    setOpenShippingOrders(index.toString());
+    console.log('CHECK OTHER ORDER INDEX ', index);
     dispatch(getReviewDefault(index));
     dispatch(getOrders(index));
+    setGetOrderDetail('ViewAllScreen');
+    setUserDetail(ordersList?.[0] ?? []);
+    setViewAllOrders(true);
+    setOrderDetail(ordersList?.[0]?.order_details ?? []);
 
     // dispatch(getOrderCount());
     // dispatch(getPendingOrders());
@@ -273,14 +285,19 @@ export function ShippingOrder2() {
       sellerID: sellerID,
     };
     dispatch(
-      acceptOrder(data, () => {
-        alert('Order declined successfully');
-        setViewAllOrders(false);
-        dispatch(getReviewDefault(openShippingOrders));
-        dispatch(orderStatusCount());
-        setUserDetail(ordersList?.[0] ?? []);
-        setViewAllOrders(true);
-        setOrderDetail(ordersList?.[0]?.order_details ?? []);
+      acceptOrder(data, openShippingOrders, 4, (res) => {
+        console.log('RERSSS cancel', JSON.stringify(res));
+        if (res?.msg) {
+          alert('Order declined successfully');
+          checkOtherOrder();
+        }
+
+        // setViewAllOrders(false);
+        // dispatch(getReviewDefault(openShippingOrders));
+        // dispatch(orderStatusCount());
+        // setUserDetail(ordersList?.[0] ?? []);
+        // setViewAllOrders(true);
+        // setOrderDetail(ordersList?.[0]?.order_details ?? []);
       })
     );
   };
@@ -387,9 +404,33 @@ export function ShippingOrder2() {
                     </View>
                   </>
                 ) : (
-                  <View style={styles.emptyOrderView}>
-                    <Text style={styles.noOrdersText}>{strings.deliveryOrders2.noOrdersFound}</Text>
-                  </View>
+                  <>
+                    <TouchableOpacity
+                      style={styles.backViewNoOrder}
+                      onPress={() => {
+                        setViewAllOrders(false);
+                        checkOtherOrder();
+                      }}
+                    >
+                      <Image
+                        source={backArrow2}
+                        style={[styles.backImageStyle, { tintColor: COLORS.navy_blue }]}
+                      />
+                      <Text
+                        style={[
+                          styles.currentStatusText,
+                          { color: COLORS.navy_blue, paddingLeft: 0 },
+                        ]}
+                      >
+                        {strings.deliveryOrders.back}
+                      </Text>
+                    </TouchableOpacity>
+                    <View style={styles.emptyOrderView}>
+                      <Text style={styles.noOrdersText}>
+                        {strings.deliveryOrders2.noOrdersFound}
+                      </Text>
+                    </View>
+                  </>
                 )}
 
                 <View style={styles.drawerMainViewStyle}>

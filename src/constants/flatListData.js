@@ -81,7 +81,7 @@ export const settingLabelData = [
   {
     id: 5,
     name: 'Plans',
-    subhead: 'Expire on April 2024',
+    subhead: '',
     image: plan,
   },
   {

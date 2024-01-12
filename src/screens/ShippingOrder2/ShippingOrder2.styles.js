@@ -305,6 +305,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.gerySkies,
   },
+  backViewNoOrder: {
+    position: 'absolute',
+    width: ms(60),
+    borderRadius: 15,
+    height: ms(25),
+    paddingRight: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.white,
+    zIndex: 1,
+  },
   backImageStyle: {
     width: SW(8),
     height: SW(8),
