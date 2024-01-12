@@ -196,18 +196,7 @@ export function Analytics() {
             ? 1
             : null,
         app_name: selectedScreen === 'TotalPosOrder' ? 'pos' : null,
-      });
-    } else {
-      commonNavigate(MPOS_NAVIGATION.transactionList, {
-        filter_by: timeValue,
-        transactionType: 'all',
-        delivery_option:
-          selectedScreen === 'TotalShippingOrders'
-            ? 4
-            : selectedScreen === 'TotalDeliveryOrders'
-            ? 1
-            : null,
-        app_name: selectedScreen === 'TotalPosOrder' ? 'pos' : null,
+        fromAnalytics: true,
       });
     }
   };

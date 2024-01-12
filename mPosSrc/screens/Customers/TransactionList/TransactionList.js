@@ -25,6 +25,7 @@ import { TYPES } from '@/Types/WalletTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { getOrdersByInvoiceIdReset } from '@/actions/DashboardAction';
+import moment from 'moment';
 
 export function TransactionList(props) {
   const height = Dimensions.get('window').height;
@@ -44,6 +45,7 @@ export function TransactionList(props) {
   );
   const [filterVal, setFilterVal] = useState(props?.route?.params?.filter_by || '');
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.GET_TOTAL_TRA_DETAIL], state));
+  const fromAnalytics = props?.route?.params?.fromAnalytics;
 
   const body = {
     // page: 1,
@@ -70,7 +72,6 @@ export function TransactionList(props) {
       ? { start_date: startDate, end_date: endDate }
       : { filter: filterVal }),
   };
-  console.log('first', body);
   useEffect(() => {
     dispatch(getTotakTraDetail(body));
     dispatch(getTotalTraType(object));
@@ -159,8 +160,8 @@ export function TransactionList(props) {
   };
 
   const renderTransList = ({ item, index }) => {
-    const date = dayjs(item?.created_at).format('MMM DD, YYYY') || '';
-    const time = dayjs(item?.created_at).format('hh:MM A') || '';
+    const date = moment.utc(item?.created_at).format('MMM DD, YYYY') || '';
+    const time = moment.utc(item?.created_at).format('hh:MM A') || '';
 
     const suffix = item?.mode_of_payment === 'cash' ? '$' : 'JBR';
     return (
@@ -200,22 +201,34 @@ export function TransactionList(props) {
   };
   return (
     <ScreenWrapper>
-      <Header
-        backRequired
-        title={'Back'}
-        filter
-        calendar
-        onValueChange={(item) => {
-          setFilterVal(item);
-          setStartDate();
-          setEndDate();
-        }}
-        defaultFilterVal={filterVal}
-        dates={handleDates}
-      />
-
+      {fromAnalytics ? (
+        <Header backRequired title={'Back'} />
+      ) : (
+        <Header
+          backRequired
+          title={'Back'}
+          filter
+          calendar
+          onValueChange={(item) => {
+            setFilterVal(item);
+            setStartDate();
+            setEndDate();
+          }}
+          defaultFilterVal={filterVal}
+          dates={handleDates}
+        />
+      )}
       <View style={{ paddingHorizontal: ms(16) }}>
-        <FlatList data={paymentOptions} renderItem={renderPaymentType} numColumns={4} />
+        {!fromAnalytics ? (
+          <FlatList
+            data={paymentOptions}
+            renderItem={renderPaymentType}
+            numColumns={4}
+            style={{ marginBottom: ms(20) }}
+          />
+        ) : (
+          <></>
+        )}
 
         <View style={styles.searchContainer}>
           <TouchableOpacity onPress={() => setIsFocused(true)} style={{ flex: 1 }}>
