@@ -247,7 +247,7 @@ export function Booking() {
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    await dispatch(getAppointment(pageNumber));
+    dispatch(getAppointment(pageNumber));
     setRefreshing(false);
   }, []);
 
@@ -257,7 +257,7 @@ export function Booking() {
         moment.utc(appointment?.date).format('L') === moment.utc(calendarDate).format('L')
     );
     return filteredAppointmentsByDate;
-  }, [calendarDate, getCalenderData]);
+  }, [calendarDate, getAppointmentList]);
 
   const onPressSaveCalendarSettings = (calendarPreferences) => {
     if (calendarPreferences?.defaultCalendarMode === 'day') {
