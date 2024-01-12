@@ -299,6 +299,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                             fontFamily: Fonts.Medium,
                             fontSize: ms(9),
                             color: COLORS.navy_blue,
+                            height: ms(30),
                           }}
                           placeholderTextColor={COLORS.grey}
                           value={invitationFirstName?.toString()}
@@ -317,6 +318,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                             fontFamily: Fonts.Medium,
                             fontSize: ms(9),
                             color: COLORS.navy_blue,
+                            height: ms(30),
                           }}
                           placeholderTextColor={COLORS.grey}
                           value={invitationLastName?.toString()}
@@ -369,6 +371,7 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                           fontFamily: Fonts.Medium,
                           fontSize: ms(9),
                           color: COLORS.navy_blue,
+                          height: ms(30),
                         }}
                         placeholderTextColor={COLORS.grey}
                         value={invitationEmail?.toString()}
