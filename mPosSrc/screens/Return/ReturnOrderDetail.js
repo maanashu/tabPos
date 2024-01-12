@@ -24,6 +24,8 @@ import styles from './styles';
 import { strings } from '@mPOS/localization';
 
 export function ReturnOrderDetail(props) {
+  console.log('dfgjsdhfksdf dsgdsgs', props);
+
   const dispatch = useDispatch();
   const orderData = props?.route?.params?.data;
   const customerDetail = orderData?.order?.seller_details?.user_profiles;

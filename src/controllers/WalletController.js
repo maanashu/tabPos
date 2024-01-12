@@ -28,7 +28,6 @@ export class WalletController {
   }
 
   static async getTotakTraDetail(data) {
-    console.log('sfhsagfsa', data);
     return new Promise((resolve, reject) => {
       const params = new URLSearchParams(data).toString();
 
@@ -86,7 +85,6 @@ export class WalletController {
       HttpClient.get(finalEndPoint)
         .then((response) => {
           console.log('first', finalEndPoint);
-          console.log('asfsafas', JSON.stringify(response));
           resolve(response);
         })
         .catch((error) => {
@@ -97,7 +95,6 @@ export class WalletController {
   }
 
   static async getTotalTraType(data) {
-    console.log('teuqwtrutwer', data);
     return new Promise((resolve, reject) => {
       const defaultParams = {
         seller_id: data?.sellerID,
@@ -132,11 +129,9 @@ export class WalletController {
       const endpoint = ORDER_URL + ApiOrderInventory.getTotalTraType + `?` + stringifiedQueryParams;
 
       const mPosEndpoint = `${ORDER_URL}${ApiOrderInventory.getTotalTraType}?${params}`;
-      console.log('safjgsafgas', mPosEndpoint);
       const finalEndPoint = isTablet() ? endpoint : mPosEndpoint;
       HttpClient.get(finalEndPoint)
         .then((response) => {
-          console.log('assfsa', finalEndPoint);
           resolve(response);
         })
         .catch((error) => {
