@@ -45,6 +45,7 @@ import { TYPES } from '@/Types/Types';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import { digitWithDot, emailReg, mobileReg } from '@/utils/validators';
 import { getAuthData } from '@/selectors/AuthSelector';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 const CartAmountByPay = ({
   addProductCartRef,
@@ -131,13 +132,23 @@ const CartAmountByPay = ({
 
     return totalPayment.toFixed(2);
   };
+  // const totalAmountByPaymentMethod = (index) => {
+  //   if (index === 0) {
+  //     return `$${totalPayAmount()}`;
+  //   } else if (index === 1) {
+  //     return `JBR ${(totalPayAmount() * 100).toFixed(0)}`;
+  //   } else {
+  //     return `$${totalPayAmount()}`;
+  //   }
+  // };
   const totalAmountByPaymentMethod = (index) => {
     if (index === 0) {
-      return `$${totalPayAmount()}`;
+      return `${amountFormat(totalPayAmount())}`;
     } else if (index === 1) {
-      return `JBR ${(totalPayAmount() * 100).toFixed(0)}`;
+      // return `J${(paymentShow() * 100).toFixed(0)}`;
+      return `J ${amountFormat(totalPayAmount() * 100, 'notSign')}`;
     } else {
-      return `$${totalPayAmount()}`;
+      return `${amountFormat(totalPayAmount())}`;
     }
   };
 
@@ -234,7 +245,7 @@ const CartAmountByPay = ({
           <View style={styles.payableAmountCon}>
             <Text style={styles.payableAmount}>Total Payable Amount:</Text>
             <Text style={styles.darkPaybleAmount}>
-              ${Number(cartData?.amount?.total_amount ?? '0.00')?.toFixed(2)}
+              {amountFormat(cartData?.amount?.total_amount)}
             </Text>
           </View>
           {selectedPaymentIndex !== null && selectedPaymentIndex === 1 && (

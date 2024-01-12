@@ -22,6 +22,7 @@ import { getAuthData } from '@/selectors/AuthSelector';
 import { addTocart } from '@/actions/RetailAction';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { useEffect } from 'react';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 const ProductDetails = ({ productDetailRef, bothSheetClose, productQuantity }) => {
   const dispatch = useDispatch();
@@ -125,7 +126,7 @@ const ProductDetails = ({ productDetailRef, bothSheetClose, productQuantity }) =
             <View style={styles.priceView}>
               <Text style={styles.priceText}>{'Price'}</Text>
               <Text style={styles.amountText}>
-                ${productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+                {amountFormat(productDetail?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
               </Text>
             </View>
             <Spacer space={ms(10)} />
