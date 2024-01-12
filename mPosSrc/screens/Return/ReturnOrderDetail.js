@@ -21,7 +21,7 @@ import ManualEntry from './Components/ManualEntry';
 import { getProductByUpc } from '@/actions/DeliveryAction';
 
 import styles from './styles';
-import { strings } from '@/localization';
+import { strings } from '@mPOS/localization';
 
 export function ReturnOrderDetail(props) {
   const dispatch = useDispatch();
@@ -38,15 +38,15 @@ export function ReturnOrderDetail(props) {
   const getDeliveryType = (type) => {
     switch (type) {
       case '1':
-        return strings.deliveryOrders.delivery;
+        return strings.return.delivery;
       case '3':
-        return strings.returnOrder.inStore;
+        return strings.return.inStore;
       case '4':
-        return strings.shipping.shippingText;
+        return strings.return.shipping;
       case '2':
-        return strings.returnOrder.reservation;
+        return strings.return.reservation;
       default:
-        return strings.returnOrder.inStore;
+        return strings.return.inStore;
     }
   };
   const onChangeHandler = (text) => {
