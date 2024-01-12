@@ -15,13 +15,13 @@ import ReactNativeModal from 'react-native-modal';
 
 import { Images } from '@mPOS/assets';
 import { COLORS, Fonts, SH } from '@/theme';
-import { strings } from '@mPOS/localization';
 import OrderTotal from './Components/OrderTotal';
 import { Header, Spacer } from '@mPOS/components';
 import ManualEntry from './Components/ManualEntry';
 import { getProductByUpc } from '@/actions/DeliveryAction';
 
 import styles from './styles';
+import { strings } from '@/localization';
 
 export function ReturnOrderDetail(props) {
   const dispatch = useDispatch();
@@ -38,16 +38,17 @@ export function ReturnOrderDetail(props) {
   const getDeliveryType = (type) => {
     switch (type) {
       case '1':
-        return strings.return.delivery;
+        return strings.deliveryOrders.delivery;
       case '3':
-        return strings.return.inStore;
+        return strings.returnOrder.inStore;
       case '4':
-        return strings.return.shipping;
+        return strings.shipping.shippingText;
+      case '2':
+        return strings.returnOrder.reservation;
       default:
-        return strings.return.reservation;
+        return strings.returnOrder.inStore;
     }
   };
-
   const onChangeHandler = (text) => {
     setProductUpc(text);
     if (text?.length >= 12) {
