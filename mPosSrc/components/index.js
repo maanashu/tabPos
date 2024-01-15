@@ -13,3 +13,4 @@ export { SearchedOrders } from '@mPOS/components/SearchedOrders';
 export { Invoice } from '@mPOS/components/Invoice';
 export { ImageView } from '@mPOS/components/ImageView';
 export { CommonOrderDetail } from '@mPOS/components/CommonOrderDetail';
+export { ScannerModal } from '@mPOS/components/ScannerModal';
