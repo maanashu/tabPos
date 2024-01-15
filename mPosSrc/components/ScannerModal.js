@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { ms } from 'react-native-size-matters';
 import { COLORS, Fonts, SH } from '@/theme';
@@ -13,6 +13,9 @@ import { Spacer } from './Spacer';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { getAllCart, scanProductAdd } from '@/actions/RetailAction';
+import { digits } from '@/utils/validators';
+import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { TYPES } from '@/Types/Types';
 
 export function ScannerModal({ cancelHandler }) {
   const dispatch = useDispatch();
@@ -25,54 +28,64 @@ export function ScannerModal({ cancelHandler }) {
     textInputRef.current.focus();
   }, []);
 
+  const scanProductLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.SCAN_PRODUCT_ADD], state)
+  );
   const onSearchFun = async () => {
     setSearch(search);
-    const data = {
-      seller_id: sellerID,
-      upc_code: search,
-      qty: 1,
-    };
-    console.log(data);
-    return;
-    const res = await dispatch(scanProductAdd(data))
-      .then((res) => {
-        setSearch('');
-        dispatch(getAllCart());
-        textInputRef.current.focus();
-      })
-      .catch((error) => {
-        // alert('error');
-        setSearch('');
-        textInputRef.current.focus();
-      });
+    if (!search) {
+      alert('Please scan product');
+    } else if (search && digits.test(search) === false) {
+      alert('Please scan valid product');
+    } else {
+      const data = {
+        seller_id: sellerID,
+        upc_code: search,
+        qty: 1,
+      };
+      const res = await dispatch(scanProductAdd(data))
+        .then((res) => {
+          setSearch('');
+          dispatch(getAllCart());
+          textInputRef.current.focus();
+        })
+        .catch((error) => {
+          setSearch('');
+          textInputRef.current.focus();
+        });
+    }
   };
   // const debouncedSearch = useCallback(debounce(onChangeFun, 1000), []);
 
   return (
-    // <KeyboardAwareScrollView contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
-    <View style={[styles.container]}>
-      <TextInput
-        style={styles.inputStyle}
-        placeholder="Search here"
-        value={search}
-        // onChangeText={(search) => {
-        //   onSearchFun(search);
-        // }}
-        onChangeText={setSearch}
-        ref={textInputRef}
-        keyboardType="numeric"
-      />
-      <Spacer space={SH(30)} />
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <TouchableOpacity style={styles.cancelButtonCon} onPress={() => cancelHandler()}>
-          <Text style={styles.cancelText}>{'Cancel'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.addToCartButtonCon} onPress={() => onSearchFun()}>
-          <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add Item'}</Text>
-        </TouchableOpacity>
+    <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+      <View style={[styles.container]}>
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Scan Product"
+          value={search}
+          // onChangeText={(search) => {
+          //   onSearchFun(search);
+          // }}
+          onChangeText={setSearch}
+          ref={textInputRef}
+          keyboardType="numeric"
+        />
+        <Spacer space={SH(30)} />
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <TouchableOpacity style={styles.cancelButtonCon} onPress={() => cancelHandler()}>
+            <Text style={styles.cancelText}>{'Cancel'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.addToCartButtonCon} onPress={() => onSearchFun()}>
+            {scanProductLoad ? (
+              <ActivityIndicator size="small" color={COLORS.white} />
+            ) : (
+              <Text style={[styles.cancelText, { color: COLORS.white }]}>{'Add Item'}</Text>
+            )}
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-    // </KeyboardAwareScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
