@@ -1,4 +1,5 @@
 import { COLORS, SW } from '@/theme';
+import { nutralizeNegativeGraphValue } from '@/utils/GlobalMethods';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
@@ -11,7 +12,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
   for (let i = 0; i < dynamicLabels?.length; i++) {
     const totalValue = data?.datasets?.reduce((sum, dataset) => sum + dataset?.data[i], 1);
     const dataPoint = {
-      value: totalValue,
+      value: nutralizeNegativeGraphValue(totalValue),
       spacing: spacing,
       label: dynamicLabels[i],
       labelWidth: SW(70),
@@ -30,7 +31,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     const values = data?.datasets?.map((dataset) => dataset?.data[index]);
 
     const firstObject = {
-      value: values[0] || 0,
+      value: nutralizeNegativeGraphValue(values[0]) || 0,
       frontColor: '#102773',
       label: label?.split(' ')[0],
       labelTextStyle: { color: '#626262', fontSize: 11, marginLeft: ms(6) },
@@ -42,7 +43,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     return [
       firstObject,
       ...Array.from({ length: 2 }, (_, i) => ({
-        value: values[i + 1] || 0,
+        value: nutralizeNegativeGraphValue(values[i + 1]) || 0,
         spacing: i === 0 ? 5 : 15,
         frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
       })),
@@ -53,7 +54,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     const values = data?.datasets?.map((dataset) => dataset?.data[index]);
 
     const firstObject = {
-      value: values[0] || 0,
+      value: nutralizeNegativeGraphValue(values[0]) || 0,
       frontColor: '#102773',
       label: label?.split(' ')[0],
       labelTextStyle: { color: '#626262', fontSize: 11 },
@@ -65,7 +66,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     return [
       firstObject,
       ...Array.from({ length: 2 }, (_, i) => ({
-        value: values[i + 1] || 0,
+        value: nutralizeNegativeGraphValue(values[i + 1]) || 0,
         spacing: i === 0 ? 5 : 14,
         frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
       })),
@@ -94,7 +95,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     const values = data?.datasets?.map((dataset) => dataset?.data[index]);
 
     const firstObject = {
-      value: values[0] || 0,
+      value: nutralizeNegativeGraphValue(values[0]) || 0,
       frontColor: '#102773',
       label: convertedLabels[index]?.split(' ')[0],
       labelTextStyle: { color: '#626262', fontSize: 11, marginLeft: ms(4) },
@@ -107,7 +108,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     return [
       firstObject,
       ...Array.from({ length: 2 }, (_, i) => ({
-        value: values[i + 1] || 0,
+        value: nutralizeNegativeGraphValue(values[i + 1]) || 0,
         spacing: i === 0 ? 5 : 14,
         frontColor: i === 0 ? COLORS.violet : COLORS.darkBlue,
       })),
