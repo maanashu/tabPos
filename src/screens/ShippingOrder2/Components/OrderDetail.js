@@ -131,17 +131,24 @@ const OrderDetail = ({
       return (
         <View style={styles.shippingOrdersViewStyle}>
           <TouchableOpacity
-            onPress={() => declineHandler(userDetail?.id)}
+            disabled={true}
+            // onPress={() => declineHandler(userDetail?.id)}
             style={[
-              styles.declineButtonStyle,
-              { width: ms(80), borderRadius: ms(30), borderColor: COLORS.navy_blue },
+              styles.acceptButtonView,
+              {
+                width: ms(80),
+                borderRadius: ms(30),
+                backgroundColor: COLORS.purple_fade,
+                flexDirection: 'row',
+                justifyContent: 'center',
+              },
             ]}
           >
-            <Text style={[styles.declineTextStyle, { color: COLORS.navy_blue }]}>
-              {strings.buttonStatus.later}
+            <Text style={[styles.declineTextStyle, { color: COLORS.white }]}>
+              {strings.returnOrder.returned}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => acceptHandler(userDetail?.id, 3)}
             style={[
               styles.acceptButtonView,
@@ -156,9 +163,40 @@ const OrderDetail = ({
           >
             <Text style={styles.acceptTextStyle}>{strings.buttonStatus.done}</Text>
             <Image source={arrowRightTop} style={[styles.rightTopIconStyle]} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       );
+      // return (
+      //   <View style={styles.shippingOrdersViewStyle}>
+      //     <TouchableOpacity
+      //       onPress={() => declineHandler(userDetail?.id)}
+      //       style={[
+      //         styles.declineButtonStyle,
+      //         { width: ms(80), borderRadius: ms(30), borderColor: COLORS.navy_blue },
+      //       ]}
+      //     >
+      //       <Text style={[styles.declineTextStyle, { color: COLORS.navy_blue }]}>
+      //         {strings.buttonStatus.later}
+      //       </Text>
+      //     </TouchableOpacity>
+      //     <TouchableOpacity
+      //       onPress={() => acceptHandler(userDetail?.id, 3)}
+      //       style={[
+      //         styles.acceptButtonView,
+      //         {
+      //           width: ms(80),
+      //           borderRadius: ms(30),
+      //           backgroundColor: COLORS.navy_blue,
+      //           flexDirection: 'row',
+      //           justifyContent: 'center',
+      //         },
+      //       ]}
+      //     >
+      //       <Text style={styles.acceptTextStyle}>{strings.buttonStatus.done}</Text>
+      //       <Image source={arrowRightTop} style={[styles.rightTopIconStyle]} />
+      //     </TouchableOpacity>
+      //   </View>
+      // );
     }
   };
 
