@@ -45,7 +45,7 @@ const AddProductCart = ({
   const retailData = useSelector(getRetail);
   const getAuth = useSelector(getAuthData);
   const productDetail = retailData?.getOneProduct;
-  console.log('productDetail', JSON.stringify(productDetail));
+  console.log(JSON.stringify(productDetail));
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
 
   const sizeArray = attributeArray?.filter((item) => item.name?.toLowerCase() == 'size');

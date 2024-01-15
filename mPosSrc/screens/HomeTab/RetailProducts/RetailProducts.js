@@ -68,6 +68,7 @@ export function RetailProducts(props) {
   const data = props?.route?.params?.item;
   const [isSelected, setSelected] = useState(false);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+  console.log('sellerID', sellerID);
   const [productFilterCount, setProductFilterCount] = useState(0);
   const [rootServiceId, setRootServiceId] = useState(null);
   const [subCategorySelectId, setSubCategorySelectId] = useState(null);
