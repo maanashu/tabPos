@@ -21,6 +21,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { getWallet } from '@/selectors/WalletSelector';
 import { useEffect } from 'react';
 import { Images } from '@/assets/new_icon';
+import { nutralizeNegativeGraphValue } from '@/utils/GlobalMethods';
 const result = Dimensions.get('window').height - 50;
 const twoEqualView = result / 1.8;
 
@@ -172,13 +173,14 @@ const Graph = () => {
 
     return frontColors[type];
   };
+
   const convertData = () => {
     const DATA = getTotalTraData?.graphData;
     const barData = DATA?.labels?.flatMap((day, index) => {
       const values = DATA?.datasets?.map((dataset) => dataset[index]);
       const setOfThree = [];
       setOfThree.push({
-        value: showJBR ? values[0] / 100 || 0 : 0,
+        value: showJBR ? nutralizeNegativeGraphValue(values[0]) / 100 || 0 : 0,
         spacing: 10,
         label: day,
         labelWidth: 80,
@@ -188,13 +190,13 @@ const Graph = () => {
         JBR: true,
       });
       setOfThree.push({
-        value: showCash ? values[1] || 0 : 0,
+        value: showCash ? nutralizeNegativeGraphValue(values[1]) || 0 : 0,
         spacing: 10,
         frontColor: showCash ? COLORS.bright_green : COLORS.white,
         Cash: true,
       });
       setOfThree.push({
-        value: showCard ? values[2] || 0 : 0,
+        value: showCard ? nutralizeNegativeGraphValue(values[2]) || 0 : 0,
         spacing: 25,
         frontColor: showCard ? COLORS.sky_blue : COLORS.white,
         Card: true,
