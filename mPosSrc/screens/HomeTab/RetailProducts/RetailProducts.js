@@ -48,6 +48,7 @@ import { getCartLength, getLocalCartArray } from '@/selectors/CartSelector';
 import { addLocalCart, clearLocalCart, updateCartLength } from '@/actions/CartAction';
 import { useIsFocused } from '@react-navigation/native';
 import CustomAlert from '@/components/CustomAlert';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function RetailProducts(props) {
   const isFocus = useIsFocused();
@@ -367,7 +368,7 @@ export function RetailProducts(props) {
               </Text>
             )} */}
             <Text style={styles.priceTextStyle} numberOfLines={1}>
-              ${item?.supplies?.[0]?.supply_prices?.[0]?.selling_price}
+              {amountFormat(item?.supplies?.[0]?.supply_prices?.[0]?.selling_price)}
             </Text>
           </View>
         </View>

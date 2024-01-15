@@ -502,13 +502,19 @@ export function ProductCart({ cartChangeHandler }) {
               );
               return (
                 <View style={styles.cartProductCon}>
-                  <View style={[styles.disPlayFlex]}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={[styles.disPlayFlex, { flex: 1 }]}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        flex: 0.8,
+                      }}
+                    >
                       <Image
                         source={{ uri: data?.item?.product_details?.image }}
-                        style={{ width: ms(35), height: ms(35) }}
+                        style={{ flex: 0.2, height: ms(35) }}
                       />
-                      <View style={{ marginLeft: ms(10) }}>
+                      <View style={{ marginLeft: ms(10), flex: 0.8 }}>
                         <Text style={styles.cartProductName} numberOfLines={1}>
                           {data?.item?.product_details?.name}
                         </Text>
@@ -577,10 +583,12 @@ export function ProductCart({ cartChangeHandler }) {
                         </View>
                       </View>
                     </View>
+
                     <View
                       style={{
                         flexDirection: 'column',
                         alignItems: 'flex-end',
+                        flex: 0.2,
                       }}
                     >
                       <TouchableOpacity
@@ -661,15 +669,13 @@ export function ProductCart({ cartChangeHandler }) {
           <View style={styles.disPlayFlex}>
             <Text style={styles.subTotal}>Sub Total</Text>
             <Text style={styles.subTotalBold}>
-              ${Number(productCartData?.amount?.products_price ?? '0.00')?.toFixed(2)}
+              {amountFormat(productCartData?.amount?.products_price)}
             </Text>
           </View>
           <Spacer space={SH(8)} />
           <View style={styles.disPlayFlex}>
             <Text style={styles.subTotal}>Total Taxes</Text>
-            <Text style={styles.subTotalBold}>
-              ${Number(productCartData?.amount?.tax ?? '0.00')?.toFixed(2)}
-            </Text>
+            <Text style={styles.subTotalBold}>{amountFormat(productCartData?.amount?.tax)}</Text>
           </View>
           <Spacer space={SH(8)} />
           <View style={styles.disPlayFlex}>
@@ -698,7 +704,7 @@ export function ProductCart({ cartChangeHandler }) {
           <View style={styles.disPlayFlex}>
             <Text style={styles.itemValue}>Item value</Text>
             <Text style={styles.itemValue}>
-              ${Number(productCartData?.amount?.total_amount ?? '0.00')?.toFixed(2)}
+              {amountFormat(productCartData?.amount?.total_amount)}
             </Text>
           </View>
           <Spacer space={SH(15)} />

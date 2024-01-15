@@ -115,6 +115,9 @@ export function CartScreen({
   const isLoadingHoldCart = useSelector((state) =>
     isLoadingSelector([TYPES.CHANGE_STATUS_PRODUCT_CART], state)
   );
+  const isLoadingAttachCustomer = useSelector((state) =>
+    isLoadingSelector([TYPES.ATTACH_CUSTOMER], state)
+  );
 
   const beforeDiscountCartLoad = () => {
     var arr = getRetailData?.getAllCart;
@@ -889,7 +892,8 @@ export function CartScreen({
         isLoadingAddDiscount ||
         isLoadingAddNote ||
         isLoadingHoldCart ||
-        isLoadingAddCustomProduct) && <FullScreenLoader />}
+        isLoadingAddCustomProduct ||
+        isLoadingAttachCustomer) && <FullScreenLoader />}
     </View>
   );
 }

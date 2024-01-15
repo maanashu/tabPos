@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
-import { COLORS, SF, SH, SW } from '@/theme';
+import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { Spacer } from '@/components';
 import { crossButton, dropdown, search_light, user } from '@/assets';
 import { getRetail } from '@/selectors/RetailSelectors';
@@ -48,10 +48,14 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   const [monthDays, setmonthDays] = useState([]);
   const getuserDetailByNo = getRetailData?.getUserDetail;
   const userLength = Object.keys(getuserDetailByNo)?.length;
+  const [invitationFirstName, setInvitationFirstName] = useState();
+  const [invitationLastName, setInvitationLastName] = useState();
+  const [invitationEmail, setInvitationEmail] = useState();
   const [defaultPhoneNumber, setDefaultPhoneNumber] = useState(
     getuserDetailByNo?.full_phone_number
   );
   const [detailArea, setDetailArea] = useState(false);
+  console.log('getuserDetailByNo?.invitation?.firstname', getuserDetailByNo?.invitation?.firstname);
 
   useEffect(() => {
     textInputRef.current.focus();
@@ -120,19 +124,43 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   };
 
   const saveCustomer = () => {
-    const data = getuserDetailByNo?.invitation?.id
-      ? {
+    if (getuserDetailByNo?.invitation?.firstName) {
+      const data = getuserDetailByNo?.invitation?.id
+        ? {
+            cartId: cartData?.id,
+            invitationId: getuserDetailByNo?.invitation?.id,
+          }
+        : {
+            cartId: cartData?.id,
+            userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
+            customerAdd: 'customerAdd',
+          };
+      dispatch(attachCustomer(data));
+      clearInput();
+      crossHandler();
+    } else {
+      if (!invitationFirstName) {
+        alert('Please enter first name');
+      } else if (!invitationLastName) {
+        alert('Please enter last name');
+      } else if (!invitationEmail) {
+        alert('Please enter email');
+      } else if (invitationEmail && emailReg.test(invitationEmail) === false) {
+        alert('Please enter valid  email');
+      } else {
+        const data = {
           cartId: cartData?.id,
-          invitationId: getuserDetailByNo?.invitation?.id,
-        }
-      : {
-          cartId: cartData?.id,
-          userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
-          customerAdd: 'customerAdd',
+          email: invitationEmail,
+          phoneCode: countryCode,
+          phoneNumber: searchCustomer,
+          firstName: invitationFirstName,
+          lastName: invitationLastName,
         };
-    dispatch(attachCustomer(data));
-    clearInput();
-    crossHandler();
+        dispatch(attachCustomer(data));
+        clearInput();
+        crossHandler();
+      }
+    }
   };
 
   const clearInput = () => {
@@ -143,12 +171,20 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
     if (cartData?.user_details) {
       setCountryCode(cartData?.user_details?.phone_code || '+1');
       setSearchCustomer(cartData?.user_details?.phone_no || '');
+      setInvitationFirstName(getuserDetailByNo?.invitation?.firstname);
     }
   }, []);
+  useEffect(() => {
+    if (getuserDetailByNo?.invitation) {
+      setInvitationFirstName(getuserDetailByNo?.invitation?.firstname);
+      setInvitationLastName(getuserDetailByNo?.invitation?.lastname);
+      setInvitationEmail(getuserDetailByNo?.invitation?.email);
+    }
+  }, [getuserDetailByNo]);
 
   return (
     <KeyboardAwareScrollView
-      contentContainerStyle={{ flex: 1, justifyContent: 'center' }}
+      contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.addCustomerCon}>
@@ -257,15 +293,41 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                     >
                       <View style={{ width: ms(140) }}>
                         <Text style={styles.customerDarkLabel}>{strings.retail.firstName}</Text>
-                        <Text style={styles.customerLightdata}>
+                        <TextInput
+                          // placeholder={strings.retail.name}
+                          style={{
+                            fontFamily: Fonts.Medium,
+                            fontSize: ms(9),
+                            color: COLORS.navy_blue,
+                            height: ms(30),
+                          }}
+                          placeholderTextColor={COLORS.grey}
+                          value={invitationFirstName?.toString()}
+                          onChangeText={setInvitationFirstName}
+                          placeholder="First  Name"
+                        />
+                        {/* <Text style={styles.customerLightdata}>
                           {getuserDetailByNo?.invitation?.firstname}
-                        </Text>
+                        </Text> */}
                       </View>
                       <View style={{ width: ms(140) }}>
                         <Text style={styles.customerDarkLabel}>{strings.retail.lastName}</Text>
-                        <Text style={styles.customerLightdata}>
+                        <TextInput
+                          // placeholder={strings.retail.name}
+                          style={{
+                            fontFamily: Fonts.Medium,
+                            fontSize: ms(9),
+                            color: COLORS.navy_blue,
+                            height: ms(30),
+                          }}
+                          placeholderTextColor={COLORS.grey}
+                          value={invitationLastName?.toString()}
+                          onChangeText={setInvitationLastName}
+                          placeholder="Last Name"
+                        />
+                        {/* <Text style={styles.customerLightdata}>
                           {getuserDetailByNo?.invitation?.lastname}
-                        </Text>
+                        </Text> */}
                       </View>
                     </View>
                     <Spacer space={SH(18)} />
@@ -303,9 +365,23 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
                     <Spacer space={SH(18)} />
                     <View>
                       <Text style={styles.customerDarkLabel}>{strings.retail.emailAdd}</Text>
-                      <Text style={styles.customerLightdata}>
+                      <TextInput
+                        // placeholder={strings.retail.name}
+                        style={{
+                          fontFamily: Fonts.Medium,
+                          fontSize: ms(9),
+                          color: COLORS.navy_blue,
+                          height: ms(30),
+                        }}
+                        placeholderTextColor={COLORS.grey}
+                        value={invitationEmail?.toString()}
+                        onChangeText={setInvitationEmail}
+                        placeholder="Email"
+                        keyboardType="email-address"
+                      />
+                      {/* <Text style={styles.customerLightdata}>
                         {getuserDetailByNo?.invitation?.email}
-                      </Text>
+                      </Text> */}
                     </View>
                   </View>
                 ) : (

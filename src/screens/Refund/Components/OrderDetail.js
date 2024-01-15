@@ -46,8 +46,10 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
         return strings.returnOrder.inStore;
       case '4':
         return strings.shipping.shippingText;
-      default:
+      case '2':
         return strings.returnOrder.reservation;
+      default:
+        return strings.returnOrder.inStore;
     }
   };
 

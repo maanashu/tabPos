@@ -121,6 +121,7 @@ export function MainScreen({
   const [serviceNumPadModal, setServiceNumPadModal] = useState(false);
   const [goToCart, setGoToCart] = useState(false);
   const getMerchantService = getAuthdata?.merchantLoginData?.product_existance_status;
+  console.log('getMerchantService?.is_product_exist', getMerchantService?.is_product_exist);
   const CART_LENGTH = useSelector(getCartLength);
   const SERVICE_CART_LENGTH = useSelector(getServiceCartLength);
   const getRetailData = useSelector(getRetail);

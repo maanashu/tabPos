@@ -2,9 +2,9 @@ import React, { memo } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Images } from '@mPOS/assets';
-import { strings } from '@mPOS/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { strings } from '@mPOS/localization';
 
 const OrderWithInvoiceNumber = ({ orderData }) => {
   const getDeliveryType = (type) => {
@@ -15,8 +15,10 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
         return strings.return.inStore;
       case '4':
         return strings.return.shipping;
-      default:
+      case '2':
         return strings.return.reservation;
+      default:
+        return strings.return.inStore;
     }
   };
 

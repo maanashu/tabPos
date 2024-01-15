@@ -29,11 +29,12 @@ export function SearchedOrders({ style }) {
         return strings.returnOrder.inStore;
       case '4':
         return strings.shipping.shippingText;
-      default:
+      case '2':
         return strings.returnOrder.reservation;
+      default:
+        return strings.returnOrder.inStore;
     }
   };
-
   return (
     <View style={[styles.container, style]}>
       <Search />

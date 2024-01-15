@@ -60,7 +60,7 @@ import moment from 'moment';
 import CustomAlert from '@/components/CustomAlert';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { MPOS_NAVIGATION } from '@common/commonImports';
-import { convertUTCTimeToCurrentTime } from '@/utils/GlobalMethods';
+import { amountFormat, convertUTCTimeToCurrentTime } from '@/utils/GlobalMethods';
 
 export function ServiceCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -527,15 +527,13 @@ export function ServiceCart({ cartChangeHandler }) {
           <View style={styles.disPlayFlex}>
             <Text style={styles.subTotal}>Sub Total</Text>
             <Text style={styles.subTotalBold}>
-              ${Number(serviceCartData?.amount?.products_price ?? '0.00')?.toFixed(2)}
+              {amountFormat(serviceCartData?.amount?.products_price)}
             </Text>
           </View>
           <Spacer space={SH(8)} />
           <View style={styles.disPlayFlex}>
             <Text style={styles.subTotal}>Total Taxes</Text>
-            <Text style={styles.subTotalBold}>
-              ${Number(serviceCartData?.amount?.tax ?? '0.00')?.toFixed(2)}
-            </Text>
+            <Text style={styles.subTotalBold}>{amountFormat(serviceCartData?.amount?.tax)}</Text>
           </View>
           <Spacer space={SH(8)} />
           <View style={styles.disPlayFlex}>
@@ -563,7 +561,7 @@ export function ServiceCart({ cartChangeHandler }) {
           <View style={styles.disPlayFlex}>
             <Text style={styles.itemValue}>Item value</Text>
             <Text style={styles.itemValue}>
-              ${Number(serviceCartData?.amount?.total_amount ?? '0.00')?.toFixed(2)}
+              {amountFormat(serviceCartData?.amount?.total_amount)}
             </Text>
           </View>
           <Spacer space={SH(15)} />

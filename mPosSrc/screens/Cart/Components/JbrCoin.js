@@ -28,6 +28,7 @@ import CountryPicker from 'react-native-country-picker-modal';
 import { dropdown } from '@/assets';
 import { useIsFocused } from '@react-navigation/native';
 import { memo } from 'react';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
   const isFocused = useIsFocused();
@@ -234,11 +235,9 @@ const JbrCoin = ({ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }) => {
           <View>
             <Text style={styles.scanToPay}>{strings.cart.scanToPay}</Text>
             <Text style={styles.jbrAmount}>
-              JBR{(cartData?.amount?.total_amount * 100).toFixed(0)}
+              JBR{amountFormat(cartData?.amount?.total_amount * 100, 'notSign')}
             </Text>
-            <Text style={styles.scanToPay}>
-              ${cartData?.amount?.total_amount.toFixed(2) ?? '0.00'}
-            </Text>
+            <Text style={styles.scanToPay}>{amountFormat(cartData?.amount?.total_amount)} USD</Text>
             <Image
               blurRadius={sendRequest ? 2.5 : 0}
               source={{ uri: qrcodeData?.qr_code }}
