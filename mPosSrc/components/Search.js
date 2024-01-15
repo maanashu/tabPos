@@ -17,7 +17,7 @@ export function Search({ style, onScanPress, onChange = () => {}, ...rest }) {
     if (text?.length < 1) {
       dispatch(getOrdersByInvoiceIdReset());
     }
-    if (text.includes('Invoice_') || text.includes('invoice_')) {
+    if (text.includes('Invoice_') || text.includes('invoice_') || text.includes('rtrn_invce_')) {
       // dispatch(scanBarCode(text));
     } else {
       dispatch(getOrdersByInvoiceId(text, (res) => {}));

@@ -317,7 +317,7 @@ export function Wallet2() {
   };
 
   const onSearchInvoiceHandler = (text) => {
-    if (text.includes('Invoice_') || text.includes('invoice_')) {
+    if (text.includes('Invoice_') || text.includes('invoice_') || text.includes('rtrn_invce_')) {
       dispatch(scanBarCode(text));
     } else {
       dispatch(
