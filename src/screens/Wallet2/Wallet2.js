@@ -397,7 +397,7 @@ export function Wallet2() {
               >
                 <Image source={searchDrawer} style={styles.searchImage} />
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={[styles.searchView, { marginLeft: ms(10) }]}
                 onPress={() => {
                   setShowSearchModal(true);
@@ -405,7 +405,7 @@ export function Wallet2() {
                 }}
               >
                 <Image source={scanNew} style={styles.searchImage} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
 
