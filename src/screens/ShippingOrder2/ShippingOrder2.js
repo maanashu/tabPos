@@ -232,7 +232,6 @@ export function ShippingOrder2() {
   };
   const checkOtherOrder = () => {
     const statusData = shipingCount;
-
     var index = 0;
     if (statusData[0].count > 0) {
       if (statusData[0].count == 1) {
@@ -265,15 +264,15 @@ export function ShippingOrder2() {
         index = 7;
       }
     }
-    setOpenShippingOrders(index.toString());
-    console.log('CHECK OTHER ORDER INDEX ', index);
-    dispatch(getReviewDefault(index));
-    dispatch(getOrders(index));
-    setGetOrderDetail('ViewAllScreen');
-    setUserDetail(ordersList?.[0] ?? []);
-    setViewAllOrders(true);
-    setOrderDetail(ordersList?.[0]?.order_details ?? []);
 
+    setTimeout(() => {
+      setOpenShippingOrders(index.toString());
+      dispatch(getOrders(index));
+      // setGetOrderDetail('ViewAllScreen');
+      setUserDetail(ordersList?.[0] ?? []);
+      setViewAllOrders(true);
+      setOrderDetail(ordersList?.[0]?.order_details ?? []);
+    }, 500);
     // dispatch(getOrderCount());
     // dispatch(getPendingOrders());
   };
@@ -409,7 +408,7 @@ export function ShippingOrder2() {
                       style={styles.backViewNoOrder}
                       onPress={() => {
                         setViewAllOrders(false);
-                        checkOtherOrder();
+                        // checkOtherOrder();
                       }}
                     >
                       <Image

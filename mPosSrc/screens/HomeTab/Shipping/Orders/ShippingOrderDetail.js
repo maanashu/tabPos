@@ -218,10 +218,10 @@ export function ShippingOrderDetail(props) {
         index = 7;
       }
     }
-    setSelectedStatus(index.toString());
-    dispatch(getReviewDefault(index));
-    dispatch(getOrders(index));
 
+    dispatch(getReviewDefault(index));
+    setSelectedStatus(index.toString());
+    dispatch(getOrders(index));
     // dispatch(getOrderCount());
     // dispatch(getPendingOrders());
   };
