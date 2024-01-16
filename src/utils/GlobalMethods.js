@@ -564,6 +564,10 @@ const getProductFinalPrice = (item) => {
   return productPrice * item?.qty;
 };
 
+const nutralizeNegativeGraphValue = (value) => {
+  return value < 0 ? 0 : value;
+};
+
 export {
   HandleUnhandledTouches,
   // hideSplash,
@@ -596,4 +600,5 @@ export {
   numberFormate,
   getProductPrice,
   getProductFinalPrice,
+  nutralizeNegativeGraphValue,
 };

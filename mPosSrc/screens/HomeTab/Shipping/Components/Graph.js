@@ -12,6 +12,7 @@ import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { getShipping } from '@/selectors/ShippingSelector';
 import { TYPES } from '@/Types/ShippingOrderTypes';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { nutralizeNegativeGraphValue } from '@/utils/GlobalMethods';
 
 const Graph = () => {
   const getShippingData = useSelector(getShipping);
@@ -34,7 +35,7 @@ const Graph = () => {
       const values = DATA?.datasets?.map((dataset) => dataset?.data?.[index]);
       const setOfThree = [];
       setOfThree.push({
-        value: values[0] || 0,
+        value: nutralizeNegativeGraphValue(values[0]) || 0,
         spacing: 10,
         label: day,
         labelWidth: 30,
@@ -49,7 +50,7 @@ const Graph = () => {
         Incoming: true,
       });
       setOfThree.push({
-        value: values[1] || 0,
+        value: nutralizeNegativeGraphValue(values[1]) || 0,
         spacing: 10,
         frontColor: COLORS.pink,
         OrderProcessing: true,
@@ -61,7 +62,7 @@ const Graph = () => {
         },
       });
       setOfThree.push({
-        value: values[2] || 0,
+        value: nutralizeNegativeGraphValue(values[2]) || 0,
         spacing: 10,
         frontColor: COLORS.yellowTweet,
         ReadyForPickup: true,
@@ -73,7 +74,7 @@ const Graph = () => {
         },
       });
       setOfThree.push({
-        value: values[3] || 0,
+        value: nutralizeNegativeGraphValue(values[3]) || 0,
         spacing: 10,
         frontColor: COLORS.primary,
         Completed: true,
@@ -97,7 +98,7 @@ const Graph = () => {
       const setOfThree = [];
       if (type === 'Incoming') {
         setOfThree.push({
-          value: values[0] || 0,
+          value: nutralizeNegativeGraphValue(values[0]) || 0,
           spacing: 10,
           label: day,
           labelWidth: 30,
@@ -113,7 +114,7 @@ const Graph = () => {
         });
       } else {
         setOfThree.push({
-          value: values[0] || 0,
+          value: nutralizeNegativeGraphValue(values[0]) || 0,
           spacing: 10,
           label: day,
           labelWidth: 30,
@@ -130,7 +131,7 @@ const Graph = () => {
       }
       if (type === 'OrderProcessing') {
         setOfThree.push({
-          value: values[1] || 0,
+          value: nutralizeNegativeGraphValue(values[1]) || 0,
           spacing: 10,
           frontColor: value ? COLORS.pink : COLORS.white,
           OrderProcessing: true,
@@ -143,7 +144,7 @@ const Graph = () => {
         });
       } else {
         setOfThree.push({
-          value: values[1] || 0,
+          value: nutralizeNegativeGraphValue(values[1]) || 0,
           spacing: 10,
           frontColor: showProcessing ? COLORS.pink : COLORS.white,
           OrderProcessing: true,
@@ -157,7 +158,7 @@ const Graph = () => {
       }
       if (type === 'ReadyForPickup') {
         setOfThree.push({
-          value: values[2] || 0,
+          value: nutralizeNegativeGraphValue(values[2]) || 0,
           spacing: 10,
           frontColor: value ? COLORS.yellowTweet : COLORS.white,
           ReadyForPickup: true,
@@ -170,7 +171,7 @@ const Graph = () => {
         });
       } else {
         setOfThree.push({
-          value: values[2] || 0,
+          value: nutralizeNegativeGraphValue(values[2]) || 0,
           spacing: 10,
           frontColor: showReadyToPickup ? COLORS.yellowTweet : COLORS.white,
           ReadyForPickup: true,
@@ -184,7 +185,7 @@ const Graph = () => {
       }
       if (type === 'Completed') {
         setOfThree.push({
-          value: values[3] || 0,
+          value: nutralizeNegativeGraphValue(values[3]) || 0,
           spacing: 10,
           frontColor: value ? COLORS.primary : COLORS.white,
           Completed: true,
@@ -197,7 +198,7 @@ const Graph = () => {
         });
       } else {
         setOfThree.push({
-          value: values[3] || 0,
+          value: nutralizeNegativeGraphValue(values[3]) || 0,
           spacing: 10,
           frontColor: showCompleted ? COLORS.primary : COLORS.white,
           Completed: true,

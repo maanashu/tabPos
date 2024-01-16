@@ -574,6 +574,7 @@ export class RetailController {
         order_amount: orderAmountstrfy,
         discount_desc: data.descriptionDis,
       };
+      console.log('body', body);
       HttpClient.put(endpoint, body)
         .then((response) => {
           if (response?.msg === 'PosCart updated!') {
@@ -964,12 +965,13 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            position: 'top',
-            type: 'error_toast',
-            text2: error?.msg,
-            visibilityTime: 3000,
-          });
+          alert(error?.msg);
+          // Toast.show({
+          //   position: 'top',
+          //   type: 'error_toast',
+          //   text2: error?.msg,
+          //   visibilityTime: 3000,
+          // });
           reject(error);
         });
     });

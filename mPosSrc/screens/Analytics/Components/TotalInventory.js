@@ -24,7 +24,6 @@ import { amountFormat, numberFormate } from '@/utils/GlobalMethods';
 export function TotalInventory() {
   const getAnalyticsData = useSelector(getAnalytics);
   const totalInventory = getAnalyticsData?.getTotalInventory;
-  console.log('first', totalInventory);
   const isInventoryLoading = useSelector((state) =>
     isLoadingSelector([TYPES.GET_TOTAL_INVENTORY], state)
   );

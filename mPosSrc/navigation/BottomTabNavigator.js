@@ -17,8 +17,12 @@ import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { COLORS, Fonts, SF, SW } from '@/theme';
 import { Cart, Home, More, Transactions } from '@mPOS/screens';
 import { Management } from '@mPOS/screens/MoreTab/BatchManagement/Management';
+import ReactNativeModal from 'react-native-modal';
+import { useState } from 'react';
+import { ScannerModal } from '@mPOS/components';
 
 const BottomTabNavigator = () => {
+  const [scannerOpen, setScannerOpen] = useState(false);
   const _renderIcon = (routeName, selectedTab) => {
     if (routeName === MPOS_NAVIGATION.home && selectedTab === MPOS_NAVIGATION.home) {
       return (
@@ -219,7 +223,10 @@ const BottomTabNavigator = () => {
         screenOptions={{ headerShown: false }}
         renderCircle={() => (
           <Animated.View>
-            <TouchableOpacity style={styles.btnCircleTouchable}>
+            <TouchableOpacity
+              style={styles.btnCircleTouchable}
+              onPress={() => setScannerOpen(true)}
+            >
               <Image
                 source={Images.scan}
                 accessibilityIgnoresInvertColors
@@ -239,6 +246,16 @@ const BottomTabNavigator = () => {
         <CurvedBottomBar.Screen position={'RIGHT'} component={More} name={MPOS_NAVIGATION.more} />
       </CurvedBottomBar.Navigator>
       {/* </NavigationContainer> */}
+
+      <ReactNativeModal
+        animationType="fade"
+        transparent={true}
+        isVisible={scannerOpen}
+        onBackdropPress={() => setScannerOpen(false)}
+      >
+        <ScannerModal cancelHandler={() => setScannerOpen(false)} />
+        {/* <ProductCustomerAdd crossHandler={() => setProductCustomerAdd(false)} /> */}
+      </ReactNativeModal>
     </SafeAreaView>
   );
 };

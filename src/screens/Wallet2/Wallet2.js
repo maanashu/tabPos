@@ -317,7 +317,7 @@ export function Wallet2() {
   };
 
   const onSearchInvoiceHandler = (text) => {
-    if (text.includes('Invoice_') || text.includes('invoice_')) {
+    if (text.includes('Invoice_') || text.includes('invoice_') || text.includes('rtrn_invce_')) {
       dispatch(scanBarCode(text));
     } else {
       dispatch(
@@ -397,7 +397,7 @@ export function Wallet2() {
               >
                 <Image source={searchDrawer} style={styles.searchImage} />
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={[styles.searchView, { marginLeft: ms(10) }]}
                 onPress={() => {
                   setShowSearchModal(true);
@@ -405,7 +405,7 @@ export function Wallet2() {
                 }}
               >
                 <Image source={scanNew} style={styles.searchImage} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
 
