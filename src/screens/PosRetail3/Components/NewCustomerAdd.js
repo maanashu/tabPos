@@ -124,7 +124,8 @@ export const NewCustomerAdd = memo(({ crossHandler, comeFrom, sellerID }) => {
   };
 
   const saveCustomer = () => {
-    if (getuserDetailByNo?.invitation?.firstName) {
+    console.log(getuserDetailByNo);
+    if (getuserDetailByNo?.invitation?.firstName || getuserDetailByNo?.user_profile?.firstname) {
       const data = getuserDetailByNo?.invitation?.id
         ? {
             cartId: cartData?.id,

@@ -129,7 +129,7 @@ const ProductCustomerAdd = ({ crossHandler }) => {
   };
 
   const saveCustomer = () => {
-    if (getuserDetailByNo?.invitation?.firstName) {
+    if (getuserDetailByNo?.invitation?.firstName || getuserDetailByNo?.user_profile?.firstname) {
       const data = getuserDetailByNo?.invitation?.id
         ? {
             cartId: cartData?.id,
