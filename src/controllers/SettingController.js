@@ -32,8 +32,11 @@ export class SettingController {
     return new Promise(async (resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint = USER_URL + ApiUserInventory.getSetting;
-      const body = data;
-      (body.seller_id = sellerID), (body.app_name = 'pos');
+      const body = {
+        ...data,
+        seller_id: sellerID,
+        app_name: 'pos',
+      };
       HttpClient.patch(endpoint, body)
         .then((response) => {
           resolve(response);
