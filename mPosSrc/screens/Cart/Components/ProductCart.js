@@ -82,6 +82,7 @@ export function ProductCart({ cartChangeHandler }) {
   const [saveCart, setSaveCart] = useState();
   const [productCustomerAdd, setProductCustomerAdd] = useState(false);
   const productCartArray = retailData?.getAllProductCart;
+  const [productQuantity, setProductQuantity] = useState('');
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
 
   const poscart = productCartData?.poscart_products;
@@ -123,7 +124,8 @@ export function ProductCart({ cartChangeHandler }) {
     productDetailRef.current.dismiss();
     addProductCartRef.current.dismiss();
   };
-  const productDetailHanlder = () => {
+  const productDetailHanlder = (data) => {
+    setProductQuantity(data);
     productDetailRef.current.present();
   };
 
@@ -796,7 +798,7 @@ export function ProductCart({ cartChangeHandler }) {
       />
 
       <AddProductCart {...{ addProductCartRef, productDetailHanlder }} />
-      <ProductDetails {...{ productDetailRef, bothSheetClose }} />
+      <ProductDetails {...{ productDetailRef, bothSheetClose, productQuantity }} />
       {/* productDetailHanlder */}
       {isLoading ? <FullScreenLoader /> : null}
     </View>
