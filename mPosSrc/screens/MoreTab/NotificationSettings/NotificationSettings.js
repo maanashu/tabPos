@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -44,59 +44,10 @@ export function NotificationSettings() {
     unusual_sales_activity: strings?.notifications?.unUsualSales,
     employee_logins: strings?.notifications?.employeeLogins,
   };
-  console.log('sjs', smsSettingsData);
-  // const appNotificationKeys = {
-  //   order_notification_status: strings?.notifications?.newOrder,
-  //   order_canceled_status: strings?.notifications?.cancelledOrder,
-  //   shipping_notification_status: strings?.notifications?.shippingNoti,
-  //   service_notification_status: strings?.notifications?.servicesNoti,
-  //   wallet_notification_status: strings?.notifications?.walletNoti,
-  //   account_notification_status: strings?.notifications?.accountNoti,
-  // };
 
-  const appNotifications = useMemo(() => {
-    const fields = [];
-    if (appSettingsData) {
-      for (const key in appNotificationKeys) {
-        const value = appSettingsData[key];
-        fields.push({
-          fieldName: appNotificationKeys[key],
-          fieldStatus: value,
-          fieldType: key,
-        });
-      }
-    }
-    return fields;
-  }, [settingsData?.app_notifications]);
-
-  const smsNotifications = useMemo(() => {
-    const fields = [];
-    if (smsSettingsData) {
-      for (const key in appNotificationKeys) {
-        const value = smsSettingsData[key];
-        fields.push({
-          fieldName: appNotificationKeys[key],
-          fieldStatus: value,
-          fieldType: key,
-        });
-      }
-    }
-    return fields;
-  }, [settingsData?.sms_notifications]);
   // const smsNotifications = useMemo(() => {
   //   const fields = [];
-
-  //   if (!smsSettingsData) {
-  //     // If smsSettingsData is null, create initial set of fields with all values set to true
-  //     for (const key in appNotificationKeys) {
-  //       fields.push({
-  //         fieldName: appNotificationKeys[key],
-  //         fieldStatus: true, // Set to true for initial case
-  //         fieldType: key,
-  //       });
-  //     }
-  //   } else {
-  //     // If smsSettingsData is not null, use the existing data
+  //   if (smsSettingsData) {
   //     for (const key in appNotificationKeys) {
   //       const value = smsSettingsData[key];
   //       fields.push({
@@ -106,13 +57,70 @@ export function NotificationSettings() {
   //       });
   //     }
   //   }
-
   //   return fields;
-  // }, [smsSettingsData]);
+  // }, [settingsData?.sms_notifications]);
+
+  const appNotifications = useMemo(() => {
+    const fields = [];
+    if (!appSettingsData) {
+      // If appSettingsData is null, create initial set of fields with all values set to false
+      for (const key in appNotificationKeys) {
+        fields.push({
+          fieldName: appNotificationKeys[key],
+          fieldStatus: false, // Set to false for initial case
+          fieldType: key,
+        });
+      }
+    } else {
+      // If appSettingsData is not null, use the existing data
+      for (const key in appNotificationKeys) {
+        const value = appSettingsData[key];
+        fields.push({
+          fieldName: appNotificationKeys[key],
+          fieldStatus: value,
+          fieldType: key,
+        });
+      }
+    }
+
+    return fields;
+  }, [appSettingsData]);
+  const smsNotifications = useMemo(() => {
+    const fields = [];
+    if (!smsSettingsData) {
+      for (const key in appNotificationKeys) {
+        fields.push({
+          fieldName: appNotificationKeys[key],
+          fieldStatus: false,
+          fieldType: key,
+        });
+      }
+    } else {
+      for (const key in appNotificationKeys) {
+        const value = smsSettingsData[key];
+        fields.push({
+          fieldName: appNotificationKeys[key],
+          fieldStatus: value,
+          fieldType: key,
+        });
+      }
+    }
+
+    return fields;
+  }, [smsSettingsData]);
 
   const emailNotifications = useMemo(() => {
     const fields = [];
-    if (emailSettingsData) {
+
+    if (!emailSettingsData) {
+      for (const key in appNotificationKeys) {
+        fields.push({
+          fieldName: appNotificationKeys[key],
+          fieldStatus: false,
+          fieldType: key,
+        });
+      }
+    } else {
       for (const key in appNotificationKeys) {
         const value = emailSettingsData[key];
         fields.push({
@@ -122,8 +130,9 @@ export function NotificationSettings() {
         });
       }
     }
+
     return fields;
-  }, [settingsData?.email_notifications]);
+  }, [emailSettingsData]);
 
   const appNotiArray = appNotifications?.map((item) => item?.fieldStatus);
 

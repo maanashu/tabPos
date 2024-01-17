@@ -123,7 +123,6 @@ export function Setting() {
     </TouchableOpacity>
   );
   const retrurnCount = (type, subHead) => {
-    console.log('datataaaa', getPlanData?.activeSubscription[0]);
     //types
     //  Security
     //  Devices

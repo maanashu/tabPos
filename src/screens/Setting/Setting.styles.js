@@ -1272,7 +1272,8 @@ export const styles = StyleSheet.create({
 
   // notification section css start
   notificationMainCon: {
-    height: windowHeight * 0.82,
+    // height: windowHeight * 0.82,
+    // marginVertical: 10,
   },
   appNotification: {
     fontFamily: Fonts.SemiBold,
