@@ -386,7 +386,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                 <View style={{}}>
                   <Text
                     style={{
-                      fontSize: ms(11),
+                      fontSize: ms(8),
                       color: COLORS.navy_blue,
                       fontFamily: Fonts.SemiBold,
                       alignSelf: 'flex-start',
@@ -394,7 +394,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                     }}
                   >
                     {'Refunds'}
-                    <Text style={{ color: COLORS.light_blue2, letterSpacing: -1 }}>
+                    <Text style={{ color: COLORS.light_blue2, letterSpacing: -1, fontSize: ms(8) }}>
                       ({orders?.length})
                     </Text>
                   </Text>
@@ -405,6 +405,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                       fontSize: ms(8),
                       letterSpacing: -1,
                       width: ms(90),
+                      fontSize: ms(8),
                     }}
                   >
                     {'Select the items to refund.'}
@@ -422,7 +423,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                         >
                           <Image
                             source={isRefundDeliveryAmount ? checkboxSecBlue : blankCheckBox}
-                            style={styles.checkBoxIconStyle}
+                            style={[styles.checkBoxIconStyle, { width: ms(13), height: ms(13) }]}
                           />
                         </TouchableOpacity>
                         <Text style={styles.applicableTextStyle}>
@@ -441,7 +442,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                             setApplicableIsCheck(!applicableIsCheck);
                           }}
                         >
-                          <Image source={checkboxSecBlue} style={styles.checkBoxIconStyle} />
+                          <Image
+                            source={checkboxSecBlue}
+                            style={[styles.checkBoxIconStyle, { width: ms(13), height: ms(13) }]}
+                          />
                         </TouchableOpacity>
                       ) : (
                         <TouchableOpacity
@@ -451,7 +455,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                             setAmount('');
                           }}
                         >
-                          <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
+                          <Image
+                            source={blankCheckBox}
+                            style={[styles.checkBoxIconStyle, { width: ms(13), height: ms(13) }]}
+                          />
                         </TouchableOpacity>
                       )}
                       <Text style={styles.applicableTextStyle}>
@@ -463,7 +470,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                       <View>
                         <Image
                           source={blankCheckBox}
-                          style={[styles.checkBoxIconStyle, { tintColor: COLORS.navy_blue }]}
+                          style={[
+                            styles.checkBoxIconStyle,
+                            { tintColor: COLORS.navy_blue, width: ms(13), height: ms(13) },
+                          ]}
                         />
                       </View>
                       <Text style={[styles.applicableTextStyle, { color: COLORS.navy_blue }]}>
@@ -615,7 +625,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                       <View>
                         <Image
                           source={blankCheckBox}
-                          style={[styles.checkBoxIconStyle, { tintColor: COLORS.solidGrey }]}
+                          style={[
+                            styles.checkBoxIconStyle,
+                            { tintColor: COLORS.solidGrey, width: ms(13), height: ms(13) },
+                          ]}
                         />
                       </View>
                       <Text style={[styles.applicableTextStyle, { color: COLORS.solidGrey }]}>
@@ -632,7 +645,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                             setButtonText('Apply Refund');
                           }}
                         >
-                          <Image source={checkboxSecBlue} style={styles.checkBoxIconStyle} />
+                          <Image
+                            source={checkboxSecBlue}
+                            style={[styles.checkBoxIconStyle, { width: ms(13), height: ms(13) }]}
+                          />
                         </TouchableOpacity>
                       ) : (
                         <TouchableOpacity
@@ -646,7 +662,10 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                             setOrders(updatedDataArray);
                           }}
                         >
-                          <Image source={blankCheckBox} style={styles.checkBoxIconStyle} />
+                          <Image
+                            source={blankCheckBox}
+                            style={[styles.checkBoxIconStyle, { width: ms(13), height: ms(13) }]}
+                          />
                         </TouchableOpacity>
                       )}
                       <Text style={styles.applicableTextStyle}>

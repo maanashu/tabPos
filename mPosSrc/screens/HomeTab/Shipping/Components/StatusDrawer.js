@@ -112,13 +112,13 @@ const StatusDrawer = ({ closeModal, selected, selectedStatusOrder }) => {
         key: '7,8',
         image: Images.noCard,
         title: 'Rejected/Cancelled',
-        count: orderStatusCountData?.[7]?.count ?? '0',
+        count: orderStatusCountData?.[6]?.count ?? '0',
       },
       {
         key: '9',
         image: Images.returnOrders,
         title: 'Returned',
-        count: orderStatusCountData?.[9]?.count ?? '0',
+        count: orderStatusCountData?.[7]?.count ?? '0',
       },
     ],
     [orderStatusCountData]

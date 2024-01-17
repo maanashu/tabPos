@@ -49,6 +49,9 @@ const ProductCustomerAdd = ({ crossHandler }) => {
   const [searchCustomer, setSearchCustomer] = useState('');
   const getuserDetailByNo = retailData?.getUserDetail;
   const userLength = Object.keys(getuserDetailByNo)?.length;
+  const [invitationFirstName, setInvitationFirstName] = useState();
+  const [invitationLastName, setInvitationLastName] = useState();
+  const [invitationEmail, setInvitationEmail] = useState();
   const [defaultPhoneNumber, setDefaultPhoneNumber] = useState(
     getuserDetailByNo?.full_phone_number
   );
@@ -126,19 +129,43 @@ const ProductCustomerAdd = ({ crossHandler }) => {
   };
 
   const saveCustomer = () => {
-    const data = getuserDetailByNo?.invitation?.id
-      ? {
+    if (getuserDetailByNo?.invitation?.firstName || getuserDetailByNo?.user_profile?.firstname) {
+      const data = getuserDetailByNo?.invitation?.id
+        ? {
+            cartId: cartData?.id,
+            invitationId: getuserDetailByNo?.invitation?.id,
+          }
+        : {
+            cartId: cartData?.id,
+            userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
+            customerAdd: 'customerAdd',
+          };
+      dispatch(attachCustomer(data));
+      clearInput();
+      crossHandler();
+    } else {
+      if (!invitationFirstName) {
+        alert('Please enter first name');
+      } else if (!invitationLastName) {
+        alert('Please enter last name');
+      } else if (!invitationEmail) {
+        alert('Please enter email');
+      } else if (invitationEmail && emailReg.test(invitationEmail) === false) {
+        alert('Please enter valid  email');
+      } else {
+        const data = {
           cartId: cartData?.id,
-          invitationId: getuserDetailByNo?.invitation?.id,
-        }
-      : {
-          cartId: cartData?.id,
-          userid: getuserDetailByNo?.user_profile?.user?.unique_uuid,
-          customerAdd: 'customerAdd',
+          email: invitationEmail,
+          phoneCode: countryCode,
+          phoneNumber: searchCustomer,
+          firstName: invitationFirstName,
+          lastName: invitationLastName,
         };
-    dispatch(presentCart === 'product' ? attachCustomer(data) : attachCustomer(data));
-    clearInput();
-    crossHandler();
+        dispatch(attachCustomer(data));
+        clearInput();
+        crossHandler();
+      }
+    }
   };
 
   const clearInput = () => {
@@ -151,6 +178,14 @@ const ProductCustomerAdd = ({ crossHandler }) => {
       setSearchCustomer(cartData?.user_details?.phone_no || '');
     }
   }, []);
+
+  useEffect(() => {
+    if (getuserDetailByNo?.invitation) {
+      setInvitationFirstName(getuserDetailByNo?.invitation?.firstname);
+      setInvitationLastName(getuserDetailByNo?.invitation?.lastname);
+      setInvitationEmail(getuserDetailByNo?.invitation?.email);
+    }
+  }, [getuserDetailByNo]);
 
   return (
     <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
@@ -224,15 +259,41 @@ const ProductCustomerAdd = ({ crossHandler }) => {
                     >
                       <View style={{ width: ms(140) }}>
                         <Text style={styles.customerDarkLabel}>{strings.retail.firstName}</Text>
-                        <Text style={styles.customerLightdata}>
+                        <TextInput
+                          // placeholder={strings.retail.name}
+                          style={{
+                            fontFamily: Fonts.Medium,
+                            fontSize: ms(12),
+                            color: COLORS.navy_blue,
+                            height: ms(30),
+                          }}
+                          placeholderTextColor={COLORS.grey}
+                          value={invitationFirstName?.toString()}
+                          onChangeText={setInvitationFirstName}
+                          placeholder="First  Name"
+                        />
+                        {/* <Text style={styles.customerLightdata}>
                           {getuserDetailByNo?.invitation?.firstname}
-                        </Text>
+                        </Text> */}
                       </View>
                       <View style={{ width: ms(140) }}>
                         <Text style={styles.customerDarkLabel}>{strings.retail.lastName}</Text>
-                        <Text style={styles.customerLightdata}>
+                        <TextInput
+                          // placeholder={strings.retail.name}
+                          style={{
+                            fontFamily: Fonts.Medium,
+                            fontSize: ms(12),
+                            color: COLORS.navy_blue,
+                            height: ms(30),
+                          }}
+                          placeholderTextColor={COLORS.grey}
+                          value={invitationLastName?.toString()}
+                          onChangeText={setInvitationLastName}
+                          placeholder="Last Name"
+                        />
+                        {/* <Text style={styles.customerLightdata}>
                           {getuserDetailByNo?.invitation?.lastname}
-                        </Text>
+                        </Text> */}
                       </View>
                     </View>
                     <Spacer space={SH(18)} />
@@ -270,9 +331,23 @@ const ProductCustomerAdd = ({ crossHandler }) => {
                     <Spacer space={SH(18)} />
                     <View>
                       <Text style={styles.customerDarkLabel}>{strings.retail.emailAdd}</Text>
-                      <Text style={styles.customerLightdata}>
+                      <TextInput
+                        // placeholder={strings.retail.name}
+                        style={{
+                          fontFamily: Fonts.Medium,
+                          fontSize: ms(12),
+                          color: COLORS.navy_blue,
+                          height: ms(30),
+                        }}
+                        placeholderTextColor={COLORS.grey}
+                        value={invitationEmail?.toString()}
+                        onChangeText={setInvitationEmail}
+                        placeholder="Email"
+                        keyboardType="email-address"
+                      />
+                      {/* <Text style={styles.customerLightdata}>
                         {getuserDetailByNo?.invitation?.email}
-                      </Text>
+                      </Text> */}
                     </View>
                   </View>
                 ) : (

@@ -10,21 +10,14 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import RBSheet from 'react-native-raw-bottom-sheet';
-
 import { Images } from '@mPOS/assets';
 import { Spacer } from '@mPOS/components';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 import { strings } from '@mPOS/localization';
 import { ms } from 'react-native-size-matters';
-import { Colors } from '@mPOS/constants/enums';
-import ProductDetails from './ProductDetails';
-import { navigate } from '@mPOS/navigation/NavigationRef';
-import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRetail } from '@/selectors/RetailSelectors';
-import { addProductCart } from '@mPOS/actions/RetailActions';
 import { CustomErrorToast } from '@mPOS/components/Toast';
 import CustomBackdrop from '@mPOS/components/CustomBackdrop';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -47,8 +40,8 @@ const AddProductCart = ({
   const productDetail = retailData?.getOneProduct;
   const attributeArray = productDetail?.product_detail?.supplies?.[0]?.attributes;
 
-  const sizeArray = attributeArray?.filter((item) => item.name === 'Size');
-  const colorArray = attributeArray?.filter((item) => item.name === 'Color');
+  const sizeArray = attributeArray?.filter((item) => item.name?.toLowerCase() == 'size');
+  const colorArray = attributeArray?.filter((item) => item.name?.toLowerCase() == 'color');
 
   const [colorSelectId, setColorSelectId] = useState(null);
   const [sizeSelectId, setSizeSelectId] = useState(null);
@@ -61,10 +54,11 @@ const AddProductCart = ({
   }, [cartQty]);
 
   const [productDetailExpand, setProductDetailExpand] = useState(false);
-  const snapPoints = useMemo(() => ['90%'], []);
+  const snapPoints = useMemo(() => ['70%'], []);
   const [colorName, setColorName] = useState();
   const [sizeName, setSizeName] = useState();
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
+
   useEffect(() => {
     setColorSelectId(null);
     setSizeSelectId(null);
@@ -183,6 +177,7 @@ const AddProductCart = ({
         setColorSelectId(null);
         setSizeSelectId(null);
         setCount(1);
+        setProductDetailExpand(false);
       }}
       backdropOpacity={0.5}
       ref={addProductCartRef}
@@ -195,7 +190,12 @@ const AddProductCart = ({
     >
       <View style={{ flex: 1 }}>
         <View style={styles.productHeaderCon}>
-          <TouchableOpacity onPress={() => addProductCartRef?.current?.dismiss()}>
+          <TouchableOpacity
+            onPress={() => {
+              setProductDetailExpand(false);
+              addProductCartRef?.current?.dismiss();
+            }}
+          >
             <Image source={Images.cross} style={styles.crossImageStyle} />
           </TouchableOpacity>
           <View style={styles.detailAndAddBtnCon}>
@@ -336,17 +336,37 @@ const AddProductCart = ({
               {productDetailExpand ? (
                 <View style={{ marginTop: ms(5) }}>
                   <View style={styles.productDetailChild}>
-                    <Text style={styles.detailKey}>{'Sleeve Length'}</Text>
-                    <Text style={styles.detailName}>{'Long Sleeves'}</Text>
+                    <Text style={styles.detailKey}>{'SKU'}</Text>
+                    <Text style={styles.detailName}>
+                      {productDetail?.product_detail?.sku || 'NA'}
+                    </Text>
+                  </View>
+
+                  <View style={styles.productDetailChild}>
+                    <Text style={styles.detailKey}>{'Barcode'}</Text>
+                    <Text style={styles.detailName}>{productDetail?.product_detail?.barcode}</Text>
                   </View>
                   <View style={styles.productDetailChild}>
-                    <Text style={styles.detailKey}>{'Sleeve Length'}</Text>
-                    <Text style={styles.detailName}>{'Long Sleeves'}</Text>
+                    <Text style={styles.detailKey}>{'Unit Type'}</Text>
+                    <Text style={styles.detailName}>{productDetail?.product_detail?.type}</Text>
+                  </View>
+                  <View style={styles.productDetailChild}>
+                    <Text style={styles.detailKey}>{'Unit Weight'}</Text>
+                    <Text style={styles.detailName}>
+                      {' '}
+                      {productDetail?.product_detail?.weight +
+                        ' ' +
+                        productDetail?.product_detail?.weight_unit}
+                    </Text>
+                  </View>
+                  <View style={styles.productDetailChild}>
+                    <Text style={styles.detailKey}>{'Other locations'}</Text>
+                    <Text style={styles.detailName}>{'NA'}</Text>
                   </View>
                 </View>
               ) : null}
             </View>
-            <Spacer space={ms(15)} />
+            {/* <Spacer space={ms(15)} />
             <View style={styles.productDetailCon}>
               <View style={styles.productDetailBody}>
                 <TouchableOpacity style={styles.detailTouchArea}>
@@ -363,7 +383,7 @@ const AddProductCart = ({
                   <Image source={Images.darkDropdownIcon} style={styles.darkDropdownIcon} />
                 </TouchableOpacity>
               </View>
-            </View>
+            </View> */}
           </ScrollView>
         </View>
       </View>

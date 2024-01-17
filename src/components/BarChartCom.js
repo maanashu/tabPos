@@ -1,4 +1,5 @@
 import { COLORS, SW } from '@/theme';
+import { nutralizeNegativeGraphValue } from '@/utils/GlobalMethods';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
@@ -11,7 +12,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
   for (let i = 0; i < dynamicLabels?.length; i++) {
     const totalValue = data?.datasets?.reduce((sum, dataset) => sum + dataset?.data[i], 1);
     const dataPoint = {
-      value: totalValue,
+      value: nutralizeNegativeGraphValue(totalValue),
       spacing: spacing,
       label: dynamicLabels[i],
       labelWidth: SW(70), // You can adjust this value as needed
@@ -30,7 +31,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     const values = data?.datasets?.map((dataset) => dataset?.data[index]);
 
     const firstObject = {
-      value: values[0] || 0,
+      value: nutralizeNegativeGraphValue(values[0]) || 0,
       label: label?.split(' ')[0], // Extracting only the day part
       labelTextStyle: { color: COLORS.navy_blue, fontSize: 11, marginLeft: ms(6) },
       // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
@@ -42,7 +43,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     return [
       firstObject,
       ...Array.from({ length: 2 }, (_, i) => ({
-        value: values[i + 1] || 0,
+        value: nutralizeNegativeGraphValue(values[i + 1]) || 0,
         spacing: i === 0 ? 3 : 10,
         // label: '', // Empty label for the other two objects
         // labelWidth: 70,
@@ -57,7 +58,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     const values = data?.datasets?.map((dataset) => dataset?.data[index]);
 
     const firstObject = {
-      value: values[0] || 0,
+      value: nutralizeNegativeGraphValue(values[0]) || 0,
       label: label?.split(' ')[0], // Extracting only the day part
       labelTextStyle: { color: COLORS.navy_blue, fontSize: 11 },
       // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
@@ -69,7 +70,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     return [
       firstObject,
       ...Array.from({ length: 2 }, (_, i) => ({
-        value: values[i + 1] || 0,
+        value: nutralizeNegativeGraphValue(values[i + 1]) || 0,
         spacing: i === 0 ? 4 : 10,
         // label: '', // Empty label for the other two objects
         // labelWidth: 70,
@@ -102,7 +103,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     const values = data?.datasets?.map((dataset) => dataset?.data[index]);
 
     const firstObject = {
-      value: values[0] || 0,
+      value: nutralizeNegativeGraphValue(values[0]) || 0,
       label: convertedLabels[index]?.split(' ')[0], // Extracting only the day part
       labelTextStyle: { color: COLORS.navy_blue, fontSize: 11, marginLeft: ms(4) },
       // value: data?.datasets.reduce((sum, dataset) => sum + dataset?.data[index], 0),
@@ -114,7 +115,7 @@ const transformData = (data, spacing, interval, dateInterval, dateTodayInterval)
     return [
       firstObject,
       ...Array.from({ length: 2 }, (_, i) => ({
-        value: values[i + 1] || 0,
+        value: nutralizeNegativeGraphValue(values[i + 1]) || 0,
         spacing: i === 0 ? 6 : 14,
         frontColor: i === 0 ? COLORS.sky_blue : COLORS.purple,
       })),

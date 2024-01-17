@@ -60,12 +60,12 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
             <Text style={styles.paidAmount}>{strings.cart.paidAmount}</Text>
             <Text style={styles.amountText}>
               {orderCreateData?.modeOfPayment === 'jbr' ? 'JBR' : '$'}
-              {payAmount}
+              {amountFormat(payAmount, 'notSign')}
             </Text>
             {orderCreateData?.modeOfPayment === 'cash' && (
               <>
                 <View style={styles.paidAmountHr} />
-                <Text style={styles.chnageDue}>Change Due: ${Number(changeDue)?.toFixed(2)}</Text>
+                <Text style={styles.chnageDue}>Change Due: {amountFormat(changeDue)}</Text>
               </>
             )}
           </View>
@@ -140,13 +140,6 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
                       )
                     )}
                   </Text>
-
-                  {/* <Text style={[styles.priceTitle]} numberOfLines={1}>
-                    $
-                    {Number(
-                      item?.product_details?.supply?.supply_prices?.selling_price ?? '0.00'
-                    )?.toFixed(2)}
-                  </Text> */}
                 </View>
               </View>
             );
@@ -155,7 +148,7 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
           <View style={styles._subTotalContainer}>
             <Text style={styles._substotalTile}>Sub-Total</Text>
             <Text style={styles._subTotalPrice}>
-              ${Number(saveCart?.amount?.products_price ?? '0.00')?.toFixed(2)}
+              {amountFormat(saveCart?.amount?.products_price)}
             </Text>
           </View>
           <View style={styles._horizontalLine} />
@@ -168,16 +161,12 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
           <View style={styles._horizontalLine} />
           <View style={styles._subTotalContainer}>
             <Text style={styles._substotalTile}>Tips</Text>
-            <Text style={styles._subTotalPrice}>
-              ${Number(saveCart?.amount?.tip ?? '0.00')?.toFixed(2)}
-            </Text>
+            <Text style={styles._subTotalPrice}>{amountFormat(saveCart?.amount?.tip)}</Text>
           </View>
           <View style={styles._horizontalLine} />
           <View style={styles._subTotalContainer}>
             <Text style={styles._substotalTile}>Total Taxes</Text>
-            <Text style={styles._subTotalPrice}>
-              ${Number(saveCart?.amount?.tax ?? '0.00')?.toFixed(2)}
-            </Text>
+            <Text style={styles._subTotalPrice}>{amountFormat(saveCart?.amount?.tax)}</Text>
           </View>
           <View style={styles._horizontalLine} />
           <View style={styles._subTotalContainer}>
@@ -187,7 +176,7 @@ const FinalPayment = ({ finalPaymentRef, finalPaymentCrossHandler, orderCreateDa
               Total
             </Text>
             <Text style={[styles._subTotalPrice, { fontSize: ms(12), fontFamily: Fonts.SemiBold }]}>
-              ${Number(saveCart?.amount?.total_amount ?? '0.00')?.toFixed(2)}
+              {amountFormat(saveCart?.amount?.total_amount)}
             </Text>
           </View>
           <View style={styles._horizontalLine} />

@@ -159,7 +159,7 @@ const PayByCash = ({ payByCashRef, payByCashhandler, payByCashCrossHandler }) =>
           </View>
           <View style={styles.payableAmountCon}>
             <Text style={styles.payableAmount}>Total Payable Amount:</Text>
-            <Text style={styles.darkPaybleAmount}>${totalPayAmount()}</Text>
+            <Text style={styles.darkPaybleAmount}>{amountFormat(totalPayAmount())}</Text>
           </View>
           <View style={styles.receivedAmountCon}>
             <Text style={styles.receivedAmountText}>Received Amount</Text>

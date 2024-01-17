@@ -587,6 +587,7 @@ export const en = {
   },
   returnOrder: {
     heading: 'Confirm the Return',
+    returned: 'Returned',
     returnConfirmed: 'Return Confirmed',
     customer: 'Customer:',
     driver: 'Driver:',

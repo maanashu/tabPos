@@ -40,8 +40,8 @@ export const AddProductScreen = ({ backHandler }) => {
   const [sizeId, setSizeId] = useState(null);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const sizeAndColorArray = productDetail?.supplies?.[0]?.attributes;
-  const sizeArray = sizeAndColorArray?.filter((item) => item.name == 'Size');
-  const colorArray = sizeAndColorArray?.filter((item) => item.name == 'Color');
+  const sizeArray = sizeAndColorArray?.filter((item) => item.name?.toLowerCase() == 'size');
+  const colorArray = sizeAndColorArray?.filter((item) => item.name?.toLowerCase() == 'color');
   const attrsArr = productDetail?.supplies[0]?.attributes;
   const [count, setCount] = useState(1);
   const restProductQty = productDetail.supplies[0]?.rest_quantity;
@@ -139,7 +139,7 @@ export const AddProductScreen = ({ backHandler }) => {
         {
           backgroundColor: item?.name,
           width: style ? ms(50) : ms(20),
-          borderColor: style ? COLORS.light_purple : 'transparent',
+          borderColor: style ? COLORS.light_purple : COLORS.gerySkies,
           height: style ? ms(18) : ms(20),
         },
       ]}
@@ -403,10 +403,10 @@ export const AddProductScreen = ({ backHandler }) => {
                       renderItem={({ item, index }) => {
                         const variant = JSON.parse(item?.attribute_variant?.variants);
                         const productSize = variant?.filter(
-                          (item) => item.attribute_name === 'Size'
+                          (item) => item.attribute_name?.toLowerCase() == 'size'
                         );
                         const productColor = variant?.filter(
-                          (item) => item.attribute_name === 'Color'
+                          (item) => item.attribute_name?.toLowerCase() == 'color'
                         );
 
                         return (
@@ -437,6 +437,7 @@ export const AddProductScreen = ({ backHandler }) => {
                                         borderRadius: ms(2),
                                         backgroundColor: productColor?.[0]?.attribute_value_name,
                                         marginHorizontal: ms(3),
+                                        borderWidth: 1,
                                       }}
                                     ></View>
                                   </View>
@@ -706,7 +707,7 @@ export const styles = StyleSheet.create({
     width: ms(15),
     height: ms(15),
     borderRadius: ms(50),
-    borderWidth: 5,
+    borderWidth: 2,
     marginRight: ms(10),
   },
   SizeItem: {

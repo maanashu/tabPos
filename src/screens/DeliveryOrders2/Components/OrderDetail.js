@@ -38,7 +38,6 @@ const OrderDetail = ({
   data,
 }) => {
   const detailView = () => {
-    console.log('Dsfdsfds', JSON.stringify(userDetail));
     if (
       userDetail?.status === 0 ||
       userDetail?.status === 1 ||

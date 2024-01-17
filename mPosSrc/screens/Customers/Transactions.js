@@ -24,6 +24,7 @@ import { TYPES } from '@/Types/WalletTypes';
 import { getWallet } from '@/selectors/WalletSelector';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
+import { nutralizeNegativeGraphValue } from '@/utils/GlobalMethods';
 
 export function Transactions() {
   const dispatch = useDispatch();
@@ -109,7 +110,7 @@ export function Transactions() {
         label = dayAbbreviations[day];
       }
       setOfThree.push({
-        value: isJobrCoin ? values[0] / 100 || 0 : 0,
+        value: isJobrCoin ? nutralizeNegativeGraphValue(values[0]) / 100 || 0 : 0,
         spacing: 10,
         label: label,
         labelWidth: 80,
@@ -123,13 +124,13 @@ export function Transactions() {
         JBR: true,
       });
       setOfThree.push({
-        value: isCash ? values[1] || 0 : 0,
+        value: isCash ? nutralizeNegativeGraphValue(values[1]) || 0 : 0,
         spacing: 10,
         frontColor: isCash ? COLORS.darkBlue : COLORS.white,
         Cash: true,
       });
       setOfThree.push({
-        value: isCard ? values[2] || 0 : 0,
+        value: isCard ? nutralizeNegativeGraphValue(values[2]) || 0 : 0,
         spacing: 25,
         frontColor: isCard ? COLORS.violet : COLORS.white,
         Card: true,
@@ -153,7 +154,7 @@ export function Transactions() {
       }
       if (type === 'JBR') {
         setOfThree.push({
-          value: value ? values[0] / 100 || 0 : 0,
+          value: value ? nutralizeNegativeGraphValue(values[0]) / 100 || 0 : 0,
           spacing: 10,
           label: label,
           labelWidth: 80,
@@ -168,7 +169,7 @@ export function Transactions() {
         });
       } else {
         setOfThree.push({
-          value: isJobrCoin ? values[0] / 100 || 0 : 0,
+          value: isJobrCoin ? nutralizeNegativeGraphValue(values[0]) / 100 || 0 : 0,
           label: day,
           labelWidth: 80,
           labelTextStyle: {
@@ -183,14 +184,14 @@ export function Transactions() {
       }
       if (type === 'CASH') {
         setOfThree.push({
-          value: value ? values[1] || 0 : 0,
+          value: value ? nutralizeNegativeGraphValue(values[1]) || 0 : 0,
           spacing: 10,
           frontColor: value ? COLORS.darkBlue : COLORS.white,
           Cash: true,
         });
       } else {
         setOfThree.push({
-          value: isCash ? values[1] || 0 : 0,
+          value: isCash ? nutralizeNegativeGraphValue(values[1]) || 0 : 0,
           spacing: 10,
           frontColor: isCash ? COLORS.darkBlue : COLORS.white,
           Cash: true,
@@ -198,14 +199,14 @@ export function Transactions() {
       }
       if (type === 'CARD') {
         setOfThree.push({
-          value: value ? values[2] || 0 : 0,
+          value: value ? nutralizeNegativeGraphValue(values[2]) || 0 : 0,
           spacing: 10,
           frontColor: value ? COLORS.violet : COLORS.white,
           Card: true,
         });
       } else {
         setOfThree.push({
-          value: isCard ? values[2] || 0 : 0,
+          value: isCard ? nutralizeNegativeGraphValue(values[2]) || 0 : 0,
           spacing: 10,
           frontColor: isCard ? COLORS.violet : COLORS.white,
           Card: true,
