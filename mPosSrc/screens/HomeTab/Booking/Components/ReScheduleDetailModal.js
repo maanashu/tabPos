@@ -357,7 +357,7 @@ const ReScheduleDetailModal = ({
                 </Text>
               </Text>
               <Spacer space={ms(10)} />
-              {/* <View
+              <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -382,7 +382,7 @@ const ReScheduleDetailModal = ({
                     setselectedYearData(yearData);
                   }}
                 />
-              </View> */}
+              </View>
             </View>
 
             <View
