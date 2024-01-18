@@ -42,6 +42,8 @@ const INITIALSTATE = {
   addProductFrom: 'main',
   addServiceFrom: 'main',
   addOpenFrom: 'main',
+  attachWithPhone: false,
+  attachWithEmail: false,
 };
 
 export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
@@ -437,6 +439,17 @@ export const retailReducer = (state = INITIALSTATE, { payload, type }) => {
       return {
         ...state,
         addOpenFrom: payload?.addOpenFrom,
+      };
+
+    case TYPES.ATTACH_WITH_PHONE_SUCCESS:
+      return {
+        ...state,
+        attachWithPhone: payload?.attachWithPhone,
+      };
+    case TYPES.ATTACH_WITH_EMAIL_SUCCESS:
+      return {
+        ...state,
+        attachWithEmail: payload?.attachWithEmail,
       };
 
     case TYPES.CLEAR_RETAIL_STORE:

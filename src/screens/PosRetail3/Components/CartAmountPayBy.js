@@ -59,6 +59,8 @@ import {
   getAllCartSuccess,
   merchantWalletCheck,
   paymentRequestCancel,
+  attachWithPhone,
+  attachWithEmail,
 } from '@/actions/RetailAction';
 import { useEffect } from 'react';
 import { getAuthData } from '@/selectors/AuthSelector';
@@ -889,14 +891,20 @@ export const CartAmountPayBy = ({
                         setSelectedRecipeMethod(item.title);
                         if (item.title == 'SMS') {
                           setPhonePopVisible(true);
+                          dispatch(attachWithPhone(true));
+                          dispatch(attachWithEmail(false));
                         } else if (item.title == 'E-mail') {
                           setEmailModal(true);
+                          dispatch(attachWithEmail(true));
+                          dispatch(attachWithPhone(false));
                           //getTipPress();
                         } else if (item.title == 'No, thanks') {
                           getTipPress(),
                             payNowHandler(),
                             payNowByphone(selectedTipAmount),
                             selectValueTake(selectedPaymentId, selectedTipIndex);
+                          dispatch(attachWithPhone(false));
+                          dispatch(attachWithEmail(false));
                         }
                       }}
                       key={index}
@@ -944,6 +952,8 @@ export const CartAmountPayBy = ({
                     const data = {
                       seller_id: sellerID,
                     };
+                    dispatch(attachWithPhone(false));
+                    dispatch(attachWithEmail(false));
                     dispatch(
                       merchantWalletCheck(data, (res) => {
                         if (res?.user_profiles?.wallet_steps <= 4) {

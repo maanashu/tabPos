@@ -705,21 +705,26 @@ export class RetailController {
   static async createOrder(data) {
     return new Promise((resolve, reject) => {
       const drawerId = store.getState()?.cashTracking?.getDrawerSession?.id;
+      const attachWithPhone = store.getState()?.retail?.attachWithPhone;
+      const attachWithEmail = store.getState()?.retail?.attachWithEmail;
       const endpoint = ORDER_URL + ApiOrderInventory.createOrder;
       const body = data?.userId
         ? {
             drawer_id: drawerId,
             cart_id: data.cartid,
             user_id: data.userId,
-            // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
+            reciept_on_email: attachWithEmail,
+            reciept_on_phone: attachWithPhone,
           }
         : {
             drawer_id: drawerId,
             cart_id: data.cartid,
-            // tips: data.tips,
             mode_of_payment: data.modeOfPayment,
+            reciept_on_email: attachWithEmail,
+            reciept_on_phone: attachWithPhone,
           };
+      console.log('body', body);
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response?.msg === 'Order placed successfully!') {

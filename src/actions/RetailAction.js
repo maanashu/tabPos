@@ -1009,6 +1009,14 @@ export const addOpenFrom = (addOpenFrom) => ({
   type: TYPES.ADD_OPEN_FROM_SUCCESS,
   payload: { addOpenFrom },
 });
+export const attachWithPhone = (attachWithPhone) => ({
+  type: TYPES.ATTACH_WITH_PHONE_SUCCESS,
+  payload: { attachWithPhone },
+});
+export const attachWithEmail = (attachWithEmail) => ({
+  type: TYPES.ATTACH_WITH_EMAIL_SUCCESS,
+  payload: { attachWithEmail },
+});
 
 //Merchant wallet check
 const merchantWalletCheckRequest = () => ({
