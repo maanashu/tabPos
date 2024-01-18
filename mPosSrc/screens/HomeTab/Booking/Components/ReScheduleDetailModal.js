@@ -344,14 +344,18 @@ const ReScheduleDetailModal = ({
                   {selectedDate === moment(new Date()).format('YYYY-MM-DD')
                     ? `Today`
                     : moment(selectedDate).format('ll')}
-                  {selectedTimeSlotData || (preSelectedStartTime && preSelectedEndTime) ? (
+                  {selectedTimeSlotData ||
+                  (appointmentData?.start_time && appointmentData?.end_time) ? (
                     <>
                       {' '}
                       @{' '}
                       {selectedTimeSlotData
                         ? selectedTimeSlotData?.start_time
-                        : preSelectedStartTime}{' '}
-                      - {selectedTimeSlotData ? selectedTimeSlotData?.end_time : preSelectedEndTime}
+                        : appointmentData?.start_time}{' '}
+                      -{' '}
+                      {selectedTimeSlotData
+                        ? selectedTimeSlotData?.end_time
+                        : appointmentData?.end_time}
                     </>
                   ) : null}
                 </Text>
