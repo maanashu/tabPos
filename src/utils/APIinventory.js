@@ -45,6 +45,7 @@ export const ApiUserInventory = {
   getState: 'states',
   getDrawerSessionById: 'drawer_management/drawer-session/history',
   getDrawer: (status) => `drawer_management/drawer-session/history?drawer_id=${status}`,
+  getExpectedCashByDrawerId: (status) => `drawer_management/drawer-session/cash-expected/${status}`,
   staffDetail: 'pos_staff_salary/get-staff-detail',
   getTax: 'tax',
   // getGoogleCode: 'users/2fa/qr-code',

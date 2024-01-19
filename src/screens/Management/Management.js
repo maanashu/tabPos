@@ -66,6 +66,7 @@ import {
   getDrawerSession,
   getDrawerSessionById,
   getDrawerSessions,
+  getExpectedCashbyDrawerId,
   getPaymentDrawerSessions,
   sendSessionHistory,
   trackSessionSave,
@@ -174,9 +175,9 @@ export function Management() {
   const cashTotalNet = drawerData?.drawerHistory?.net_amount;
   // alert(cashOut?.total);
   const [countFirst, setCountFirst] = useState();
-  const [countThird, setCountThird] = useState();
+  const [countThird, setCountThird] = useState(0);
 
-  const discrepancy = SessionData?.cashBalance - countFirst;
+  // const discrepancy = SessionData?.cashBalance - countFirst;
 
   const [endBalance, setEndBalance] = useState();
 
@@ -191,9 +192,17 @@ export function Management() {
   const [salesOutExpandedView, setSalesOutExpandedView] = useState(false);
   const [manualInExpandedView, setManualInExpandedView] = useState(false);
   const [manualOutExpandedView, setManualOutExpandedView] = useState(false);
+
+  //expected cash
+  const [expectedCashValue, setExpectedCashValue] = useState(0);
+  const [cashInValue, setCashInValue] = useState(0);
+  const [cashOutValue, setCashOutValue] = useState(0);
+  const [jobrSummarryValue, setJobrSummaryValue] = useState(0);
+  const [cardSummaryValue, setCardSummaryValue] = useState(0);
+
   const [closeBatch, setCloseBatch] = useState(false);
   const currentDateTime = moment();
-
+  const discrepancy = expectedCashValue - countFirst;
   // Format the date and time as per your requirements
   const formattedDateTime = currentDateTime.format('M/D/YYYY h:mm a');
 
@@ -220,7 +229,8 @@ export function Management() {
     },
     {
       id: 2,
-      title: SessionData?.cashBalance,
+      // title: SessionData?.cashBalance,
+      title: expectedCashValue,
     },
   ];
 
@@ -243,7 +253,7 @@ export function Management() {
     return (
       <Item
         item={item}
-        onPress={() => (setLeaveId(item.id), setLeaveData(item?.title))}
+        onPress={() => (setLeaveId(item.id), setLeaveData(item?.title), setCountThird(item?.title))}
         borderColor={borderColor}
         color={color}
         borderWidth={borderWidth}
@@ -255,6 +265,9 @@ export function Management() {
     isLoadingSelector([TYPES.GET_DRAWER_SESSION], state)
   );
 
+  const expectedCashLoad = useSelector((state) =>
+    isLoadingSelector([TYPES.GET_EXPECTED_CASH_BY_DRAWERID], state)
+  );
   const createActivityLoad = useSelector((state) =>
     isLoadingSelector([TYPES.TRACK_SESSION_SAVE], state)
   );
@@ -353,13 +366,23 @@ export function Management() {
     }
   };
 
-  const countCashFirst = () => {
+  const countCashFirst = async () => {
     if (countFirst && digits.test(countFirst) === false) {
       alert('Please enter valid amount');
     } else if (countFirst <= 0) {
       alert('Please enter valid amount');
     } else {
-      setEndSession(false), setCashSummary(true);
+      const res = await dispatch(getExpectedCashbyDrawerId(SessionData?.id));
+      console.log('Testtsss', JSON.stringify(res));
+      if (res?.status_code == 200) {
+        setEndSession(false);
+        setExpectedCashValue(res?.payload?.remainingCash);
+        setCashInValue(res?.payload?.cashIn);
+        setCashOutValue(res?.payload?.cashOut);
+        setJobrSummaryValue(res?.payload?.remainingJbrCoin);
+        setCardSummaryValue(res?.payload?.remainingCardAmount);
+        setCashSummary(true);
+      }
     }
   };
 
@@ -372,12 +395,12 @@ export function Management() {
           modeOfcash: 'cash_out',
         }
       : {
-          amount: leaveDatas,
+          amount: parseInt(countThird),
           drawerId: SessionData?.id,
           transactionType: 'end_tracking_session',
           modeOfcash: 'cash_out',
         };
-
+    console.log('sedndnd', data);
     const res = await endTrackingSession(data)(dispatch);
     setClickAmount(data?.amount);
     if (res) {
@@ -385,7 +408,12 @@ export function Management() {
       // setLeaveData('')
       dispatch(getPaymentDrawerSessions());
       setEndBalance(res?.payload?.getSessionHistory?.payload);
-      setEndSelectAmount(false), setRemoveUsd(true);
+
+      dispatch(getDrawerSessionById(res?.payload?.getSessionHistory?.payload?.drawer_id));
+      setCardCoinSummary(false);
+      setEndSession(false);
+      setCashSummary('');
+      setSummaryHistory(true), setHistoryHeader(true);
     }
   };
 
@@ -781,8 +809,14 @@ export function Management() {
                 countFirst == '' && { backgroundColor: 'grey' },
               ]}
             >
-              <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
-              <Image source={arrowRightTop} style={styles.crossImage} />
+              {expectedCashLoad ? (
+                <ActivityIndicator size={'large'} color="white" />
+              ) : (
+                <>
+                  <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
+                  <Image source={arrowRightTop} style={styles.crossImage} />
+                </>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -833,7 +867,8 @@ export function Management() {
                 <Text style={styles.amountExpect}>{strings.management.amountexpect}</Text>
                 <Text style={styles.amountExpect}>
                   {'USD $'}
-                  {amountFormat(SessionData?.cashBalance, true)}
+                  {expectedCashValue}
+                  {/* {amountFormat(SessionData?.cashBalance, true)} */}
                 </Text>
               </View>
               <Spacer space={SH(12.5)} />
@@ -909,7 +944,7 @@ export function Management() {
               activeOpacity={0.5}
               onPress={() => {
                 setCashSummary(false), setEndSelectAmount(true);
-                setCountThird(''), setLeaveId(1), setLeaveData('0');
+                setCountThird(0), setLeaveId(1), setLeaveData('0');
               }}
               style={[styles.nextButtonEnd, { position: 'absolute', bottom: ms(15) }]}
             >
@@ -971,7 +1006,10 @@ export function Management() {
                   onChangeText={(text) => {
                     // Filter out non-numeric characters
                     const numericValue = text.replace(/[^0-9]/g, '');
-                    setCountThird(numericValue), setLeavFun(numericValue);
+                    if (numericValue <= parseInt(expectedCashValue)) {
+                      setLeaveId(null);
+                      setCountThird(numericValue), setLeavFun(numericValue);
+                    }
                   }}
                 />
               </View>
@@ -988,7 +1026,11 @@ export function Management() {
 
             <TouchableOpacity
               activeOpacity={0.5}
-              onPress={endTrackingHandler}
+              // onPress={endTrackingHandler}
+              onPress={() => {
+                // setEndBalance(res?.payload?.getSessionHistory?.payload);
+                setEndSelectAmount(false), setRemoveUsd(true);
+              }}
               style={styles.nextButtonEnd}
             >
               <Text style={styles.sessionHistoryTextNew}>{strings.management.next}</Text>
@@ -1010,10 +1052,18 @@ export function Management() {
               // onPress={() => {
               //   setRemoveUsd(false), setEndSelectAmount(true);
               // }}
+              // onPress={() => {
+              //   setRemoveUsd(false),
+
+              //   setSummaryHistory(true),
+
+              //   setHistoryHeader(true);
+              //   // setViewSession(false),
+              //   // dispatch(getDrawerSession());
+              // }}
+
               onPress={() => {
-                setRemoveUsd(false), setSummaryHistory(true), setHistoryHeader(true);
-                // setViewSession(false),
-                // dispatch(getDrawerSession());
+                setRemoveUsd(false), setEndSelectAmount(true);
               }}
               style={{ width: SW(10) }}
             >
@@ -1027,16 +1077,22 @@ export function Management() {
             <Spacer space={SH(25)} />
             <View>
               <Text style={styles.removerDarkText}>
-                Are you sure you want to remove USD $ {clickAmount ?? '0'} from the drawer?
+                Are you sure you want to remove USD $ {countThird ?? leaveDatas} from the drawer?
                 {/* Remove USD $ {clickAmount ?? '0'} from drawer */}
               </Text>
               <Spacer space={SH(21)} />
               <Text style={styles.removerDarkTextRegular}>
                 Amount left in drawer:
                 {/* USD ${endBalance?.amount} */}
+                {/* {`USD${expectedCashValue - countThird} `} */}
               </Text>
               <Spacer space={SH(40)} />
-              <Text style={styles.removerDarkText}>${endBalance?.amount}</Text>
+              <Text style={styles.removerDarkText}>
+                {`$${parseInt(expectedCashValue) - parseInt(countThird)} `}
+                {/* {`$${parseFloat(expectedCashValue) - parseFloat(countThird)} `} */}
+
+                {/* ${endBalance?.amount} */}
+              </Text>
             </View>
 
             <View style={{ flex: 0.5 }} />
@@ -1045,14 +1101,19 @@ export function Management() {
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={'Confirm'}
               onPress={() => {
-                // dispatch(getDrawerSessionById(endBalance?.drawer_id));
                 setRemoveUsd(false);
+                setCardCoinSummary(true);
+
+                // dispatch(getDrawerSessionById(endBalance?.drawer_id));
                 // setEndSession(false);
                 // setCashSummary('');
 
                 // setSummaryHistory(true),
                 // setHistoryHeader(true);
-                setCardCoinSummary(true);
+
+                //erlier
+                // setCardCoinSummary(true);
+                // setRemoveUsd(false);
               }}
             />
           </View>
@@ -1115,7 +1176,8 @@ export function Management() {
                 <Text style={styles.amountExpect}>{strings.management.amountText}</Text>
                 <Text style={styles.amountExpect}>
                   {'$'}
-                  {cardSum}
+                  {/* {cardSum} */}
+                  {cardSummaryValue}
                 </Text>
               </View>
               <Spacer space={SH(12.5)} />
@@ -1150,7 +1212,8 @@ export function Management() {
                 <Text style={styles.amountExpect}>{strings.management.amountText}</Text>
                 <Text style={styles.amountExpect}>
                   {'$'}
-                  {jbrCoinSum}
+                  {/* {jbrCoinSum} */}
+                  {jobrSummarryValue}
                 </Text>
               </View>
               <Spacer space={SH(12.5)} />
@@ -1171,11 +1234,12 @@ export function Management() {
             <TouchableOpacity
               activeOpacity={0.5}
               onPress={() => {
-                dispatch(getDrawerSessionById(endBalance?.drawer_id));
-                setCardCoinSummary(false);
-                setEndSession(false);
-                setCashSummary('');
-                setSummaryHistory(true), setHistoryHeader(true);
+                endTrackingHandler();
+                // dispatch(getDrawerSessionById(endBalance?.drawer_id));
+                // setCardCoinSummary(false);
+                // setEndSession(false);
+                // setCashSummary('');
+                // setSummaryHistory(true), setHistoryHeader(true);
               }}
               style={styles.cancelBatch}
             >
