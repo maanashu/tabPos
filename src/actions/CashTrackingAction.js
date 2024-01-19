@@ -99,6 +99,18 @@ const getDrawerSessionByIdError = (error) => ({
   payload: { error },
 });
 
+const getExpectedCashbyDrawerIdRequest = () => ({
+  type: TYPES.GET_EXPECTED_CASH_BY_DRAWERID_REQUEST,
+  payload: null,
+});
+const getExpectedCashbyDrawerIdSuccess = (getExpectedCashbyDrawerId) => ({
+  type: TYPES.GET_EXPECTED_CASH_BY_DRAWERID_SUCCESS,
+  payload: { getExpectedCashbyDrawerId },
+});
+const getExpectedCashbyDrawerIdError = (error) => ({
+  type: TYPES.GET_EXPECTED_CASH_BY_DRAWERID_ERROR,
+  payload: { error },
+});
 export const getDrawerSessions = () => async (dispatch) => {
   dispatch(getDrawerSessionRequest());
   try {
@@ -170,5 +182,16 @@ export const getDrawerSessionById = (status) => async (dispatch) => {
     dispatch(getDrawerSessionByIdSuccess(res?.payload?.data));
   } catch (error) {
     dispatch(getDrawerSessionByIdError(error.message));
+  }
+};
+
+export const getExpectedCashbyDrawerId = (status) => async (dispatch) => {
+  dispatch(getExpectedCashbyDrawerIdRequest());
+  try {
+    const res = await CashTrackingController.getExpectedCashByDrawerId(status);
+    dispatch(getExpectedCashbyDrawerIdSuccess(res?.payload?.data));
+    return res;
+  } catch (error) {
+    dispatch(getExpectedCashbyDrawerIdError(error.message));
   }
 };

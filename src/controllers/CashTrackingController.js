@@ -40,12 +40,15 @@ export class CashTrackingController {
           resolve(response);
         })
         .catch((error) => {
-          Toast.show({
-            text2: error.error,
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          console.log('error', JSON.stringify(error));
+          if (error?.statusCode !== 204) {
+            Toast.show({
+              text2: error.error,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
           reject(new Error((strings.valiadtion.error = error.msg)));
         });
     });
@@ -199,6 +202,7 @@ export class CashTrackingController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('errorr', error);
           Toast.show({
             position: 'bottom',
             type: 'error_toast',
@@ -219,6 +223,31 @@ export class CashTrackingController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('errooror', error);
+          if (error?.statusCode !== 204 && error?.statusCode !== 400) {
+            Toast.show({
+              text2: error.msg,
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
+          }
+          reject(error);
+        });
+    });
+  }
+  static async getExpectedCashByDrawerId(status) {
+    return new Promise((resolve, reject) => {
+      const endpoint = USER_URL + ApiUserInventory.getExpectedCashByDrawerId(status);
+      console.log('Expected Cash ', endpoint);
+
+      HttpClient.get(endpoint)
+        .then((response) => {
+          console.log('expected,,', response);
+          resolve(response);
+        })
+        .catch((error) => {
+          console.log('error--', error);
           if (error?.statusCode !== 204) {
             Toast.show({
               text2: error.msg,

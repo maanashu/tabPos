@@ -46,6 +46,7 @@ import {
   getDrawerSession,
   getDrawerSessionById,
   getDrawerSessions,
+  getExpectedCashbyDrawerId,
   getPaymentDrawerSessions,
   sendSessionHistory,
   trackSessionSave,
@@ -155,15 +156,15 @@ export function Management() {
 
   // alert(cashOut?.total);
   const [countFirst, setCountFirst] = useState();
-  const [countThird, setCountThird] = useState();
+  const [countThird, setCountThird] = useState(0);
 
-  const discrepancy = SessionData?.cashBalance - countFirst;
+  // const discrepancy = SessionData?.cashBalance - countFirst;
 
   const [endBalance, setEndBalance] = useState();
 
   const [leaveId, setLeaveId] = useState(1);
 
-  const [leaveDatas, setLeaveData] = useState('0');
+  const [leaveDatas, setLeaveData] = useState(0);
   const [clickAmount, setClickAmount] = useState();
   const [showInvoice, setShowInvoice] = useState(false);
   const [viewCashInArray, setViewCashInArray] = useState(false);
@@ -174,7 +175,14 @@ export function Management() {
   const [manualOutExpandedView, setManualOutExpandedView] = useState(false);
   const [closeBatch, setCloseBatch] = useState(false);
   const currentDateTime = moment();
+  //expected
+  const [expectedCashValue, setExpectedCashValue] = useState(0);
+  const [cashInValue, setCashInValue] = useState(0);
+  const [cashOutValue, setCashOutValue] = useState(0);
+  const [jobrSummarryValue, setJobrSummaryValue] = useState(0);
+  const [cardSummaryValue, setCardSummaryValue] = useState(0);
 
+  const discrepancy = expectedCashValue - countFirst;
   // Format the date and time as per your requirements
   const formattedDateTime = currentDateTime.format('M/D/YYYY h:mm a');
   const formattedDate = currentDateTime.format('M/D/YYYY');
@@ -202,7 +210,8 @@ export function Management() {
     },
     {
       id: 2,
-      title: SessionData?.cashBalance,
+      // title: SessionData?.cashBalance,
+      title: expectedCashValue,
     },
   ];
 
@@ -219,7 +228,8 @@ export function Management() {
     return (
       <Item
         item={item}
-        onPress={() => (setLeaveId(item.id), setLeaveData(item?.title))}
+        // onPress={() => (setLeaveId(item.id), setLeaveData(item?.title))}
+        onPress={() => (setLeaveId(item.id), setLeaveData(item?.title), setCountThird(item?.title))}
         borderColor={borderColor}
         color={color}
       />
@@ -327,16 +337,54 @@ export function Management() {
     }
   };
 
-  const countCashFirst = () => {
+  const countCashFirst = async () => {
     if (countFirst && digits.test(countFirst) === false) {
       alert('Please enter valid amount');
     } else if (countFirst <= 0) {
       alert('Please enter valid amount');
     } else {
-      setEndSession(false), setCashSummary(true);
+      // setEndSession(false),
+
+      // setCashSummary(true);
+      const res = await dispatch(getExpectedCashbyDrawerId(SessionData?.id));
+      console.log('Testtsss', JSON.stringify(res));
+      if (res?.status_code == 200) {
+        setEndSession(false);
+        setExpectedCashValue(res?.payload?.remainingCash);
+        setCashInValue(res?.payload?.cashIn);
+        setCashOutValue(res?.payload?.cashOut);
+        setJobrSummaryValue(res?.payload?.remainingJbrCoin);
+        setCardSummaryValue(res?.payload?.remainingCardAmount);
+        setCashSummary(true);
+      }
     }
   };
 
+  // const endTrackingHandler = async () => {
+  //   const data = countThird
+  //     ? {
+  //         amount: parseInt(countThird),
+  //         drawerId: SessionData?.id,
+  //         transactionType: 'end_tracking_session',
+  //         modeOfcash: 'cash_out',
+  //       }
+  //     : {
+  //         amount: leaveDatas,
+  //         drawerId: SessionData?.id,
+  //         transactionType: 'end_tracking_session',
+  //         modeOfcash: 'cash_out',
+  //       };
+
+  //   const res = await endTrackingSession(data)(dispatch);
+  //   setClickAmount(data?.amount);
+  //   if (res) {
+  //     // dispatch(getDrawerSession());
+  //     // setLeaveData('')
+  //     dispatch(getPaymentDrawerSessions());
+  //     setEndBalance(res?.payload?.getSessionHistory?.payload);
+  //     setEndSelectAmount(false), setRemoveUsd(true);
+  //   }
+  // };
   const endTrackingHandler = async () => {
     const data = countThird
       ? {
@@ -346,12 +394,11 @@ export function Management() {
           modeOfcash: 'cash_out',
         }
       : {
-          amount: leaveDatas,
+          amount: parseInt(countThird),
           drawerId: SessionData?.id,
           transactionType: 'end_tracking_session',
           modeOfcash: 'cash_out',
         };
-
     const res = await endTrackingSession(data)(dispatch);
     setClickAmount(data?.amount);
     if (res) {
@@ -359,7 +406,12 @@ export function Management() {
       // setLeaveData('')
       dispatch(getPaymentDrawerSessions());
       setEndBalance(res?.payload?.getSessionHistory?.payload);
-      setEndSelectAmount(false), setRemoveUsd(true);
+
+      dispatch(getDrawerSessionById(res?.payload?.getSessionHistory?.payload?.drawer_id));
+      setCardCoinSummary(false);
+      setEndSession(false);
+      setCashSummary('');
+      setSummaryHistory(true), setHistoryHeader(true);
     }
   };
 
@@ -771,7 +823,8 @@ export function Management() {
                 <Text style={[styles.amountExpect]}>{strings.management.amountexpect}</Text>
                 <Text style={styles.amountExpect}>
                   {'USD $'}
-                  {SessionData?.cashBalance}
+                  {expectedCashValue}
+                  {/* {SessionData?.cashBalance} */}
                 </Text>
               </View>
               <Spacer space={SH(12.5)} />
@@ -810,7 +863,7 @@ export function Management() {
                   ]}
                 >
                   {discrepancy < 0 ? '-' : null} {'USD'} $
-                  {discrepancy < 0 ? Math.abs(discrepancy) : discrepancy}
+                  {discrepancy < 0 ? Math.abs(discrepancy).toFixed(2) : discrepancy?.toFixed(2)}
                 </Text>
               </View>
             </View>
@@ -821,7 +874,7 @@ export function Management() {
               title={strings.management.next}
               onPress={() => {
                 setCashSummary(false), setEndSelectAmount(true);
-                setCountThird(''), setLeaveId(1), setLeaveData('0');
+                setCountThird(0), setLeaveId(1), setLeaveData('0');
               }}
             />
           </View>
@@ -882,8 +935,16 @@ export function Management() {
                   placeholder={strings.management.amount}
                   placeholderTextColor={COLORS.solid_grey}
                   value={countThird}
-                  onChangeText={(countThird) => (setCountThird(countThird), setLeavFun(countThird))}
+                  // onChangeText={(countThird) => (setCountThird(countThird), setLeavFun(countThird))}
                   keyboardType="numeric"
+                  onChangeText={(text) => {
+                    // Filter out non-numeric characters
+                    const numericValue = text.replace(/[^0-9]/g, '');
+                    if (numericValue <= parseInt(expectedCashValue)) {
+                      setLeaveId(null);
+                      setCountThird(numericValue), setLeavFun(numericValue);
+                    }
+                  }}
                 />
               </View>
             </View>
@@ -894,7 +955,11 @@ export function Management() {
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.next}
               // onPress={() => (setEndSelectAmount(false), setRemoveUsd(true))}
-              onPress={endTrackingHandler}
+              // onPress={endTrackingHandler}
+              onPress={() => {
+                // setEndBalance(res?.payload?.getSessionHistory?.payload);
+                setEndSelectAmount(false), setRemoveUsd(true);
+              }}
             />
           </View>
         </View>
@@ -907,10 +972,14 @@ export function Management() {
               // onPress={() => {
               //   setRemoveUsd(false), setEndSelectAmount(true);
               // }}
+              // onPress={() => {
+              //   setRemoveUsd(false), setSummaryHistory(true), setHistoryHeader(true);
+              //   // setViewSession(false),
+              //   // dispatch(getDrawerSession());
+              // }}
+
               onPress={() => {
-                setRemoveUsd(false), setSummaryHistory(true), setHistoryHeader(true);
-                // setViewSession(false),
-                // dispatch(getDrawerSession());
+                setRemoveUsd(false), setEndSelectAmount(true);
               }}
               style={{ width: SW(10) }}
             >
@@ -927,11 +996,12 @@ export function Management() {
             <Spacer space={SH(60)} />
             <View>
               <Text style={styles.removerDarkText}>
-                Remove USD $ {clickAmount ?? '0'} from drawer
+                Remove USD $ {countThird ?? leaveDatas} from drawer
               </Text>
               <Spacer space={SH(21)} />
               <Text style={styles.removerDarkTextRegular}>
-                Amount left in drawer: USD ${endBalance?.amount}
+                Amount left in drawer: USD
+                {`$${parseInt(expectedCashValue) - parseInt(countThird)} `}
               </Text>
             </View>
             <Spacer space={SH(150)} />
@@ -940,14 +1010,16 @@ export function Management() {
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={'Confirm'}
               onPress={() => {
-                // dispatch(getDrawerSessionById(endBalance?.drawer_id));
                 setRemoveUsd(false);
+                setCardCoinSummary(true);
+                // dispatch(getDrawerSessionById(endBalance?.drawer_id));
                 // setEndSession(false);
                 // setCashSummary('');
 
                 // setSummaryHistory(true),
                 // setHistoryHeader(true);
-                setCardCoinSummary(true);
+                // setCardCoinSummary(true);
+                // setRemoveUsd(false);
               }}
             />
           </View>
@@ -994,7 +1066,8 @@ export function Management() {
                 <Text style={styles.amountExpect}>{strings.management.amountText}</Text>
                 <Text style={styles.amountExpect}>
                   {'$'}
-                  {cardSum}
+                  {cardSummaryValue}
+                  {/* {cardSum} */}
                 </Text>
               </View>
               <Spacer space={SH(12.5)} />
@@ -1012,7 +1085,9 @@ export function Management() {
                 <Text style={styles.amountExpect}>{strings.management.amountText}</Text>
                 <Text style={styles.amountExpect}>
                   {'$'}
-                  {jbrCoinSum}
+                  {jobrSummarryValue}
+
+                  {/* {jbrCoinSum} */}
                 </Text>
               </View>
               <Spacer space={SH(12.5)} />
@@ -1023,11 +1098,12 @@ export function Management() {
               textStyle={[styles.buttonText, { color: COLORS.white }]}
               title={strings.management.confirm}
               onPress={() => {
-                dispatch(getDrawerSessionById(endBalance?.drawer_id));
-                setCardCoinSummary(false);
-                setEndSession(false);
-                setCashSummary('');
-                setSummaryHistory(true), setHistoryHeader(true);
+                endTrackingHandler();
+                // dispatch(getDrawerSessionById(endBalance?.drawer_id));
+                // setCardCoinSummary(false);
+                // setEndSession(false);
+                // setCashSummary('');
+                // setSummaryHistory(true), setHistoryHeader(true);
               }}
             />
           </View>
