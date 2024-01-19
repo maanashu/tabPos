@@ -48,6 +48,7 @@ import { CustomErrorToast } from '@mPOS/components/Toast';
 import { digitWithDot, emailReg, mobileReg } from '@/utils/validators';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { amountFormat } from '@/utils/GlobalMethods';
+import { getSetting } from '@/selectors/SettingSelector';
 
 const CartAmountByPay = ({
   addProductCartRef,
@@ -61,6 +62,8 @@ const CartAmountByPay = ({
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const getAuthdata = useSelector(getAuthData);
+  const getSettingData = useSelector(getSetting);
+  console.log('getSettingData', JSON.stringify(getSettingData));
   const presentCart = retailData?.cartFrom;
   const productDetail = retailData?.getOneProduct;
   const sellerID = getAuthdata?.merchantLoginData?.uniqe_id;
@@ -77,6 +80,7 @@ const CartAmountByPay = ({
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
   const [selectedRecipeIndex, setSelectedRecipeIndex] = useState(null);
+  const [selectedRecipeId, setSelectedRecipeId] = useState(null);
 
   const sizeArray = attributeArray?.filter((item) => item.name === 'Size');
   const colorArray = attributeArray?.filter((item) => item.name === 'Color');
@@ -96,6 +100,18 @@ const CartAmountByPay = ({
   const [countryCode, setCountryCode] = useState('');
   const [email, setEmail] = useState('');
 
+  const functionNull = () => {
+    setSelectedPaymentIndex(null);
+    setSelectedPaymentMethod(null);
+    setSelectedPaymentId(null);
+    setSelectedRecipeId(null);
+    setSelectedRecipeIndex(null);
+  };
+
+  useEffect(() => {
+    functionNull();
+  }, []);
+
   useEffect(() => {
     if (cartData?.user_details) {
       setEmail(cartData?.user_details?.email ?? '');
@@ -107,6 +123,7 @@ const CartAmountByPay = ({
   useEffect(() => {
     setColorSelectId(null);
     setSizeSelectId(null);
+    setSelectedRecipeIndex(null);
   }, []);
 
   const TIPS_DATA = [
@@ -156,37 +173,86 @@ const CartAmountByPay = ({
 
   const ERECIPE_DATA = [
     {
-      id: 1,
-      title: 'SMS',
-    },
-    {
-      id: 2,
-      title: 'Email',
-    },
-    {
       id: 3,
       title: 'No e-recipe',
     },
   ];
-
-  const PAYMENT_SELECT_DATA = [
-    {
-      title: 'Cash',
-      icon: moneyIcon,
+  if (getSettingData?.getSetting?.invoice_sms_send_status) {
+    ERECIPE_DATA?.unshift({
       id: 1,
-    },
-    {
+      title: 'SMS',
+    });
+  }
+  if (getSettingData?.getSetting?.invoice_email_send_status) {
+    ERECIPE_DATA?.unshift({
+      id: 2,
+      title: 'Email',
+    });
+  }
+
+  //   {
+  //     id: 1,
+  //     title: 'SMS',
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Email',
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'No e-recipe',
+  //   },
+  // ];
+
+  // const PAYMENT_SELECT_DATA = [
+  //   {
+  //     title: 'Cash',
+  //     icon: moneyIcon,
+  //     id: 1,
+  //   },
+  //   {
+  //     title: 'JBR Coin',
+  //     icon: qrCodeIcon,
+  //     // status: true,
+  //     id: 2,
+  //   },
+  //   {
+  //     title: 'Card',
+  //     icon: cardPayment,
+  //     id: 3,
+  //   },
+  // ];
+  const paymentMethodData = [];
+  if (Object.keys(getSettingData?.getSetting).length > 0) {
+    paymentMethodData.push(
+      {
+        title: 'Cash',
+        icon: moneyIcon,
+        id: 1,
+        status: getSettingData.getSetting.accept_cash_payment,
+      },
+      {
+        title: 'JBR Coin',
+        icon: qrCodeIcon,
+        status: true,
+        id: 2,
+      },
+      {
+        title: 'Card',
+        icon: cardPayment,
+        id: 3,
+        status: getSettingData.getSetting.accept_card_payment,
+      }
+    );
+  } else {
+    paymentMethodData.push({
       title: 'JBR Coin',
       icon: qrCodeIcon,
-      // status: true,
+      status: true,
       id: 2,
-    },
-    {
-      title: 'Card',
-      icon: cardPayment,
-      id: 3,
-    },
-  ];
+    });
+  }
+  const PAYMENT_SELECT_DATA = paymentMethodData.filter((item) => item.status);
 
   const getTipPress = async () => {
     const data = {
@@ -226,6 +292,7 @@ const CartAmountByPay = ({
         setSelectedTipIndex(null);
         setSelectedPaymentIndex(null);
         cartAmountByPayCross();
+        functionNull();
       }}
       backdropOpacity={0.5}
       ref={cartAmountByPayRef}
@@ -240,7 +307,12 @@ const CartAmountByPay = ({
         <View style={{ flex: 1, paddingHorizontal: ms(10), paddingBottom: ms(20) }}>
           {Platform.OS === 'ios' && <SafeAreaView />}
           <View style={styles.productHeaderCon}>
-            <TouchableOpacity onPress={() => cartAmountByPayCross()}>
+            <TouchableOpacity
+              onPress={() => {
+                cartAmountByPayCross();
+                functionNull();
+              }}
+            >
               <Image source={Images.cross} style={styles.crossImageStyle} />
             </TouchableOpacity>
           </View>
@@ -377,7 +449,7 @@ const CartAmountByPay = ({
               </View>
             </View>
           ) : null}
-          {selectedPaymentIndex !== null && selectedPaymentIndex === 0 && (
+          {selectedPaymentId !== null && selectedPaymentId == 1 && (
             <View>
               <Spacer space={SH(20)} />
               <Text style={styles.selectTips}>{'E-Recipe '}</Text>
@@ -386,6 +458,7 @@ const CartAmountByPay = ({
                   <TouchableOpacity
                     onPress={() => {
                       setSelectedRecipeIndex(index);
+                      setSelectedRecipeId(item?.id);
                       // setPhoneNumber(), setEmail();
                       if (item.title == 'No e-recipe') {
                         getTipPress();
@@ -419,159 +492,155 @@ const CartAmountByPay = ({
             </View>
           )}
           {/* sms  section */}
-          {selectedPaymentIndex !== null &&
-            selectedPaymentIndex === 0 &&
-            selectedRecipeIndex === 0 && (
-              <>
-                <View style={{ marginTop: ms(15) }}>
-                  <Text style={styles.erecipeSms}>{strings.cart.erecipeSms}</Text>
-                  <View style={styles.textInputView}>
-                    <CountryPicker
-                      withFilter
-                      withCallingCode
-                      countryCode={flag}
-                      onSelect={(code) => {
-                        setFlag(code.cca2);
-                        if (code?.callingCode?.length > 0) {
-                          setCountryCode('+' + code.callingCode.flat());
-                        } else {
-                          setCountryCode('');
-                        }
-                      }}
-                    />
-
-                    <Text style={styles.codeText}>{countryCode}</Text>
-
-                    <TextInput
-                      maxLength={10}
-                      value={phoneNumber?.toString()}
-                      autoCorrect={false}
-                      returnKeyType={'done'}
-                      keyboardType={'number-pad'}
-                      style={styles.textInputContainer}
-                      onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
-                      placeholderTextColor={COLORS.gerySkies}
-                      placeholder={strings.phoneNumber.numberText}
-                    />
-                  </View>
-                </View>
-                <TouchableOpacity
-                  style={styles.payNowCon}
-                  onPress={async () => {
-                    if (!phoneNumber) {
-                      CustomErrorToast({ message: 'Please enter phone number' });
-                    } else if (
-                      phoneNumber &&
-                      mobileReg.test(phoneNumber) === false &&
-                      phoneNumber?.length < 10
-                    ) {
-                      CustomErrorToast({ message: 'Please enter valid phone number' });
-                    } else {
-                      const data = {
-                        tip: selectedTipAmount.toString(),
-                        cartId: cartData.id,
-                        // ...(presentCart === 'service' && { services: 'services' }),
-                      };
-                      const res = await dispatch(updateCartByTip(data));
-                      if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
-                        const data = {
-                          cartId: cartData?.id,
-                          phoneNo: phoneNumber,
-                          countryCode: countryCode,
-                        };
-                        const res = await dispatch(attachCustomer(data));
-                        // : dispatch(attachServiceCustomer(data));
-                        if (
-                          res?.type === 'ATTACH_CUSTOMER_SUCCESS' ||
-                          'ATTACH_SERVICE_CUSTOMER_SUCCESS'
-                        ) {
-                          cashPayNowHandler();
-                          dispatch(attachWithPhone(true));
-                          dispatch(attachWithEmail(false));
-                        }
-                        // {presentCart === 'product'
-                        // ?
-                        // const res = await dispatch(attachCustomer(data));
-                        // if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
-                        //   cashPayNowHandler()
-                        // }
-                        // :
-                        // const res = await dispatch(attachServiceCustomer(data));
-                        // if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
-                        //   cashPayNowHandler()
-                        // }}
+          {selectedPaymentId !== null && selectedPaymentId == 1 && selectedRecipeId == 1 && (
+            <>
+              <View style={{ marginTop: ms(15) }}>
+                <Text style={styles.erecipeSms}>{strings.cart.erecipeSms}</Text>
+                <View style={styles.textInputView}>
+                  <CountryPicker
+                    withFilter
+                    withCallingCode
+                    countryCode={flag}
+                    onSelect={(code) => {
+                      setFlag(code.cca2);
+                      if (code?.callingCode?.length > 0) {
+                        setCountryCode('+' + code.callingCode.flat());
+                      } else {
+                        setCountryCode('');
                       }
+                    }}
+                  />
+
+                  <Text style={styles.codeText}>{countryCode}</Text>
+
+                  <TextInput
+                    maxLength={10}
+                    value={phoneNumber?.toString()}
+                    autoCorrect={false}
+                    returnKeyType={'done'}
+                    keyboardType={'number-pad'}
+                    style={styles.textInputContainer}
+                    onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
+                    placeholderTextColor={COLORS.gerySkies}
+                    placeholder={strings.phoneNumber.numberText}
+                  />
+                </View>
+              </View>
+              <TouchableOpacity
+                style={styles.payNowCon}
+                onPress={async () => {
+                  if (!phoneNumber) {
+                    CustomErrorToast({ message: 'Please enter phone number' });
+                  } else if (
+                    phoneNumber &&
+                    mobileReg.test(phoneNumber) === false &&
+                    phoneNumber?.length < 10
+                  ) {
+                    CustomErrorToast({ message: 'Please enter valid phone number' });
+                  } else {
+                    const data = {
+                      tip: selectedTipAmount.toString(),
+                      cartId: cartData.id,
+                      // ...(presentCart === 'service' && { services: 'services' }),
+                    };
+                    const res = await dispatch(updateCartByTip(data));
+                    if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
+                      const data = {
+                        cartId: cartData?.id,
+                        phoneNo: phoneNumber,
+                        countryCode: countryCode,
+                      };
+                      const res = await dispatch(attachCustomer(data));
+                      // : dispatch(attachServiceCustomer(data));
+                      if (
+                        res?.type === 'ATTACH_CUSTOMER_SUCCESS' ||
+                        'ATTACH_SERVICE_CUSTOMER_SUCCESS'
+                      ) {
+                        cashPayNowHandler();
+                        dispatch(attachWithPhone(true));
+                        dispatch(attachWithEmail(false));
+                      }
+                      // {presentCart === 'product'
+                      // ?
+                      // const res = await dispatch(attachCustomer(data));
+                      // if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+                      //   cashPayNowHandler()
+                      // }
+                      // :
+                      // const res = await dispatch(attachServiceCustomer(data));
+                      // if (res?.type === 'ATTACH_CUSTOMER_SUCCESS') {
+                      //   cashPayNowHandler()
+                      // }}
                     }
-                  }}
-                >
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.payNowText}>{'Pay Now'}</Text>
-                    <Image source={Images.buttonArrow} style={styles.buttonArrow} />
-                  </View>
-                </TouchableOpacity>
-              </>
-            )}
+                  }
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.payNowText}>{'Pay Now'}</Text>
+                  <Image source={Images.buttonArrow} style={styles.buttonArrow} />
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
           {/* email  section */}
-          {selectedPaymentIndex !== null &&
-            selectedPaymentIndex === 0 &&
-            selectedRecipeIndex === 1 && (
-              <>
-                <View style={{ marginTop: ms(15) }}>
-                  <Text style={styles.erecipeSms}>{strings.cart.erecipeEmail}</Text>
-                  <View style={styles.textInputView}>
-                    <Image source={Images.email} style={styles.emailIcon} />
+          {selectedPaymentId !== null && selectedPaymentId == 1 && selectedRecipeId == 2 && (
+            <>
+              <View style={{ marginTop: ms(15) }}>
+                <Text style={styles.erecipeSms}>{strings.cart.erecipeEmail}</Text>
+                <View style={styles.textInputView}>
+                  <Image source={Images.email} style={styles.emailIcon} />
 
-                    <TextInput
-                      value={email?.trim()}
-                      autoCorrect={false}
-                      returnKeyType={'done'}
-                      style={styles.textInputContainer}
-                      onChangeText={(email) => setEmail(email)}
-                      placeholderTextColor={COLORS.gerySkies}
-                      placeholder={strings.profile.emailAddress}
-                    />
-                  </View>
+                  <TextInput
+                    value={email?.trim()}
+                    autoCorrect={false}
+                    returnKeyType={'done'}
+                    style={styles.textInputContainer}
+                    onChangeText={(email) => setEmail(email)}
+                    placeholderTextColor={COLORS.gerySkies}
+                    placeholder={strings.profile.emailAddress}
+                  />
                 </View>
-                <TouchableOpacity
-                  style={styles.payNowCon}
-                  onPress={async () => {
-                    if (!email) {
-                      CustomErrorToast({ message: 'Please enter email' });
-                    } else if (email && emailReg.test(email) === false) {
-                      CustomErrorToast({ message: 'Please enter valid email' });
-                    } else {
+              </View>
+              <TouchableOpacity
+                style={styles.payNowCon}
+                onPress={async () => {
+                  if (!email) {
+                    CustomErrorToast({ message: 'Please enter email' });
+                  } else if (email && emailReg.test(email) === false) {
+                    CustomErrorToast({ message: 'Please enter valid email' });
+                  } else {
+                    const data = {
+                      tip: selectedTipAmount.toString(),
+                      cartId: cartData.id,
+                      // ...(presentCart === 'service' && { services: 'services' }),
+                    };
+                    const res = await dispatch(updateCartByTip(data));
+                    if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
                       const data = {
-                        tip: selectedTipAmount.toString(),
-                        cartId: cartData.id,
-                        // ...(presentCart === 'service' && { services: 'services' }),
+                        cartId: cartData?.id,
+                        phoneEmail: email,
                       };
-                      const res = await dispatch(updateCartByTip(data));
-                      if (res?.type === 'UPDATE_CART_BY_TIP_SUCCESS') {
-                        const data = {
-                          cartId: cartData?.id,
-                          phoneEmail: email,
-                        };
-                        const res = await dispatch(attachCustomer(data));
-                        // : dispatch(attachServiceCustomer(data));
-                        if (
-                          res?.type === 'ATTACH_CUSTOMER_SUCCESS' ||
-                          'ATTACH_SERVICE_CUSTOMER_SUCCESS'
-                        ) {
-                          cashPayNowHandler();
-                          dispatch(attachWithPhone(false));
-                          dispatch(attachWithEmail(true));
-                        }
+                      const res = await dispatch(attachCustomer(data));
+                      // : dispatch(attachServiceCustomer(data));
+                      if (
+                        res?.type === 'ATTACH_CUSTOMER_SUCCESS' ||
+                        'ATTACH_SERVICE_CUSTOMER_SUCCESS'
+                      ) {
+                        cashPayNowHandler();
+                        dispatch(attachWithPhone(false));
+                        dispatch(attachWithEmail(true));
                       }
                     }
-                  }}
-                >
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.payNowText}>{'Pay Now'}</Text>
-                    <Image source={Images.buttonArrow} style={styles.buttonArrow} />
-                  </View>
-                </TouchableOpacity>
-              </>
-            )}
+                  }
+                }}
+              >
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={styles.payNowText}>{'Pay Now'}</Text>
+                  <Image source={Images.buttonArrow} style={styles.buttonArrow} />
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
           {/* {selectedPaymentIndex !== null &&
             selectedPaymentIndex === 0 &&
             selectedRecipeIndex === 2 && (
@@ -583,7 +652,7 @@ const CartAmountByPay = ({
               </TouchableOpacity>
             )} */}
           {/* jbr coin pay now button */}
-          {selectedPaymentIndex !== null && selectedPaymentIndex === 1 && (
+          {selectedPaymentId !== null && selectedPaymentId == 2 && (
             <TouchableOpacity
               style={styles.payNowCon}
               //  onPress={jbrCoinSheetshow}
@@ -727,10 +796,11 @@ const styles = StyleSheet.create({
     borderColor: COLORS.solidGrey,
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: ms(5),
   },
   erecipeCon: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     marginTop: ms(10),
   },
   payNowCon: {
