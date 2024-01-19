@@ -1000,8 +1000,7 @@ export function Management() {
               </Text>
               <Spacer space={SH(21)} />
               <Text style={styles.removerDarkTextRegular}>
-                Amount left in drawer: USD {console.log('poopopop', parseInt(expectedCashValue))}
-                {console.log('countt', parseInt(countThird))}
+                Amount left in drawer: USD
                 {`$${parseInt(expectedCashValue) - parseInt(countThird)} `}
               </Text>
             </View>
