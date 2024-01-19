@@ -39,6 +39,8 @@ import {
   getServiceCart,
   merchantWalletCheck,
   updateCartByTip,
+  attachWithPhone,
+  attachWithEmail,
 } from '@/actions/RetailAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
@@ -387,6 +389,8 @@ const CartAmountByPay = ({
                       // setPhoneNumber(), setEmail();
                       if (item.title == 'No e-recipe') {
                         getTipPress();
+                        dispatch(attachWithPhone(false));
+                        dispatch(attachWithEmail(false));
                       }
                     }}
                     style={[
@@ -482,6 +486,8 @@ const CartAmountByPay = ({
                           'ATTACH_SERVICE_CUSTOMER_SUCCESS'
                         ) {
                           cashPayNowHandler();
+                          dispatch(attachWithPhone(true));
+                          dispatch(attachWithEmail(false));
                         }
                         // {presentCart === 'product'
                         // ?
@@ -552,6 +558,8 @@ const CartAmountByPay = ({
                           'ATTACH_SERVICE_CUSTOMER_SUCCESS'
                         ) {
                           cashPayNowHandler();
+                          dispatch(attachWithPhone(false));
+                          dispatch(attachWithEmail(true));
                         }
                       }
                     }
@@ -597,6 +605,8 @@ const CartAmountByPay = ({
                         dispatch(getQrCodee(cartData?.id));
                         dispatch(getAllCart());
                         jbrCoinSheetshow();
+                        dispatch(attachWithPhone(false));
+                        dispatch(attachWithEmail(false));
                       }
                     }
                   })
