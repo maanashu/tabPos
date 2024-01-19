@@ -1,5 +1,5 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../node_modules/react-native/scripts/react_native_pods'
 
 platform :ios, '13.0'
 install! 'cocoapods', :deterministic_uuids => false
@@ -47,5 +47,6 @@ target 'tabposapp' do
         config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
         config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
       end
-    end  end
+    end 
+   end
 end
