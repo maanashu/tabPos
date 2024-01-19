@@ -70,9 +70,10 @@ export function PosRetail3() {
   const getServicecart = getRetailData?.getAllCart;
   const getServiceCartAmount = getRetailData?.getAllCart?.amount;
   const finalAmountForDiscount =
-    cartData?.amount?.products_price.toFixed(2) - cartData?.amount?.tax.toFixed(2);
+    cartData?.amount?.products_price.toFixed(2) - Number(cartData?.amount?.tax)?.toFixed(2);
   const finalServiceAmountForDiscount =
-    getServicecart?.amount?.products_price?.toFixed(2) - getServicecart?.amount?.tax?.toFixed(2);
+    getServicecart?.amount?.products_price?.toFixed(2) -
+    Number(getServicecart?.amount?.tax)?.toFixed(2);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const defaultArrayproduct = getRetailData?.getProductDefault;
   const categoryArray = getRetailData?.categoryList;

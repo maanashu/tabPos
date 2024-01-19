@@ -69,7 +69,7 @@ export function AddDiscountToCart({
               <View style={styles.addDiscountInputCon}>
                 <Text style={styles.dollarsign}>$</Text>
                 <TextInput
-                  placeholder="00.00"
+                  placeholder="0.00"
                   keyboardType="numeric"
                   style={[
                     styles.amountInput,
@@ -115,7 +115,7 @@ export function AddDiscountToCart({
                 style={[styles.addDiscountInputCon, { paddingLeft: ms(0), paddingRight: ms(4) }]}
               >
                 <TextInput
-                  placeholder="0.00"
+                  placeholder="0"
                   keyboardType="numeric"
                   style={[
                     styles.amountInput,

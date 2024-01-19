@@ -125,7 +125,7 @@ const AddDiscount = ({ discountClose }) => {
                 <Text style={styles.dollarsign}>$ </Text>
                 <TextInput
                   ref={amountInputRef}
-                  placeholder={'00.00'}
+                  placeholder={'0.00'}
                   keyboardType={'numeric'}
                   style={[
                     styles.amountInput,
@@ -174,7 +174,7 @@ const AddDiscount = ({ discountClose }) => {
               <View style={styles.addDiscountInputCon}>
                 <TextInput
                   ref={percentInputRef}
-                  placeholder={'00.00'}
+                  placeholder={'0'}
                   keyboardType={'numeric'}
                   style={[
                     styles.amountInput,
