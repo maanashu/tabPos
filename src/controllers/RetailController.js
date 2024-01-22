@@ -101,11 +101,14 @@ export class RetailController {
     };
     return new Promise((resolve, reject) => {
       const endpoint = getUrl(sellerID, search);
+      console.log('endpoint1234', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           // Toast.show({
           //   text2: 'Sub-Category not found',
           //   position: 'bottom',
@@ -1416,7 +1419,7 @@ export class RetailController {
     });
   }
 
-  static async getAvailableOffer(data) {
+  static async getAvailableOffer(data, value) {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
@@ -1430,13 +1433,13 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          // error?.statusCode === 204 &&
-          //   Toast.show({
-          //     text2: 'Offer Not Found',
-          //     position: 'bottom',
-          //     type: 'error_toast',
-          //     visibilityTime: 1500,
-          //   });
+          error?.statusCode === 204 && value == 'mpos';
+          Toast.show({
+            text2: 'Offer Not Found',
+            position: 'bottom',
+            type: 'error_toast',
+            visibilityTime: 1500,
+          });
           reject(error);
         });
     });

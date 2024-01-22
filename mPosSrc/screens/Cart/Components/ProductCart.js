@@ -653,7 +653,7 @@ export function ProductCart({ cartChangeHandler }) {
                 servicetype: 'product',
               };
               dispatch(
-                getAvailableOffer(data, () => {
+                getAvailableOffer(data, 'mpos', () => {
                   availableOfferRef?.current?.present();
                 })
               );
