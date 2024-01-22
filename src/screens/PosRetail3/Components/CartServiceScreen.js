@@ -186,7 +186,7 @@ export function CartServiceScreen({
       seller_id: sellerID,
       servicetype: 'service',
     };
-    dispatch(getAvailableOffer(data));
+    dispatch(getAvailableOffer(data, 'pos'));
     dispatch(getUserDetailSuccess({}));
   }, []);
 

@@ -140,7 +140,7 @@ export function CartScreen({
       seller_id: sellerID,
       servicetype: 'product',
     };
-    dispatch(getAvailableOffer(data));
+    dispatch(getAvailableOffer(data, 'pos'));
     dispatch(getUserDetailSuccess({}));
   }, []);
 
@@ -740,7 +740,7 @@ export function CartScreen({
                             seller_id: sellerID,
                             servicetype: 'product',
                           };
-                          dispatch(getAvailableOffer(data));
+                          dispatch(getAvailableOffer(data, 'pos'));
                         }}
                         tintColor={COLORS.primary} // Change the color of the loading spinner
                         title="Pull to Refresh" // Optional, you can customize the text

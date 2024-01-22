@@ -1433,13 +1433,14 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          error?.statusCode === 204 && value == 'mpos';
-          Toast.show({
-            text2: 'Offer Not Found',
-            position: 'bottom',
-            type: 'error_toast',
-            visibilityTime: 1500,
-          });
+          error?.statusCode === 204 &&
+            value == 'mpos' &&
+            Toast.show({
+              text2: 'Offer Not Found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
           reject(error);
         });
     });
