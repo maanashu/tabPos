@@ -20,13 +20,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?seller_id=${sellerid}&main_category=true&search=${search}&service_type=product`
+          `?seller_id=${sellerid}&main_category=true&search=${search}&service_type=product&check_product_existance=false`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?seller_id=${sellerid}&main_category=true&service_type=product`
+          `?seller_id=${sellerid}&main_category=true&service_type=product&check_product_existance=false`
         );
       }
     };
@@ -55,13 +55,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service&search=${search}`
+          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service&search=${search}&check_product_existance=false`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service`
+          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service&check_product_existance=false`
         );
       }
     };
@@ -89,13 +89,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&search=${search}&service_type=product&need_subcategory=true`
+          `?seller_id=${sellerid}&search=${search}&service_type=product&need_subcategory=true&check_product_existance=false`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&service_type=product&need_subcategory=true`
+          `?seller_id=${sellerid}&service_type=product&need_subcategory=true&check_product_existance=false`
         );
       }
     };
@@ -126,13 +126,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&search=${search}&service_type=service&need_subcategory=true`
+          `?seller_id=${sellerid}&search=${search}&service_type=service&need_subcategory=true&check_product_existance=false`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&service_type=service&need_subcategory=true`
+          `?seller_id=${sellerid}&service_type=service&need_subcategory=true&check_product_existance=false`
         );
       }
     };
