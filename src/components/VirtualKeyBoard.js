@@ -21,6 +21,7 @@ export const VirtualKeyBoard = ({
   screen,
   canGoBack = true,
   onBackPressHandler,
+  onlyNext = false,
 }) => {
   const KEYBOARD_DATA = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'cross', '0', 'deleteBack'];
   return (
@@ -76,47 +77,19 @@ export const VirtualKeyBoard = ({
                 ]}
               />
             )} */}
-
-            <View style={{ flexDirection: 'row' }}>
-              <ButtonIcon
-                disabled={isBackButtonDisbaled}
-                onPress={() => {
-                  screen == 'PickupPin' ? onBackPressHandler() : goBack();
-                }}
-                style={{
-                  width: 'auto',
-                  height: ms(35),
-                  paddingHorizontal: ms(10),
-                  backgroundColor: COLORS.sky_grey,
-                  borderWidth: 0,
-                  borderRadius: ms(20),
-                  marginHorizontal: 0,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                textStyle={[
-                  { fontSize: ms(12), fontFamily: Fonts.Regular },
-                  !canGoBack && { color: COLORS.graySky },
-                ]}
-                iconStyle={{
-                  height: ms(15),
-                  width: ms(15),
-                  tintColor: !canGoBack ? COLORS.graySky : COLORS.sky_blue,
-                }}
-                icon={screen == 'PickupPin' ? crossDrawer : Images.arrowLeftUp}
-                title={screen == 'PickupPin' ? 'Close' : 'Back'}
-              />
+            {onlyNext ? (
               <ButtonIcon
                 pending={isButtonLoading}
                 iconPostion="right"
                 style={{
-                  width: 'auto',
+                  // width: 'auto',
+                  flex: 0.6,
                   height: ms(35),
                   paddingHorizontal: ms(10),
                   backgroundColor: COLORS.navy_blue,
                   borderWidth: 0,
-                  borderRadius: ms(20),
-                  marginLeft: ms(20),
+                  borderRadius: ms(50),
+                  // marginLeft: ms(20),
                   marginHorizontal: 0,
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -127,7 +100,59 @@ export const VirtualKeyBoard = ({
                 onPress={onPressContinueButton}
                 title={'Next'}
               />
-            </View>
+            ) : (
+              <View style={{ flexDirection: 'row' }}>
+                <ButtonIcon
+                  disabled={isBackButtonDisbaled}
+                  onPress={() => {
+                    screen == 'PickupPin' ? onBackPressHandler() : goBack();
+                  }}
+                  style={{
+                    width: 'auto',
+                    height: ms(35),
+                    paddingHorizontal: ms(10),
+                    backgroundColor: COLORS.sky_grey,
+                    borderWidth: 0,
+                    borderRadius: ms(20),
+                    marginHorizontal: 0,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  textStyle={[
+                    { fontSize: ms(12), fontFamily: Fonts.Regular },
+                    !canGoBack && { color: COLORS.graySky },
+                  ]}
+                  iconStyle={{
+                    height: ms(15),
+                    width: ms(15),
+                    tintColor: !canGoBack ? COLORS.graySky : COLORS.sky_blue,
+                  }}
+                  icon={screen == 'PickupPin' ? crossDrawer : Images.arrowLeftUp}
+                  title={screen == 'PickupPin' ? 'Close' : 'Back'}
+                />
+                <ButtonIcon
+                  pending={isButtonLoading}
+                  iconPostion="right"
+                  style={{
+                    width: 'auto',
+                    height: ms(35),
+                    paddingHorizontal: ms(10),
+                    backgroundColor: COLORS.navy_blue,
+                    borderWidth: 0,
+                    borderRadius: ms(20),
+                    marginLeft: ms(20),
+                    marginHorizontal: 0,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  textStyle={{ fontSize: ms(12), fontFamily: Fonts.Regular, color: COLORS.white }}
+                  iconStyle={{ height: ms(15), width: ms(15), transform: [{ rotate: '90deg' }] }}
+                  icon={Images.arrowLeftUp}
+                  onPress={onPressContinueButton}
+                  title={'Next'}
+                />
+              </View>
+            )}
 
             {/* <Button
               pending={isButtonLoading}

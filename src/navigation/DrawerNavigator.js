@@ -1,43 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Platform, Dimensions, StyleSheet, ScrollView, Text } from 'react-native';
+import {
+  View,
+  Image,
+  Platform,
+  Dimensions,
+  StyleSheet,
+  ScrollView,
+  Text,
+  Alert,
+} from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 
-import {
-  Fonts,
-  deliveryTruck,
-  blueTruck,
-  logo_icon,
-  retail,
-  greyRetail,
-  parachuteBox,
-  bluepara,
-  calendar,
-  analytics,
-  blueanalytics,
-  wallet,
-  bluewallet,
-  tray,
-  users,
-  blueusers,
-  settings,
-  bluetray,
-  blueCalender,
-  blueSetting,
-  userImage,
-  newUsers,
-  new_wallet,
-} from '@/assets';
+import { Fonts, userImage, newUsers, powerAuth } from '@/assets';
 import { COLORS, SF, SW } from '@/theme';
 import { NAVIGATION } from '@/constants';
 import { getUser } from '@/selectors/UserSelectors';
 import { navigate } from '@/navigation/NavigationRef';
 import { getDashboard } from '@/selectors/DashboardSelector';
-import { addSellingSelection } from '@/actions/DashboardAction';
 import { Images } from '@/assets/new_icon';
 import { ADMIN } from '@/utils/GlobalMethods';
 const windowHeight = Dimensions.get('window').height;
+import { logoutFunction } from '@/actions/AuthActions';
+import { logoutUserFunction } from '@/actions/UserActions';
+import { endTrackingSession, getDrawerSessions } from '@/actions/CashTrackingAction';
+import { addSellingSelection, getDrawerSessionSuccess } from '@/actions/DashboardAction';
 
 export function DrawerNavigator(props) {
   const dispatch = useDispatch();
@@ -46,6 +34,15 @@ export function DrawerNavigator(props) {
   const selection = getDashboardData?.selection;
   const [active, setActive] = useState('dashBoard');
   const getPosUser = getUserData?.posLoginData;
+  const getSessionObj = getDashboardData?.getSesssion;
+
+  const profileObj = {
+    openingBalance: getSessionObj?.opening_balance,
+    closeBalance: getSessionObj?.cash_balance,
+    profile: getSessionObj?.seller_details?.user_profiles?.profile_photo,
+    name: getSessionObj?.seller_details?.user_profiles?.firstname,
+    id: getSessionObj?.id,
+  };
 
   useEffect(() => {
     getSelectedOption();
@@ -63,6 +60,35 @@ export function DrawerNavigator(props) {
         setActive('shippingOrder2');
       }
     }
+  };
+  const onPressLogoutHandler = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout ?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: async () => {
+          const data = {
+            amount: parseInt(profileObj?.closeBalance),
+            drawerId: profileObj?.id,
+            transactionType: 'end_tracking_session',
+            modeOfcash: 'cash_out',
+          };
+          console.log('data', data);
+          const res = await dispatch(endTrackingSession(data));
+          if (res?.type === 'END_TRACKING_SUCCESS') {
+            // dispatch(getDrawerSessionSuccess(null));
+            // dispatch(logoutUserFunction());
+            dispatch(logoutFunction());
+          } else {
+            alert('something went wrong');
+          }
+        },
+      },
+    ]);
   };
 
   return (
@@ -317,15 +343,26 @@ export function DrawerNavigator(props) {
           )}
         /> */}
       </ScrollView>
-      {/* {getAuth?.merchantLoginData?.id === getUserData?.posLoginData?.id ? (
+      {ADMIN()?.length > 0 && (
         <View style={styles.endSessionViewStyle}>
           <DrawerItem
             label={''}
-            onPress={() => merchantEndSesion()}
-            icon={({ focused, color, size }) => <Image source={power} style={styles.iconStyle(focused)} />}
+            onPress={() => onPressLogoutHandler()}
+            icon={({ focused, color, size }) => (
+              <Image
+                source={powerAuth}
+                style={{
+                  marginRight: ms(10),
+                  marginTop: ms(2),
+                  width: ms(13),
+                  height: ms(13),
+                  tintColor: COLORS.navy_blue,
+                }}
+              />
+            )}
           />
         </View>
-      ) : null} */}
+      )}
     </DrawerContentScrollView>
   );
 }
@@ -334,8 +371,11 @@ const styles = StyleSheet.create({
   endSessionViewStyle: {
     backgroundColor: COLORS.textInputBackground,
     position: 'absolute',
-    left: 0,
-    bottom: 0,
+    left: 10,
+    bottom: 5,
+    width: ms(30),
+    height: ms(30),
+    borderRadius: ms(50),
   },
   contentContainerStyle: {
     // alignItems: 'flex-start',
