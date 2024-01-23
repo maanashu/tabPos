@@ -289,7 +289,7 @@ export function WeeklyTransaction({
         return 'Ready Pickup';
         break;
       case 4:
-        return 'Walkin';
+        return 'Pickup';
         break;
       case 5:
         return 'Delivered';
