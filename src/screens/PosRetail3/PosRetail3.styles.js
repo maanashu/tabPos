@@ -1417,7 +1417,8 @@ export const styles = StyleSheet.create({
     height: SH(40),
   },
   searchCartInput: {
-    width: windowWidth * 0.35,
+    flex: 1,
+    // width: windowWidth * 0.35,
   },
 
   productCount: {

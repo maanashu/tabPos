@@ -538,8 +538,8 @@ const getProductFinalPrice = (item) => {
   var productPrice = 0;
 
   productPrice = getProductPrice(
-    item.product_details?.supply?.supply_offers,
-    item.product_details?.supply?.supply_prices?.selling_price,
+    item?.product_details?.supply?.supply_offers,
+    item?.product_details?.supply?.supply_prices?.selling_price,
     item?.qty
   );
 
@@ -547,7 +547,7 @@ const getProductFinalPrice = (item) => {
   //   item?.product_details?.supply?.supply_prices?.selling_price;
   var attributePrice = 0;
 
-  const supplyVariants = item.product_details?.supply?.supply_variants;
+  const supplyVariants = item?.product_details?.supply?.supply_variants;
 
   if (supplyVariants) {
     if (Array.isArray(supplyVariants)) {

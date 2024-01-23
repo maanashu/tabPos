@@ -57,6 +57,7 @@ import CustomAlert from '@/components/CustomAlert';
 import { navigate } from '@mPOS/navigation/NavigationRef';
 import { MPOS_NAVIGATION } from '@common/commonImports';
 import { amountFormat, getProductFinalPrice, getProductPrice } from '@/utils/GlobalMethods';
+import { debounce } from 'lodash';
 
 export function ProductCart({ cartChangeHandler }) {
   const isFocused = useIsFocused();
@@ -83,12 +84,20 @@ export function ProductCart({ cartChangeHandler }) {
   const [productCustomerAdd, setProductCustomerAdd] = useState(false);
   const productCartArray = retailData?.getAllProductCart;
   const [productQuantity, setProductQuantity] = useState('');
+  const [cartSearch, setCartSearch] = useState('');
   const holdProductArray = productCartArray?.filter((item) => item.is_on_hold === true);
 
   const poscart = productCartData?.poscart_products;
 
   const onlyServiceCartArray = poscart?.filter((item) => item?.product_type === 'service');
   const onlyProductCartArray = poscart?.filter((item) => item?.product_type === 'product');
+
+  const cartSearchHandler = (search) => {
+    console.log('search', search?.length);
+  };
+
+  const debounceSearchCart = useCallback(debounce(cartSearchHandler, 1000), []);
+
   const isLoading = useSelector((state) =>
     isLoadingSelector(
       [
@@ -486,6 +495,11 @@ export function ProductCart({ cartChangeHandler }) {
           <TextInput
             placeholder={strings.homeTab.placeholder}
             style={styles.searchTextInputStyle}
+            value={cartSearch}
+            onChangeText={(cartSearch) => {
+              setCartSearch(cartSearch);
+              debounceSearchCart(cartSearch);
+            }}
           />
         </View>
 
