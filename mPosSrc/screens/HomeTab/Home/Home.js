@@ -7,6 +7,7 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ms } from 'react-native-size-matters';
@@ -284,8 +285,9 @@ export function Home() {
           renderItem={renderItem}
           contentContainerStyle={{
             flexGrow: 1,
-            paddingBottom: ms(110),
+            paddingBottom: Platform?.OS === 'ios' ? ms(110) : ms(135),
           }}
+          showsVerticalScrollIndicator={false}
         />
       </View>
 

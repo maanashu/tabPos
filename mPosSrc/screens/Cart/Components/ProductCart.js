@@ -459,7 +459,7 @@ export function ProductCart({ cartChangeHandler }) {
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            style={styles.headerImagecCon}
+            style={[styles.headerImagecCon, { paddingRight: ms(0) }]}
             onPress={() => {
               beforeDiscountCartLoad();
               cartStatusHandler();

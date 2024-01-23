@@ -8,7 +8,7 @@ import { crossButton } from '@/assets';
 import { strings } from '@/localization';
 import { COLORS, Fonts, SF, SH, SW } from '@/theme';
 
-const EmailReceipt = ({ closeModal }) => {
+const EmailReceipt = ({ closeModal, onUpdateEmail }) => {
   const [email, setEmail] = useState('');
 
   return (
@@ -45,6 +45,7 @@ const EmailReceipt = ({ closeModal }) => {
               onPress={() => {
                 closeModal(false);
                 setEmail(email);
+                onUpdateEmail(email);
               }}
             >
               <Text style={styles.payNowButtonText}>Continue</Text>

@@ -38,7 +38,6 @@ const PaymentSelection = ({
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [countryCode, setCountryCode] = useState('');
-
   const refundHandler = () => {
     if (isCashOrder && eReceiptMethod === 0) {
       alert('Please select e-recipe method');
@@ -226,8 +225,9 @@ const PaymentSelection = ({
       <ReactNativeModal isVisible={isEmailVisible}>
         <EmailReceipt
           closeModal={(val) => {
-            setIsEmailVisible(false), setEmail(val);
+            setIsEmailVisible(false);
           }}
+          onUpdateEmail={(email) => setEmail(email)}
         />
       </ReactNativeModal>
 
