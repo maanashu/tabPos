@@ -92,9 +92,30 @@ export function ProductCart({ cartChangeHandler }) {
   const onlyServiceCartArray = poscart?.filter((item) => item?.product_type === 'service');
   const onlyProductCartArray = poscart?.filter((item) => item?.product_type === 'product');
 
-  const cartSearchHandler = (search) => {
-    console.log('search', search?.length);
+  const [cartDetail, setCartDetail] = useState(onlyProductCartArray);
+
+  // useEffect(() => {
+  //   if (onlyProductCartArray) {
+  //     setCartDetail(onlyProductCartArray);
+  //   }
+  // }, [onlyProductCartArray]);
+
+  const cartSearchHandler = (text) => {
+    if (text?.length > 1) {
+      const filterData = onlyProductCartArray?.filter((item) =>
+        item?.product_details?.name.toLowerCase().includes(text.toLowerCase())
+      );
+
+      const copyObj = {
+        ...onlyProductCartArray,
+        poscart_products: filterData,
+      };
+      setCartDetail(filterData);
+    } else if (text?.length == 0) {
+      setCartDetail(onlyProductCartArray);
+    }
   };
+  console.log('popo', cartDetail);
 
   const debounceSearchCart = useCallback(debounce(cartSearchHandler, 1000), []);
 
@@ -118,10 +139,10 @@ export function ProductCart({ cartChangeHandler }) {
     )
   );
 
-  const jbrCoinCallback = useCallback(
-    () => <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} />,
-    [jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler]
-  );
+  // const jbrCoinCallback = useCallback(
+  //   () => <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} />,
+  //   [jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler]
+  // );
   useEffect(() => {
     dispatch(getAllCart());
     dispatch(getAllProductCart());
@@ -508,12 +529,14 @@ export function ProductCart({ cartChangeHandler }) {
             showsVerticalScrollIndicator={false}
             data={onlyProductCartArray}
             extraData={onlyProductCartArray}
+            // data={cartDetail || []}
+            // extraData={cartDetail || []}
             keyExtractor={(_, index) => index.toString()}
-            renderItem={(data, index) => {
-              const productSize = data?.item?.product_details?.supply?.attributes?.filter(
+            renderItem={({ item, index }) => {
+              const productSize = item?.product_details?.supply?.attributes?.filter(
                 (item) => item?.name === 'Size'
               );
-              const productColor = data?.item?.product_details?.supply?.attributes?.filter(
+              const productColor = item?.product_details?.supply?.attributes?.filter(
                 (item) => item?.name === 'Color'
               );
               return (
@@ -527,12 +550,12 @@ export function ProductCart({ cartChangeHandler }) {
                       }}
                     >
                       <Image
-                        source={{ uri: data?.item?.product_details?.image }}
+                        source={{ uri: item?.product_details?.image }}
                         style={{ flex: 0.2, height: ms(35) }}
                       />
                       <View style={{ marginLeft: ms(10), flex: 0.8 }}>
                         <Text style={styles.cartProductName} numberOfLines={1}>
-                          {data?.item?.product_details?.name}
+                          {item?.product_details?.name}
                         </Text>
                         <View style={{ flexDirection: 'row' }}>
                           {productColor?.length > 0 && (
@@ -560,9 +583,7 @@ export function ProductCart({ cartChangeHandler }) {
                             </Text>
                           )}
                         </View>
-                        <Text style={styles.colorName}>
-                          UPC: {data?.item?.product_details?.upc}
-                        </Text>
+                        <Text style={styles.colorName}>UPC: {item?.product_details?.upc}</Text>
                         <View
                           style={{
                             flexDirection: 'row',
@@ -573,9 +594,9 @@ export function ProductCart({ cartChangeHandler }) {
                           <Text style={[styles.cartPrice, { fontFamily: Fonts.Regular }]}>
                             {amountFormat(
                               getProductPrice(
-                                data?.item?.product_details?.supply?.supply_offers,
-                                data?.item?.product_details?.supply?.supply_prices?.selling_price,
-                                data?.item?.qty
+                                item?.product_details?.supply?.supply_offers,
+                                item?.product_details?.supply?.supply_prices?.selling_price,
+                                item?.qty
                               )
                             )}
                           </Text>
@@ -583,15 +604,15 @@ export function ProductCart({ cartChangeHandler }) {
                           <View style={styles.counterCon}>
                             <TouchableOpacity
                               style={styles.cartPlusCon}
-                              onPress={() => updateQuantity('-', data?.index)}
-                              disabled={data.item?.qty == 1 ? true : false}
+                              onPress={() => updateQuantity('-', index)}
+                              disabled={item?.qty == 1 ? true : false}
                             >
                               <Text style={styles.counterDigit}>-</Text>
                             </TouchableOpacity>
-                            <Text style={styles.counterDigit}>{data?.item?.qty}</Text>
+                            <Text style={styles.counterDigit}>{item?.qty}</Text>
                             <TouchableOpacity
                               style={styles.cartPlusCon}
-                              onPress={() => updateQuantity('+', data?.index)}
+                              onPress={() => updateQuantity('+', index)}
                             >
                               <Text style={styles.counterDigit}>+</Text>
                             </TouchableOpacity>
@@ -611,13 +632,13 @@ export function ProductCart({ cartChangeHandler }) {
                         onPress={() => {
                           beforeDiscountCartLoad();
                           setPriceChange((prev) => !prev);
-                          setCartProduct(data?.item);
+                          setCartProduct(item);
                         }}
                       >
                         <Image source={Images.pencil} style={styles.pencil} />
                       </TouchableOpacity>
                       <Text style={[styles.cartPrice, { marginTop: ms(15) }]}>
-                        {amountFormat(getProductFinalPrice(data?.item))}
+                        {amountFormat(getProductFinalPrice(item))}
                       </Text>
                     </View>
                   </View>
@@ -628,7 +649,7 @@ export function ProductCart({ cartChangeHandler }) {
               <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
                 // onPress={() => deleteRow(rowMap, data.item.key)}
-                onPress={() => removeOneCartHandler(data?.index, data?.item)}
+                onPress={() => removeOneCartHandler(data?.index, data)}
               >
                 <Image
                   source={Images.cross}
@@ -759,7 +780,7 @@ export function ProductCart({ cartChangeHandler }) {
         isVisible={clearCart}
         onBackdropPress={() => setClearCart(false)}
       >
-        <ClearCart cartClose={() => setClearCart(false)} />
+        <ClearCart cartClose={() => setClearCart(false)} clearOnClick={() => setCartDetail([])} />
       </Modal>
       <Modal animationType="fade" isVisible={customProductAdd}>
         <KeyboardAwareScrollView
@@ -801,7 +822,7 @@ export function ProductCart({ cartChangeHandler }) {
       />
       <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
-      {jbrCoinCallback()}
+      {/* {jbrCoinCallback()} */}
 
       <AvailableOffer
         availableOfferRef={availableOfferRef}

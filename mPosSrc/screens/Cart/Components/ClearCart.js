@@ -10,7 +10,7 @@ import { clearAllCart, clearServiceAllCart } from '@/actions/RetailAction';
 import { getRetail } from '@/selectors/RetailSelectors';
 import { clearLocalCart, updateCartLength } from '@/actions/CartAction';
 
-function ClearCart({ cartClose }) {
+function ClearCart({ cartClose, clearOnClick }) {
   const dispatch = useDispatch();
   const retailData = useSelector(getRetail);
   const presentCart = retailData?.cartFrom;
@@ -21,6 +21,7 @@ function ClearCart({ cartClose }) {
       dispatch(clearAllCart());
       dispatch(clearLocalCart());
       dispatch(updateCartLength(0));
+      clearOnClick();
     } else {
       dispatch(clearAllCart());
       // dispatch(clearServiceAllCart());
