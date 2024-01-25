@@ -139,10 +139,10 @@ export function ProductCart({ cartChangeHandler }) {
     )
   );
 
-  // const jbrCoinCallback = useCallback(
-  //   () => <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} />,
-  //   [jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler]
-  // );
+  const jbrCoinCallback = useCallback(
+    () => <JbrCoin {...{ jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler }} />,
+    [jbrCoinRef, jbrCoinCrossHandler, payByJbrHandler]
+  );
   useEffect(() => {
     dispatch(getAllCart());
     dispatch(getAllProductCart());
@@ -822,7 +822,7 @@ export function ProductCart({ cartChangeHandler }) {
       />
       <PayByCash {...{ payByCashRef, payByCashhandler, payByCashCrossHandler }} />
       <FinalPayment {...{ finalPaymentRef, finalPaymentCrossHandler, orderCreateData, saveCart }} />
-      {/* {jbrCoinCallback()} */}
+      {jbrCoinCallback()}
 
       <AvailableOffer
         availableOfferRef={availableOfferRef}
