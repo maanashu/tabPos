@@ -147,7 +147,22 @@ const AvailableOffer = ({ availableOfferRef, serviceCartOpen, productCartOpen })
                   </View>
                 </View>
 
-                <TouchableOpacity style={styles.addView}>
+                <TouchableOpacity
+                  style={styles.addView}
+                  onPress={async () => {
+                    const res =
+                      (await presentCart) === 'product'
+                        ? dispatch(getOneProduct(sellerID, item.id))
+                        : dispatch(getOneService(sellerID, item.id));
+                    if (
+                      (res?.type === presentCart) === 'product'
+                        ? 'GET_ONE_PRODUCT_SUCCESS'
+                        : 'GET_ONE_SERVICE_SUCCESS'
+                    ) {
+                      presentCart === 'product' ? productCartOpen() : serviceCartOpen();
+                    }
+                  }}
+                >
                   <Image source={Images.addTitle} resizeMode="contain" style={[styles.addImage]} />
                 </TouchableOpacity>
               </TouchableOpacity>

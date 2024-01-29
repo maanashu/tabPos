@@ -20,13 +20,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?seller_id=${sellerid}&main_category=true&search=${search}&service_type=product`
+          `?seller_id=${sellerid}&main_category=true&search=${search}&service_type=product&check_product_existance=false`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?seller_id=${sellerid}&main_category=true&service_type=product`
+          `?seller_id=${sellerid}&main_category=true&service_type=product&check_product_existance=false`
         );
       }
     };
@@ -55,13 +55,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service&search=${search}`
+          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service&search=${search}&check_product_existance=false`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getCategory +
-          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service`
+          `?page=1&limit=100&&seller_id=${sellerid}&main_category=true&service_type=service&check_product_existance=false`
         );
       }
     };
@@ -89,23 +89,26 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&search=${search}&service_type=product&need_subcategory=true`
+          `?seller_id=${sellerid}&search=${search}&service_type=product&need_subcategory=true&check_product_existance=false`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&service_type=product&need_subcategory=true`
+          `?seller_id=${sellerid}&service_type=product&need_subcategory=true&check_product_existance=false`
         );
       }
     };
     return new Promise((resolve, reject) => {
       const endpoint = getUrl(sellerID, search);
+      console.log('endpoint1234', endpoint);
       HttpClient.get(endpoint)
         .then((response) => {
+          console.log('response', response);
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           // Toast.show({
           //   text2: 'Sub-Category not found',
           //   position: 'bottom',
@@ -123,13 +126,13 @@ export class RetailController {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&search=${search}&service_type=service&need_subcategory=true`
+          `?seller_id=${sellerid}&search=${search}&service_type=service&need_subcategory=true&check_product_existance=false`
         );
       } else {
         return (
           PRODUCT_URL +
           ApiProductInventory.getSubCategory +
-          `?seller_id=${sellerid}&service_type=service&need_subcategory=true`
+          `?seller_id=${sellerid}&service_type=service&need_subcategory=true&check_product_existance=false`
         );
       }
     };
@@ -1416,7 +1419,7 @@ export class RetailController {
     });
   }
 
-  static async getAvailableOffer(data) {
+  static async getAvailableOffer(data, value) {
     return new Promise((resolve, reject) => {
       const sellerID = store.getState().auth?.merchantLoginData?.uniqe_id;
       const endpoint =
@@ -1430,13 +1433,14 @@ export class RetailController {
           resolve(response);
         })
         .catch((error) => {
-          // error?.statusCode === 204 &&
-          //   Toast.show({
-          //     text2: 'Offer Not Found',
-          //     position: 'bottom',
-          //     type: 'error_toast',
-          //     visibilityTime: 1500,
-          //   });
+          error?.statusCode === 204 &&
+            value == 'mpos' &&
+            Toast.show({
+              text2: 'Offer Not Found',
+              position: 'bottom',
+              type: 'error_toast',
+              visibilityTime: 1500,
+            });
           reject(error);
         });
     });

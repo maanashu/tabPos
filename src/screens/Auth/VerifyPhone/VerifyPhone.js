@@ -123,6 +123,7 @@ export function VerifyPhone() {
               isButtonLoading={isLoading}
               onPressContinueButton={verifyPhoneHandler}
               isBackButtonDisbaled={true}
+              onlyNext={true}
             />
             <Spacer space={SH(6)} />
           </View>

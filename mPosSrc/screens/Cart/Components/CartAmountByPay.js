@@ -63,7 +63,6 @@ const CartAmountByPay = ({
   const retailData = useSelector(getRetail);
   const getAuthdata = useSelector(getAuthData);
   const getSettingData = useSelector(getSetting);
-  console.log('getSettingData', JSON.stringify(getSettingData));
   const presentCart = retailData?.cartFrom;
   const productDetail = retailData?.getOneProduct;
   const sellerID = getAuthdata?.merchantLoginData?.uniqe_id;

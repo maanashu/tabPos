@@ -17,7 +17,7 @@ const TodayShippingStatus = () => {
   const orderStatusLoading = useSelector((state) =>
     isLoadingSelector([TYPES.TODAY_ORDER_STATUS], state)
   );
-
+  console.log('sdfdsfdsf', JSON.stringify(todayStatus));
   return (
     <View style={styles.shippingStatusViewStyle}>
       <Text style={styles.shippingStatusText}>{strings.shippingOrder.shippingStatus}</Text>
@@ -30,12 +30,16 @@ const TodayShippingStatus = () => {
         <>
           <View style={styles.shippingOrdersViewStyle}>
             <Text style={styles.shippedOrderText}>{strings.shippingOrder.shippingOrders}</Text>
-            <Text style={styles.shippedOrderText}>{todayStatus?.[0]?.count ?? '0'}</Text>
+            <Text style={styles.shippedOrderText}>
+              {todayStatus?.todayShippingStatus?.[0]?.count ?? '0'}
+            </Text>
           </View>
 
           <View style={styles.shippingOrdersViewStyle}>
             <Text style={styles.shippedOrderText}>{strings.orderStatus.shipOrder}</Text>
-            <Text style={styles.shippedOrderText}>{todayStatus?.[1]?.count ?? '0'}</Text>
+            <Text style={styles.shippedOrderText}>
+              {todayStatus?.todayShippingStatus?.[1]?.count ?? '20'}
+            </Text>
           </View>
         </>
       )}

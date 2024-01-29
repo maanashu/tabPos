@@ -53,6 +53,8 @@ import {
 import { Images } from '@/assets/new_icon';
 import { FullScreenLoader } from '@mPOS/components';
 import BlurredModal from '@/components/BlurredModal';
+import { debounce } from 'lodash';
+import { search } from 'react-native-country-picker-modal/lib/CountryService';
 
 export function CartScreen({
   onPressPayNow,
@@ -66,7 +68,9 @@ export function CartScreen({
   const getRetailData = useSelector(getRetail);
   const cartData = getRetailData?.getAllCart;
   const cartId = cartData?.id;
+
   let arr = [getRetailData?.getAllCart];
+  // console.log(getRetailData?.getAllCart);
   const getAuth = useSelector(getAuthData);
   const sellerID = getAuth?.merchantLoginData?.uniqe_id;
   const productCartArray = getRetailData?.getAllProductCart;
@@ -87,6 +91,33 @@ export function CartScreen({
   const [productIndex, setProductIndex] = useState(0);
   const [productItem, setProductItem] = useState(null);
   const [selectedItem, setSelectedItem] = useState();
+
+  const [cartDetail, setCartDetail] = useState([getRetailData?.getAllCart]);
+
+  useEffect(() => {
+    if (getRetailData?.getAllCart) {
+      setCartDetail([getRetailData?.getAllCart]);
+    }
+  }, [getRetailData?.getAllCart]);
+
+  const cartSearchHandler = (text) => {
+    if (text?.length > 1) {
+      const filterData = getRetailData?.getAllCart?.poscart_products?.filter((item) =>
+        item?.product_details?.name.toLowerCase().includes(text.toLowerCase())
+      );
+
+      const copyObj = {
+        ...getRetailData?.getAllCart,
+        poscart_products: filterData,
+      };
+      setCartDetail([copyObj]);
+    } else if (text?.length == 0) {
+      setCartDetail([getRetailData?.getAllCart]);
+    }
+  };
+  console.log('popo', cartDetail);
+
+  const debounceSearchCart = useCallback(debounce(cartSearchHandler, 1000), []);
 
   const availableOfferLoad = useSelector((state) =>
     isLoadingSelector([TYPES.GET_AVAILABLE_OFFER], state)
@@ -140,7 +171,7 @@ export function CartScreen({
       seller_id: sellerID,
       servicetype: 'product',
     };
-    dispatch(getAvailableOffer(data));
+    dispatch(getAvailableOffer(data, 'pos'));
     dispatch(getUserDetailSuccess({}));
   }, []);
 
@@ -398,13 +429,18 @@ export function CartScreen({
                     placeholder="Search by Barcode, SKU, Name"
                     style={[styles.sideBarsearchInput, styles.searchCartInput]}
                     value={cartSearch}
-                    onChangeText={setCartSearch}
+                    onChangeText={(cartSearch) => {
+                      setCartSearch(cartSearch);
+                      debounceSearchCart(cartSearch);
+                    }}
                     placeholderTextColor={COLORS.lavender}
                   />
                   {cartSearch?.length > 0 ? (
                     <TouchableOpacity
                       onPress={() => {
-                        setCartSearch(''), Keyboard.dismiss();
+                        setCartSearch('');
+                        Keyboard.dismiss();
+                        setCartDetail([getRetailData?.getAllCart]);
                       }}
                     >
                       <Image source={cross} style={[styles.sideSearchStyle, styles.crossStyling]} />
@@ -442,7 +478,7 @@ export function CartScreen({
             > */}
             <View style={{ marginBottom: ms(60) }}>
               <ScrollView style={{ paddingBottom: ms(40) }} showsVerticalScrollIndicator={false}>
-                {arr?.map((item, index) => (
+                {cartDetail?.map((item, index) => (
                   <View key={index}>
                     {item?.poscart_products?.map((data, ind) => {
                       const suppliesPrice = data?.product_details?.supply?.supply_prices;
@@ -740,7 +776,7 @@ export function CartScreen({
                             seller_id: sellerID,
                             servicetype: 'product',
                           };
-                          dispatch(getAvailableOffer(data));
+                          dispatch(getAvailableOffer(data, 'pos'));
                         }}
                         tintColor={COLORS.primary} // Change the color of the loading spinner
                         title="Pull to Refresh" // Optional, you can customize the text

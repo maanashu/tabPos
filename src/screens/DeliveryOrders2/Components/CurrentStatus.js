@@ -23,7 +23,7 @@ const CurrentStatus = () => {
   const dispatch = useDispatch();
   const getDeliveryData = useSelector(getDelivery);
   const [deliverytypes, setDeliveryTypes] = useState();
-
+  console.log('SAdsadsa', getDeliveryData);
   useEffect(() => {
     dispatch(todayOrders());
 
@@ -54,7 +54,7 @@ const CurrentStatus = () => {
         image: Market,
         delivery_type_title: 'Customer Pickups',
         // getDeliveryData?.deliveringOrder?.[2]?.delivery_type_title ?? '2 hour delivery window',
-        count: getDeliveryData?.deliveringOrder?.[2]?.count ?? 0,
+        count: getDeliveryData?.deliveringOrder?.[3]?.count ?? 0,
       },
     ];
     setDeliveryTypes(deliveryTypes);

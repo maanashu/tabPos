@@ -1716,10 +1716,10 @@ export const getTimeSlots = (params) => async (dispatch) => {
   }
 };
 
-export const getAvailableOffer = (data, callback) => async (dispatch) => {
+export const getAvailableOffer = (data, value, callback) => async (dispatch) => {
   dispatch(getAvailableOfferRequest());
   try {
-    const res = await RetailController.getAvailableOffer(data);
+    const res = await RetailController.getAvailableOffer(data, value);
     dispatch(getAvailableOfferSuccess(res?.payload));
     callback && callback(res);
   } catch (error) {

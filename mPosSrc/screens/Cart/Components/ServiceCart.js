@@ -509,7 +509,7 @@ export function ServiceCart({ cartChangeHandler }) {
                 servicetype: 'service',
               };
               dispatch(
-                getAvailableOffer(data, () => {
+                getAvailableOffer(data, 'mpos', () => {
                   availableOfferRef?.current?.present();
                 })
               );
