@@ -132,7 +132,7 @@ const EventItemCard = ({ item, index }) => {
               {moment.utc(item?.start_date_time).format('dddd, DD/MM/YYYY')}
             </Text>
           </View>
-          <Spacer horizontal space={ms(10)} />
+          <Spacer horizontal space={ms(5)} />
           <View style={styles.rowAligned}>
             <Image source={clock} style={styles.serviceTimeIcons} resizeMode="contain" />
             <Text style={styles.serviceTimeTextSmall}>{calculateTimeDuration(item)}</Text>

@@ -265,7 +265,7 @@ const ListViewItem = ({
         <View style={styles.listViewSubContainers}>
           <Image
             source={timeDurationIcon}
-            style={{ height: ms(10), width: ms(10), marginRight: ms(2) }}
+            style={{ height: ms(10), width: ms(10), marginRight: ms(0) }}
           />
           <Text style={styles.lineViewValues}>{`${item?.start_time}-${item?.end_time}`}</Text>
         </View>

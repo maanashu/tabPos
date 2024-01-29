@@ -106,8 +106,8 @@ const CalendarHeaderWithOptions = ({
           <TouchableOpacity
             style={
               calendarViewMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW
-                ? styles.clickedButtonCon
-                : styles.unClickedButtonCon
+                ? styles.clickedListButtonCon
+                : styles.unClickedListButtonCon
             }
             onPress={onPressCalendarViewMode}
           >
@@ -120,7 +120,7 @@ const CalendarHeaderWithOptions = ({
                 },
               ]}
             />
-            <Spacer space={ms(8)} horizontal />
+            <Spacer space={ms(4)} horizontal />
             <Text
               style={
                 calendarViewMode === CALENDAR_VIEW_MODES.CALENDAR_VIEW
@@ -135,13 +135,13 @@ const CalendarHeaderWithOptions = ({
           <TouchableOpacity
             style={
               calendarViewMode === CALENDAR_VIEW_MODES.LIST_VIEW
-                ? styles.clickedButtonCon
-                : styles.unClickedButtonCon
+                ? styles.clickedListButtonCon
+                : styles.unClickedListButtonCon
             }
             onPress={onPressListViewMode}
           >
             <Image source={listview} style={styles.calenderModeIcons} />
-            <Spacer space={ms(8)} horizontal />
+            <Spacer space={ms(4)} horizontal />
             <Text
               style={
                 calendarViewMode === CALENDAR_VIEW_MODES.LIST_VIEW
