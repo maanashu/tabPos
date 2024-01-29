@@ -12,9 +12,8 @@ export const styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 1,
-    paddingTop: ms(25),
+    paddingTop: ms(20),
     paddingHorizontal: ms(12),
-    paddingBottom: ms(30),
   },
   displayflex: {
     flexDirection: 'row',

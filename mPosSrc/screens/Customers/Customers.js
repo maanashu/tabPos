@@ -139,16 +139,19 @@ export function Customers() {
           style={styles.headerContainer}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity
-                onPress={() => onViewUser(item.cID, item.type, item?.count)}
-                style={styles.subContainer}
-              >
-                <Image source={item.img} style={styles.imageStyle} />
-                <View style={{ marginHorizontal: ms(10) }}>
-                  <Text style={styles.text2}>{item.count}</Text>
-                  <Text style={styles.text}>{item.customertype}</Text>
-                </View>
-              </TouchableOpacity>
+              <>
+                <TouchableOpacity
+                  onPress={() => onViewUser(item.cID, item.type, item?.count)}
+                  style={styles.subContainer}
+                >
+                  <Image source={item.img} style={styles.imageStyle} />
+                  <View style={{ marginHorizontal: ms(10) }}>
+                    <Text style={styles.text2}>{item.count}</Text>
+                    <Text style={styles.text}>{item.customertype}</Text>
+                  </View>
+                </TouchableOpacity>
+                {index === 3 ? <Spacer space={ms(20)} /> : <></>}
+              </>
             );
           }}
           keyExtractor={(item) => item.id}

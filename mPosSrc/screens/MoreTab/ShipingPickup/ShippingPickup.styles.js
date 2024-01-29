@@ -1314,7 +1314,7 @@ export const styles = StyleSheet.create({
     fontSize: SF(14),
   },
   shippingBodyCon: {
-    height: windowHeight * 0.83,
+    // height: windowHeight * 0.83,
     paddingHorizontal: SW(20),
   },
   headerMainView: {

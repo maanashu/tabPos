@@ -226,10 +226,10 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.SemiBold,
   },
   billViewStyle: {
-    width: Dimensions.get('window').width - 40,
+    width: Dimensions.get('window').width - 35,
     bottom: 10,
-    alignSelf: 'center',
-    position: 'absolute',
+    // alignSelf: 'center',
+    // position: 'absolute',
     backgroundColor: COLORS.white,
     marginHorizontal: ms(15),
     borderRadius: 10,

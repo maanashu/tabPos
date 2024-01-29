@@ -325,11 +325,11 @@ const ReScheduleDetailModal = ({
                     <Text style={styles.bookedDate}>
                       {moment(appointmentData?.start_date_time).format('DD/MM/YYYY. ')}
                     </Text>
-                    <Text style={styles.bookedDate}>{`${moment(
-                      appointmentData?.start_date_time
-                    ).format('hh:mm A')}-${moment(appointmentData?.end_date_time).format(
-                      'hh:mm A'
-                    )}`}</Text>
+                    <Text style={styles.bookedDate}>{`${moment(appointmentData?.start_date_time)
+                      .local()
+                      .format('hh:mm A')}-${moment(appointmentData?.end_date_time)
+                      .local()
+                      .format('hh:mm A')}`}</Text>
                   </View>
                 </View>
 

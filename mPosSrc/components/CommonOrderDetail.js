@@ -9,6 +9,7 @@ import {
   Pressable,
   Dimensions,
   FlatList,
+  ScrollView,
 } from 'react-native';
 
 import dayjs from 'dayjs';
@@ -197,232 +198,235 @@ export function CommonOrderDetail(props) {
   return (
     <ScreenWrapper>
       <Header backRequired title={strings.profile.header} />
-      <View style={styles.container}>
-        {customerDetail && (
-          <View style={styles.userDetailView}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image
-                source={
-                  customerDetail?.profile_photo
-                    ? { uri: customerDetail?.profile_photo }
-                    : Images.user
-                }
-                style={styles.profileImageStyle}
-              />
-
-              <View style={{ paddingLeft: 10 }}>
-                <Text style={styles.nameTextStyle}>
-                  {`${customerDetail?.firstname} ${customerDetail?.lastname}`}
-                </Text>
-                <Text
-                  style={styles.addressTextStyle}
-                >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
-              </View>
-            </View>
-
-            {orderData?.delivery_option == '1' ||
-              (orderData?.delivery_option == '4' && (
-                <>
-                  <Spacer space={SH(20)} />
-                  <View style={styles.deliveryDetailsView}>
-                    <View style={{ flex: 0.35 }}>
-                      {orderData?.shipping_details ? (
-                        <Text style={styles.deliveryTypeText}>
-                          {orderData?.shipping_details?.title}
-                        </Text>
-                      ) : orderData?.shipping_details ? (
-                        <Text style={styles.deliveryTypeText}>
-                          {orderData?.delivery_details?.title}
-                        </Text>
-                      ) : null}
-                    </View>
-                    {orderData?.delivery_option == '1' && (
-                      <View style={styles.deliveryTimeViewStyle}>
-                        <Image source={Images.clockIcon} style={styles.clockImageStyle} />
-                        <Text
-                          style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
-                        >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
-                      </View>
-                    )}
-                  </View>
-                </>
-              ))}
-          </View>
-        )}
-
-        <Spacer space={SH(10)} />
-        {orderData?.delivery_option == '1' ||
-          (orderData?.delivery_option == '4' && (
-            <View style={styles.mapViewStyle}>
-              <MapView
-                ref={mapRef}
-                style={styles.detailMap}
-                customMapStyle={mapCustomStyle}
-                showCompass
-                initialRegion={{
-                  latitude: orderData?.coordinates?.[0] ?? 0.0,
-                  longitude: orderData?.coordinates?.[1] ?? 0.0,
-                  latitudeDelta: 0.0992,
-                  longitudeDelta: 0.0421,
-                }}
-                region={{
-                  latitude: orderData?.coordinates?.[0] ?? 0.0,
-                  longitude: orderData?.coordinates?.[1] ?? 0.0,
-                  latitudeDelta: 0.0992,
-                  longitudeDelta: 0.0421,
-                }}
-              >
-                <Marker
-                  coordinate={{
-                    latitude: orderData?.coordinates?.[0] ?? 0.0,
-                    longitude: orderData?.coordinates?.[1] ?? 0.0,
-                  }}
-                >
-                  <View>
-                    <Image source={Images.deliveryHomeIcon} style={styles.mapMarkerStyle} />
-                  </View>
-                </Marker>
-              </MapView>
-
-              <Spacer space={SH(10)} />
-
-              <View style={styles.driverViewStyle}>
-                <View>
-                  <Text style={styles.driverStatusTextStyle}>
-                    {orderData?.status === 3
-                      ? strings.orderStatus.driverAssigned
-                      : orderData?.status === 4
-                      ? strings.orderStatus.driverOnTheWay
-                      : strings.orderStatus.delivered}
-                  </Text>
-                  <Text style={styles.driverArrivalTimeText}>
-                    {dayjs(orderData?.date).format('DD MMM, YYYY  |  hh:mm a')}
-                  </Text>
-                </View>
-
-                <TouchableOpacity
-                  style={styles.trackButtonStyle}
-                  onPress={() => navigate(MPOS_NAVIGATION.deliveryStatus, { data: orderData })}
-                >
-                  <Text style={styles.trackTextStyle}>{strings.delivery.track}</Text>
-                  <Image source={Images.track} style={styles.trackImageStyle} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
-
-        <Spacer space={SH(10)} />
-
-        {/* <ProductList orderData={orderData} {...{ orderData }} /> */}
-
-        <View>
-          <FlatList
-            renderItem={renderProductItem}
-            data={
-              orderData?.return_detail?.return_details
-                ? orderData?.return_detail?.return_details
-                : orderData?.order_details
-            }
-            // extraData={orderData?.order_details}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item, index) => index.toString()}
-            contentContainerStyle={{ flexGrow: 1 }}
-          />
-        </View>
-        <View style={{ flex: 1 }} />
-        <Spacer space={SH(10)} />
-        <View style={styles.billViewStyle}>
-          <Text style={styles.totalItemsStyles}>
-            {`${strings.delivery.totalItems} ${
-              orderData?.order_details?.length > 1
-                ? `${orderData?.order_details?.length}`
-                : `${orderData?.order_details?.length}`
-            }`}
-          </Text>
-          <View style={styles.horizontalLineStyle} />
-          <Spacer space={SH(10)} />
-          <View style={styles.orderDetailView}>
-            <View style={{ flex: 0.5 }}>
-              <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.orderDate}</Text>
-              <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>{`${dayjs(
-                orderData?.created_at
-              ).format('DD/MM/YYYY')}`}</Text>
-            </View>
-
-            <View style={{ flex: 0.5 }}>
-              <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.orderid}</Text>
-              <Text
-                style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}
-              >{`#${orderData?.id}`}</Text>
-            </View>
-
-            <View>
-              <Text style={styles.deliveryOrderTextStyle}>{'Invoice Number'}</Text>
-              <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>
-                {orderData?.return_detail
-                  ? `#${orderData?.return_detail?.invoices?.invoice_number}`
-                  : `#${orderData?.invoices?.invoice_number}`}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.horizontalLineStyle} />
-          <Spacer space={SH(15)} />
-          <View style={styles.amountViewStyle}>
-            <Text style={styles.labelTextStyle}>{strings.delivery.subTotal}</Text>
-            <Text style={styles.priceValueText}>{`$${
-              Number(orderData?.actual_amount)?.toFixed(2) || '0.00'
-            }`}</Text>
-          </View>
-          <Spacer space={SH(4)} />
-          <View style={styles.amountViewStyle}>
-            <Text style={styles.labelTextStyle}>{strings.delivery.totalTax}</Text>
-            <Text style={styles.priceValueText}>{`$${
-              Number(orderData?.tax)?.toFixed(2) || '0.00'
-            }`}</Text>
-          </View>
-          <Spacer space={SH(4)} />
-          <View style={styles.amountViewStyle}>
-            <Text style={styles.labelTextStyle}>{'Tip'}</Text>
-            <Text style={styles.priceValueText}>{`$${
-              Number(orderData?.tips)?.toFixed(2) || '0.00'
-            }`}</Text>
-          </View>
-          <Spacer space={SH(4)} />
-          <View style={styles.amountViewStyle}>
-            <Text style={styles.labelTextStyle}>{strings.delivery.discount}</Text>
-            <Text style={styles.priceValueText}>{`$${
-              Number(orderData?.discount)?.toFixed(2) || '0.00'
-            }`}</Text>
-          </View>
-          <Spacer space={SH(4)} />
-          {(orderData?.delivery_charge !== '0' || orderData?.shipping_charge !== '0') && (
-            <View style={styles.amountViewStyle}>
-              <Text style={styles.labelTextStyle}>
-                {orderData?.delivery_charge !== '0'
-                  ? strings.deliveryOrders.deliveryCharges
-                  : strings.deliveryOrders.shippingCharges}
-              </Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          {customerDetail && (
+            <View style={styles.userDetailView}>
               <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.priceValueText}>{'$'}</Text>
-                <Text style={styles.priceValueText}>
-                  {orderData?.delivery_charge !== '0'
-                    ? Number(orderData?.delivery_charge)?.toFixed(2)
-                    : Number(orderData?.shipping_charge)?.toFixed(2)}
-                </Text>
+                <Image
+                  source={
+                    customerDetail?.profile_photo
+                      ? { uri: customerDetail?.profile_photo }
+                      : Images.user
+                  }
+                  style={styles.profileImageStyle}
+                />
+
+                <View style={{ paddingLeft: 10 }}>
+                  <Text style={styles.nameTextStyle}>
+                    {`${customerDetail?.firstname} ${customerDetail?.lastname}`}
+                  </Text>
+                  <Text
+                    style={styles.addressTextStyle}
+                  >{`${customerDetail?.current_address?.street_address}, ${customerDetail?.current_address?.city}, ${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+                </View>
               </View>
+
+              {orderData?.delivery_option == '1' ||
+                (orderData?.delivery_option == '4' && (
+                  <>
+                    <Spacer space={SH(20)} />
+                    <View style={styles.deliveryDetailsView}>
+                      <View style={{ flex: 0.35 }}>
+                        {orderData?.shipping_details ? (
+                          <Text style={styles.deliveryTypeText}>
+                            {orderData?.shipping_details?.title}
+                          </Text>
+                        ) : orderData?.shipping_details ? (
+                          <Text style={styles.deliveryTypeText}>
+                            {orderData?.delivery_details?.title}
+                          </Text>
+                        ) : null}
+                      </View>
+                      {orderData?.delivery_option == '1' && (
+                        <View style={styles.deliveryTimeViewStyle}>
+                          <Image source={Images.clockIcon} style={styles.clockImageStyle} />
+                          <Text
+                            style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}
+                          >{`${orderData?.preffered_delivery_start_time} ${orderData?.preffered_delivery_end_time}`}</Text>
+                        </View>
+                      )}
+                    </View>
+                  </>
+                ))}
             </View>
           )}
-          <Spacer space={SH(4)} />
-          <View style={styles.dashedHorizontalLine} />
-          <Spacer space={SH(15)} />
-          <View style={styles.amountViewStyle}>
-            <Text style={styles.totalValueText}>{strings.delivery.total}</Text>
-            <Text style={styles.totalValueText}>
-              ${Number(orderData?.payable_amount)?.toFixed(2 || '0.00')}
-            </Text>
+
+          <Spacer space={SH(10)} />
+          {orderData?.delivery_option == '1' ||
+            (orderData?.delivery_option == '4' && (
+              <View style={styles.mapViewStyle}>
+                <MapView
+                  ref={mapRef}
+                  style={styles.detailMap}
+                  customMapStyle={mapCustomStyle}
+                  showCompass
+                  initialRegion={{
+                    latitude: orderData?.coordinates?.[0] ?? 0.0,
+                    longitude: orderData?.coordinates?.[1] ?? 0.0,
+                    latitudeDelta: 0.0992,
+                    longitudeDelta: 0.0421,
+                  }}
+                  region={{
+                    latitude: orderData?.coordinates?.[0] ?? 0.0,
+                    longitude: orderData?.coordinates?.[1] ?? 0.0,
+                    latitudeDelta: 0.0992,
+                    longitudeDelta: 0.0421,
+                  }}
+                >
+                  <Marker
+                    coordinate={{
+                      latitude: orderData?.coordinates?.[0] ?? 0.0,
+                      longitude: orderData?.coordinates?.[1] ?? 0.0,
+                    }}
+                  >
+                    <View>
+                      <Image source={Images.deliveryHomeIcon} style={styles.mapMarkerStyle} />
+                    </View>
+                  </Marker>
+                </MapView>
+
+                <Spacer space={SH(10)} />
+
+                <View style={styles.driverViewStyle}>
+                  <View>
+                    <Text style={styles.driverStatusTextStyle}>
+                      {orderData?.status === 3
+                        ? strings.orderStatus.driverAssigned
+                        : orderData?.status === 4
+                        ? strings.orderStatus.driverOnTheWay
+                        : strings.orderStatus.delivered}
+                    </Text>
+                    <Text style={styles.driverArrivalTimeText}>
+                      {dayjs(orderData?.date).format('DD MMM, YYYY  |  hh:mm a')}
+                    </Text>
+                  </View>
+
+                  <TouchableOpacity
+                    style={styles.trackButtonStyle}
+                    onPress={() => navigate(MPOS_NAVIGATION.deliveryStatus, { data: orderData })}
+                  >
+                    <Text style={styles.trackTextStyle}>{strings.delivery.track}</Text>
+                    <Image source={Images.track} style={styles.trackImageStyle} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+
+          <Spacer space={SH(10)} />
+
+          {/* <ProductList orderData={orderData} {...{ orderData }} /> */}
+
+          <View>
+            <FlatList
+              renderItem={renderProductItem}
+              data={
+                orderData?.return_detail?.return_details
+                  ? orderData?.return_detail?.return_details
+                  : orderData?.order_details
+              }
+              // extraData={orderData?.order_details}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={{ flexGrow: 1 }}
+            />
           </View>
+          <View style={{ flex: 1 }} />
+          <Spacer space={SH(10)} />
+          <View style={styles.billViewStyle}>
+            <Text style={styles.totalItemsStyles}>
+              {`${strings.delivery.totalItems} ${
+                orderData?.order_details?.length > 1
+                  ? `${orderData?.order_details?.length}`
+                  : `${orderData?.order_details?.length}`
+              }`}
+            </Text>
+            <View style={styles.horizontalLineStyle} />
+            <Spacer space={SH(10)} />
+            <View style={styles.orderDetailView}>
+              <View style={{ flex: 0.5 }}>
+                <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.orderDate}</Text>
+                <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>{`${dayjs(
+                  orderData?.created_at
+                ).format('DD/MM/YYYY')}`}</Text>
+              </View>
+
+              <View style={{ flex: 0.5 }}>
+                <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.orderid}</Text>
+                <Text
+                  style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}
+                >{`#${orderData?.id}`}</Text>
+              </View>
+
+              <View>
+                <Text style={styles.deliveryOrderTextStyle}>{'Invoice Number'}</Text>
+                <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>
+                  {orderData?.return_detail
+                    ? `#${orderData?.return_detail?.invoices?.invoice_number}`
+                    : `#${orderData?.invoices?.invoice_number}`}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.horizontalLineStyle} />
+            <Spacer space={SH(15)} />
+            <View style={styles.amountViewStyle}>
+              <Text style={styles.labelTextStyle}>{strings.delivery.subTotal}</Text>
+              <Text style={styles.priceValueText}>{`$${
+                Number(orderData?.actual_amount)?.toFixed(2) || '0.00'
+              }`}</Text>
+            </View>
+            <Spacer space={SH(4)} />
+            <View style={styles.amountViewStyle}>
+              <Text style={styles.labelTextStyle}>{strings.delivery.totalTax}</Text>
+              <Text style={styles.priceValueText}>{`$${
+                Number(orderData?.tax)?.toFixed(2) || '0.00'
+              }`}</Text>
+            </View>
+            <Spacer space={SH(4)} />
+            <View style={styles.amountViewStyle}>
+              <Text style={styles.labelTextStyle}>{'Tip'}</Text>
+              <Text style={styles.priceValueText}>{`$${
+                Number(orderData?.tips)?.toFixed(2) || '0.00'
+              }`}</Text>
+            </View>
+            <Spacer space={SH(4)} />
+            <View style={styles.amountViewStyle}>
+              <Text style={styles.labelTextStyle}>{strings.delivery.discount}</Text>
+              <Text style={styles.priceValueText}>{`$${
+                Number(orderData?.discount)?.toFixed(2) || '0.00'
+              }`}</Text>
+            </View>
+            <Spacer space={SH(4)} />
+            {(orderData?.delivery_charge !== '0' || orderData?.shipping_charge !== '0') && (
+              <View style={styles.amountViewStyle}>
+                <Text style={styles.labelTextStyle}>
+                  {orderData?.delivery_charge !== '0'
+                    ? strings.deliveryOrders.deliveryCharges
+                    : strings.deliveryOrders.shippingCharges}
+                </Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={styles.priceValueText}>{'$'}</Text>
+                  <Text style={styles.priceValueText}>
+                    {orderData?.delivery_charge !== '0'
+                      ? Number(orderData?.delivery_charge)?.toFixed(2)
+                      : Number(orderData?.shipping_charge)?.toFixed(2)}
+                  </Text>
+                </View>
+              </View>
+            )}
+            <Spacer space={SH(4)} />
+            <View style={styles.dashedHorizontalLine} />
+            <Spacer space={SH(15)} />
+            <View style={styles.amountViewStyle}>
+              <Text style={styles.totalValueText}>{strings.delivery.total}</Text>
+              <Text style={styles.totalValueText}>
+                ${Number(orderData?.payable_amount)?.toFixed(2 || '0.00')}
+              </Text>
+            </View>
+          </View>
+          <Spacer space={SH(15)} />
         </View>
-      </View>
+      </ScrollView>
     </ScreenWrapper>
   );
 }

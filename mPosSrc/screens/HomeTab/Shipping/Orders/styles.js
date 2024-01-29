@@ -227,8 +227,8 @@ const styles = StyleSheet.create({
   billViewStyle: {
     width: Dimensions.get('window').width - 40,
     bottom: 10,
-    alignSelf: 'center',
-    position: 'absolute',
+    // alignSelf: 'center',
+    // position: 'absolute',
     backgroundColor: COLORS.white,
     marginHorizontal: ms(15),
     borderRadius: 10,
@@ -255,12 +255,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   mapViewStyle: {
-    flex: 1 / 2.5,
+    // flex: 1 / 2.5,
     marginHorizontal: ms(15),
     borderRadius: 10,
     justifyContent: 'center',
     backgroundColor: COLORS.white,
     paddingHorizontal: ms(10),
+    height: ms(180),
   },
   driverViewStyle: {
     backgroundColor: COLORS.inputBorder,

@@ -1,5 +1,13 @@
 import React, { useRef } from 'react';
-import { View, Text, Image, SafeAreaView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  SafeAreaView,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 
 import MapView from 'react-native-maps';
 import { ms } from 'react-native-size-matters';
@@ -242,212 +250,217 @@ export function ShippingOrderDetail(props) {
         title={strings.profile.header}
         rightIconOnpress={() => setIsStatusDrawer(true)}
       />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {!openWebView ? (
+          <>
+            {Object.keys(orders)?.length !== 0 && (
+              <View style={styles.userDetailView}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Image
+                    source={
+                      customerDetail?.profile_photo
+                        ? { uri: customerDetail?.profile_photo }
+                        : Images.user
+                    }
+                    style={styles.profileImageStyle}
+                  />
 
-      {!openWebView ? (
-        <>
-          {Object.keys(orders)?.length !== 0 && (
-            <View style={styles.userDetailView}>
-              <View style={{ flexDirection: 'row' }}>
-                <Image
-                  source={
-                    customerDetail?.profile_photo
-                      ? { uri: customerDetail?.profile_photo }
-                      : Images.user
-                  }
-                  style={styles.profileImageStyle}
-                />
-
-                <View style={{ paddingLeft: 10 }}>
-                  <Text
-                    style={styles.nameTextStyle}
-                  >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
-                  <Text
-                    style={styles.addressTextStyle}
-                  >{`${customerDetail?.current_address?.street_address}\n${customerDetail?.current_address?.city}\n${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+                  <View style={{ paddingLeft: 10 }}>
+                    <Text
+                      style={styles.nameTextStyle}
+                    >{`${customerDetail?.firstname} ${customerDetail?.lastname}`}</Text>
+                    <Text
+                      style={styles.addressTextStyle}
+                    >{`${customerDetail?.current_address?.street_address}\n${customerDetail?.current_address?.city}\n${customerDetail?.current_address?.state}, ${customerDetail?.current_address?.country}`}</Text>
+                  </View>
                 </View>
-              </View>
 
-              <Spacer space={SH(20)} />
+                <Spacer space={SH(20)} />
 
-              {orderData?.status === 7 ? (
-                <View style={styles.cancelButtonStyle}>
-                  <Text style={styles.cancelButtonText}>
-                    {strings.buttonStatus.cancelledByuser}
-                  </Text>
-                </View>
-              ) : orderData?.status === 8 ? (
-                <View>
-                  <Text>{strings.buttonStatus.cancelledBySeller}</Text>
-                </View>
-              ) : (
-                <View style={styles.deliveryDetailsView}>
-                  <View style={styles.shippingTypeView}>
-                    <Image
-                      source={{ uri: orderData?.shipping_details?.image }}
-                      style={styles.shippingType}
-                    />
-                    <Text style={styles.deliveryTypeText}>
-                      {orderData?.shipping_details?.title}
+                {orderData?.status === 7 ? (
+                  <View style={styles.cancelButtonStyle}>
+                    <Text style={styles.cancelButtonText}>
+                      {strings.buttonStatus.cancelledByuser}
                     </Text>
                   </View>
-
-                  <View style={styles.deliveryTimeViewStyle}>
-                    <Image source={Images.clockIcon} style={styles.clockImageStyle} />
-                    <Text style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}>{`${
-                      orderData?.preffered_delivery_start_time ?? '00 -'
-                    } ${orderData?.preffered_delivery_end_time ?? '00'}`}</Text>
+                ) : orderData?.status === 8 ? (
+                  <View>
+                    <Text>{strings.buttonStatus.cancelledBySeller}</Text>
                   </View>
-                </View>
-              )}
-            </View>
-          )}
-          <Spacer space={SH(15)} />
+                ) : (
+                  <View style={styles.deliveryDetailsView}>
+                    <View style={styles.shippingTypeView}>
+                      <Image
+                        source={{ uri: orderData?.shipping_details?.image }}
+                        style={styles.shippingType}
+                      />
+                      <Text style={styles.deliveryTypeText}>
+                        {orderData?.shipping_details?.title}
+                      </Text>
+                    </View>
 
-          {orderData?.status === 4 || orderData?.status === 5 ? (
-            <View style={styles.mapViewStyle}>
-              <MapView
-                ref={mapRef}
-                style={styles.detailMap}
-                customMapStyle={mapCustomStyle}
-                showCompass
-                initialRegion={{
-                  latitude: orderData?.coordinates?.[0] ?? 0.0,
-                  longitude: orderData?.coordinates?.[1] ?? 0.0,
-                  latitudeDelta: 0.0992,
-                  longitudeDelta: 0.0421,
-                }}
-              ></MapView>
-
-              <Spacer space={SH(10)} />
-
-              <View style={styles.driverViewStyle}>
-                <View>
-                  <Text style={styles.driverStatusTextStyle}>
-                    {orderData?.status === 4
-                      ? 'Shipping on the way'
-                      : strings.orderStatus.delivered}
-                  </Text>
-                  <Text style={styles.driverArrivalTimeText}>{'In transit'}</Text>
-                </View>
-
-                <TouchableOpacity
-                  style={styles.trackButtonStyle}
-                  onPress={
-                    () => trackOrderHandler(getAnalyticsData?.getOrderData?.tracking_info?.url)
-                    // navigate(MPOS_NAVIGATION.trackOrder, { id: orderData?.id })
-                  }
-                >
-                  <Text style={styles.trackTextStyle}>{strings.delivery.track}</Text>
-                  <Image source={Images.track} style={styles.trackImageStyle} />
-                </TouchableOpacity>
+                    <View style={styles.deliveryTimeViewStyle}>
+                      <Image source={Images.clockIcon} style={styles.clockImageStyle} />
+                      <Text style={[styles.deliveryTypeText, { paddingLeft: ms(4) }]}>{`${
+                        orderData?.preffered_delivery_start_time ?? '00 -'
+                      } ${orderData?.preffered_delivery_end_time ?? '00'}`}</Text>
+                    </View>
+                  </View>
+                )}
               </View>
-            </View>
-          ) : null}
+            )}
+            <Spacer space={SH(15)} />
 
-          <Spacer space={SH(10)} />
-          {Object.keys(orders)?.length !== 0 && <ProductList {...{ orderData }} />}
+            {orderData?.status === 4 || orderData?.status === 5 ? (
+              <View style={styles.mapViewStyle}>
+                <MapView
+                  ref={mapRef}
+                  style={styles.detailMap}
+                  customMapStyle={mapCustomStyle}
+                  showCompass
+                  initialRegion={{
+                    latitude: orderData?.coordinates?.[0] ?? 0.0,
+                    longitude: orderData?.coordinates?.[1] ?? 0.0,
+                    latitudeDelta: 0.0992,
+                    longitudeDelta: 0.0421,
+                  }}
+                ></MapView>
 
-          <Spacer space={SH(20)} />
-          {Object.keys(orders)?.length !== 0 && (
-            <OrderTotal {...{ orderData, onPressDeclineHandler, onPressAcceptHandler }} />
-          )}
-        </>
-      ) : (
-        <View style={[styles.container, { flexDirection: 'column' }]}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingRight: 20,
-            }}
-          >
-            <TouchableOpacity
-              style={styles.backView}
-              onPress={() => {
-                setOpenWebView(false);
-                // checkOtherOrder();
-                // dispatch(getReviewDefault(checkOtherOrder()));
+                <Spacer space={SH(10)} />
+
+                <View style={styles.driverViewStyle}>
+                  <View>
+                    <Text style={styles.driverStatusTextStyle}>
+                      {orderData?.status === 4
+                        ? 'Shipping on the way'
+                        : strings.orderStatus.delivered}
+                    </Text>
+                    <Text style={styles.driverArrivalTimeText}>{'In transit'}</Text>
+                  </View>
+
+                  <TouchableOpacity
+                    style={styles.trackButtonStyle}
+                    onPress={
+                      () => trackOrderHandler(getAnalyticsData?.getOrderData?.tracking_info?.url)
+                      // navigate(MPOS_NAVIGATION.trackOrder, { id: orderData?.id })
+                    }
+                  >
+                    <Text style={styles.trackTextStyle}>{strings.delivery.track}</Text>
+                    <Image source={Images.track} style={styles.trackImageStyle} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : null}
+
+            <Spacer space={SH(10)} />
+            {Object.keys(orders)?.length !== 0 && <ProductList {...{ orderData }} />}
+
+            <Spacer space={SH(20)} />
+            {Object.keys(orders)?.length !== 0 && (
+              <OrderTotal {...{ orderData, onPressDeclineHandler, onPressAcceptHandler }} />
+            )}
+          </>
+        ) : (
+          <View style={[styles.container, { flexDirection: 'column' }]}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingRight: 20,
               }}
             >
-              <Image source={backArrow2} style={styles.backImageStyle} />
-              <Text style={[styles.currentStatusText, { color: COLORS.white, paddingLeft: 0 }]}>
-                {strings.deliveryOrders.back}
-              </Text>
-            </TouchableOpacity>
-
-            {showLabelPdf && pdfUrl ? (
-              <TouchableOpacity style={styles.backView} onPress={printPdf}>
-                <Image source={printer} style={styles.backImageStyle} />
-                <Text style={[styles.currentStatusText, { color: COLORS.white, paddingLeft: 5 }]}>
-                  {'Print'}
+              <TouchableOpacity
+                style={styles.backView}
+                onPress={() => {
+                  setOpenWebView(false);
+                  // checkOtherOrder();
+                  // dispatch(getReviewDefault(checkOtherOrder()));
+                }}
+              >
+                <Image source={backArrow2} style={styles.backImageStyle} />
+                <Text style={[styles.currentStatusText, { color: COLORS.white, paddingLeft: 0 }]}>
+                  {strings.deliveryOrders.back}
                 </Text>
               </TouchableOpacity>
+
+              {showLabelPdf && pdfUrl ? (
+                <TouchableOpacity style={styles.backView} onPress={printPdf}>
+                  <Image source={printer} style={styles.backImageStyle} />
+                  <Text style={[styles.currentStatusText, { color: COLORS.white, paddingLeft: 5 }]}>
+                    {'Print'}
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+
+            <Spacer space={SH(20)} />
+
+            {!showLabelPdf ? (
+              <WebView
+                source={{ uri: getAnalyticsData?.getOrderData?.tracking_info?.url }}
+                style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}
+                startInLoadingState
+                renderLoading={() => (
+                  <View style={styles.loader}>
+                    <ActivityIndicator
+                      size={'large'}
+                      color={COLORS.primary}
+                      style={styles.loader}
+                    />
+                  </View>
+                )}
+              />
             ) : null}
+
+            {showLabelPdf && pdfUrl && (
+              <Pdf
+                trustAllCerts={false}
+                activityIndicatorProps={{
+                  color: COLORS.primary,
+                  progressTintColor: COLORS.primary,
+                }}
+                source={{
+                  uri: pdfUrl,
+                  cache: true,
+                }}
+                onLoadComplete={(numberOfPages, filePath) => {
+                  console.log(`Number of pages: ${numberOfPages}`);
+                }}
+                onPageChanged={(page, numberOfPages) => {
+                  console.log(`Current page: ${page}`);
+                }}
+                onError={(error) => {
+                  console.log(error);
+                }}
+                onPressLink={(uri) => {
+                  console.log(`Link pressed: ${uri}`);
+                }}
+                style={{
+                  flex: 1,
+                }}
+              />
+            )}
           </View>
+        )}
 
-          <Spacer space={SH(20)} />
-
-          {!showLabelPdf ? (
-            <WebView
-              source={{ uri: getAnalyticsData?.getOrderData?.tracking_info?.url }}
-              style={{ flex: 1, backgroundColor: COLORS.textInputBackground }}
-              startInLoadingState
-              renderLoading={() => (
-                <View style={styles.loader}>
-                  <ActivityIndicator size={'large'} color={COLORS.primary} style={styles.loader} />
-                </View>
-              )}
-            />
-          ) : null}
-
-          {showLabelPdf && pdfUrl && (
-            <Pdf
-              trustAllCerts={false}
-              activityIndicatorProps={{
-                color: COLORS.primary,
-                progressTintColor: COLORS.primary,
-              }}
-              source={{
-                uri: pdfUrl,
-                cache: true,
-              }}
-              onLoadComplete={(numberOfPages, filePath) => {
-                console.log(`Number of pages: ${numberOfPages}`);
-              }}
-              onPageChanged={(page, numberOfPages) => {
-                console.log(`Current page: ${page}`);
-              }}
-              onError={(error) => {
-                console.log(error);
-              }}
-              onPressLink={(uri) => {
-                console.log(`Link pressed: ${uri}`);
-              }}
-              style={{
-                flex: 1,
-              }}
-            />
-          )}
-        </View>
-      )}
-
-      {isLoading ? <FullScreenLoader /> : null}
-      {/* {orderLoad ? <FullScreenLoader /> : null} */}
-      <ReactNativeModal
-        isVisible={isStatusDrawer}
-        animationIn={'slideInRight'}
-        animationOut={'slideOutRight'}
-        onBackdropPress={() => setIsStatusDrawer(false)}
-      >
-        <StatusDrawer
-          closeModal={() => setIsStatusDrawer(false)}
-          selected={(value) => {
-            setHeaderText(value);
-            setSelectedStatus(value);
-          }}
-          selectedStatusOrder={selectedStatus}
-        />
-      </ReactNativeModal>
+        {isLoading ? <FullScreenLoader /> : null}
+        {/* {orderLoad ? <FullScreenLoader /> : null} */}
+        <ReactNativeModal
+          isVisible={isStatusDrawer}
+          animationIn={'slideInRight'}
+          animationOut={'slideOutRight'}
+          onBackdropPress={() => setIsStatusDrawer(false)}
+        >
+          <StatusDrawer
+            closeModal={() => setIsStatusDrawer(false)}
+            selected={(value) => {
+              setHeaderText(value);
+              setSelectedStatus(value);
+            }}
+            selectedStatusOrder={selectedStatus}
+          />
+        </ReactNativeModal>
+      </ScrollView>
     </SafeAreaView>
   );
 }

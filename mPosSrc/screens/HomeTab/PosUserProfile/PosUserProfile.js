@@ -140,7 +140,7 @@ export function PosUserProfile(props) {
   return (
     <ScreenWrapper>
       <View style={styles.containerStyle}>
-        <View style={{ height: ms(60) }}>
+        <View style={{ height: ms(40) }}>
           <BackButton
             onPress={handleBackNavigation}
             title={'Back'}
@@ -178,99 +178,102 @@ export function PosUserProfile(props) {
             </Text>
           </View>
           <Spacer space={SH(15)} />
-          <View style={styles.todaySaleCon}>
-            <View style={styles.displayflex}>
-              <Text style={styles.todaySale}>{strings.profile.todaySale}</Text>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.todaySaleCon}>
+              <View style={styles.displayflex}>
+                <Text style={styles.todaySale}>{strings.profile.todaySale}</Text>
+              </View>
+              <Spacer space={SH(8)} />
+              <View style={[styles.displayflex, styles.paddingV]}>
+                <Text style={styles.cashLabel}>{strings.profile.cashSale}</Text>
+                <Text style={styles.cashAmount}>
+                  ${Number(totalSale?.[3]?.total_sale_amount ?? '0.00').toFixed(2)}
+                </Text>
+              </View>
+              <View style={[styles.displayflex, styles.paddingV, { marginVertical: ms(10) }]}>
+                <Text style={styles.cashLabel}>{strings.profile.cardSale}</Text>
+                <Text style={styles.cashAmount}>
+                  ${Number(totalSale?.[2]?.total_sale_amount ?? '0.00').toFixed(2)}
+                </Text>
+              </View>
+              <View style={[styles.displayflex, styles.paddingV]}>
+                <Text style={styles.cashLabel} numberOfLines={1}>
+                  {strings.profile.jobrSale}
+                </Text>
+                <Text style={styles.cashAmount}>
+                  JOBR {Number(totalSale?.[1]?.total_sale_amount ?? '0.00').toFixed(2)}
+                </Text>
+              </View>
             </View>
-            <Spacer space={SH(8)} />
+            <Spacer space={SH(15)} />
+            <View style={styles.todaySaleCon}>
+              <View style={styles.displayflex}>
+                <Text style={styles.todaySale}>{strings.profile.cashDrawer}</Text>
+              </View>
+              <Spacer space={SH(8)} />
+              <View style={[styles.displayflex, styles.paddingV]}>
+                <Text style={styles.cashLabel}>{strings.profile.openingBalance}</Text>
+                <Text style={styles.cashAmount}>
+                  ${Number(profileObj?.openingBalance ?? '0.00')?.toFixed(2)}
+                </Text>
+              </View>
+              <View style={[styles.displayflex, styles.paddingV, { marginVertical: ms(10) }]}>
+                <Text style={styles.cashLabel}>{strings.profile.closingBalance}</Text>
+                <Text style={styles.cashAmount}>
+                  ${Number(profileObj?.closeBalance ?? '0.00')?.toFixed(2)}
+                </Text>
+              </View>
+            </View>
+            <Spacer space={SH(15)} />
+            <View style={{ borderWidth: 0.7, borderColor: COLORS.solidGrey }} />
+            <Spacer space={SH(15)} />
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={styles.cashLabel}>{strings.profile.cashSale}</Text>
-              <Text style={styles.cashAmount}>
-                ${Number(totalSale?.[3]?.total_sale_amount ?? '0.00').toFixed(2)}
+              <Text style={styles.cashLabel}>
+                {moment().format('dddd')}
+                {', '}
+                {moment().format('ll')}
               </Text>
+              <Text style={styles.cashLabel}>{moment().format('LTS')}</Text>
             </View>
-            <View style={[styles.displayflex, styles.paddingV, { marginVertical: ms(10) }]}>
-              <Text style={styles.cashLabel}>{strings.profile.cardSale}</Text>
-              <Text style={styles.cashAmount}>
-                ${Number(totalSale?.[2]?.total_sale_amount ?? '0.00').toFixed(2)}
-              </Text>
-            </View>
+            <Spacer space={SH(10)} />
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={styles.cashLabel} numberOfLines={1}>
-                {strings.profile.jobrSale}
-              </Text>
+              <Text style={styles.cashLabel}>{strings.profile.loginTime}</Text>
               <Text style={styles.cashAmount}>
-                JOBR {Number(totalSale?.[1]?.total_sale_amount ?? '0.00').toFixed(2)}
+                {moment(getLoginDeatil?.updated_at).format('LTS')}
               </Text>
             </View>
-          </View>
-          <Spacer space={SH(15)} />
-          <View style={styles.todaySaleCon}>
-            <View style={styles.displayflex}>
-              <Text style={styles.todaySale}>{strings.profile.cashDrawer}</Text>
-            </View>
-            <Spacer space={SH(8)} />
+            <Spacer space={SH(10)} />
             <View style={[styles.displayflex, styles.paddingV]}>
-              <Text style={styles.cashLabel}>{strings.profile.openingBalance}</Text>
+              <Text style={styles.cashLabel}>{strings.profile.session}</Text>
               <Text style={styles.cashAmount}>
-                ${Number(profileObj?.openingBalance ?? '0.00')?.toFixed(2)}
+                {getLoginSessionTime(moment(getLoginDeatil?.updated_at).format('LTS'))}
               </Text>
             </View>
-            <View style={[styles.displayflex, styles.paddingV, { marginVertical: ms(10) }]}>
-              <Text style={styles.cashLabel}>{strings.profile.closingBalance}</Text>
-              <Text style={styles.cashAmount}>
-                ${Number(profileObj?.closeBalance ?? '0.00')?.toFixed(2)}
-              </Text>
-            </View>
-          </View>
-          <Spacer space={SH(15)} />
-          <View style={{ borderWidth: 0.7, borderColor: COLORS.solidGrey }} />
-          <Spacer space={SH(15)} />
-          <View style={[styles.displayflex, styles.paddingV]}>
-            <Text style={styles.cashLabel}>
-              {moment().format('dddd')}
-              {', '}
-              {moment().format('ll')}
-            </Text>
-            <Text style={styles.cashLabel}>{moment().format('LTS')}</Text>
-          </View>
-          <Spacer space={SH(10)} />
-          <View style={[styles.displayflex, styles.paddingV]}>
-            <Text style={styles.cashLabel}>{strings.profile.loginTime}</Text>
-            <Text style={styles.cashAmount}>
-              {moment(getLoginDeatil?.updated_at).format('LTS')}
-            </Text>
-          </View>
-          <Spacer space={SH(10)} />
-          <View style={[styles.displayflex, styles.paddingV]}>
-            <Text style={styles.cashLabel}>{strings.profile.session}</Text>
-            <Text style={styles.cashAmount}>
-              {getLoginSessionTime(moment(getLoginDeatil?.updated_at).format('LTS'))}
-            </Text>
-          </View>
-          {/* <Spacer space={SH(30)} /> */}
-          <View style={{ flex: 1 }} />
-          <TouchableOpacity
-            style={styles.lockScreenButton}
-            onPress={async () => {
-              const data = {
-                amount: parseInt(profileObj?.closeBalance),
-                drawerId: profileObj?.id,
-                transactionType: 'end_tracking_session',
-                modeOfcash: 'cash_out',
-              };
-              const res = await dispatch(endTrackingSession(data));
-              if (res?.type === 'END_TRACKING_SUCCESS') {
-                dispatch(getDrawerSessionSuccess(null));
-                dispatch(logoutUserFunction());
-              } else {
-                CustomErrorToast({ message: 'Something went wrong' });
-              }
-            }}
-          >
-            <Image source={Images.lockIcon} style={styles.lock} />
-            <Text style={styles.cashLabel}>{strings.profile.lockScreen}</Text>
-          </TouchableOpacity>
+            {/* <Spacer space={SH(30)} /> */}
+            <View style={{ flex: 1 }} />
+            <TouchableOpacity
+              style={styles.lockScreenButton}
+              onPress={async () => {
+                const data = {
+                  amount: parseInt(profileObj?.closeBalance),
+                  drawerId: profileObj?.id,
+                  transactionType: 'end_tracking_session',
+                  modeOfcash: 'cash_out',
+                };
+                const res = await dispatch(endTrackingSession(data));
+                if (res?.type === 'END_TRACKING_SUCCESS') {
+                  dispatch(getDrawerSessionSuccess(null));
+                  dispatch(logoutUserFunction());
+                } else {
+                  CustomErrorToast({ message: 'Something went wrong' });
+                }
+              }}
+            >
+              <Image source={Images.lockIcon} style={styles.lock} />
+              <Text style={styles.cashLabel}>{strings.profile.lockScreen}</Text>
+            </TouchableOpacity>
+            <Spacer space={SH(30)} />
+          </ScrollView>
         </View>
       </View>
 
