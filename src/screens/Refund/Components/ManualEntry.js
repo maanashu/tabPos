@@ -33,44 +33,54 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
   const [selectedItem, setSelectedItem] = useState();
 
   const changeView = () => {
-    if (getProducts !== undefined && Object.keys(getProducts).length > 0) {
-      return (
-        <TouchableOpacity
-          style={[
-            styles.productRowStyle,
-            {
-              borderColor:
-                selectedItem === getProducts?.product_detail?.id
-                  ? COLORS.primary
-                  : COLORS.solidGrey,
-            },
-          ]}
-          onPress={() => {
-            setSelectedItem(getProducts?.product_detail?.id);
-            onPressCart(getProducts?.product_detail?.id);
-          }}
-        >
-          <View style={{ flexDirection: 'row' }}>
-            <Image source={categoryshoes} style={styles.productIconStyle} />
+    return (
+      <>
+        {getProducts !== undefined && search && Object.keys(getProducts).length > 0 ? (
+          <TouchableOpacity
+            style={[
+              styles.productRowStyle,
+              {
+                borderColor:
+                  selectedItem === getProducts?.product_detail?.id
+                    ? COLORS.primary
+                    : COLORS.solidGrey,
+              },
+            ]}
+            onPress={() => {
+              setSelectedItem(getProducts?.product_detail?.id);
+              onPressCart(getProducts?.product_detail?.id);
+              setSearch('');
+            }}
+          >
+            <View style={{ flexDirection: 'row' }}>
+              <Image
+                source={
+                  getProducts?.product_detail?.image
+                    ? { uri: getProducts?.product_detail?.image }
+                    : categoryshoes
+                }
+                style={styles.productIconStyle}
+              />
 
-            <View style={{ width: ms(170), paddingLeft: SH(10) }}>
-              <Text style={styles.productNameText}>{getProducts?.product_detail?.name ?? '-'}</Text>
-              <Text style={styles.skuTextStyle}>{getProducts?.product_detail?.sku ?? '-'}</Text>
+              <View style={{ width: ms(170), paddingLeft: SH(10) }}>
+                <Text style={styles.productNameText}>
+                  {getProducts?.product_detail?.name ?? '-'}
+                </Text>
+                <Text style={styles.skuTextStyle}>{getProducts?.product_detail?.sku ?? '-'}</Text>
+              </View>
             </View>
-          </View>
 
-          <Text style={[styles.productNameText, { left: 12 }]}>
-            {getProducts?.product_detail?.price ?? '-'}
-          </Text>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <View style={styles.emptyViewStyle}>
-          <Text style={styles.emptyTextStyle}>{'No product found'}</Text>
-        </View>
-      );
-    }
+            <Text style={[styles.productNameText, { left: 12 }]}>
+              {getProducts?.product_detail?.price ?? '-'}
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.emptyViewStyle}>
+            <Text style={styles.emptyTextStyle}>{'No product found'}</Text>
+          </View>
+        )}
+      </>
+    );
   };
 
   const onSearchHandler = (text) => {
@@ -89,7 +99,11 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
     >
       <View style={[styles.container, { flex: 1 }]}>
         <View style={styles.headingRowStyle}>
-          <TouchableOpacity onPress={() => setIsVisible(false)}>
+          <TouchableOpacity
+            onPress={() => {
+              setIsVisible(false), setSearch('');
+            }}
+          >
             <Image source={crossButton} style={styles.crossIconStyle} />
           </TouchableOpacity>
 
@@ -97,12 +111,16 @@ const ManualEntry = ({ isVisible, setIsVisible, onPressCart }) => {
             disabled={
               getProducts !== undefined && Object.keys(getProducts).length > 0 ? false : true
             }
-            onPress={() => setIsVisible(false)}
+            onPress={() => {
+              setSelectedItem(getProducts?.product_detail?.id);
+              onPressCart(getProducts?.product_detail?.id);
+              setSearch('');
+            }}
             style={[
               styles.headingViewStyle,
               {
                 backgroundColor:
-                  getProducts !== undefined && Object.keys(getProducts).length > 0
+                  getProducts !== undefined && search && Object.keys(getProducts).length > 0
                     ? COLORS.primary
                     : COLORS.gerySkies,
               },

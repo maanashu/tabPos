@@ -79,7 +79,7 @@ export function SearchScreen(props) {
   }, [order, sku]);
 
   const cartHandler = (id, count) => {
-    const getArray = orderDetail?.findIndex((attr) => attr?.id === id);
+    const getArray = orderDetail?.findIndex((attr) => attr?.id == id);
     if (getArray !== -1) {
       const newProdArray = [...orderDetail];
       if (newProdArray[0]?.attributes?.length > 0) {
@@ -90,6 +90,24 @@ export function SearchScreen(props) {
       } else {
         newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
         setOrderDetail(newProdArray);
+      }
+    } else {
+      alert('Product not found in the order');
+    }
+  };
+
+  const cartManualHandler = (id) => {
+    const getArray = orderDetail?.findIndex((attr) => attr?.product_id == id);
+    if (getArray !== -1) {
+      const newProdArray = [...orderDetail];
+      if (newProdArray[0]?.attributes?.length > 0) {
+        newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
+        setOrderDetail(newProdArray);
+        setIsVisibleManual(false);
+      } else {
+        newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
+        setOrderDetail(newProdArray);
+        setIsVisibleManual(false);
       }
     } else {
       alert('Product not found in the order');
@@ -184,7 +202,7 @@ export function SearchScreen(props) {
           </View>
 
           <ManualEntry
-            onPressCart={cartHandler}
+            onPressCart={cartManualHandler}
             isVisible={isVisibleManual}
             setIsVisible={setIsVisibleManual}
           />
