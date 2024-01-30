@@ -820,7 +820,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     height: height * 0.08,
-    width: width * 0.33,
+    // width: width * 0.33,
     borderWidth: 1,
     borderColor: '#D8D8D8',
     borderRadius: 5,

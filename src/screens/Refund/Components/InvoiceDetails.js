@@ -108,7 +108,7 @@ const InvoiceDetails = ({
     },
     {
       title: 'Invoice',
-      data: orderDetail?.id,
+      data: orderDetail?.invoices?.invoice_number,
       id: 4,
     },
     {
@@ -118,7 +118,7 @@ const InvoiceDetails = ({
     },
     {
       title: 'User ID',
-      data: getUserData?.posLoginData?.id,
+      data: getUserData?.posLoginData?.user_profiles?.id,
       id: 5,
     },
   ];
