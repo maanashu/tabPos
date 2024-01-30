@@ -86,6 +86,7 @@ import { Modal as PaperModal } from 'react-native-paper';
 import { Images } from '@/assets/new_icon';
 import { ms } from 'react-native-size-matters';
 import BlurredModal from '@/components/BlurredModal';
+import { FullScreenLoader } from '@mPOS/components';
 
 moment.suppressDeprecationWarnings = true;
 
@@ -806,13 +807,7 @@ export function DashBoard({ navigation }) {
         {bodyView()}
         {trackinSessionModal()}
       </View>
-
-      {getSessionLoad ? (
-        <View style={[styles.loader, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-          <ActivityIndicator size={'large'} style={styles.loader} color={COLORS.primary} />
-        </View>
-      ) : null}
-
+        {getSessionLoad && <FullScreenLoader />}
       <Modal transparent={true} animationType={'fade'} isVisible={yourSessionEndModal}>
         <View style={styles.yourSessionendCon}>
           <View style={styles.yourSessionendHeader}>
@@ -848,7 +843,6 @@ export function DashBoard({ navigation }) {
           </View>
         </View>
       </Modal>
-
       {/* Search List modal start*/}
       {/* <Modal
         animationType="fade"
@@ -856,7 +850,6 @@ export function DashBoard({ navigation }) {
         isVisible={searchModal || searchModalDetail}
         avoidKeyboard={false}
       > */}
-
       <PaperModal visible={searchModal}>
         {searchModalDetail ? (
           <PosSearchDetailModal
@@ -889,7 +882,6 @@ export function DashBoard({ navigation }) {
         )}
       </PaperModal>
       {/* Search List modal end*/}
-
       <PaperModal visible={addCartModal || addCartDetailModal}>
         {addCartDetailModal ? (
           <AddCartDetailModal

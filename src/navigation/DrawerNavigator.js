@@ -8,6 +8,7 @@ import {
   ScrollView,
   Text,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
@@ -344,24 +345,23 @@ export function DrawerNavigator(props) {
         /> */}
       </ScrollView>
       {ADMIN()?.length > 0 && (
-        <View style={styles.endSessionViewStyle}>
-          <DrawerItem
+        <TouchableOpacity style={styles.endSessionViewStyle} onPress={() => onPressLogoutHandler()}>
+          {/* <DrawerItem
             label={''}
             onPress={() => onPressLogoutHandler()}
-            icon={({ focused, color, size }) => (
-              <Image
-                source={powerAuth}
-                style={{
-                  marginRight: ms(10),
-                  marginTop: ms(2),
-                  width: ms(13),
-                  height: ms(13),
-                  tintColor: COLORS.navy_blue,
-                }}
-              />
-            )}
+            icon={({ focused, color, size }) => ( */}
+          <Image
+            source={powerAuth}
+            style={{
+              width: ms(13),
+              height: ms(13),
+              resizeMode: 'contain',
+              tintColor: COLORS.navy_blue,
+            }}
           />
-        </View>
+          {/* )}
+          /> */}
+        </TouchableOpacity>
       )}
     </DrawerContentScrollView>
   );
@@ -370,12 +370,13 @@ export function DrawerNavigator(props) {
 const styles = StyleSheet.create({
   endSessionViewStyle: {
     backgroundColor: COLORS.textInputBackground,
-    position: 'absolute',
-    left: 10,
-    bottom: 5,
     width: ms(30),
     height: ms(30),
     borderRadius: ms(50),
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: ms(3),
   },
   contentContainerStyle: {
     // alignItems: 'flex-start',

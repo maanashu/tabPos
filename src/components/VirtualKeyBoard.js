@@ -83,7 +83,7 @@ export const VirtualKeyBoard = ({
                 iconPostion="right"
                 style={{
                   // width: 'auto',
-                  flex: 0.6,
+                  flex: 0.55,
                   height: ms(35),
                   paddingHorizontal: ms(10),
                   backgroundColor: COLORS.navy_blue,
