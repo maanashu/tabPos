@@ -807,7 +807,12 @@ export function DashBoard({ navigation }) {
         {bodyView()}
         {trackinSessionModal()}
       </View>
-        {getSessionLoad && <FullScreenLoader />}
+
+      {getSessionLoad ? (
+        <>
+          <FullScreenLoader />
+        </>
+      ) : null}
       <Modal transparent={true} animationType={'fade'} isVisible={yourSessionEndModal}>
         <View style={styles.yourSessionendCon}>
           <View style={styles.yourSessionendHeader}>
