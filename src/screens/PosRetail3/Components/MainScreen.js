@@ -85,7 +85,7 @@ import { TYPES } from '@/Types/Types';
 import { ServiceCartListModal } from './ServiceCartListModal ';
 import { CustomProductAdd } from '@/screens/PosRetail3/Components';
 import { Images } from '@/assets/new_icon';
-import { amountFormat, imageSource } from '@/utils/GlobalMethods';
+import { amountFormat, imageSource, getDateLabel } from '@/utils/GlobalMethods';
 import CustomAlert from '@/components/CustomAlert';
 import { FullScreenLoader } from '@mPOS/components';
 import BlurredModal from '@/components/BlurredModal';
@@ -1182,8 +1182,13 @@ export function MainScreen({
                                   source={Images.serviceCalendar}
                                   style={styles.calendarStyle}
                                 />
-                                <Text numberOfLines={1} style={styles.serviceTimeText}>
-                                  Tomorrow at 10:00hrs
+                                <Text numberOfLines={2} style={styles.serviceTimeText}>
+                                  {getDateLabel(item?.supplies?.[0]?.next_available_slot?.date) +
+                                    ' ' +
+                                    '/' +
+                                    item?.supplies?.[0]?.next_available_slot?.start_time +
+                                    '-' +
+                                    item?.supplies?.[0]?.next_available_slot?.end_time}
                                 </Text>
                               </View>
                               <Spacer space={SH(7)} />

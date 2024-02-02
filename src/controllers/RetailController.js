@@ -1080,6 +1080,7 @@ export class RetailController {
         service_type: 'service',
         need_pos_users: true,
         check_stock_out: true,
+        need_next_available_slot: true,
         page: productTypeID.page,
         limit: 20,
       };

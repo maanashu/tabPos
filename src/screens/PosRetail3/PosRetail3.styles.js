@@ -1487,7 +1487,7 @@ export const styles = StyleSheet.create({
   },
   serviceTimeCon: {
     backgroundColor: COLORS.textInputBackground,
-    height: ms(18),
+    height: ms(22),
     borderRadius: ms(12),
     flexDirection: 'row',
     alignItems: 'center',
