@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   notificationCon: {
-    width: windowWidth * 0.34,
+    width: windowWidth * 0.36,
     height: '90%',
     position: 'absolute',
     top: ms(30),

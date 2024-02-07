@@ -122,7 +122,8 @@ const EventDetailModal = ({ showEventDetailModal, setshowEventDetailModal, event
                     },
                   ]}
                 >
-                  {completeData?.mode_of_payment == 'cash' ? 'Unpaid' : 'Paid'}
+                  {/* {completeData?.mode_of_payment == 'cash' ? 'Unpaid' : 'Paid'} */}
+                  {'Paid'}
                 </Text>
                 {completeData?.mode_of_payment != 'cash' && (
                   <>

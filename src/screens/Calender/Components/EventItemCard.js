@@ -20,6 +20,9 @@ const EventItemCard = ({ item, index }) => {
   const userDetails = item?.user_details;
   const userAddress = userDetails?.current_address;
   const appointmentDetail = item;
+  const invitedUserDetails = item?.invitation_details;
+  const userId = item?.user_id;
+  const customerDetails = userId != null ? userDetails : invitedUserDetails;
 
   return (
     <View
@@ -32,7 +35,7 @@ const EventItemCard = ({ item, index }) => {
         },
       ]}
     >
-      {userDetails && (
+      {(userDetails || invitedUserDetails) && (
         <View style={styles.customerDetailContainer}>
           <View style={styles.rowAlignedJustified}>
             <Text style={styles._eventTitle}>Customer:</Text>
@@ -53,7 +56,8 @@ const EventItemCard = ({ item, index }) => {
                   },
                 ]}
               >
-                {item?.mode_of_payment == 'cash' ? 'Unpaid' : 'Paid'}
+                {/* {item?.mode_of_payment == 'cash' ? 'Unpaid' : 'Paid'} */}
+                {'Paid'}
               </Text>
               {item?.mode_of_payment != 'cash' && (
                 <>
@@ -70,16 +74,26 @@ const EventItemCard = ({ item, index }) => {
 
           <View style={{ flexDirection: 'row', marginTop: ms(5) }}>
             <ProfileImage
-              source={{ uri: userDetails?.profile_photo }}
+              source={{ uri: customerDetails?.profile_photo }}
               style={styles.customerUserProfile}
             />
             <View style={{ marginLeft: ms(6) }}>
               <Text style={styles.customerName}>
-                {userDetails?.firstname + ' ' + userDetails?.lastname}
+                {customerDetails?.firstname + ' ' + customerDetails?.lastname}
               </Text>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Image source={pin} style={styles.eventAddressIcon} />
-                <Text style={styles.eventAddress}>{userAddress?.street_address}</Text>
+                {userId !== null && userAddress?.street_address && (
+                  <Image source={pin} style={styles.eventAddressIcon} />
+                )}
+
+                <Text style={styles.eventAddress}>
+                  {/* {userAddress?.street_address} */}
+                  {userId !== null
+                    ? userAddress?.street_address
+                      ? userAddress?.street_address
+                      : userAddress?.phone_number
+                    : customerDetails?.phone_code + customerDetails?.phone_no}
+                </Text>
               </View>
             </View>
           </View>

@@ -97,6 +97,9 @@ export function Calender() {
   const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const [showRescheduleTimeModal, setshowRescheduleTimeModal] = useState(false);
   const [selectedPosStaffCompleteData, setSelectedPosStaffCompleteData] = useState(null);
+  const completeUserData = selectedPosStaffCompleteData?.user_details
+    ? selectedPosStaffCompleteData?.user_details
+    : selectedPosStaffCompleteData?.invitation_details;
   const [refreshing, setRefreshing] = useState(false);
   const [monthDays, setMonthDays] = useState([]);
   const searchAppoinmentInputRef = useRef(null);
@@ -130,6 +133,7 @@ export function Calender() {
   const getApprovedAppointments = getAppointmentList?.filter(
     (item) => item.status === 1 || item.status === 2 || item.status === 3
   );
+  console.log('1111', JSON.stringify(getAppointmentList));
 
   // Will be used to show list of all unaccepted appointments
   const appointmentListArr = getAppointmentList2?.filter((item) => item.status === 0);
@@ -1007,35 +1011,37 @@ export function Calender() {
             <Text style={styles.subHeadingText}>Confirm the details of your appointment</Text>
 
             <View style={styles.serviceDetailContainer}>
-              <View style={styles.rowJustified}>
-                <Text style={styles.customerText}>Customer:</Text>
-                <Text style={styles.unpaidText}>
-                  {selectedPosStaffCompleteData?.mode_of_payment == 'cash' ? 'Unpaid' : 'Paid'}
-                </Text>
-              </View>
+              <>
+                <View style={styles.rowJustified}>
+                  <Text style={styles.customerText}>Customer:</Text>
+                  <Text style={styles.unpaidText}>{'Paid'}</Text>
+                </View>
 
-              <View style={styles.customerProfileView}>
-                <ProfileImage
-                  source={{
-                    uri: selectedPosStaffCompleteData?.user_details?.profile_photo || null,
-                  }}
-                  style={styles.customerProfileImage}
-                />
-                <View style={{ marginLeft: ms(5) }}>
-                  <Text style={styles.customerNameText}>
-                    {`${selectedPosStaffCompleteData?.user_details?.firstname} ${selectedPosStaffCompleteData?.user_details?.lastname}`}
-                  </Text>
-                  <Spacer space={ms(5)} />
-                  <View style={[styles.rowAligned, {}]}>
-                    <Image source={new_location} style={styles.eventAddressIcon} />
-                    <View style={{ width: '85%' }}>
-                      <Text
-                        style={styles.addressText}
-                      >{`${selectedPosStaffCompleteData?.user_details?.current_address?.city}, ${selectedPosStaffCompleteData?.user_details?.current_address?.state}`}</Text>
+                <View style={styles.customerProfileView}>
+                  <ProfileImage
+                    source={{
+                      uri: completeUserData?.profile_photo || null,
+                    }}
+                    style={styles.customerProfileImage}
+                  />
+                  <View style={{ marginLeft: ms(5) }}>
+                    <Text style={styles.customerNameText}>
+                      {`${completeUserData?.firstname} ${completeUserData?.lastname}`}
+                    </Text>
+                    <Spacer space={ms(5)} />
+                    <View style={[styles.rowAligned, {}]}>
+                      {/* <Image source={new_location} style={styles.eventAddressIcon} /> */}
+                      <View style={{ width: '85%' }}>
+                        <Text style={styles.addressText}>
+                          {completeUserData?.phone_number ||
+                            completeUserData?.phone_code + completeUserData?.phone_no}
+                          {/* {`${completeUserData?.current_address?.city}, ${completeUserData?.current_address?.state}`} */}
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
+              </>
 
               <View style={styles.requestedServicesView}>
                 <Text style={styles.servicesRequested}>Services requested:</Text>
@@ -1045,13 +1051,11 @@ export function Calender() {
                   style={{ marginLeft: ms(5) }}
                 >
                   <View style={styles.rowAligned}>
-                    {/* {[0, 1, 2, 3, 4, 5].map((item, index) => ( */}
                     <View style={styles.scrollableServicesView}>
                       <Text style={styles.servicesName}>
                         {selectedPosStaffCompleteData?.product_name}
                       </Text>
                     </View>
-                    {/* ))} */}
                   </View>
                 </ScrollView>
               </View>
