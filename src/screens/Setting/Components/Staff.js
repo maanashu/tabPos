@@ -132,14 +132,14 @@ export function Staff() {
       title: 'Payment Cycle',
       data:
         staffDetailData?.pos_staff_detail?.payment_cycle?.charAt?.(0)?.toUpperCase() +
-          staffDetailData?.pos_staff_detail?.payment_cycle?.slice?.(1) ?? '-----',
+          staffDetailData?.pos_staff_detail?.payment_cycle?.slice?.(1) || '-----',
     },
     {
       id: 4,
       title: 'Billing',
       data:
         staffDetailData?.pos_staff_detail?.billing_type?.charAt?.(0)?.toUpperCase() +
-          staffDetailData?.pos_staff_detail?.billing_type?.slice?.(1) ?? '-----',
+          staffDetailData?.pos_staff_detail?.billing_type?.slice?.(1) || '-----',
     },
   ];
   const cycleArray = [
@@ -438,12 +438,12 @@ export function Staff() {
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Employment Type</Text>
-                      <Text style={styles.joinDatelight}>{finalEmploymentType ?? '-----'}</Text>
+                      <Text style={styles.joinDatelight}>{finalEmploymentType || '-----'}</Text>
                     </View>
                     <View style={styles.flexRow}>
                       <Text style={styles.joinDateDark}>Leave taken</Text>
                       <Text style={styles.joinDatelight}>
-                        {staffDetailData?.pos_staff_detail?.leave ?? '-----'}
+                        {staffDetailData?.pos_staff_detail?.leave || '-----'}
                       </Text>
                     </View>
                   </View>
@@ -564,6 +564,7 @@ export function Staff() {
                                     end_date: item?.end_date,
                                     staff_details_id: item?.pos_staff_detail?.id?.toString(),
                                   };
+                                  console.log('data', data);
                                   const res = await dispatch(
                                     staffRequest(data, (res) => {
                                       dispatch(getStaffDetail(data.staff_details_id));

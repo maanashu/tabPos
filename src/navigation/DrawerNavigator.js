@@ -85,7 +85,7 @@ export function DrawerNavigator(props) {
             // dispatch(logoutUserFunction());
             dispatch(logoutFunction());
           } else {
-            alert('something went wrong');
+            // alert('something went wrong');
           }
         },
       },

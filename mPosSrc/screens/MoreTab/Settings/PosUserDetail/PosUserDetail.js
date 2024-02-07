@@ -34,9 +34,10 @@ export function PosUserDetail(props) {
   const route = props?.route?.params;
   const posUser = props?.route?.params?.user?.user_profiles;
   const settings = useSelector(getSetting);
-  const listArray = settings?.staffDetail?.results?.results?.length > 0 || [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  ];
+  // const listArray = settings?.staffDetail?.results?.results?.length > 0 || [
+  //   1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  // ];
+  const listArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const handleClick = (item) => {};
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.STAFF_DETAIL], state));

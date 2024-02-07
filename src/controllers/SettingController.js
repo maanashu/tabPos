@@ -480,6 +480,7 @@ export class SettingController {
       const endpoint = USER_URL + ApiUserInventory.staffRequest;
       HttpClient.post(endpoint, data)
         .then((response) => {
+          console.log('response', response);
           Toast.show({
             text2: response?.msg,
             position: 'bottom',
@@ -489,6 +490,7 @@ export class SettingController {
           resolve(response);
         })
         .catch((error) => {
+          console.log('error', error);
           Toast.show({
             text2: error?.msg,
             position: 'bottom',
