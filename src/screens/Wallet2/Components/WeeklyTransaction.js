@@ -698,9 +698,9 @@ export function WeeklyTransaction({
                 <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
                   starts
                 </Text>
-                <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
+                {/* <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
                   Transaction id
-                </Text>
+                </Text> */}
                 <View style={styles.flexAlign}>
                   <Text numberOfLines={1} style={[styles.tableTextHea, { lineHeight: ms(7) }]}>
                     Transaction type
@@ -771,12 +771,17 @@ export function WeeklyTransaction({
                               ? moment(item.created_at).format('h:mm A')
                               : 'date not found'}
                           </Text>
-                          <Text style={[styles.tableTextData, { marginLeft: ms(-35) }]}>
+                          {/* <Text style={[styles.tableTextData, { marginLeft: ms(-35) }]}>
                             {item?.transaction_id}
-                          </Text>
+                          </Text> */}
                           {/* <Spacer horizontal space={ms(10)} /> */}
                           <View>
-                            <Text style={[styles.tableTextData, { textAlign: 'center' }]}>
+                            <Text
+                              style={[
+                                styles.tableTextData,
+                                { textAlign: 'center', marginLeft: ms(-35) },
+                              ]}
+                            >
                               {DELIVERY_MODE[item?.delivery_option]}
                             </Text>
                           </View>

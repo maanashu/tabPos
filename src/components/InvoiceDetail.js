@@ -86,7 +86,7 @@ export function InvoiceDetail({ mapRef, closeHandler }) {
     },
     {
       title: 'User ID',
-      data: getUserData?.posLoginData?.id,
+      data: singleOrderDetail?.user_details?.id ?? '-',
       id: 5,
     },
   ];

@@ -453,7 +453,7 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
               <View style={[styles.profilDetailChildView, { alignItems: 'flex-start' }]}>
                 <View style={{ flexDirection: 'row' }}>
                   <Text style={[styles.tableTextHeader, { marginRight: ms(30) }]}>#</Text>
-                  <Text style={styles.tableTextHeader}>Order id</Text>
+                  <Text style={styles.tableTextHeader}>Invoice Id</Text>
                 </View>
               </View>
               <View style={styles.profilDetailChildView}>
@@ -519,7 +519,9 @@ const UserDetail = ({ backHandler, userDetail, orderId }) => {
                             <Text style={[styles.tableTextData, { marginRight: ms(40) }]}>
                               {currentIndex}
                             </Text>
-                            <Text style={styles.tableTextData}>{item.id}</Text>
+                            <Text style={styles.tableTextData}>
+                              {item?.invoices?.invoice_number}
+                            </Text>
                           </View>
                         </View>
                         <View style={styles.profilDetailChildView}>

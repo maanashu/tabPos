@@ -312,7 +312,7 @@ export function UserProfile(props) {
                 </View>
               </View>
               <View style={styles.profileheaderChildView}>
-                <Text style={styles.tableTextHeader}>Order id#</Text>
+                <Text style={styles.tableTextHeader}>Invoice Id</Text>
               </View>
 
               <View style={styles.profileheaderChildView}>
@@ -375,7 +375,7 @@ export function UserProfile(props) {
                           </View>
                         </View>
                         <View style={styles.profileheaderChildView}>
-                          <Text style={styles.tableTextData}>{item.id}</Text>
+                          <Text style={styles.tableTextData}>{item?.invoices?.invoice_number}</Text>
                         </View>
                         <View style={styles.profileheaderChildView}>
                           {item?.delivery_option == 4 ? (

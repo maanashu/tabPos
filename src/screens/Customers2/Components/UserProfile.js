@@ -523,7 +523,7 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
               <View style={[styles.profileheaderChildView, { alignItems: 'flex-start' }]}>
                 <View style={{ flexDirection: 'row' }}>
                   <Text style={[styles.tableTextHeader, { marginRight: ms(25) }]}>#</Text>
-                  <Text style={styles.tableTextHeader}>Order id</Text>
+                  <Text style={styles.tableTextHeader}>Invoice Id</Text>
                 </View>
               </View>
               <View style={styles.profileheaderChildView}>
@@ -587,7 +587,9 @@ const UserProfile = ({ backHandler, userDetail, orderClickHandler, pointHandler 
                             <Text style={[styles.tableTextData, { marginRight: ms(30) }]}>
                               {currentIndex}
                             </Text>
-                            <Text style={styles.tableTextData}>{item.id}</Text>
+                            <Text style={styles.tableTextData}>
+                              {item?.invoices?.invoice_number}
+                            </Text>
                           </View>
                         </View>
                         <View style={styles.profileheaderChildView}>

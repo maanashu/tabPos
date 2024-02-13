@@ -150,7 +150,9 @@ const WalletInvoice = ({ orderDetail }) => {
     },
     {
       title: 'User ID',
-      data: getUserData?.posLoginData?.id,
+      data: orderDetail?.return
+        ? orderDetail?.return?.user_details?.id
+        : orderDetail?.order?.user_details?.id ?? '-',
       id: 5,
     },
   ];
