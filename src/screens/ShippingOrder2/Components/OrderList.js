@@ -75,7 +75,11 @@ const OrderList = ({
             color: COLORS.dark_grey,
           }}
         >
-          {`#${item?.id}`}
+          {/* {`#${item?.id}`} */}
+          {'#'}
+          {item?.return_detail
+            ? item?.return_detail?.invoices?.invoice_number
+            : item?.invoices?.invoice_number ?? '-'}
         </Text>
       </View>
 
@@ -361,7 +365,11 @@ const OrderList = ({
                 { marginVertical: ms(3) },
               ]}
             >
-              {`#${item?.id}`}
+              {/* {`#${item?.id}`} */}
+              {'#'}
+              {item?.return_detail
+                ? item?.return_detail?.invoices?.invoice_number
+                : item?.invoices?.invoice_number ?? '-'}
             </Text>
           </View>
           <View
