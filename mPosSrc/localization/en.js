@@ -308,6 +308,7 @@ export const en = {
     totalItems: 'Total Items:',
     orderDate: 'Order Date',
     orderid: 'Order ID',
+    invoiceNumber: 'Invoice Number',
     subTotal: 'Sub Total',
     totalTax: 'Total Taxes',
     discount: 'Discount',
