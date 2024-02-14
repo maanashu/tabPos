@@ -53,7 +53,7 @@ export class DashboardController {
       const amountStringy = parseFloat(data.amount);
       const body = {
         seller_id: sellerID,
-        amount: amountStringy,
+        amount: data.amount,
         notes: data?.notes,
       };
       HttpClient.post(endpoint, body)
@@ -98,7 +98,6 @@ export class DashboardController {
             transaction_type: 'start_tracking_session',
             mode_of_cash: 'cash_in',
           };
-
       HttpClient.post(endpoint, body)
         .then((response) => {
           if (response?.msg === 'Create drawer activity.') {

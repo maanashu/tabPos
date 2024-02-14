@@ -259,7 +259,7 @@ export function DashBoard({ navigation }) {
           {hours < 1 ? '00' : hours}:{minutes < 1 ? '00' : minutes}:{seconds < 1 ? '00' : seconds}
         </Text> */}
         <Text style={[styles.nameTextBold, { color: COLORS.navy_blue }]}>
-          {moment(estimateTime).format('LTS')}
+          {moment.utc(estimateTime).format('LTS')}
         </Text>
       </View>
     );
