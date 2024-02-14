@@ -74,6 +74,7 @@ import Header from './Components/Header';
 import CalendarPickerModal from '@/components/CalendarPickerModal';
 import { CustomHeader } from '../PosRetail3/Components';
 import VerifyPickupOtpModal from './Components/VerifyPickupOtpModal';
+import { formattedPrice } from '@/utils/GlobalMethods';
 
 export function DeliveryOrders2({ route }) {
   var screen;
@@ -418,7 +419,7 @@ export function DeliveryOrders2({ route }) {
               style={[styles.pinImageStyle, { tintColor: COLORS.success_green }]}
             />
             <Text style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
-              {item?.payable_amount || '00'}
+              {formattedPrice(item?.payable_amount) || '0.00'}
             </Text>
           </View>
         </View>

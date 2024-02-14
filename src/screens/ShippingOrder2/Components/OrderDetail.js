@@ -27,6 +27,7 @@ import { getAnalytics } from '@/selectors/AnalyticsSelector';
 import styles from '../ShippingOrder2.styles';
 import {
   amountFormat,
+  formattedPrice,
   formattedReturnPrice,
   formattedReturnPriceWithoutSign,
 } from '@/utils/GlobalMethods';
@@ -546,7 +547,7 @@ const OrderDetail = ({
 
             <View style={styles.orderDetailsView}>
               <Text style={styles.totalText}>{strings.deliveryOrders.total}</Text>
-              <Text style={styles.totalText}>{'$' + userDetail?.payable_amount}</Text>
+              <Text style={styles.totalText}>{formattedPrice(userDetail?.payable_amount)}</Text>
             </View>
 
             <Spacer space={ms(10)} />

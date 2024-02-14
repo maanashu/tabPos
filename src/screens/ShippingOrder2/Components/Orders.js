@@ -30,6 +30,7 @@ import {
 } from '@/assets';
 import { getDelivery } from '@/selectors/DeliverySelector';
 import moment from 'moment';
+import { formattedPrice } from '@/utils/GlobalMethods';
 
 const { height } = Dimensions.get('window');
 
@@ -86,7 +87,7 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
           >
             <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
             <Text numberOfLines={2} style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
-              {item?.payable_amount ?? '00'}
+              {formattedPrice(item?.payable_amount) ?? '0.00'}
             </Text>
           </View>
         </View>

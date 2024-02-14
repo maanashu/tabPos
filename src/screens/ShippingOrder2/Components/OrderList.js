@@ -30,6 +30,7 @@ import {
 } from '@/assets';
 import moment from 'moment';
 import { useEffect } from 'react';
+import { formattedPrice } from '@/utils/GlobalMethods';
 
 const OrderList = ({
   selectedStatus,
@@ -108,7 +109,7 @@ const OrderList = ({
           <View style={[styles.locationViewStyle, { backgroundColor: COLORS.alarm_success_50 }]}>
             <Image source={cashShippingNew} style={[styles.pinImageStyle]} />
             <Text numberOfLines={2} style={[styles.distanceTextStyle, { color: COLORS.green_new }]}>
-              {item?.payable_amount ?? '00'}
+              {formattedPrice(item?.payable_amount) ?? '0.00'}
             </Text>
           </View>
         </View>
@@ -222,7 +223,7 @@ const OrderList = ({
                     numberOfLines={2}
                     style={[styles.distanceTextStyle, { color: COLORS.green_new }]}
                   >
-                    {item?.payable_amount ?? '00'}
+                    {formattedPrice(item?.payable_amount) ?? '0.00'}
                   </Text>
                 </View>
               </View>
@@ -418,7 +419,7 @@ const OrderList = ({
                     numberOfLines={2}
                     style={[styles.distanceTextStyle, { color: COLORS.green_new }]}
                   >
-                    {item?.payable_amount ?? '00'}
+                    {formattedPrice(item?.payable_amount) ?? '0.00'}
                   </Text>
                 </View>
               </View>

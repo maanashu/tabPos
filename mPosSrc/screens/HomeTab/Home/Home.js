@@ -240,7 +240,7 @@ export function Home() {
       alert('Please Enter Amount');
     } else if (amount && digitWithDot.test(amount) === false) {
       alert('Please enter valid amount');
-    } else if (amount <= 0) {
+    } else if (amount < 0) {
       alert('Please enter valid amount');
     } else {
       const data = {

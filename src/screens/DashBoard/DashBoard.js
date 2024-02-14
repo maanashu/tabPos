@@ -69,7 +69,7 @@ import { getUser } from '@/selectors/UserSelectors';
 import { navigate } from '@/navigation/NavigationRef';
 import { getAuthData } from '@/selectors/AuthSelector';
 import { logoutUserFunction } from '@/actions/UserActions';
-import { ADMIN, getLoginSessionTime } from '@/utils/GlobalMethods';
+import { ADMIN, formattedPrice, getLoginSessionTime } from '@/utils/GlobalMethods';
 import { getDashboard } from '@/selectors/DashboardSelector';
 import { Button, ScreenWrapper, Spacer } from '@/components';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
@@ -255,8 +255,11 @@ export function DashBoard({ navigation }) {
     const seconds = Math.floor((timeDifference / 1000) % 60);
     const timeFormatted = (
       <View>
-        <Text style={[styles.nameTextBold, { color: COLORS.navy_blue }]}>
+        {/* <Text style={[styles.nameTextBold, { color: COLORS.navy_blue }]}>
           {hours < 1 ? '00' : hours}:{minutes < 1 ? '00' : minutes}:{seconds < 1 ? '00' : seconds}
+        </Text> */}
+        <Text style={[styles.nameTextBold, { color: COLORS.navy_blue }]}>
+          {moment(estimateTime).format('LTS')}
         </Text>
       </View>
     );
@@ -280,7 +283,7 @@ export function DashBoard({ navigation }) {
       alert('Please Enter Amount');
     } else if (amountCount && digits.test(amountCount) === false) {
       alert('Please enter valid amount');
-    } else if (amountCount <= 0) {
+    } else if (amountCount < 0) {
       alert('Please enter valid amount');
     } else {
       const data = {
@@ -355,34 +358,42 @@ export function DashBoard({ navigation }) {
       <View style={{ width: SW(25) }}>
         <Text style={styles.nameText}>{item?.order_details?.length} items</Text>
         <View style={styles.timeView}>
-          <Image source={moneySolidIcon} style={styles.pinIcon(2)} />
+          <Image source={moneySolidIcon} style={styles.pinIcon(4)} />
           <Text style={[styles.timeText, { color: COLORS.success_green }]}>
-            ${item.payable_amount ? item.payable_amount : '0'}
+            {item.payable_amount ? formattedPrice(item.payable_amount) : '$0.00'}
           </Text>
         </View>
       </View>
-      {item?.delivery_option == 1 ? (
-        <View style={{ width: SW(60) }}>
-          <Text style={styles.nameText}>
-            {item?.preffered_delivery_start_time || '-----'} -
-            {item?.preffered_delivery_end_time || '-----'}
-          </Text>
+
+      <View style={{ width: SW(60) }}>
+        <Text
+          style={[styles.timeText, styles.nameTextBold, { color: COLORS.light_time }]}
+          numberOfLines={1}
+        >
+          {item?.delivery_details?.title
+            ? item.delivery_details.title
+            : item.delivery_option == '1'
+            ? 'Delivery'
+            : item.delivery_option == '3'
+            ? 'Customer Pickup'
+            : item?.shipping_details?.title
+            ? item.shipping_details.title
+            : ''}
+          {/* {item?.delivery_details?.title || '-----'} */}
+        </Text>
+        {item?.preffered_delivery_start_time && (
           <View style={styles.timeView}>
             <Image source={Images.serviceTime} style={styles.pinIcon(3)} />
-            <Text
-              style={[styles.timeText, styles.nameTextBold, { color: COLORS.light_time }]}
-              numberOfLines={1}
-            >
-              {item?.delivery_details?.title || '-----'}
+
+            <Text style={styles.nameText}>
+              {item?.preffered_delivery_start_time || '-----'} -
+              {item?.preffered_delivery_end_time || '-----'}
             </Text>
           </View>
-        </View>
-      ) : (
-        <View style={{ width: SW(60) }}></View>
-      )}
+        )}
+      </View>
 
-      <Image source={arrowRightIcon} style={styles.arrowIconRight} />
-      <View style={styles.rightIconStyle1}>
+      <View style={[styles.rightIconStyle1, { flexDirection: 'row' }]}>
         {/* <View style={[styles.timeView, { paddingTop: 0, borderWidth: 1 }]}> */}
         <Text style={[styles.nameTextBold, { color: COLORS.navy_blue }]}>
           {item.estimated_preparation_time === null
@@ -390,6 +401,7 @@ export function DashBoard({ navigation }) {
             : orderTime(item.estimated_preparation_time)}
         </Text>
         {/* </View> */}
+        <Image source={arrowRightIcon} style={styles.arrowIconRight} />
       </View>
     </TouchableOpacity>
   );

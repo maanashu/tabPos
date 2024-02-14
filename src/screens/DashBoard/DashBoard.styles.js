@@ -306,7 +306,14 @@ export const styles = StyleSheet.create({
       height: SW(6),
       resizeMode: 'contain',
       marginRight: SW(1),
-      tintColor: value === 1 ? COLORS.purple : value === 2 ? COLORS.navy_blue : COLORS.light_time,
+      tintColor:
+        value === 1
+          ? COLORS.purple
+          : value === 2
+          ? COLORS.navy_blue
+          : value === 4
+          ? COLORS.green
+          : COLORS.light_time,
     };
   },
   arrowIconRight: {
