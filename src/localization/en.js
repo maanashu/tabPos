@@ -540,6 +540,7 @@ export const en = {
     totalItem: 'Total Items',
     orderDate: 'Order Date',
     orderId: 'Order ID',
+    inVoiceNumber: 'Invoice Number',
     completed: 'Completed',
     reviewOrders: 'Shipping Orders to Review',
     acceptedOrders: 'Shipping Orders to Prepare',

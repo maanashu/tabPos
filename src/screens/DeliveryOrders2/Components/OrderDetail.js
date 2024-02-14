@@ -87,9 +87,15 @@ const OrderDetail = ({
               <Spacer space={SH(6)} />
               <View>
                 <Text style={[styles.totalTextStyle, { paddingTop: 0 }]}>
-                  {strings.shippingOrder.orderId}
+                  {strings.shippingOrder.inVoiceNumber}
                 </Text>
-                <Text style={styles.itemCountText}>{`#${userDetail?.id}`}</Text>
+                <Text style={styles.itemCountText}>
+                  {/* {`#${userDetail?.id}`} */}
+                  {'#'}
+                  {userDetail?.return_detail
+                    ? userDetail?.return_detail?.invoices?.invoice_number
+                    : userDetail?.invoices?.invoice_number ?? '-'}
+                </Text>
               </View>
               <Spacer space={SH(6)} />
               <Spacer backgroundColor={COLORS.lavender} space={0.5} />

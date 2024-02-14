@@ -49,10 +49,14 @@ const OrderTotal = ({ orderData, declineHandler, onPressAcceptHandler }) => {
         </View>
 
         <View>
-          <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.orderid}</Text>
-          <Text
-            style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}
-          >{`#${orderData?.id}`}</Text>
+          <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.invoiceNumber}</Text>
+          <Text style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}>
+            {/* {`#${orderData?.id}`} */}
+            {'#'}
+            {orderData?.return_detail
+              ? orderData?.return_detail?.invoices?.invoice_number
+              : orderData?.invoices?.invoice_number ?? '-'}
+          </Text>
         </View>
       </View>
 

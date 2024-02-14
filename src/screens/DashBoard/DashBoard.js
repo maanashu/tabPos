@@ -331,7 +331,14 @@ export function DashBoard({ navigation }) {
       style={[styles.reviewRenderView]}
     >
       <View style={{ width: SW(20) }}>
-        <Text style={styles.hashNumber}>#{item.id}</Text>
+        <Text style={styles.hashNumber}>
+          {/* #{item.id} */}
+
+          {'#'}
+          {item?.return_detail
+            ? item?.return_detail?.invoices?.invoice_number
+            : item?.invoices?.invoice_number ?? '-'}
+        </Text>
       </View>
       <View style={{ width: SW(45) }}>
         <Text numberOfLines={1} style={styles.nameText}>

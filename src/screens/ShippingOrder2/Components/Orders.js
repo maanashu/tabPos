@@ -52,7 +52,11 @@ const Orders = ({ selectedStatus, onViewAllHandler }) => {
               color: COLORS.dark_grey,
             }}
           >
-            {`#${item?.id}`}
+            {/* {`#${item?.id}`} */}
+            {'#'}
+            {item?.return_detail
+              ? item?.return_detail?.invoices?.invoice_number
+              : item?.invoices?.invoice_number ?? '-'}
           </Text>
         </View>
 
