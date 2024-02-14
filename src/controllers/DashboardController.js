@@ -53,7 +53,7 @@ export class DashboardController {
       const amountStringy = parseFloat(data.amount);
       const body = {
         seller_id: sellerID,
-        amount: data.amount,
+        amount: data?.amount,
         notes: data?.notes,
       };
       HttpClient.post(endpoint, body)
