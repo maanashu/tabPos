@@ -138,9 +138,11 @@ export const AddProductScreen = ({ backHandler }) => {
         styles.selectColorItem,
         {
           backgroundColor: item?.name,
-          width: style ? ms(50) : ms(20),
+          // width: style ? ms(50) : ms(20),
+          width: style ? ms(20) : ms(20),
           borderColor: style ? COLORS.light_purple : COLORS.gerySkies,
-          height: style ? ms(18) : ms(20),
+          // height: style ? ms(18) : ms(20),
+          height: style ? ms(20) : ms(20),
         },
       ]}
       onPress={onPress}
