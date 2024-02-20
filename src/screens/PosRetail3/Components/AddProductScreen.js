@@ -142,6 +142,7 @@ export const AddProductScreen = ({ backHandler }) => {
           width: style ? ms(20) : ms(20),
           borderColor: style ? COLORS.light_purple : COLORS.gerySkies,
           // height: style ? ms(18) : ms(20),
+          borderWidth: style ? ms(2.5) : 1,
           height: style ? ms(20) : ms(20),
         },
       ]}
