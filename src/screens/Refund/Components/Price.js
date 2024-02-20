@@ -14,8 +14,38 @@ import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 
-const Price = ({ orderData, onPresshandler }) => {
-  const hasCheckedItem = orderData?.order?.order_details.some((item) => item.isChecked === true);
+const Price = ({ orderData, orderList, onPresshandler }) => {
+  const hasCheckedItem = orderList?.some((item) => item.isChecked === true);
+  const orderDetails = orderData?.order;
+
+  const deliveryShippingCharges = () => {
+    let deliveryCharges;
+    let title;
+    if (orderDetails?.delivery_charge !== '0') {
+      deliveryCharges = orderDetails?.delivery_charge;
+      title = 'Delivery Charges';
+    } else if (orderDetails?.shipping_charge !== '0') {
+      deliveryCharges = orderDetails?.shipping_charge;
+      title = 'Shipping Charges';
+    } else {
+      title = '';
+      deliveryCharges = '0';
+    }
+    return { title, deliveryCharges };
+  };
+
+  const getCalculatedAmount = orderList?.reduce(
+    (accu, item) => {
+      const TAX_PERCENTAGE = 0.08;
+      const otherCharges =
+        parseFloat(orderDetails?.tips) + parseFloat(deliveryShippingCharges().deliveryCharges);
+      const subTotal = accu.subTotal + parseFloat(item.price * item.qty);
+      const totalTax = accu.totalTax + parseFloat(item.price * item.qty * TAX_PERCENTAGE);
+      const totalAmount = subTotal + totalTax + otherCharges;
+      return { subTotal, totalTax, totalAmount };
+    },
+    { subTotal: 0, totalTax: 0, totalAmount: 0 }
+  );
 
   return (
     <View style={styles.subTotalView}>
@@ -24,7 +54,7 @@ const Price = ({ orderData, onPresshandler }) => {
           {strings.deliveryOrders.subTotal}
         </Text>
         <Text style={[styles.totalTextStyle, { fontFamily: Fonts.MaisonBold }]}>
-          ${orderData?.order?.actual_amount ?? '0'}
+          ${getCalculatedAmount?.subTotal?.toFixed(2)}
         </Text>
       </View>
 
@@ -32,14 +62,14 @@ const Price = ({ orderData, onPresshandler }) => {
         <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.totalTextStyle2}>{'$'}</Text>
-          <Text style={[styles.totalTextStyle]}>{orderData?.order?.discount ?? '0.0'}</Text>
+          <Text style={[styles.totalTextStyle]}>{orderDetails?.discount ?? '0.0'}</Text>
         </View>
       </View>
       <View style={styles.orderDetailsView}>
         <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.totalTextStyle2}>{'$'}</Text>
-          <Text style={[styles.totalTextStyle]}>{orderData?.order?.tips ?? '0.0'}</Text>
+          <Text style={[styles.totalTextStyle]}>{orderDetails?.tips ?? '0.0'}</Text>
         </View>
       </View>
 
@@ -47,23 +77,15 @@ const Price = ({ orderData, onPresshandler }) => {
         <Text style={styles.invoiceText}>{strings.deliveryOrders.tax}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.totalTextStyle2}>{'$'}</Text>
-          <Text style={[styles.totalTextStyle]}>{orderData?.order?.tax}</Text>
+          <Text style={[styles.totalTextStyle]}>{getCalculatedAmount?.totalTax?.toFixed(2)}</Text>
         </View>
       </View>
-      {(orderData?.order?.delivery_charge !== '0' || orderData?.order?.shipping_charge !== '0') && (
+      {deliveryShippingCharges().title != '' && (
         <View style={styles.orderDetailsView}>
-          <Text style={styles.invoiceText}>
-            {orderData?.order?.delivery_charge !== '0'
-              ? strings.deliveryOrders.deliveryCharges
-              : strings.deliveryOrders.shippingCharges}
-          </Text>
+          <Text style={styles.invoiceText}>{deliveryShippingCharges().title}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={styles.totalTextStyle2}>{'$'}</Text>
-            <Text style={[styles.totalTextStyle]}>
-              {orderData?.order?.delivery_charge !== '0'
-                ? orderData?.order?.delivery_charge
-                : orderData?.order?.shipping_charge}
-            </Text>
+            <Text style={[styles.totalTextStyle]}>{deliveryShippingCharges().deliveryCharges}</Text>
           </View>
         </View>
       )}
@@ -96,7 +118,7 @@ const Price = ({ orderData, onPresshandler }) => {
             {'$'}
           </Text>
           <Text style={[styles.totalText, { paddingTop: 0 }]}>
-            {orderData?.order?.payable_amount ?? '0'}
+            {getCalculatedAmount?.totalAmount?.toFixed(2)}
           </Text>
         </View>
       </View>
@@ -132,34 +154,6 @@ const Price = ({ orderData, onPresshandler }) => {
           <Image source={arrowRightTop} style={styles.arrowButton} />
         </TouchableOpacity>
       </View>
-
-      {/* <View style={[styles.locationViewStyle, { justifyContent: 'center' }]}>
-        <TouchableOpacity
-          onPress={() => {
-            if (hasCheckedItem) {
-              onPresshandler();
-            } else {
-              alert('Please select products to return');
-            }
-          }}
-          style={[
-            styles.returnButtonStyle,
-            {
-              backgroundColor: hasCheckedItem ? COLORS.navy_blue : COLORS.white,
-              borderWidth: hasCheckedItem ? 0 : 1,
-            },
-          ]}
-        >
-          <Text
-            style={[
-              styles.returnTextStyle,
-              { color: hasCheckedItem ? COLORS.white : COLORS.navy_blue },
-            ]}
-          >
-            {'Return All'}
-          </Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 };

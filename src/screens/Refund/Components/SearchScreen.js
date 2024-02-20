@@ -194,9 +194,12 @@ export function SearchScreen(props) {
             ) : (
               <OrderDetail
                 orderData={order}
-                checkboxHandler={cartHandler}
+                checkboxHandler={setOrderDetail}
                 enableModal={() => setIsVisibleManual(true)}
-                onPress={() => setShowProductRefund(true)}
+                onPress={(orderList) => {
+                  setOrderDetail(orderList);
+                  setShowProductRefund(true);
+                }}
               />
             )}
           </View>

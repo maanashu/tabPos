@@ -1,35 +1,33 @@
 import React, { memo } from 'react';
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
-
 import moment from 'moment';
 import { ms } from 'react-native-size-matters';
-
 import Price from './Price';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
 import {
   addProduct,
-  blankCheckBox,
   checkboxSec,
   checkboxSecBlue,
   Fonts,
+  minus,
   pay,
-  PaymentDone,
-  research,
-  retail,
+  plus,
   scanNew,
-  scooter,
   userImage,
 } from '@/assets';
 import { useState } from 'react';
 import { getProductByUpc } from '@/actions/DeliveryAction';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { height } from '@/theme/ScalerDimensions';
+import { useDispatch, useSelector } from 'react-redux';
 import { Images } from '@/assets/new_icon';
+import { styles as posRetailStyles } from '@/screens/PosRetail3/PosRetail3.styles';
+import { getDashboard } from '@/selectors/DashboardSelector';
 
-const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
+const OrderDetail = ({ enableModal, checkboxHandler, onPress }) => {
+  const getSearchOrders = useSelector(getDashboard);
+  const orderData = getSearchOrders?.invoiceSearchOrders;
   const [productUpc, setProductUpc] = useState('');
   const [orderDetails, setOrderDetails] = useState([]);
   const dispatch = useDispatch();
@@ -56,26 +54,66 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
   const onChangeHandler = (text) => {
     setProductUpc(text);
     if (text?.length >= 12) {
-      dispatch(getProductByUpc(text, getProduct));
+      dispatch(getProductByUpc(text, handleCheckBox));
     }
   };
 
-  const getProduct = (value) => {
-    const getArray = orderData?.order?.order_details?.findIndex(
-      (attr) => attr?.product_id === value
+  const handleCheckBox = (productId) => {
+    const index = orderData?.order?.order_details?.findIndex(
+      (detail) => detail?.product_id == productId
     );
 
-    if (getArray !== -1) {
-      const newProdArray = [...orderData?.order?.order_details];
-      newProdArray[getArray].isChecked = !newProdArray[getArray].isChecked;
-      setOrderDetails(newProdArray);
+    if (index !== -1) {
+      const updatedOrderDetails = [...orderDetails];
+      updatedOrderDetails[index].isChecked = !updatedOrderDetails[index].isChecked;
+      setOrderDetails(updatedOrderDetails);
       setProductUpc('');
+      checkboxHandler(updatedOrderDetails);
     } else {
       alert('Product not found in the order');
     }
   };
 
-  const renderOrderProducts = ({ item }) => {
+  //TODO : Need to fix this
+  const updateQuantity = (operation, index) => {
+    // Retrieve the order detail at the specified index
+    const orderDetail = orderData?.order?.order_details[index];
+
+    // If order detail is not found or operation is invalid, exit early
+    if (!orderDetail || (operation !== '-' && operation !== '+')) {
+      return;
+    }
+
+    // Retrieve the current quantity of the product at the specified index
+    const currentQty = orderDetails[index]?.qty;
+
+    // If operation is decrement and quantity is already at minimum, exit early
+    if (operation === '-' && currentQty <= 1) {
+      return;
+    }
+
+    // If operation is increment and quantity is already at maximum, exit early
+    if (operation === '+' && currentQty >= orderDetail.qty) {
+      return;
+    }
+
+    // Clone the products array
+    const updatedProducts = [...orderDetails];
+
+    // Clone the product object at the specified index
+    const updatedProduct = { ...updatedProducts[index] };
+
+    // Update the quantity based on the operation
+    updatedProduct.qty += operation === '-' ? -1 : 1;
+
+    // Update the product at the specified index
+    updatedProducts[index] = updatedProduct;
+
+    // Update the state with the updated products array
+    setOrderDetails(updatedProducts);
+  };
+
+  const renderOrderProducts = ({ item, index }) => {
     return (
       <View style={styles.orderproductView}>
         <View style={[styles.shippingOrderHeader, { paddingTop: 0 }]}>
@@ -92,17 +130,55 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
         <Text style={[styles.nameTextStyle, { color: COLORS.black }]}>
           {`$${item?.price}` ?? '-'}
         </Text>
-        <Text style={[styles.nameTextStyle, { color: COLORS.black }]}>{item?.qty ?? '-'}</Text>
+        <View style={posRetailStyles.productCartBody}>
+          <View style={posRetailStyles.listCountCon}>
+            <TouchableOpacity
+              style={{
+                width: ms(10),
+                alignItems: 'center',
+                height: ms(15),
+                justifyContent: 'center',
+              }}
+              onPress={() => updateQuantity('-', index)}
+            >
+              <Image source={minus} style={posRetailStyles.minus} />
+            </TouchableOpacity>
+            <View style={posRetailStyles.dataQtyCon}>
+              <Text style={posRetailStyles.dataQty}>{item?.qty}</Text>
+            </View>
+
+            <TouchableOpacity
+              style={{
+                width: ms(10),
+                alignItems: 'center',
+                height: ms(15),
+                justifyContent: 'center',
+              }}
+              onPress={() => updateQuantity('+', index)}
+            >
+              <Image source={plus} style={posRetailStyles.minus} />
+            </TouchableOpacity>
+          </View>
+        </View>
+
         <Text style={[styles.nameTextStyle, { color: COLORS.black }]}>
           {`$${item?.price * item?.qty}` ?? '-'}
         </Text>
 
         {item?.isChecked ? (
-          <TouchableOpacity onPress={() => checkboxHandler(item?.id, item?.qty)}>
+          <TouchableOpacity
+            onPress={() => {
+              handleCheckBox(item?.product_id, item?.qty);
+            }}
+          >
             <Image source={checkboxSecBlue} style={styles.infoIconStyle} />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity onPress={() => checkboxHandler(item?.id, item?.qty)}>
+          <TouchableOpacity
+            onPress={() => {
+              handleCheckBox(item?.product_id, item?.qty);
+            }}
+          >
             <Image source={checkboxSec} style={styles.checkboxIconStyle} />
           </TouchableOpacity>
         )}
@@ -260,7 +336,13 @@ const OrderDetail = ({ orderData, enableModal, checkboxHandler, onPress }) => {
               </View>
             </View>
 
-            <Price orderData={orderData} onPresshandler={onPress} />
+            <Price
+              orderData={orderData}
+              orderList={orderDetails}
+              onPresshandler={() => {
+                onPress(orderDetails);
+              }}
+            />
           </View>
         </View>
       ) : Object.keys(orderData).length > 0 && orderData?.order === null ? (

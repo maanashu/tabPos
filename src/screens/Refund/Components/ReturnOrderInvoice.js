@@ -17,7 +17,6 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
   const sellerDetails = returnedData?.seller_details;
   const returnOrderDetail = returnedData?.order;
   const returnAddress = orderDetail?.order ? orderDetail?.order?.seller_details : sellerDetails;
-  // console.log('orderDetail', returnAddress);
   const address = orderDetail?.order
     ? orderDetail?.order?.seller_address_id
     : returnOrderDetail?.seller_address_id;
@@ -66,6 +65,11 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
     }
   }, [address, selleraddress]);
 
+  const refundAmountSubTotal = returnedData?.return_details?.reduce((acc, item) => {
+    const totalAmount = acc + parseFloat(item.refunded_amount);
+    return totalAmount;
+  }, 0);
+
   const renderProductItem = ({ item, index }) => {
     const appointment = appointments[index];
     const isBookingDateAvailable =
@@ -78,7 +82,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
       <View style={{ height: ms(28) }}>
         <View style={styles.container}>
           <View style={styles.subContainer}>
-            <Text style={styles.count}>x {item?.order_details?.qty}</Text>
+            <Text style={styles.count}>x {item?.returned_qty}</Text>
             <View style={{ marginLeft: ms(10) }}>
               <Text style={[styles.itemName, { width: ms(80) }]} numberOfLines={1}>
                 {item?.order_details?.product_name}
@@ -87,7 +91,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
           </View>
           <View style={{ width: '24%', alignItems: 'flex-end' }}>
             <Text style={styles.priceTitle} numberOfLines={1}>
-              {`${formattedReturnPrice(item?.order_details?.price * item?.order_details?.qty)}`}
+              {`${formattedReturnPrice(item?.refunded_amount)}`}
             </Text>
           </View>
         </View>
@@ -195,7 +199,7 @@ const ReturnOrderInvoice = ({ orderDetail }) => {
             <View style={styles._subTotalContainer}>
               <Text style={styles._payTitle}>Sub-Total</Text>
               <Text style={styles._payTitle}>{`${formattedReturnPrice(
-                returnedData?.products_refunded_amount
+                refundAmountSubTotal
               )}`}</Text>
             </View>
             <Spacer space={SH(10)} />
