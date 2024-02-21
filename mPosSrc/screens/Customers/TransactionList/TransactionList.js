@@ -26,6 +26,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
 import { getOrdersByInvoiceIdReset } from '@/actions/DashboardAction';
 import moment from 'moment';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function TransactionList(props) {
   const height = Dimensions.get('window').height;
@@ -160,8 +161,8 @@ export function TransactionList(props) {
   };
 
   const renderTransList = ({ item, index }) => {
-    const date = moment.utc(item?.created_at).format('MMM DD, YYYY') || '';
-    const time = moment.utc(item?.created_at).format('hh:MM A') || '';
+    const date = moment(item?.created_at).format('MMM DD, YYYY') || '';
+    const time = moment(item?.created_at).format('hh:MM A') || '';
 
     const suffix = item?.mode_of_payment === 'cash' ? '$' : 'JBR';
     return (
@@ -180,7 +181,7 @@ export function TransactionList(props) {
           </View>
           <View style={{ flex: 1 }}>
             <Text style={styles.amountText}>
-              {suffix} {item?.payable_amount}
+              {suffix} {amountFormat(item?.payable_amount, 'noSign')}
             </Text>
           </View>
           <View style={styles.rowAligned}>

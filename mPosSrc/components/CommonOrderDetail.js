@@ -45,6 +45,7 @@ import ProductList from '@mPOS/screens/HomeTab/Delivery/Components/ProductList';
 import OrderTotal from '@mPOS/screens/Return/Components/OrderTotal';
 import { number } from 'prop-types';
 import moment from 'moment/moment';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 export function CommonOrderDetail(props) {
   const mapRef = useRef();
@@ -184,10 +185,10 @@ export function CommonOrderDetail(props) {
           </View>
 
           <View style={styles.totalAmountView}>
-            <Text style={styles.productQtyPriceText}>{`$${
+            <Text style={styles.productQtyPriceText}>{`${
               item?.order_details
-                ? item?.order_details?.price * item?.order_details?.qty
-                : item?.price * item?.qty
+                ? amountFormat(item?.order_details?.price * item?.order_details?.qty)
+                : amountFormat(item?.price * item?.qty)
             }`}</Text>
           </View>
         </View>
@@ -371,30 +372,24 @@ export function CommonOrderDetail(props) {
             <Spacer space={SH(15)} />
             <View style={styles.amountViewStyle}>
               <Text style={styles.labelTextStyle}>{strings.delivery.subTotal}</Text>
-              <Text style={styles.priceValueText}>{`$${
-                Number(orderData?.actual_amount)?.toFixed(2) || '0.00'
-              }`}</Text>
+              <Text style={styles.priceValueText}>{`${amountFormat(
+                orderData?.actual_amount
+              )}`}</Text>
             </View>
             <Spacer space={SH(4)} />
             <View style={styles.amountViewStyle}>
               <Text style={styles.labelTextStyle}>{strings.delivery.totalTax}</Text>
-              <Text style={styles.priceValueText}>{`$${
-                Number(orderData?.tax)?.toFixed(2) || '0.00'
-              }`}</Text>
+              <Text style={styles.priceValueText}>{`${amountFormat(orderData?.tax)}`}</Text>
             </View>
             <Spacer space={SH(4)} />
             <View style={styles.amountViewStyle}>
               <Text style={styles.labelTextStyle}>{'Tip'}</Text>
-              <Text style={styles.priceValueText}>{`$${
-                Number(orderData?.tips)?.toFixed(2) || '0.00'
-              }`}</Text>
+              <Text style={styles.priceValueText}>{`${amountFormat(orderData?.tips)}`}</Text>
             </View>
             <Spacer space={SH(4)} />
             <View style={styles.amountViewStyle}>
               <Text style={styles.labelTextStyle}>{strings.delivery.discount}</Text>
-              <Text style={styles.priceValueText}>{`$${
-                Number(orderData?.discount)?.toFixed(2) || '0.00'
-              }`}</Text>
+              <Text style={styles.priceValueText}>{`${amountFormat(orderData?.discount)}`}</Text>
             </View>
             <Spacer space={SH(4)} />
             {(orderData?.delivery_charge !== '0' || orderData?.shipping_charge !== '0') && (
@@ -405,11 +400,11 @@ export function CommonOrderDetail(props) {
                     : strings.deliveryOrders.shippingCharges}
                 </Text>
                 <View style={{ flexDirection: 'row' }}>
-                  <Text style={styles.priceValueText}>{'$'}</Text>
+                  {/* <Text style={styles.priceValueText}>{'$'}</Text> */}
                   <Text style={styles.priceValueText}>
                     {orderData?.delivery_charge !== '0'
-                      ? Number(orderData?.delivery_charge)?.toFixed(2)
-                      : Number(orderData?.shipping_charge)?.toFixed(2)}
+                      ? amountFormat(orderData?.delivery_charge)
+                      : amountFormat(orderData?.shipping_charge)}
                   </Text>
                 </View>
               </View>
@@ -419,9 +414,7 @@ export function CommonOrderDetail(props) {
             <Spacer space={SH(15)} />
             <View style={styles.amountViewStyle}>
               <Text style={styles.totalValueText}>{strings.delivery.total}</Text>
-              <Text style={styles.totalValueText}>
-                ${Number(orderData?.payable_amount)?.toFixed(2 || '0.00')}
-              </Text>
+              <Text style={styles.totalValueText}>{amountFormat(orderData?.payable_amount)}</Text>
             </View>
           </View>
           <Spacer space={SH(15)} />
