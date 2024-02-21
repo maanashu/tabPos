@@ -13,6 +13,11 @@ import { Header, HorizontalLine, ScreenWrapper, Spacer } from '@mPOS/components'
 export function ReturnOrderInvoice(props) {
   const data = props?.route?.params?.data;
 
+  const refundAmountSubTotal = returnedData?.return_details?.reduce((acc, item) => {
+    const totalAmount = acc + parseFloat(item.refunded_amount);
+    return totalAmount;
+  }, 0);
+
   const getUserData = useSelector(getUser);
   const returnedData = data?.return;
 
@@ -20,7 +25,7 @@ export function ReturnOrderInvoice(props) {
 
   const sellerDetail = returnedData?.seller_details;
 
-  const finalSubtotal = returnedData?.products_refunded_amount;
+  const finalSubtotal = refundAmountSubTotal;
 
   const finalDeliveryShippingCharges =
     (returnedData?.order?.delivery_charge != 0 && returnedData?.order?.delivery_charge) ||
@@ -50,12 +55,10 @@ export function ReturnOrderInvoice(props) {
   const formattedDate = localDateTime.format('ddd DD MMM , YYYY | h:mm A');
 
   const renderProducts = ({ item, index }) => {
-    const normalOrderAmount = formattedReturnPrice(
-      item?.order_details?.price * item?.order_details?.qty
-    );
+    const normalOrderAmount = formattedReturnPrice(item?.refunded_amount);
 
     const productName = item?.order_details?.product_name;
-    const productQty = item?.order_details?.qty;
+    const productQty = item?.returned_qty;
     return (
       <>
         <View style={styles.itemContainer}>

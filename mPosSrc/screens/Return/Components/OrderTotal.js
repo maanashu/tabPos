@@ -9,9 +9,42 @@ import { strings } from '@mPOS/localization';
 import { Dimensions } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { MPOS_NAVIGATION, commonNavigate } from '@common/commonImports';
+import { amountFormat, formattedPrice } from '@/utils/GlobalMethods';
 
 const OrderTotal = ({ orderData, orderDetails }) => {
-  const hasCheckedItem = orderData?.order?.order_details?.some((item) => item.isChecked === true);
+  // const hasCheckedItem = orderData?.order?.order_details?.some((item) => item.isChecked === true);
+
+  const hasCheckedItem = orderDetails?.some((item) => item.isChecked === true);
+  const orderDetail = orderData?.order;
+
+  const deliveryShippingCharges = () => {
+    let deliveryCharges;
+    let title;
+    if (orderDetail?.delivery_charge !== '0') {
+      deliveryCharges = orderDetail?.delivery_charge;
+      title = 'Delivery Charges';
+    } else if (orderDetail?.shipping_charge !== '0') {
+      deliveryCharges = orderDetail?.shipping_charge;
+      title = 'Shipping Charges';
+    } else {
+      title = '';
+      deliveryCharges = '0';
+    }
+    return { title, deliveryCharges };
+  };
+
+  const getCalculatedAmount = orderDetails?.reduce(
+    (accu, item) => {
+      const TAX_PERCENTAGE = 0.08;
+      const otherCharges =
+        parseFloat(orderDetail?.tips) + parseFloat(deliveryShippingCharges().deliveryCharges);
+      const subTotal = accu.subTotal + parseFloat(item.price * item.qty);
+      const totalTax = accu.totalTax + parseFloat(item.price * item.qty * TAX_PERCENTAGE);
+      const totalAmount = subTotal + totalTax + otherCharges;
+      return { subTotal, totalTax, totalAmount };
+    },
+    { subTotal: 0, totalTax: 0, totalAmount: 0 }
+  );
 
   const onPressNextHandler = () => {
     if (hasCheckedItem) {
@@ -44,10 +77,10 @@ const OrderTotal = ({ orderData, orderDetails }) => {
         </View>
 
         <View>
-          <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.orderid}</Text>
+          <Text style={styles.deliveryOrderTextStyle}>{strings.delivery.invoiceNumber}</Text>
           <Text
             style={[styles.deliveryDateTextStyle, { fontSize: SF(14) }]}
-          >{`#${orderData?.order?.id}`}</Text>
+          >{`#${orderData?.invoice_number}`}</Text>
         </View>
       </View>
 
@@ -57,30 +90,30 @@ const OrderTotal = ({ orderData, orderDetails }) => {
 
       <View style={styles.amountViewStyle}>
         <Text style={styles.labelTextStyle}>{strings.delivery.subTotal}</Text>
-        <Text style={styles.priceValueText}>{`$${orderData?.order?.actual_amount}`}</Text>
+        <Text style={styles.priceValueText}> {amountFormat(getCalculatedAmount?.subTotal)}</Text>
       </View>
 
       <Spacer space={SH(4)} />
 
       <View style={styles.amountViewStyle}>
         <Text style={styles.labelTextStyle}>{strings.delivery.totalTax}</Text>
-        <Text style={styles.priceValueText}>{`$${orderData?.order?.tax}`}</Text>
+        <Text style={styles.priceValueText}>{amountFormat(getCalculatedAmount?.totalTax)}</Text>
       </View>
 
       <Spacer space={SH(4)} />
 
       <View style={styles.amountViewStyle}>
         <Text style={styles.labelTextStyle}>{strings.delivery.discount}</Text>
-        <Text style={styles.priceValueText}>{`$${orderData?.order?.discount}`}</Text>
+        <Text style={styles.priceValueText}>{amountFormat(orderDetails?.discount)}</Text>
       </View>
 
-      {orderData?.order?.tips >= 0 ? (
+      {orderDetails?.tips > 0 ? (
         <>
           <Spacer space={SH(4)} />
 
           <View style={styles.amountViewStyle}>
             <Text style={styles.labelTextStyle}>{strings.delivery.tip}</Text>
-            <Text style={styles.priceValueText}>{`$${orderData?.order?.tips}`}</Text>
+            <Text style={styles.priceValueText}>{amountFormat(orderDetails?.tips)}</Text>
           </View>
         </>
       ) : (
@@ -89,20 +122,13 @@ const OrderTotal = ({ orderData, orderDetails }) => {
 
       <Spacer space={SH(4)} />
 
-      {(orderData?.order?.delivery_charge !== '0' || orderData?.order?.shipping_charge !== '0') && (
+      {deliveryShippingCharges().title != '' && (
         <View style={styles.amountViewStyle}>
-          <Text style={styles.labelTextStyle}>
-            {orderData?.order?.delivery_charge !== '0'
-              ? strings.deliveryOrders.deliveryCharges
-              : strings.deliveryOrders.shippingCharges}
-          </Text>
+          <Text style={styles.invoiceText}>{deliveryShippingCharges().title}</Text>
+
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.priceValueText}>{'$'}</Text>
-            <Text style={styles.priceValueText}>
-              {orderData?.order?.delivery_charge !== '0'
-                ? orderData?.order?.delivery_charge
-                : orderData?.order?.shipping_charge}
-            </Text>
+            <Text style={styles.priceValueText}>{deliveryShippingCharges().deliveryCharges}</Text>
           </View>
         </View>
       )}
@@ -115,7 +141,7 @@ const OrderTotal = ({ orderData, orderDetails }) => {
 
       <View style={styles.amountViewStyle}>
         <Text style={styles.totalValueText}>{strings.delivery.total}</Text>
-        <Text style={styles.totalValueText}>{`$${orderData?.order?.payable_amount}`}</Text>
+        <Text style={styles.totalValueText}>{amountFormat(getCalculatedAmount?.totalAmount)}</Text>
       </View>
 
       <Spacer space={SH(15)} />

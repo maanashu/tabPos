@@ -32,7 +32,7 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
               orderData?.order?.status === 7 ||
               orderData?.order?.status === 8) &&
               orderData?.return !== null) ||
-            (orderData?.order === null && orderData?.return !== null)
+            (orderData?.order == null && orderData?.return != null)
               ? commonNavigate(MPOS_NAVIGATION.returnOrderInvoice, { data: orderData })
               : commonNavigate(MPOS_NAVIGATION.returnOrderDetail, { data: orderData });
           }}
