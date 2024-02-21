@@ -34,7 +34,7 @@ import { getDrawerSessions } from '@/actions/CashTrackingAction';
 import ReactNativeModal from 'react-native-modal';
 import InventoryProducts from './InventoryProducts';
 import RecheckConfirmation from './RecheckConfirmation';
-import { formattedReturnPrice } from '@/utils/GlobalMethods';
+import { amountFormat, formattedReturnPrice } from '@/utils/GlobalMethods';
 import Header from './Header';
 
 const { width, height } = Dimensions.get('window');
@@ -184,7 +184,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
         <View style={styles.productCartBodyRight}>
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              ${item?.price ?? '0'}
+              {amountFormat(item?.price ?? '0.00')}
             </Text>
           </View>
 
@@ -251,10 +251,9 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
 
           <View style={styles.productCartBody}>
             <Text style={styles.blueListDataText} numberOfLines={1}>
-              $
               {applicableIsCheck || applyEachItem
-                ? (item?.totalRefundAmount).toFixed(2) ?? 0
-                : item.price * item.qty}
+                ? amountFormat((item?.totalRefundAmount).toFixed(2) ?? 0)
+                : amountFormat(item.price * item.qty)}
             </Text>
           </View>
           <View style={{}}>
@@ -514,9 +513,7 @@ const ProductRefund = ({ backHandler, orderList, orderData }) => {
                         setApplicableIsCheck(!!text);
                       }}
                       placeholderTextColor={COLORS.faded_purple}
-                      placeholder={
-                        selectType === strings.returnOrder.dollarLabel ? '$ 00.00' : '0 %'
-                      }
+                      placeholder={selectType === strings.returnOrder.dollarLabel ? '$0.00' : '0%'}
                     />
 
                     <View style={styles.typeViewStyle}>

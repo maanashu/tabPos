@@ -88,7 +88,10 @@ const PaymentSelection = ({
         orderData?.order?.mode_of_payment === 'card' ? COLORS.light_sky_blue : COLORS.torquoise,
       backgroundColor:
         orderData?.order?.mode_of_payment === 'card' ? COLORS.torquoise : COLORS.light_sky_blue,
-      amount: orderData?.order?.mode_of_payment === 'card' ? '$' + payableAmount.toFixed(2) : 'J0',
+      amount:
+        orderData?.order?.mode_of_payment === 'card'
+          ? '$' + payableAmount.toFixed(2)
+          : payableAmount.toFixed(2),
       borderColor:
         orderData?.order?.mode_of_payment === 'card' ? COLORS.transparent : COLORS.light_skyblue,
       opacity: orderData?.order?.mode_of_payment === 'card' ? 1 : 0.5,

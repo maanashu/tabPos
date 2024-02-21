@@ -6,6 +6,7 @@ import { COLORS, SF, SH, SW } from '@/theme';
 import { clock, Fonts, pay, pin, rightIcon, user, userOutlineDrawer } from '@/assets';
 import { ms } from 'react-native-size-matters';
 import { DataTable } from 'react-native-paper';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 const OrderWithInvoiceNumber = ({ orderData }) => {
   const userDetails = orderData?.order?.user_details ?? orderData?.return?.user_details;
@@ -119,9 +120,11 @@ const OrderWithInvoiceNumber = ({ orderData }) => {
               style={[styles.pinImageStyle, { tintColor: COLORS.success_green }]}
             />
             <Text style={[styles.distanceTextStyle, { color: COLORS.success_green }]}>
-              {orderData?.return
-                ? orderData?.return?.order?.payable_amount
-                : orderData?.order?.payable_amount}
+              {amountFormat(
+                orderData?.return
+                  ? orderData?.return?.order?.payable_amount
+                  : orderData?.order?.payable_amount
+              )}
             </Text>
           </View>
 
