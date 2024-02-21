@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Images } from '@/assets/new_icon';
 import { styles as posRetailStyles } from '@/screens/PosRetail3/PosRetail3.styles';
 import { getDashboard } from '@/selectors/DashboardSelector';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 const OrderDetail = ({ enableModal, checkboxHandler, onPress }) => {
   const getSearchOrders = useSelector(getDashboard);
@@ -128,7 +129,7 @@ const OrderDetail = ({ enableModal, checkboxHandler, onPress }) => {
           </View>
         </View>
         <Text style={[styles.nameTextStyle, { color: COLORS.black }]}>
-          {`$${item?.price}` ?? '-'}
+          {`${amountFormat(item?.price)}` ?? '-'}
         </Text>
         <View style={posRetailStyles.productCartBody}>
           <View style={posRetailStyles.listCountCon}>
@@ -162,7 +163,7 @@ const OrderDetail = ({ enableModal, checkboxHandler, onPress }) => {
         </View>
 
         <Text style={[styles.nameTextStyle, { color: COLORS.black }]}>
-          {`$${item?.price * item?.qty}` ?? '-'}
+          {`${amountFormat(item?.price * item?.qty)}` ?? '-'}
         </Text>
 
         {item?.isChecked ? (
@@ -424,7 +425,7 @@ const styles = StyleSheet.create({
     color: COLORS.navy_blue,
   },
   nameTextStyle: {
-    fontSize: SF(14),
+    fontSize: SF(12),
     textAlign: 'center',
     color: COLORS.solid_grey,
     fontFamily: Fonts.Regular,

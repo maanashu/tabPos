@@ -13,6 +13,7 @@ import { Fonts, arrowRightTop } from '@/assets';
 import { Spacer } from '@/components';
 import { strings } from '@/localization';
 import { COLORS, SF, SH } from '@/theme';
+import { amountFormat } from '@/utils/GlobalMethods';
 
 const Price = ({ orderData, orderList, onPresshandler }) => {
   const hasCheckedItem = orderList?.some((item) => item.isChecked === true);
@@ -29,7 +30,7 @@ const Price = ({ orderData, orderList, onPresshandler }) => {
       title = 'Shipping Charges';
     } else {
       title = '';
-      deliveryCharges = '0';
+      deliveryCharges = '0.00';
     }
     return { title, deliveryCharges };
   };
@@ -61,15 +62,15 @@ const Price = ({ orderData, orderList, onPresshandler }) => {
       <View style={styles.orderDetailsView}>
         <Text style={styles.invoiceText}>{strings.deliveryOrders.discount}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={styles.totalTextStyle2}>{'$'}</Text>
-          <Text style={[styles.totalTextStyle]}>{orderDetails?.discount ?? '0.0'}</Text>
+          <Text style={[styles.totalTextStyle]}>
+            {amountFormat(orderDetails?.discount ?? '0.00')}
+          </Text>
         </View>
       </View>
       <View style={styles.orderDetailsView}>
         <Text style={styles.invoiceText}>{strings.deliveryOrders.tips}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={styles.totalTextStyle2}>{'$'}</Text>
-          <Text style={[styles.totalTextStyle]}>{orderDetails?.tips ?? '0.0'}</Text>
+          <Text style={[styles.totalTextStyle]}>{amountFormat(orderDetails?.tips ?? '0.00')}</Text>
         </View>
       </View>
 
@@ -84,19 +85,20 @@ const Price = ({ orderData, orderList, onPresshandler }) => {
         <View style={styles.orderDetailsView}>
           <Text style={styles.invoiceText}>{deliveryShippingCharges().title}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={styles.totalTextStyle2}>{'$'}</Text>
-            <Text style={[styles.totalTextStyle]}>{deliveryShippingCharges().deliveryCharges}</Text>
+            <Text style={[styles.totalTextStyle]}>
+              {amountFormat(deliveryShippingCharges().deliveryCharges)}
+            </Text>
           </View>
         </View>
       )}
 
-      <View style={styles.orderDetailsView}>
+      {/* <View style={styles.orderDetailsView}>
         <Text style={styles.invoiceText}>{strings.deliveryOrders.otherFees}</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={styles.totalTextStyle2}>{'$'}</Text>
           <Text style={[styles.totalTextStyle]}>{'0.00'}</Text>
         </View>
-      </View>
+      </View> */}
 
       <View style={styles.horizontalLine} />
 
