@@ -331,6 +331,7 @@ export function POSUsers({ navigation }) {
       setIsForgot(false);
     }
   };
+
   return (
     <ScreenWrapper>
       {!twoFactorEnabled ? (
@@ -385,7 +386,9 @@ export function POSUsers({ navigation }) {
 
                     <Spacer space={SH(10)} />
                     <Text style={styles.firstName} numberOfLines={1}>
-                      {`${item.user?.user_profiles?.firstname} ${item.user?.user_profiles?.lastname} `}
+                      {`${item.user?.user_profiles?.firstname} ${
+                        item.user?.user_profiles?.lastname ?? ''
+                      } `}
                     </Text>
                     <Spacer space={SH(6)} />
                     <Text style={styles.role} numberOfLines={4}>
