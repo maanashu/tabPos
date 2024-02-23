@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { styles } from '../Calender.styles';
@@ -35,6 +35,24 @@ const VerifyCheckinOtp = ({ isVisible, setIsVisible, appointmentData, onVerify }
   const isSendCheckinOTPLoading = useSelector((state) =>
     isLoadingSelector([TYPES.SEND_CHECKIN_OTP], state)
   );
+  const apiFunction = async () => {
+    const params = {
+      appointment_id: appointmentId,
+      otp: value,
+    };
+    dispatch(verifyCheckinOTP(params))
+      .then((response) => {
+        onVerify(response);
+      })
+      .catch((error) => {
+        alert(error?.msg);
+      });
+  };
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      apiFunction();
+    }
+  }, [value]);
 
   return (
     <Modal isVisible={isVisible}>

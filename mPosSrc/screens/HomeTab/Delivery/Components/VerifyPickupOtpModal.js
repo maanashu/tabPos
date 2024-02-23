@@ -74,6 +74,25 @@ const VerifyPickupOtpModal = ({ visible, orderData, changeOrderStatus, onClose }
       });
       return;
     } else {
+      apiFunction();
+    }
+
+    const storeSuccessFlag = async (value) => {
+      try {
+        await AsyncStorage.setItem('success-flag', 'true');
+      } catch (e) {}
+    };
+
+    const renderCell = ({ index }) => {
+      const displaySymbol = value[index] ? '*' : '';
+
+      return (
+        <View key={index} style={styles.cellRoot} onLayout={getCellOnLayoutHandler(index)}>
+          <Text style={styles.cellText}>{displaySymbol}</Text>
+        </View>
+      );
+    };
+    const apiFunction = async () => {
       const data = {
         order_id: orderData?.id,
         otp: value,
@@ -90,25 +109,13 @@ const VerifyPickupOtpModal = ({ visible, orderData, changeOrderStatus, onClose }
       //   setValue('');
       //   navigate(NAVIGATION.posUsers);
       // }
+    };
+  };
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      apiFunction();
     }
-  };
-
-  const storeSuccessFlag = async (value) => {
-    try {
-      await AsyncStorage.setItem('success-flag', 'true');
-    } catch (e) {}
-  };
-
-  const renderCell = ({ index }) => {
-    const displaySymbol = value[index] ? '*' : '';
-
-    return (
-      <View key={index} style={styles.cellRoot} onLayout={getCellOnLayoutHandler(index)}>
-        <Text style={styles.cellText}>{displaySymbol}</Text>
-      </View>
-    );
-  };
-
+  }, [value]);
   return (
     <Modal
       coverScreen

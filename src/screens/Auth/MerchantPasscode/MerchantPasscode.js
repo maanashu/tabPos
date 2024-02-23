@@ -23,6 +23,7 @@ import { VirtualKeyBoard } from '@/components/VirtualKeyBoard';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { styles } from '@/screens/Auth/MerchantPasscode/MerchantPasscode.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 
 const CELL_COUNT = 4;
 
@@ -67,22 +68,24 @@ export function MerchantPasscode({ route }) {
       });
       return;
     } else {
-      const data = {
-        phone_no: phone_no,
-        country_code: country_code,
-        pin: value,
-      };
-      storeSuccessFlag();
-      const res = await merchantLogin(data)(dispatch);
-      if (res?.type === 'MERCHANT_LOGIN_ERROR') {
-        setValue('');
-      } else if (res?.type === 'MERCHANT_LOGIN_SUCCESS') {
-        setValue('');
-        navigate(NAVIGATION.posUsers);
-      }
+      apiFunction();
     }
   };
-
+  const apiFunction = async () => {
+    const data = {
+      phone_no: phone_no,
+      country_code: country_code,
+      pin: value,
+    };
+    storeSuccessFlag();
+    const res = await merchantLogin(data)(dispatch);
+    if (res?.type === 'MERCHANT_LOGIN_ERROR') {
+      setValue('');
+    } else if (res?.type === 'MERCHANT_LOGIN_SUCCESS') {
+      setValue('');
+      navigate(NAVIGATION.posUsers);
+    }
+  };
   const storeSuccessFlag = async (value) => {
     try {
       await AsyncStorage.setItem('success-flag', 'true');
@@ -98,6 +101,11 @@ export function MerchantPasscode({ route }) {
       </View>
     );
   };
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      apiFunction();
+    }
+  }, [value]);
 
   return (
     <View

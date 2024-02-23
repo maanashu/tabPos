@@ -194,44 +194,51 @@ export function POSUsers({ navigation }) {
       });
       return;
     } else {
-      const data = {
-        code: value,
-      };
-      const verificationFunction = TWO_FACTOR ? verifyGoogleCode : configureGoogleCode;
-
-      const res = await verificationFunction(data, merchantToken)(dispatch);
-
-      if (res?.msg === 'Code verified successfully') {
-        if (isLogout) {
-          dispatch(logoutFunction());
-          setIsLogout(false);
-          setValue('');
-          setTwoFactorEnabled(false);
-          setTwoStepModal(false);
-          setGoogleAuthScan(false);
-          setSixDigit(false);
-        } else {
-          var updatedData = merchantData;
-          updatedData.user.user_profiles.is_two_fa_enabled = false;
-          dispatch(merchantLoginSuccess(updatedData));
-          setValue('');
-          setTwoFactorEnabled(false);
-          setTwoStepModal(false);
-          setGoogleAuthScan(false);
-          setSixDigit(false);
-          const data = {
-            page: 1,
-            limit: 10,
-            seller_id: sellerID,
-          };
-          dispatch(getAllPosUsers(data));
-        }
-      } else if (res === undefined) {
-        setValue('');
-      }
+      enableSixAPIFunction();
     }
   };
+  const enableSixAPIFunction = async () => {
+    const data = {
+      code: value,
+    };
+    const verificationFunction = TWO_FACTOR ? verifyGoogleCode : configureGoogleCode;
 
+    const res = await verificationFunction(data, merchantToken)(dispatch);
+
+    if (res?.msg === 'Code verified successfully') {
+      if (isLogout) {
+        dispatch(logoutFunction());
+        setIsLogout(false);
+        setValue('');
+        setTwoFactorEnabled(false);
+        setTwoStepModal(false);
+        setGoogleAuthScan(false);
+        setSixDigit(false);
+      } else {
+        var updatedData = merchantData;
+        updatedData.user.user_profiles.is_two_fa_enabled = false;
+        dispatch(merchantLoginSuccess(updatedData));
+        setValue('');
+        setTwoFactorEnabled(false);
+        setTwoStepModal(false);
+        setGoogleAuthScan(false);
+        setSixDigit(false);
+        const data = {
+          page: 1,
+          limit: 10,
+          seller_id: sellerID,
+        };
+        dispatch(getAllPosUsers(data));
+      }
+    } else if (res === undefined) {
+      setValue('');
+    }
+  };
+  useEffect(() => {
+    if (value && value.length >= 6) {
+      enableSixAPIFunction();
+    }
+  }, [value]);
   const passcodeHandlerFive = async () => {
     if (!forgotValue) {
       Toast.show({
@@ -258,17 +265,25 @@ export function POSUsers({ navigation }) {
       });
       return;
     } else {
-      const data = {
-        verification_id: verificationId,
-        verification_otp: forgotValue,
-      };
-      const res = await dispatch(reset2fa(data, merchantToken));
-      if (res?.status_code == 201) {
-        setQRCodeUrl(res?.payload?.qrCode);
-        setForgotPinScreen(false);
-      }
+      forgotApiFunction();
     }
   };
+  const forgotApiFunction = async () => {
+    const data = {
+      verification_id: verificationId,
+      verification_otp: forgotValue,
+    };
+    const res = await dispatch(reset2fa(data, merchantToken));
+    if (res?.status_code == 201) {
+      setQRCodeUrl(res?.payload?.qrCode);
+      setForgotPinScreen(false);
+    }
+  };
+  useEffect(() => {
+    if (forgotValue && forgotValue.length >= 5) {
+      forgotApiFunction();
+    }
+  }, [forgotValue]);
   const crossHandler = () => {
     if (isLogout) {
       setTwoFactorEnabled(false);

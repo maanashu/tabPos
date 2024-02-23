@@ -18,6 +18,7 @@ import Header from '@mPOS/screens/Authentication/SetPin/Components/Header';
 import PinSuccessComponent from '@mPOS/screens/Authentication/SetPin/Components/PinSuccessComponent';
 
 import { styles } from '@mPOS/screens/Authentication/SetPin/styles';
+import { useEffect } from 'react';
 
 export function ReenterPin(props) {
   const CELL_COUNT = 4;
@@ -40,6 +41,12 @@ export function ReenterPin(props) {
       setEnableModal(true);
     }
   };
+
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      setEnableModal(true);
+    }
+  }, [value]);
 
   const cancelHandler = () => setValue('');
 
@@ -67,6 +74,7 @@ export function ReenterPin(props) {
           keyboardType={'number-pad'}
           textContentType={'oneTimeCode'}
           onSubmitEditing={Keyboard.dismiss}
+          on
           renderCell={({ index, symbol, isFocused }) => (
             <View
               key={index}

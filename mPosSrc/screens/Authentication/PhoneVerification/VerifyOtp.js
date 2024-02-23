@@ -24,6 +24,7 @@ import { CustomErrorToast } from '@mPOS/components/Toast';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 
 import styles from './styles';
+import { useEffect } from 'react';
 
 export function VerifyOtp() {
   const dispatch = useDispatch();
@@ -46,18 +47,25 @@ export function VerifyOtp() {
     } else if (value && value.length < 4) {
       CustomErrorToast({ message: strings.validationMessages.otpLengthError });
     } else {
-      const data = {
-        type: 'phone',
-        country_code: phone_code,
-        phone_no: phone_no,
-        pin: value,
-      };
-      dispatch(merchantLogin(data));
+      apiFunction();
     }
   };
 
   const isLoading = useSelector((state) => isLoadingSelector([TYPES.MERCHANT_LOGIN], state));
-
+  const apiFunction = async () => {
+    const data = {
+      type: 'phone',
+      country_code: phone_code,
+      phone_no: phone_no,
+      pin: value,
+    };
+    dispatch(merchantLogin(data));
+  };
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      apiFunction();
+    }
+  }, [value]);
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView

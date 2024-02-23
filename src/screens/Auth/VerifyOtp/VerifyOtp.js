@@ -18,6 +18,7 @@ import { Spacer, Button } from '@/components';
 import { navigate } from '@/navigation/NavigationRef';
 
 import { styles } from '@/screens/Auth/VerifyOtp/VerifyOtp.styles';
+import { useEffect } from 'react';
 
 const CELL_COUNT = 5;
 
@@ -55,10 +56,17 @@ export function VerifyOtp() {
       });
       return;
     } else {
-      navigate(NAVIGATION.verifySucess);
+      verifyOtpFunction();
     }
   };
-
+  const verifyOtpFunction = async () => {
+    navigate(NAVIGATION.verifySucess);
+  };
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      verifyOtpFunction();
+    }
+  }, [value]);
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{ flexGrow: 1 }}

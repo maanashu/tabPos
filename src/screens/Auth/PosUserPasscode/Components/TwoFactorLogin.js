@@ -148,25 +148,32 @@ export function TwoFactorLogin(props) {
       });
       return;
     } else {
-      setIsLoading(true);
-      const data = {
-        code: value,
-      };
-      const authToken = userResponse?.token;
-      // const verificationFunction = verifyGoogleCodeMPOS;
-      const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
-      const res = await verificationFunction(data, authToken)(dispatch);
-      setIsLoading(false);
-      if (res?.status_code === 201) {
-        dispatch(loginPosUserSuccess(userResponse));
-        dispatch(getSettings());
-        dispatch(getProfile(userResponse?.id));
-      } else if (res === undefined) {
-        setValue('');
-      }
+      enableSixAPIFunction();
     }
   };
-
+  const enableSixAPIFunction = async () => {
+    setIsLoading(true);
+    const data = {
+      code: value,
+    };
+    const authToken = userResponse?.token;
+    // const verificationFunction = verifyGoogleCodeMPOS;
+    const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
+    const res = await verificationFunction(data, authToken)(dispatch);
+    setIsLoading(false);
+    if (res?.status_code === 201) {
+      dispatch(loginPosUserSuccess(userResponse));
+      dispatch(getSettings());
+      dispatch(getProfile(userResponse?.id));
+    } else if (res === undefined) {
+      setValue('');
+    }
+  };
+  useEffect(() => {
+    if (value && value.length >= 6) {
+      enableSixAPIFunction();
+    }
+  }, [value]);
   const onForgotPin = async () => {
     setSixDigit(false);
     setForgotPinScreen(true);
@@ -202,21 +209,30 @@ export function TwoFactorLogin(props) {
       });
       return;
     } else {
-      const data = {
-        verification_id: verificationId,
-        verification_otp: forgotValue,
-      };
-      const authToken = userResponse?.token;
-
-      const res = await dispatch(reset2fa(data, authToken));
-      if (res?.status_code == 201) {
-        setQRCodeUrl(res?.payload?.qrCode);
-        setForgotPinScreen(false);
-        setForgotValue('');
-        setQrCodeScreen(true);
-      }
+      forgotApiFunction();
     }
   };
+
+  const forgotApiFunction = async () => {
+    const data = {
+      verification_id: verificationId,
+      verification_otp: forgotValue,
+    };
+    const authToken = userResponse?.token;
+
+    const res = await dispatch(reset2fa(data, authToken));
+    if (res?.status_code == 201) {
+      setQRCodeUrl(res?.payload?.qrCode);
+      setForgotPinScreen(false);
+      setForgotValue('');
+      setQrCodeScreen(true);
+    }
+  };
+  useEffect(() => {
+    if (forgotValue && forgotValue.length >= 5) {
+      forgotApiFunction();
+    }
+  }, [forgotValue]);
   const onBackPressHandler = (type) => {
     if (type == 'Forgot') {
       setForgotPinScreen(false);
@@ -226,6 +242,7 @@ export function TwoFactorLogin(props) {
       setIsForgot(false);
     }
   };
+
   const crossHandler = () => {};
   return (
     <SafeAreaView style={styles.container}>

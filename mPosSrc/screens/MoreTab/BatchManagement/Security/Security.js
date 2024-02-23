@@ -116,41 +116,50 @@ export function Security() {
       });
       return;
     } else {
-      // const data = {
-      //   token: value,
-      //   status: googleAuthicator ? false : true,
-      // };
-      // const res = await dispatch(verifyGoogleCode(data));
-
-      var data = {};
-      data = googleAuthicator
-        ? {
-            code: value,
-            disable_2fa: true,
-          }
-        : {
-            code: value,
-          };
-      const authToken = loginPosUser?.token;
-
-      const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
-
-      const res = await verificationFunction(data, authToken)(dispatch);
-      if (res?.status_code === 201) {
-        // const data = {
-        //   app_name: 'pos',
-        //   google_authenticator_status: factorEnable,
-        // };
-        // dispatch(upadteApi(data));
-        // dispatch(getSettings());
-        dispatch(getProfile(loginPosUser?.user_id));
-        setSixDigit(false);
-        setValue('');
-      } else if (res === undefined) {
-        setValue('');
-      }
+      enableSixAPIFunction();
     }
   };
+
+  const enableSixAPIFunction = async () => {
+    // const data = {
+    //   token: value,
+    //   status: googleAuthicator ? false : true,
+    // };
+    // const res = await dispatch(verifyGoogleCode(data));
+
+    var data = {};
+    data = googleAuthicator
+      ? {
+          code: value,
+          disable_2fa: true,
+        }
+      : {
+          code: value,
+        };
+    const authToken = loginPosUser?.token;
+
+    const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
+
+    const res = await verificationFunction(data, authToken)(dispatch);
+    if (res?.status_code === 201) {
+      // const data = {
+      //   app_name: 'pos',
+      //   google_authenticator_status: factorEnable,
+      // };
+      // dispatch(upadteApi(data));
+      // dispatch(getSettings());
+      dispatch(getProfile(loginPosUser?.user_id));
+      setSixDigit(false);
+      setValue('');
+    } else if (res === undefined) {
+      setValue('');
+    }
+  };
+  useEffect(() => {
+    if (value && value.length >= 6) {
+      enableSixAPIFunction();
+    }
+  }, [value]);
   const passcodeHandlerFive = async () => {
     if (!forgotValue) {
       Toast.show({
@@ -177,18 +186,7 @@ export function Security() {
       });
       return;
     } else {
-      const data = {
-        verification_id: verificationId,
-        verification_otp: forgotValue,
-      };
-      const authToken = loginPosUser?.token;
-      const res = await dispatch(reset2fa(data, authToken));
-      if (res?.status_code == 201) {
-        setQRCodeUrl(res?.payload?.qrCode);
-        setForgotPinScreen(false);
-        setForgotValue('');
-        setQrCodeScreen(true);
-      }
+      forgotApiFunction();
     }
   };
   const toggleBtnHandler = (value) => {
@@ -244,6 +242,25 @@ export function Security() {
     }
   };
 
+  const forgotApiFunction = async () => {
+    const data = {
+      verification_id: verificationId,
+      verification_otp: forgotValue,
+    };
+    const authToken = loginPosUser?.token;
+    const res = await dispatch(reset2fa(data, authToken));
+    if (res?.status_code == 201) {
+      setQRCodeUrl(res?.payload?.qrCode);
+      setForgotPinScreen(false);
+      setForgotValue('');
+      setQrCodeScreen(true);
+    }
+  };
+  useEffect(() => {
+    if (forgotValue && forgotValue.length >= 5) {
+      forgotApiFunction();
+    }
+  }, [forgotValue]);
   return (
     <SafeAreaView>
       <Header backRequired title={strings?.security.security} />

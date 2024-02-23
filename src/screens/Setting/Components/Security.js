@@ -76,6 +76,8 @@ export function Security() {
 
   const TWO_FACTOR = getAuth?.merchantLoginData?.user?.user_profiles?.is_two_fa_enabled;
   const [forgotPinScreen, setForgotPinScreen] = useState(false);
+  const [enableSixLoader, setEnableSixLoader] = useState(false);
+
   const [verificationId, setVerificationId] = useState(null);
   const [QRCodeUrl, setQRCodeUrl] = useState(null);
   const [isForgot, setIsForgot] = useState(null);
@@ -129,33 +131,42 @@ export function Security() {
       //   code: value,
 
       // };
-
-      var data = {};
-      data = googleAuthicator
-        ? {
-            code: value,
-            disable_2fa: true,
-          }
-        : {
-            code: value,
-          };
-      const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
-      const res = await verificationFunction(data, posUserToken)(dispatch);
-      if (res?.msg === 'Code verified successfully') {
-        setValue('');
-        // const data = {
-        //   app_name: 'pos',
-        //   google_authenticator_status: factorEnable,
-        // };
-        // dispatch(upadteApi(data));
-        // dispatch(getSettings());
-        dispatch(getProfile(posUserToken?.id));
-        setSixDigit(false);
-      } else if (res === undefined) {
-        setValue('');
-      }
+      enableSixAPIFunction();
     }
   };
+  const enableSixAPIFunction = async () => {
+    setEnableSixLoader(true);
+    var data = {};
+    data = googleAuthicator
+      ? {
+          code: value,
+          disable_2fa: true,
+        }
+      : {
+          code: value,
+        };
+    const verificationFunction = googleAuthicator ? verifyGoogleCode : configureGoogleCode;
+    const res = await verificationFunction(data, posUserToken)(dispatch);
+    if (res?.msg === 'Code verified successfully') {
+      setValue('');
+      // const data = {
+      //   app_name: 'pos',
+      //   google_authenticator_status: factorEnable,
+      // };
+      // dispatch(upadteApi(data));
+      // dispatch(getSettings());
+      dispatch(getProfile(posUserToken?.id));
+      setSixDigit(false);
+    } else if (res === undefined) {
+      setValue('');
+    }
+    setEnableSixLoader(false);
+  };
+  useEffect(() => {
+    if (value && value.length >= 6) {
+      enableSixAPIFunction();
+    }
+  }, [value]);
 
   const toggleBtnHandler = () => {
     if (googleAuthicator === false) {
@@ -174,6 +185,15 @@ export function Security() {
   const reset2faLoader = useSelector((state) => isLoadingSelector([TYPESS.RESET_2FA], state));
   const renderCell = ({ index }) => {
     const displaySymbol = value[index] ? '*' : '';
+
+    return (
+      <View key={index} style={styles.cellRoot} onLayout={getCellOnLayoutHandler(index)}>
+        <Text style={styles.cellText}>{displaySymbol}</Text>
+      </View>
+    );
+  };
+  const renderForgotCell = ({ index }) => {
+    const displaySymbol = forgotValue[index] ? '*' : '';
 
     return (
       <View key={index} style={styles.cellRoot} onLayout={getCellOnLayoutHandler(index)}>
@@ -224,19 +244,28 @@ export function Security() {
       });
       return;
     } else {
-      const data = {
-        verification_id: verificationId,
-        verification_otp: forgotValue,
-      };
-      const res = await dispatch(reset2fa(data, posUserToken));
-      if (res?.status_code == 201) {
-        setQRCodeUrl(res?.payload?.qrCode);
-        setForgotPinScreen(false);
-        setForgotValue('');
-        setQrCodeScreen(true);
-      }
+      forgotApiFunction();
     }
   };
+  const forgotApiFunction = async () => {
+    const data = {
+      verification_id: verificationId,
+      verification_otp: forgotValue,
+    };
+    const res = await dispatch(reset2fa(data, posUserToken));
+    if (res?.status_code == 201) {
+      setQRCodeUrl(res?.payload?.qrCode);
+      setForgotPinScreen(false);
+      setForgotValue('');
+      setQrCodeScreen(true);
+    }
+  };
+  useEffect(() => {
+    if (forgotValue && forgotValue.length >= 5) {
+      forgotApiFunction();
+    }
+  }, [forgotValue]);
+
   return (
     <View>
       <Spacer space={SH(10)} />
@@ -279,6 +308,12 @@ export function Security() {
                 screen={'PickupPin'}
                 onBackPressHandler={() => setSixDigit(false)}
               />
+              <ActivityIndicator
+                size={'large'}
+                color={COLORS.navy_blue}
+                animating={enableSixLoader}
+                style={{ position: 'absolute', top: '50%' }}
+              />
               <TouchableOpacity style={styles.forgotPin} onPress={() => onForgotPin()}>
                 <Text style={styles.forgotPinText}>Forgot Pin</Text>
               </TouchableOpacity>
@@ -308,17 +343,18 @@ export function Security() {
                     showSoftInputOnFocus={false}
                     keyboardType={'number-pad'}
                     textContentType={'oneTimeCode'}
-                    renderCell={({ index, symbol, isFocused }) => (
-                      <View
-                        onLayout={getCellOnLayoutHandler(index)}
-                        key={index}
-                        style={styles.cellRootSix}
-                      >
-                        <Text style={styles.cellTextSix}>
-                          {symbol || (isFocused ? <Cursor /> : null)}
-                        </Text>
-                      </View>
-                    )}
+                    renderCell={renderForgotCell}
+                    // renderCell={({ index, symbol, isFocused }) => (
+                    //   <View
+                    //     onLayout={getCellOnLayoutHandler(index)}
+                    //     key={index}
+                    //     style={styles.cellRootSix}
+                    //   >
+                    //     <Text style={styles.cellTextSix}>
+                    //       {symbol || (isFocused ? <Cursor /> : null)}
+                    //     </Text>
+                    //   </View>
+                    // )}
                   />
 
                   <VirtualKeyBoard

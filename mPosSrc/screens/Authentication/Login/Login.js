@@ -100,25 +100,7 @@ export function Login(props) {
     if (!value || value.length < 4) {
       CustomErrorToast({ message: strings.validationMessages.emptyPinCode });
     } else {
-      setIsLoading(true);
-      let data = {
-        merchant_id: getData?.merchantLoginData?.uniqe_id,
-        pos_user_id: posUser?.user_id.toString(),
-        pos_security_pin: value,
-      };
-      const res = await dispatch(loginPosUserMPOS(data));
-      setIsLoading(false);
-      if (res?.type !== TYPES.LOGIN_POS_USER_ERROR) {
-        // dispatch(posLoginDetail());
-        if (TWO_FACTOR) {
-          navigate(MPOS_NAVIGATION.twoFactorLogin, { userResponse: res });
-        } else {
-          dispatch(posLoginDetail());
-          dispatch(loginPosUserSuccess(res));
-          dispatch(getSettings());
-          dispatch(getProfile(res?.id));
-        }
-      }
+      apiFunction();
     }
   };
   const bioMetricLogin = () => {
@@ -202,7 +184,32 @@ export function Login(props) {
   };
 
   // const isLoading = useSelector((state) => isLoadingSelector([TYPES.LOGIN_POS_USER], state));
-
+  const apiFunction = async () => {
+    setIsLoading(true);
+    let data = {
+      merchant_id: getData?.merchantLoginData?.uniqe_id,
+      pos_user_id: posUser?.user_id.toString(),
+      pos_security_pin: value,
+    };
+    const res = await dispatch(loginPosUserMPOS(data));
+    setIsLoading(false);
+    if (res?.type !== TYPES.LOGIN_POS_USER_ERROR) {
+      // dispatch(posLoginDetail());
+      if (TWO_FACTOR) {
+        navigate(MPOS_NAVIGATION.twoFactorLogin, { userResponse: res });
+      } else {
+        dispatch(posLoginDetail());
+        dispatch(loginPosUserSuccess(res));
+        dispatch(getSettings());
+        dispatch(getProfile(res?.id));
+      }
+    }
+  };
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      apiFunction();
+    }
+  }, [value]);
   return (
     <SafeAreaView style={styles.container}>
       <Header />

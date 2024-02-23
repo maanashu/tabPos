@@ -17,6 +17,7 @@ import { sendCheckinOTP, verifyCheckinOTP } from '@/actions/AppointmentAction';
 import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/AppointmentTypes';
 import { styles } from '../styles';
+import { useEffect } from 'react';
 
 const VerifyCheckinOtp = ({ isVisible, setIsVisible, appointmentData, onVerify }) => {
   const dispatch = useDispatch();
@@ -36,6 +37,24 @@ const VerifyCheckinOtp = ({ isVisible, setIsVisible, appointmentData, onVerify }
     isLoadingSelector([TYPES.SEND_CHECKIN_OTP], state)
   );
 
+  const apiFunction = async () => {
+    const params = {
+      appointment_id: appointmentId,
+      otp: value,
+    };
+    dispatch(verifyCheckinOTP(params))
+      .then((response) => {
+        onVerify(response);
+      })
+      .catch((error) => {
+        alert(error?.msg);
+      });
+  };
+  useEffect(() => {
+    if (value && value.length >= 5) {
+      apiFunction();
+    }
+  }, [value]);
   return (
     <Modal isVisible={isVisible}>
       <View style={styles.verifyOtpContainer}>

@@ -19,6 +19,7 @@ import { isLoadingSelector } from '@/selectors/StatusSelectors';
 import { TYPES } from '@/Types/Types';
 import { CustomButton } from '@mPOS/components/CustomButton';
 import { navigate } from '@mPOS/navigation/NavigationRef';
+import { useEffect } from 'react';
 
 const CELL_COUNT = 4;
 
@@ -55,18 +56,25 @@ export function OldPin(props) {
     //   });
     // }
     else {
-      setIsLoading(true);
-      const res = await disptach(verifyOldPin(value));
-      if (res?.status_code == '200') {
-        navigate(NAVIGATION.setPin, {
-          key: 'change_pin',
-          data: value,
-        });
-      }
-      setIsLoading(false);
+      apiFunction();
     }
   };
-
+  const apiFunction = async () => {
+    setIsLoading(true);
+    const res = await disptach(verifyOldPin(value));
+    if (res?.status_code == '200') {
+      navigate(NAVIGATION.setPin, {
+        key: 'change_pin',
+        data: value,
+      });
+    }
+    setIsLoading(false);
+  };
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      apiFunction();
+    }
+  }, [value]);
   const renderCell = ({ index }) => {
     const displaySymbol = value[index] ? '*' : '';
 

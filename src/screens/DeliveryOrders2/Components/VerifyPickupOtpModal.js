@@ -74,25 +74,32 @@ const VerifyPickupOtpModal = ({ visible, orderData, changeOrderStatus, onClose }
       });
       return;
     } else {
-      const data = {
-        order_id: orderData?.id,
-        otp: value,
-      };
-
-      const res = await verifyPickupOtp(data)(dispatch);
-      if (res) {
-        setValue('');
-        changeOrderStatus();
-      }
-      // if (res?.type === 'MERCHANT_LOGIN_ERROR') {
-      //   setValue('');
-      // } else if (res?.type === 'MERCHANT_LOGIN_SUCCESS') {
-      //   setValue('');
-      //   navigate(NAVIGATION.posUsers);
-      // }
+      verifyOtpAPiFunction();
     }
   };
+  const verifyOtpAPiFunction = async () => {
+    const data = {
+      order_id: orderData?.id,
+      otp: value,
+    };
 
+    const res = await verifyPickupOtp(data)(dispatch);
+    if (res) {
+      setValue('');
+      changeOrderStatus();
+    }
+    // if (res?.type === 'MERCHANT_LOGIN_ERROR') {
+    //   setValue('');
+    // } else if (res?.type === 'MERCHANT_LOGIN_SUCCESS') {
+    //   setValue('');
+    //   navigate(NAVIGATION.posUsers);
+    // }
+  };
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      verifyOtpAPiFunction();
+    }
+  }, [value]);
   const storeSuccessFlag = async (value) => {
     try {
       await AsyncStorage.setItem('success-flag', 'true');

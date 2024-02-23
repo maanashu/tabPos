@@ -33,6 +33,7 @@ import { MPOS_NAVIGATION } from '@common/commonImports';
 import { navigationRef } from '@mPOS/navigation/NavigationRef';
 import { NAVIGATION } from '@/constants';
 import { getSettings } from '@/actions/SettingAction';
+import { useEffect } from 'react';
 
 const CELL_COUNT = 4;
 
@@ -88,24 +89,34 @@ export function PosUserPasscode({ route }) {
       });
       return;
     } else {
-      let data = {
-        merchant_id: getData?.merchantLoginData?.uniqe_id,
-        pos_user_id: posuser.user_id.toString(),
-        pos_security_pin: value,
-      };
-      // dispatch(loginPosUser(data));
-      const res = await dispatch(loginPosUser(data));
-      if (res) {
-        if (res?.user_profiles?.is_two_fa_enabled) {
-          navigate(NAVIGATION.twoFactorLogin, { userResponse: res });
-        } else {
-          dispatch(loginPosUserSuccess(res));
-          dispatch(getSettings());
-          dispatch(getProfile(res?.id));
-        }
+      apiFunction();
+    }
+  };
+
+  const apiFunction = async () => {
+    let data = {
+      merchant_id: getData?.merchantLoginData?.uniqe_id,
+      pos_user_id: posuser.user_id.toString(),
+      pos_security_pin: value,
+    };
+    // dispatch(loginPosUser(data));
+    const res = await dispatch(loginPosUser(data));
+    if (res?.id) {
+      if (res?.user_profiles?.is_two_fa_enabled) {
+        navigate(NAVIGATION.twoFactorLogin, { userResponse: res });
+      } else {
+        dispatch(loginPosUserSuccess(res));
+        dispatch(getSettings());
+        dispatch(getProfile(res?.id));
       }
     }
   };
+
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      apiFunction();
+    }
+  }, [value]);
   const renderCell = ({ index }) => {
     const displaySymbol = value[index] ? '*' : '';
 

@@ -17,6 +17,7 @@ import { CustomErrorToast } from '@mPOS/components/Toast';
 import Header from '@mPOS/screens/Authentication/SetPin/Components/Header';
 
 import { styles } from '@mPOS/screens/Authentication/SetPin/styles';
+import { useEffect } from 'react';
 
 export function SetNewPin() {
   const CELL_COUNT = 4;
@@ -31,12 +32,19 @@ export function SetNewPin() {
     if (!value || value.length < 4) {
       CustomErrorToast({ message: strings.validationMessages.emptyPinCode });
     } else {
-      navigate(MPOS_NAVIGATION.reenterPin, { pinCode: value });
+      navigateToScreen();
     }
   };
 
   const cancelHandler = () => setValue('');
-
+  const navigateToScreen = () => {
+    navigate(MPOS_NAVIGATION.reenterPin, { pinCode: value });
+  };
+  useEffect(() => {
+    if (value && value.length >= 4) {
+      navigateToScreen();
+    }
+  }, [value]);
   return (
     <SafeAreaView style={styles.container}>
       <Header clearInput={cancelHandler} />
