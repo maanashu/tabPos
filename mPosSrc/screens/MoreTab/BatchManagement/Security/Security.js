@@ -213,6 +213,14 @@ export function Security() {
       // dispatch(getGoogleCode());
     }
   };
+  const renderForgotCell = ({ index }) => {
+    const displaySymbol = forgotValue[index] ? '*' : '';
+    return (
+      <View key={index} style={styles.cellRoot} onLayout={getCellOnLayoutHandler(index)}>
+        <Text style={styles.cellText}>{displaySymbol}</Text>
+      </View>
+    );
+  };
   const renderCell = ({ index }) => {
     const displaySymbol = value[index] ? '*' : '';
     return (
@@ -333,17 +341,18 @@ export function Security() {
                       showSoftInputOnFocus={false}
                       keyboardType={'number-pad'}
                       textContentType={'oneTimeCode'}
-                      renderCell={({ index, symbol, isFocused }) => (
-                        <View
-                          onLayout={getCellOnLayoutHandler(index)}
-                          key={index}
-                          style={styles.cellRootSix}
-                        >
-                          <Text style={styles.cellTextSix}>
-                            {symbol || (isFocused ? <Cursor /> : null)}
-                          </Text>
-                        </View>
-                      )}
+                      renderCell={renderForgotCell}
+                      // renderCell={({ index, symbol, isFocused }) => (
+                      //   <View
+                      //     onLayout={getCellOnLayoutHandler(index)}
+                      //     key={index}
+                      //     style={styles.cellRootSix}
+                      //   >
+                      //     <Text style={styles.cellTextSix}>
+                      //       {symbol || (isFocused ? <Cursor /> : null)}
+                      //     </Text>
+                      //   </View>
+                      // )}
                     />
 
                     <VirtualKeyBoard
