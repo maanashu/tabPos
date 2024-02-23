@@ -255,12 +255,12 @@ export function DashBoard({ navigation }) {
     const seconds = Math.floor((timeDifference / 1000) % 60);
     const timeFormatted = (
       <View>
-        {/* <Text style={[styles.nameTextBold, { color: COLORS.navy_blue }]}>
-          {hours < 1 ? '00' : hours}:{minutes < 1 ? '00' : minutes}:{seconds < 1 ? '00' : seconds}
-        </Text> */}
         <Text style={[styles.nameTextBold, { color: COLORS.navy_blue }]}>
-          {moment.utc(estimateTime).format('LTS')}
+          {hours < 1 ? '00' : hours}:{minutes < 1 ? '00' : minutes}:{seconds < 1 ? '00' : seconds}
         </Text>
+        {/* <Text style={[styles.nameTextBold, { color: COLORS.navy_blue }]}>
+          {moment.utc(estimateTime).format('LTS')}
+        </Text> */}
       </View>
     );
 
